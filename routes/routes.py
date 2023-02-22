@@ -41,6 +41,8 @@ async def post_login(request: Request, context: typing.Dict[str, typing.Any] = {
 
     await load_session(request)
     form = await request.form()
+
+    log.debug(form)
     
     # form = await request.form()
     # form_json = await request.json()
