@@ -11,7 +11,7 @@ setup(
     author_email='deiv@aarhus.dk',
     license='MIT',
     packages=find_packages(exclude=("tests",)),
-    package_data={"stadsarkiv_client": ["templates/*.html", "static/*"]},
+    package_data={"stadsarkiv_client": ["templates/*.html", "static/js/*.js", "static/css/*.css"]},
     install_requires=REQUIREMENTS,
 
     classifiers=[
