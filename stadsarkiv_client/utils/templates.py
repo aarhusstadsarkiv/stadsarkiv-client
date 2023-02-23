@@ -3,6 +3,7 @@ import os
 from jinja2 import FileSystemLoader 
 from starlette.templating import Jinja2Templates
 from starlette.requests import Request
+from settings import settings
 
 # Asynchronous functions as context processors are not supported.
 def app_context(request: Request) -> typing.Dict[str, typing.Any]:
@@ -11,8 +12,16 @@ def app_context(request: Request) -> typing.Dict[str, typing.Any]:
 
 dir_path = os.path.dirname(os.path.realpath(__file__)) + "/../templates/"
 
+templates = []
 
-loader = FileSystemLoader(["/home/dennis/starlette-client/templates", dir_path])
+# check if key in settings
+if "templates_local" in settings:
+    templates.append(settings["templates_local"])
+
+templates.append(dir_path)
+
+
+loader = FileSystemLoader(templates)
 
 
 templates = Jinja2Templates(
