@@ -11,7 +11,7 @@ dir = "./logs"
 os.makedirs(dir, exist_ok=True)
 Path('./logs/main.log').touch()
 
-# Create a custom logger
+
 log = logging.getLogger("main")
 level = settings["log_level"]
 
@@ -32,3 +32,5 @@ if not len(log.handlers):
 
     log.addHandler(fh)
     log.addHandler(ch)
+
+log.warning("Logging initialized")

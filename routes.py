@@ -1,17 +1,16 @@
 
 from starlette.routing import Route, Mount
 from starlette.staticfiles import StaticFiles
-from endpoints.auth import Auth
-from endpoints.pages import Pages
+from endpoints import auth, pages
 
 
 routes = [
-    Route('/', endpoint=Pages.home, name='home'),
-    Route('/about', endpoint=Pages.about, name='about'),
-    Route('/admin', endpoint=Pages.admin, name='admin'),
+    Route('/', endpoint=pages.home, name='home'),
+    Route('/about', endpoint=pages.about, name='about'),
+    Route('/admin', endpoint=pages.admin, name='admin'),
     Mount('/static', StaticFiles(directory='static'), name='static'),
-    Route('/auth/login', endpoint=Auth.get_login, name='login'),
-    Route('/auth/post-login', endpoint=Auth.post_login,
+    Route('/auth/login', endpoint=auth.get_login, name='login'),
+    Route('/auth/post-login', endpoint=auth.post_login,
           name='post_login', methods=['POST']),
-    Route('/auth/register', endpoint=Auth.get_register, name='register'),
+    Route('/auth/register', endpoint=auth.get_register, name='register'),
 ]

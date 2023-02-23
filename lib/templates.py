@@ -10,10 +10,3 @@ def app_context(request: Request) -> typing.Dict[str, typing.Any]:
 templates = Jinja2Templates(
     directory='templates', context_processors=[app_context]
 )
-
-def get_template_context(request: Request) -> typing.Dict[str, typing.Any]:
-    return {
-        'request': request,
-        'title': 'No title',
-        'main_menu': ["home", "about", "admin", "login"]
-    }

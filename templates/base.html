@@ -8,6 +8,7 @@
     <title>{% block title %}{{ title }}{% endblock title %}</title>
     <link id="theme-select" rel="stylesheet" href="{{ url_for('static', path='/css/light.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/dolphin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/flash.css') }}">
 </head>
 
 <body>
@@ -18,5 +19,6 @@
     <h1>Welcome to {{ title }}!</h1>
     {% endblock content %}
 </body>
+{% include "_flash.html" %}
 
 </html>

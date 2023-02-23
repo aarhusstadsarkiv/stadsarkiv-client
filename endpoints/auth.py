@@ -1,47 +1,44 @@
 import typing
 from starlette.requests import Request
-from starlette.responses import JSONResponse
-from lib.templates import templates, get_template_context
+from starlette.responses import JSONResponse, RedirectResponse
+from lib.templates import templates
+from lib.context import get_context
 from lib.logging import log
+from lib.fastapi_client import FastAPIClient
+from lib import flash
 from starsessions import load_session
 
 
-class Auth:
+async def get_login(request: Request):
 
-    def __init__(self):
-        pass
+    await load_session(request)
+    
+    # flash_messages = flash.get_messages(request)
+    # log.debug(flash_messages)
 
-    @staticmethod
-    async def get_login(request: Request, context: typing.Dict[str, typing.Any] = {}):
+    context = get_context(request)
+    context["title"] = "Login"
+    return templates.TemplateResponse('login.html', context)
 
-        await load_session(request)
-        session_data = request.session
-        context = get_template_context(request)
-        context["title"] = "Login"
-        return templates.TemplateResponse('login.html', context)
 
-    @staticmethod
-    async def post_login(request: Request, context: typing.Dict[str, typing.Any] = {}):
+async def post_login(request: Request):
 
-        await load_session(request)
-        form = await request.form()
+    await load_session(request)
+    form = await request.form()
+    
+    username = form.get('username')
+    password = form.get('password')
 
-        log.debug(form["username"], form["password"])
-        
-        # form = await request.form()
-        # form_json = await request.json()
-        # log.debug(form_json)
-        
-        session_data = request.session
-        context = get_template_context(request)
-        context["title"] = "Login"
-        return JSONResponse({"message": "Hello, world!"})
+    flash.set_message(request, "You have been logged in", type="success")
 
-    @staticmethod
-    async def get_register(request: Request, context: typing.Dict[str, typing.Any] = {}):
-        context = get_template_context(request)
-        context["title"] = "Register"
-        return templates.TemplateResponse('register.html', context)
+
+    return RedirectResponse(url='/auth/login', status_code=302)
+    return JSONResponse({"message": "Hello, world!"})
+
+async def get_register(request: Request):
+    context = get_context(request)
+    context["title"] = "Register"
+    return templates.TemplateResponse('register.html', context)
 
 
     
