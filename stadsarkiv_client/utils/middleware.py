@@ -5,7 +5,7 @@ from settings import settings
 import os
 
 
-secret_key = os.getenv('SECRET_KEY')
+secret_key = str(os.getenv('SECRET_KEY'))
 
 session_store: CookieStore = CookieStore(secret_key=secret_key)
 

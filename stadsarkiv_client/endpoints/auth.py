@@ -20,8 +20,8 @@ async def post_login(request: Request):
     try:
 
         form = await request.form()
-        username = form.get('username')
-        password = form.get('password')
+        username = str(form.get('username'))
+        password = str(form.get('password'))
 
         fastapi_client = FastAPIClient()
         await fastapi_client.login_jwt(username, password)

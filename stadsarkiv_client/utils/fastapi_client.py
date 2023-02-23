@@ -34,7 +34,7 @@ class FastAPIClient:
             raise FastAPIException("Registration failed",
                                    response.status_code, response.text)
 
-    def forgot_password(self, email: str) -> str:
+    def forgot_password(self, email: str) -> bytes:
 
         self.url += '/v1/auth/forgot-password'
         form_dict = {"email": email}
@@ -54,7 +54,7 @@ class FastAPIClient:
             raise FastAPIException(
                 "Forgot password failed", response.status_code, response.text)
 
-    def reset_password(self, token: str, password: str) -> str:
+    def reset_password(self, token: str, password: str) -> bytes:
 
         self.url += '/v1/auth/reset-password'
         form_dict = {"token": token, "password": password}
@@ -74,7 +74,7 @@ class FastAPIClient:
             raise FastAPIException(
                 "Reset password failed", response.status_code, response.text)
 
-    def login_cookie(self, username: str, password: str) -> str:
+    def login_cookie(self, username: str, password: str) -> dict:
 
         self.url += '/v1/auth/login'
         session = requests.Session()
@@ -149,7 +149,7 @@ class FastAPIClient:
             raise FastAPIException("Logout JWT failed",
                                    response.status_code, response.text)
 
-    def me(self, access_token: str = None, token_type: str = None, cookie: str = None) -> dict:
+    def me(self, access_token: str, token_type: str, cookie: str) -> dict:
         self.url += '/v1/users/me'
 
         headers = {
