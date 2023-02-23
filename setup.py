@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
@@ -10,7 +10,7 @@ setup(
     author='Dennis Iversen',
     author_email='deiv@aarhus.dk',
     license='MIT',
-    packages=['stadsarkiv_client'],
+    packages=find_packages(exclude=("tests",)),
     install_requires=REQUIREMENTS,
 
     classifiers=[
