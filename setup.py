@@ -1,5 +1,7 @@
 from setuptools import setup
 
+REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
+
 setup(
     name='stadsarkiv-client',
     version='0.0.1',    
@@ -9,7 +11,7 @@ setup(
     author_email='deiv@aarhus.dk',
     license='MIT',
     packages=['stadsarkiv_client'],
-    install_requires=[],
+    install_requires=REQUIREMENTS,
 
     classifiers=[
         'Development Status :: 1 - Planning',
