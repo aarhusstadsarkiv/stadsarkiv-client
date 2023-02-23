@@ -1,6 +1,6 @@
 from starlette.requests import Request
-from lib.templates import templates
-from lib.context import get_context
+from stadsarkiv_client.utils.templates import templates
+from stadsarkiv_client.utils.context import get_context
 
 
 async def home(request: Request):

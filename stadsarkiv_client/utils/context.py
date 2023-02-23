@@ -1,7 +1,7 @@
 import typing
 from starlette.templating import Jinja2Templates
 from starlette.requests import Request
-from lib.flash import get_messages
+from stadsarkiv_client.utils.flash import get_messages
 
 
 def get_context(request: Request) -> typing.Dict[str, typing.Any]:

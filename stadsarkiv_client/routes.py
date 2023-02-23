@@ -1,7 +1,7 @@
 
 from starlette.routing import Route, Mount
 from starlette.staticfiles import StaticFiles
-from endpoints import auth, pages
+from stadsarkiv_client.endpoints import auth, pages
 
 
 routes = [

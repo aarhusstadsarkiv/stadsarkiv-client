@@ -2,7 +2,7 @@ import requests
 import json
 
 from settings import settings
-from lib.logging import log
+from stadsarkiv_client.utils.logging import log
 
 
 class FastAPIException(Exception):
@@ -116,7 +116,7 @@ class FastAPIClient:
             raise FastAPIException(
                 "Logout cookie failed", response.status_code, response.text)
 
-    def login_jwt(self, username: str, password: str) -> str:
+    async def login_jwt(self, username: str, password: str) -> str:
 
         self.url += '/v1/auth/jwt/login'
 
