@@ -1,6 +1,6 @@
 from starsessions import CookieStore, load_session, SessionMiddleware
 from starlette.middleware import Middleware
-from settings.settings import settings
+from settings import settings
 
 
 session_store: CookieStore = CookieStore(secret_key=settings)

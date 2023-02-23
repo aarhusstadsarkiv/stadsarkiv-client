@@ -1,8 +1,8 @@
 from starlette.applications import Starlette
-from routes.routes import routes
+from routes import routes
 from lib.middleware import session_middleware
 from lib.logging import log
-from settings.settings import settings
+from settings import settings
 from dotenv import load_dotenv
 import os
 

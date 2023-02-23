@@ -1,7 +1,7 @@
 import logging
 import os
 from pathlib import Path
-from settings.settings import settings
+from settings import settings
 
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
