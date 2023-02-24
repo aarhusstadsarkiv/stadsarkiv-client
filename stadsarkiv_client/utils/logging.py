@@ -32,5 +32,3 @@ if not len(log.handlers):
 
     log.addHandler(fh)
     log.addHandler(ch)
-
-log.warning("Logging initialized")
