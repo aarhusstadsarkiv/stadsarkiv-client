@@ -20,6 +20,9 @@ settings = {
     "environment": os.getenv("ENVIRONMENT"),
     "fastapi_endpoint": fastapi_endpoint,
     "log_level": log_level,
+    # "file" or "stream" or both
+    # "file" will log to ./logs/main.log
+    "log_handlers": ["stream"],
     "cookie": {
         "name": "session",
         "lifetime": 3600 * 24 * 14,
@@ -29,8 +32,7 @@ settings = {
     }
 }
 
+
 dir_path = os.path.dirname(os.path.realpath(__file__)) + "/templates"
-
-
 if os.path.exists(dir_path):
     settings["templates_local"] = dir_path
