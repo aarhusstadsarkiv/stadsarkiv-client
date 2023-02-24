@@ -36,10 +36,11 @@ settings = {
         "httponly": cookie_httponly,
         "secure": cookie_secure,
         "samesite": "lax"
-    }
+    },
+    "templates_local": "./templates"
 }
 
 
-dir_path = os.path.dirname(os.path.realpath(__file__)) + "/templates"
+""" dir_path = os.path.dirname(os.path.realpath(__file__)) + "/templates"
 if os.path.exists(dir_path):
-    settings["templates_local"] = dir_path
+    settings["templates_local"] = dir_path """
