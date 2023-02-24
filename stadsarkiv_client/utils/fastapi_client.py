@@ -1,8 +1,8 @@
 import requests
 import json
 
-from settings import settings
-from stadsarkiv_client.utils.logging import log
+from .dynamic_settings import settings
+from .logging import log
 
 
 class FastAPIException(Exception):

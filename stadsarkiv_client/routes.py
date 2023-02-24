@@ -1,7 +1,7 @@
 
 from starlette.routing import Route, Mount
 from starlette.staticfiles import StaticFiles
-from stadsarkiv_client.endpoints import auth, pages
+from .endpoints import auth, pages
 import os
 
 static_dir = os.path.dirname(os.path.abspath(__file__)) + '/static'

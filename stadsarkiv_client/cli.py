@@ -5,7 +5,7 @@ from pprint import pformat
 from stadsarkiv_client.routes import routes
 from stadsarkiv_client.utils.middleware import session_middleware, session_autoload_middleware
 from stadsarkiv_client.utils.logging import log
-from settings import settings
+from .settings import settings
 import os
 
 

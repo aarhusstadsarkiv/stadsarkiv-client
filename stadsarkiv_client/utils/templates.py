@@ -3,7 +3,7 @@ import os
 from jinja2 import FileSystemLoader 
 from starlette.templating import Jinja2Templates
 from starlette.requests import Request
-from settings import settings
+from .dynamic_settings import settings
 
 # Asynchronous functions as context processors are not supported.
 def app_context(request: Request) -> typing.Dict[str, typing.Any]:

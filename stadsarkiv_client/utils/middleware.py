@@ -1,7 +1,7 @@
 import re
 from starsessions import CookieStore, SessionMiddleware, SessionAutoloadMiddleware
 from starlette.middleware import Middleware
-from settings import settings
+from .dynamic_settings import settings
 import os
 
 
