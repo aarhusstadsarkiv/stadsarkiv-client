@@ -1,17 +1,24 @@
 import logging
 import os
 
+from dotenv import load_dotenv
 
-log_level = logging.INFO
-cookie_httponly = True
-cookie_secure = True
+dir_path = os.path.dirname(os.path.realpath(__file__))
+env_dist = dir_path + "/.env-dist"
+load_dotenv(env_dist)
+load_dotenv(override=True)
+
+
+log_level = logging.DEBUG
+cookie_httponly = False
+cookie_secure = False
 fastapi_endpoint = "https://dev.openaws.dk"
 
 
-if os.getenv("ENVIRONMENT") == "development":
-    log_level = logging.DEBUG
-    cookie_httponly = False
-    cookie_secure = False
+if os.getenv("ENVIRONMENT") == "production":
+    log_level = logging.INFO
+    cookie_httponly = True
+    cookie_secure = True
     fastapi_endpoint = "https://dev.openaws.dk"
 
 
