@@ -4,6 +4,18 @@
 
     git clone https://github.com/aarhusstadsarkiv/stadsarkiv-client.git
 
+cd stadsarkiv-client
+
+    pip install -r requirements.txt
+
+## Run local:
+
+    python -m stadsarkiv_client
+
+Or: 
+
+    ./run-module.sh
+
 ## Install as requirement
 
 Update version and install latest version:
@@ -15,12 +27,12 @@ Update version and install latest version:
 
 Override settings: 
 
-    touch settings.py
+    touch settings_local.py
 
-View settings: https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/settings.py
-
-Override templates: 
-
-    mkdir templates
-
-    python -m stadsarkiv_client
+```.py
+settings_local = {
+    "templates_local": "./templates", # Override templates
+    "static_local": "./static", # Change static folder
+    "static_extra": "./static_extra", # Add extra static folder
+}
+```
