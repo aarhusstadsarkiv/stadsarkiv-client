@@ -14,10 +14,11 @@ dir_path = os.path.dirname(os.path.realpath(__file__)) + "/../templates/"
 
 templates = []
 
-# check if key in settings
+# Load local templates first
 if "templates_local" in settings:
     templates.append(settings["templates_local"])
 
+# Load default templates
 templates.append(dir_path)
 
 
