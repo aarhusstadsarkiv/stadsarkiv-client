@@ -1,20 +1,15 @@
 from stadsarkiv_client.settings import settings
 
-
-local_settings = {}
+settings_local = {}
 
 try:
-    import settings as local_settings
-    # get local settings path
-    settings_type = 'local'
+    from settings_local import settings_local
 except ImportError:
-    settings_type = 'default'
     pass
 
-settings["settings_type"] = settings_type
 
-# Iterate over the settings and override them with the local settings
-for key, value in settings.items():
-    if hasattr(local_settings, key):
-        settings[key] = getattr(local_settings, key)
+for key, value in settings_local.items():
+    settings[key] = value
+
+
 
