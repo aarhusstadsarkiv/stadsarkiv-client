@@ -36,3 +36,14 @@ settings_local = {
     "static_extra": "./static_extra", # Add extra static folder
 }
 ```
+
+Override .env: 
+
+    touch .env
+
+```.env
+# session secret
+SECRET=SECRET
+# dev or prod
+ENVIRONMENT=development
+```
