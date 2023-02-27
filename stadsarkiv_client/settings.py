@@ -35,5 +35,4 @@ settings = {
         "secure": cookie_secure,
         "samesite": "lax"
     },
-
 }

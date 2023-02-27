@@ -2,6 +2,6 @@
 
 <nav class="main-menu">
     {% for menu_item in main_menu %}
-    <a href="{{ url_for(menu_item) }}">{{ menu_item }}</a>
+    <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
     {% endfor %}
 </nav>
