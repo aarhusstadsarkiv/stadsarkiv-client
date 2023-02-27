@@ -3,10 +3,10 @@ import os
 from stadsarkiv_client.utils.dynamic_settings import settings
 from stadsarkiv_client.utils.logging import log
 
-def serve():
+def serve(reload, port):
 
     log.debug(os.getenv('ENVIRONMENT'))
     log.debug(settings)
 
     uvicorn.run("stadsarkiv_client.app:app",
-                reload=True, port=5555, log_level="info")
+                reload=reload, port=port, log_level="info")
