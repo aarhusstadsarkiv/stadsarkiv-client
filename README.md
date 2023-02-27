@@ -4,7 +4,13 @@
 
     git clone https://github.com/aarhusstadsarkiv/stadsarkiv-client.git
 
-cd stadsarkiv-client
+    cd stadsarkiv-client
+
+    source venv/bin/activate
+
+Or (Windows)
+
+    source venv/Scripts/activate
 
     pip install -r requirements.txt
 
