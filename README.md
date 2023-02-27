@@ -44,6 +44,6 @@ Override .env:
 ```.env
 # session secret
 SECRET=SECRET
-# dev or prod
-ENVIRONMENT=development
+# developemnt or production
+ENVIRONMENT=production
 ```
