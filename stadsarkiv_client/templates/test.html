@@ -1,18 +1,13 @@
-{# templates/test.html #}
+{# templates/login.html #}
 
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="utf-8">
-    <title>{{ title }}</title>
-</head>
+{% block content %}
+<h1>TEST</h1>
+<pre>
+{{ variables }}
+</pre>
 
-<body>
-    <header>
-        {% include "_navigation.html" %}
-    </header>
 
-</body>
 
-</html>
+{% endblock content %}
