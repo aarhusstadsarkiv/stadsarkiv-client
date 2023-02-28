@@ -7,5 +7,5 @@ from .cli import serve
 def run(reload: bool, port: int):
     serve(reload=reload, port=port)
 
-if __name__ == "__main__":
-    run()
+""" if __name__ == "__main__":
+    run() """
