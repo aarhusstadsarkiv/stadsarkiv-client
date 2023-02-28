@@ -15,7 +15,7 @@ setup(
     install_requires=REQUIREMENTS,
     entry_points={
         'console_scripts': [
-            'stadsarkiv-client = stadsarkiv_client.test_serve.commands.serve:run',
+            'stadsarkiv-client = stadsarkiv_client.commands.serve:run',
         ],
     },
 
