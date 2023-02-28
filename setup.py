@@ -13,6 +13,11 @@ setup(
     packages=find_packages(exclude=("tests",)),
     package_data={"stadsarkiv_client": ["templates/*.html", "static/js/*.js", "static/css/*.css", ".env-dist"]},
     install_requires=REQUIREMENTS,
+    entry_points={
+        'console_scripts': [
+            'stadsarkiv-client = stadsarkiv_client:test_serve',
+        ],
+    },
 
     classifiers=[
         'Development Status :: 1 - Planning',
