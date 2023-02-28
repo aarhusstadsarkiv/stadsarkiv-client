@@ -1,6 +1,6 @@
 settings_local = {
     "templates_local": "./templates",  # Override templates
-    "static_local": "./static",  # Change static folder
+    "static_local": "./static",  # Override static folder
     "main_menu": [
         {
             "name": "home", 
