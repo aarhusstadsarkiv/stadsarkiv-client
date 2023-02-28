@@ -39,9 +39,9 @@ before_entity_update
 after_entity_update 
 after_entity_delete 
 
-before_render_template (GUI-response) 
+before_render_template (GUI-response) x
 before_json_response (Data-response) 
 
-before_search_query 
-after_search_results 
+before_search_query x
+after_search_results x
 before_next_results 
