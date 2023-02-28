@@ -11,8 +11,13 @@ from stadsarkiv_client.utils import flash
 async def get_login(request: Request):
 
     context = get_context(request)
+
+    if "logged_in" in request.session:
+        if request.session["logged_in"]:
+            return RedirectResponse(url='/', status_code=302)
+
     context["title"] = "Login"
-    return templates.TemplateResponse('login.html', context)
+    return templates.TemplateResponse('auth/login.html', context)
 
 
 async def post_login(request: Request):
@@ -27,19 +32,60 @@ async def post_login(request: Request):
         await fastapi_client.login_jwt(username, password)
 
         request.session["logged_in"] = True
-        
+
         flash.set_message(request, "You have been logged in", type="success")
     except Exception as e:
         log.info(e)
-        flash.set_message(request, "Invalid username or password", type="error")
-            
+        flash.set_message(request, e.args[0], type="error")
+
+    return RedirectResponse(url='/auth/login', status_code=302)
+
+
+async def get_logout(request: Request):
+
+    context = get_context(request)
+    context["title"] = "Logout"
+    return templates.TemplateResponse('auth/logout.html', context)
+
+
+async def post_logout(request: Request):
+    try:
+
+        request.session.pop('logged_in', None)
+        flash.set_message(request, "You have been logged out", type="success")
+    except Exception as e:
+        log.info(e)
+        flash.set_message(request, "Error logging out", type="error")
+
     return RedirectResponse(url='/auth/login', status_code=302)
 
 
 async def get_register(request: Request):
     context = get_context(request)
     context["title"] = "Register"
-    return templates.TemplateResponse('register.html', context)
+    return templates.TemplateResponse('auth/register.html', context)
 
 
-    
+
+async def post_register(request: Request):
+    try:
+        form = await request.form()
+        email = str(form.get('email'))
+        password = str(form.get('password'))
+
+        fastapi_client = FastAPIClient()
+        register_dict = {"email": email, "password": password}
+
+        await fastapi_client.register(register_dict)
+
+        flash.set_message(request, "You have been registered", type="success")
+    except Exception as e:
+        log.info(e)
+        flash.set_message(request, e.args[0], type="error")
+
+    return RedirectResponse(url='/auth/register', status_code=302)
+
+
+async def get_me(request: Request):
+    pass
+

@@ -1,0 +1,5 @@
+.main-menu-item {
+    background-color: var(--background);
+    padding: 5px;
+    margin-right: 2px;
+}

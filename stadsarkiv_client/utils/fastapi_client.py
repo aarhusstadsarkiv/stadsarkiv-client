@@ -4,6 +4,25 @@ import json
 from .dynamic_settings import settings
 from .logging import log
 
+error_codes = {
+    "register": {
+        400: "Bruger eksisterer allerede. Prøv at logge ind.",
+        422: "Email skal være korrekt. Og password skal være mindst 8 karakterer."
+    },
+    "login_jwt": {
+        400: "Din bruger kunne ikke logges ind. Enten forkert email eller password. Eller din bruger eksisterer ikke eller er ikke aktiveret.",
+        422: "Din bruger kunne ikke logges ind. Enten forkert email eller password. Eller din bruger eksisterer ikke eller er ikke aktiveret.",
+    }
+}
+
+
+def get_error_message(endpoint, code):
+    errors = error_codes[endpoint]
+    if code in errors:
+        return errors[code]
+    else:
+        return "Ukendt fejl"
+
 
 class FastAPIException(Exception):
     pass
@@ -15,12 +34,11 @@ class FastAPIClient:
         self.url = kwargs.get('url', settings['fastapi_endpoint'])
         self.timeout = kwargs.get('timeout', 30)
 
-    def register(self, form_dict: dict) -> str:
+    async def register(self, form_dict: dict) -> str:
 
         self.url += '/v1/auth/register'
 
         def request():
-            form_dict["flags"] = int(form_dict["flags"])
             return requests.post(
                 self.url,
                 json=form_dict, timeout=self.timeout)
@@ -31,7 +49,7 @@ class FastAPIClient:
             response_content = json.loads(response.content)
             return response_content
         else:
-            raise FastAPIException("Registration failed",
+            raise FastAPIException(get_error_message('register', response.status_code),
                                    response.status_code, response.text)
 
     def forgot_password(self, email: str) -> bytes:
@@ -131,7 +149,9 @@ class FastAPIClient:
             return json.loads(response.content)
         else:
             raise FastAPIException(
-                "Login failed", response.status_code, response.text)
+                get_error_message("login_jwt", response.status_code), 
+                response.status_code, 
+                response.text)
 
     def logout_jwt(self, token: str, token_type: str = 'Bearer') -> dict:
         self.url += '/v1/auth/jwt/logout'

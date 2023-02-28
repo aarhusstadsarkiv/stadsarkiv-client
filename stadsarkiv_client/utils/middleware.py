@@ -16,8 +16,9 @@ cookie_httponly = settings["cookie"]["httponly"]
 
 admin_rx = re.compile('/*')
 
+
 session_middleware: Middleware = Middleware(
     SessionMiddleware, store=session_store, cookie_https_only=cookie_httponly, lifetime=lifetime)
 
 session_autoload_middleware: Middleware = Middleware(
-    SessionAutoloadMiddleware, paths=[admin_rx])
+    SessionAutoloadMiddleware, paths=['/'])

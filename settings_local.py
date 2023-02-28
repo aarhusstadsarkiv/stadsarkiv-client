@@ -13,7 +13,16 @@ settings_local = {
         {
             "name": "login", 
             "title": "Log ind"
-        }
+        },
+        {
+            "name": "logout", 
+            "title": "Log ud"
+        },
+        {
+            "name": "register", 
+            "title": "Register"
+        },
+
     ],
     "pages": [
         {

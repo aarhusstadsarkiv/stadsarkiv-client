@@ -1,0 +1,14 @@
+{# templates/login.html #}
+
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+
+<form action="{{ url_for('post_register')}}" method="post">
+    <input type="username" name="email" placeholder="Email"><br >
+    <input type="password" name="password" placeholder="Password"><br>
+    <textarea name="notes" placeholder="Notes"></textarea><br>
+    <input type="submit" value="Submit"><br />
+</form>
+{% endblock content %}

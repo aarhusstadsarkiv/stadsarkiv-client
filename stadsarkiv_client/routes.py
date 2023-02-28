@@ -24,7 +24,11 @@ routes = [
     Mount('/static', MultiStaticFiles(directories=static_dir_list), name='static'),
     Route('/auth/login', endpoint=auth.get_login, name='login'),
     Route('/auth/post-login', endpoint=auth.post_login, name='post_login', methods=['POST']),
+    Route('/auth/logout', endpoint=auth.get_logout, name='logout'),
+    Route('/auth/post-logout', endpoint=auth.post_logout, name='post_logout', methods=['POST']),
     Route('/auth/register', endpoint=auth.get_register, name='register'),
+    Route('/auth/post-register', endpoint=auth.post_register, name='post_register', methods=['POST']),
+    # Route('/auth/me', endpoint=auth.me, name='me'),
     Route('/test', endpoint=testing.test, name='test'),
 ]
 
