@@ -13,12 +13,6 @@ if "static_local" in settings:
         static_dir = settings["static_local"]
 
 
-static_extra: typing.Optional[str] = None
-if "static_extra" in settings:
-    if os.path.exists(settings["static_extra"]):
-        static_extra = settings["static_extra"]
-
-
 routes = [
     # Route('/', endpoint=home.index, name='home'),
     Mount('/static', StaticFiles(directory=static_dir), name='static'),
@@ -30,15 +24,10 @@ routes = [
 ]
 
 
-if static_extra:
-    routes.append(Mount('/static_extra',
-                  StaticFiles(directory=static_extra), name='static_extra'))
-
+# Add pages
 common_pages = []
 if "pages" in settings:
     common_pages = settings["pages"]
-else:
-    common_pages = []
 
 for common_page in common_pages:
     url = common_page["url"]
