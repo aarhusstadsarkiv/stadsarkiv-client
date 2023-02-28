@@ -1,18 +1,10 @@
 import typing
 from starlette.routing import Route, Mount
-from starlette.staticfiles import StaticFiles
 from .endpoints import auth, testing, pages
 import os
 from stadsarkiv_client.utils.dynamic_settings import settings
-# from stadsarkiv_client.utils.logging import log
-from starlette.staticfiles import PathLike, StaticFiles
-
-# Override static files in order to load multiple static folders
-class MultiStaticFiles(StaticFiles):
-    def __init__(self, directories: typing.List[PathLike] = [], **kwargs) -> None:
-        super().__init__(**kwargs)
-        self.all_directories = self.all_directories + directories
-
+from stadsarkiv_client.utils.multi_static import MultiStaticFiles
+from starlette.staticfiles import PathLike
 
 
 static_dir_list: typing.List[PathLike] = []
@@ -48,4 +40,3 @@ for common_page in common_pages:
 
     routes.append(Route(url, endpoint=pages.default, name=name, methods=['GET']))
 
-    
