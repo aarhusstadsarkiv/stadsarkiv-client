@@ -31,9 +31,13 @@ Update version and install latest version:
 
 ## Run 
 
-Run with default settings: 
+Serve with default settings:
 
-    stadsarkiv-client --port 5000 --reload true
+    stadsarkiv-serve --port 5555 --reload true
+
+Generate a secret to use in .env:
+
+    stadsarkiv-secret
 
 Override settings: 
 
