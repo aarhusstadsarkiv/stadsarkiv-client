@@ -31,6 +31,10 @@ Update version and install latest version:
 
 ## Run 
 
+Run with default settings: 
+
+    stadsarkiv-client --port 5000 --reload true
+
 Override settings: 
 
     touch settings_local.py
