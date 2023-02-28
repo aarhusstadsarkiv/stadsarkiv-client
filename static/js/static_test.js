@@ -1,0 +1,1 @@
+console.log("static_test.js loaded");
