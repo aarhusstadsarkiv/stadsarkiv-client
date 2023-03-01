@@ -33,13 +33,12 @@ async def post_login(request: Request):
 
         request.session["logged_in"] = True
 
-        flash.set_message(request, translate(
-            "You have been logged in."), type="success")
+        flash.set_message(request, translate("You have been logged in."), type="success")
     except Exception as e:
         log.info(e)
         flash.set_message(request, e.args[0], type="error")
 
-    return RedirectResponse(url='/auth/login', status_code=302)
+    return RedirectResponse(url='/', status_code=302)
 
 
 async def get_logout(request: Request):
