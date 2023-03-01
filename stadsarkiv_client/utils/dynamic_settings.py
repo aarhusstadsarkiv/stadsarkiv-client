@@ -10,6 +10,3 @@ except ImportError:
 
 for key, value in settings_local.items():
     settings[key] = value
-
-
-

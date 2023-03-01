@@ -1,11 +1,11 @@
-import typing
 from starlette.requests import Request
-from starlette.responses import JSONResponse, RedirectResponse
+from starlette.responses import RedirectResponse
 from stadsarkiv_client.utils.templates import templates
 from stadsarkiv_client.utils.context import get_context
 from stadsarkiv_client.utils.logging import log
 from stadsarkiv_client.utils.fastapi_client import FastAPIClient
 from stadsarkiv_client.utils import flash
+from stadsarkiv_client.utils.translate import translate
 
 
 async def get_login(request: Request):
@@ -16,7 +16,7 @@ async def get_login(request: Request):
         if request.session["logged_in"]:
             return RedirectResponse(url='/', status_code=302)
 
-    context["title"] = "Login"
+    context["title"] = translate("Login")
     return templates.TemplateResponse('auth/login.html', context)
 
 
@@ -33,7 +33,8 @@ async def post_login(request: Request):
 
         request.session["logged_in"] = True
 
-        flash.set_message(request, "You have been logged in", type="success")
+        flash.set_message(request, translate(
+            "You have been logged in."), type="success")
     except Exception as e:
         log.info(e)
         flash.set_message(request, e.args[0], type="error")
@@ -44,7 +45,7 @@ async def post_login(request: Request):
 async def get_logout(request: Request):
 
     context = get_context(request)
-    context["title"] = "Logout"
+    context["title"] = translate("Logout")
     return templates.TemplateResponse('auth/logout.html', context)
 
 
@@ -52,19 +53,20 @@ async def post_logout(request: Request):
     try:
 
         request.session.pop('logged_in', None)
-        flash.set_message(request, "You have been logged out", type="success")
+        flash.set_message(request, translate(
+            "You have been logged out."), type="success")
     except Exception as e:
         log.info(e)
-        flash.set_message(request, "Error logging out", type="error")
+        flash.set_message(request, translate(
+            "Error logging out."), type="error")
 
     return RedirectResponse(url='/auth/login', status_code=302)
 
 
 async def get_register(request: Request):
     context = get_context(request)
-    context["title"] = "Register"
+    context["title"] = translate("New user")
     return templates.TemplateResponse('auth/register.html', context)
-
 
 
 async def post_register(request: Request):
@@ -78,7 +80,8 @@ async def post_register(request: Request):
 
         await fastapi_client.register(register_dict)
 
-        flash.set_message(request, "You have been registered", type="success")
+        flash.set_message(request, translate(
+            "You have been registered."), type="success")
     except Exception as e:
         log.info(e)
         flash.set_message(request, e.args[0], type="error")
@@ -88,4 +91,3 @@ async def post_register(request: Request):
 
 async def get_me(request: Request):
     pass
-

@@ -1,27 +1,10 @@
 import requests
 import json
+import typing
 
 from .dynamic_settings import settings
 from .logging import log
-
-error_codes = {
-    "register": {
-        400: "Bruger eksisterer allerede. Prøv at logge ind.",
-        422: "Email skal være korrekt. Og password skal være mindst 8 karakterer."
-    },
-    "login_jwt": {
-        400: "Din bruger kunne ikke logges ind. Enten forkert email eller password. Eller din bruger eksisterer ikke eller er ikke aktiveret.",
-        422: "Din bruger kunne ikke logges ind. Enten forkert email eller password. Eller din bruger eksisterer ikke eller er ikke aktiveret.",
-    }
-}
-
-
-def get_error_message(endpoint, code):
-    errors = error_codes[endpoint]
-    if code in errors:
-        return errors[code]
-    else:
-        return "Ukendt fejl"
+from .translate import translate
 
 
 class FastAPIException(Exception):
@@ -34,7 +17,7 @@ class FastAPIClient:
         self.url = kwargs.get('url', settings['fastapi_endpoint'])
         self.timeout = kwargs.get('timeout', 30)
 
-    async def register(self, form_dict: dict) -> str:
+    async def register(self, form_dict: dict) -> typing.Any:
 
         self.url += '/v1/auth/register'
 
@@ -49,15 +32,18 @@ class FastAPIClient:
             response_content = json.loads(response.content)
             return response_content
         else:
-            raise FastAPIException(get_error_message('register', response.status_code),
-                                   response.status_code, response.text)
+
+            if response.status_code == 400:
+                raise FastAPIException(translate("User already exists. Try to login instead."), response.status_code, response.text)
+
+            if response.status_code == 422:
+                raise FastAPIException(translate("Email needs to be correct. Password needs to be at least 8 characters long."), response.status_code, response.text)
+
 
     def forgot_password(self, email: str) -> bytes:
 
         self.url += '/v1/auth/forgot-password'
         form_dict = {"email": email}
-
-        log.debug(f"Forgot password: {form_dict}")
 
         def request():
             return requests.post(
@@ -70,14 +56,12 @@ class FastAPIClient:
             return response.content
         else:
             raise FastAPIException(
-                "Forgot password failed", response.status_code, response.text)
+                translate("System can not deliver an email about resetting password."), response.status_code, response.text)
 
     def reset_password(self, token: str, password: str) -> bytes:
 
         self.url += '/v1/auth/reset-password'
         form_dict = {"token": token, "password": password}
-
-        log.debug(f"Reset password: {form_dict}")
 
         def request():
             return requests.post(
@@ -90,7 +74,7 @@ class FastAPIClient:
             return response.content
         else:
             raise FastAPIException(
-                "Reset password failed", response.status_code, response.text)
+                translate("Reset of your password failed"), response.status_code, response.text)
 
     def login_cookie(self, username: str, password: str) -> dict:
 
@@ -110,7 +94,7 @@ class FastAPIClient:
             return {'_auth': cookie}
         else:
             raise FastAPIException(
-                "No user info", response.status_code, response.text)
+                translate("Email or password is incorrect. Or your user has not been activated."), response.status_code, response.text)
 
     def logout_cookie(self, cookie: str) -> str:
 
@@ -132,7 +116,7 @@ class FastAPIClient:
             return json.loads(response.content)
         else:
             raise FastAPIException(
-                "Logout cookie failed", response.status_code, response.text)
+                translate("Logout cookie failed"), response.status_code, response.text)
 
     async def login_jwt(self, username: str, password: str) -> str:
 
@@ -149,9 +133,7 @@ class FastAPIClient:
             return json.loads(response.content)
         else:
             raise FastAPIException(
-                get_error_message("login_jwt", response.status_code), 
-                response.status_code, 
-                response.text)
+                translate("Email or password is incorrect. Or your user has not been activated."), response.status_code, response.text)
 
     def logout_jwt(self, token: str, token_type: str = 'Bearer') -> dict:
         self.url += '/v1/auth/jwt/logout'
@@ -185,7 +167,7 @@ class FastAPIClient:
             return json.loads(response.content)
         else:
             raise FastAPIException(
-                "Me failed", response.status_code, response.text)
+                translate("Me failed"), response.status_code, response.text)
 
     def log_response(self, response: requests.Response) -> None:
         log.debug(self.url)
