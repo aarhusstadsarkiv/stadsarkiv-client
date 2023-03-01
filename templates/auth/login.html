@@ -3,12 +3,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{{ title }} Test 3</h1>
+<h1>{{ title }} Local test</h1>
+
 <form method="post" action="{{ url_for('post_login')}}">
-    <label for="username">Username</label>
+    <label for="username">{{ translate('Email') }}</label>
     <input type="text" name="username" id="username" />
-    <label for="password">Password</label>
+    <label for="password">{{ translate('Password') }}</label>
     <input type="password" name="password" id="password" />
-    <input type="submit" value="Login" />
+    <input type="submit" value="{{ translate('Login') }}" />
 </form>
 {% endblock content %}

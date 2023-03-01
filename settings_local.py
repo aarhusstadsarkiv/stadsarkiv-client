@@ -1,7 +1,7 @@
 settings_local = {
     "language": "da",
-    "language_local": "./language.py", # Override translations
-    "templates_local": "./templates",  # Override templates
+    # "language_local": "./language.py", # Override translations
+    # "templates_local": "./templates",  # Override templates
     "static_local": "./static",  # Override static folder
     "main_menu": [
         {

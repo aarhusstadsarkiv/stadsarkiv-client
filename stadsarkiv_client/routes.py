@@ -7,21 +7,23 @@ from stadsarkiv_client.utils.multi_static import MultiStaticFiles
 from starlette.staticfiles import PathLike
 
 
-static_dir_list: typing.List[PathLike] = []
+def get_static_dirs() -> list:
+    static_dir_list: typing.List[PathLike] = []
 
-if "static_local" in settings:
-    if os.path.exists(settings["static_local"]):
-        static_dir_local = settings["static_local"]
+    # if "static_local" in settings
+    if os.path.exists('static'):
+        static_dir_local = 'static'
         static_dir_list.append(static_dir_local)
 
-# Module static files
-static_dir = os.path.dirname(os.path.abspath(__file__)) + '/static'
-static_dir_list.append(static_dir)
+    # Module static files
+    static_dir = os.path.dirname(os.path.abspath(__file__)) + '/static'
+    static_dir_list.append(static_dir)
+    return static_dir_list
 
 
 routes = [
     # Route('/', endpoint=home.index, name='home'),
-    Mount('/static', MultiStaticFiles(directories=static_dir_list), name='static'),
+    Mount('/static', MultiStaticFiles(directories=get_static_dirs()), name='static'),
     Route('/auth/login', endpoint=auth.get_login, name='login'),
     Route('/auth/post-login', endpoint=auth.post_login, name='post_login', methods=['POST']),
     Route('/auth/logout', endpoint=auth.get_logout, name='logout'),
