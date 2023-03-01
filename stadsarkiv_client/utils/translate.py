@@ -3,7 +3,12 @@ from stadsarkiv_client.locales.en import en
 from stadsarkiv_client.locales.da import da
 import json
 
+try: 
+    from language import language_local
+except:
+    language_local = None
 
+        
 def translate(key) -> str | None:
     translation = None
 
@@ -14,10 +19,24 @@ def translate(key) -> str | None:
         _add_translate_key_value('en', key)
 
     if settings["language"] == 'da':
-        translation = da[key]
+        translation = _translate_local(key)
+        if not translation:
+            translation = da[key]
 
     if settings["language"] == 'en':
-        translation = en[key]
+        translation = _translate_local(key)
+        if not translation:
+            translation = en[key]
+
+    return translation
+
+
+def _translate_local(key) -> str | None:
+    translation = None
+
+    if language_local:
+        if key in language_local:
+            translation = language_local[key]
 
     return translation
 
