@@ -6,7 +6,9 @@ da = {
     "Logout": "Log ud",
     "New user": "Ny bruger",
     "Password": "Password",
+    "Register": "Opret",
+    "Submit": "Submit",
     "User already exists. Try to login instead.": "Bruger findes allerede. Pr\u00f8v at logge ind i stedet.",
-    "You have been logged in.": "You have been logged in.",
-    "You have been logged out.": "You have been logged out."
+    "You have been logged in.": "Du er nu logget ind.",
+    "You have been logged out.": "Du er nu logget ud."
 }

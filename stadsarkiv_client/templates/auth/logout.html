@@ -6,7 +6,7 @@
 <h1>{{ title }}</h1>
 
 <form method="post" action="{{ url_for('post_logout')}}">
-    <button type="submit">Logout</button>
+    <button type="submit">{{ translate('Logout') }}</button>
 </form>
 
 {% endblock content %}

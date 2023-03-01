@@ -5,5 +5,9 @@ en = {
     "Logout": "Logout",
     "New user": "New user",
     "Password": "Password",
+    "Register": "Register",
+    "Submit": "Submit",
     "User already exists. Try to login instead.": "User already exists. Try to login instead.",
+    "You have been logged in.": "You have been logged in.",
+    "You have been logged out.": "You have been logged out."
 }
