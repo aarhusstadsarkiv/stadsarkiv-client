@@ -35,6 +35,10 @@ def _add_translate_key_value(lang, key) -> None:
 
 
 def _save_file_dict(lang) -> None:
+
+    if settings["environment"] == 'production':
+        return
+    
     if lang == 'en':
         with open(f"stadsarkiv_client/locales/en.py", 'w') as f:
             f.write(f"{lang} = " + json.dumps(en, indent=4, sort_keys=True))
