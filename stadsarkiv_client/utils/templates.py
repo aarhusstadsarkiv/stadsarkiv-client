@@ -4,6 +4,7 @@ from jinja2 import FileSystemLoader
 from starlette.templating import Jinja2Templates
 from starlette.requests import Request
 from .translate import translate
+# from .logging import log
 
 
 def app_context(request: Request) -> typing.Dict[str, typing.Any]:
@@ -17,8 +18,9 @@ def get_template_dirs() -> list:
     if os.path.exists("templates"):
         template_dirs.append("templates")
 
-    # module templates
-    template_dirs.append('stadsarkiv_client/templates')
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+    template_module_dirs = current_dir + "/../templates"
+    template_dirs.append(template_module_dirs)
     return template_dirs
 
 
