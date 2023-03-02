@@ -4,7 +4,7 @@ from stadsarkiv_client.locales.da import da
 import json
 
 try:
-    from language import language_local
+    from language import language as language_local
 except ImportError:
     language_local = None
 

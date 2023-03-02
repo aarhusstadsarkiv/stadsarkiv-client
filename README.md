@@ -14,7 +14,7 @@ Or (Windows)
 
     pip install -r requirements.txt
 
-## Run local:
+## Run local dev:
 
     python -m stadsarkiv_client
 
@@ -65,3 +65,22 @@ https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/settings.py
 Or view the module settings:
 
 https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/settings.py
+
+Override language:
+
+    touch language.py
+
+See:
+    
+    https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/language.py
+
+All language string in da:
+
+    https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/locales/da.py
+
+All language string in en:
+
+    https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/locales/en.py
+
+
+

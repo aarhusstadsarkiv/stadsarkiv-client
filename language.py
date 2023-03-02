@@ -1,3 +1,3 @@
-language_local = {
-    "Email": "Local. E-mail",
+language = {
+    "Email": "E-mail",
 }

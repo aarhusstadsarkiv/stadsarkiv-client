@@ -30,6 +30,7 @@ routes = [
     Route('/auth/post-logout', endpoint=auth.post_logout, name='post_logout', methods=['POST']),
     Route('/auth/register', endpoint=auth.get_register, name='register'),
     Route('/auth/post-register', endpoint=auth.post_register, name='post_register', methods=['POST']),
+    Route('/auth/forgot-password', endpoint=auth.get_forgot_password, name='forgot_password'),
     Route('/auth/me', endpoint=auth.get_me, name='profile'),
     Route('/test', endpoint=testing.test, name='test'),
 ]

@@ -1,6 +1,7 @@
 en = {
     "Email": "Email",
     "Email or password is incorrect. Or your user has not been activated.": "Email or password is incorrect. Or your user has not been activated.",
+    "Forgot your password": "Forgot your password",
     "Login": "Login",
     "Logout": "Logout",
     "Me": "Me",
@@ -8,6 +9,7 @@ en = {
     "Password": "Password",
     "Profile": "Profile",
     "Register": "Register",
+    "Reset password": "Reset password",
     "Submit": "Submit",
     "User already exists. Try to login instead.": "User already exists. Try to login instead.",
     "You have been logged in.": "You have been logged in.",

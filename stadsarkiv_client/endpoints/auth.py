@@ -101,9 +101,16 @@ async def get_me(request: Request):
         context = get_context(request)
         context["title"] = translate("Profile")
         context["me"] = me
-        
+
         return templates.TemplateResponse('auth/me.html', context)
     except Exception as e:
         log.info(e)
         flash.set_message(request, e.args[0], type="error")
         return RedirectResponse(url='/auth/login', status_code=302)
+
+
+async def get_forgot_password(request: Request):
+
+    context = get_context(request)
+    context["title"] = translate("New user")
+    return templates.TemplateResponse('auth/forgot_password.html', context)
