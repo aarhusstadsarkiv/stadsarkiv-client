@@ -5,38 +5,42 @@ settings_local = {
     "static_local": "./static",  # Override static folder
     "main_menu": [
         {
-            "name": "home", 
+            "name": "home",
             "title": "Hjem"
         },
         {
-            "name": "about", 
+            "name": "about",
             "title": "Om"
         },
         {
-            "name": "login", 
+            "name": "login",
             "title": "Log ind"
         },
         {
-            "name": "logout", 
+            "name": "logout",
             "title": "Log ud"
         },
         {
-            "name": "register", 
+            "name": "register",
             "title": "Register"
+        },
+        {
+            "name": "profile",
+            "title": "Profil"
         },
 
     ],
     "pages": [
         {
-            "name": "home", 
-            "title": "Hjem", 
-            "page": "pages/home.html", 
+            "name": "home",
+            "title": "Hjem",
+            "page": "pages/home.html",
             "url": "/"
         },
         {
-            "name": "about", 
-            "title": "Om", 
-            "page": "pages/about.html", 
+            "name": "about",
+            "title": "Om",
+            "page": "pages/about.html",
             "url": "/about"
         }
     ]

@@ -1,8 +1,7 @@
-import typing
-from starlette.templating import Jinja2Templates
 from starlette.requests import Request
 from .flash import get_messages
 from stadsarkiv_client.utils import dynamic_settings
+
 
 def get_main_menu(request: Request) -> list:
     main_menu = []
@@ -10,14 +9,15 @@ def get_main_menu(request: Request) -> list:
         main_menu = dynamic_settings.settings["main_menu"]
 
     if "logged_in" in request.session:
-        main_menu = [x for x in main_menu if x["name"] != "login"  ]
-        main_menu = [x for x in main_menu if x["name"] != "register" ]
+        main_menu = [x for x in main_menu if x["name"] != "login"]
+        main_menu = [x for x in main_menu if x["name"] != "register"]
 
-    if not "logged_in" in request.session:
-        main_menu = [x for x in main_menu if x["name"] != "logout" ]
-        
+    if "logged_in" not in request.session:
+        main_menu = [x for x in main_menu if x["name"] != "logout"]
+        main_menu = [x for x in main_menu if x["name"] != "profile"]
 
     return main_menu
+
 
 def get_title(request: Request) -> str:
     pages = []
@@ -30,13 +30,13 @@ def get_title(request: Request) -> str:
             title = page["title"]
     return title
 
+
 def logged_in(request: Request) -> bool:
     logged_in = False
     if "logged_in" in request.session:
         if request.session["logged_in"]:
             logged_in = True
     return logged_in
-
 
 
 def get_context(request: Request) -> dict:

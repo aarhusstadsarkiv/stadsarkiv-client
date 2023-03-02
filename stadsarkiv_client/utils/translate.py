@@ -3,12 +3,12 @@ from stadsarkiv_client.locales.en import en
 from stadsarkiv_client.locales.da import da
 import json
 
-try: 
+try:
     from language import language_local
-except:
+except ImportError:
     language_local = None
 
-        
+
 def translate(key) -> str | None:
     translation = None
 
@@ -57,11 +57,11 @@ def _save_file_dict(lang) -> None:
 
     if settings["environment"] == 'production':
         return
-    
+
     if lang == 'en':
-        with open(f"stadsarkiv_client/locales/en.py", 'w') as f:
+        with open("stadsarkiv_client/locales/en.py", 'w') as f:
             f.write(f"{lang} = " + json.dumps(en, indent=4, sort_keys=True))
 
     if lang == 'da':
-        with open(f"stadsarkiv_client/locales/da.py", 'w') as f:
+        with open("stadsarkiv_client/locales/da.py", 'w') as f:
             f.write(f"{lang} = " + json.dumps(da, indent=4, sort_keys=True))

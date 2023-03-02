@@ -29,18 +29,18 @@ async def post_login(request: Request):
         password = str(form.get('password'))
 
         fastapi_client = FastAPIClient()
-        await fastapi_client.login_jwt(username, password)
+        cookie_dict = await fastapi_client.login_cookie(username, password)
 
         request.session["logged_in"] = True
+        request.session["_auth"] = cookie_dict["_auth"]
 
-        flash.set_message(request, translate("You have been logged in."), type="success")
+        flash.set_message(request, translate(
+            "You have been logged in."), type="success")
         return RedirectResponse(url='/', status_code=302)
     except Exception as e:
         log.info(e)
         flash.set_message(request, e.args[0], type="error")
         return RedirectResponse(url='/auth/login', status_code=302)
-
-    
 
 
 async def get_logout(request: Request):
@@ -91,4 +91,19 @@ async def post_register(request: Request):
 
 
 async def get_me(request: Request):
-    pass
+
+    try:
+        fastapi_client = FastAPIClient()
+        me = await fastapi_client.me_cookie(cookie=request.session["_auth"])
+
+        log.debug(me)
+
+        context = get_context(request)
+        context["title"] = translate("Profile")
+        context["me"] = me
+        
+        return templates.TemplateResponse('auth/me.html', context)
+    except Exception as e:
+        log.info(e)
+        flash.set_message(request, e.args[0], type="error")
+        return RedirectResponse(url='/auth/login', status_code=302)

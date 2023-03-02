@@ -30,7 +30,7 @@ routes = [
     Route('/auth/post-logout', endpoint=auth.post_logout, name='post_logout', methods=['POST']),
     Route('/auth/register', endpoint=auth.get_register, name='register'),
     Route('/auth/post-register', endpoint=auth.post_register, name='post_register', methods=['POST']),
-    # Route('/auth/me', endpoint=auth.me, name='me'),
+    Route('/auth/me', endpoint=auth.get_me, name='profile'),
     Route('/test', endpoint=testing.test, name='test'),
 ]
 
@@ -45,4 +45,3 @@ for common_page in common_pages:
     name = common_page["name"]
 
     routes.append(Route(url, endpoint=pages.default, name=name, methods=['GET']))
-

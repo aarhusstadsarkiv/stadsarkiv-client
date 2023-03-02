@@ -15,7 +15,7 @@ class FastAPIClient:
 
     def __init__(self, **kwargs):
         self.url = kwargs.get('url', settings['fastapi_endpoint'])
-        self.timeout = kwargs.get('timeout', 30)
+        self.timeout = kwargs.get('timeout', 5)
 
     async def register(self, form_dict: dict) -> typing.Any:
 
@@ -34,11 +34,13 @@ class FastAPIClient:
         else:
 
             if response.status_code == 400:
-                raise FastAPIException(translate("User already exists. Try to login instead."), response.status_code, response.text)
+                raise FastAPIException(translate(
+                    "User already exists. Try to login instead."), response.status_code, response.text)
 
             if response.status_code == 422:
-                raise FastAPIException(translate("Email needs to be correct. Password needs to be at least 8 characters long."), response.status_code, response.text)
-
+                raise FastAPIException(translate(
+                    "Email needs to be correct. Password needs to be at least 8 characters long."),
+                    response.status_code, response.text)
 
     def forgot_password(self, email: str) -> bytes:
 
@@ -56,7 +58,8 @@ class FastAPIClient:
             return response.content
         else:
             raise FastAPIException(
-                translate("System can not deliver an email about resetting password."), response.status_code, response.text)
+                translate("System can not deliver an email about resetting password."),
+                response.status_code, response.text)
 
     def reset_password(self, token: str, password: str) -> bytes:
 
@@ -76,7 +79,7 @@ class FastAPIClient:
             raise FastAPIException(
                 translate("Reset of your password failed"), response.status_code, response.text)
 
-    def login_cookie(self, username: str, password: str) -> dict:
+    async def login_cookie(self, username: str, password: str) -> dict:
 
         self.url += '/v1/auth/login'
         session = requests.Session()
@@ -94,7 +97,8 @@ class FastAPIClient:
             return {'_auth': cookie}
         else:
             raise FastAPIException(
-                translate("Email or password is incorrect. Or your user has not been activated."), response.status_code, response.text)
+                translate("Email or password is incorrect. Or your user has not been activated."), 
+                response.status_code, response.text)
 
     def logout_cookie(self, cookie: str) -> str:
 
@@ -108,8 +112,6 @@ class FastAPIClient:
                 json={}, timeout=self.timeout)
 
         response = self._call(request)
-
-        log.debug(response.content)
 
         if response.status_code == 200:
             # 'null' as string if correct
@@ -133,7 +135,8 @@ class FastAPIClient:
             return json.loads(response.content)
         else:
             raise FastAPIException(
-                translate("Email or password is incorrect. Or your user has not been activated."), response.status_code, response.text)
+                translate("Email or password is incorrect. Or your user has not been activated."),
+                response.status_code, response.text)
 
     def logout_jwt(self, token: str, token_type: str = 'Bearer') -> dict:
         self.url += '/v1/auth/jwt/logout'
@@ -151,15 +154,30 @@ class FastAPIClient:
             raise FastAPIException("Logout JWT failed",
                                    response.status_code, response.text)
 
-    def me(self, access_token: str, token_type: str, cookie: str) -> dict:
+    def me_jwt(self, access_token: str, token_type: str) -> dict:
         self.url += '/v1/users/me'
 
         headers = {
             'Authorization': f'{token_type} {access_token}'} if access_token else None
+
+        def request() -> requests.Response:
+            return requests.get(self.url, timeout=self.timeout, headers=headers)
+
+        response = self._call(request)
+
+        if response.status_code == 200:
+            return json.loads(response.content)
+        else:
+            raise FastAPIException(
+                translate("Me failed"), response.status_code, response.text)
+
+    async def me_cookie(self, cookie: str) -> dict:
+        self.url += '/v1/users/me'
+
         cookies = {'_auth': cookie} if cookie else None
 
         def request() -> requests.Response:
-            return requests.get(self.url, timeout=self.timeout, headers=headers, cookies=cookies)
+            return requests.get(self.url, timeout=self.timeout, cookies=cookies)
 
         response = self._call(request)
 

@@ -1,9 +1,8 @@
 import typing
 import os
-from jinja2 import FileSystemLoader, Environment
+from jinja2 import FileSystemLoader
 from starlette.templating import Jinja2Templates
 from starlette.requests import Request
-from .dynamic_settings import settings
 from .translate import translate
 
 
