@@ -39,11 +39,23 @@ Or using some options:
 
     stadsarkiv-serve --port 5555 --reload true
 
+### Override defaults
+
+https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/stadsarkiv_client
+
+The following folders and the contents can be overridden:
+
+  * templates
+  * static
+
+The following files can be overridden:
+
+  * settings.py  
+  * .env
+
 ### Create .env file
 
 Alter default env:
-
-    touch .env
 
 ```.env
 # session secret
@@ -52,46 +64,16 @@ SECRET=SECRET
 ENVIRONMENT=production
 ```
 
-Generate a secret to use in .env:
-
-    stadsarkiv-secret
-
-### Override settings
-
-Override settings: 
-
-    touch settings.py
-
-Example:
-
-https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/settings.py
-
-Or view the module settings:
-
-https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/settings.py
-
-### Override language
-
-Override language:
+### Override translations
 
     touch language.py
 
-See:
-    
-https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/language.py
+```.py
+language = {
+    "Email": "E-mail",
+}
+```
 
-All language string in da:
+See existing language keys: 
 
 https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/locales/da.py
-
-All language string in en:
-
-https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/locales/en.py
-
-### Ovrerride templates
-
-    mkdir templates
-
-See default templates:
-
-https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/stadsarkiv_client/templates
