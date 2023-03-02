@@ -72,15 +72,15 @@ Override language:
 
 See:
     
-    https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/language.py
+https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/language.py
 
 All language string in da:
 
-    https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/locales/da.py
+https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/locales/da.py
 
 All language string in en:
 
-    https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/locales/en.py
+https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/locales/en.py
 
 
 
