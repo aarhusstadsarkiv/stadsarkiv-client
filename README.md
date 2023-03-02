@@ -31,7 +31,11 @@ Update version and install latest version:
 
 ## Run 
 
-Serve with default settings:
+Serve with default settings. This just serves the module with default pages and auth.  
+
+    stadsarkiv-serve
+
+Or using some options:
 
     stadsarkiv-serve --port 5555 --reload true
 
@@ -39,15 +43,7 @@ Generate a secret to use in .env:
 
     stadsarkiv-secret
 
-Override settings: 
-
-    touch settings_local.py
-
-Example:
-
-https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/settings_local.py
-
-Override .env: 
+Alter default env:
 
     touch .env
 
@@ -57,3 +53,15 @@ SECRET=SECRET
 # developemnt or production
 ENVIRONMENT=production
 ```
+
+Override settings: 
+
+    touch settings.py
+
+Example:
+
+https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/settings.py
+
+Or view the module settings:
+
+https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/settings.py

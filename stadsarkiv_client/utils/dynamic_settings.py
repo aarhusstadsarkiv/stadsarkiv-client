@@ -3,7 +3,7 @@ from stadsarkiv_client.settings import settings
 settings_local = {}
 
 try:
-    from settings_local import settings_local
+    from settings import settings as settings_local
 except ImportError:
     pass
 
