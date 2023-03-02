@@ -12,6 +12,7 @@ da = {
     "Register": "Opret",
     "Reset password": "Reset password",
     "Submit": "Submit",
+    "System can not deliver an email about resetting password. Try again later.": "System can not deliver an email about resetting password. Try again later.",
     "User already exists. Try to login instead.": "Bruger findes allerede. Pr\u00f8v at logge ind i stedet.",
     "You have been logged in.": "Du er nu logget ind.",
     "You have been logged out.": "Du er nu logget ud.",

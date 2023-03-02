@@ -11,6 +11,7 @@ en = {
     "Register": "Register",
     "Reset password": "Reset password",
     "Submit": "Submit",
+    "System can not deliver an email about resetting password. Try again later.": "System can not deliver an email about resetting password. Try again later.",
     "User already exists. Try to login instead.": "User already exists. Try to login instead.",
     "You have been logged in.": "You have been logged in.",
     "You have been logged out.": "You have been logged out.",
