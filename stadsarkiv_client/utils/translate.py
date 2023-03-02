@@ -60,7 +60,7 @@ def _save_file_dict(lang) -> None:
 
     if lang == 'en':
         with open("stadsarkiv_client/locales/en.py", 'w') as f:
-            f.write(f"{lang} = " + json.dumps(en, indent=4, sort_keys=True))
+            f.write(f"{lang} = " + json.dumps(en, indent=4, sort_keys=True, ))
 
     if lang == 'da':
         with open("stadsarkiv_client/locales/da.py", 'w') as f:
