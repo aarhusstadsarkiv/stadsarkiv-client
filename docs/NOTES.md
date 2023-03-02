@@ -45,3 +45,18 @@ before_json_response (Data-response)
 before_search_query x
 after_search_results x
 before_next_results 
+
+# Todo
+
+Register: Man bliver altid verificeret. 
+OK: redirect ikke til login når man forsøger at logge ind uden at det lykkes. 
+
+
+
+token: 
+
+dennis.iversen+asdf@gmail.com
+
+Test token:
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTM2MzA5YjMtYTY3YS00NDBhLTk0ZTctNDQzOTRkY2NhOGVlIiwiZW1haWwiOiJkZW5uaXMuaXZlcnNlbithc2RmQGdtYWlsLmNvbSIsImF1ZCI6ImZhc3RhcGktdXNlcnM6dmVyaWZ5IiwiZXhwIjoxNjc3NzQ3ODQyfQ.m-4Q-Ted2CS7x-nRuqVvrU5a5-227Yd05emkK4a_4Ew
