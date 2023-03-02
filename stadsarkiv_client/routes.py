@@ -22,7 +22,6 @@ def get_static_dirs() -> list:
 
 
 routes = [
-    # Route('/', endpoint=home.index, name='home'),
     Mount('/static', MultiStaticFiles(directories=get_static_dirs()), name='static'),
     Route('/auth/login', endpoint=auth.get_login, name='login'),
     Route('/auth/post-login', endpoint=auth.post_login, name='post_login', methods=['POST']),
@@ -31,6 +30,8 @@ routes = [
     Route('/auth/register', endpoint=auth.get_register, name='register'),
     Route('/auth/post-register', endpoint=auth.post_register, name='post_register', methods=['POST']),
     Route('/auth/forgot-password', endpoint=auth.get_forgot_password, name='forgot_password'),
+    Route('/auth/post-forgot-password', endpoint=auth.post_forgot_password,
+          name='post_forgot_password', methods=['POST']),
     Route('/auth/me', endpoint=auth.get_me, name='profile'),
     Route('/test', endpoint=testing.test, name='test'),
 ]

@@ -34,8 +34,7 @@ async def post_login(request: Request):
         request.session["logged_in"] = True
         request.session["_auth"] = cookie_dict["_auth"]
 
-        flash.set_message(request, translate(
-            "You have been logged in."), type="success")
+        flash.set_message(request, translate("You have been logged in."), type="success")
         return RedirectResponse(url='/', status_code=302)
     except Exception as e:
         log.info(e)
@@ -112,5 +111,24 @@ async def get_me(request: Request):
 async def get_forgot_password(request: Request):
 
     context = get_context(request)
-    context["title"] = translate("New user")
+    context["title"] = translate("Forgot your password")
     return templates.TemplateResponse('auth/forgot_password.html', context)
+
+
+async def post_forgot_password(request: Request):
+
+    try:
+        form = await request.form()
+        email = str(form.get('email'))
+
+        fastapi_client = FastAPIClient()
+
+        await fastapi_client.forgot_password(email)
+
+        flash.set_message(request, translate(
+            "You have been registered. Check your email to confirm your account."), type="success")
+    except Exception as e:
+        log.info(e)
+        flash.set_message(request, e.args[0], type="error")
+
+    return RedirectResponse(url='/auth/register', status_code=302)

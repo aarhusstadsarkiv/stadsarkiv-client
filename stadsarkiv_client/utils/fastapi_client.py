@@ -42,7 +42,7 @@ class FastAPIClient:
                     "Email needs to be correct. Password needs to be at least 8 characters long."),
                     response.status_code, response.text)
 
-    def forgot_password(self, email: str) -> bytes:
+    async def forgot_password(self, email: str) -> bytes:
 
         self.url += '/v1/auth/forgot-password'
         form_dict = {"email": email}
@@ -58,7 +58,7 @@ class FastAPIClient:
             return response.content
         else:
             raise FastAPIException(
-                translate("System can not deliver an email about resetting password."),
+                translate("System can not deliver an email about resetting password. Try again later."),
                 response.status_code, response.text)
 
     def reset_password(self, token: str, password: str) -> bytes:
@@ -147,6 +147,7 @@ class FastAPIClient:
             return requests.post(self.url, json={}, timeout=self.timeout, headers=headers)
 
         response = self._call(request)
+        self.log_response(response)
 
         if response.status_code == 200:
             return json.loads(response.content)
