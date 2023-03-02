@@ -20,9 +20,13 @@
     </header>
 
     <main>
+
+        {% include "includes/main_title.html" %}
+
         {% block content %}
         <h1>Welcome to {{ title }}!</h1>
         {% endblock content %}
+        
     </main>
 
     <footer>

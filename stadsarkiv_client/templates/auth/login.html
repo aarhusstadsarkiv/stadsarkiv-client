@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% include "includes/main_title.html" %}
-
 <form method="post" action="{{ url_for('post_login')}}">
     <label for="username">{{ translate('Email') }}</label>
     <input type="text" name="username" id="username" />

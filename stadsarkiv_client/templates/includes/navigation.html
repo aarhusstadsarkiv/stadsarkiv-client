@@ -1,7 +1,7 @@
 {# templates/_navigation.html #}
 
-<nav class="main-menu">
+<div class="main-menu">
     {% for menu_item in main_menu %}
     <a class="main-menu-item" href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
     {% endfor %}
-</nav>
+</div>
