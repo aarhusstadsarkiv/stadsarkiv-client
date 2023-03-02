@@ -34,11 +34,13 @@ async def post_login(request: Request):
         request.session["logged_in"] = True
 
         flash.set_message(request, translate("You have been logged in."), type="success")
+        return RedirectResponse(url='/', status_code=302)
     except Exception as e:
         log.info(e)
         flash.set_message(request, e.args[0], type="error")
+        return RedirectResponse(url='/auth/login', status_code=302)
 
-    return RedirectResponse(url='/', status_code=302)
+    
 
 
 async def get_logout(request: Request):
@@ -80,7 +82,7 @@ async def post_register(request: Request):
         await fastapi_client.register(register_dict)
 
         flash.set_message(request, translate(
-            "You have been registered."), type="success")
+            "You have been registered. Check your email to confirm your account."), type="success")
     except Exception as e:
         log.info(e)
         flash.set_message(request, e.args[0], type="error")

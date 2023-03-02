@@ -10,5 +10,7 @@ da = {
     "Submit": "Submit",
     "User already exists. Try to login instead.": "Bruger findes allerede. Pr\u00f8v at logge ind i stedet.",
     "You have been logged in.": "Du er nu logget ind.",
-    "You have been logged out.": "Du er nu logget ud."
+    "You have been logged out.": "Du er nu logget ud.",
+    "You have been registered.": "You have been registered.",
+    "You have been registered. Check your email to confirm your account.": "You have been registered. Check your email to confirm your account."
 }
