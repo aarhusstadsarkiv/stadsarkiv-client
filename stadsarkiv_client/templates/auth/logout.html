@@ -1,7 +1,23 @@
 {% extends "base.html" %}
 
+{#
 {% block content %}
 <form method="post" action="{{ url_for('post_logout')}}">
     <button type="submit">{{ translate('Logout') }}</button>
 </form>
+{% endblock content %}
+#}
+{% block content %}
+<article class="grid">
+    <div>
+        <hgroup>
+            {% include "includes/main_title.html" %}
+            <h2>{{ translate('Are you sure') }}</h2>
+        </hgroup>
+        <form method="post" action="{{ url_for('post_logout')}}">
+            <button type="submit" class="contrast">{{ translate('Logout') }}</button>
+        </form>
+    </div>
+    <div></div>
+</article>
 {% endblock content %}

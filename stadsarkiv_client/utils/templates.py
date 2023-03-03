@@ -4,6 +4,7 @@ from jinja2 import FileSystemLoader
 from starlette.templating import Jinja2Templates
 from starlette.requests import Request
 from .translate import translate
+from .dynamic_settings import get_setting
 
 
 def app_context(request: Request) -> typing.Dict[str, typing.Any]:
@@ -33,3 +34,4 @@ templates = Jinja2Templates(
 
 # Add translate function to templates
 templates.env.globals.update(translate=translate)
+templates.env.globals.update(get_setting=get_setting)

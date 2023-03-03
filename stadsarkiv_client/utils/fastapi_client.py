@@ -15,16 +15,14 @@ class FastAPIClient:
 
     def __init__(self, **kwargs):
         self.url = kwargs.get('url', settings['fastapi_endpoint'])
-        self.timeout = kwargs.get('timeout', 5)
+        self.timeout = kwargs.get('timeout', 10)
 
     async def register(self, form_dict: dict) -> typing.Any:
 
         self.url += '/v1/auth/register'
 
         def request():
-            return requests.post(
-                self.url,
-                json=form_dict, timeout=self.timeout)
+            return requests.post(self.url, json=form_dict, timeout=self.timeout)
 
         response = self._call(request)
 
@@ -76,8 +74,8 @@ class FastAPIClient:
             # 'null' as string if correct
             return response.content
         else:
-            raise FastAPIException(
-                translate("Reset of your password failed"), response.status_code, response.text)
+            raise FastAPIException(translate("Reset of your password failed"),
+                                   response.status_code, response.text)
 
     async def login_cookie(self, username: str, password: str) -> dict:
 
@@ -97,7 +95,7 @@ class FastAPIClient:
             return {'_auth': cookie}
         else:
             raise FastAPIException(
-                translate("Email or password is incorrect. Or your user has not been activated."), 
+                translate("Email or password is incorrect. Or your user has not been activated."),
                 response.status_code, response.text)
 
     def logout_cookie(self, cookie: str) -> str:
@@ -147,7 +145,6 @@ class FastAPIClient:
             return requests.post(self.url, json={}, timeout=self.timeout, headers=headers)
 
         response = self._call(request)
-        self.log_response(response)
 
         if response.status_code == 200:
             return json.loads(response.content)

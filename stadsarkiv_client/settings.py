@@ -23,6 +23,7 @@ if os.getenv("ENVIRONMENT") == "production":
 
 
 settings = {
+    "version" : "0.0.1",
     "language": "da",
     "environment": os.getenv("ENVIRONMENT"),
     "fastapi_endpoint": fastapi_endpoint,

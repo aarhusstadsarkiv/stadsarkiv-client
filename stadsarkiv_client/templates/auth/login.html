@@ -1,14 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form method="post" action="{{ url_for('post_login')}}">
-    <label for="username">{{ translate('Email') }}</label>
-    <input type="text" name="username" id="username" />
-    <label for="password">{{ translate('Password') }}</label>
-    <input type="password" name="password" id="password" />
-    <input type="submit" value="{{ translate('Login') }}" />
-</form>
-
-<a href="{{ url_for('forgot_password') }}">{{ translate('Forgot your password') }}</a>
+<article class="grid">
+    <div>
+        <hgroup>
+            {% include "includes/main_title.html" %}
+            <h2>{{ translate('Login to get access to speciel functions') }}</h2>
+        </hgroup>
+        <form method="post" action="{{ url_for('post_login')}}">
+            <input type="text" name="username" placeholder="{{ translate('Email') }}" aria-label="Login" autocomplete="email" required>
+            <input type="password" name="password" placeholder="{{ translate('Password') }}" aria-label="Password"
+                autocomplete="current-password" required>
+            <fieldset>
+                <label for="remember">
+                    <input type="checkbox" role="switch" id="remember" name="remember">
+                    {{ translate('Remember me') }}
+                </label>
+            </fieldset>
+            <button type="submit" class="contrast">{{ translate('Login') }}</button>
+            <a href="{{ url_for('forgot_password') }}">{{ translate('Forgot your password') }}</a>
+        </form>
+    </div>
+    <div></div>
+</article>
 {% endblock content %}
-
