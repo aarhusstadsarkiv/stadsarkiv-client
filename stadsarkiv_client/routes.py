@@ -24,7 +24,8 @@ def get_static_dirs() -> list:
 routes = [
     Mount('/static', MultiStaticFiles(directories=get_static_dirs()), name='static'),
     Route('/auth/login', endpoint=auth.get_login, name='login'),
-    Route('/auth/post-login', endpoint=auth.post_login, name='post_login', methods=['POST']),
+    Route('/auth/post-login', endpoint=auth.post_login_cookie, name='post_login_cookie', methods=['POST']),
+    Route('/auth/post-login-jwt', endpoint=auth.post_login_jwt, name='post_login_jwt', methods=['POST']),
     Route('/auth/logout', endpoint=auth.get_logout, name='logout'),
     Route('/auth/post-logout', endpoint=auth.post_logout, name='post_logout', methods=['POST']),
     Route('/auth/register', endpoint=auth.get_register, name='register'),

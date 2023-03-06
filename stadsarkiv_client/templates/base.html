@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{{ title }}{% endblock title %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/pico-custom.css') }}?v={{ get_setting('version') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/pico.min.css') }}?v={{ get_setting('version') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/pico-custom.css') }}?v={{ get_setting('version') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/flash.css') }}?v={{ get_setting('version') }}">
     <script type="importmap">
         {
@@ -16,20 +16,19 @@
         }
     </script>
     <script type="module">
-        import {} from "{{ url_for('static', path='/js/main-events.js') }}";
+        import { } from "{{ url_for('static', path='/js/main-events.js') }}";
         import { Flash } from "{{ url_for('static', path='/js/flash.js') }}";
         Flash.setWidth();
     </script>
+    
 </head>
 
 <body>
 
-
-    
-        {#{% include "includes/logo.html" %}#}
-    <header class="container">
+    <nav class="container">
         {% include "includes/navigation.html" %}
-    </header>
+    </nav>
+    
 
     <main class="container">
 

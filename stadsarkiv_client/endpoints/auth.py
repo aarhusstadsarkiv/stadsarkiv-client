@@ -20,19 +20,48 @@ async def get_login(request: Request):
     return templates.TemplateResponse('auth/login.html', context)
 
 
-async def post_login(request: Request):
+async def post_login_cookie(request: Request):
 
     try:
 
         form = await request.form()
         username = str(form.get('username'))
         password = str(form.get('password'))
+        # remember = str(form.get('remember'))
+        # log.debug("Remember: " + remember)
 
         fastapi_client = FastAPIClient()
         cookie_dict = await fastapi_client.login_cookie(username, password)
 
         request.session["logged_in"] = True
+        request.session["login_type"] = "cookie"
         request.session["_auth"] = cookie_dict["_auth"]
+
+        flash.set_message(request, translate("You have been logged in."), type="success")
+        return RedirectResponse(url='/', status_code=302)
+    except Exception as e:
+        log.info(e)
+        flash.set_message(request, e.args[0], type="error")
+        return RedirectResponse(url='/auth/login', status_code=302)
+
+
+async def post_login_jwt(request: Request):
+
+    try:
+
+        form = await request.form()
+        username = str(form.get('username'))
+        password = str(form.get('password'))
+        # remember = str(form.get('remember'))
+        # log.debug("Remember: " + remember)     
+
+        fastapi_client = FastAPIClient()
+        bearer_token = await fastapi_client.login_jwt(username, password)
+
+        request.session["logged_in"] = True
+        request.session["access_token"] = bearer_token["access_token"]
+        request.session["token_type"] = bearer_token["token_type"]
+        request.session["login_type"] = "jwt"
 
         flash.set_message(request, translate("You have been logged in."), type="success")
         return RedirectResponse(url='/', status_code=302)
@@ -90,12 +119,16 @@ async def post_register(request: Request):
 
 
 async def get_me(request: Request):
-
+    me = None
     try:
         fastapi_client = FastAPIClient()
-        me = await fastapi_client.me_cookie(cookie=request.session["_auth"])
-
-        log.debug(me)
+        # me = None
+        if request.session["login_type"] == "jwt":
+            access_token = request.session["access_token"]
+            token_type = request.session["token_type"]
+            me = await fastapi_client.me_jwt(access_token, token_type)
+        else:
+            me = await fastapi_client.me_cookie(cookie=request.session["_auth"])
 
         context = get_context(request)
         context["title"] = translate("Profile")

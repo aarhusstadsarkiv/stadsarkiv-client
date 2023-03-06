@@ -118,7 +118,7 @@ class FastAPIClient:
             raise FastAPIException(
                 translate("Logout cookie failed"), response.status_code, response.text)
 
-    async def login_jwt(self, username: str, password: str) -> str:
+    async def login_jwt(self, username: str, password: str) -> dict:
 
         self.url += '/v1/auth/jwt/login'
 
@@ -128,6 +128,7 @@ class FastAPIClient:
                 data={"username": username, "password": password}, timeout=self.timeout)
 
         response = self._call(request)
+        self.log_response(response)
 
         if response.status_code == 200:
             return json.loads(response.content)
@@ -152,16 +153,20 @@ class FastAPIClient:
             raise FastAPIException("Logout JWT failed",
                                    response.status_code, response.text)
 
-    def me_jwt(self, access_token: str, token_type: str) -> dict:
+    async def me_jwt(self, access_token: str, token_type: str) -> dict:
         self.url += '/v1/users/me'
 
+        log.debug(access_token)
+        log.debug(token_type)
+
         headers = {
-            'Authorization': f'{token_type} {access_token}'} if access_token else None
+            'Authorization': f'{token_type} {access_token}'}
 
         def request() -> requests.Response:
             return requests.get(self.url, timeout=self.timeout, headers=headers)
 
         response = self._call(request)
+        self.log_response(response)
 
         if response.status_code == 200:
             return json.loads(response.content)

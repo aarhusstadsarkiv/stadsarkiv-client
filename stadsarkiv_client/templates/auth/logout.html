@@ -1,12 +1,5 @@
 {% extends "base.html" %}
 
-{#
-{% block content %}
-<form method="post" action="{{ url_for('post_logout')}}">
-    <button type="submit">{{ translate('Logout') }}</button>
-</form>
-{% endblock content %}
-#}
 {% block content %}
 <article class="grid">
     <div>
@@ -18,6 +11,6 @@
             <button type="submit" class="contrast">{{ translate('Logout') }}</button>
         </form>
     </div>
-    <div></div>
+    <div class="auth-image"><img src="/static/assets/login-image.jpg"></div>
 </article>
 {% endblock content %}

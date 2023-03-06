@@ -19,7 +19,7 @@ settings = {
         },
         {
             "name": "register",
-            "title": "Register"
+            "title": "Ny bruger"
         },
         {
             "name": "profile",

@@ -40,6 +40,8 @@ after_entity_update
 after_entity_delete 
 
 before_render_template (GUI-response) x
+    context object / 
+
 before_json_response (Data-response) 
 
 before_search_query x
