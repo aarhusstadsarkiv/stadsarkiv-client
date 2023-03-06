@@ -13,7 +13,7 @@ setup(
     author_email='deiv@aarhus.dk',
     license='MIT',
     packages=find_packages(exclude=("tests",)),
-    package_data={"stadsarkiv_client": ["templates/**/**",
+    package_data={"stadsarkiv_client": ["templates/**/**", "templates/**",
                                         "static/**/**", ".env-dist"]},
     install_requires=REQUIREMENTS,
     entry_points={
