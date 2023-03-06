@@ -12,12 +12,12 @@
                 autocomplete="email" required>
             <input type="password" name="password" placeholder="{{ translate('Password') }}" aria-label="Password"
                 autocomplete="current-password" required>
-            <fieldset>
+            {#<fieldset>
                 <label for="remember">
                     <input type="checkbox" role="switch" id="remember" name="remember">
                     {{ translate('Remember me') }}
                 </label>
-            </fieldset>
+            </fieldset>#}
             <button type="submit" class="contrast">{{ translate('Login') }}</button>
             <a href="{{ url_for('forgot_password') }}">{{ translate('Forgot your password') }}</a>
         </form>
