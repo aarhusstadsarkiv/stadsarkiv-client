@@ -5,7 +5,7 @@ from starlette.templating import Jinja2Templates
 from starlette.requests import Request
 from .translate import translate
 from .dynamic_settings import get_setting
-from stadsarkiv_client.utils.logging import log
+
 
 def app_context(request: Request) -> typing.Dict[str, typing.Any]:
     return {'app': request.app}
@@ -23,7 +23,6 @@ def get_template_dirs() -> list:
     template_module_dirs = current_dir + "/../templates"
     template_dirs.append(template_module_dirs)
 
-    log.debug(template_dirs)
     return template_dirs
 
 
