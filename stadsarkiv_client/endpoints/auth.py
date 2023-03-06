@@ -27,8 +27,6 @@ async def post_login_cookie(request: Request):
         form = await request.form()
         username = str(form.get('username'))
         password = str(form.get('password'))
-        # remember = str(form.get('remember'))
-        # log.debug("Remember: " + remember)
 
         fastapi_client = FastAPIClient()
         cookie_dict = await fastapi_client.login_cookie(username, password)
@@ -50,11 +48,10 @@ async def post_login_jwt(request: Request):
     try:
 
         form = await request.form()
+
         username = str(form.get('username'))
         password = str(form.get('password'))
-        # remember = str(form.get('remember'))
-        # log.debug("Remember: " + remember)     
-
+        
         fastapi_client = FastAPIClient()
         bearer_token = await fastapi_client.login_jwt(username, password)
 
