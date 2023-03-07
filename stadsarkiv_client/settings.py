@@ -1,7 +1,9 @@
 import logging
 import os
-
+import sys
 from dotenv import load_dotenv
+sys.path.append(".")
+
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 env_dist = dir_path + "/.env-dist"
