@@ -3,15 +3,13 @@ from stadsarkiv_client.utils.logging import log
 import pluggy
 import inspect
 import sys
-import traceback
+
 
 try:
     import hooks
-    log.debug("Plugins loaded")
+    log.debug("Hooks loaded: hooks.py")
 except ImportError:
     hooks = None
-    log.debug("No plugins loaded")
-    traceback.print_exc()
 
 
 def get_plugin_manager() -> pluggy.PluginManager:
