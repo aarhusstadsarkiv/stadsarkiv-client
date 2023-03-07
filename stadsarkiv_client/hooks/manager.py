@@ -3,6 +3,7 @@ from stadsarkiv_client.utils.logging import log
 import pluggy
 import inspect
 import sys
+import traceback
 
 try:
     import plugins
@@ -10,6 +11,7 @@ try:
 except ImportError:
     plugins = None
     log.debug("No plugins loaded")
+    traceback.print_exc()
 
 
 def get_plugin_manager() -> pluggy.PluginManager:
