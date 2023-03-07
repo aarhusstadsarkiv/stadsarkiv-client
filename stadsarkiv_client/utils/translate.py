@@ -8,7 +8,7 @@ try:
     from language import language as language_local
     log.info("Loaded local language file: language.py")
 except ImportError:
-    log.info("No local language file")
+    log.info("local settings file NOT loaded: settings.py")
     language_local = None
 
 

@@ -4,10 +4,12 @@ from stadsarkiv_client.utils.logging import log
 
 settings_local = {}
 
+
 try:
     from settings import settings as settings_local
     log.info("Loaded local settings file: settings.py")
 except ImportError:
+    log.info("Local settings file NOT loaded: settings.py")
     pass
 
 
