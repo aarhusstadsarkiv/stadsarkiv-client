@@ -2,6 +2,7 @@ import logging
 import os
 from dotenv import load_dotenv
 import sys
+import logging
 
 sys.path.append(".")
 
