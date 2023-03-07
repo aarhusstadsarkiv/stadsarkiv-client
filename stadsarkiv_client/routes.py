@@ -1,19 +1,19 @@
-import typing
 from starlette.routing import Route, Mount
 from .endpoints import auth, testing, pages
 import os
 from stadsarkiv_client.utils.dynamic_settings import settings
+from stadsarkiv_client.utils.logging import log
 from stadsarkiv_client.utils.multi_static import MultiStaticFiles
-from starlette.staticfiles import PathLike
 
 
 def get_static_dirs() -> list:
-    static_dir_list: typing.List[PathLike] = []
+    static_dir_list = []
 
     # if "static_local" in settings
     if os.path.exists('static'):
         static_dir_local = 'static'
         static_dir_list.append(static_dir_local)
+        log.info("Loaded local static files: static/")
 
     # Module static files
     static_dir = os.path.dirname(os.path.abspath(__file__)) + '/static'
