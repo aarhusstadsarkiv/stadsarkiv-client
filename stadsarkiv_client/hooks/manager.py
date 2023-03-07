@@ -6,10 +6,10 @@ import sys
 import traceback
 
 try:
-    import plugins
+    import hooks
     log.debug("Plugins loaded")
 except ImportError:
-    plugins = None
+    hooks = None
     log.debug("No plugins loaded")
     traceback.print_exc()
 
@@ -18,10 +18,10 @@ def get_plugin_manager() -> pluggy.PluginManager:
     pm = pluggy.PluginManager("stadsarkiv_client")
     pm.add_hookspecs(hook_specs)
 
-    if plugins:
-        pm.register(plugins)
+    if hooks:
+        pm.register(hooks)
 
-        for _, obj in inspect.getmembers(sys.modules[plugins.__name__]):
+        for _, obj in inspect.getmembers(sys.modules[hooks.__name__]):
             if inspect.isclass(obj):
                 pm.register(obj)
 
