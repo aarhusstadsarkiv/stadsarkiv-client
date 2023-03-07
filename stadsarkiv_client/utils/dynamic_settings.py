@@ -1,5 +1,6 @@
 from stadsarkiv_client.settings import settings
-from stadsarkiv_client.utils.logging import log
+from stadsarkiv_client.utils.logging import get_log
+log = get_log()
 
 
 settings_local = {}

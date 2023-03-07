@@ -2,8 +2,9 @@ from starlette.routing import Route, Mount
 from .endpoints import auth, testing, pages
 import os
 from stadsarkiv_client.utils.dynamic_settings import settings
-from stadsarkiv_client.utils.logging import log
 from stadsarkiv_client.utils.multi_static import MultiStaticFiles
+from stadsarkiv_client.utils.logging import get_log
+log = get_log()
 
 
 def get_static_dirs() -> list:

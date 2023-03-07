@@ -1,8 +1,9 @@
 from stadsarkiv_client.utils.dynamic_settings import settings
 from stadsarkiv_client.locales.en import en
 from stadsarkiv_client.locales.da import da
-from stadsarkiv_client.utils.logging import log
 import json
+from stadsarkiv_client.utils.logging import get_log
+log = get_log()
 
 try:
     from language import language as language_local

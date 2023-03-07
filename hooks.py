@@ -1,5 +1,6 @@
 from stadsarkiv_client import hooks
-from stadsarkiv_client.utils.logging import log
+from stadsarkiv_client.utils.logging import get_log
+log = get_log()
 
 
 # Implementation using the hookimpl decorator

@@ -4,7 +4,8 @@ from stadsarkiv_client.utils.middleware import session_middleware, session_autol
 from stadsarkiv_client.hooks.manager import get_plugin_manager
 import os
 from stadsarkiv_client.utils.dynamic_settings import settings
-from stadsarkiv_client.utils.logging import log
+from stadsarkiv_client.utils.logging import get_log
+log = get_log()
 
 
 pm = get_plugin_manager()

@@ -3,8 +3,9 @@ import json
 import typing
 
 from .dynamic_settings import settings
-from .logging import log
 from .translate import translate
+from .logging import get_log
+log = get_log()
 
 
 class FastAPIException(Exception):

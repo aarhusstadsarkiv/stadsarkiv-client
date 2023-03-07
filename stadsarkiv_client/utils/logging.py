@@ -5,7 +5,6 @@ import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 log = logging.getLogger("main")
 level = settings["log_level"]
 log.setLevel(level)
@@ -23,5 +22,8 @@ if not len(log.handlers):
         log.addHandler(ch)
 
 
-def get_log():
+def get_log() -> logging.Logger:
     return log
+
+
+__ALL__ = [get_log]

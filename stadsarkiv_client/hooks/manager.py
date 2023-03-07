@@ -1,8 +1,9 @@
 from stadsarkiv_client.hooks import hook_specs
-from stadsarkiv_client.utils.logging import log
 import pluggy
 import inspect
 import sys
+from stadsarkiv_client.utils.logging import get_log
+log = get_log()
 
 
 try:

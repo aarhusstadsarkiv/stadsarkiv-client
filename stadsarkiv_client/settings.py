@@ -1,27 +1,8 @@
 import logging
 import os
-from dotenv import load_dotenv
-import sys
-import logging
-
-sys.path.append(".")
-
-
-def load():
-
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    env_dist = dir_path + "/.env-dist"
-    load_dotenv(env_dist)
-
-    # file exists
-    if os.path.exists(".env"):
-        print("Loaded local .env file")
-        load_dotenv(override=True)
-    else:
-        print("Local .env file NOT loaded")
-
-
+from stadsarkiv_client.utils.dotenv_local import load
 load()
+
 
 log_level = logging.DEBUG
 cookie_httponly = False
