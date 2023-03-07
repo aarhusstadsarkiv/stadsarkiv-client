@@ -1,4 +1,7 @@
 from stadsarkiv_client.settings import settings
+import sys
+sys.path.append(".")
+
 
 settings_local = {}
 
