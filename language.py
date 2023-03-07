@@ -1,3 +1,5 @@
 language = {
-    "Email": "E-mail",
+
+    "Forgot your password": "Glemt password (from language.py)",
+
 }
