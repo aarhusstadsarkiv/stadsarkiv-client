@@ -1,33 +1,17 @@
-from stadsarkiv_client.utils.hooks_spec import plugin_manager, hookimpl
+from stadsarkiv_client import hooks
+from stadsarkiv_client.utils.logging import log
 
 
-class Plugin_1:
-    """A hook implementation namespace."""
+@hooks.hookimpl
+def before_render_template():
+    log.debug("Before render template")
+    """
+    """
 
-    @hookimpl
-    def before_render_template(self, arg1, arg2):
-        print("inside Plugin_1.myhook()")
-        return arg1 + arg2
-
-
-class Plugin_2:
-    """A 2nd hook implementation namespace."""
-
-    @hookimpl
-    def before_render_template(self, arg1, arg2):
-        print("inside Plugin_2.myhook()")
-        return arg1 - arg2
+@hooks.hookimpl(specname="before_render_template")
+def before_render_template_():
+    log.debug("Before render template 2")
+    """
+    """
 
 
-class Plugin_3:
-    """A 3rd hook implementation namespace."""
-
-    @hookimpl
-    def before_render_template(self, arg1, arg2):
-        print("inside Plugin_2.myhook()")
-        return arg1 * arg2
-
-
-plugin_manager.register(Plugin_1())
-plugin_manager.register(Plugin_2())
-plugin_manager.register(Plugin_3())

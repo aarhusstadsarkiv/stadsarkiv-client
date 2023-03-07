@@ -9,12 +9,12 @@ def get_main_menu(request: Request) -> list:
         main_menu = dynamic_settings.settings["main_menu"]
 
     if "logged_in" in request.session:
-        main_menu = [x for x in main_menu if x["name"] != "login"]
-        main_menu = [x for x in main_menu if x["name"] != "register"]
+        main_menu = [item for item in main_menu if item["name"] != "login"]
+        main_menu = [item for item in main_menu if item["name"] != "register"]
 
     if "logged_in" not in request.session:
-        main_menu = [x for x in main_menu if x["name"] != "logout"]
-        main_menu = [x for x in main_menu if x["name"] != "profile"]
+        main_menu = [item for item in main_menu if item["name"] != "logout"]
+        main_menu = [item for item in main_menu if item["name"] != "profile"]
 
     return main_menu
 
