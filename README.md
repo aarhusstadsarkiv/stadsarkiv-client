@@ -59,7 +59,7 @@ The following files can be overridden:
   * settings.py  
   * .env
 
-You made add hooks in the following file:
+You may add hooks in the following file:
 
   * hooks.py
 
