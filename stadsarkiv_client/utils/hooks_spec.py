@@ -13,5 +13,5 @@ class MySpec:
 
 
 # create a manager and add the spec
-pm = pluggy.PluginManager("myproject")
-pm.add_hookspecs(MySpec)
+plugin_manager = pluggy.PluginManager("myproject")
+plugin_manager.add_hookspecs(MySpec)

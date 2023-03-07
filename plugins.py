@@ -1,4 +1,4 @@
-from stadsarkiv_client.utils.hooks_spec import pm, hookimpl
+from stadsarkiv_client.utils.hooks_spec import plugin_manager, hookimpl
 
 
 class Plugin_1:
@@ -28,16 +28,6 @@ class Plugin_3:
         return arg1 * arg2
 
 
-pm.register(Plugin_1())
-pm.register(Plugin_2())
-pm.register(Plugin_3())
-
-
-def test_test():
-    print("Doh")
-
-
-# print("Doh")
-# call our `myhook` hook
-""" results = pm.hook.before_render_template(arg1=1, arg2=2)
-print(results) """
+plugin_manager.register(Plugin_1())
+plugin_manager.register(Plugin_2())
+plugin_manager.register(Plugin_3())

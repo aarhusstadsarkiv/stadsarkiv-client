@@ -1,22 +1,18 @@
-from .dynamic_settings import get_setting
+from .logging import log
 
-# print(get_setting("language"))
 
 try:
-    # import from current directory
-    from plugins_test import test_test
-    test_test()
+    from plugins import plugin_manager
+    log.debug("Plugins found")
 
-    # from plugins_test import test_test
 except ImportError:
-    print("No plugins found")
+    log.debug("No plugins found")
     pass
 
 
-# print(pm)
-# test_test()
-exit()
+def load_hooks():
+    pass
 
-# call our `myhook` hook
-results = pm.hook.before_render_template(arg1=1, arg2=2)
-print(results)
+
+results = plugin_manager.hook.before_render_template(arg1=1, arg2=2)
+log.debug(results)
