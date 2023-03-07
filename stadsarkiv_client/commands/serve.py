@@ -1,8 +1,5 @@
 import click
 import uvicorn
-import os
-from stadsarkiv_client.utils.dynamic_settings import settings
-from stadsarkiv_client.utils.logging import log
 
 
 @click.command()
@@ -10,8 +7,6 @@ from stadsarkiv_client.utils.logging import log
 @click.option('--port', default=5555, help='Server port.')
 @click.option('--workers', default=1, help='Number of workers.')
 def run(reload: bool, port: int, workers: int):
-    log.debug(os.getenv('ENVIRONMENT'))
-    log.debug(settings)
 
     uvicorn.run("stadsarkiv_client.app:app",
                 reload=reload, port=port, workers=workers, log_level="info")

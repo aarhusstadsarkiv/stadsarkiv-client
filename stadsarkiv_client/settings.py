@@ -1,15 +1,26 @@
 import logging
 import os
-import sys
 from dotenv import load_dotenv
+import sys
+
 sys.path.append(".")
 
 
-dir_path = os.path.dirname(os.path.realpath(__file__))
-env_dist = dir_path + "/.env-dist"
-load_dotenv(env_dist)
-load_dotenv(override=True)
+def load():
 
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    env_dist = dir_path + "/.env-dist"
+    load_dotenv(env_dist)
+
+    # file exists
+    if os.path.exists(".env"):
+        print("Loaded local .env file")
+        load_dotenv(override=True)
+    else:
+        print("Local .env file NOT loaded")
+
+
+load()
 
 log_level = logging.DEBUG
 cookie_httponly = False

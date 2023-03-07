@@ -7,8 +7,9 @@ import sys
 
 try:
     import hooks
-    log.debug("Hooks loaded: hooks.py")
+    log.info("Loaded local hooks: hooks.py")
 except ImportError:
+    log.info("Local hooks NOT loaded: hooks.py")
     hooks = None
 
 
