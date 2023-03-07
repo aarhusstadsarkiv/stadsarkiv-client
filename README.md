@@ -6,6 +6,8 @@
 
     cd stadsarkiv-client
 
+    virtualenv venv # Python >= 3.10.6 should work   
+
     source venv/bin/activate
 
 Or (Windows)
@@ -23,6 +25,10 @@ Or:
     ./run-module.sh
 
 ## Install as requirement
+
+    virtualenv venv
+
+    source venv/bin/activate
 
 Update version and install latest version:
 
@@ -52,6 +58,12 @@ The following files can be overridden:
 
   * settings.py  
   * .env
+
+You made add hooks in the following file:
+
+  * hooks.py
+
+Example of a [naive implementation of hooks](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/hooks.py):
 
 ### Create .env file
 
