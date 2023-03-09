@@ -22,11 +22,14 @@ en = {
     "Register to get access to speciel functions": "Register to get access to speciel functions",
     "Remember me": "Remember me",
     "Reset password": "Reset password",
+    "Search": "Search",
+    "Search this site": "Search this site",
     "Submit": "Submit",
     "System can not deliver an email about resetting password. Try again later.": "System can not deliver an email about resetting password. Try again later.",
     "User already exists. Try to login instead.": "User already exists. Try to login instead.",
     "You have been logged in.": "You have been logged in.",
     "You have been logged out.": "You have been logged out.",
     "You have been registered.": "You have been registered.",
-    "You have been registered. Check your email to confirm your account.": "You have been registered. Check your email to confirm your account."
+    "You have been registered. Check your email to confirm your account.": "You have been registered. Check your email to confirm your account.",
+    "search": "search"
 }
