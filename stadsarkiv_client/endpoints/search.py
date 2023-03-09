@@ -30,7 +30,7 @@ async def get_search_results(request: Request):
 
     query_params = alter_search_query(request)
     log.debug(query_params)
-    
+
     return templates.TemplateResponse('search/search-results.html', context)
 
 
