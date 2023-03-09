@@ -1,6 +1,10 @@
 from starlette.requests import Request
 from .flash import get_messages
 from stadsarkiv_client.utils import dynamic_settings
+from stadsarkiv_client.hooks.manager import get_plugin_manager
+
+
+pm = get_plugin_manager()
 
 
 def get_main_menu(request: Request) -> list:
@@ -39,8 +43,8 @@ def logged_in(request: Request) -> bool:
     return logged_in
 
 
-def get_context(request: Request) -> dict:
-    dict_values = {
+def get_context(request: Request, context_values: dict = {}) -> dict:
+    context = {
         'path': request.url.path,
         'request': request,
         'title': get_title(request),
@@ -49,4 +53,8 @@ def get_context(request: Request) -> dict:
         'logged_in': logged_in(request),
     }
 
-    return dict_values
+    context.update(context_values)
+
+    pm.hook.before_render_template(context=context)  # type: ignore
+
+    return context
