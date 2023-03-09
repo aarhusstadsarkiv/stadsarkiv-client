@@ -25,6 +25,10 @@ settings = {
             "name": "profile",
             "title": "Profil"
         },
+        {
+            "name": "search",
+            "title": "Søg"
+        },
 
     ],
     "pages": [

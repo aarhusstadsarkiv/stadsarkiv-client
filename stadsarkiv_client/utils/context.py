@@ -55,6 +55,6 @@ def get_context(request: Request, context_values: dict = {}) -> dict:
 
     context.update(context_values)
 
-    pm.hook.before_render_template(context=context)  # type: ignore
+    pm.hook.alter_context(context=context)  # type: ignore
 
     return context
