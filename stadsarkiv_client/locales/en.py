@@ -14,6 +14,7 @@ en = {
     "Logout of systems": "Logout of systems",
     "Me": "Me",
     "Me failed": "Me failed",
+    "Menu": "Menu",
     "New user": "New user",
     "Password": "Password",
     "Profile": "Profile",

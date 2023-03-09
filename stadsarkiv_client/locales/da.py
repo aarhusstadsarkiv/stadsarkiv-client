@@ -1,6 +1,6 @@
 da = {
     "Are you sure": "Er du sikker p\u00e5 at du vil logge ud?",
-    "Change your password": "Ændr dit password",
+    "Change your password": "\u00c6ndr dit password",
     "Email": "E-mail",
     "Email needs to be correct. Password needs to be at least 8 characters long.": "Email er ikke korrekt. Password skal v\u00e6re mindst 8 tegn langt.",
     "Email or password is incorrect. Or your user has not been activated.": "Email eller password er ikke korrekt. Eller din konto er ikke blevet aktiveret.",
@@ -12,6 +12,7 @@ da = {
     "Logout of systems": "Logout of systems",
     "Me": "Profile",
     "Me failed": "Me failed",
+    "Menu": "Menu",
     "New user": "Ny bruger",
     "Password": "Password",
     "Profile": "Profile",
