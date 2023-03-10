@@ -1,5 +1,6 @@
 settings = {
     "language": "da",
+    "fastapi_endpoint": "http://localhost:8000/v1",
     "main_menu": [
         {
             "name": "home",

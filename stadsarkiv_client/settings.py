@@ -7,21 +7,18 @@ load()
 log_level = logging.DEBUG
 cookie_httponly = False
 cookie_secure = False
-fastapi_endpoint = "https://dev.openaws.dk"
 
 
 if os.getenv("ENVIRONMENT") == "production":
     log_level = logging.INFO
     cookie_httponly = True
     cookie_secure = True
-    fastapi_endpoint = "https://dev.openaws.dk"
 
 
 settings = {
     "version" : "0.0.1",
     "language": "da",
     "environment": os.getenv("ENVIRONMENT"),
-    "fastapi_endpoint": fastapi_endpoint,
     "log_level": log_level,
     "log_handlers": ["stream"],  # [ "stream", "file"]
     "cookie": {
@@ -31,6 +28,7 @@ settings = {
         "secure": cookie_secure,
         "samesite": "lax"
     },
+    "fastapi_endpoint": "https://dev.openaws.dk/v1",
     "main_menu": [
         {
             "name": "home",

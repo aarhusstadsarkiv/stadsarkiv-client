@@ -1,5 +1,5 @@
 from starlette.routing import Route, Mount
-from .endpoints import auth, search, testing, pages
+from .endpoints import auth, search, testing, pages, schemas
 import os
 from stadsarkiv_client.utils.dynamic_settings import settings
 from stadsarkiv_client.utils.multi_static import MultiStaticFiles
@@ -37,6 +37,7 @@ routes = [
     Route('/auth/me', endpoint=auth.get_me, name='profile'),
     Route('/search', endpoint=search.get_search, name='search'),
     Route('/search-results', endpoint=search.get_search_results, name='search_results'),
+    Route('/schemas', endpoint=schemas.get_schemas, name='schemas'),
     Route('/test', endpoint=testing.test, name='test'),
 ]
 
