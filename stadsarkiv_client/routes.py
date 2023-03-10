@@ -1,5 +1,5 @@
 from starlette.routing import Route, Mount
-from .endpoints import auth, testing, pages
+from .endpoints import auth, search, testing, pages
 import os
 from stadsarkiv_client.utils.dynamic_settings import settings
 from stadsarkiv_client.utils.multi_static import MultiStaticFiles
@@ -35,6 +35,8 @@ routes = [
     Route('/auth/post-forgot-password', endpoint=auth.post_forgot_password,
           name='post_forgot_password', methods=['POST']),
     Route('/auth/me', endpoint=auth.get_me, name='profile'),
+    Route('/search', endpoint=search.get_search, name='search'),
+    Route('/search-results', endpoint=search.get_search_results, name='search_results'),
     Route('/test', endpoint=testing.test, name='test'),
 ]
 

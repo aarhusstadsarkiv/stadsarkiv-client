@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="grid">
+    <div>
+        <hgroup>
+            {% include "includes/main_title.html" %}
+            <h2>{{ translate('Search this site') }}</h2>
+        </hgroup>
+        <form method="GET" action="{{ url_for('search_results')}}">
+            <input type="text" name="search" placeholder="{{ translate('Search') }}" aria-label="{{ translate('search') }}" required>
+            <button type="submit" class="contrast">{{ translate('Search') }}</button>
+        </form>
+</article>
+{% endblock content %}

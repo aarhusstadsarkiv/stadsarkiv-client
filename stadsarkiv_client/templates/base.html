@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{{ title }}{% endblock title %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/pico.min.css') }}?v={{ get_setting('version') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/pico.css') }}?v={{ get_setting('version') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/pico-custom.css') }}?v={{ get_setting('version') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/flash.css') }}?v={{ get_setting('version') }}">
     <script type="importmap">
@@ -16,8 +16,10 @@
         }
     </script>
     <script type="module">
+        import {themeSwitcher } from "{{ url_for('static', path='/js/minimal-theme-switcher.js') }}";
         import { } from "{{ url_for('static', path='/js/main-events.js') }}";
         import { Flash } from "{{ url_for('static', path='/js/flash.js') }}";
+        themeSwitcher.init();
         Flash.setWidth();
     </script>
     

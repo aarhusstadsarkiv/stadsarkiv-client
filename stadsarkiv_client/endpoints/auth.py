@@ -11,13 +11,13 @@ log = get_log()
 
 async def get_login(request: Request):
 
-    context = get_context(request)
+    context_values = {"title": translate("Login")}
+    context = get_context(request, context_values=context_values)
 
     if "logged_in" in request.session:
         if request.session["logged_in"]:
             return RedirectResponse(url='/', status_code=302)
 
-    context["title"] = translate("Login")
     return templates.TemplateResponse('auth/login.html', context)
 
 
@@ -52,7 +52,7 @@ async def post_login_jwt(request: Request):
 
         username = str(form.get('username'))
         password = str(form.get('password'))
-        
+
         fastapi_client = FastAPIClient()
         bearer_token = await fastapi_client.login_jwt(username, password)
 
@@ -71,8 +71,8 @@ async def post_login_jwt(request: Request):
 
 async def get_logout(request: Request):
 
-    context = get_context(request)
-    context["title"] = translate("Logout")
+    context_values = {"title": translate("Logout")}
+    context = get_context(request, context_values=context_values)
     return templates.TemplateResponse('auth/logout.html', context)
 
 
@@ -91,8 +91,8 @@ async def post_logout(request: Request):
 
 
 async def get_register(request: Request):
-    context = get_context(request)
-    context["title"] = translate("New user")
+    context_values = {"title": translate("Register")}
+    context = get_context(request, context_values=context_values)
     return templates.TemplateResponse('auth/register.html', context)
 
 
@@ -128,9 +128,8 @@ async def get_me(request: Request):
         else:
             me = await fastapi_client.me_cookie(cookie=request.session["_auth"])
 
-        context = get_context(request)
-        context["title"] = translate("Profile")
-        context["me"] = me
+        context_values = {"title": translate("Profile"), "me": me}
+        context = get_context(request, context_values=context_values)
 
         return templates.TemplateResponse('auth/me.html', context)
     except Exception as e:
@@ -141,8 +140,8 @@ async def get_me(request: Request):
 
 async def get_forgot_password(request: Request):
 
-    context = get_context(request)
-    context["title"] = translate("Forgot your password")
+    context_values = {"title": translate("Forgot your password")}
+    context = get_context(request, context_values=context_values)
     return templates.TemplateResponse('auth/forgot_password.html', context)
 
 

@@ -4,6 +4,6 @@ from stadsarkiv_client.utils.context import get_context
 
 
 async def index(request: Request):
-    context = get_context(request)
-    context["title"] = "Home"
+    context_values = {"title": "Home"}
+    context = get_context(request, context_values=context_values)
     return templates.TemplateResponse('home.html', context)
