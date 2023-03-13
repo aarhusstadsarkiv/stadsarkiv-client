@@ -1,6 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
-<pre>
-{{ schemas }}
-</pre>
+
+<div>
+    <hgroup>
+        {% include "includes/main_title.html" %}
+        <h2>{{ translate('Create schema') }}</h2>
+    </hgroup>
+    <form method="post" action="/schemas/post-schema">
+        <input type="text" name="type" placeholder="Type" aria-label="Type" >
+        <textarea name="data" placeholder="Data" ></textarea>
+        <button type="submit" class="contrast">Create Schema</button>
+    </form>
+</div>
+
+{% for schema in schemas %}
+<div>
+    <h4><a href="/schema/{{ schema.type }}">{{ schema.type }} </a></h4>
+</div>
+{% endfor %}
+
+
 {% endblock content %}

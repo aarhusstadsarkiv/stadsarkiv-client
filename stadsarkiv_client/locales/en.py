@@ -1,6 +1,7 @@
 en = {
     "Are you sure": "Are you sure",
     "Change your password": "Change your password",
+    "Create schema": "Create schema",
     "Email": "Email",
     "Email needs to be correct. Password needs to be at least 8 characters long.": "Email needs to be correct. Password needs to be at least 8 characters long.",
     "Email or password is incorrect. Or your user has not been activated.": "Email or password is incorrect. Or your user has not been activated.",
@@ -9,6 +10,8 @@ en = {
     "Get a reset link by email": "Get a reset link by email",
     "Get instructions by email": "Get instructions by email",
     "Get instructions on how to change your password": "Get instructions on how to change your password",
+    "Invalid JSON in data.": "Invalid JSON in data.",
+    "Invalid JSON.": "Invalid JSON.",
     "Login": "Login",
     "Login to get access to speciel functions": "Login to get access to speciel functions",
     "Logout": "Logout",

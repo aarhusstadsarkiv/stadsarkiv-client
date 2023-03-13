@@ -32,7 +32,9 @@ class FastAPIBase:
         url = self.url + url
 
         def request() -> requests.Response:
-            return requests.get(url, json={}, timeout=self.timeout, headers=headers)
+            response = requests.get(url, json={}, timeout=self.timeout, headers=headers)
+            return response
+            # return response.json()
 
         response = self._call(request)
         return response

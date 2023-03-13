@@ -38,6 +38,7 @@ routes = [
     Route('/search', endpoint=search.get_search, name='search'),
     Route('/search-results', endpoint=search.get_search_results, name='search_results'),
     Route('/schemas', endpoint=schemas.get_schemas, name='schemas'),
+    Route('/schemas/post-schema', endpoint=schemas.post_schema, name='post_schema', methods=['POST']),
     Route('/test', endpoint=testing.test, name='test'),
 ]
 

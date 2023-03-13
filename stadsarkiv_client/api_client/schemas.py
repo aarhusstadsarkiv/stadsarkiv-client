@@ -1,8 +1,8 @@
-import requests
+# import requests
 import json
 from stadsarkiv_client.utils.translate import translate
 from stadsarkiv_client.utils.logging import get_log
-from starlette.requests import Request
+# from starlette.requests import Request
 from .fastapi_base import FastAPIBase
 log = get_log()
 
@@ -22,5 +22,20 @@ class Schemas(FastAPIBase):
             raise FastAPIException(
                 translate("Failed to get schemas"), response.status_code, response.text)
 
-    async def get_schema(self, cookie: str, schema_id: str):
-        pass
+    async def get_schema(self, schema_id: str):
+        url = "/schema/" + schema_id
+        response = self.jwt_get_json(url=url)
+        if response.status_code == 200:
+            return json.loads(response.content)
+        else:
+            raise FastAPIException(
+                translate("Failed to get schemas"), response.status_code, response.text)
+
+    async def post_schema(self, type: str):
+        url = "/schema/"
+        response = self.jwt_get_json(url=url)
+        if response.status_code == 200:
+            return json.loads(response.content)
+        else:
+            raise FastAPIException(
+                translate("Failed to get schemas"), response.status_code, response.text)

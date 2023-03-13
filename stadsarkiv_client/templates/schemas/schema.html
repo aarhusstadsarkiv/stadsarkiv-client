@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "includes/main_title.html" %}
+<pre>
+{{ schemas }}
+</pre>
+<form method="post" action="/schemas/post-schema">
+    <input type="text" name="type" placeholder="Type" aria-label="Type" required>
+    <textarea name="data" required></textarea>
+    <button type="submit" class="contrast">Create Schema</button>
+</form>
+{% endblock content %}
