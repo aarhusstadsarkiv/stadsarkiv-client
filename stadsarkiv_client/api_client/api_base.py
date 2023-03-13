@@ -9,7 +9,7 @@ class FastAPIException(Exception):
     pass
 
 
-class FastAPIBase:
+class APIBase:
 
     def __init__(self, request: Request, timeout: int = 10):
         self.url = settings['fastapi_endpoint']

@@ -2,7 +2,7 @@ from starlette.requests import Request
 from starlette.responses import RedirectResponse
 from stadsarkiv_client.utils.templates import templates
 from stadsarkiv_client.utils.context import get_context
-from stadsarkiv_client.api_client.user_auth import UserAuth
+from stadsarkiv_client.api_client.api_auth import UserAuth
 from stadsarkiv_client.utils import flash
 from stadsarkiv_client.utils.translate import translate
 from stadsarkiv_client.utils.logging import get_log

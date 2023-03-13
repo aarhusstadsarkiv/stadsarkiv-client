@@ -3,15 +3,15 @@ import json
 from stadsarkiv_client.utils.translate import translate
 from stadsarkiv_client.utils.logging import get_log
 # from starlette.requests import Request
-from .fastapi_base import FastAPIBase
+from .api_base import APIBase
 log = get_log()
 
 
-class FastAPIException(Exception):
+class APIException(Exception):
     pass
 
 
-class APISchema(FastAPIBase):
+class APISchema(APIBase):
 
     async def get_schemas(self):
 
@@ -19,7 +19,7 @@ class APISchema(FastAPIBase):
         if response.status_code == 200:
             return json.loads(response.content)
         else:
-            raise FastAPIException(
+            raise APIException(
                 translate("Failed to get schemas"), response.status_code, response.text)
 
     async def get_schema(self, schema_type: str):
@@ -29,7 +29,7 @@ class APISchema(FastAPIBase):
         if response.status_code == 200:
             return json.loads(response.content)
         else:
-            raise FastAPIException(
+            raise APIException(
                 translate("Failed to get schema"), response.status_code, response.text)
 
     async def post_schema(self, type: str):
@@ -38,5 +38,5 @@ class APISchema(FastAPIBase):
         if response.status_code == 200:
             return json.loads(response.content)
         else:
-            raise FastAPIException(
+            raise APIException(
                 translate("Failed to create schema"), response.status_code, response.text)

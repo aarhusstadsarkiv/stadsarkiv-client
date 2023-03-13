@@ -3,7 +3,7 @@ import json
 import typing
 from stadsarkiv_client.utils.translate import translate
 from stadsarkiv_client.utils.logging import get_log
-from .fastapi_base import FastAPIBase
+from .api_base import APIBase
 log = get_log()
 
 
@@ -11,7 +11,7 @@ class FastAPIException(Exception):
     pass
 
 
-class UserAuth(FastAPIBase):
+class UserAuth(APIBase):
 
     async def register(self, form_dict: dict) -> typing.Any:
 
