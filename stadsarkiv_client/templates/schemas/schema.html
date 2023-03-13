@@ -8,7 +8,13 @@
     </hgroup>
 </div>
 
+{% for key, value in schema.items() %} 
+{{ key }}: {{ value }} 
+{% endfor %}
+
+<pre>
 {{ schema }}
+</pre>
 
 
 {% endblock content %}

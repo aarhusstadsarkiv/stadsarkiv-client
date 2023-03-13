@@ -11,7 +11,7 @@ class FastAPIException(Exception):
     pass
 
 
-class UserAuth(APIBase):
+class APIAuth(APIBase):
 
     async def register(self, form_dict: dict) -> typing.Any:
 

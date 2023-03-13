@@ -5,7 +5,7 @@ from starlette.requests import Request
 log = get_log()
 
 
-class FastAPIException(Exception):
+class APIException(Exception):
     pass
 
 
@@ -67,4 +67,4 @@ class APIBase:
             return func()
         except Exception as e:
             log.error(e)
-            raise FastAPIException("Network error", 408, "Request timeout")
+            raise APIException("Network error", 408, "Request timeout")
