@@ -27,6 +27,7 @@ en = {
     "Register to get access to speciel functions": "Register to get access to speciel functions",
     "Remember me": "Remember me",
     "Reset password": "Reset password",
+    "Schema": "Schema",
     "Schemas": "Schemas",
     "Search": "Search",
     "Search this site": "Search this site",

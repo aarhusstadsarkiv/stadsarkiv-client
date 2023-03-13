@@ -11,7 +11,7 @@ class FastAPIException(Exception):
     pass
 
 
-class Schemas(FastAPIBase):
+class APISchema(FastAPIBase):
 
     async def get_schemas(self):
 
@@ -22,14 +22,15 @@ class Schemas(FastAPIBase):
             raise FastAPIException(
                 translate("Failed to get schemas"), response.status_code, response.text)
 
-    async def get_schema(self, schema_id: str):
-        url = "/schema/" + schema_id
+    async def get_schema(self, schema_type: str):
+
+        url = "/schemas/" + schema_type
         response = self.jwt_get_json(url=url)
         if response.status_code == 200:
             return json.loads(response.content)
         else:
             raise FastAPIException(
-                translate("Failed to get schemas"), response.status_code, response.text)
+                translate("Failed to get schema"), response.status_code, response.text)
 
     async def post_schema(self, type: str):
         url = "/schema/"
@@ -38,4 +39,4 @@ class Schemas(FastAPIBase):
             return json.loads(response.content)
         else:
             raise FastAPIException(
-                translate("Failed to get schemas"), response.status_code, response.text)
+                translate("Failed to create schema"), response.status_code, response.text)

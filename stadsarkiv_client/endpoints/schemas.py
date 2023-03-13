@@ -2,7 +2,7 @@ from starlette.requests import Request
 from starlette.responses import RedirectResponse
 from stadsarkiv_client.utils.templates import templates
 from stadsarkiv_client.utils.context import get_context
-from stadsarkiv_client.api_client.schemas import Schemas
+from stadsarkiv_client.api_client.schemas import APISchema
 from stadsarkiv_client.api_client.fastapi_base import FastAPIBase
 # from stadsarkiv_client.utils import flash
 from stadsarkiv_client.utils.translate import translate
@@ -15,19 +15,26 @@ log = get_log()
 
 async def get_schemas(request: Request):
 
-    schema = Schemas(request=request)
-    schemas = await schema.get_schemas()
+    api_schema = APISchema(request=request)
+    schemas = await api_schema.get_schemas()
 
     context_values = {"title": translate("Schemas"), "schemas": schemas}
-    log.debug(type(schemas))
-    log.debug(schemas)
-
-    for schema in schemas:
-        log.debug(schema)
-
     context = get_context(request, context_values=context_values)
 
     return templates.TemplateResponse('schemas/schemas.html', context)
+
+
+async def get_schema(request: Request):
+
+    schema_type = request.path_params['schema_type']
+
+    api_schema = APISchema(request=request)
+    schema = await api_schema.get_schema(schema_type=schema_type)
+
+    context_values = {"title": translate("Schemas"), "schema": schema}
+    context = get_context(request, context_values=context_values)
+
+    return templates.TemplateResponse('schemas/schema.html', context)
 
 
 async def post_schema(request: Request):
