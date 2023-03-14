@@ -15,7 +15,8 @@
 
 {% for schema in schemas %}
 <div>
-    <h4><a href="/schema/{{ schema.type }}">{{ schema.type }} </a></h4>
+    <a href="/schema/{{ schema.type }}"> {{ translate('View schema') }}: {{ schema.type }} </a> |
+    <a href="/entities/{{ schema.type }}"> {{ translate('Create entity') }}: {{ schema.type }} </a>
 </div>
 {% endfor %}
 

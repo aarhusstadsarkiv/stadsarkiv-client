@@ -22,11 +22,14 @@ class APISchema(APIBase):
             raise APIException(
                 translate("Failed to get schemas"), response.status_code, response.text)
 
-    async def get_schema(self, schema_type: str):
+    async def get_schema(self, schema_type: str, as_text: bool = False):
 
         url = "/schemas/" + schema_type
         response = self.jwt_get_json(url=url)
         if response.status_code == 200:
+            if as_text:
+                return response.content
+
             return json.loads(response.content)
         else:
             raise APIException(
