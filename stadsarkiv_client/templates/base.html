@@ -11,15 +11,14 @@
     <script type="importmap">
         {
           "imports": {
-            "{{ url_for('static', path='/js/flash.js') }}": "{{ url_for('static', path='/js/flash.js') }}?v={{ get_setting('version') }}"
+            "{{ url_for('static', path='/js/flash.js') }}": "{{ url_for('static', path='/js/flash.js') }}?v={{ get_setting('version') }}",
+            "{{ url_for('static', path='/js/requests.js') }}": "{{ url_for('static', path='/js/requests.js') }}?v={{ get_setting('version') }}",
+            "{{ url_for('static', path='/js/config.js') }}": "{{ url_for('static', path='/js/config.js') }}?v={{ get_setting('version') }}"
           }
         }
     </script>
     <script type="module">
-        import {themeSwitcher } from "{{ url_for('static', path='/js/minimal-theme-switcher.js') }}";
-        import { } from "{{ url_for('static', path='/js/main-events.js') }}";
         import { Flash } from "{{ url_for('static', path='/js/flash.js') }}";
-        themeSwitcher.init();
         Flash.setWidth();
     </script>
 
