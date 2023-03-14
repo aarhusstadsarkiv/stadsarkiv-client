@@ -3,12 +3,8 @@ import json
 import typing
 from stadsarkiv_client.utils.translate import translate
 from stadsarkiv_client.utils.logging import get_log
-from .api_base import APIBase
+from .api_base import APIBase, APIException
 log = get_log()
-
-
-class FastAPIException(Exception):
-    pass
 
 
 class APIAuth(APIBase):
@@ -22,11 +18,11 @@ class APIAuth(APIBase):
         else:
 
             if response.status_code == 400:
-                raise FastAPIException(translate(
+                raise APIException(translate(
                     "User already exists. Try to login instead."), response.status_code, response.text)
 
             if response.status_code == 422:
-                raise FastAPIException(translate(
+                raise APIException(translate(
                     "Email needs to be correct. Password needs to be at least 8 characters long."),
                     response.status_code, response.text)
 
@@ -38,7 +34,7 @@ class APIAuth(APIBase):
         if response.status_code == 202:
             return response.content
         else:
-            raise FastAPIException(
+            raise APIException(
                 translate("System can not deliver an email about resetting password. Try again later."),
                 response.status_code, response.text)
 
@@ -50,7 +46,7 @@ class APIAuth(APIBase):
         if response.status_code == 200:
             return json.loads(response.content)
         else:
-            raise FastAPIException(
+            raise APIException(
                 translate("Email or password is incorrect. Or your user has not been activated."),
                 response.status_code, response.text)
 
@@ -62,7 +58,7 @@ class APIAuth(APIBase):
         if response.status_code == 200:
             return json.loads(response.content)
         else:
-            raise FastAPIException(
+            raise APIException(
                 translate("Me failed"), response.status_code, response.text)
 
     async def me_cookie(self, cookie: str) -> dict:
@@ -78,7 +74,7 @@ class APIAuth(APIBase):
         if response.status_code == 200:
             return json.loads(response.content)
         else:
-            raise FastAPIException(
+            raise APIException(
                 translate("Me failed"), response.status_code, response.text)
 
     def logout_jwt(self) -> dict:
@@ -87,8 +83,7 @@ class APIAuth(APIBase):
         if response.status_code == 200:
             return json.loads(response.content)
         else:
-            raise FastAPIException("Logout JWT failed",
-                                   response.status_code, response.text)
+            raise APIException("Logout JWT failed", response.status_code, response.text)
 
     def logout_cookie(self, cookie: str) -> str:
 
@@ -104,10 +99,9 @@ class APIAuth(APIBase):
         response = self._call(request)
 
         if response.status_code == 200:
-            # 'null' as string if correct
             return json.loads(response.content)
         else:
-            raise FastAPIException(
+            raise APIException(
                 translate("Logout cookie failed"), response.status_code, response.text)
 
     async def login_cookie(self, username: str, password: str) -> dict:
@@ -123,11 +117,10 @@ class APIAuth(APIBase):
         response = self._call(request)
 
         if response.status_code == 200:
-            # 'null' as string if correct
             cookie = session.cookies.get_dict()['_auth']
             return {'_auth': cookie}
         else:
-            raise FastAPIException(
+            raise APIException(
                 translate("Email or password is incorrect. Or your user has not been activated."),
                 response.status_code, response.text)
 
@@ -143,8 +136,7 @@ class APIAuth(APIBase):
 
         response = self._call(request)
         if response.status_code == 200:
-            # 'null' as string if correct
             return response.content
         else:
-            raise FastAPIException(translate("Reset of your password failed"),
-                                   response.status_code, response.text)
+            raise APIException(
+                translate("Reset of your password failed"), response.status_code, response.text)

@@ -3,12 +3,8 @@ import json
 from stadsarkiv_client.utils.translate import translate
 from stadsarkiv_client.utils.logging import get_log
 # from starlette.requests import Request
-from .api_base import APIBase
+from .api_base import APIBase, APIException
 log = get_log()
-
-
-class APIException(Exception):
-    pass
 
 
 class APISchema(APIBase):
