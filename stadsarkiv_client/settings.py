@@ -55,6 +55,10 @@ settings = {
             "title": "Profil"
         },
         {
+            "name": "schemas",
+            "title": "Schemas"
+        },
+        {
             "name": "search",
             "title": "Søg"
         },

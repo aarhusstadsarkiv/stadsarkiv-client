@@ -19,6 +19,7 @@ def get_main_menu(request: Request) -> list:
     if "logged_in" not in request.session:
         main_menu = [item for item in main_menu if item["name"] != "logout"]
         main_menu = [item for item in main_menu if item["name"] != "profile"]
+        main_menu = [item for item in main_menu if item["name"] != "schemas"]
 
     return main_menu
 
