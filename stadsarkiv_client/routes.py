@@ -1,5 +1,5 @@
 from starlette.routing import Route, Mount
-from .endpoints import auth, search, testing, pages, schemas
+from .endpoints import auth, search, testing, pages, schemas, entities
 import os
 from stadsarkiv_client.utils.dynamic_settings import settings
 from stadsarkiv_client.utils.multi_static import MultiStaticFiles
@@ -24,6 +24,7 @@ def get_static_dirs() -> list:
 
 routes = [
     Mount('/static', MultiStaticFiles(directories=get_static_dirs()), name='static'),
+    
     Route('/auth/login', endpoint=auth.get_login, name='login'),
     Route('/auth/post-login', endpoint=auth.post_login_cookie, name='post_login_cookie', methods=['POST']),
     Route('/auth/post-login-jwt', endpoint=auth.post_login_jwt, name='post_login_jwt', methods=['POST']),
@@ -35,11 +36,16 @@ routes = [
     Route('/auth/post-forgot-password', endpoint=auth.post_forgot_password,
           name='post_forgot_password', methods=['POST']),
     Route('/auth/me', endpoint=auth.get_me, name='profile'),
+
     Route('/search', endpoint=search.get_search, name='search'),
     Route('/search-results', endpoint=search.get_search_results, name='search_results'),
+
     Route('/schema/{schema_type:str}', endpoint=schemas.get_schema, name='schemas'),
     Route('/schemas', endpoint=schemas.get_schemas, name='schemas'),
     Route('/schemas/post-schema', endpoint=schemas.post_schema, name='post_schema', methods=['POST']),
+
+    Route('/entities/{schema_type:str}', endpoint=entities.entity_create, name='entity_create'),
+
     Route('/test', endpoint=testing.test, name='test'),
 ]
 

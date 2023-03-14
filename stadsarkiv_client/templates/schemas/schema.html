@@ -9,12 +9,7 @@
 </div>
 
 {% for key, value in schema.items() %} 
-{{ key }}: {{ value }} 
+<p>{{ key }}</p> <pre>{{ value }}</pre> 
 {% endfor %}
-
-<pre>
-{{ schema }}
-</pre>
-
 
 {% endblock content %}
