@@ -28,6 +28,7 @@ da = {
     "Remember me": "Husk login p\u00e5 denne computer",
     "Reset password": "Nulstil password",
     "Schema": "Schema",
+    "Schema created.": "Schema created.",
     "Schemas": "Schemas",
     "Search": "Search",
     "Search this site": "Search this site",

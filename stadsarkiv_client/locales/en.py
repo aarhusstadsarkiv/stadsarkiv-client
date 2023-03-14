@@ -30,6 +30,7 @@ en = {
     "Remember me": "Remember me",
     "Reset password": "Reset password",
     "Schema": "Schema",
+    "Schema created.": "Schema created.",
     "Schemas": "Schemas",
     "Search": "Search",
     "Search this site": "Search this site",
