@@ -26,7 +26,8 @@ def alter_search(request: Request) -> dict:
 #         log.debug("Before render template as class")
 
 
-def alter_search_query(request: Request) -> dict:
-    request_params = dict(request.query_params)
-    request_params["modified_by_plugin"] = "True"
-    return request_params
+
+# def alter_search_query(request: Request) -> dict:
+#     request_params = dict(request.query_params)
+#     request_params["modified_by_plugin"] = "True"
+#     return request_params
