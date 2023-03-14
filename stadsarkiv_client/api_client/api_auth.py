@@ -11,7 +11,7 @@ class APIAuth(APIBase):
 
     async def register(self, form_dict: dict) -> typing.Any:
 
-        response = self.jwt_post_json(url='/auth/register', json=form_dict)
+        response = self.jwt_post_json(url='/auth/register', data=form_dict)
         if response.status_code == 201:
             response_content = json.loads(response.content)
             return response_content
@@ -29,7 +29,7 @@ class APIAuth(APIBase):
     async def forgot_password(self, email: str) -> bytes:
 
         json = {"email": email}
-        response = self.jwt_post_json(url='/auth/forgot-password', json=json)
+        response = self.jwt_post_json(url='/auth/forgot-password', data=json)
 
         if response.status_code == 202:
             return response.content

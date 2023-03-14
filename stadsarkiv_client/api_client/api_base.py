@@ -51,13 +51,13 @@ class APIBase:
         response = self._call(request)
         return response
 
-    def jwt_post_json(self, url: str, json={}):
+    def jwt_post_json(self, url: str, data={}):
 
         headers = self.get_jwt_headers()
         url = self.url + url
 
         def request() -> requests.Response:
-            return requests.post(url, json=json, timeout=self.timeout, headers=headers)
+            return requests.post(url, json=data, timeout=self.timeout, headers=headers)
 
         response = self._call(request)
         return response

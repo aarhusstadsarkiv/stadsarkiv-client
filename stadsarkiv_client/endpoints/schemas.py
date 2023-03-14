@@ -4,7 +4,6 @@ from stadsarkiv_client.utils.templates import templates
 from stadsarkiv_client.utils.context import get_context
 from stadsarkiv_client.api_client.api_schemas import APISchema
 from stadsarkiv_client.api_client.api_base import APIBase
-# from stadsarkiv_client.utils import flash
 from stadsarkiv_client.utils.translate import translate
 from stadsarkiv_client.utils.logging import get_log
 from stadsarkiv_client.utils import flash
@@ -52,7 +51,7 @@ async def post_schema(request: Request):
         data_dict["data"] = data
 
         schema = APIBase(request=request)
-        schema.jwt_post_json(url="/schemas/", json=data_dict)
+        schema.jwt_post_json(url="/schemas/", data=data_dict)
         flash.set_message(request, translate("Schema created."), type="success")
 
     except JSONDecodeError:

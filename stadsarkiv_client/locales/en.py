@@ -7,6 +7,7 @@ en = {
     "Email needs to be correct. Password needs to be at least 8 characters long.": "Email needs to be correct. Password needs to be at least 8 characters long.",
     "Email or password is incorrect. Or your user has not been activated.": "Email or password is incorrect. Or your user has not been activated.",
     "Entities": "Entities",
+    "Failed to create entity": "Failed to create entity",
     "Failed to get schemas": "Failed to get schemas",
     "Forgot your password": "Forgot your password",
     "Get a reset link by email": "Get a reset link by email",

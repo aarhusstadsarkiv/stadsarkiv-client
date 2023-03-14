@@ -15,7 +15,6 @@
     import { Requests } from "/static/js/requests.js";
     import { getApiUrl } from "/static/js/config.js";
 
-
     var schema = {{ schema | safe }};
 
     // Initialize the editor with a JSON schema
@@ -27,8 +26,6 @@
     }
 
     var editor = new JSONEditor(document.getElementById('editor_holder'), options);
-
-
     document.getElementById('submit').addEventListener('click', async function () {
 
         let schema_data = editor.getValue();
@@ -44,17 +41,11 @@
 
         } catch (e) {
             console.log(e)
-            // await Pebble.asyncPostError('/error/log', e.stack);
         } finally {
-            // spinner.classList.toggle('hidden');
         }
-
-        
 
         console.log(post_json)
         return;
-
-
     });
 
 </script>
