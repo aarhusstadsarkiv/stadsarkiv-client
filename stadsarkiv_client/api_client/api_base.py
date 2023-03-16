@@ -7,7 +7,14 @@ log = get_log()
 
 
 class APIException(Exception):
-    pass
+    def __init__(self, message: str, status_code: int, text: str):
+        self.message = message
+        self.status_code = status_code
+        self.text = text
+        super().__init__(message, status_code, text)
+    
+    def __str__(self) -> str:
+        return self.message
 
 
 class APIBase:
