@@ -2,4 +2,4 @@
 exclude = .git, __pycache__, .mypy_cache, .pytest_cache, .venv, .github
 ignore = E203, W503
 max-line-length = 110
-exclude=stadsarkiv_client/templates/*,stadsarkiv_client/locales/*
+exclude=stadsarkiv_client/templates,stadsarkiv_client/locales
