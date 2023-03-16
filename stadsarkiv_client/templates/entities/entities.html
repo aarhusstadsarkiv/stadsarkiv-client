@@ -15,6 +15,7 @@
     import { Requests } from "/static/js/requests.js";
     import { getApiUrl } from "/static/js/config.js";
 
+
     var schema = {{ schema | safe }};
 
     // Initialize the editor with a JSON schema
@@ -43,9 +44,11 @@
             console.log(e)
         } finally {
         }
-
+        
         console.log(post_json)
         return;
+
+
     });
 
 </script>
