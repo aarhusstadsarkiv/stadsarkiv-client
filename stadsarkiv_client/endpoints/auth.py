@@ -15,7 +15,7 @@ async def get_login(request: Request):
     context_values = {"title": translate("Login")}
     context = get_context(request, context_values=context_values)
 
-    if user.is_logged_in(request):
+    if not user.is_logged_in(request):
             return RedirectResponse(url='/', status_code=302)
 
     return templates.TemplateResponse('auth/login.html', context)
@@ -51,7 +51,7 @@ async def get_logout(request: Request):
 async def post_logout(request: Request):
     try:
 
-        request.session.pop('logged_in', None)
+        await user.logout(request)
         flash.set_message(request, translate(
             "You have been logged out."), type="success")
     except Exception as e:

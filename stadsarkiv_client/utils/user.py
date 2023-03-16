@@ -8,7 +8,6 @@ log = get_log()
 async def get_user(request: Request, level: int = 0):
 
     log.debug('get_user()')
-    pass
 
 
 async def set_user_cookie(request: Request, cookie_dict: dict):
@@ -37,3 +36,7 @@ async def is_logged_in(request: Request):
         return True
     else:
         return False
+
+
+async def logout(request: Request):
+    request.session.pop('logged_in', None)
