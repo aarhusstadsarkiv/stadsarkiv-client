@@ -18,5 +18,5 @@ app = Starlette(
     debug=True,
     middleware=[session_middleware, session_autoload_middleware],
     routes=routes,
-    exception_handlers=exception_handlers, # type: ignore
-)  
+    exception_handlers=exception_handlers,  # type: ignore
+)
