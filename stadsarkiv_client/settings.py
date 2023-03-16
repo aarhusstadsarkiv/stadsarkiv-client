@@ -23,7 +23,7 @@ settings = {
     "log_handlers": ["stream"],  # [ "stream", "file"]
     "cookie": {
         "name": "session",
-        "lifetime": 3600 * 24 * 14,
+        "lifetime": 3600,  # seconds
         "httponly": cookie_httponly,
         "secure": cookie_secure,
         "samesite": "lax"
