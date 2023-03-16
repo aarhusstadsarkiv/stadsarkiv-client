@@ -5,6 +5,7 @@ from stadsarkiv_client.utils.context import get_context
 from stadsarkiv_client.api_client.api_auth import APIAuth
 from stadsarkiv_client.utils import flash
 from stadsarkiv_client.utils.translate import translate
+from stadsarkiv_client.utils import user
 from stadsarkiv_client.utils.logging import get_log
 log = get_log()
 
@@ -21,29 +22,6 @@ async def get_login(request: Request):
     return templates.TemplateResponse('auth/login.html', context)
 
 
-async def post_login_cookie(request: Request):
-
-    try:
-
-        form = await request.form()
-        username = str(form.get('username'))
-        password = str(form.get('password'))
-
-        fastapi_client = APIAuth(request=request)
-        cookie_dict = await fastapi_client.login_cookie(username, password)
-
-        request.session["logged_in"] = True
-        request.session["login_type"] = "cookie"
-        request.session["_auth"] = cookie_dict["_auth"]
-
-        flash.set_message(request, translate("You have been logged in."), type="success")
-        return RedirectResponse(url='/', status_code=302)
-    except Exception as e:
-        log.info(e)
-        flash.set_message(request, e.args[0], type="error")
-        return RedirectResponse(url='/auth/login', status_code=302)
-
-
 async def post_login_jwt(request: Request):
 
     try:
@@ -54,11 +32,7 @@ async def post_login_jwt(request: Request):
 
         fastapi_client = APIAuth(request)
         bearer_token = await fastapi_client.login_jwt(username, password)
-
-        request.session["logged_in"] = True
-        request.session["access_token"] = bearer_token["access_token"]
-        request.session["token_type"] = bearer_token["token_type"]
-        request.session["login_type"] = "jwt"
+        await user.set_user_jwt(request, bearer_token)
 
         flash.set_message(request, translate("You have been logged in."), type="success")
         return RedirectResponse(url='/', status_code=302)
@@ -161,3 +135,24 @@ async def post_forgot_password(request: Request):
         flash.set_message(request, e.args[0], type="error")
 
     return RedirectResponse(url='/auth/register', status_code=302)
+
+
+async def post_login_cookie(request: Request):
+
+    try:
+
+        form = await request.form()
+        username = str(form.get('username'))
+        password = str(form.get('password'))
+
+        fastapi_client = APIAuth(request=request)
+        cookie_dict = await fastapi_client.login_cookie(username, password)
+
+        await user.set_user_cookie(request, cookie_dict)
+
+        flash.set_message(request, translate("You have been logged in."), type="success")
+        return RedirectResponse(url='/', status_code=302)
+    except Exception as e:
+        log.info(e)
+        flash.set_message(request, e.args[0], type="error")
+        return RedirectResponse(url='/auth/login', status_code=302)

@@ -28,7 +28,7 @@ async def get_schemas(request: Request):
 
 async def get_schema(request: Request):
 
-
+    await user.get_user(request)
 
     schema_type = request.path_params['schema_type']
 
