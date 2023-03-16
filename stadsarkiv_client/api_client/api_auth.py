@@ -78,7 +78,7 @@ class APIAuth(APIBase):
         else:
             raise APIException(translate("Me failed"), response.status_code, response.text)
 
-    def logout_jwt(self) -> dict:
+    async def logout_jwt(self) -> dict:
         response = self.jwt_post_json(url="/auth/jwt/logout")
 
         if response.status_code == 200:
@@ -86,7 +86,7 @@ class APIAuth(APIBase):
         else:
             raise APIException("Logout JWT failed", response.status_code, response.text)
 
-    def logout_cookie(self, cookie: str) -> str:
+    async def logout_cookie(self, cookie: str) -> str:
         self.url += "/auth/logout"
         session = requests.Session()
         session.cookies.set("_auth", cookie)
@@ -120,7 +120,7 @@ class APIAuth(APIBase):
                 response.text,
             )
 
-    def reset_password(self, token: str, password: str) -> bytes:
+    async def reset_password(self, token: str, password: str) -> bytes:
         self.url += "/auth/reset-password"
         form_dict = {"token": token, "password": password}
 

@@ -3,6 +3,7 @@ from starlette.responses import JSONResponse
 from stadsarkiv_client.utils.templates import templates
 from stadsarkiv_client.utils.context import get_context
 from stadsarkiv_client.api_client.api_schemas import APISchema
+from stadsarkiv_client.api_client.api_base import APIException
 from stadsarkiv_client.api_client.api_entities import APIEntity
 from stadsarkiv_client.utils.translate import translate
 from stadsarkiv_client.utils.logging import get_log
@@ -41,8 +42,8 @@ async def post_entity_create(request: Request):
         api_schema = APIEntity(request=request)
         await api_schema.post_entity(url=url, data=json_body)
 
-    except Exception as e:
-        log.info(e)
-        flash.set_message(request, e.args[0], type="error")
+    except APIException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
 
     return JSONResponse({"message": "Hello, world!"})

@@ -8,6 +8,7 @@ from stadsarkiv_client.utils.translate import translate
 from stadsarkiv_client.utils.logging import get_log
 from stadsarkiv_client.utils import flash
 from stadsarkiv_client.utils import user
+from stadsarkiv_client.api_client.api_base import APIException
 from json import JSONDecodeError
 import json
 
@@ -58,8 +59,8 @@ async def post_schema(request: Request):
 
     except JSONDecodeError:
         flash.set_message(request, translate("Invalid JSON in data."), type="error")
-    except Exception as e:
-        log.info(e)
-        flash.set_message(request, e.args[0], type="error")
+    except APIException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
 
     return RedirectResponse(url="/schemas", status_code=302)

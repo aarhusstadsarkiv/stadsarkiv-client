@@ -19,3 +19,8 @@ def clear(request) -> None:
     """Clear a flash message to be displayed to the user."""
     request.session.pop("flash", [])
     return
+
+
+def handle_api_exception(e):
+    pass
+

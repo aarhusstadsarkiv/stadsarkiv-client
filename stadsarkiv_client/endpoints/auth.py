@@ -3,6 +3,7 @@ from starlette.responses import RedirectResponse
 from stadsarkiv_client.utils.templates import templates
 from stadsarkiv_client.utils.context import get_context
 from stadsarkiv_client.api_client.api_auth import APIAuth
+from stadsarkiv_client.api_client.api_base import APIException
 from stadsarkiv_client.utils import flash
 from stadsarkiv_client.utils.translate import translate
 from stadsarkiv_client.utils import user
@@ -22,6 +23,7 @@ async def get_login(request: Request):
 
 
 async def post_login_jwt(request: Request):
+
     try:
         form = await request.form()
         username = str(form.get("username"))
@@ -30,12 +32,11 @@ async def post_login_jwt(request: Request):
         fastapi_client = APIAuth(request)
         bearer_token = await fastapi_client.login_jwt(username, password)
         await user.set_user_jwt(request, bearer_token)
-
         flash.set_message(request, translate("You have been logged in."), type="success")
         return RedirectResponse(url="/", status_code=302)
-    except Exception as e:
-        log.info(e)
-        flash.set_message(request, e.args[0], type="error")
+    except APIException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
@@ -48,10 +49,11 @@ async def get_logout(request: Request):
 async def post_logout(request: Request):
     try:
         await user.logout(request)
-        flash.set_message(request, translate("You have been logged out."), type="success")
-    except Exception as e:
-        log.info(e)
-        flash.set_message(request, translate("Error logging out."), type="error")
+        flash.set_message(request, translate(
+            "You have been logged out."), type="success")
+    except APIException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
 
     return RedirectResponse(url="/auth/login", status_code=302)
 
@@ -76,9 +78,9 @@ async def post_register(request: Request):
         flash.set_message(
             request, translate("You have been registered. Check your email to confirm your account."), type="success"
         )
-    except Exception as e:
-        log.info(e)
-        flash.set_message(request, e.args[0], type="error")
+    except APIException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
 
     return RedirectResponse(url="/auth/register", status_code=302)
 
@@ -91,9 +93,9 @@ async def get_me_jwt(request: Request):
         context = get_context(request, context_values=context_values)
 
         return templates.TemplateResponse("auth/me.html", context)
-    except Exception as e:
-        log.info(e)
-        flash.set_message(request, e.args[0], type="error")
+    except APIException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
@@ -115,14 +117,14 @@ async def post_forgot_password(request: Request):
         flash.set_message(
             request, translate("You have been registered. Check your email to confirm your account."), type="success"
         )
-    except Exception as e:
-        log.info(e)
-        flash.set_message(request, e.args[0], type="error")
+    except APIException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
 
     return RedirectResponse(url="/auth/register", status_code=302)
 
 
-### NOT USED
+# NOT USED
 
 
 async def post_login_cookie(request: Request):
@@ -136,11 +138,12 @@ async def post_login_cookie(request: Request):
 
         await user.set_user_cookie(request, cookie_dict)
 
-        flash.set_message(request, translate("You have been logged in."), type="success")
+        flash.set_message(request, translate(
+            "You have been logged in."), type="success")
         return RedirectResponse(url="/", status_code=302)
-    except Exception as e:
-        log.info(e)
-        flash.set_message(request, e.args[0], type="error")
+    except APIException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
@@ -155,7 +158,7 @@ async def get_me_cookie(request: Request):
         context = get_context(request, context_values=context_values)
 
         return templates.TemplateResponse("auth/me.html", context)
-    except Exception as e:
-        log.info(e)
-        flash.set_message(request, e.args[0], type="error")
+    except APIException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
         return RedirectResponse(url="/auth/login", status_code=302)
