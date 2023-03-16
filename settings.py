@@ -3,7 +3,7 @@ settings = {
     "fastapi_endpoint": "http://localhost:8000/v1",
     "cookie": {
         "name": "session",
-        "lifetime": 60,  # seconds
+        "lifetime": 3600,  # seconds
         "httponly": False,
         "secure": False,
         "samesite": "lax"

@@ -7,12 +7,15 @@ from stadsarkiv_client.api_client.api_base import APIBase
 from stadsarkiv_client.utils.translate import translate
 from stadsarkiv_client.utils.logging import get_log
 from stadsarkiv_client.utils import flash
+from stadsarkiv_client.utils import user
 from json import JSONDecodeError
 import json
 log = get_log()
 
 
 async def get_schemas(request: Request):
+
+    await user.get_user(request)
 
     api_schema = APISchema(request=request)
     schemas = await api_schema.get_schemas()
@@ -24,6 +27,8 @@ async def get_schemas(request: Request):
 
 
 async def get_schema(request: Request):
+
+
 
     schema_type = request.path_params['schema_type']
 
