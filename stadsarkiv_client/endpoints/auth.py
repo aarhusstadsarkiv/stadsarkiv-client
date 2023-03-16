@@ -15,8 +15,7 @@ async def get_login(request: Request):
     context_values = {"title": translate("Login")}
     context = get_context(request, context_values=context_values)
 
-    if "logged_in" in request.session:
-        if request.session["logged_in"]:
+    if user.is_logged_in(request):
             return RedirectResponse(url='/', status_code=302)
 
     return templates.TemplateResponse('auth/login.html', context)

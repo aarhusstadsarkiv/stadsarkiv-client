@@ -16,6 +16,7 @@ async def set_user_cookie(request: Request, cookie_dict: dict):
     request.session["logged_in"] = True
     request.session["login_type"] = "cookie"
     request.session["_auth"] = cookie_dict["_auth"]
+    request.session['type'] = 'cookie'
 
     log.debug('user logged in')
 
@@ -28,3 +29,11 @@ async def set_user_jwt(request: Request, bearer_token: dict):
     request.session["login_type"] = "jwt"
 
     log.debug('user logged in')
+
+
+async def is_logged_in(request: Request):
+
+    if request.session.get("logged_in"):
+        return True
+    else:
+        return False
