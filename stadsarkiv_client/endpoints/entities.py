@@ -12,8 +12,7 @@ log = get_log()
 
 
 async def get_entity_create(request: Request):
-
-    schema_type = request.path_params['schema_type']
+    schema_type = request.path_params["schema_type"]
 
     api_schema = APISchema(request=request)
     schema = await api_schema.get_schema(schema_type=schema_type, as_text=True)
@@ -24,13 +23,12 @@ async def get_entity_create(request: Request):
     context_values = {"title": translate("Entities"), "schema": schema}
     context = get_context(request, context_values=context_values)
 
-    return templates.TemplateResponse('entities/entities.html', context)
+    return templates.TemplateResponse("entities/entities.html", context)
 
 
 async def post_entity_create(request: Request):
-
     try:
-        schema_type = request.path_params['schema_type']
+        schema_type = request.path_params["schema_type"]
         log.debug(schema_type)
 
         # get body json from request

@@ -3,11 +3,13 @@ import pluggy
 import inspect
 import sys
 from stadsarkiv_client.utils.logging import get_log
+
 log = get_log()
 
 
 try:
     import hooks
+
     log.info("Loaded local hooks: hooks.py")
 except ImportError:
     log.info("Local hooks NOT loaded: hooks.py")

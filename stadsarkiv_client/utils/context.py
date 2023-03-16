@@ -46,12 +46,12 @@ def logged_in(request: Request) -> bool:
 
 def get_context(request: Request, context_values: dict = {}) -> dict:
     context = {
-        'path': request.url.path,
-        'request': request,
-        'title': get_title(request),
-        'flash_messages': get_messages(request),
-        'main_menu': get_main_menu(request),
-        'logged_in': logged_in(request),
+        "path": request.url.path,
+        "request": request,
+        "title": get_title(request),
+        "flash_messages": get_messages(request),
+        "main_menu": get_main_menu(request),
+        "logged_in": logged_in(request),
     }
 
     context.update(context_values)

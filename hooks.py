@@ -1,6 +1,7 @@
 from stadsarkiv_client import hooks
 from stadsarkiv_client.utils.logging import get_log
 from starlette.requests import Request
+
 log = get_log()
 
 
@@ -18,6 +19,7 @@ def alter_search(request: Request) -> dict:
     return request_params
     # request.query_params._dict = "modified by plugin"
     # log.debug(request.query_params)
+
 
 # Implementation using the hookimpl decorator but as a class
 # class Plugin_1:

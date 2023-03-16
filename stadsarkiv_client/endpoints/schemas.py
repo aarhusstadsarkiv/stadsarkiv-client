@@ -10,11 +10,11 @@ from stadsarkiv_client.utils import flash
 from stadsarkiv_client.utils import user
 from json import JSONDecodeError
 import json
+
 log = get_log()
 
 
 async def get_schemas(request: Request):
-
     await user.get_user(request)
 
     api_schema = APISchema(request=request)
@@ -23,14 +23,13 @@ async def get_schemas(request: Request):
     context_values = {"title": translate("Schemas"), "schemas": schemas}
     context = get_context(request, context_values=context_values)
 
-    return templates.TemplateResponse('schemas/schemas.html', context)
+    return templates.TemplateResponse("schemas/schemas.html", context)
 
 
 async def get_schema(request: Request):
-
     await user.get_user(request)
 
-    schema_type = request.path_params['schema_type']
+    schema_type = request.path_params["schema_type"]
 
     api_schema = APISchema(request=request)
     schema = await api_schema.get_schema(schema_type=schema_type)
@@ -38,16 +37,14 @@ async def get_schema(request: Request):
     context_values = {"title": translate("Schemas"), "schema": schema}
     context = get_context(request, context_values=context_values)
 
-    return templates.TemplateResponse('schemas/schema.html', context)
+    return templates.TemplateResponse("schemas/schema.html", context)
 
 
 async def post_schema(request: Request):
-
     try:
-
         form = await request.form()
-        type = str(form.get('type'))
-        data = str(form.get('data'))
+        type = str(form.get("type"))
+        data = str(form.get("data"))
 
         data_dict = {}
         data_dict["type"] = type
@@ -65,4 +62,4 @@ async def post_schema(request: Request):
         log.info(e)
         flash.set_message(request, e.args[0], type="error")
 
-    return RedirectResponse(url='/schemas', status_code=302)
+    return RedirectResponse(url="/schemas", status_code=302)

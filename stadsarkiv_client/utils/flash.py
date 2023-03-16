@@ -2,12 +2,11 @@ import typing
 
 
 def set_message(request, message, type="notice") -> None:
-
-    if type not in ['notice', 'success', 'warning', 'error']:
-        type = 'notice'
+    if type not in ["notice", "success", "warning", "error"]:
+        type = "notice"
 
     """Set a flash message to be displayed to the user."""
-    request.session.setdefault("flash", []).append({'type': type, 'message': message})
+    request.session.setdefault("flash", []).append({"type": type, "message": message})
     return
 
 

@@ -20,8 +20,4 @@ async def forbidden_error(request: Request, exc: HTTPException):
     return HTMLResponse(content=HTML_403_PAGE, status_code=exc.status_code)
 
 
-exception_handlers = {
-    403: forbidden_error,
-    404: not_found,
-    500: server_error
-}
+exception_handlers = {403: forbidden_error, 404: not_found, 500: server_error}

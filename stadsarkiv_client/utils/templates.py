@@ -8,7 +8,7 @@ from .dynamic_settings import get_setting
 
 
 def app_context(request: Request) -> typing.Dict[str, typing.Any]:
-    return {'app': request.app}
+    return {"app": request.app}
 
 
 def get_template_dirs() -> list:
@@ -30,7 +30,9 @@ loader = FileSystemLoader(get_template_dirs())
 
 
 templates = Jinja2Templates(
-    directory='', context_processors=[app_context], loader=loader,
+    directory="",
+    context_processors=[app_context],
+    loader=loader,
 )
 
 # Add translate function to templates

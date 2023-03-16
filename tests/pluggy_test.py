@@ -29,6 +29,7 @@ class Plugin_2:
         print("inside Plugin_2.myhook()")
         return arg1 - arg2
 
+
 class Plugin_3:
     """A 3rd hook implementation namespace."""
 

@@ -2,6 +2,7 @@ import requests
 from ..utils.dynamic_settings import settings
 from ..utils.logging import get_log
 from starlette.requests import Request
+
 log = get_log()
 
 
@@ -10,9 +11,8 @@ class APIException(Exception):
 
 
 class APIBase:
-
     def __init__(self, request: Request, timeout: int = 10):
-        self.url = settings['fastapi_endpoint']
+        self.url = settings["fastapi_endpoint"]
         self.timeout = timeout
         self.request = request
 
@@ -23,11 +23,10 @@ class APIBase:
 
     def get_jwt_headers(self) -> dict:
         access_token = self.request.session["access_token"]
-        headers = {'Authorization': f'Bearer {access_token}'}
+        headers = {"Authorization": f"Bearer {access_token}"}
         return headers
 
     def jwt_get_json(self, url: str):
-
         headers = self.get_jwt_headers()
         url = self.url + url
 
@@ -40,19 +39,16 @@ class APIBase:
         return response
 
     def jwt_post_form(self, url: str, data: dict) -> requests.Response:
-        """ x-www-form-urlencoded """
+        """x-www-form-urlencoded"""
         url = self.url + url
 
         def request() -> requests.Response:
-            return requests.post(
-                url,
-                data=data, timeout=self.timeout)
+            return requests.post(url, data=data, timeout=self.timeout)
 
         response = self._call(request)
         return response
 
     def jwt_post_json(self, url: str, data={}):
-
         headers = self.get_jwt_headers()
         url = self.url + url
 

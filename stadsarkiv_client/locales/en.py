@@ -44,5 +44,5 @@ en = {
     "You have been logged out.": "You have been logged out.",
     "You have been registered.": "You have been registered.",
     "You have been registered. Check your email to confirm your account.": "You have been registered. Check your email to confirm your account.",
-    "search": "search"
+    "search": "search",
 }
