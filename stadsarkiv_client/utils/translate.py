@@ -15,15 +15,17 @@ except ImportError:
     language_local = None
 
 
-def translate(key) -> str | None:
-    translation = None
+def translate(key: str) -> str:
+    translation = ''
 
+    # Add key to language files if not exists
     if key not in da:
         _add_translate_key_value("da", key)
 
     if key not in en:
         _add_translate_key_value("en", key)
 
+    # If local language file exists, use that. Else use default language
     if settings["language"] == "da":
         translation = _translate_local(key)
         if not translation:
@@ -37,7 +39,8 @@ def translate(key) -> str | None:
     return translation
 
 
-def _translate_local(key) -> str | None:
+def _translate_local(key: str) -> str | None:
+    """ Get translation from local language file if exists"""
     translation = None
 
     if language_local:
@@ -64,16 +67,11 @@ def _save_file_dict(lang) -> None:
         return
 
     if lang == "en":
+        file_contents_en = f"{lang} = {json.dumps(en, indent=4, sort_keys=True)}"
         with open("stadsarkiv_client/locales/en.py", "w") as f:
-            f.write(
-                f"{lang} = "
-                + json.dumps(
-                    en,
-                    indent=4,
-                    sort_keys=True,
-                )
-            )
+            f.write(file_contents_en)
 
     if lang == "da":
+        file_contents_da = f"{lang} = {json.dumps(da, indent=4, sort_keys=True)}"
         with open("stadsarkiv_client/locales/da.py", "w") as f:
-            f.write(f"{lang} = " + json.dumps(da, indent=4, sort_keys=True))
+            f.write(file_contents_da)
