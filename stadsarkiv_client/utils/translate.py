@@ -16,7 +16,7 @@ except ImportError:
 
 
 def translate(key: str) -> str:
-    translation = ''
+    translation = ""
 
     # Add key to language files if not exists
     if key not in da:
@@ -40,7 +40,7 @@ def translate(key: str) -> str:
 
 
 def _translate_local(key: str) -> str | None:
-    """ Get translation from local language file if exists"""
+    """Get translation from local language file if exists"""
     translation = None
 
     if language_local:

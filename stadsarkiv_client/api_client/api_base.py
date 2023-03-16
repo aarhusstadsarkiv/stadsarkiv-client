@@ -12,7 +12,7 @@ class APIException(Exception):
         self.status_code = status_code
         self.text = text
         super().__init__(message, status_code, text)
-    
+
     def __str__(self) -> str:
         return self.message
 

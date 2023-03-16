@@ -23,4 +23,3 @@ def clear(request) -> None:
 
 def handle_api_exception(e):
     pass
-
