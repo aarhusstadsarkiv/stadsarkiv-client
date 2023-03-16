@@ -122,6 +122,9 @@ async def post_forgot_password(request: Request):
     return RedirectResponse(url="/auth/register", status_code=302)
 
 
+### NOT USED
+
+
 async def post_login_cookie(request: Request):
     try:
         form = await request.form()

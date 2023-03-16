@@ -1,6 +1,7 @@
 from starlette.requests import Request
 from stadsarkiv_client.utils.logging import get_log
 from stadsarkiv_client.utils import flash
+from stadsarkiv_client.api_client.api_auth import APIAuth
 
 log = get_log()
 
@@ -40,3 +41,13 @@ async def is_logged_in(request: Request):
 
 async def logout(request: Request):
     request.session.pop('logged_in', None)
+
+
+async def get_me(request: Request):
+    me = None
+    fastapi_client = APIAuth(request=request)
+    if request.session["login_type"] == "jwt":
+        access_token = request.session["access_token"]
+        token_type = request.session["token_type"]
+        me = await fastapi_client.me_jwt(access_token, token_type)
+    return me
