@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages # type: ignore
 
 
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]

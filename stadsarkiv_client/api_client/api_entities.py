@@ -8,6 +8,9 @@ from .api_base import APIBase, APIException
 
 log = get_log()
 
+# Correct example:
+# {"data":{"make":"Toyota","year":2008,"model":"test","safety":-1},"schema":"car_1"}
+
 
 class APIEntity(APIBase):
     async def post_entity(self, url, data: dict = {}):

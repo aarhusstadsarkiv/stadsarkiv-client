@@ -4,7 +4,7 @@ from stadsarkiv_client.utils.logging import get_log
 log = get_log()
 
 
-settings_local = {}
+settings_local: dict = {}
 
 
 try:

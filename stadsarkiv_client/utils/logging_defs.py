@@ -1,3 +1,4 @@
+from typing import Any
 import logging
 import os
 from pathlib import Path
@@ -15,14 +16,14 @@ def generate_log_dir():
     Path("./logs/main.log").touch()
 
 
-def get_file_handler(level: int):
+def get_file_handler(level: Any):
     fh = logging.FileHandler("logs/main.log")
     fh.setLevel(level)
     fh.setFormatter(formatter)
     return fh
 
 
-def get_stream_handler(level: int):
+def get_stream_handler(level: Any):
     ch = logging.StreamHandler()
     ch.setLevel(level)
     ch.setFormatter(formatter)

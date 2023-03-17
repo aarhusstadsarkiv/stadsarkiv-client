@@ -1,4 +1,4 @@
-import pluggy
+import pluggy # type: ignore
 from starlette.requests import Request
 
 

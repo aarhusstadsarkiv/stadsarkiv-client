@@ -4,6 +4,7 @@ import os
 from stadsarkiv_client.utils.dynamic_settings import settings
 from stadsarkiv_client.utils.multi_static import MultiStaticFiles
 from stadsarkiv_client.utils.logging import get_log
+from typing import Any
 
 log = get_log()
 
@@ -67,7 +68,7 @@ routes = [
 
 
 # Add pages
-common_pages = []
+common_pages: Any = []
 if "pages" in settings:
     common_pages = settings["pages"]
 

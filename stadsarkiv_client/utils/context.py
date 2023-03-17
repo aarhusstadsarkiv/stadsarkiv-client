@@ -1,3 +1,4 @@
+from typing import Any
 from starlette.requests import Request
 from .flash import get_messages
 from stadsarkiv_client.utils import dynamic_settings
@@ -7,10 +8,10 @@ from stadsarkiv_client.hooks.manager import get_plugin_manager
 pm = get_plugin_manager()
 
 
-def get_main_menu(request: Request) -> list:
-    main_menu = []
+def get_main_menu(request: Request):
+    main_menu: Any = [] # type: ignore
     if "main_menu" in dynamic_settings.settings:
-        main_menu = dynamic_settings.settings["main_menu"]
+        main_menu = dynamic_settings.settings["main_menu"] # type ignore
 
     if "logged_in" in request.session:
         main_menu = [item for item in main_menu if item["name"] != "login"]
@@ -25,7 +26,7 @@ def get_main_menu(request: Request) -> list:
 
 
 def get_title(request: Request) -> str:
-    pages = []
+    pages: Any = []
     title = "No title"
     if "pages" in dynamic_settings.settings:
         pages = dynamic_settings.settings["pages"]
