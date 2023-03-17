@@ -89,3 +89,9 @@ language = {
 See existing language keys: 
 
 https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/locales/da.py
+
+### Fix code
+
+    ./fix.sh
+
+
