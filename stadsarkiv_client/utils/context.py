@@ -9,9 +9,9 @@ pm = get_plugin_manager()
 
 
 def get_main_menu(request: Request):
-    main_menu: Any = [] # type: ignore
+    main_menu: Any = []  # type: ignore
     if "main_menu" in dynamic_settings.settings:
-        main_menu = dynamic_settings.settings["main_menu"] # type ignore
+        main_menu = dynamic_settings.settings["main_menu"]  # type ignore
 
     if "logged_in" in request.session:
         main_menu = [item for item in main_menu if item["name"] != "login"]

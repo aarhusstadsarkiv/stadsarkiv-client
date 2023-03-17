@@ -8,17 +8,17 @@ warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
 log = logging.getLogger("main")
-level:Any= settings["log_level"] 
+level: Any = settings["log_level"]
 log.setLevel(level)
 
 
 if not len(log.handlers):
-    if "file" in settings["log_handlers"]: # type: ignore
+    if "file" in settings["log_handlers"]:  # type: ignore
         generate_log_dir()
         fh = get_file_handler(level)
         log.addHandler(fh)
 
-    if "stream" in settings["log_handlers"]: # type: ignore
+    if "stream" in settings["log_handlers"]:  # type: ignore
         ch = get_stream_handler(level)
         log.addHandler(ch)
 

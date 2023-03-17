@@ -19,7 +19,7 @@ class APIException(Exception):
 
 class APIBase:
     def __init__(self, request: Request, timeout: int = 10):
-        self.url: str = settings["fastapi_endpoint"] # type: ignore
+        self.url: str = settings["fastapi_endpoint"]  # type: ignore
         self.timeout = timeout
         self.request = request
 

@@ -27,7 +27,7 @@ def translate(key: str) -> str:
 
     # If local language file exists, use that. Else use default language
     if settings["language"] == "da":
-        translation = get_translation_override(key) 
+        translation = get_translation_override(key)
         if not translation:
             translation = da[key]
 
@@ -75,5 +75,6 @@ def save_file_dict(lang) -> None:
         file_contents_da = f"{lang} = {json.dumps(da, indent=4, sort_keys=True)}"
         with open("stadsarkiv_client/locales/da.py", "w") as f:
             f.write(file_contents_da)
+
 
 __ALL__ = ["translate"]
