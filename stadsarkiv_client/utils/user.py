@@ -1,6 +1,5 @@
 from starlette.requests import Request
 from stadsarkiv_client.utils.logging import get_log
-from stadsarkiv_client.utils import flash
 from stadsarkiv_client.api_client.api_auth import APIAuth
 
 log = get_log()

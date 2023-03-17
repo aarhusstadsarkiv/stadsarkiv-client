@@ -17,7 +17,9 @@ class APIAuth(APIBase):
         else:
             if response.status_code == 400:
                 raise APIException(
-                    translate("User already exists. Try to login instead."), response.status_code, response.text
+                    translate("User already exists. Try to login instead."),
+                    response.status_code,
+                    response.text,
                 )
 
             if response.status_code == 422:
@@ -106,7 +108,9 @@ class APIAuth(APIBase):
         session = requests.Session()
 
         def request():
-            return session.post(self.url, data={"username": username, "password": password}, timeout=self.timeout)
+            return session.post(
+                self.url, data={"username": username, "password": password}, timeout=self.timeout
+            )
 
         response = self._call(request)
 
@@ -131,4 +135,6 @@ class APIAuth(APIBase):
         if response.status_code == 200:
             return response.content
         else:
-            raise APIException(translate("Reset of your password failed"), response.status_code, response.text)
+            raise APIException(
+                translate("Reset of your password failed"), response.status_code, response.text
+            )

@@ -74,7 +74,9 @@ async def post_register(request: Request):
         await fastapi_client.register(register_dict)
 
         flash.set_message(
-            request, translate("You have been registered. Check your email to confirm your account."), type="success"
+            request,
+            translate("You have been registered. Check your email to confirm your account."),
+            type="success",
         )
     except APIException as e:
         log.exception(e)
@@ -113,7 +115,9 @@ async def post_forgot_password(request: Request):
         await fastapi_client.forgot_password(email)
 
         flash.set_message(
-            request, translate("You have been registered. Check your email to confirm your account."), type="success"
+            request,
+            translate("You have been registered. Check your email to confirm your account."),
+            type="success",
         )
     except APIException as e:
         log.exception(e)

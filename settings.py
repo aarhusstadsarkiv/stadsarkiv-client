@@ -1,7 +1,13 @@
 settings = {
     "language": "da",
     "fastapi_endpoint": "http://localhost:8000/v1",
-    "cookie": {"name": "session", "lifetime": 3600, "httponly": False, "secure": False, "samesite": "lax"},  # seconds
+    "cookie": {
+        "name": "session",
+        "lifetime": 3600,
+        "httponly": False,
+        "secure": False,
+        "samesite": "lax",
+    },  # seconds
     "main_menu": [
         {"name": "home", "title": "Hjem"},
         {"name": "about", "title": "Om"},
