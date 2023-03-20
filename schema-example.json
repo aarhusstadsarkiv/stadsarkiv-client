@@ -44,8 +44,8 @@
     "safety": {
       "type": "integer",
       "format": "rating",
+      "minimum": 0,
       "maximum": 5,
-      "exclusiveMaximum": 0,
       "readonly": 0
     }
   }

@@ -70,11 +70,7 @@ class APIAuth(APIBase):
 
         cookies = {"_auth": cookie} if cookie else None
 
-        def request() -> requests.Response:
-            return requests.get(self.url, timeout=self.timeout, cookies=cookies)
-
-        response = self._call(request)
-
+        response = requests.get(self.url, timeout=self.timeout, cookies=cookies)
         if response.status_code == 200:
             return json.loads(response.content)
         else:
@@ -93,11 +89,7 @@ class APIAuth(APIBase):
         session = requests.Session()
         session.cookies.set("_auth", cookie)
 
-        def request():
-            return session.post(self.url, json={}, timeout=self.timeout)
-
-        response = self._call(request)
-
+        response = session.post(self.url, json={}, timeout=self.timeout)
         if response.status_code == 200:
             return json.loads(response.content)
         else:
@@ -107,12 +99,9 @@ class APIAuth(APIBase):
         self.url += "/auth/login"
         session = requests.Session()
 
-        def request():
-            return session.post(
-                self.url, data={"username": username, "password": password}, timeout=self.timeout
-            )
-
-        response = self._call(request)
+        response = session.post(
+            self.url, data={"username": username, "password": password}, timeout=self.timeout
+        )
 
         if response.status_code == 200:
             cookie = session.cookies.get_dict()["_auth"]
@@ -128,10 +117,7 @@ class APIAuth(APIBase):
         self.url += "/auth/reset-password"
         form_dict = {"token": token, "password": password}
 
-        def request():
-            return requests.post(self.url, json=form_dict, timeout=self.timeout)
-
-        response = self._call(request)
+        response = requests.post(self.url, json=form_dict, timeout=self.timeout)
         if response.status_code == 200:
             return response.content
         else:

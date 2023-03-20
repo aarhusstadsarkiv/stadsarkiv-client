@@ -36,33 +36,19 @@ class APIBase:
     def jwt_get_json(self, url: str):
         headers = self.get_jwt_headers()
         url = self.url + url
-
-        def request() -> requests.Response:
-            response = requests.get(url, json={}, timeout=self.timeout, headers=headers)
-            return response
-            # return response.json()
-
-        response = self._call(request)
+        response = requests.get(url, json={}, timeout=self.timeout, headers=headers)
         return response
 
     def jwt_post_form(self, url: str, data: dict) -> requests.Response:
         """x-www-form-urlencoded"""
         url = self.url + url
-
-        def request() -> requests.Response:
-            return requests.post(url, data=data, timeout=self.timeout)
-
-        response = self._call(request)
+        response = requests.post(url, data=data, timeout=self.timeout)
         return response
 
     def jwt_post_json(self, url: str, data={}):
         headers = self.get_jwt_headers()
         url = self.url + url
-
-        def request() -> requests.Response:
-            return requests.post(url, json=data, timeout=self.timeout, headers=headers)
-
-        response = self._call(request)
+        response = requests.post(url, json=data, timeout=self.timeout, headers=headers)
         return response
 
     def _call(self, func) -> requests.Response:
