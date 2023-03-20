@@ -69,5 +69,5 @@ class APIBase:
         try:
             return func()
         except Exception as e:
-            log.error(e)
+            log.exception(e)
             raise APIException("Network error", 408, "Request timeout")
