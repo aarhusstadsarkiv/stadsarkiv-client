@@ -26,7 +26,7 @@ class Requests {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(formData)
+            body: formData
         }).then(function (response) {
             return response.json()
         }).then(function (response) {

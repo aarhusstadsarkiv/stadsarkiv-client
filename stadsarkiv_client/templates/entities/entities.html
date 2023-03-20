@@ -16,12 +16,13 @@
     import { getApiUrl } from "/static/js/config.js";
 
 
-    var schema = {{ schema | safe }};
+    let schema = {{ schema | safe }};
 
     console.log(schema)
+    const schema_type = schema.type;
 
     // Initialize the editor with a JSON schema
-    var options = {
+    const options = {
         disable_properties: true,
         disable_collapse: true,
         disable_edit_json: true,
@@ -30,16 +31,20 @@
 
     var editor = new JSONEditor(document.getElementById('editor_holder'), options);
     document.getElementById('submit').addEventListener('click', async function () {
+        
 
         let schema_data = editor.getValue();
         let post_json = JSON.stringify({
             data: schema_data,
-            schema: "testcar",
+            schema: schema_type,
         })
+
+        console.log(post_json)
 
         try {
 
-            const res = await Requests.asyncPostJson(getApiUrl('/entities/testcar'), post_json);
+            let url = `/entities/${schema_type}`;
+            const res = await Requests.asyncPostJson(getApiUrl(url), post_json);
             console.log(res)
 
         } catch (e) {
