@@ -1,2 +1,2 @@
-project_name_override: openapi-client
-package_name_override: openapi_client
+project_name_override: openaws-client
+package_name_override: openaws_client
