@@ -57,7 +57,7 @@ class APIAuth(APIBase):
 
     # NOT USED FOR NOW ###
 
-    async def me_jwt(self, access_token: str, token_type: str) -> dict:
+    async def me_jwt(self) -> dict:
         response = self.jwt_get_json("/users/me")
 
         if response.status_code == 200:

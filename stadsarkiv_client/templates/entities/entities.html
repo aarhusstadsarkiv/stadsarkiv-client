@@ -15,8 +15,7 @@
     import { Requests } from "/static/js/requests.js";
     import { getApiUrl } from "/static/js/config.js";
 
-
-    let schema = {{ schema | safe }};
+    var schema = {{ schema | safe }};
 
     console.log(schema)
     const schema_type = schema.type;
@@ -32,7 +31,6 @@
     var editor = new JSONEditor(document.getElementById('editor_holder'), options);
     document.getElementById('submit').addEventListener('click', async function () {
         
-
         let schema_data = editor.getValue();
         let post_json = JSON.stringify({
             data: schema_data,
