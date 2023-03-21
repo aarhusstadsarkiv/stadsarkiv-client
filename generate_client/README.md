@@ -1,5 +1,7 @@
 # How to create the API client
 
+This will create the openapi-client directory with the generated client.
+
 ## Usage
 
 ```bash
