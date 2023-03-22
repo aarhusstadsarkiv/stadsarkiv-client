@@ -1,8 +1,8 @@
 from starlette.requests import Request
 from openaws_client.client import Client, AuthenticatedClient
-from .dynamic_settings import settings
 from openaws_client.models.error_model import ErrorModel
 from openaws_client.models.http_validation_error import HTTPValidationError
+from .dynamic_settings import settings
 from .logging import get_log
 
 log = get_log()
@@ -14,15 +14,21 @@ verify_ssl = True
 
 
 def get_client() -> Client:
-    client = Client(raise_on_unexpected_status=True,
-                    base_url=base_url, timeout=timeout, verify_ssl=verify_ssl)
+    client = Client(
+        raise_on_unexpected_status=True, base_url=base_url, timeout=timeout, verify_ssl=verify_ssl
+    )
     return client
 
 
 def get_auth_client(request: Request) -> AuthenticatedClient:
     token = request.session["access_token"]
-    auth_client = AuthenticatedClient(raise_on_unexpected_status=True, token=token,
-                                      base_url=base_url, timeout=timeout, verify_ssl=verify_ssl)
+    auth_client = AuthenticatedClient(
+        raise_on_unexpected_status=True,
+        token=token,
+        base_url=base_url,
+        timeout=timeout,
+        verify_ssl=verify_ssl,
+    )
     return auth_client
 
 

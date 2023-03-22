@@ -45,5 +45,5 @@ en = {
     "You have been registered.": "You have been registered.",
     "You have been registered. Check your email to confirm your account.": "You have been registered. Check your email to confirm your account.",
     "You will need to log in order to get access to your profile": "You will need to log in order to get access to your profile",
-    "search": "search"
+    "search": "search",
 }

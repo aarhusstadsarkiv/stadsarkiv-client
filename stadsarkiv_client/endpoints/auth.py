@@ -9,9 +9,10 @@ from stadsarkiv_client.utils.translate import translate
 from stadsarkiv_client.utils import user
 from stadsarkiv_client.utils.logging import get_log
 from stadsarkiv_client.utils.openaws import get_client, get_auth_client, OpenAwsException
-from openaws_client.client import Client, AuthenticatedClient
-from openaws_client.models.body_auth_db_bearer_login_v1_auth_jwt_login_post import (
-    BodyAuthDbBearerLoginV1AuthJwtLoginPost as AuthJwtPOST,
+
+# from openaws_client.client import Client, AuthenticatedClient
+from openaws_client.models.body_auth_db_bearer_login_v1_auth_jwt_login_post import (  # type: ignore
+    BodyAuthDbBearerLoginV1AuthJwtLoginPost as AuthJwtPOST,  # type: ignore
 )
 from openaws_client.models.bearer_response import BearerResponse
 from openaws_client.models.body_auth_db_cookie_login_v1_auth_login_post import (
@@ -111,14 +112,13 @@ async def post_register(request: Request):
 
 
 async def get_me_jwt(request: Request):
-
     if not await user.is_logged_in(request):
-        flash.set_message(request, translate(
-            'You will need to log in order to get access to your profile'), 'error')
+        flash.set_message(
+            request, translate("You will need to log in order to get access to your profile"), "error"
+        )
         return RedirectResponse(url="/auth/login", status_code=302)
 
     try:
-
         auth_client: AuthenticatedClient = get_auth_client(request)
         me = await users_current_user_v1_users_me_get.asyncio(client=auth_client)
         context_values = {"title": translate("Profile"), "me": me}
@@ -127,7 +127,7 @@ async def get_me_jwt(request: Request):
         return templates.TemplateResponse("auth/me.html", context)
     except Exception as e:
         log.exception(e)
-        flash.set_message(request, translate('System error. Something went wrong'), type="error")
+        flash.set_message(request, translate("System error. Something went wrong"), type="error")
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
