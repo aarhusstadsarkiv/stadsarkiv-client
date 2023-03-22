@@ -159,3 +159,4 @@ cython_debug/
 #.idea/
 #
 logs
+client_test.py
