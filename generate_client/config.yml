@@ -1,2 +1,6 @@
 project_name_override: openaws-client
 package_name_override: openaws_client
+
+class_overrides:
+  Body_auth_db_bearer_login_v1_auth_jwt_login_post:
+    module_name: jwt_login_post

@@ -160,3 +160,4 @@ cython_debug/
 #
 logs
 client_test.py
+generate_client/openaws-client
