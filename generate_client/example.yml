@@ -15,6 +15,4 @@ class_overrides:
     class_name: request_verify_token_post
   BodyVerifyVerifyV1AuthVerifyPost:
     class_name: verify_post
-  auth_db_bearer_login_v1_auth_jwt_login_post:
-    module_name: jwt_login_post
   
