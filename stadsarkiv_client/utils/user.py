@@ -42,7 +42,5 @@ async def get_me(request: Request):
     me = None
     fastapi_client = APIAuth(request=request)
     if request.session["login_type"] == "jwt":
-        access_token = request.session["access_token"]
-        token_type = request.session["token_type"]
-        me = await fastapi_client.me_jwt(access_token, token_type)
+        me = await fastapi_client.me_jwt()
     return me
