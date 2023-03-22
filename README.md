@@ -100,4 +100,8 @@ In order to update the openapi client you can `cd` into the `generate_client` di
 
 Instructions can be found in the [generate_client/README.md](generate_client/README.md) directory. 
 
+The client itself is just a python module which has it's own repository at: 
+
+[https://github.com/aarhusstadsarkiv/openaws-client](aarhusstadsarkiv/openaws-client)
+
 
