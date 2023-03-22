@@ -1,4 +1,4 @@
 #!/bin/sh
 black .
-mypy .
+mypy --config-file pyproject.toml .
 flake8 .
