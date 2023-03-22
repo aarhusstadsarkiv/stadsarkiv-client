@@ -8,6 +8,18 @@ from stadsarkiv_client.utils import flash
 from stadsarkiv_client.utils.translate import translate
 from stadsarkiv_client.utils import user
 from stadsarkiv_client.utils.logging import get_log
+from stadsarkiv_client.utils.openaws import get_client, get_auth_client, OpenAwsException
+from openaws_client.client import Client, AuthenticatedClient
+from openaws_client.models.body_auth_db_bearer_login_v1_auth_jwt_login_post import (
+    BodyAuthDbBearerLoginV1AuthJwtLoginPost as AuthJwtPOST,
+)
+from openaws_client.models.bearer_response import BearerResponse
+from openaws_client.models.body_auth_db_cookie_login_v1_auth_login_post import (
+    BodyAuthDbCookieLoginV1AuthLoginPost as AuthCookiePOST,
+)
+from openaws_client.api.auth import auth_db_bearer_login_v1_auth_jwt_login_post as bearer_login
+from openaws_client.api.users import users_current_user_v1_users_me_get
+from openaws_client.models.bearer_response import BearerResponse
 
 log = get_log()
 
@@ -25,15 +37,28 @@ async def get_login(request: Request):
 async def post_login_jwt(request: Request):
     try:
         form = await request.form()
+
         username = str(form.get("username"))
         password = str(form.get("password"))
 
-        fastapi_client = APIAuth(request)
-        bearer_token = await fastapi_client.login_jwt(username, password)
-        await user.set_user_jwt(request, bearer_token)
+        client = get_client()
+        form_data: AuthJwtPOST = AuthJwtPOST(username=username, password=password)
+        bearer_response = bearer_login.sync(client=client, form_data=form_data)
+
+        if not isinstance(bearer_response, BearerResponse):
+            raise OpenAwsException(
+                translate("Email or password is incorrect. Or your user has not been activated."),
+                401,
+                "Unauthorized",
+            )
+
+        access_token: str = bearer_response.access_token
+        token_type: str = bearer_response.token_type
+
+        await user.set_user_jwt(request, access_token, token_type)
         flash.set_message(request, translate("You have been logged in."), type="success")
         return RedirectResponse(url="/", status_code=302)
-    except APIException as e:
+    except OpenAwsException as e:
         log.exception(e)
         flash.set_message(request, str(e), type="error")
         return RedirectResponse(url="/auth/login", status_code=302)
@@ -86,16 +111,23 @@ async def post_register(request: Request):
 
 
 async def get_me_jwt(request: Request):
-    me = None
+
+    if not await user.is_logged_in(request):
+        flash.set_message(request, translate(
+            'You will need to log in order to get access to your profile'), 'error')
+        return RedirectResponse(url="/auth/login", status_code=302)
+
     try:
-        me = await user.get_me(request)
+
+        auth_client: AuthenticatedClient = get_auth_client(request)
+        me = await users_current_user_v1_users_me_get.asyncio(client=auth_client)
         context_values = {"title": translate("Profile"), "me": me}
         context = get_context(request, context_values=context_values)
 
         return templates.TemplateResponse("auth/me.html", context)
-    except APIException as e:
+    except Exception as e:
         log.exception(e)
-        flash.set_message(request, str(e), type="error")
+        flash.set_message(request, translate('System error. Something went wrong'), type="error")
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
