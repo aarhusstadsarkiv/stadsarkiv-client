@@ -2,12 +2,13 @@ from starlette.requests import Request
 from openaws_client.client import Client, AuthenticatedClient
 from openaws_client.models.error_model import ErrorModel
 from openaws_client.models.http_validation_error import HTTPValidationError
-from .dynamic_settings import settings
+
+# from .dynamic_settings import settings
 from .logging import get_log
 
 log = get_log()
 
-base_url = settings["fastapi_endpoint"]
+# base_url: str = settings["fastapi_endpoint"]
 base_url = "http://localhost:8000"
 timeout = 5
 verify_ssl = True
