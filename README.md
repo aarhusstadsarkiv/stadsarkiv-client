@@ -94,4 +94,10 @@ https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_clien
 
     ./fix.sh
 
+### openaws client
+
+In order to update the openapi client you can `cd` into the `generate_client` directory
+
+Instructions can be found in the [generate_client/README.md](generate_client/README.md) directory. 
+
 
