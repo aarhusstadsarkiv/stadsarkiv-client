@@ -102,6 +102,6 @@ Instructions can be found in the [generate_client/README.md](generate_client/REA
 
 The client itself is just a python module which has it's own repository at: 
 
-[https://github.com/aarhusstadsarkiv/openaws-client](aarhusstadsarkiv/openaws-client)
+[aarhusstadsarkiv/openaws-client](https://github.com/aarhusstadsarkiv/openaws-client)
 
 
