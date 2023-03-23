@@ -1,6 +1,7 @@
 from starlette.requests import Request
 from openaws_client.client import Client, AuthenticatedClient
 from .logging import get_log
+
 # from .dynamic_settings import settings
 
 log = get_log()

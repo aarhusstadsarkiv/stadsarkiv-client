@@ -26,7 +26,8 @@ from openaws_client.api.users import users_current_user_v1_users_me_get as users
 # user create
 from openaws_client.api.auth import register_register_v1_auth_register_post as register_post
 from openaws_client.models.user_create import UserCreate
-from openaws_client.models.user_read import UserRead
+
+# from openaws_client.models.user_read import UserRead
 
 #
 from openaws_client.models.http_validation_error import HTTPValidationError
@@ -100,7 +101,6 @@ async def get_register(request: Request):
 
 
 async def post_register(request: Request):
-
     try:
         form = await request.form()
         email = str(form.get("email"))
