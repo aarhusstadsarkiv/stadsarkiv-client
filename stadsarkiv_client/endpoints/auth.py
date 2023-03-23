@@ -18,13 +18,13 @@ from openaws_client.models.body_auth_db_bearer_login_v1_auth_jwt_login_post impo
     BodyAuthDbBearerLoginV1AuthJwtLoginPost as AuthJwtPOST,
 )
 from openaws_client.models.bearer_response import BearerResponse
-from openaws_client.api.auth import auth_db_bearer_login_v1_auth_jwt_login_post as bearer_login
+from openaws_client.api.auth import auth_db_bearer_login_v1_auth_jwt_login_post as auth_jwt_login_post
 
 # me
 from openaws_client.api.users import users_current_user_v1_users_me_get as users_me_get
 
 # user create
-from openaws_client.api.auth import register_register_v1_auth_register_post as register_post
+from openaws_client.api.auth import register_register_v1_auth_register_post as auth_register_post
 from openaws_client.models.user_create import UserCreate
 
 # from openaws_client.models.user_read import UserRead
@@ -56,7 +56,7 @@ async def post_login_jwt(request: Request):
 
         client: Client = get_client()
         form_data: AuthJwtPOST = AuthJwtPOST(username=username, password=password)
-        bearer_response = bearer_login.sync(client=client, form_data=form_data)
+        bearer_response = auth_jwt_login_post.sync(client=client, form_data=form_data)
 
         if not isinstance(bearer_response, BearerResponse):
             raise OpenAwsException(
@@ -110,7 +110,7 @@ async def post_register(request: Request):
         json_body: UserCreate = UserCreate(
             email=email, password=password, is_active=True, is_superuser=False, is_verified=True
         )
-        user_read = register_post.sync(client=client, json_body=json_body)
+        user_read = auth_register_post.sync(client=client, json_body=json_body)
         if isinstance(user_read, HTTPValidationError):
             log.debug(user_read)
             raise OpenAwsException(
