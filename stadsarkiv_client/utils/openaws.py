@@ -1,29 +1,31 @@
 from starlette.requests import Request
 from openaws_client.client import Client, AuthenticatedClient
-from .logging import get_log
 
-# Clients
-# from openaws_client.client import AuthenticatedClient, Client
-
-# JWT POST
+# JWT Login
 from openaws_client.models.body_auth_db_bearer_login_v1_auth_jwt_login_post import (
-    BodyAuthDbBearerLoginV1AuthJwtLoginPost as AuthJwtPOST,
+    BodyAuthDbBearerLoginV1AuthJwtLoginPost as AuthJwtLoginPost,
 )
 from openaws_client.models.bearer_response import BearerResponse
 from openaws_client.api.auth import auth_db_bearer_login_v1_auth_jwt_login_post as auth_jwt_login_post
 
-# me
+# Users module
 from openaws_client.api.users import users_current_user_v1_users_me_get as users_me_get
 
-# user create
+# Register module
 from openaws_client.api.auth import register_register_v1_auth_register_post as auth_register_post
 from openaws_client.models.user_create import UserCreate
 
-# from openaws_client.models.user_read import UserRead
+# Forgotten password
+from openaws_client.models.body_reset_forgot_password_v1_auth_forgot_password_post import (
+    BodyResetForgotPasswordV1AuthForgotPasswordPost as ForgotPasswordPost
+)
+from openaws_client.api.auth import reset_forgot_password_v1_auth_forgot_password_post as auth_forgot_password_post
 
-#
+# Error / Validation
 from openaws_client.models.http_validation_error import HTTPValidationError
 from openaws_client.models.error_model import ErrorModel
+
+from .logging import get_log
 
 # from .dynamic_settings import settings
 
@@ -68,11 +70,12 @@ class OpenAwsException(Exception):
 
 __ALL__ = [
     # models
-    AuthJwtPOST,
+    AuthJwtLoginPost,
     BearerResponse,
     HTTPValidationError,
     ErrorModel,
     UserCreate,
+    ForgotPasswordPost,
     # clients
     AuthenticatedClient,
     Client,
@@ -81,6 +84,7 @@ __ALL__ = [
     auth_jwt_login_post,
     users_me_get,
     auth_register_post,
+    auth_forgot_password_post,
     # functions
     get_client,
     get_auth_client,

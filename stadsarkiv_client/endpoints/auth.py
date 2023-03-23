@@ -10,24 +10,26 @@ from stadsarkiv_client.utils import user
 from stadsarkiv_client.utils.logging import get_log
 from stadsarkiv_client.utils.openaws import (
     # models
-    AuthJwtPOST,
+    AuthJwtLoginPost,
     BearerResponse,
     HTTPValidationError,
     ErrorModel,
     UserCreate,
+    ForgotPasswordPost,
     # clients
     AuthenticatedClient,
     Client,
     # modules
+    UserCreate,
     auth_jwt_login_post,
     users_me_get,
     auth_register_post,
+    auth_forgot_password_post,
     # functions
     get_client,
     get_auth_client,
     # exceptions
     OpenAwsException,
-    # functions
 )
 
 log = get_log()
@@ -51,26 +53,40 @@ async def post_login_jwt(request: Request):
         password = str(form.get("password"))
 
         client: Client = get_client()
-        form_data: AuthJwtPOST = AuthJwtPOST(username=username, password=password)
+        form_data: AuthJwtLoginPost = AuthJwtLoginPost(username=username, password=password)
         bearer_response = auth_jwt_login_post.sync(client=client, form_data=form_data)
 
-        if not isinstance(bearer_response, BearerResponse):
+        if isinstance(bearer_response, BearerResponse):
+            access_token: str = bearer_response.access_token
+            token_type: str = bearer_response.token_type
+
+            await user.set_user_jwt(request, access_token, token_type)
+            flash.set_message(request, translate("You have been logged in."), type="success")
+            return RedirectResponse(url="/", status_code=302)
+
+        if isinstance(bearer_response, HTTPValidationError):
+            log.debug(bearer_response)
             raise OpenAwsException(
-                translate("Email or password is incorrect. Or your user has not been activated."),
-                401,
+                translate("User already exists. Try to login instead."),
+                422,
                 "Unauthorized",
             )
 
-        access_token: str = bearer_response.access_token
-        token_type: str = bearer_response.token_type
+        if isinstance(bearer_response, ErrorModel):
+            log.debug(bearer_response)
+            raise OpenAwsException(
+                translate("User already exists. Try to login instead."),
+                400,
+                "Unauthorized",
+            )
 
-        await user.set_user_jwt(request, access_token, token_type)
-        flash.set_message(request, translate("You have been logged in."), type="success")
-        return RedirectResponse(url="/", status_code=302)
     except OpenAwsException as e:
         log.exception(e)
         flash.set_message(request, str(e), type="error")
         return RedirectResponse(url="/auth/login", status_code=302)
+    except Exception as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
 
 
 async def get_logout(request: Request):
@@ -83,7 +99,7 @@ async def post_logout(request: Request):
     try:
         await user.logout(request)
         flash.set_message(request, translate("You have been logged out."), type="success")
-    except APIException as e:
+    except Exception as e:
         log.exception(e)
         flash.set_message(request, str(e), type="error")
 
