@@ -21,11 +21,17 @@ from openaws_client.models.bearer_response import BearerResponse
 from openaws_client.api.auth import auth_db_bearer_login_v1_auth_jwt_login_post as bearer_login
 
 # me
-from openaws_client.api.users import users_current_user_v1_users_me_get
+from openaws_client.api.users import users_current_user_v1_users_me_get as users_me_get
 
 # user create
 from openaws_client.api.auth import register_register_v1_auth_register_post as register_post
 from openaws_client.models.user_create import UserCreate
+from openaws_client.models.user_read import UserRead
+
+#
+from openaws_client.models.http_validation_error import HTTPValidationError
+from openaws_client.models.error_model import ErrorModel
+
 
 log = get_log()
 
@@ -94,6 +100,7 @@ async def get_register(request: Request):
 
 
 async def post_register(request: Request):
+
     try:
         form = await request.form()
         email = str(form.get("email"))
@@ -103,8 +110,22 @@ async def post_register(request: Request):
         json_body: UserCreate = UserCreate(
             email=email, password=password, is_active=True, is_superuser=False, is_verified=True
         )
-        response = register_post.sync(client=client, json_body=json_body)
-        log.debug(response)
+        user_read = register_post.sync(client=client, json_body=json_body)
+        if isinstance(user_read, HTTPValidationError):
+            log.debug(user_read)
+            raise OpenAwsException(
+                translate("Email needs to be correct. Password needs to be at least 8 characters long."),
+                422,
+                "Unauthorized",
+            )
+
+        if isinstance(user_read, ErrorModel):
+            log.debug(user_read)
+            raise OpenAwsException(
+                translate("User already exists. Try to login instead."),
+                400,
+                "Unauthorized",
+            )
 
         flash.set_message(
             request,
@@ -132,7 +153,7 @@ async def get_me_jwt(request: Request):
 
     try:
         auth_client: AuthenticatedClient = get_auth_client(request)
-        me = await users_current_user_v1_users_me_get.asyncio(client=auth_client)
+        me = await users_me_get.asyncio(client=auth_client)
         context_values = {"title": translate("Profile"), "me": me}
         context = get_context(request, context_values=context_values)
 

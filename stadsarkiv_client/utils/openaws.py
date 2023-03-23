@@ -1,10 +1,7 @@
 from starlette.requests import Request
 from openaws_client.client import Client, AuthenticatedClient
-from openaws_client.models.error_model import ErrorModel
-from openaws_client.models.http_validation_error import HTTPValidationError
-
-# from .dynamic_settings import settings
 from .logging import get_log
+# from .dynamic_settings import settings
 
 log = get_log()
 
@@ -43,7 +40,3 @@ class OpenAwsException(Exception):
 
     def __str__(self) -> str:
         return self.message
-
-
-def check_error(error: ErrorModel | HTTPValidationError):
-    log.debug(error)
