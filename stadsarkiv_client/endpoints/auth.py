@@ -9,18 +9,20 @@ from stadsarkiv_client.utils.translate import translate
 from stadsarkiv_client.utils import user
 from stadsarkiv_client.utils.logging import get_log
 from stadsarkiv_client.utils.openaws import get_client, get_auth_client, OpenAwsException
-
-from openaws_client.client import AuthenticatedClient
+# Clients
+from openaws_client.client import AuthenticatedClient, Client
+# JWT POST
 from openaws_client.models.body_auth_db_bearer_login_v1_auth_jwt_login_post import (
     BodyAuthDbBearerLoginV1AuthJwtLoginPost as AuthJwtPOST,
 )
 from openaws_client.models.bearer_response import BearerResponse
-
-# from openaws_client.models.body_auth_db_cookie_login_v1_auth_login_post import (
-#     BodyAuthDbCookieLoginV1AuthLoginPost as AuthCookiePOST,
-# )
 from openaws_client.api.auth import auth_db_bearer_login_v1_auth_jwt_login_post as bearer_login
+# me
 from openaws_client.api.users import users_current_user_v1_users_me_get
+
+# user create
+from openaws_client.api.auth import register_register_v1_auth_register_post as register_post
+from openaws_client.models.user_create import UserCreate
 
 log = get_log()
 
@@ -42,7 +44,7 @@ async def post_login_jwt(request: Request):
         username = str(form.get("username"))
         password = str(form.get("password"))
 
-        client = get_client()
+        client: Client = get_client()
         form_data: AuthJwtPOST = AuthJwtPOST(username=username, password=password)
         bearer_response = bearer_login.sync(client=client, form_data=form_data)
 
@@ -94,17 +96,23 @@ async def post_register(request: Request):
         email = str(form.get("email"))
         password = str(form.get("password"))
 
-        fastapi_client = APIAuth(request=request)
-        register_dict = {"email": email, "password": password}
-
-        await fastapi_client.register(register_dict)
+        client: Client = get_client()
+        json_body: UserCreate = UserCreate(email=email, password=password,
+                                           is_active=True, is_superuser=False, is_verified=True)
+        response = register_post.sync(client=client, json_body=json_body)
+        log.debug(response)
 
         flash.set_message(
             request,
             translate("You have been registered. Check your email to confirm your account."),
             type="success",
         )
-    except APIException as e:
+
+        return RedirectResponse(url="/auth/login", status_code=302)
+    except OpenAwsException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+    except Exception as e:
         log.exception(e)
         flash.set_message(request, str(e), type="error")
 

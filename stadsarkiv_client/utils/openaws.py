@@ -10,7 +10,8 @@ log = get_log()
 
 # base_url: str = settings["fastapi_endpoint"]
 base_url = "http://localhost:8000"
-timeout = 5
+# base_url = "https://dev.openaws.dk"
+timeout = 10
 verify_ssl = True
 
 
