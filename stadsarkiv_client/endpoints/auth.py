@@ -9,14 +9,17 @@ from stadsarkiv_client.utils.translate import translate
 from stadsarkiv_client.utils import user
 from stadsarkiv_client.utils.logging import get_log
 from stadsarkiv_client.utils.openaws import get_client, get_auth_client, OpenAwsException
+
 # Clients
 from openaws_client.client import AuthenticatedClient, Client
+
 # JWT POST
 from openaws_client.models.body_auth_db_bearer_login_v1_auth_jwt_login_post import (
     BodyAuthDbBearerLoginV1AuthJwtLoginPost as AuthJwtPOST,
 )
 from openaws_client.models.bearer_response import BearerResponse
 from openaws_client.api.auth import auth_db_bearer_login_v1_auth_jwt_login_post as bearer_login
+
 # me
 from openaws_client.api.users import users_current_user_v1_users_me_get
 
@@ -97,8 +100,9 @@ async def post_register(request: Request):
         password = str(form.get("password"))
 
         client: Client = get_client()
-        json_body: UserCreate = UserCreate(email=email, password=password,
-                                           is_active=True, is_superuser=False, is_verified=True)
+        json_body: UserCreate = UserCreate(
+            email=email, password=password, is_active=True, is_superuser=False, is_verified=True
+        )
         response = register_post.sync(client=client, json_body=json_body)
         log.debug(response)
 
