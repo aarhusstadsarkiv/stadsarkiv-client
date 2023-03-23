@@ -8,31 +8,27 @@ from stadsarkiv_client.utils import flash
 from stadsarkiv_client.utils.translate import translate
 from stadsarkiv_client.utils import user
 from stadsarkiv_client.utils.logging import get_log
-from stadsarkiv_client.utils.openaws import get_client, get_auth_client, OpenAwsException
-
-# Clients
-from openaws_client.client import AuthenticatedClient, Client
-
-# JWT POST
-from openaws_client.models.body_auth_db_bearer_login_v1_auth_jwt_login_post import (
-    BodyAuthDbBearerLoginV1AuthJwtLoginPost as AuthJwtPOST,
+from stadsarkiv_client.utils.openaws import (
+    # models
+    AuthJwtPOST,
+    BearerResponse,
+    HTTPValidationError,
+    ErrorModel,
+    UserCreate,
+    # clients
+    AuthenticatedClient,
+    Client,
+    # modules
+    auth_jwt_login_post,
+    users_me_get,
+    auth_register_post,
+    # functions
+    get_client,
+    get_auth_client,
+    # exceptions
+    OpenAwsException,
+    # functions
 )
-from openaws_client.models.bearer_response import BearerResponse
-from openaws_client.api.auth import auth_db_bearer_login_v1_auth_jwt_login_post as auth_jwt_login_post
-
-# me
-from openaws_client.api.users import users_current_user_v1_users_me_get as users_me_get
-
-# user create
-from openaws_client.api.auth import register_register_v1_auth_register_post as auth_register_post
-from openaws_client.models.user_create import UserCreate
-
-# from openaws_client.models.user_read import UserRead
-
-#
-from openaws_client.models.http_validation_error import HTTPValidationError
-from openaws_client.models.error_model import ErrorModel
-
 
 log = get_log()
 
