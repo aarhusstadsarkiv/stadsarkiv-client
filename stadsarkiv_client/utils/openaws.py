@@ -91,5 +91,4 @@ __ALL__ = [
     get_auth_client,
     # exceptions
     OpenAwsException,
-
 ]
