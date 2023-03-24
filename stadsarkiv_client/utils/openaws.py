@@ -23,6 +23,25 @@ from openaws_client.api.auth import (
     reset_forgot_password_v1_auth_forgot_password_post as auth_forgot_password_post,
 )
 
+# Schema
+from openaws_client.models.schema_create import SchemaCreate
+from openaws_client.models.schema_read import SchemaRead
+from openaws_client.models.schema_create_data import SchemaCreateData
+
+from openaws_client.api.schemas import (
+    entity_get_schema_v1_schemas_name_get as schemas_name_get,
+    entity_create_schema_v1_schemas_post as schemas_post,
+    entity_get_available_schemas_v1_schemas_get as schemas_get
+)
+
+# Entities
+""" from openaws_client.models.entity_create import EntityCreate
+from openaws_client.api.entities import (
+    entity_create_entity_v1_entities_post as entities_post,
+    entity_get_entity_v1_entities_uuid_get as entities_uuid_get,
+    entity_restore_entity_from_soft_deletion_v1_entities_uuid_restore_patch as entities_uuid_restore_patch,
+)
+ """
 # Error / Validation
 from openaws_client.models.http_validation_error import HTTPValidationError
 from openaws_client.models.error_model import ErrorModel
@@ -71,22 +90,32 @@ class OpenAwsException(Exception):
 
 
 __ALL__ = [
-    # models
+    # auth
     AuthJwtLoginPost,
+    auth_jwt_login_post,
     BearerResponse,
+
+    # me
+    users_me_get,
+    # errors
     HTTPValidationError,
     ErrorModel,
+    # Register. Forgot password
     ForgotPasswordPost,
     UserCreate,
-    # clients
-    AuthenticatedClient,
-    Client,
-    # modules
-    auth_jwt_login_post,
-    users_me_get,
     auth_register_post,
     auth_forgot_password_post,
-    # functions
+    # schema
+    SchemaCreate,
+    SchemaRead,
+    SchemaCreateData,
+    schemas_name_get,
+    schemas_post,
+    schemas_get,
+
+    # client related
+    AuthenticatedClient,
+    Client,
     get_client,
     get_auth_client,
     # exceptions

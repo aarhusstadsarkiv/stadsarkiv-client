@@ -32,6 +32,7 @@ en = {
     "Reset password": "Reset password",
     "Schema": "Schema",
     "Schema created.": "Schema created.",
+    "Schema not found.": "Schema not found.",
     "Schemas": "Schemas",
     "Search": "Search",
     "Search this site": "Search this site",
@@ -46,5 +47,5 @@ en = {
     "You have been registered.": "You have been registered.",
     "You have been registered. Check your email to confirm your account.": "You have been registered. Check your email to confirm your account.",
     "You will need to log in order to get access to your profile": "You will need to log in order to get access to your profile",
-    "search": "search",
+    "search": "search"
 }

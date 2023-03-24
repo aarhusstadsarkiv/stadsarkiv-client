@@ -119,7 +119,7 @@ async def post_register(request: Request):
 
         client: Client = get_client()
         json_body: UserCreate = UserCreate(
-            email=email, password=password, is_active=True, is_superuser=False, is_verified=True
+            email=email, password=password, is_active=True, is_superuser=False, is_verified=False
         )
         user_read = auth_register_post.sync(client=client, json_body=json_body)
         if isinstance(user_read, HTTPValidationError):
