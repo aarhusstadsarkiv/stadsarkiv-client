@@ -14,13 +14,12 @@ from stadsarkiv_client.utils.openaws import (
     BearerResponse,
     HTTPValidationError,
     ErrorModel,
-    UserCreate,
     ForgotPasswordPost,
+    UserCreate,
     # clients
     AuthenticatedClient,
     Client,
     # modules
-    UserCreate,
     auth_jwt_login_post,
     users_me_get,
     auth_register_post,
@@ -187,20 +186,32 @@ async def post_forgot_password(request: Request):
         form = await request.form()
         email = str(form.get("email"))
 
-        fastapi_client = APIAuth(request=request)
-
-        await fastapi_client.forgot_password(email)
+        client: Client = get_client()
+        forgot_password_post: ForgotPasswordPost = ForgotPasswordPost(email=email)
+        forgot_password_response = auth_forgot_password_post.sync(
+            client=client, json_body=forgot_password_post
+        )
+        if isinstance(forgot_password_response, HTTPValidationError):
+            log.debug(forgot_password_response)
+            raise OpenAwsException(
+                translate("There is no user with this email address."),
+                422,
+                "Unauthorized",
+            )
 
         flash.set_message(
             request,
-            translate("You have been registered. Check your email to confirm your account."),
+            translate("An email has been sent to you with instructions on how to reset your password."),
             type="success",
         )
     except APIException as e:
         log.exception(e)
         flash.set_message(request, str(e), type="error")
+    except Exception as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
 
-    return RedirectResponse(url="/auth/register", status_code=302)
+    return RedirectResponse(url="/auth/forgot-password", status_code=302)
 
 
 # NOT USED

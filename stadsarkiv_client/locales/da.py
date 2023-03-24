@@ -35,6 +35,7 @@ da = {
     "Search this site": "S\u00f8g i dette site",
     "Submit": "Send",
     "System can not deliver an email about resetting password. Try again later.": "Systemet kan ikke sende en email om at nulstille password. Pr\u00f8v igen senere.",
+    "There is no user with this email address.": "There is no user with this email address.",
     "User already exists. Try to login instead.": "Bruger findes allerede. Pr\u00f8v at logge ind i stedet.",
     "View": "Vis",
     "View schema": "Vis schema",
@@ -42,5 +43,5 @@ da = {
     "You have been logged out.": "Du er nu logget ud.",
     "You have been registered. Check your email to confirm your account.": "Du er blevet registreret. Check din email for at bekr\u00e6fte din konto.",
     "You will need to log in order to get access to your profile": "You will need to log in order to get access to your profile",
-    "search": "search",
+    "search": "search"
 }

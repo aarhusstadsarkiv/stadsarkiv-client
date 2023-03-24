@@ -17,9 +17,11 @@ from openaws_client.models.user_create import UserCreate
 
 # Forgotten password
 from openaws_client.models.body_reset_forgot_password_v1_auth_forgot_password_post import (
-    BodyResetForgotPasswordV1AuthForgotPasswordPost as ForgotPasswordPost
+    BodyResetForgotPasswordV1AuthForgotPasswordPost as ForgotPasswordPost,
 )
-from openaws_client.api.auth import reset_forgot_password_v1_auth_forgot_password_post as auth_forgot_password_post
+from openaws_client.api.auth import (
+    reset_forgot_password_v1_auth_forgot_password_post as auth_forgot_password_post,
+)
 
 # Error / Validation
 from openaws_client.models.http_validation_error import HTTPValidationError
@@ -74,13 +76,12 @@ __ALL__ = [
     BearerResponse,
     HTTPValidationError,
     ErrorModel,
-    UserCreate,
     ForgotPasswordPost,
+    UserCreate,
     # clients
     AuthenticatedClient,
     Client,
     # modules
-    UserCreate,
     auth_jwt_login_post,
     users_me_get,
     auth_register_post,
@@ -90,5 +91,5 @@ __ALL__ = [
     get_auth_client,
     # exceptions
     OpenAwsException,
-    # functions
+
 ]

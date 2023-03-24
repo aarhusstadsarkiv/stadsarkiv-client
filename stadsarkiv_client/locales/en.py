@@ -37,6 +37,7 @@ en = {
     "Search this site": "Search this site",
     "Submit": "Submit",
     "System can not deliver an email about resetting password. Try again later.": "System can not deliver an email about resetting password. Try again later.",
+    "There is no user with this email address.": "There is no user with this email address.",
     "User already exists. Try to login instead.": "User already exists. Try to login instead.",
     "View": "View",
     "View schema": "View schema",
@@ -45,5 +46,5 @@ en = {
     "You have been registered.": "You have been registered.",
     "You have been registered. Check your email to confirm your account.": "You have been registered. Check your email to confirm your account.",
     "You will need to log in order to get access to your profile": "You will need to log in order to get access to your profile",
-    "search": "search",
+    "search": "search"
 }
