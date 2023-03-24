@@ -3,13 +3,10 @@ from starlette.exceptions import HTTPException
 from starlette.responses import RedirectResponse
 from stadsarkiv_client.utils.templates import templates
 from stadsarkiv_client.utils.context import get_context
-from stadsarkiv_client.api_client.api_schemas import APISchema
-from stadsarkiv_client.api_client.api_base import APIBase
 from stadsarkiv_client.utils.translate import translate
-from stadsarkiv_client.utils.logging import get_log
 from stadsarkiv_client.utils import flash
 from stadsarkiv_client.utils import user
-from stadsarkiv_client.api_client.api_base import APIException
+from stadsarkiv_client.utils.logging import get_log
 from stadsarkiv_client.utils.openaws import (
     # schema
     SchemaCreate,
@@ -20,10 +17,7 @@ from stadsarkiv_client.utils.openaws import (
     schemas_get,
     # client related
     AuthenticatedClient,
-    Client,
-    get_client,
     get_auth_client,
-    HTTPValidationError,
     OpenAwsException,
 )
 from json import JSONDecodeError
@@ -35,7 +29,7 @@ log = get_log()
 async def get_schemas(request: Request):
     await user.get_user(request)
 
-    client: Client = get_auth_client(request)
+    client: AuthenticatedClient = get_auth_client(request)
     schemas = schemas_get.sync(client=client, limit=1000)
 
     context_values = {"title": translate("Schemas"), "schemas": schemas}
@@ -45,12 +39,11 @@ async def get_schemas(request: Request):
 
 
 async def get_schema(request: Request):
-
     try:
         await user.get_user(request)
 
         schema_type = request.path_params["schema_type"]
-        client: Client = get_auth_client(request)
+        client: AuthenticatedClient = get_auth_client(request)
 
         schema = schemas_name_get.sync(client=client, name=schema_type, version=None)
         if not isinstance(schema, SchemaRead):
@@ -60,7 +53,7 @@ async def get_schema(request: Request):
                 422,
                 "Unauthorized",
             )
-        if (isinstance(schema, SchemaRead)):
+        if isinstance(schema, SchemaRead):
             schema = schema.to_dict()
             log.debug(schema)
 
@@ -85,16 +78,16 @@ async def post_schema(request: Request):
 
         src_dict = json.loads(data)
 
-        client: Client = get_auth_client(request)
-        schema = schemas_post.sync(client=client, json_body=SchemaCreate(
-            type=schema_type, data=SchemaCreateData.from_dict(src_dict=src_dict)))
+        client: AuthenticatedClient = get_auth_client(request)
+        schema = schemas_post.sync(
+            client=client,
+            json_body=SchemaCreate(type=schema_type, data=SchemaCreateData.from_dict(src_dict=src_dict)),
+        )
 
-        if (isinstance(schema, SchemaRead)):
-            log.debug(schema)
+        if isinstance(schema, SchemaRead):
+            flash.set_message(request, translate("Schema created."), type="success")
         else:
-            raise OpenAwsException(translate('Schema could not be created'), 500)
-
-        flash.set_message(request, translate("Schema created."), type="success")
+            raise OpenAwsException(translate("Schema could not be created"), 500)
 
     except JSONDecodeError:
         flash.set_message(request, translate("Invalid JSON in data."), type="error")

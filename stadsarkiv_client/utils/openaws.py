@@ -31,7 +31,7 @@ from openaws_client.models.schema_create_data import SchemaCreateData
 from openaws_client.api.schemas import (
     entity_get_schema_v1_schemas_name_get as schemas_name_get,
     entity_create_schema_v1_schemas_post as schemas_post,
-    entity_get_available_schemas_v1_schemas_get as schemas_get
+    entity_get_available_schemas_v1_schemas_get as schemas_get,
 )
 
 # Entities
@@ -94,7 +94,6 @@ __ALL__ = [
     AuthJwtLoginPost,
     auth_jwt_login_post,
     BearerResponse,
-
     # me
     users_me_get,
     # errors
@@ -112,7 +111,6 @@ __ALL__ = [
     schemas_name_get,
     schemas_post,
     schemas_get,
-
     # client related
     AuthenticatedClient,
     Client,
