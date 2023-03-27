@@ -28,12 +28,6 @@ routes = [
     Mount("/static", MultiStaticFiles(directories=get_static_dirs()), name="static"),
     Route("/auth/login", endpoint=auth.get_login, name="login"),
     Route(
-        "/auth/post-login",
-        endpoint=auth.post_login_cookie,
-        name="post_login_cookie",
-        methods=["POST"],
-    ),
-    Route(
         "/auth/post-login-jwt",
         endpoint=auth.post_login_jwt,
         name="post_login_jwt",

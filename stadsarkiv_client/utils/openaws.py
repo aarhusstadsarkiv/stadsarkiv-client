@@ -35,18 +35,20 @@ from openaws_client.api.schemas import (
 )
 
 # Entities
-""" from openaws_client.models.entity_create import EntityCreate
+from openaws_client.models.entity_create import EntityCreate
 from openaws_client.api.entities import (
     entity_create_entity_v1_entities_post as entities_post,
-    entity_get_entity_v1_entities_uuid_get as entities_uuid_get,
-    entity_restore_entity_from_soft_deletion_v1_entities_uuid_restore_patch as entities_uuid_restore_patch,
+    # entity_get_entity_v1_entities_uuid_get as entities_uuid_get,
+    # entity_restore_entity_from_soft_deletion_v1_entities_uuid_restore_patch as entities_uuid_restore_patch,
 )
- """
+
 # Error / Validation
 from openaws_client.models.http_validation_error import HTTPValidationError
 from openaws_client.models.error_model import ErrorModel
 
 from .logging import get_log
+from .translate import translate
+import json
 
 # from .dynamic_settings import settings
 
