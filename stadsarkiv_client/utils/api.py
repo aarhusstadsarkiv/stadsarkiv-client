@@ -21,6 +21,14 @@ from stadsarkiv_client.utils.openaws import (
     schemas_name_get,
     schemas_post,
     schemas_get,
+    # entity
+    EntityRead,
+    EntityCreate,
+    EntityUpdate,
+    EntityCreateDataType0,
+    entities_uuid_patch,
+    entities_get,
+    entities_post,
     # client related
     AuthenticatedClient,
     Client,
@@ -30,10 +38,10 @@ from stadsarkiv_client.utils.openaws import (
     OpenAwsException,
 )
 from stadsarkiv_client.utils.logging import get_log
-from stadsarkiv_client.utils import flash
+# from stadsarkiv_client.utils import flash
 from stadsarkiv_client.utils import user
 from stadsarkiv_client.utils.translate import translate
-from json import JSONDecodeError
+# from json import JSONDecodeError
 import json
 
 
@@ -130,11 +138,11 @@ async def get_schemas(request: Request):
     return schemas
 
 
-def get_schema(request: Request):
+async def get_schema(request: Request):
     schema_type = request.path_params["schema_type"]
     client: AuthenticatedClient = get_auth_client(request)
 
-    schema = schemas_name_get.sync(client=client, name=schema_type, version=None)
+    schema = await schemas_name_get.asyncio(client=client, name=schema_type, version=None)
     if isinstance(schema, SchemaRead):
         return schema
 
@@ -154,17 +162,49 @@ async def post_schema(request: Request):
     data_dict["type"] = schema_type
 
     src_dict = json.loads(data)
+    json_body = SchemaCreate(type=schema_type, data=SchemaCreateData.from_dict(src_dict=src_dict))
 
     client: AuthenticatedClient = get_auth_client(request)
     schema = await schemas_post.asyncio(
         client=client,
-        json_body=SchemaCreate(type=schema_type, data=SchemaCreateData.from_dict(src_dict=src_dict)),
+        json_body=json_body,
     )
 
     if not isinstance(schema, SchemaRead):
         raise OpenAwsException(translate("Schema could not be created"), 500)
 
     return schema
+
+
+async def post_entity_create(request: Request):
+
+    schema_type = request.path_params["schema_type"]
+    json = await request.json()
+    json_body = EntityCreate(schema=schema_type, data=EntityCreateDataType0.from_dict(src_dict=json))
+
+    client: AuthenticatedClient = get_auth_client(request)
+    entity = await entities_post.asyncio(
+        client=client,
+        json_body=json_body)
+
+    if isinstance(entity, HTTPValidationError):
+        log.debug(entity)
+        raise OpenAwsException(
+            translate("Entity could not be validated"),
+            422,
+            "Unauthorized",
+        )
+
+    if isinstance(entity, ErrorModel):
+        log.debug(entity)
+        raise OpenAwsException(
+            translate("Invalid entity data"),
+            400,
+            "Unauthorized",
+        )
+
+    if not isinstance(entity, EntityRead):
+        raise OpenAwsException(translate("Schema could not be created"), 500)
 
 
 __ALL__ = [
