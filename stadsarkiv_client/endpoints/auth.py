@@ -24,7 +24,6 @@ async def get_login(request: Request):
 
 async def post_login_jwt(request: Request):
     try:
-
         await api.post_login_jwt(request)
         flash.set_message(request, translate("You have been logged in."), type="success")
         return RedirectResponse(url="/", status_code=302)
@@ -63,7 +62,6 @@ async def get_register(request: Request):
 
 async def post_register(request: Request):
     try:
-
         await api.post_register(request)
 
         flash.set_message(

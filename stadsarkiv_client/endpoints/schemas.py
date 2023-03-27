@@ -16,7 +16,6 @@ log = get_log()
 
 
 async def get_schemas(request: Request):
-
     await user.get_user(request)
     schemas = await api.get_schemas(request)
     context_values = {"title": translate("Schemas"), "schemas": schemas}
@@ -27,7 +26,6 @@ async def get_schemas(request: Request):
 
 async def get_schema(request: Request):
     try:
-
         schema = await api.get_schema(request)
         schema = schema.to_dict()
         context_values = {"title": translate("Schemas"), "schema": schema}

@@ -38,9 +38,11 @@ from stadsarkiv_client.utils.openaws import (
     OpenAwsException,
 )
 from stadsarkiv_client.utils.logging import get_log
+
 # from stadsarkiv_client.utils import flash
 from stadsarkiv_client.utils import user
 from stadsarkiv_client.utils.translate import translate
+
 # from json import JSONDecodeError
 import json
 
@@ -120,9 +122,7 @@ async def post_get_password(request: Request):
 
     client: Client = get_client()
     forgot_password_post: ForgotPasswordPost = ForgotPasswordPost(email=email)
-    forgot_password_response = auth_forgot_password_post.sync(
-        client=client, json_body=forgot_password_post
-    )
+    forgot_password_response = auth_forgot_password_post.sync(client=client, json_body=forgot_password_post)
     if isinstance(forgot_password_response, HTTPValidationError):
         log.debug(forgot_password_response)
         raise OpenAwsException(
@@ -177,15 +177,12 @@ async def post_schema(request: Request):
 
 
 async def post_entity_create(request: Request):
-
     schema_type = request.path_params["schema_type"]
     json = await request.json()
     json_body = EntityCreate(schema=schema_type, data=EntityCreateDataType0.from_dict(src_dict=json))
 
     client: AuthenticatedClient = get_auth_client(request)
-    entity = await entities_post.asyncio(
-        client=client,
-        json_body=json_body)
+    entity = await entities_post.asyncio(client=client, json_body=json_body)
 
     if isinstance(entity, HTTPValidationError):
         log.debug(entity)
@@ -207,11 +204,4 @@ async def post_entity_create(request: Request):
         raise OpenAwsException(translate("Schema could not be created"), 500)
 
 
-__ALL__ = [
-    post_login_jwt,
-    get_me_jwt,
-    post_get_password,
-    post_register,
-    get_schema,
-    post_schema
-]
+__ALL__ = [post_login_jwt, get_me_jwt, post_get_password, post_register, get_schema, post_schema]

@@ -42,7 +42,7 @@ from openaws_client.models.entity_create_data_type_0 import EntityCreateDataType
 from openaws_client.api.entities import (
     entity_create_entity_v1_entities_post as entities_post,
     entity_get_entities_v1_entities_get as entities_get,
-    entity_update_entity_v1_entities_uuid_patch as entities_uuid_patch
+    entity_update_entity_v1_entities_uuid_patch as entities_uuid_patch,
 )
 
 # Error / Validation
