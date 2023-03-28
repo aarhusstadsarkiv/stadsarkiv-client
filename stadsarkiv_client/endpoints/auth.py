@@ -95,7 +95,7 @@ async def get_me_jwt(request: Request):
         return templates.TemplateResponse("auth/me.html", context)
     except Exception as e:
         log.exception(e)
-        flash.set_message(request, translate("System error. Something went wrong"), type="error")
+        flash.set_message(request, str(e), type="error")
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
