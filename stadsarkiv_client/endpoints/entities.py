@@ -8,6 +8,7 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.openaws import OpenAwsException
+import json
 
 log = get_log()
 
@@ -20,6 +21,7 @@ async def get_entity_create(request: Request):
         schema = await api.schema_read(request)
         schema.type = schema.name
         schema = schema.to_dict()
+        schema = json.dumps(schema)
 
         context_values = {"title": translate("Entities"), "schema": schema}
         context = get_context(request, context_values=context_values)
