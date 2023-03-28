@@ -26,6 +26,7 @@ from .openaws import (
     EntityCreate,
     EntityUpdate,
     EntityCreateDataType0,
+    EntityReadDataType0,
     entities_uuid_patch,
     entities_get,
     entities_post,
@@ -203,7 +204,24 @@ async def entity_create(request: Request):
         )
 
     if not isinstance(entity, EntityRead):
-        raise OpenAwsException(translate("Schema could not be created"), 500)
+        raise OpenAwsException(translate("Entity could not be created"), 500)
 
 
-__ALL__ = [login_jwt, me_read, forgot_password, user_create, schema_read, schema_create]
+async def entities_read(request: Request):
+    client = get_auth_client(request)
+    # client = get_client()
+    entities = await entities_get.asyncio(client=client)
+    log.debug(entities)
+    pass
+
+
+__ALL__ = [
+    login_jwt,
+    me_read,
+    forgot_password,
+    user_create,
+    schema_read,
+    schema_create,
+    entity_create,
+    entities_read
+]
