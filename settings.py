@@ -1,6 +1,6 @@
 settings = {
     "language": "da",
-    "fastapi_endpoint": "http://localhost:8000/v1",
+    "fastapi_endpoint": "http://localhost:8000",
     "cookie": {
         "name": "session",
         "lifetime": 3600,

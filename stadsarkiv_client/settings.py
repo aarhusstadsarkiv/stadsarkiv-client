@@ -29,7 +29,7 @@ settings = {
         "secure": cookie_secure,
         "samesite": "lax",
     },
-    "fastapi_endpoint": "https://dev.openaws.dk/v1",
+    "fastapi_endpoint": "http://localhost:8000",
     "main_menu": [
         {"name": "home", "title": "Hjem"},
         {"name": "about", "title": "Om"},
