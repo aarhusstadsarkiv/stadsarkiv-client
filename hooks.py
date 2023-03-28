@@ -1,5 +1,5 @@
 from stadsarkiv_client import hooks
-from stadsarkiv_client.utils.logging import get_log
+from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
 
 log = get_log()

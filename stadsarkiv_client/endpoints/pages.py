@@ -1,6 +1,6 @@
 from starlette.requests import Request
-from stadsarkiv_client.utils.templates import templates
-from stadsarkiv_client.utils.context import get_context
+from stadsarkiv_client.core.templates import templates
+from stadsarkiv_client.core.context import get_context
 
 
 async def default(request: Request):

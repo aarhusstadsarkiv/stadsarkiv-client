@@ -1,6 +1,6 @@
 import logging
 import os
-from stadsarkiv_client.utils.dotenv_local import load
+from stadsarkiv_client.core.dotenv_local import load
 
 load()
 

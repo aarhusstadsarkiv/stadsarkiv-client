@@ -1,7 +1,7 @@
 from typing import Any
 from starlette.requests import Request
 from .flash import get_messages
-from stadsarkiv_client.utils import dynamic_settings
+from stadsarkiv_client.core import dynamic_settings
 from stadsarkiv_client.hooks.manager import get_plugin_manager
 
 

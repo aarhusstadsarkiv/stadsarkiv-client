@@ -1,8 +1,8 @@
-from stadsarkiv_client.utils.dynamic_settings import settings
+from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.locales.en import en
 from stadsarkiv_client.locales.da import da
 import json
-from stadsarkiv_client.utils.logging import get_log
+from stadsarkiv_client.core.logging import get_log
 
 log = get_log()
 

@@ -2,7 +2,7 @@ from stadsarkiv_client.hooks import hook_specs
 import pluggy  # type: ignore
 import inspect
 import sys
-from stadsarkiv_client.utils.logging import get_log
+from stadsarkiv_client.core.logging import get_log
 
 log = get_log()
 

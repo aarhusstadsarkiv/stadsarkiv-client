@@ -1,9 +1,9 @@
 from starlette.routing import Route, Mount
 from .endpoints import auth, search, testing, pages, schemas, entities
 import os
-from stadsarkiv_client.utils.dynamic_settings import settings
-from stadsarkiv_client.utils.multi_static import MultiStaticFiles
-from stadsarkiv_client.utils.logging import get_log
+from stadsarkiv_client.core.dynamic_settings import settings
+from stadsarkiv_client.core.multi_static import MultiStaticFiles
+from stadsarkiv_client.core.logging import get_log
 from typing import Any
 
 log = get_log()

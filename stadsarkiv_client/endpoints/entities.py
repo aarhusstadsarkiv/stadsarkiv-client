@@ -1,13 +1,13 @@
 from starlette.requests import Request
 from starlette.exceptions import HTTPException
 from starlette.responses import JSONResponse
-from stadsarkiv_client.utils.templates import templates
-from stadsarkiv_client.utils.context import get_context
-from stadsarkiv_client.utils.translate import translate
-from stadsarkiv_client.utils.logging import get_log
-from stadsarkiv_client.utils import flash
-from stadsarkiv_client.utils import api
-from stadsarkiv_client.utils.openaws import OpenAwsException
+from stadsarkiv_client.core.templates import templates
+from stadsarkiv_client.core.context import get_context
+from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core import flash
+from stadsarkiv_client.core import api
+from stadsarkiv_client.core.openaws import OpenAwsException
 
 log = get_log()
 

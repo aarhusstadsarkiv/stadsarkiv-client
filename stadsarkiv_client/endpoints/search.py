@@ -1,8 +1,8 @@
 from starlette.requests import Request
-from stadsarkiv_client.utils.templates import templates
-from stadsarkiv_client.utils.context import get_context
-from stadsarkiv_client.utils.translate import translate
-from stadsarkiv_client.utils.logging import get_log
+from stadsarkiv_client.core.templates import templates
+from stadsarkiv_client.core.context import get_context
+from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.hooks.manager import get_plugin_manager
 
 # from hooks import alter_search_query

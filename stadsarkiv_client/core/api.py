@@ -1,5 +1,5 @@
 from starlette.requests import Request
-from stadsarkiv_client.utils.openaws import (
+from .openaws import (
     # auth
     AuthJwtLoginPost,
     auth_jwt_login_post,
@@ -37,11 +37,11 @@ from stadsarkiv_client.utils.openaws import (
     # exceptions
     OpenAwsException,
 )
-from stadsarkiv_client.utils.logging import get_log
+from stadsarkiv_client.core.logging import get_log
 
 # from stadsarkiv_client.utils import flash
-from stadsarkiv_client.utils import user
-from stadsarkiv_client.utils.translate import translate
+from stadsarkiv_client.core import user
+from stadsarkiv_client.core.translate import translate
 
 # from json import JSONDecodeError
 import json
