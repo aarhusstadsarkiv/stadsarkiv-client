@@ -54,7 +54,7 @@ from .dynamic_settings import settings
 
 log = get_log()
 
-base_url: str = settings["fastapi_endpoint"]
+base_url = str(settings["fastapi_endpoint"])
 timeout = 10
 verify_ssl = True
 
