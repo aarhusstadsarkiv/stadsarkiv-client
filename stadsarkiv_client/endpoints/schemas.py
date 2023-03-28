@@ -17,7 +17,7 @@ log = get_log()
 
 async def get_schemas(request: Request):
     await user.get_user(request)
-    schemas = await api.get_schemas(request)
+    schemas = await api.schemas_read(request)
     context_values = {"title": translate("Schemas"), "schemas": schemas}
     context = get_context(request, context_values=context_values)
 
@@ -26,7 +26,7 @@ async def get_schemas(request: Request):
 
 async def get_schema(request: Request):
     try:
-        schema = await api.get_schema(request)
+        schema = await api.schema_read(request)
         schema = schema.to_dict()
         context_values = {"title": translate("Schemas"), "schema": schema}
         context = get_context(request, context_values=context_values)
@@ -40,7 +40,7 @@ async def get_schema(request: Request):
 
 async def post_schema(request: Request):
     try:
-        await api.post_schema(request)
+        await api.schema_create(request)
         flash.set_message(request, translate("Schema created."), type="success")
 
     except JSONDecodeError:

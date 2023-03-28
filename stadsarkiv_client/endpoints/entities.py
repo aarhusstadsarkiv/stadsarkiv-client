@@ -17,7 +17,7 @@ async def get_entity_create(request: Request):
     # type is e.g. car
     # name is e.g. car_2 (the name of the schema '_' + version)
     try:
-        schema = await api.get_schema(request)
+        schema = await api.schema_read(request)
         schema.type = schema.name
         schema = schema.to_dict()
 
@@ -33,7 +33,7 @@ async def get_entity_create(request: Request):
 async def post_entity_create(request: Request):
     # {"data":{"make":"Toyota","year":2008,"model":"test","safety":-1},"schema":"car_1"}
     try:
-        await api.post_entity_create(request)
+        await api.entity_create(request)
 
     except OpenAwsException as e:
         log.exception(e)

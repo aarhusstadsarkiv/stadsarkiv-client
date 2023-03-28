@@ -50,7 +50,7 @@ import json
 log = get_log()
 
 
-async def post_login_jwt(request: Request):
+async def login_jwt(request: Request):
     form = await request.form()
 
     username = str(form.get("username"))
@@ -83,7 +83,7 @@ async def post_login_jwt(request: Request):
         )
 
 
-async def post_register(request: Request):
+async def user_create(request: Request):
     form = await request.form()
     email = str(form.get("email"))
     password = str(form.get("password"))
@@ -110,13 +110,13 @@ async def post_register(request: Request):
         )
 
 
-async def get_me_jwt(request: Request):
+async def me_read(request: Request):
     auth_client: AuthenticatedClient = get_auth_client(request)
     me = await users_me_get.asyncio(client=auth_client)
     return me
 
 
-async def post_get_password(request: Request):
+async def forgot_password(request: Request):
     form = await request.form()
     email = str(form.get("email"))
 
@@ -132,13 +132,13 @@ async def post_get_password(request: Request):
         )
 
 
-async def get_schemas(request: Request):
+async def schemas_read(request: Request):
     client: AuthenticatedClient = get_auth_client(request)
     schemas = schemas_get.sync(client=client, limit=1000)
     return schemas
 
 
-async def get_schema(request: Request):
+async def schema_read(request: Request):
     schema_type = request.path_params["schema_type"]
     client: AuthenticatedClient = get_auth_client(request)
 
@@ -153,7 +153,7 @@ async def get_schema(request: Request):
     )
 
 
-async def post_schema(request: Request):
+async def schema_create(request: Request):
     form = await request.form()
     schema_type = str(form.get("type"))
     data = str(form.get("data"))
@@ -178,7 +178,7 @@ async def post_schema(request: Request):
     return schema
 
 
-async def post_entity_create(request: Request):
+async def entity_create(request: Request):
     schema_type = request.path_params["schema_type"]
     json = await request.json()
     json_body = EntityCreate(schema=schema_type, data=EntityCreateDataType0.from_dict(src_dict=json))
@@ -206,4 +206,4 @@ async def post_entity_create(request: Request):
         raise OpenAwsException(translate("Schema could not be created"), 500)
 
 
-__ALL__ = [post_login_jwt, get_me_jwt, post_get_password, post_register, get_schema, post_schema]
+__ALL__ = [login_jwt, me_read, forgot_password, user_create, schema_read, schema_create]

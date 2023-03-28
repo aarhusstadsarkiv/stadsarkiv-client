@@ -24,7 +24,7 @@ async def get_login(request: Request):
 
 async def post_login_jwt(request: Request):
     try:
-        await api.post_login_jwt(request)
+        await api.login_jwt(request)
         flash.set_message(request, translate("You have been logged in."), type="success")
         return RedirectResponse(url="/", status_code=302)
 
@@ -62,7 +62,7 @@ async def get_register(request: Request):
 
 async def post_register(request: Request):
     try:
-        await api.post_register(request)
+        await api.user_create(request)
 
         flash.set_message(
             request,
@@ -89,7 +89,7 @@ async def get_me_jwt(request: Request):
         return RedirectResponse(url="/auth/login", status_code=302)
 
     try:
-        me = await api.get_me_jwt(request)
+        me = await api.me_read(request)
         context_values = {"title": translate("Profile"), "me": me}
         context = get_context(request, context_values=context_values)
         return templates.TemplateResponse("auth/me.html", context)
@@ -107,7 +107,7 @@ async def get_forgot_password(request: Request):
 
 async def post_forgot_password(request: Request):
     try:
-        await api.post_get_password(request)
+        await api.forgot_password(request)
         flash.set_message(
             request,
             translate("An email has been sent to you with instructions on how to reset your password."),
