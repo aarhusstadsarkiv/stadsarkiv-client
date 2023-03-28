@@ -1,4 +1,5 @@
 from starlette.requests import Request
+from starlette.exceptions import HTTPException
 from starlette.responses import JSONResponse
 from stadsarkiv_client.utils.templates import templates
 from stadsarkiv_client.utils.context import get_context
@@ -15,14 +16,18 @@ async def get_entity_create(request: Request):
     # Type needs to be altered to name
     # type is e.g. car
     # name is e.g. car_2 (the name of the schema '_' + version)
-    schema = await api.get_schema(request)
-    schema.type = schema.name
-    schema = schema.to_dict()
+    try:
+        schema = await api.get_schema(request)
+        schema.type = schema.name
+        schema = schema.to_dict()
 
-    context_values = {"title": translate("Entities"), "schema": schema}
-    context = get_context(request, context_values=context_values)
+        context_values = {"title": translate("Entities"), "schema": schema}
+        context = get_context(request, context_values=context_values)
 
-    return templates.TemplateResponse("entities/entities.html", context)
+        return templates.TemplateResponse("entities/entities.html", context)
+
+    except Exception as e:
+        raise HTTPException(404, detail=str(e), headers=None)
 
 
 async def post_entity_create(request: Request):

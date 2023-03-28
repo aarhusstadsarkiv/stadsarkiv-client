@@ -170,6 +170,8 @@ async def post_schema(request: Request):
         json_body=json_body,
     )
 
+    log.debug(schema)
+
     if not isinstance(schema, SchemaRead):
         raise OpenAwsException(translate("Schema could not be created"), 500)
 
