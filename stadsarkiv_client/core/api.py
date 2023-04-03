@@ -204,7 +204,7 @@ async def entity_create(request: Request):
             "Unauthorized",
         )
 
-    if entity is None:       
+    if entity is None:
         raise OpenAwsException(
             translate("Entity returned is None"),
             400,
@@ -212,9 +212,7 @@ async def entity_create(request: Request):
         )
 
     if not isinstance(entity, EntityRead):
-        log.debug(entity)
-        log.debug(type(entity))
-        raise OpenAwsException(translate("Entity could not be created. Test"), 500)
+        raise OpenAwsException(translate("Entity could not be created."), 500)
 
     return entity
 
