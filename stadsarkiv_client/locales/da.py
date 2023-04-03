@@ -7,12 +7,15 @@ da = {
     "Email needs to be correct. Password needs to be at least 8 characters long.": "Email er ikke korrekt. Password skal v\u00e6re mindst 8 tegn langt.",
     "Email or password is incorrect. Or your user has not been activated.": "Email eller password er ikke korrekt. Eller din konto er ikke blevet aktiveret.",
     "Entities": "Entities",
+    "Entity could not be created": "Entitet kunne ikke oprettes",
+    "Entity returned is None": "Entitet kunne ikke oprettes. System fejl.",
     "Failed to create entity": "Kunne ikke oprette entity",
     "Failed to get schemas": "Det var ikke muligt at hente schemas",
     "Forgot your password": "Glemt password",
     "Get a reset link by email": "Modtag en nulstillingslink per email",
     "Invalid JSON in data.": "Invalid JSON i data.",
     "Invalid JSON.": "Invalid JSON.",
+    "Invalid entity data": "Invalid entity data",
     "Login": "Log ind",
     "Login to get access to speciel functions": "Login for at f\u00e5 adgang til specielle funktioner",
     "Logout": "Log ud",
@@ -46,5 +49,5 @@ da = {
     "You have been logged out.": "Du er nu logget ud.",
     "You have been registered. Check your email to confirm your account.": "Du er blevet registreret. Check din email for at bekr\u00e6fte din konto.",
     "You will need to log in order to get access to your profile": "Du skal logge ind for at se din profil.",
-    "search": "search",
+    "search": "search"
 }

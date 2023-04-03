@@ -7,6 +7,8 @@ en = {
     "Email needs to be correct. Password needs to be at least 8 characters long.": "Email needs to be correct. Password needs to be at least 8 characters long.",
     "Email or password is incorrect. Or your user has not been activated.": "Email or password is incorrect. Or your user has not been activated.",
     "Entities": "Entities",
+    "Entity could not be created": "Entity could not be created",
+    "Entity returned is None": "Entity returned is None",
     "Failed to create entity": "Failed to create entity",
     "Failed to get schemas": "Failed to get schemas",
     "Forgot your password": "Forgot your password",
@@ -15,6 +17,7 @@ en = {
     "Get instructions on how to change your password": "Get instructions on how to change your password",
     "Invalid JSON in data.": "Invalid JSON in data.",
     "Invalid JSON.": "Invalid JSON.",
+    "Invalid entity data": "Invalid entity data",
     "Login": "Login",
     "Login to get access to speciel functions": "Login to get access to speciel functions",
     "Logout": "Logout",
@@ -49,5 +52,5 @@ en = {
     "You have been registered.": "You have been registered.",
     "You have been registered. Check your email to confirm your account.": "You have been registered. Check your email to confirm your account.",
     "You will need to log in order to get access to your profile": "You will need to log in order to get access to your profile",
-    "search": "search",
+    "search": "search"
 }
