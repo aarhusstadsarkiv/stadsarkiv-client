@@ -22,7 +22,7 @@ Or (Windows)
 
 Or: 
 
-    ./bin/run-module.sh
+    ./run-module.sh
 
 ## Install as requirement
 
