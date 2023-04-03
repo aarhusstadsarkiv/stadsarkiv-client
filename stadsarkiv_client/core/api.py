@@ -163,8 +163,9 @@ async def schema_create(request: Request):
     data_dict["type"] = schema_type
 
     src_dict = json.loads(data)
-    data = SchemaCreateData.from_dict(src_dict=src_dict)
-    json_body = SchemaCreate(type=schema_type, data=data)
+    create_data: SchemaCreateData = SchemaCreateData.from_dict(src_dict=src_dict)
+
+    json_body = SchemaCreate(type=schema_type, data=create_data)
 
     client: AuthenticatedClient = get_auth_client(request)
     schema = await schemas_post.asyncio(

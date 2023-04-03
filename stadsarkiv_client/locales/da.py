@@ -1,6 +1,7 @@
 da = {
     "Are you sure": "Er du sikker p\u00e5 at du vil logge ud?",
     "Change your password": "\u00c6ndr dit password",
+    "Create Schema": "Create Schema",
     "Create entity": "Create entity",
     "Create schema": "Create schema",
     "Email": "E-mail",
@@ -49,5 +50,5 @@ da = {
     "You have been logged out.": "Du er nu logget ud.",
     "You have been registered. Check your email to confirm your account.": "Du er blevet registreret. Check din email for at bekr\u00e6fte din konto.",
     "You will need to log in order to get access to your profile": "Du skal logge ind for at se din profil.",
-    "search": "search"
+    "search": "search",
 }
