@@ -163,7 +163,8 @@ async def schema_create(request: Request):
     data_dict["type"] = schema_type
 
     src_dict = json.loads(data)
-    json_body = SchemaCreate(type=schema_type, data=SchemaCreateData.from_dict(src_dict=src_dict))
+    data = SchemaCreateData.from_dict(src_dict=src_dict)
+    json_body = SchemaCreate(type=schema_type, data=data)
 
     client: AuthenticatedClient = get_auth_client(request)
     schema = await schemas_post.asyncio(
@@ -172,6 +173,13 @@ async def schema_create(request: Request):
     )
 
     log.debug(schema)
+    if isinstance(schema, HTTPValidationError):
+        log.debug(schema)
+        raise OpenAwsException(
+            translate("Schema could not be validated"),
+            422,
+            "Unauthorized",
+        )
 
     if not isinstance(schema, SchemaRead):
         raise OpenAwsException(translate("Schema could not be created"), 500)
@@ -181,9 +189,10 @@ async def schema_create(request: Request):
 
 async def entity_create(request: Request):
     schema_type = request.path_params["schema_type"]
-    json = await request.json()
-    json_body = EntityCreate(schema=schema_type, data=EntityCreateDataType0.from_dict(src_dict=json))
+    json_dict = await request.json()
+    json_dict = json_dict["data"]
 
+    json_body = EntityCreate(schema=schema_type, data=json_dict)
     client: AuthenticatedClient = get_auth_client(request)
     entity = await entities_post.asyncio(client=client, json_body=json_body)
 
@@ -195,16 +204,19 @@ async def entity_create(request: Request):
             "Unauthorized",
         )
 
-    if isinstance(entity, ErrorModel):
-        log.debug(entity)
+    if entity is None:       
         raise OpenAwsException(
-            translate("Invalid entity data"),
+            translate("Entity returned is None"),
             400,
             "Unauthorized",
         )
 
     if not isinstance(entity, EntityRead):
-        raise OpenAwsException(translate("Entity could not be created"), 500)
+        log.debug(entity)
+        log.debug(type(entity))
+        raise OpenAwsException(translate("Entity could not be created. Test"), 500)
+
+    return entity
 
 
 async def entities_read(request: Request):
@@ -223,5 +235,5 @@ __ALL__ = [
     schema_read,
     schema_create,
     entity_create,
-    entities_read
+    entities_read,
 ]
