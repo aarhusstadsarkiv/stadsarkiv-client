@@ -57,9 +57,11 @@
         },
         "lastnames": {
             "type": "array",
+            "minItems": 1,
             "items": {
                 "type": "string",
-                "maxLength": 255
+                "maxLength": 255,
+                "minLength": 3
             },
             "title": "Mellem- og efternavne",
             "description": "Alle nuværende mellem og efternavne i korrekt rækkefølge"
