@@ -45,4 +45,14 @@ async def post_entity_create(request: Request):
         log.exception(e)
         flash.set_message(request, str(e), type="error")
 
-    return JSONResponse({"message": "Hello, world!"})
+    return JSONResponse({"message": ""})
+
+
+async def get_entities_read(request: Request):
+    try:
+        entities = await api.entities_read(request)
+        log.debug(entities)
+    except Exception as e:
+        log.exception(e)
+
+    return JSONResponse({"message": "Entities"})
