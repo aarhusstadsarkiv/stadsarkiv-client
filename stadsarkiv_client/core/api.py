@@ -189,6 +189,7 @@ async def schema_create(request: Request):
 
 
 async def entity_create(request: Request):
+
     schema_type = request.path_params["schema_type"]
     json_dict = await request.json()
     json_dict = json_dict["data"]
@@ -196,6 +197,8 @@ async def entity_create(request: Request):
     json_body = EntityCreate(schema=schema_type, data=json_dict)
     client: AuthenticatedClient = get_auth_client(request)
     entity = await entities_post.asyncio(client=client, json_body=json_body)
+
+    log.debug(entity)
 
     if isinstance(entity, HTTPValidationError):
         log.debug(entity)
