@@ -110,6 +110,7 @@ async def user_create(request: Request):
 
 
 async def me_read(request: Request):
+
     auth_client: AuthenticatedClient = get_auth_client(request)
     me = await users_me_get.asyncio(client=auth_client)
     return me

@@ -1,11 +1,11 @@
 from starlette.requests import Request
 from starlette.exceptions import HTTPException
 from starlette.responses import RedirectResponse
+from stadsarkiv_client.core.decorators import is_authenticated_or_redirect
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core import flash
-from stadsarkiv_client.core import user
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.openaws import OpenAwsException
 from stadsarkiv_client.core import api
@@ -15,8 +15,8 @@ from json import JSONDecodeError
 log = get_log()
 
 
+@is_authenticated_or_redirect(message=translate("You need to be logged in to view this page."))
 async def get_schemas(request: Request):
-    await user.get_user(request)
     schemas = await api.schemas_read(request)
     context_values = {"title": translate("Schemas"), "schemas": schemas}
     context = get_context(request, context_values=context_values)
@@ -24,6 +24,7 @@ async def get_schemas(request: Request):
     return templates.TemplateResponse("schemas/schemas.html", context)
 
 
+@is_authenticated_or_redirect(message=translate("You need to be logged in to view this page."))
 async def get_schema(request: Request):
     try:
         schema = await api.schema_read(request)
@@ -38,6 +39,7 @@ async def get_schema(request: Request):
         raise HTTPException(status_code=404, detail=str(e))
 
 
+@is_authenticated_or_redirect(message=translate("You need to be logged in to view this page."))
 async def post_schema(request: Request):
     try:
         await api.schema_create(request)
