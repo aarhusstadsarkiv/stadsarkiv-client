@@ -141,7 +141,6 @@ async def schemas_read(request: Request):
 
 async def schema_read(request: Request):
     schema_type = request.path_params["schema_type"]
-    # client: AuthenticatedClient = get_auth_client_from_token(request)
     client: AuthenticatedClient = get_auth_client(request)
 
     schema = await schemas_name_get.asyncio(client=client, name=schema_type, version=None)

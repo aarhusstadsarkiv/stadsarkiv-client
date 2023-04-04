@@ -16,3 +16,12 @@ openapi-python-client generate --config config.yml --url http://localhost:8000/v
 cp -rf openaws-client/* openaws-client-tmp/
 rm -rf openaws-client
 mv openaws-client-tmp openaws-client
+
+MESSAGE="Client made using: [openapi-python-client](https://github.com/openapi-generators/openapi-python-client)\n"
+# Add MESSAGE TO the top of the file 'openaws-client/README.md'
+echo "$MESSAGE" | cat - openaws-client/README.md > temp && mv temp openaws-client/README.md
+
+
+
+
+
