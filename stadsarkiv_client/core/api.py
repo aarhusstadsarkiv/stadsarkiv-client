@@ -25,8 +25,6 @@ from .openaws import (
     EntityRead,
     EntityCreate,
     EntityUpdate,
-    EntityCreateDataType0,
-    EntityReadDataType0,
     entities_uuid_patch,
     entities_get,
     entities_post,
@@ -59,7 +57,7 @@ async def login_jwt(request: Request):
 
     client: Client = get_client()
     form_data: AuthJwtLoginPost = AuthJwtLoginPost(username=username, password=password)
-    bearer_response = auth_jwt_login_post.sync(client=client, form_data=form_data)
+    bearer_response = await auth_jwt_login_post.asyncio(client=client, form_data=form_data)
 
     if isinstance(bearer_response, BearerResponse):
         access_token: str = bearer_response.access_token
@@ -123,7 +121,9 @@ async def forgot_password(request: Request):
 
     client: Client = get_client()
     forgot_password_post: ForgotPasswordPost = ForgotPasswordPost(email=email)
-    forgot_password_response = auth_forgot_password_post.sync(client=client, json_body=forgot_password_post)
+    forgot_password_response = await auth_forgot_password_post.asyncio(
+        client=client, json_body=forgot_password_post
+    )
     if isinstance(forgot_password_response, HTTPValidationError):
         log.debug(forgot_password_response)
         raise OpenAwsException(
@@ -134,14 +134,15 @@ async def forgot_password(request: Request):
 
 
 async def schemas_read(request: Request):
-    client: AuthenticatedClient = get_auth_client(request)
-    schemas = schemas_get.sync(client=client, limit=1000)
+    client: Client = get_auth_client(request)
+    schemas = await schemas_get.asyncio(client=client, limit=1000)
     return schemas
 
 
 async def schema_read(request: Request):
     schema_type = request.path_params["schema_type"]
-    client: AuthenticatedClient = get_auth_client(request)
+    # client: AuthenticatedClient = get_auth_client_from_token(request)
+    client: Client = get_auth_client(request)
 
     schema = await schemas_name_get.asyncio(client=client, name=schema_type, version=None)
     if isinstance(schema, SchemaRead):
@@ -222,7 +223,6 @@ async def entity_create(request: Request):
 
 async def entities_read(request: Request):
     client = get_auth_client(request)
-    # client = get_client()
     entities = await entities_get.asyncio(client=client)
     log.debug(entities)
     pass
