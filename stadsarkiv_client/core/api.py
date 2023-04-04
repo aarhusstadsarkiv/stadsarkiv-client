@@ -189,7 +189,6 @@ async def schema_create(request: Request):
 
 
 async def entity_create(request: Request):
-
     schema_type = request.path_params["schema_type"]
     json_dict = await request.json()
     json_dict = json_dict["data"]
