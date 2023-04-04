@@ -70,7 +70,6 @@ def get_client() -> Client:
 
 
 def get_auth_client(request: Request) -> AuthenticatedClient:
-
     token = request.session["access_token"]
     auth_client = AuthenticatedClient(
         raise_on_unexpected_status=False,

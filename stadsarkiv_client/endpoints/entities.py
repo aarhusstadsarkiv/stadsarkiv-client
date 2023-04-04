@@ -18,7 +18,6 @@ log = get_log()
 
 @is_authenticated_or_redirect(message=translate("You need to be logged in to view this page."))
 async def get_entity_create(request: Request):
-
     # Type needs to be altered to name
     # type is e.g. car
     # name is e.g. car_2 (the name of the schema '_' + version)

@@ -51,5 +51,5 @@ da = {
     "You have been registered. Check your email to confirm your account.": "Du er blevet registreret. Check din email for at bekr\u00e6fte din konto.",
     "You need to be logged in to view this page.": "Du er ikke logget ind. Log ind for at se siden.",
     "You will need to log in order to get access to your profile": "Du skal logge ind for at se din profil.",
-    "search": "search"
+    "search": "search",
 }

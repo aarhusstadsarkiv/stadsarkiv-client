@@ -110,7 +110,6 @@ async def user_create(request: Request):
 
 
 async def me_read(request: Request):
-
     auth_client: AuthenticatedClient = get_auth_client(request)
     me = await users_me_get.asyncio(client=auth_client)
     return me
@@ -135,7 +134,7 @@ async def forgot_password(request: Request):
 
 
 async def schemas_read(request: Request):
-    client: Client = get_auth_client(request)
+    client: AuthenticatedClient = get_auth_client(request)
     schemas = await schemas_get.asyncio(client=client, limit=1000)
     return schemas
 
@@ -143,7 +142,7 @@ async def schemas_read(request: Request):
 async def schema_read(request: Request):
     schema_type = request.path_params["schema_type"]
     # client: AuthenticatedClient = get_auth_client_from_token(request)
-    client: Client = get_auth_client(request)
+    client: AuthenticatedClient = get_auth_client(request)
 
     schema = await schemas_name_get.asyncio(client=client, name=schema_type, version=None)
     if isinstance(schema, SchemaRead):

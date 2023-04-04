@@ -4,7 +4,7 @@ from starlette.responses import RedirectResponse
 from functools import wraps
 
 
-def is_authenticated_or_redirect(func=None, message='Redirecting to homepage...'):
+def is_authenticated_or_redirect(func=None, message="Redirecting to homepage..."):
     if func is None:
         return lambda func: is_authenticated_or_redirect(func, message=message)
 
@@ -12,7 +12,7 @@ def is_authenticated_or_redirect(func=None, message='Redirecting to homepage...'
     async def wrapper(request, *args, **kwargs):
         if not await user.is_logged_in(request):
             flash.set_message(request, message, type="error")
-            response = RedirectResponse(url='/auth/login', status_code=302, headers={'X-Message': message})
+            response = RedirectResponse(url="/auth/login", status_code=302, headers={"X-Message": message})
         else:
             response = await func(request, *args, **kwargs)
         return response

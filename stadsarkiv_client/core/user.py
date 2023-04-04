@@ -27,7 +27,7 @@ async def set_user_jwt(request: Request, access_token: str, token_type: str):
 
 
 async def is_logged_in(request: Request):
-    log.debug('Is logged in')
+    log.debug("Is logged in")
     log.debug(request.session.get("logged_in"))
     if request.session.get("logged_in"):
         return True
