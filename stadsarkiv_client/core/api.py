@@ -223,8 +223,13 @@ async def entity_create(request: Request):
 async def entities_read(request: Request):
     client = get_auth_client(request)
     entities = await entities_get.asyncio(client=client)
-    log.debug(entities)
-    pass
+    return entities
+
+async def entity_read(request: Request):
+    entity_id = request.path_params["entity_id"]
+    client = get_auth_client(request)
+    # entity = await entities_id_get.asyncio(client=client, id=entity_id)
+    # return entity
 
 
 __ALL__ = [

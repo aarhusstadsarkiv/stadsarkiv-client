@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
+{% endblock head %}
+
+{% block content %}
+<h1>Create resource</h1>
+
+
+<div id='editor_holder' class='small'></div>
+<button id='submit'>Create</button>
+
+<script type="module">
+
+    import { Requests } from "/static/js/requests.js";
+    import { getApiUrl } from "/static/js/config.js";
+    import { Flash } from "/static/js/flash.js";
+
+    var schema = {{ schema | safe }};
+
+    console.log(schema)
+    // schema.data['$schema'] = 'http://json-schema.org/draft-07/schema#';
+    const schema_type = schema.type;
+
+    // Initialize the editor with a JSON schema
+    const options = {
+        theme: 'barebones',
+        disable_properties: true,
+        disable_collapse: true,
+        disable_edit_json: true,
+        schema: schema.data
+    }
+
+    var editor = new JSONEditor(document.getElementById('editor_holder'), options);
+    document.getElementById('submit').addEventListener('click', async function () {
+
+        const errors = editor.validate();
+        if (errors.length) {
+
+            // console.log(editor.getValue())
+            // errors is an array of objects, each with a `path`, `property`, and `message` parameter
+            // `property` is the schema keyword that triggered the validation error (e.g. "minLength")
+            // `path` is a dot separated path into the JSON object (e.g. "root.path.to.field")
+            console.log(errors)
+            errors.forEach(error => {
+                let message = "Client validation. Path: " + error.path + " - " + error.message;
+                Flash.setFlashMessage(message, 'error')
+            })
+            return;
+
+        }
+        else {
+            let schema_data = editor.getValue();
+            let post_json = JSON.stringify({
+                data: schema_data,
+                schema: schema_type,
+            })
+
+            console.log(post_json)
+
+            try {
+
+                let url = `/entities/post-entity/${schema_type}`;
+                const res = await Requests.asyncPostJson(getApiUrl(url), post_json);
+
+                if (res.error) {
+                    Flash.setFlashMessage(res.error, 'error')
+                }
+                else {
+                    Flash.setFlashMessage("Entity created", 'success')
+                }
+
+            } catch (e) {
+                console.log(e)
+            } finally {
+
+            }
+        }
+    });
+
+</script>
+
+{% endblock content %}

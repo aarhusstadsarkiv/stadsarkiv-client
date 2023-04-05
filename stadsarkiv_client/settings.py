@@ -38,6 +38,7 @@ settings = {
         {"name": "register", "title": "Ny bruger"},
         {"name": "profile", "title": "Profil"},
         {"name": "schemas", "title": "Schemas"},
+        {"name": "entities", "title": "Entities"},
         {"name": "search", "title": "Søg"},
     ],
     "pages": [

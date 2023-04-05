@@ -50,14 +50,15 @@ routes = [
     Route("/schema/{schema_type:str}", endpoint=schemas.get_schema, name="schemas"),
     Route("/schemas", endpoint=schemas.get_schemas, name="schemas"),
     Route("/schemas/post-schema", endpoint=schemas.post_schema, name="post_schema", methods=["POST"]),
-    Route("/entities/read", endpoint=entities.get_entities_read, name="entities_read"),
+    Route("/entities", endpoint=entities.get_entities, name="entities"),
     Route("/entities/{schema_type:str}", endpoint=entities.get_entity_create, name="entity_create"),
     Route(
-        "/entities/{schema_type:str}",
+        "/entities/post-entity/{schema_type:str}",
         endpoint=entities.post_entity_create,
         name="post_entity_create",
         methods=["POST"],
     ),
+    Route("/entities/view/{uuid:str}", endpoint=entities.get_entity, name="entity_view"),
     Route("/test", endpoint=testing.test, name="test"),
 ]
 

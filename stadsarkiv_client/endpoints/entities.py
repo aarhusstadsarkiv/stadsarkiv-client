@@ -30,7 +30,7 @@ async def get_entity_create(request: Request):
         context_values = {"title": translate("Entities"), "schema": schema}
         context = get_context(request, context_values=context_values)
 
-        return templates.TemplateResponse("entities/entities.html", context)
+        return templates.TemplateResponse("entities/entities_create.html", context)
 
     except Exception as e:
         raise HTTPException(404, detail=str(e), headers=None)
@@ -55,11 +55,20 @@ async def post_entity_create(request: Request):
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))
-async def get_entities_read(request: Request):
+async def get_entities(request: Request):
     try:
         entities = await api.entities_read(request)
-        log.debug(entities)
+        context_values = {"title": translate("Entities"), "entities": entities}
+        context = get_context(request, context_values=context_values)
+        return templates.TemplateResponse("entities/entities.html", context)
+
     except Exception as e:
         log.exception(e)
 
     return JSONResponse({"message": "Entities"})
+
+
+async def get_entity(request: Request):
+    log.debug('get_entity')
+    return JSONResponse({"message": "Entity Test"})
+    pass
