@@ -92,7 +92,7 @@ https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_clien
 
 ### Fix code
 
-    ./fix.sh
+    ./bin/fix.sh
 
 ### openaws client
 
