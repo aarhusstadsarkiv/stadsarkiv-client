@@ -74,9 +74,9 @@ async def get_entity(request: Request):
         entity = entity.to_dict()
 
         # schema is e.g. person_1
-        schema_name: str = entity['schema'].split('_')[0]
-        schema_version = entity['schema'].split('_')[1]
-        
+        schema_name: str = entity["schema"].split("_")[0]
+        schema_version = entity["schema"].split("_")[1]
+
         schema = await api.schema_read_specific(request, schema_name, schema_version)
         schema = schema.to_dict()
 
@@ -88,6 +88,6 @@ async def get_entity(request: Request):
         return templates.TemplateResponse("entities/entity.html", context)
 
     except Exception as e:
-        log.debug('doh')
+        log.debug("doh")
         log.exception(e)
         raise HTTPException(404, detail=str(e), headers=None)
