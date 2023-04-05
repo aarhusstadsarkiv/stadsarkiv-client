@@ -39,7 +39,7 @@ from .openaws import (
     get_client,
     get_auth_client,
     # exceptions
-    OpenAwsException
+    OpenAwsException,
 )
 from stadsarkiv_client.core.logging import get_log
 
@@ -142,7 +142,7 @@ async def forgot_password(request: Request):
 async def schemas_read(request: Request):
     client: AuthenticatedClient = get_auth_client(request)
     schemas = await schemas_get.asyncio(client=client, limit=1000)
-    if (isinstance(schemas, list)):
+    if isinstance(schemas, list):
         return schemas
 
     raise HTTPException(
