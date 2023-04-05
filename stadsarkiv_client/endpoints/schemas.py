@@ -17,11 +17,14 @@ log = get_log()
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))
 async def get_schemas(request: Request):
-    schemas = await api.schemas_read(request)
-    context_values = {"title": translate("Schemas"), "schemas": schemas}
-    context = get_context(request, context_values=context_values)
-
-    return templates.TemplateResponse("schemas/schemas.html", context)
+    try:
+        schemas = await api.schemas_read(request)
+        context_values = {"title": translate("Schemas"), "schemas": schemas}
+        context = get_context(request, context_values=context_values)
+        return templates.TemplateResponse("schemas/schemas.html", context)
+    except Exception as e:
+        log.exception(e)
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))

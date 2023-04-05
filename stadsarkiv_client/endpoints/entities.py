@@ -31,7 +31,8 @@ async def get_entity_create(request: Request):
 
         return templates.TemplateResponse("entities/entities_create.html", context)
 
-    except OpenAwsException as e:
+    except Exception as e:
+        # for sure this is a 404
         raise HTTPException(404, detail=str(e), headers=None)
 
 

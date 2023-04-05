@@ -6,6 +6,7 @@ from .openaws import (
     auth_jwt_login_post,
     BearerResponse,
     # me
+    UserRead,
     users_me_get,
     # errors
     HTTPValidationError,
@@ -38,7 +39,7 @@ from .openaws import (
     get_client,
     get_auth_client,
     # exceptions
-    OpenAwsException,
+    OpenAwsException
 )
 from stadsarkiv_client.core.logging import get_log
 
@@ -51,12 +52,6 @@ import json
 
 
 log = get_log()
-
-
-def check_none(value):
-    if value is None:
-        return ""
-    return value
 
 
 async def login_jwt(request: Request):
@@ -76,19 +71,15 @@ async def login_jwt(request: Request):
         await user.set_user_jwt(request, access_token, token_type)
 
     if isinstance(bearer_response, HTTPValidationError):
-        log.debug(bearer_response)
         raise OpenAwsException(
             422,
             translate("User already exists. Try to login instead."),
-            "Unauthorized",
         )
 
     if isinstance(bearer_response, ErrorModel):
-        log.debug(bearer_response)
         raise OpenAwsException(
             400,
             translate("User already exists. Try to login instead."),
-            "Unauthorized",
         )
 
 
@@ -101,9 +92,9 @@ async def user_create(request: Request):
     json_body: UserCreate = UserCreate(
         email=email, password=password, is_active=True, is_superuser=False, is_verified=False
     )
+
     user_read = await auth_register_post.asyncio(client=client, json_body=json_body)
     if isinstance(user_read, HTTPValidationError):
-        log.debug(user_read)
         raise OpenAwsException(
             422,
             translate("Email needs to be correct. Password needs to be at least 8 characters long."),
@@ -111,7 +102,6 @@ async def user_create(request: Request):
         )
 
     if isinstance(user_read, ErrorModel):
-        log.debug(user_read)
         raise OpenAwsException(
             400,
             translate("User already exists. Try to login instead."),
@@ -122,7 +112,14 @@ async def user_create(request: Request):
 async def me_read(request: Request):
     auth_client: AuthenticatedClient = get_auth_client(request)
     me = await users_me_get.asyncio(client=auth_client)
-    return me
+
+    if isinstance(me, UserRead):
+        return me
+
+    raise OpenAwsException(
+        422,
+        translate("User not found."),
+    )
 
 
 async def forgot_password(request: Request):
@@ -134,19 +131,24 @@ async def forgot_password(request: Request):
     forgot_password_response = await auth_forgot_password_post.asyncio(
         client=client, json_body=forgot_password_post
     )
+
     if isinstance(forgot_password_response, HTTPValidationError):
-        log.debug(forgot_password_response)
         raise OpenAwsException(
             422,
             translate("There is no user with this email address."),
-            "Unauthorized",
         )
 
 
 async def schemas_read(request: Request):
     client: AuthenticatedClient = get_auth_client(request)
     schemas = await schemas_get.asyncio(client=client, limit=1000)
-    return schemas
+    if (isinstance(schemas, list)):
+        return schemas
+
+    raise HTTPException(
+        404,
+        translate("Schemas not found."),
+    )
 
 
 async def schema_read(request: Request):
@@ -172,7 +174,6 @@ async def schema_read_specific(request: Request, schema_name: str, schema_versio
     raise OpenAwsException(
         422,
         translate("Schema not found."),
-        "Unauthorized",
     )
 
 
@@ -195,7 +196,6 @@ async def schema_create(request: Request):
         json_body=json_body,
     )
 
-    log.debug(schema)
     if isinstance(schema, HTTPValidationError):
         log.debug(schema)
         raise OpenAwsException(
@@ -219,10 +219,7 @@ async def entity_create(request: Request):
     client: AuthenticatedClient = get_auth_client(request)
     entity = await entities_post.asyncio(client=client, json_body=json_body)
 
-    log.debug(entity)
-
     if isinstance(entity, HTTPValidationError):
-        log.debug(entity)
         raise OpenAwsException(
             422,
             translate("Entity could not be validated"),

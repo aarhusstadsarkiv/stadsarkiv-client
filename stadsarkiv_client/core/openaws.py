@@ -10,6 +10,7 @@ from openaws_client.api.auth import auth_db_bearer_login_v1_auth_jwt_login_post 
 
 # Users module
 from openaws_client.api.users import users_current_user_v1_users_me_get as users_me_get
+from openaws_client.models.user_read import UserRead 
 
 # Register module
 from openaws_client.api.auth import register_register_v1_auth_register_post as auth_register_post
@@ -99,6 +100,7 @@ __ALL__ = [
     auth_jwt_login_post,
     BearerResponse,
     # me
+    UserRead,
     users_me_get,
     # errors
     HTTPValidationError,
