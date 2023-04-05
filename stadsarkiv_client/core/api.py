@@ -1,4 +1,5 @@
 from starlette.requests import Request
+from starlette.exceptions import HTTPException
 from .openaws import (
     # auth
     AuthJwtLoginPost,
@@ -77,16 +78,16 @@ async def login_jwt(request: Request):
     if isinstance(bearer_response, HTTPValidationError):
         log.debug(bearer_response)
         raise OpenAwsException(
-            translate("User already exists. Try to login instead."),
             422,
+            translate("User already exists. Try to login instead."),
             "Unauthorized",
         )
 
     if isinstance(bearer_response, ErrorModel):
         log.debug(bearer_response)
         raise OpenAwsException(
-            translate("User already exists. Try to login instead."),
             400,
+            translate("User already exists. Try to login instead."),
             "Unauthorized",
         )
 
@@ -104,16 +105,16 @@ async def user_create(request: Request):
     if isinstance(user_read, HTTPValidationError):
         log.debug(user_read)
         raise OpenAwsException(
-            translate("Email needs to be correct. Password needs to be at least 8 characters long."),
             422,
+            translate("Email needs to be correct. Password needs to be at least 8 characters long."),
             "Unauthorized",
         )
 
     if isinstance(user_read, ErrorModel):
         log.debug(user_read)
         raise OpenAwsException(
-            translate("User already exists. Try to login instead."),
             400,
+            translate("User already exists. Try to login instead."),
             "Unauthorized",
         )
 
@@ -136,8 +137,8 @@ async def forgot_password(request: Request):
     if isinstance(forgot_password_response, HTTPValidationError):
         log.debug(forgot_password_response)
         raise OpenAwsException(
-            translate("There is no user with this email address."),
             422,
+            translate("There is no user with this email address."),
             "Unauthorized",
         )
 
@@ -156,10 +157,9 @@ async def schema_read(request: Request):
     if isinstance(schema, SchemaRead):
         return schema
 
-    raise OpenAwsException(
+    raise HTTPException(
+        404,
         translate("Schema not found."),
-        422,
-        "Unauthorized",
     )
 
 
@@ -170,8 +170,8 @@ async def schema_read_specific(request: Request, schema_name: str, schema_versio
         return schema
 
     raise OpenAwsException(
-        translate("Schema not found."),
         422,
+        translate("Schema not found."),
         "Unauthorized",
     )
 
@@ -199,13 +199,13 @@ async def schema_create(request: Request):
     if isinstance(schema, HTTPValidationError):
         log.debug(schema)
         raise OpenAwsException(
-            translate("Schema could not be validated"),
             422,
+            translate("Schema could not be validated"),
             "Unauthorized",
         )
 
     if not isinstance(schema, SchemaRead):
-        raise OpenAwsException(translate("Schema could not be created"), 500)
+        raise OpenAwsException(500, translate("Schema could not be created"))
 
     return schema
 
@@ -224,20 +224,20 @@ async def entity_create(request: Request):
     if isinstance(entity, HTTPValidationError):
         log.debug(entity)
         raise OpenAwsException(
-            translate("Entity could not be validated"),
             422,
+            translate("Entity could not be validated"),
             "Unauthorized",
         )
 
     if entity is None:
         raise OpenAwsException(
-            translate("Entity returned is None"),
             400,
+            translate("Entity returned is None"),
             "Unauthorized",
         )
 
     if not isinstance(entity, EntityRead):
-        raise OpenAwsException(translate("Entity could not be created."), 500)
+        raise OpenAwsException(500, translate("Entity could not be created."))
 
     return entity
 
@@ -245,6 +245,9 @@ async def entity_create(request: Request):
 async def entities_read(request: Request):
     client = get_auth_client(request)
     entities = await entities_get.asyncio(client=client)
+    if not isinstance(entities, list):
+        raise OpenAwsException(500, translate("Entities could not be read."))
+
     return entities
 
 
@@ -254,7 +257,7 @@ async def entity_read(request: Request):
     entity = await entities_uuid_get.asyncio(client=client, uuid=entity_id)
 
     if not isinstance(entity, EntityRead):
-        raise OpenAwsException(translate("Entity could not be read."), 500)
+        raise OpenAwsException(500, translate("Entity could not be read."))
 
     return entity
 

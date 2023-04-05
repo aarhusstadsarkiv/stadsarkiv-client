@@ -83,9 +83,9 @@ def get_auth_client(request: Request) -> AuthenticatedClient:
 
 
 class OpenAwsException(Exception):
-    def __init__(self, message: str, status_code: int, text: str = ""):
-        self.message = message
+    def __init__(self, status_code: int, message: str, text: str = ""):
         self.status_code = status_code
+        self.message = message
         self.text = text
         super().__init__(message, status_code, text)
 

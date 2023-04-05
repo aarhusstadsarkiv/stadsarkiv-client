@@ -31,7 +31,7 @@ async def get_entity_create(request: Request):
 
         return templates.TemplateResponse("entities/entities_create.html", context)
 
-    except Exception as e:
+    except OpenAwsException as e:
         raise HTTPException(404, detail=str(e), headers=None)
 
 
@@ -50,8 +50,6 @@ async def post_entity_create(request: Request):
         log.exception(e)
         flash.set_message(request, str(e), type="error")
 
-    return JSONResponse({"message": ""})
-
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))
 async def get_entities(request: Request):
@@ -63,8 +61,6 @@ async def get_entities(request: Request):
 
     except Exception as e:
         log.exception(e)
-
-    return JSONResponse({"message": "Entities"})
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))
@@ -88,6 +84,5 @@ async def get_entity(request: Request):
         return templates.TemplateResponse("entities/entity.html", context)
 
     except Exception as e:
-        log.debug("doh")
         log.exception(e)
         raise HTTPException(404, detail=str(e), headers=None)
