@@ -41,7 +41,7 @@ da = {
     "Search this site": "S\u00f8g i dette site",
     "Submit": "Send",
     "System can not deliver an email about resetting password. Try again later.": "Systemet kan ikke sende en email om at nulstille password. Pr\u00f8v igen senere.",
-    "System error. Something went wrong": "System error. Something went wrong",
+    "System error. Something went wrong": "System fejl. Fejlen er blevet logget.",
     "There is no user with this email address.": "Der er ingen bruger med denne email adresse.",
     "User already exists. Try to login instead.": "Bruger findes allerede. Pr\u00f8v at logge ind i stedet.",
     "View": "Vis",
@@ -51,5 +51,5 @@ da = {
     "You have been registered. Check your email to confirm your account.": "Du er blevet registreret. Check din email for at bekr\u00e6fte din konto.",
     "You need to be logged in to view this page.": "Du er ikke logget ind. Log ind for at se siden.",
     "You will need to log in order to get access to your profile": "Du skal logge ind for at se din profil.",
-    "search": "search",
+    "search": "search"
 }

@@ -52,7 +52,8 @@ en = {
     "You have been logged out.": "You have been logged out.",
     "You have been registered.": "You have been registered.",
     "You have been registered. Check your email to confirm your account.": "You have been registered. Check your email to confirm your account.",
+    "You need to be logged in to access this page.": "You need to be logged in to access this page.",
     "You need to be logged in to view this page.": "You need to be logged in to view this page.",
     "You will need to log in order to get access to your profile": "You will need to log in order to get access to your profile",
-    "search": "search",
+    "search": "search"
 }
