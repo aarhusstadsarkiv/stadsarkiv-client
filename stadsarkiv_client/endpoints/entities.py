@@ -9,7 +9,6 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.decorators import is_authenticated_or_redirect
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core import api
-from stadsarkiv_client.core import user
 from stadsarkiv_client.core.openaws import OpenAwsException
 import json
 
