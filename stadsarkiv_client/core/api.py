@@ -163,6 +163,19 @@ async def schema_read(request: Request):
     )
 
 
+async def schema_read_specific(request: Request, schema_name: str, schema_version: int):
+    client: AuthenticatedClient = get_auth_client(request)
+    schema = await schemas_name_get.asyncio(client=client, name=schema_name, version=schema_version)
+    if isinstance(schema, SchemaRead):
+        return schema
+
+    raise OpenAwsException(
+        translate("Schema not found."),
+        422,
+        "Unauthorized",
+    )
+
+
 async def schema_create(request: Request):
     form = await request.form()
     schema_type = str(form.get("type"))
