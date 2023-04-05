@@ -72,6 +72,16 @@ async def get_entity(request: Request):
     try:
         entity = await api.entity_read(request)
         entity = entity.to_dict()
+
+        # schema is e.g. person_1
+        schema_name: str = entity['schema'].split('_')[0]
+        schema_version = entity['schema'].split('_')[1]
+        
+        schema = await api.schema_read_specific(request, schema_name, schema_version)
+        schema = schema.to_dict()
+
+        log.debug(schema)
+
         log.debug(entity)
         context_values = {"title": translate("Entities"), "entity": entity}
         context = get_context(request, context_values=context_values)
