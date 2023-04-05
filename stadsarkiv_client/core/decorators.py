@@ -5,9 +5,10 @@ from starlette.responses import RedirectResponse
 from functools import wraps
 
 
-def is_authenticated_or_redirect(func=None, message=translate("You need to be logged in to view this page.")):
+def is_authenticated(func=None, message=translate("You need to be logged in to view this page.")):
+    """Redirect to login page if user is not authenticated."""
     if func is None:
-        return lambda func: is_authenticated_or_redirect(func, message=message)
+        return lambda func: is_authenticated(func, message=message)
 
     @wraps(func)
     async def wrapper(request, *args, **kwargs):

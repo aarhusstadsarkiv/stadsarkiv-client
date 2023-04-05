@@ -2,7 +2,7 @@ from starlette.requests import Request
 from starlette.responses import RedirectResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
-from stadsarkiv_client.core.decorators import is_authenticated_or_redirect
+from stadsarkiv_client.core.decorators import is_authenticated
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core import user
@@ -82,7 +82,7 @@ async def post_register(request: Request):
     return RedirectResponse(url="/auth/register", status_code=302)
 
 
-@is_authenticated_or_redirect(message=translate("You need to be logged in to view this page."))
+@is_authenticated(message=translate("You need to be logged in to view this page."))
 async def get_me_jwt(request: Request):
     try:
         me = await api.me_read(request)

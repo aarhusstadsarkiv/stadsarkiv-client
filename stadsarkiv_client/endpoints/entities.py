@@ -6,7 +6,7 @@ from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.core.decorators import is_authenticated_or_redirect
+from stadsarkiv_client.core.decorators import is_authenticated
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.openaws import OpenAwsException
@@ -15,7 +15,7 @@ import json
 log = get_log()
 
 
-@is_authenticated_or_redirect(message=translate("You need to be logged in to view this page."))
+@is_authenticated(message=translate("You need to be logged in to view this page."))
 async def get_entity_create(request: Request):
     # Type needs to be altered to name
     # type is e.g. car
@@ -36,7 +36,7 @@ async def get_entity_create(request: Request):
         raise HTTPException(404, detail=str(e), headers=None)
 
 
-@is_authenticated_or_redirect(message=translate("You need to be logged in to view this page."))
+@is_authenticated(message=translate("You need to be logged in to view this page."))
 async def post_entity_create(request: Request):
     # {"data":{"make":"Toyota","year":2008,"model":"test","safety":-1},"schema":"car_1"}
 
@@ -54,7 +54,7 @@ async def post_entity_create(request: Request):
     return JSONResponse({"message": ""})
 
 
-@is_authenticated_or_redirect(message=translate("You need to be logged in to view this page."))
+@is_authenticated(message=translate("You need to be logged in to view this page."))
 async def get_entities_read(request: Request):
     try:
         entities = await api.entities_read(request)
