@@ -25,9 +25,12 @@ from .openaws import (
     EntityRead,
     EntityCreate,
     EntityUpdate,
+    EntityCreateDataType0,
+    EntityReadDataType0,
     entities_uuid_patch,
     entities_get,
     entities_post,
+    entities_uuid_get,
     # client related
     AuthenticatedClient,
     Client,
@@ -47,6 +50,12 @@ import json
 
 
 log = get_log()
+
+
+def check_none(value):
+    if value is None:
+        return ""
+    return value
 
 
 async def login_jwt(request: Request):
@@ -225,11 +234,16 @@ async def entities_read(request: Request):
     entities = await entities_get.asyncio(client=client)
     return entities
 
+
 async def entity_read(request: Request):
-    entity_id = request.path_params["entity_id"]
+    entity_id = request.path_params["uuid"]
     client = get_auth_client(request)
-    # entity = await entities_id_get.asyncio(client=client, id=entity_id)
-    # return entity
+    entity = await entities_uuid_get.asyncio(client=client, uuid=entity_id)
+
+    if not isinstance(entity, EntityRead):
+        raise OpenAwsException(translate("Entity could not be read."), 500)
+
+    return entity
 
 
 __ALL__ = [

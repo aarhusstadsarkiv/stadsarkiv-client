@@ -46,6 +46,7 @@ from openaws_client.api.entities import (
     entity_create_entity_v1_entities_post as entities_post,
     entity_get_entities_v1_entities_get as entities_get,
     entity_update_entity_v1_entities_uuid_patch as entities_uuid_patch,
+    entity_get_entity_v1_entities_uuid_get as entities_uuid_get,
 )
 
 # Error / Validation
@@ -123,6 +124,7 @@ __ALL__ = [
     entities_uuid_patch,
     entities_get,
     entities_post,
+    entities_uuid_get,
     # client related
     AuthenticatedClient,
     Client,

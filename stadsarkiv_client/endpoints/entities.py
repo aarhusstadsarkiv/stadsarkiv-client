@@ -1,5 +1,4 @@
 from starlette.requests import Request
-from starlette.responses import RedirectResponse
 from starlette.exceptions import HTTPException
 from starlette.responses import JSONResponse
 from stadsarkiv_client.core.templates import templates
@@ -68,7 +67,17 @@ async def get_entities(request: Request):
     return JSONResponse({"message": "Entities"})
 
 
+@is_authenticated(message=translate("You need to be logged in to view this page."))
 async def get_entity(request: Request):
-    log.debug('get_entity')
-    return JSONResponse({"message": "Entity Test"})
-    pass
+    try:
+        entity = await api.entity_read(request)
+        entity = entity.to_dict()
+        log.debug(entity)
+        context_values = {"title": translate("Entities"), "entity": entity}
+        context = get_context(request, context_values=context_values)
+        return templates.TemplateResponse("entities/entity.html", context)
+
+    except Exception as e:
+        log.debug('doh')
+        log.exception(e)
+        raise HTTPException(404, detail=str(e), headers=None)

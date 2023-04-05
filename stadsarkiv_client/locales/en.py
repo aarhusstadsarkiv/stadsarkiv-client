@@ -9,6 +9,7 @@ en = {
     "Email or password is incorrect. Or your user has not been activated.": "Email or password is incorrect. Or your user has not been activated.",
     "Entities": "Entities",
     "Entity could not be created": "Entity could not be created",
+    "Entity could not be read.": "Entity could not be read.",
     "Entity returned is None": "Entity returned is None",
     "Failed to create entity": "Failed to create entity",
     "Failed to get schemas": "Failed to get schemas",
@@ -55,5 +56,5 @@ en = {
     "You need to be logged in to access this page.": "You need to be logged in to access this page.",
     "You need to be logged in to view this page.": "You need to be logged in to view this page.",
     "You will need to log in order to get access to your profile": "You will need to log in order to get access to your profile",
-    "search": "search",
+    "search": "search"
 }

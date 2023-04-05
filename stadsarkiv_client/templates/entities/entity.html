@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "includes/main_title.html" %}
+
+<h3>Data</h3>
+{% for key, value in entity.data.items() %}
+<p>{{ key }}</p> 
+<pre>{{ value or 'None' }}</pre>
+{% endfor %}
+
+<h3>Entity</h3>
+{% for key, value in entity.items() %} 
+<p>{{ key }}</p> <pre>{{ value }}</pre> 
+{% endfor %}
+
+{% endblock content %}
