@@ -21,6 +21,7 @@ def get_main_menu(request: Request):
         main_menu = [item for item in main_menu if item["name"] != "logout"]
         main_menu = [item for item in main_menu if item["name"] != "profile"]
         main_menu = [item for item in main_menu if item["name"] != "schemas"]
+        main_menu = [item for item in main_menu if item["name"] != "entities"]
 
     return main_menu
 

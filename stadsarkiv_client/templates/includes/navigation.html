@@ -1,29 +1,7 @@
+<h3><a href="/"><img src="{{ url_for('static', path='/assets/default-logo.png') }}"></a></h3>
 
-    <ul>
-        <li>
-            <a href="/"><img src="{{ url_for('static', path='/assets/default-logo.png') }}"></a>
-        </li>
-    </ul>
-    <ul>
-        {#<li>
-            <details role="list" dir="rtl">
-                <summary aria-haspopup="listbox" role="link" class="contrast">Theme</summary>
-                <ul role="listbox">
-                    <li><a href="#" data-theme-switcher="auto">Auto</a></li>
-                    <li><a href="#" data-theme-switcher="light">Light</a></li>
-                    <li><a href="#" data-theme-switcher="dark">Dark</a></li>
-                </ul>
-            </details>
-        </li>#}
-        <li>
-            <details role="list" dir="rtl">
-                <summary aria-haspopup="listbox" role="link" class="contrast">{{ translate('Menu') }}</summary>
-                <ul role="listbox">
-                    {% for menu_item in main_menu %}
-                    <li><a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a></li>
-                    {% endfor %}
-                </ul>
-            </details>
-        </li>
-    </ul>
-
+<div class="app-menu">
+    {% for menu_item in main_menu %}
+        <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
+    {% endfor %}
+</div>

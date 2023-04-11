@@ -8,7 +8,9 @@ log = get_log()
 # Implementation using the hookimpl decorator
 @hooks.hookimpl(specname="alter_context")
 def alter_context(context: dict) -> None:
-    context["title"] = context["title"] + " [modified by plugin]"
+    pass
+    # Edit context. E.g:
+    # context["title"] = context["title"] + " [modified by plugin]"
 
 
 # Implementation using the hookimpl decorator
