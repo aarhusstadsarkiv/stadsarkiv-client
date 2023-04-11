@@ -9,20 +9,8 @@
 </div>
 
 <h3>Schema</h3>
-{% for key, value in schema.items() %} 
-<p>{{ key }}</p> <pre>{{ value }}</pre> 
-{% endfor %}
-
-<h3>Data</h3>
-{% for key, value in schema.data.items() %} 
-<p>{{ key }}</p> <pre>{{ value }}</pre> 
-{% endfor %}
-
-<h3>Properties</h3>
-{% for key, value in schema.data.properties.items() %} 
-<p>{{ key }}</p> <pre>{{ value }}</pre> 
-{% endfor %}
-
-
+<pre>
+{{ schema | safe }}
+</pre>
 
 {% endblock content %}

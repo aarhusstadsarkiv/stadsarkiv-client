@@ -24,7 +24,7 @@ async def get_entity_create(request: Request):
         schema = await api.schema_read(request)
         schema.type = schema.name
         schema = schema.to_dict()
-        schema = json.dumps(schema)
+        schema = json.dumps(schema, indent=4, ensure_ascii=False)
 
         context_values = {"title": translate("Entities"), "schema": schema}
         context = get_context(request, context_values=context_values)

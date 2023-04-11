@@ -10,6 +10,7 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.openaws import OpenAwsException
 from stadsarkiv_client.core import api
 from json import JSONDecodeError
+import json
 
 
 log = get_log()
@@ -32,7 +33,8 @@ async def get_schema(request: Request):
     try:
         schema = await api.schema_read(request)
         schema = schema.to_dict()
-        context_values = {"title": translate("Schemas"), "schema": schema}
+        schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
+        context_values = {"title": translate("Schemas"), "schema": schema_json}
         context = get_context(request, context_values=context_values)
 
         return templates.TemplateResponse("schemas/schema.html", context)
