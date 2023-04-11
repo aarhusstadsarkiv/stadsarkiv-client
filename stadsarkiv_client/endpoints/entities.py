@@ -65,7 +65,6 @@ async def get_entities(request: Request):
 
 
 def get_schema_and_values(schema, entity):
-
     schema_and_values = schema["data"]["properties"]
     data = entity["data"]
 
@@ -79,7 +78,6 @@ def get_schema_and_values(schema, entity):
 @is_authenticated(message=translate("You need to be logged in to view this page."))
 async def get_entity_view(request: Request):
     try:
-
         # content
         entity = await api.entity_read(request)
         entity_dict = entity.to_dict()
