@@ -1,16 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-
-<div>
-    <hgroup>
-        {% include "includes/main_title.html" %}
-        <h2>{{ translate('Schema') }}</h2>
-    </hgroup>
-</div>
-
-<h3>Schema</h3>
+{% include "includes/main_title.html" %}
 <pre>
 {{ schema | safe }}
 </pre>
-
 {% endblock content %}
