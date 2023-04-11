@@ -5,8 +5,44 @@
 
 <h3>Schema and values</h3>
 {% for key, value in schema_and_values.items() %}
-<p>{{ key }}</p> 
-<pre>{{ value or 'None' }}</pre>
+    <pre> {{ value }}</pre>
+    <p><strong>{{ value["title"] }}</strong> ({{ value["type"] }})</p> 
+
+    {% if value["type"] == "array" %}
+    <div class="entity-array">
+        {% for item in value["value"] %}
+        <p>{{ item }}</p>
+        {% endfor %}
+    </div>
+
+    {% elif value["type"] == "string" %}
+    <div class="entity-string">
+        <p>{{ value["value"] }}</p>
+    </div>
+
+    {% elif value["type"] == "object" %}
+    <div class="entity-object">
+        {% for key, value in value["value"].items() %}
+        <p>{{ key }}: {{ value }}</p>
+        {% endfor %}
+    </div>
+
+    {% elif value["type"] == "null" %}
+    <div class="entity-null">
+        <p>None</p>
+    </div>
+
+    {% elif value["type"] == "integer" %}
+    <div class="entity-number">
+        <p>{{ value["value"] }}</p>
+    </div>
+
+    {% elif value["type"] == "boolean" %}
+    <div class="entity-boolean">
+        <p>{{ value["value"] }}</p>
+    </div>
+
+    {% endif %}
 {% endfor %}
 
 
