@@ -86,9 +86,7 @@
             "title": "Erhverv"
         },
         "from_date": {
-            "type": [
-                "string"
-            ],
+            "type": "string",
             "format": "date",
             "maxLength": 255,
             "title": "Fødselsdato (åååå-mm-dd)",
@@ -100,9 +98,7 @@
             "title": "Fødselssted"
         },
         "to_date": {
-            "type": [
-                "string"
-            ],
+            "type": "string",
             "format": "date",
             "maxLength": 255,
             "title": "Dødsdato (åååå-mm-dd)",

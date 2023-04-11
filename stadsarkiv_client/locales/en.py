@@ -8,6 +8,7 @@ en = {
     "Email needs to be correct. Password needs to be at least 8 characters long.": "Email needs to be correct. Password needs to be at least 8 characters long.",
     "Email or password is incorrect. Or your user has not been activated.": "Email or password is incorrect. Or your user has not been activated.",
     "Entities": "Entities",
+    "Entity": "Entity",
     "Entity could not be created": "Entity could not be created",
     "Entity could not be read.": "Entity could not be read.",
     "Entity returned is None": "Entity returned is None",
@@ -56,5 +57,5 @@ en = {
     "You need to be logged in to access this page.": "You need to be logged in to access this page.",
     "You need to be logged in to view this page.": "You need to be logged in to view this page.",
     "You will need to log in order to get access to your profile": "You will need to log in order to get access to your profile",
-    "search": "search",
+    "search": "search"
 }

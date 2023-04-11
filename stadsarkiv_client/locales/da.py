@@ -8,6 +8,7 @@ da = {
     "Email needs to be correct. Password needs to be at least 8 characters long.": "Email er ikke korrekt. Password skal v\u00e6re mindst 8 tegn langt.",
     "Email or password is incorrect. Or your user has not been activated.": "Email eller password er ikke korrekt. Eller din konto er ikke blevet aktiveret.",
     "Entities": "Entities",
+    "Entity": "Entity",
     "Entity could not be created": "Entitet kunne ikke oprettes",
     "Entity could not be read.": "Entity could not be read.",
     "Entity returned is None": "Entitet kunne ikke oprettes. System fejl.",
@@ -52,5 +53,5 @@ da = {
     "You have been registered. Check your email to confirm your account.": "Du er blevet registreret. Check din email for at bekr\u00e6fte din konto.",
     "You need to be logged in to view this page.": "Du er ikke logget ind. Log ind for at se siden.",
     "You will need to log in order to get access to your profile": "Du skal logge ind for at se din profil.",
-    "search": "search",
+    "search": "search"
 }

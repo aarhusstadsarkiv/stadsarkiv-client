@@ -64,23 +64,37 @@ async def get_entities(request: Request):
         log.exception(e)
 
 
+def get_schema_and_values(schema, entity):
+
+    schema_and_values = schema["data"]["properties"]
+    data = entity["data"]
+
+    for key, value in schema_and_values.items():
+        if key in data:
+            schema_and_values[key]["value"] = data[key]
+
+    return schema_and_values
+
+
 @is_authenticated(message=translate("You need to be logged in to view this page."))
-async def get_entity(request: Request):
+async def get_entity_view(request: Request):
     try:
+
+        # content
         entity = await api.entity_read(request)
-        entity = entity.to_dict()
+        entity_dict = entity.to_dict()
 
         # schema is e.g. person_1
-        schema_name: str = entity["schema"].split("_")[0]
-        schema_version = entity["schema"].split("_")[1]
+        schema_name: str = entity_dict["schema"].split("_")[0]
+        schema_version = entity_dict["schema"].split("_")[1]
 
+        # schema
         schema = await api.schema_read_specific(request, schema_name, schema_version)
-        schema = schema.to_dict()
+        schema_dict = schema.to_dict()
 
-        log.debug(schema)
+        schema_and_values = get_schema_and_values(schema_dict, entity_dict)
 
-        log.debug(entity)
-        context_values = {"title": translate("Entities"), "entity": entity}
+        context_values = {"title": translate("Entity"), "schema_and_values": schema_and_values}
         context = get_context(request, context_values=context_values)
         return templates.TemplateResponse("entities/entity.html", context)
 

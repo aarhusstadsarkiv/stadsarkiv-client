@@ -165,7 +165,7 @@ async def schema_read(request: Request):
     )
 
 
-async def schema_read_specific(request: Request, schema_name: str, schema_version: int):
+async def schema_read_specific(request: Request, schema_name: str, schema_version: int) -> SchemaRead:
     client: AuthenticatedClient = get_auth_client(request)
     schema = await schemas_name_get.asyncio(client=client, name=schema_name, version=schema_version)
     if isinstance(schema, SchemaRead):
@@ -241,7 +241,7 @@ async def entity_create(request: Request):
 
 async def entities_read(request: Request):
     client = get_auth_client(request)
-    entities = await entities_get.asyncio(client=client)
+    entities = await entities_get.asyncio(client=client, offset=0, limit=1000)
     if not isinstance(entities, list):
         raise OpenAwsException(500, translate("Entities could not be read."))
 

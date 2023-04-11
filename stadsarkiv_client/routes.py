@@ -58,7 +58,7 @@ routes = [
         name="post_entity_create",
         methods=["POST"],
     ),
-    Route("/entities/view/{uuid:str}", endpoint=entities.get_entity, name="entity_view"),
+    Route("/entities/view/{uuid:str}", endpoint=entities.get_entity_view, name="entity_view"),
     Route("/test", endpoint=testing.test, name="test"),
 ]
 
