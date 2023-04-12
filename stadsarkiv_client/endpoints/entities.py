@@ -42,7 +42,7 @@ async def post_entity_create(request: Request):
 
     try:
         await api.entity_create(request)
-        flash.set_message(request, translate("Entity created"), type="success")
+        flash.set_message(request, translate("Entity created"), type="success", remove=True)
         return JSONResponse({"message": translate("Entity created"), "error": False})
 
     except OpenAwsException as e:

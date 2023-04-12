@@ -26,7 +26,7 @@ async def get_login(request: Request):
 async def post_login_jwt(request: Request):
     try:
         await api.login_jwt(request)
-        flash.set_message(request, translate("You have been logged in."), type="success")
+        flash.set_message(request, translate("You have been logged in."), type="success", remove=True)
         return RedirectResponse(url="/", status_code=302)
 
     except OpenAwsException as e:

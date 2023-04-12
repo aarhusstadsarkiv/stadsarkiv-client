@@ -8,7 +8,7 @@
 {% include "includes/main_title.html" %}
 
 <div id='editor_holder' class='small'></div>
-<button id='submit'>Create</button>
+<button id='submit'>{{ translate("Create entity") }}</button>
 
 <script type="module">
 
@@ -34,7 +34,7 @@
         try {
             let user_info = await Requests.asyncPostJson(getApiUrl('/auth/user-info'));
             if (!user_info.is_logged_in) {
-                Flash.setFlashMessage("{{ translate('You must be logged in to create an entity') }}", 'error')
+                Flash.setFlashMessage("{{ translate('You must be logged in to create an entity') }}", 'error', 5000)
                 return;
             }
         } catch (e) {
@@ -69,7 +69,6 @@
                     Flash.setFlashMessage(res.error, 'error')
                 }
                 else {
-                    // Flash.setFlashMessage("Entity created", 'success')
                     // Rediect to current page
                     window.location = window.location.href;
                 }
