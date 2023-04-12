@@ -85,7 +85,6 @@ async def post_register(request: Request):
 async def get_me_jwt(request: Request):
     try:
         me = await api.me_read(request)
-        log.debug(me)
         context_values = {"title": translate("Profile"), "me": me}
         context = get_context(request, context_values=context_values)
         return templates.TemplateResponse("auth/me.html", context)

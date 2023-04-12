@@ -1,5 +1,4 @@
 from stadsarkiv_client.core import flash
-from stadsarkiv_client.core import user
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.translate import translate
@@ -9,8 +8,9 @@ from functools import wraps
 log = get_log()
 
 
-def is_authenticated(func=None, message=translate("You need to be logged in to view this page."), permissions=[]):
-
+def is_authenticated(
+    func=None, message=translate("You need to be logged in to view this page."), permissions=[]
+):
     # This is a decorator factory, which means that it returns a decorator
     # If the decorator is called without arguments, func will be None
     if func is None:
@@ -36,8 +36,14 @@ def is_authenticated(func=None, message=translate("You need to be logged in to v
         user_permissions = me["permissions"]
         for permission in permissions:
             if permission not in user_permissions:
-                flash.set_message(request, translate("You do not have the required permissions to view this page."), type="error")
-                response = RedirectResponse(url="/auth/login", status_code=302, headers={"X-Message": message})
+                flash.set_message(
+                    request,
+                    translate("You do not have the required permissions to view this page."),
+                    type="error",
+                )
+                response = RedirectResponse(
+                    url="/auth/login", status_code=302, headers={"X-Message": message}
+                )
                 return response
 
         # If the user has all permissions, return the response

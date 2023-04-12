@@ -58,7 +58,6 @@ def get_client() -> Client:
 
 
 def get_auth_client(request: Request) -> AuthenticatedClient:
-
     if "access_token" not in request.session:
         raise OpenAwsException(401, translate("You need to be logged in to view this page."))
 
@@ -95,7 +94,6 @@ async def login_jwt(request: Request):
     bearer_response = await auth_jwt_login_post.asyncio(client=client, form_data=form_data)
 
     if isinstance(bearer_response, BearerResponse):
-
         access_token: str = bearer_response.access_token
         token_type: str = bearer_response.token_type
 
@@ -140,14 +138,10 @@ async def user_create(request: Request):
         )
 
     if not isinstance(user_read, UserRead):
-        raise OpenAwsException(
-            500,
-            translate("Something went wrong. Please try again.")
-        )
+        raise OpenAwsException(500, translate("Something went wrong. Please try again."))
 
 
 async def me_read(request: Request) -> dict:
-
     """cache me on request state. In case of multiple calls to me_read
     in the same request, we don't need to call the api again.
     """

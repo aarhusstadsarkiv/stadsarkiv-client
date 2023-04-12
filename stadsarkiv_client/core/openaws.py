@@ -1,4 +1,3 @@
-from starlette.requests import Request
 from openaws_client.client import Client, AuthenticatedClient
 
 # JWT Login
@@ -53,46 +52,6 @@ from openaws_client.api.entities import (
 # Error / Validation
 from openaws_client.models.http_validation_error import HTTPValidationError
 from openaws_client.models.error_model import ErrorModel
-from .logging import get_log
-from .dynamic_settings import settings
-
-
-""" log = get_log()
-
-base_url = str(settings["fastapi_endpoint"])
-timeout = 10
-verify_ssl = True
-
-
-def get_client() -> Client:
-    client = Client(
-        raise_on_unexpected_status=False, base_url=base_url, timeout=timeout, verify_ssl=verify_ssl
-    )
-    return client
-
-
-def get_auth_client(request: Request) -> AuthenticatedClient:
-    token = request.session["access_token"]
-    auth_client = AuthenticatedClient(
-        raise_on_unexpected_status=False,
-        token=token,
-        base_url=base_url,
-        timeout=timeout,
-        verify_ssl=verify_ssl,
-    )
-    return auth_client
-
-
-class OpenAwsException(Exception):
-    def __init__(self, status_code: int, message: str, text: str = ""):
-        self.status_code = status_code
-        self.message = message
-        self.text = text
-        super().__init__(message, status_code, text)
-
-    def __str__(self) -> str:
-        return self.message
- """
 
 __ALL__ = [
     # auth
