@@ -1,5 +1,5 @@
 from starlette.requests import Request
-from starlette.responses import RedirectResponse
+from starlette.responses import RedirectResponse, JSONResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.decorators import is_authenticated
@@ -117,3 +117,9 @@ async def post_forgot_password(request: Request):
         flash.set_message(request, str(e), type="error")
 
     return RedirectResponse(url="/auth/forgot-password", status_code=302)
+
+
+async def post_user_info(request: Request):
+
+    is_logged_in = await user.is_logged_in(request)
+    return JSONResponse({"is_logged_in": is_logged_in})

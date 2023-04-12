@@ -11,6 +11,7 @@ en = {
     "Entity": "Entity",
     "Entity could not be created": "Entity could not be created",
     "Entity could not be read.": "Entity could not be read.",
+    "Entity created": "Entity created",
     "Entity returned is None": "Entity returned is None",
     "Failed to create entity": "Failed to create entity",
     "Failed to get schemas": "Failed to get schemas",
@@ -54,8 +55,9 @@ en = {
     "You have been logged out.": "You have been logged out.",
     "You have been registered.": "You have been registered.",
     "You have been registered. Check your email to confirm your account.": "You have been registered. Check your email to confirm your account.",
+    "You must be logged in to create an entity": "You must be logged in to create an entity",
     "You need to be logged in to access this page.": "You need to be logged in to access this page.",
     "You need to be logged in to view this page.": "You need to be logged in to view this page.",
     "You will need to log in order to get access to your profile": "You will need to log in order to get access to your profile",
-    "search": "search",
+    "search": "search"
 }

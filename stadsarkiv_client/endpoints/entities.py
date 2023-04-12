@@ -42,14 +42,15 @@ async def post_entity_create(request: Request):
 
     try:
         await api.entity_create(request)
+        flash.set_message(request, translate("Entity created"), type="success")
+        return JSONResponse({"message": translate("Entity created"), "error": False})
 
     except OpenAwsException as e:
         log.exception(e)
-        flash.set_message(request, str(e), type="error")
-        return JSONResponse({"message": str(e)})
+        return JSONResponse({"message": translate('Entity could not be created'), "error": True})
     except Exception as e:
         log.exception(e)
-        flash.set_message(request, str(e), type="error")
+        return JSONResponse({"message": translate('Entity could not be created'), "error": True})
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))

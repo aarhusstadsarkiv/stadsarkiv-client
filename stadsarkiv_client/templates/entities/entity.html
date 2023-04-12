@@ -5,7 +5,7 @@
 
 <h3>Schema and values</h3>
 {% for key, value in schema_and_values.items() %}
-    <pre> {{ value }}</pre>
+
     <p><strong>{{ value["title"] }}</strong> ({{ value["type"] }})</p> 
 
     {% if value["type"] == "array" %}

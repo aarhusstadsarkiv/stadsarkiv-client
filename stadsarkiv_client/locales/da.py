@@ -11,6 +11,7 @@ da = {
     "Entity": "Entity",
     "Entity could not be created": "Entitet kunne ikke oprettes",
     "Entity could not be read.": "Entity could not be read.",
+    "Entity created": "Entity created",
     "Entity returned is None": "Entitet kunne ikke oprettes. System fejl.",
     "Failed to create entity": "Kunne ikke oprette entity",
     "Failed to get schemas": "Det var ikke muligt at hente schemas",
@@ -51,7 +52,8 @@ da = {
     "You have been logged in.": "Du er nu logget ind.",
     "You have been logged out.": "Du er nu logget ud.",
     "You have been registered. Check your email to confirm your account.": "Du er blevet registreret. Tjek din email for at bekræfte din konto.",
+    "You must be logged in to create an entity": "You must be logged in to create an entity",
     "You need to be logged in to view this page.": "Du er ikke logget ind. Log ind for at se siden.",
     "You will need to log in order to get access to your profile": "Du skal logge ind for at se din profil.",
-    "search": "search",
+    "search": "search"
 }
