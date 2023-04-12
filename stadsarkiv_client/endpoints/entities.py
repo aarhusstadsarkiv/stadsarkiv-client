@@ -47,10 +47,10 @@ async def post_entity_create(request: Request):
 
     except OpenAwsException as e:
         log.exception(e)
-        return JSONResponse({"message": translate('Entity could not be created'), "error": True})
+        return JSONResponse({"message": translate("Entity could not be created"), "error": True})
     except Exception as e:
         log.exception(e)
-        return JSONResponse({"message": translate('Entity could not be created'), "error": True})
+        return JSONResponse({"message": translate("Entity could not be created"), "error": True})
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))

@@ -120,6 +120,5 @@ async def post_forgot_password(request: Request):
 
 
 async def post_user_info(request: Request):
-
     is_logged_in = await user.is_logged_in(request)
     return JSONResponse({"is_logged_in": is_logged_in})
