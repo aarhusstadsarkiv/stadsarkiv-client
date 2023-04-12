@@ -14,8 +14,9 @@ import json
 log = get_log()
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."))
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def get_entity_create(request: Request):
+
     # Type needs to be altered to name
     # type is e.g. car
     # name is e.g. car_2 (the name of the schema '_' + version)
@@ -36,7 +37,7 @@ async def get_entity_create(request: Request):
         raise HTTPException(404, detail=str(e), headers=None)
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."))
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def post_entity_create(request: Request):
     # {"data":{"make":"Toyota","year":2008,"model":"test","safety":-1},"schema":"car_1"}
 
@@ -76,7 +77,7 @@ def get_schema_and_values(schema, entity):
     return schema_and_values
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."))
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def get_entity_view(request: Request):
     try:
         # content

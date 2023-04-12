@@ -16,7 +16,7 @@ import json
 log = get_log()
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."))
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def get_schemas(request: Request):
     try:
         schemas = await api.schemas_read(request)
@@ -28,7 +28,7 @@ async def get_schemas(request: Request):
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."))
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def get_schema(request: Request):
     try:
         schema = await api.schema_read(request)
@@ -44,7 +44,7 @@ async def get_schema(request: Request):
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."))
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def post_schema(request: Request):
     try:
         await api.schema_create(request)
