@@ -8,8 +8,9 @@ from functools import wraps
 log = get_log()
 
 
-def is_authenticated(func=None, message=translate("You need to be logged in to view this page."),
-                     permissions=[]):
+def is_authenticated(
+    func=None, message=translate("You need to be logged in to view this page."), permissions=[]
+):
     # This is a decorator factory, which means that it returns a decorator
     # If the decorator is called without arguments, func will be None
     if func is None:
