@@ -7,7 +7,7 @@ from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core import user
 from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.core.openaws import OpenAwsException
+from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 
 log = get_log()
@@ -64,7 +64,6 @@ async def get_register(request: Request):
 async def post_register(request: Request):
     try:
         await api.user_create(request)
-
         flash.set_message(
             request,
             translate("You have been registered. Check your email to confirm your account."),
@@ -86,6 +85,7 @@ async def post_register(request: Request):
 async def get_me_jwt(request: Request):
     try:
         me = await api.me_read(request)
+        log.debug(me)
         context_values = {"title": translate("Profile"), "me": me}
         context = get_context(request, context_values=context_values)
         return templates.TemplateResponse("auth/me.html", context)

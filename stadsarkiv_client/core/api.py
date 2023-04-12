@@ -36,22 +36,52 @@ from .openaws import (
     # client related
     AuthenticatedClient,
     Client,
-    get_client,
-    get_auth_client,
-    # exceptions
-    OpenAwsException,
 )
-from stadsarkiv_client.core.logging import get_log
-
-# from stadsarkiv_client.utils import flash
-from stadsarkiv_client.core import user
-from stadsarkiv_client.core.translate import translate
-
-# from json import JSONDecodeError
+from .logging import get_log
+from . import user
+from .translate import translate
 import json
-
+from .dynamic_settings import settings
 
 log = get_log()
+
+base_url = str(settings["fastapi_endpoint"])
+timeout = 10
+verify_ssl = True
+
+
+def get_client() -> Client:
+    client = Client(
+        raise_on_unexpected_status=False, base_url=base_url, timeout=timeout, verify_ssl=verify_ssl
+    )
+    return client
+
+
+def get_auth_client(request: Request) -> AuthenticatedClient:
+
+    if "access_token" not in request.session:
+        raise OpenAwsException(401, translate("You need to be logged in to view this page."))
+
+    token = request.session["access_token"]
+    auth_client = AuthenticatedClient(
+        raise_on_unexpected_status=False,
+        token=token,
+        base_url=base_url,
+        timeout=timeout,
+        verify_ssl=verify_ssl,
+    )
+    return auth_client
+
+
+class OpenAwsException(Exception):
+    def __init__(self, status_code: int, message: str, text: str = ""):
+        self.status_code = status_code
+        self.message = message
+        self.text = text
+        super().__init__(message, status_code, text)
+
+    def __str__(self) -> str:
+        return self.message
 
 
 async def login_jwt(request: Request):
@@ -65,6 +95,7 @@ async def login_jwt(request: Request):
     bearer_response = await auth_jwt_login_post.asyncio(client=client, form_data=form_data)
 
     if isinstance(bearer_response, BearerResponse):
+
         access_token: str = bearer_response.access_token
         token_type: str = bearer_response.token_type
 
@@ -79,7 +110,7 @@ async def login_jwt(request: Request):
     if isinstance(bearer_response, ErrorModel):
         raise OpenAwsException(
             400,
-            translate("User already exists. Try to login instead."),
+            translate("No such user exists."),
         )
 
 
@@ -108,13 +139,28 @@ async def user_create(request: Request):
             "Unauthorized",
         )
 
+    if not isinstance(user_read, UserRead):
+        raise OpenAwsException(
+            500,
+            translate("Something went wrong. Please try again.")
+        )
 
-async def me_read(request: Request):
+
+async def me_read(request: Request) -> dict:
+
+    """cache me on request state. In case of multiple calls to me_read
+    in the same request, we don't need to call the api again.
+    """
+    if hasattr(request.state, "me"):
+        return request.state.me
+
     auth_client: AuthenticatedClient = get_auth_client(request)
     me = await users_me_get.asyncio(client=auth_client)
 
     if isinstance(me, UserRead):
-        return me
+        me_dict = me.to_dict()
+        request.state.me = me_dict
+        return me_dict
 
     raise OpenAwsException(
         422,

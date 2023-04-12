@@ -57,7 +57,7 @@ from .logging import get_log
 from .dynamic_settings import settings
 
 
-log = get_log()
+""" log = get_log()
 
 base_url = str(settings["fastapi_endpoint"])
 timeout = 10
@@ -92,7 +92,7 @@ class OpenAwsException(Exception):
 
     def __str__(self) -> str:
         return self.message
-
+ """
 
 __ALL__ = [
     # auth
@@ -130,8 +130,4 @@ __ALL__ = [
     # client related
     AuthenticatedClient,
     Client,
-    get_client,
-    get_auth_client,
-    # exceptions
-    OpenAwsException,
 ]
