@@ -31,6 +31,11 @@ from .openaws import (
     entities_get,
     entities_post,
     entities_uuid_get,
+    # records
+    RecordsIdGet,
+    RecordsSearchGet,
+    record_id_get,
+    records_search_get,
     # client related
     AuthenticatedClient,
     Client,

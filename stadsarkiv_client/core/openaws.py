@@ -34,17 +34,30 @@ from openaws_client.api.schemas import (
     entity_get_available_schemas_v1_schemas_get as schemas_get,
 )
 
-# Entities
+# Entity models
 from openaws_client.models.entity_create import EntityCreate
 from openaws_client.models.entity_read import EntityRead
 from openaws_client.models.entity_update import EntityUpdate
 
-# from openaws_client.models.entity_
+# Entity modules
 from openaws_client.api.entities import (
     entity_create_entity_v1_entities_post as entities_post,
     entity_get_entities_v1_entities_get as entities_get,
     entity_update_entity_v1_entities_uuid_patch as entities_uuid_patch,
     entity_get_entity_v1_entities_uuid_get as entities_uuid_get,
+)
+
+# Records models
+from openaws_client.models.records_get_record_v1_records_record_id_get_response_records_get_record_v1_records_record_id_get import (
+    RecordsGetRecordV1RecordsRecordIdGetResponseRecordsGetRecordV1RecordsRecordIdGet as RecordsIdGet,
+)
+from openaws_client.models.records_search_records_v1_records_search_get_response_records_search_records_v1_records_search_get import (
+    RecordsSearchRecordsV1RecordsSearchGetResponseRecordsSearchRecordsV1RecordsSearchGet as RecordsSearchGet,
+)
+
+from openaws_client.api.proxies import (
+    records_get_record_v1_records_record_id_get as record_id_get,
+    records_search_records_v1_records_search_get as records_search_get,
 )
 
 # Error / Validation
@@ -82,6 +95,11 @@ __ALL__ = [
     entities_get,
     entities_post,
     entities_uuid_get,
+    # records
+    RecordsIdGet,
+    RecordsSearchGet,
+    record_id_get,
+    records_search_get,
     # client related
     AuthenticatedClient,
     Client,
