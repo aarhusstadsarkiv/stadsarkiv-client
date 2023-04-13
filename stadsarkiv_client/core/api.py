@@ -85,7 +85,6 @@ class OpenAwsException(Exception):
 
 async def login_jwt(request: Request):
     form = await request.form()
-
     username = str(form.get("username"))
     password = str(form.get("password"))
 
