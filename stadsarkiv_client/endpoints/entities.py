@@ -84,8 +84,8 @@ async def get_entity_view(request: Request):
         entity_dict = entity.to_dict()
 
         # schema is e.g. person_1
-        schema_name: str = entity_dict["schema"].split("_")[0]
-        schema_version = entity_dict["schema"].split("_")[1]
+        schema_name: str = entity_dict["schema_name"].split("_")[0]
+        schema_version = entity_dict["schema_name"].split("_")[1]
 
         # schema
         schema = await api.schema_read_specific(request, schema_name, schema_version)
