@@ -35,11 +35,9 @@ from openaws_client.api.schemas import (
 )
 
 # Entities
-from openaws_client.models.entity_read_data_type_0 import EntityReadDataType0
 from openaws_client.models.entity_create import EntityCreate
 from openaws_client.models.entity_read import EntityRead
 from openaws_client.models.entity_update import EntityUpdate
-from openaws_client.models.entity_create_data_type_0 import EntityCreateDataType0
 
 # from openaws_client.models.entity_
 from openaws_client.api.entities import (
@@ -80,8 +78,6 @@ __ALL__ = [
     EntityRead,
     EntityCreate,
     EntityUpdate,
-    EntityCreateDataType0,
-    EntityReadDataType0,
     entities_uuid_patch,
     entities_get,
     entities_post,

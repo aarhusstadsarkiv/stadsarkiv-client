@@ -27,8 +27,6 @@ from .openaws import (
     EntityRead,
     EntityCreate,
     EntityUpdate,
-    EntityCreateDataType0,
-    EntityReadDataType0,
     entities_uuid_patch,
     entities_get,
     entities_post,

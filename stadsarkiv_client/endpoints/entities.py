@@ -69,7 +69,7 @@ def get_schema_and_values(schema, entity):
     schema_and_values = schema["data"]["properties"]
     data = entity["data"]
 
-    for key, value in schema_and_values.items():
+    for key, _value in schema_and_values.items():
         if key in data:
             schema_and_values[key]["value"] = data[key]
 
@@ -100,3 +100,10 @@ async def get_entity_view(request: Request):
     except Exception as e:
         log.exception(e)
         raise HTTPException(404, detail=str(e), headers=None)
+
+__ALL__ = [
+    "get_entity_create",
+    "post_entity_create",
+    "get_entities",
+    "get_entity_view",
+]
