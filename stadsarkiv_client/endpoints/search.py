@@ -14,14 +14,14 @@ log = get_log()
 
 async def get_search(request: Request):
     context_values = {"title": translate("Search")}
-    context = get_context(request, context_values=context_values)
+    context = await get_context(request, context_values=context_values)
 
     return templates.TemplateResponse("search/search.html", context)
 
 
 async def get_search_results(request: Request):
     context_values = {"title": translate("Search")}
-    context = get_context(request, context_values=context_values)
+    context = await get_context(request, context_values=context_values)
 
     query_params = pm.hook.alter_search(request=request)  # type: ignore
     log.debug(query_params)

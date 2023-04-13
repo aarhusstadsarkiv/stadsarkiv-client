@@ -3,23 +3,38 @@ from starlette.requests import Request
 from .flash import get_messages
 from stadsarkiv_client.core import dynamic_settings
 from stadsarkiv_client.hooks.manager import get_plugin_manager
+from stadsarkiv_client.core import api
+from stadsarkiv_client.core.logging import get_log
 
 
+log = get_log()
 pm = get_plugin_manager()
 
 
-def get_main_menu(request: Request):
+async def get_main_menu(request: Request):
+
+    permissions = []
+    logged_in = False
+    try:
+        me = await api.me_read(request)
+        permissions = me["permissions"]
+        logged_in = True
+    except Exception:
+        pass
+
     main_menu: Any = []  # type: ignore
     if "main_menu" in dynamic_settings.settings:
         main_menu = dynamic_settings.settings["main_menu"]  # type ignore
 
-    if "logged_in" in request.session:
+    if logged_in:
         main_menu = [item for item in main_menu if item["name"] != "login"]
         main_menu = [item for item in main_menu if item["name"] != "register"]
 
-    if "logged_in" not in request.session:
+    if not logged_in:
         main_menu = [item for item in main_menu if item["name"] != "logout"]
         main_menu = [item for item in main_menu if item["name"] != "profile"]
+
+    if "admin" not in permissions:
         main_menu = [item for item in main_menu if item["name"] != "schemas"]
         main_menu = [item for item in main_menu if item["name"] != "entities"]
 
@@ -46,13 +61,13 @@ def logged_in(request: Request) -> bool:
     return logged_in
 
 
-def get_context(request: Request, context_values: dict = {}) -> dict:
+async def get_context(request: Request, context_values: dict = {}) -> dict:
     context = {
         "path": request.url.path,
         "request": request,
         "title": get_title(request),
         "flash_messages": get_messages(request),
-        "main_menu": get_main_menu(request),
+        "main_menu": await get_main_menu(request),
         "logged_in": logged_in(request),
     }
 

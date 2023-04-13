@@ -38,11 +38,11 @@ def is_authenticated(
             if permission not in user_permissions:
                 flash.set_message(
                     request,
-                    translate("You do not have the required permissions to view this page."),
+                    translate("You do not have the required permissions to view the page."),
                     type="error",
                 )
                 response = RedirectResponse(
-                    url="/auth/login", status_code=302, headers={"X-Message": message}
+                    url="/", status_code=302, headers={"X-Message": message}
                 )
                 return response
 

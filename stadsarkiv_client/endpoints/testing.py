@@ -9,7 +9,7 @@ log = get_log()
 
 
 async def test(request: Request):
-    context = get_context(request)
+    context = await get_context(request)
     settings = dynamic_settings.settings
     settings_json = json.dumps(settings, indent=4)
     context["variables"] = settings_json

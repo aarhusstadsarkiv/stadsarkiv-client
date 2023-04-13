@@ -55,6 +55,8 @@ en = {
     "User not found.": "User not found.",
     "View": "View",
     "View schema": "View schema",
+    "You are already logged in.": "You are already logged in.",
+    "You do not have the required permissions to view the page.": "You do not have the required permissions to view the page.",
     "You do not have the required permissions to view this page.": "You do not have the required permissions to view this page.",
     "You have been logged in.": "You have been logged in.",
     "You have been logged out.": "You have been logged out.",
@@ -64,5 +66,5 @@ en = {
     "You need to be logged in to access this page.": "You need to be logged in to access this page.",
     "You need to be logged in to view this page.": "You need to be logged in to view this page.",
     "You will need to log in order to get access to your profile": "You will need to log in order to get access to your profile",
-    "search": "search",
+    "search": "search"
 }

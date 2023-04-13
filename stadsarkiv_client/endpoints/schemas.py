@@ -21,7 +21,7 @@ async def get_schemas(request: Request):
     try:
         schemas = await api.schemas_read(request)
         context_values = {"title": translate("Schemas"), "schemas": schemas}
-        context = get_context(request, context_values=context_values)
+        context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("schemas/schemas.html", context)
     except Exception as e:
         log.exception(e)
@@ -35,7 +35,7 @@ async def get_schema(request: Request):
         schema = schema.to_dict()
         schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
         context_values = {"title": translate("Schemas"), "schema": schema_json}
-        context = get_context(request, context_values=context_values)
+        context = await get_context(request, context_values=context_values)
 
         return templates.TemplateResponse("schemas/schema.html", context)
 

@@ -27,7 +27,7 @@ async def get_entity_create(request: Request):
         schema = json.dumps(schema, indent=4, ensure_ascii=False)
 
         context_values = {"title": translate("Entities"), "schema": schema}
-        context = get_context(request, context_values=context_values)
+        context = await get_context(request, context_values=context_values)
 
         return templates.TemplateResponse("entities/entities_create.html", context)
 
@@ -58,7 +58,7 @@ async def get_entities(request: Request):
     try:
         entities = await api.entities_read(request)
         context_values = {"title": translate("Entities"), "entities": entities}
-        context = get_context(request, context_values=context_values)
+        context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("entities/entities.html", context)
 
     except Exception as e:
@@ -94,7 +94,7 @@ async def get_entity_view(request: Request):
         schema_and_values = get_schema_and_values(schema_dict, entity_dict)
 
         context_values = {"title": translate("Entity"), "schema_and_values": schema_and_values}
-        context = get_context(request, context_values=context_values)
+        context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("entities/entity.html", context)
 
     except Exception as e:

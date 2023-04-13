@@ -15,9 +15,11 @@ log = get_log()
 
 async def get_login(request: Request):
     context_values = {"title": translate("Login")}
-    context = get_context(request, context_values=context_values)
+    context = await get_context(request, context_values=context_values)
 
-    if await user.is_logged_in(request):
+    # check
+    if await api.is_logged_in(request):
+        flash.set_message(request, translate("You are already logged in."), type="error", remove=True)
         return RedirectResponse(url="/", status_code=302)
 
     return templates.TemplateResponse("auth/login.html", context)
@@ -40,7 +42,7 @@ async def post_login_jwt(request: Request):
 
 async def get_logout(request: Request):
     context_values = {"title": translate("Logout")}
-    context = get_context(request, context_values=context_values)
+    context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse("auth/logout.html", context)
 
 
@@ -57,7 +59,7 @@ async def post_logout(request: Request):
 
 async def get_register(request: Request):
     context_values = {"title": translate("Register")}
-    context = get_context(request, context_values=context_values)
+    context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse("auth/register.html", context)
 
 
@@ -86,7 +88,7 @@ async def get_me_jwt(request: Request):
     try:
         me = await api.me_read(request)
         context_values = {"title": translate("Profile"), "me": me}
-        context = get_context(request, context_values=context_values)
+        context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("auth/me.html", context)
     except Exception as e:
         log.exception(e)
@@ -96,7 +98,7 @@ async def get_me_jwt(request: Request):
 
 async def get_forgot_password(request: Request):
     context_values = {"title": translate("Forgot your password")}
-    context = get_context(request, context_values=context_values)
+    context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse("auth/forgot_password.html", context)
 
 
@@ -119,5 +121,5 @@ async def post_forgot_password(request: Request):
 
 
 async def post_user_info(request: Request):
-    is_logged_in = await user.is_logged_in(request)
+    is_logged_in = await api.is_logged_in(request)
     return JSONResponse({"is_logged_in": is_logged_in})

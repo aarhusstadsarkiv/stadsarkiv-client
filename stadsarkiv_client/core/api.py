@@ -83,6 +83,8 @@ class OpenAwsException(Exception):
         return self.message
 
 
+
+
 async def login_jwt(request: Request):
     form = await request.form()
 
@@ -160,6 +162,15 @@ async def me_read(request: Request) -> dict:
         422,
         translate("User not found."),
     )
+
+
+async def is_logged_in(request: Request) -> bool:
+    try:
+        me = await me_read(request)
+        log.debug(me)
+        return True
+    except Exception:
+        return False
 
 
 async def forgot_password(request: Request):

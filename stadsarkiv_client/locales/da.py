@@ -53,6 +53,8 @@ da = {
     "User not found.": "User not found.",
     "View": "Vis",
     "View schema": "Vis schema",
+    "You are already logged in.": "You are already logged in.",
+    "You do not have the required permissions to view the page.": "You do not have the required permissions to view the page.",
     "You do not have the required permissions to view this page.": "You do not have the required permissions to view this page.",
     "You have been logged in.": "Du er nu logget ind.",
     "You have been logged out.": "Du er nu logget ud.",
@@ -60,5 +62,5 @@ da = {
     "You must be logged in to create an entity": "You must be logged in to create an entity",
     "You need to be logged in to view this page.": "Du er ikke logget ind. Log ind for at se siden.",
     "You will need to log in order to get access to your profile": "Du skal logge ind for at se din profil.",
-    "search": "search",
+    "search": "search"
 }
