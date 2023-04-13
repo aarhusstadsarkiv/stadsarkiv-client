@@ -318,7 +318,6 @@ async def record_read(request: Request) -> RecordsIdGet:
     record = await record_id_get.asyncio(client=client, record_id=record_id)
 
     if not isinstance(record, RecordsIdGet):
-        log.debug('Not instance of RecordsIdGet')
         raise OpenAwsException(500, translate("Record could not be read."))
 
     return record
