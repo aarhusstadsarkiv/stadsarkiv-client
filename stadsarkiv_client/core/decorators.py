@@ -41,9 +41,7 @@ def is_authenticated(
                     translate("You do not have the required permissions to view the page."),
                     type="error",
                 )
-                response = RedirectResponse(
-                    url="/", status_code=302, headers={"X-Message": message}
-                )
+                response = RedirectResponse(url="/", status_code=302, headers={"X-Message": message})
                 return response
 
         # If the user has all permissions, return the response

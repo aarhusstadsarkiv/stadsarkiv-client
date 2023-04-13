@@ -83,8 +83,6 @@ class OpenAwsException(Exception):
         return self.message
 
 
-
-
 async def login_jwt(request: Request):
     form = await request.form()
 

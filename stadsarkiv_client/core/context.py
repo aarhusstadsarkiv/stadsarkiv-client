@@ -12,7 +12,6 @@ pm = get_plugin_manager()
 
 
 async def get_main_menu(request: Request):
-
     permissions = []
     logged_in = False
     try:
