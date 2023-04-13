@@ -10,23 +10,28 @@ from stadsarkiv_client.core import flash
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.api import OpenAwsException
 import json
+from stadsarkiv_client.core.openaws import (
+    SchemaRead,
+    EntityRead,
+)
 
 log = get_log()
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def get_entity_create(request: Request):
-    # Type needs to be altered to name
-    # type is e.g. car
-    # name is e.g. car_2 (the name of the schema '_' + version)
-
     try:
-        schema = await api.schema_read(request)
-        schema.type = schema.name
-        schema = schema.to_dict()
-        schema = json.dumps(schema, indent=4, ensure_ascii=False)
+        schema: SchemaRead = await api.schema_read(request)
+        schema_dict = schema.to_dict()
 
-        context_values = {"title": translate("Entities"), "schema": schema}
+        """ Type needs to be altered to name before being used with the json editor
+        type is e.g. car
+        name is e.g. car_2 """
+
+        schema_dict["type"] = schema_dict["name"]
+        schema_json = json.dumps(schema_dict, indent=4, ensure_ascii=False)
+
+        context_values = {"title": translate("Entities"), "schema": schema_json}
         context = await get_context(request, context_values=context_values)
 
         return templates.TemplateResponse("entities/entities_create.html", context)
@@ -56,7 +61,7 @@ async def post_entity_create(request: Request):
 @is_authenticated(message=translate("You need to be logged in to view this page."))
 async def get_entities(request: Request):
     try:
-        entities = await api.entities_read(request)
+        entities: list[EntityRead] = await api.entities_read(request)
         context_values = {"title": translate("Entities"), "entities": entities}
         context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("entities/entities.html", context)
@@ -80,7 +85,7 @@ def get_schema_and_values(schema, entity):
 async def get_entity_view(request: Request):
     try:
         # content
-        entity = await api.entity_read(request)
+        entity: EntityRead = await api.entity_read(request)
         entity_dict = entity.to_dict()
 
         # schema is e.g. person_1

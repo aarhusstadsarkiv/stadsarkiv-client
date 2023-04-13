@@ -173,7 +173,7 @@ async def is_logged_in(request: Request) -> bool:
         return False
 
 
-async def forgot_password(request: Request):
+async def forgot_password(request: Request) -> None:
     form = await request.form()
     email = str(form.get("email"))
 
@@ -190,7 +190,7 @@ async def forgot_password(request: Request):
         )
 
 
-async def schemas_read(request: Request):
+async def schemas_read(request: Request) -> list[SchemaRead]:
     client: AuthenticatedClient = get_auth_client(request)
     schemas = await schemas_get.asyncio(client=client, limit=1000)
     if isinstance(schemas, list):
@@ -202,7 +202,7 @@ async def schemas_read(request: Request):
     )
 
 
-async def schema_read(request: Request):
+async def schema_read(request: Request) -> SchemaRead:
     schema_type = request.path_params["schema_type"]
     client: AuthenticatedClient = get_auth_client(request)
 
@@ -228,7 +228,7 @@ async def schema_read_specific(request: Request, schema_name: str, schema_versio
     )
 
 
-async def schema_create(request: Request):
+async def schema_create(request: Request) -> SchemaRead:
     form = await request.form()
     schema_type = str(form.get("type"))
     data = str(form.get("data"))
@@ -261,7 +261,7 @@ async def schema_create(request: Request):
     return schema
 
 
-async def entity_create(request: Request):
+async def entity_create(request: Request) -> EntityRead:
     schema_type = request.path_params["schema_type"]
     json_dict = await request.json()
     json_dict = json_dict["data"]
@@ -299,7 +299,7 @@ async def entities_read(request: Request) -> list[EntityRead]:
     return entities
 
 
-async def entity_read(request: Request):
+async def entity_read(request: Request) -> EntityRead:
     entity_id = request.path_params["uuid"]
     client = get_auth_client(request)
     entity = await entities_uuid_get.asyncio(client=client, uuid=entity_id)

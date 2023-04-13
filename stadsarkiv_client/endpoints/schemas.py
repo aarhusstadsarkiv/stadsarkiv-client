@@ -11,6 +11,9 @@ from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from json import JSONDecodeError
 import json
+from stadsarkiv_client.core.openaws import (
+    SchemaRead,
+)
 
 
 log = get_log()
@@ -19,7 +22,7 @@ log = get_log()
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def get_schemas(request: Request):
     try:
-        schemas = await api.schemas_read(request)
+        schemas: list[SchemaRead] = await api.schemas_read(request)
         context_values = {"title": translate("Schemas"), "schemas": schemas}
         context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("schemas/schemas.html", context)
@@ -31,9 +34,9 @@ async def get_schemas(request: Request):
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def get_schema(request: Request):
     try:
-        schema = await api.schema_read(request)
-        schema = schema.to_dict()
-        schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
+        schema: SchemaRead = await api.schema_read(request)
+        schema_dict = schema.to_dict()
+        schema_json = json.dumps(schema_dict, indent=4, ensure_ascii=False)
         context_values = {"title": translate("Schemas"), "schema": schema_json}
         context = await get_context(request, context_values=context_values)
 
