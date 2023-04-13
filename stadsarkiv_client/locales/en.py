@@ -46,6 +46,7 @@ en = {
     "Schema not found.": "Schema not found.",
     "Schemas": "Schemas",
     "Search": "Search",
+    "Search results": "Search results",
     "Search this site": "Search this site",
     "Something went wrong. Please try again.": "Something went wrong. Please try again.",
     "Submit": "Submit",

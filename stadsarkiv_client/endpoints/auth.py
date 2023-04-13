@@ -17,7 +17,6 @@ async def get_login(request: Request):
     context_values = {"title": translate("Login")}
     context = await get_context(request, context_values=context_values)
 
-    # check
     if await api.is_logged_in(request):
         flash.set_message(request, translate("You are already logged in."), type="error", remove=True)
         return RedirectResponse(url="/", status_code=302)

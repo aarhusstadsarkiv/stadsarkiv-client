@@ -39,7 +39,8 @@ settings = {
         {"name": "profile", "title": "Profil"},
         {"name": "schemas", "title": "Schemas"},
         {"name": "entities", "title": "Entities"},
-        {"name": "search", "title": "Søg"},
+        {"name": "entities_search", "title": "Søg Entities"},
+        {"name": "records", "title": "Records"},
     ],
     "pages": [
         {"name": "home", "title": "Hjem", "page": "pages/home.html", "url": "/"},

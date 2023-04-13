@@ -44,6 +44,7 @@ da = {
     "Schema not found.": "Schema blev ikke fundet",
     "Schemas": "Schemas",
     "Search": "Søg",
+    "Search results": "Search results",
     "Search this site": "Søg i dette site",
     "Something went wrong. Please try again.": "Something went wrong. Please try again.",
     "Submit": "Send",

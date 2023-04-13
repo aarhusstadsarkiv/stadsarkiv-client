@@ -46,8 +46,8 @@ routes = [
         methods=["POST"],
     ),
     Route("/auth/me", endpoint=auth.get_me_jwt, name="profile"),
-    Route("/search", endpoint=search.get_search, name="search"),
-    Route("/search-results", endpoint=search.get_search_results, name="search_results"),
+    Route("/search", endpoint=search.get_search, name="entities_search"),
+    # Route("/search-results", endpoint=search.get_search_results, name="entities_search_results"),
     Route("/schema/{schema_type:str}", endpoint=schemas.get_schema, name="schemas"),
     Route("/schemas", endpoint=schemas.get_schemas, name="schemas"),
     Route("/schemas/post-schema", endpoint=schemas.post_schema, name="post_schema", methods=["POST"]),
@@ -60,6 +60,7 @@ routes = [
         methods=["POST"],
     ),
     Route("/entities/view/{uuid:str}", endpoint=entities.get_entity_view, name="entity_view"),
+    Route("/records-search", endpoint=records.get_records_search, name="records_search"),
     Route("/records/{record_id:str}", endpoint=records.get_record_view, name="record_view"),
     Route("/test", endpoint=testing.test, name="test"),
 ]
