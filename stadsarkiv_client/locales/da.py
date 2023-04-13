@@ -33,6 +33,7 @@ da = {
     "No such user exists.": "No such user exists.",
     "Password": "Password",
     "Profile": "Profil",
+    "Record could not be read.": "Record could not be read.",
     "Register": "Opret",
     "Register to get access to speciel functions": "Opret bruger for at få adgang til specielle funktioner",
     "Remember me": "Husk login på denne computer",
@@ -62,5 +63,5 @@ da = {
     "You must be logged in to create an entity": "You must be logged in to create an entity",
     "You need to be logged in to view this page.": "Du er ikke logget ind. Log ind for at se siden.",
     "You will need to log in order to get access to your profile": "Du skal logge ind for at se din profil.",
-    "search": "search",
+    "search": "search"
 }

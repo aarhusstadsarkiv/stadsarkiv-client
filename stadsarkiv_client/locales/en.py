@@ -35,6 +35,7 @@ en = {
     "No such user exists.": "No such user exists.",
     "Password": "Password",
     "Profile": "Profile",
+    "Record could not be read.": "Record could not be read.",
     "Register": "Register",
     "Register to get access to speciel functions": "Register to get access to speciel functions",
     "Remember me": "Remember me",
@@ -66,5 +67,5 @@ en = {
     "You need to be logged in to access this page.": "You need to be logged in to access this page.",
     "You need to be logged in to view this page.": "You need to be logged in to view this page.",
     "You will need to log in order to get access to your profile": "You will need to log in order to get access to your profile",
-    "search": "search",
+    "search": "search"
 }

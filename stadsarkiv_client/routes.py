@@ -1,5 +1,5 @@
 from starlette.routing import Route, Mount
-from .endpoints import auth, search, testing, pages, schemas, entities
+from .endpoints import auth, search, testing, pages, schemas, entities, records
 import os
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.multi_static import MultiStaticFiles
@@ -60,6 +60,7 @@ routes = [
         methods=["POST"],
     ),
     Route("/entities/view/{uuid:str}", endpoint=entities.get_entity_view, name="entity_view"),
+    Route("/records/{record_id:str}", endpoint=records.get_record_view, name="record_view"),
     Route("/test", endpoint=testing.test, name="test"),
 ]
 

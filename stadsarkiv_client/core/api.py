@@ -310,6 +310,20 @@ async def entity_read(request: Request) -> EntityRead:
     return entity
 
 
+async def record_read(request: Request) -> RecordsIdGet:
+    # e.g. 000478348
+    record_id = request.path_params["record_id"]
+
+    client = get_client()
+    record = await record_id_get.asyncio(client=client, record_id=record_id)
+
+    if not isinstance(record, RecordsIdGet):
+        log.debug('Not instance of RecordsIdGet')
+        raise OpenAwsException(500, translate("Record could not be read."))
+
+    return record
+
+
 __ALL__ = [
     login_jwt,
     me_read,
@@ -319,4 +333,5 @@ __ALL__ = [
     schema_create,
     entity_create,
     entities_read,
+    record_read,
 ]
