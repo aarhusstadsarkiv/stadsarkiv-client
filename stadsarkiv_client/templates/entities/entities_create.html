@@ -9,7 +9,6 @@
 
 <div id='editor_holder' class='small'></div>
 <button id='submit'>{{ translate("Create entity") }}</button>
-
 <script type="module">
 
     import { Requests } from "/static/js/requests.js";
@@ -34,7 +33,7 @@
         try {
             let user_info = await Requests.asyncPostJson(getApiUrl('/auth/user-info'));
             if (!user_info.is_logged_in) {
-                Flash.setFlashMessage("{{ translate('You must be logged in to create an entity') }}", 'error', 5000)
+                Flash.setFlashMessage("{{ translate('You must be logged in to create an entity') }}", 'error', true)
                 return;
             }
         } catch (e) {
@@ -43,8 +42,6 @@
 
         const errors = editor.validate();
         if (errors.length) {
-
-            // console.log(editor.getValue())
             // errors is an array of objects, each with a `path`, `property`, and `message` parameter
             // `property` is the schema keyword that triggered the validation error (e.g. "minLength")
             // `path` is a dot separated path into the JSON object (e.g. "root.path.to.field")
@@ -64,9 +61,8 @@
                 
                 let url = `/entities/post-entity/${schema_type}`;
                 const res = await Requests.asyncPostJson(getApiUrl(url), post_json);
-
                 if (res.error) {
-                    Flash.setFlashMessage(res.error, 'error')
+                    Flash.setFlashMessage(res.message, 'error', true)
                 }
                 else {
                     // Rediect to current page

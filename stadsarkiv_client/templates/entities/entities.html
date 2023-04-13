@@ -3,14 +3,21 @@
 {% block content %}
 {% include "includes/main_title.html" %}
 
-{# iterate entities <p>Schema: {{ entity.schema }} <a href= "</p> #}
-
-{% for entity in entities %}
-<ul class="entity">
-    <li>
-        <a href="/entities/view/{{entity.uuid}}">{{ entity.uuid }}</a> ({{entity.schema_name }})
-    </li>
-</ul>
-{% endfor %}
+<table>
+    <tr>
+        <th>UUID</th>
+        <th>Schema</th>
+    </tr>
+    {% for entity in entities %}
+    <tr>
+        <td>
+            <a href="/entities/view/{{entity.uuid}}">{{ entity.uuid }}</a>
+        </td>
+        <td>
+            {{entity.schema_name }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
 
 {% endblock content %}
