@@ -263,7 +263,7 @@ async def entity_create(request: Request):
     json_dict = await request.json()
     json_dict = json_dict["data"]
 
-    json_body = EntityCreate(schema=schema_type, data=json_dict)
+    json_body = EntityCreate(schema_name=schema_type, data=json_dict)
     client: AuthenticatedClient = get_auth_client(request)
     entity = await entities_post.asyncio(client=client, json_body=json_body)
 
@@ -287,7 +287,7 @@ async def entity_create(request: Request):
     return entity
 
 
-async def entities_read(request: Request):
+async def entities_read(request: Request) -> list[EntityRead]:
     client = get_auth_client(request)
     entities = await entities_get.asyncio(client=client, offset=0, limit=1000)
     if not isinstance(entities, list):
