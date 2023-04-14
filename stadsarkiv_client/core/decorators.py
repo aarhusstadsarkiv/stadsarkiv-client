@@ -20,7 +20,6 @@ def is_authenticated(
     async def wrapper(request, *args, **kwargs):
         try:
             me = await api.me_read(request)
-            log.debug(me)
         except Exception as e:
             flash.set_message(request, str(e), type="error")
             response = RedirectResponse(url="/auth/login", status_code=302, headers={"X-Message": message})

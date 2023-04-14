@@ -9,9 +9,8 @@ log = get_log()
 
 
 async def test(request: Request):
-
     settings = dynamic_settings.settings
     settings_json = json.dumps(settings, indent=4, ensure_ascii=False)
-    context_variables = {'settings': settings_json, 'title': 'Test'}
+    context_variables = {"settings": settings_json, "title": "Test"}
     context = await get_context(request, context_variables)
     return templates.TemplateResponse("testing/test.html", context)
