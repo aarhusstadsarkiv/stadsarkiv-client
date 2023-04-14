@@ -18,7 +18,6 @@ settings = {
         {"name": "schemas", "title": "Schemas"},
         {"name": "entities", "title": "Entities"},
         {"name": "entities_search", "title": "Søg"},
-        # {"name": "entities_search", "title": "Søg Entities"},
         {"name": "records_search", "title": "Søg records"},
     ],
     "pages": [
