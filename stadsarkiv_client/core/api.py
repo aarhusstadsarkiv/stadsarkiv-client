@@ -328,7 +328,6 @@ async def records_search(request: Request):
     json_dict = await request.json()
     json_dict = json_dict["data"]
 
-    # json_body = RecordsSearchGet(data=json_dict)
     records = await records_search_get.asyncio(client=client)
 
     if not isinstance(records, RecordsSearchGet):
