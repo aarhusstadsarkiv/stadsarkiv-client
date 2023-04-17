@@ -1,11 +1,11 @@
 settings = {
     "language": "da",
-    "fastapi_endpoint": "http://localhost:8000",
+    "fastapi_endpoint": "https://dev.openaws.dk/",
     "cookie": {
         "name": "session",
         "lifetime": 3600,
-        "httponly": False,
-        "secure": False,
+        "httponly": True,
+        "secure": True,
         "samesite": "lax",
     },  # seconds
     "main_menu": [
