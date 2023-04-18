@@ -1,12 +1,119 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 {% include "includes/main_title.html" %}
 
+{# list of dicts containing id and label #}
+{% set id_label_dicts = ['collectors', 'people', 'locations', 'curators', 'organisations'] %}
+{# dicts containing id and label #}
+{% set id_label = ['availability', 'contractual_status', 'other_legal_restrictions', 'copyright_status', 'usability', 'collection'] %}
+{# dicts containing id and label - but they should be displayed different, e.g. /path /path2 #}
+{% set id_label_dicts_type_2 = ['subjects', 'content_types'] %}
+{# links #}
+{% set links = ['collectors'] %}
+
+{% macro parse_as_collectors (data) %}
+    {% for item in data %}
+        <a href="/search?collectors={{ item.id }}">{{ item.label }}</a>
+    {% endfor %}
+{% endmacro %}
+
+{% macro parse_as_content_types (data) %}
+    {% for item in data %}
+        <a href="/search?content_types={{ item.id }}">{{ item.label }}</a>
+    {% endfor %}
+{% endmacro %}
+
+{% macro parse_as_curators (data) %}
+    {% for item in data %}
+        <a href="/search?curators={{ item.id }}">{{ item.label }}</a>
+    {% endfor %}
+{% endmacro %}
+
+{% macro parse_as_creators (data) %}
+    {% for item in data %}
+        <a href="/search?creators={{ item.id }}">{{ item.label }}</a>
+    {% endfor %}
+{% endmacro %}
+
+{% macro parse_as_subjects (data) %}
+    {% for item in data %}
+        <a href="/search?subjects={{ item.id }}">{{ item.label }}</a>
+    {% endfor %}
+{% endmacro %}
+
+{% macro parse_as_series_normalized (data) %}
+    {% for item in data %}
+        <a href="/search?{{ item.query }}">{{ item.series }}</a>
+    {% endfor %}
+{% endmacro %}
+
+{% macro parse_as_collection (data) %}
+    <a href="/search?collection={{ data.id }}">{{ data.label }}</a>
+{% endmacro %}
+
+{% macro parse_id_label_dicts(data, type) %}
+    {% for item in data %}
+        <p>
+            ID: {{ item.id }},
+            LABEL: "{{ item.label }}"
+        </p>
+    {% endfor %}
+{% endmacro %}
+
+{% macro parse_id_label_dicts_type_2(data) %}
+    {% for item in data %}
+        <p>
+            ID: {{ item.id }},
+            LABEL: "{{ item.label }}"
+        </p>
+    {% endfor %}
+{% endmacro %}
+
+{% macro parse_id_label(data) %}
+    <p>
+        ID: {{ data.id }},
+        LABEL: "{{ data.label }}"
+    </p>
+{% endmacro %}
+
+{% macro print_record(data) %}
+    {% for key, value in data.items() %}
+    <h3>{{ key }}</h3>
+        {% if key == 'collectors' %}
+            {{ parse_as_collectors(value) }}
+        {% elif key == 'content_types' %}
+            {{ parse_as_content_types(value) }}
+        {% elif key == 'curators' %}
+            {{ parse_as_curators(value) }}
+        {% elif key == 'creators' %}
+            {{ parse_as_curators(value) }}
+        {% elif key == 'collection' %}
+            {{ parse_as_collection(value) }}
+        {% elif key == 'subjects' %}
+            {{ parse_as_subjects(value) }}
+        {% elif key == 'series_normalized' %}
+            {{ parse_as_series_normalized(value) }}
+        {% elif key in links %}
+            {{ parse_as_links(value) }}
+        {% elif key in id_label_dicts %}
+            {{ parse_id_label_dicts(value) }}
+        {% elif key in id_label %}
+            {{ parse_id_label(value) }}
+        {% elif key in id_label_dicts_type_2 %}
+            <h3>TYPE 2</h3>
+            {{ parse_id_label_dicts_type_2(value) }}
+        {% else %}
+            {{ value }}
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+{{ print_record(record_dict) }}
+
 <pre>
-    {{ record }}
+    {{ record_json }}
 </pre>
-
-
 
 {% endblock content %}

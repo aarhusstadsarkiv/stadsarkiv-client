@@ -1,0 +1,108 @@
+{
+    "last_updated": "2023-04-14T13:22:37.494000",
+    "collectors": [
+        {
+            "id": 109190,
+            "label": "Den Gamle By (1914-)"
+        },
+        {
+            "id": 157810,
+            "label": "Jens Peder Pedersen (1893-)"
+        }
+    ],
+    "people": [
+        {
+            "id": 157810,
+            "label": "Jens Peder Pedersen (1893-)"
+        }
+    ],
+    "locations": [
+        {
+            "id": 157811,
+            "label": "Galgefaldet"
+        },
+        {
+            "id": 25638,
+            "label": "Gammel Munkegade 2"
+        }
+    ],
+    "availability": {
+        "id": 2,
+        "label": "På magasin"
+    },
+    "contractual_status": {
+        "id": 5,
+        "label": "Ingen afleveringsaftale"
+    },
+    "registration_id": 2400,
+    "date_from": "1925",
+    "created_by": "Janne Marie Barslev",
+    "id": "000480682",
+    "other_legal_restrictions": {
+        "id": 1,
+        "label": "Ingen andre juridiske begrænsninger"
+    },
+    "subjects": [
+        {
+            "id": [
+                17,
+                16
+            ],
+            "label": [
+                "Erhverv",
+                "Land- og skovbrug"
+            ]
+        },
+        {
+            "id": [
+                37,
+                56
+            ],
+            "label": [
+                "Kultur og fritid",
+                "Folkekultur og dagligdagsliv"
+            ]
+        }
+    ],
+    "type": "record",
+    "resources": [
+        {
+            "type": "analog",
+            "storage_id": [
+                "91+01347-1"
+            ]
+        }
+    ],
+    "schema": "oas_v1.0",
+    "curators": [
+        {
+            "id": 1,
+            "label": "Aarhus Stadsarkiv"
+        }
+    ],
+    "copyright_status": {
+        "id": 1,
+        "label": "I offentlig eje. Ikke ophavsretsværdigt"
+    },
+    "last_updated_by": "Janne Marie Barslev",
+    "date_to": "1929",
+    "created": "2023-04-14T13:22:37.494000",
+    "summary": "Kvitteringer for handelsgartner J.P. Pedersens leje af jordlod 7B Galgefaldet samt huslejekvitteringer.\n",
+    "content_types": [
+        {
+            "id": [
+                29,
+                31
+            ],
+            "label": [
+                "Statistisk og økonomisk materiale",
+                "Regnskaber og budgetmateriale"
+            ]
+        }
+    ],
+    "heading": "Lejekvitteringer",
+    "usability": {
+        "id": 1,
+        "label": "Materialet er i offentlig eje"
+    }
+}
