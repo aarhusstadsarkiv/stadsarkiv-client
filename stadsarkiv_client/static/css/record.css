@@ -1,0 +1,16 @@
+.media-object {
+    display: flex;
+    margin-bottom: 1rem;
+    flex-wrap: nowrap;
+}
+.media-object-section:first-child {
+    padding-right: 1rem;
+}
+.media-object-label {
+    /* text-transform: uppercase; */
+    font-weight: bold;
+    padding-top: 0.2rem;
+    font-size: 75%;
+    color: #424242;
+    width: 11em;
+}
