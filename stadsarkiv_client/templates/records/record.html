@@ -4,106 +4,206 @@
 
 {% include "includes/main_title.html" %}
 
-{# list of dicts containing id and label #}
-{% set id_label_dicts = ['collectors', 'people', 'locations', 'curators', 'organisations'] %}
-{# dicts containing id and label #}
-{% set id_label = ['availability', 'contractual_status', 'other_legal_restrictions', 'copyright_status', 'usability', 'collection'] %}
-{# dicts containing id and label - but they should be displayed different, e.g. /path /path2 #}
-{% set id_label_dicts_type_2 = ['subjects', 'content_types'] %}
-{# links #}
-{% set links = ['collectors'] %}
-
-{% macro parse_as_collectors (data) %}
+{% macro parse_collectors (data) %}
     {% for item in data %}
         <a href="/search?collectors={{ item.id }}">{{ item.label }}</a>
     {% endfor %}
 {% endmacro %}
 
-{% macro parse_as_content_types (data) %}
+{% macro parse_content_types (data) %}
     {% for item in data %}
         <a href="/search?content_types={{ item.id }}">{{ item.label }}</a>
     {% endfor %}
 {% endmacro %}
 
-{% macro parse_as_curators (data) %}
+{% macro parse_curators (data) %}
     {% for item in data %}
         <a href="/search?curators={{ item.id }}">{{ item.label }}</a>
     {% endfor %}
 {% endmacro %}
 
-{% macro parse_as_creators (data) %}
+{% macro parse_creators (data) %}
     {% for item in data %}
         <a href="/search?creators={{ item.id }}">{{ item.label }}</a>
     {% endfor %}
 {% endmacro %}
 
-{% macro parse_as_subjects (data) %}
+{% macro parse_subjects (data) %}
     {% for item in data %}
         <a href="/search?subjects={{ item.id }}">{{ item.label }}</a>
     {% endfor %}
 {% endmacro %}
 
-{% macro parse_as_series_normalized (data) %}
+{% macro parse_series_normalized (data) %}
     {% for item in data %}
         <a href="/search?{{ item.query }}">{{ item.series }}</a>
     {% endfor %}
 {% endmacro %}
 
-{% macro parse_as_collection (data) %}
+{% macro parse_collection (data) %}
     <a href="/search?collection={{ data.id }}">{{ data.label }}</a>
 {% endmacro %}
 
-{% macro parse_id_label_dicts(data, type) %}
+{% macro parse_organisations (data) %}
     {% for item in data %}
-        <p>
-            ID: {{ item.id }},
-            LABEL: "{{ item.label }}"
-        </p>
+        <a href="/search?organisations={{ item.id }}">{{ item.label }}</a>
     {% endfor %}
 {% endmacro %}
 
-{% macro parse_id_label_dicts_type_2(data) %}
+{% macro parse_locations (data) %}
     {% for item in data %}
-        <p>
-            ID: {{ item.id }},
-            LABEL: "{{ item.label }}"
-        </p>
+        <a href="/search?locations={{ item.id }}">{{ item.label }}</a>
     {% endfor %}
 {% endmacro %}
 
-{% macro parse_id_label(data) %}
-    <p>
-        ID: {{ data.id }},
-        LABEL: "{{ data.label }}"
-    </p>
+
+{% macro parse_last_updated (data) %}
+    <pre>{{ data }}</pre>
 {% endmacro %}
+
+{% macro parse_desc_data (data) %}
+    <table>
+    {% for key, value in data.items() %}
+        <tr>
+            <td>
+                {{ key }}
+            </td>
+            <td>
+                {{ value }}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endmacro %}
+
+{% macro parse_admin_notes (data) %}
+    <pre>{{ data }}</pre>
+{% endmacro %}
+
+{% macro parse_heading (data) %}
+    <pre>{{ data }}</pre>
+{% endmacro %}
+
+{% macro parse_availability (data) %}
+    <pre>{{ data.label }}</pre>
+{% endmacro %}
+
+{% macro parse_contractual_status (data) %}
+    <pre>{{ data.label }}</pre>
+{% endmacro %}
+
+{% macro parse_registration_id (data) %}
+    <pre>{{ data }}</pre>
+{% endmacro %}
+
+{% macro parse_date_from(data) %}
+    <pre>{{ data }}</pre>
+{% endmacro %}
+
+{% macro parse_created_by(data) %}
+    <pre>{{ data }}</pre>
+{% endmacro %}
+
+{% macro parse_id(data) %}
+    <pre>{{ data }}</pre>
+{% endmacro %}
+
+{% macro parse_other_legal_restrictions(data) %}
+    <pre>{{ data.label }}</pre>
+{% endmacro %}
+
+{% macro parse_copyright_status(data) %}
+    <pre>{{ data.label }}</pre>
+{% endmacro %}
+
+{% macro parse_last_updated_by(data) %}
+    <pre>{{ data }}</pre>
+{% endmacro %}
+
+{% macro parse_date_to(data) %}
+    <pre>{{ data }}</pre>
+{% endmacro %}
+
+{% macro parse_created(data) %}
+    <pre>{{ data }}</pre>
+{% endmacro %}
+
+{% macro parse_usability(data) %}
+    <pre>{{ data.label }}</pre>
+{% endmacro %}
+
+{% macro parse_schema(data) %}
+    <pre>{{ data }}</pre>
+{% endmacro %}
+
+{% macro parse_type(data) %}
+    <pre>{{ data }}</pre>
+{% endmacro %}
+
+{% macro parse_header(data) %}
+    <strong>{{ data }}</strong>
+{% endmacro %}
+
+{% set skip = ['series'] %}
 
 {% macro print_record(data) %}
-    {% for key, value in data.items() %}
-    <h3>{{ key }}</h3>
+    {% for key, value in data.items() if not key in skip %}
+        {{ parse_header(key) }}
+
         {% if key == 'collectors' %}
-            {{ parse_as_collectors(value) }}
+            {{ parse_collectors(value) }}
         {% elif key == 'content_types' %}
-            {{ parse_as_content_types(value) }}
+            {{ parse_content_types(value) }}
         {% elif key == 'curators' %}
-            {{ parse_as_curators(value) }}
+            {{ parse_curators(value) }}
         {% elif key == 'creators' %}
-            {{ parse_as_curators(value) }}
+            {{ parse_curators(value) }}
         {% elif key == 'collection' %}
-            {{ parse_as_collection(value) }}
+            {{ parse_collection(value) }}
         {% elif key == 'subjects' %}
-            {{ parse_as_subjects(value) }}
+            {{ parse_subjects(value) }}
         {% elif key == 'series_normalized' %}
-            {{ parse_as_series_normalized(value) }}
-        {% elif key in links %}
-            {{ parse_as_links(value) }}
-        {% elif key in id_label_dicts %}
-            {{ parse_id_label_dicts(value) }}
-        {% elif key in id_label %}
-            {{ parse_id_label(value) }}
-        {% elif key in id_label_dicts_type_2 %}
-            <h3>TYPE 2</h3>
-            {{ parse_id_label_dicts_type_2(value) }}
+            {{ parse_series_normalized(value) }}
+        {% elif key == 'organisations' %}
+            {{ parse_organisations(value) }}
+        {% elif key == 'last_updated' %}
+            {{ parse_last_updated(value) }}
+        {% elif key == 'desc_data' %}
+            {{ parse_desc_data(value) }}
+        {% elif key == 'admin_notes' %}
+            {{ parse_admin_notes(value) }}
+        {% elif key == 'heading' %}
+            {{ parse_heading(value) }}
+        {% elif key == 'availability' %}
+            {{ parse_availability(value) }}
+        {% elif key == 'contractual_status' %}
+            {{ parse_contractual_status(value) }}
+        {% elif key == 'registration_id' %}
+            {{ parse_registration_id(value) }}
+        {% elif key == 'date_from' %}
+            {{ parse_date_from(value) }}
+        {% elif key == 'created_by' %}
+            {{ parse_created_by(value) }}
+        {% elif key == 'id' %}
+            {{ parse_id(value) }}
+        {% elif key == 'other_legal_restrictions' %}
+            {{ parse_other_legal_restrictions(value) }}
+        {% elif key == 'copyright_status' %}
+            {{ parse_copyright_status(value) }}
+        {% elif key == 'last_updated_by' %}
+            {{ parse_last_updated_by(value) }}
+        {% elif key == 'date_to' %}
+            {{ parse_date_to(value) }}
+        {% elif key == 'created' %}
+            {{ parse_created(value) }}
+        {% elif key == 'usability' %}
+            {{ parse_usability(value)}}
+        {% elif key == 'schema' %}
+            {{ parse_schema(value)}}
+        {% elif key == 'type' %}
+            {{ parse_type(value)}}
+        {% elif key == 'locations' %}
+            {{ parse_locations(value)}}
         {% else %}
             {{ value }}
         {% endif %}
