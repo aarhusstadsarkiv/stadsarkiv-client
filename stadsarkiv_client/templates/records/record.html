@@ -4,206 +4,226 @@
 
 {% include "includes/main_title.html" %}
 
-{% macro parse_collectors (data) %}
-    {% for item in data %}
-        <a href="/search?collectors={{ item.id }}">{{ item.label }}</a>
-    {% endfor %}
+{% macro record_label (label) %}
+<div class="media-object-section media-object-label">
+    <strong>{{ label }}</strong>
+</div>
 {% endmacro %}
 
-{% macro parse_content_types (data) %}
-    {% for item in data %}
-        <a href="/search?content_types={{ item.id }}">{{ item.label }}</a>
-    {% endfor %}
+{% macro parse_collectors (key, value) %}
+<div class="media-object">
+    {{ record_label(key)}}
+    <div class="media-object-section">
+        {% for item in value %}
+            <a href="/search?collectors={{ item.id }}">{{ item.label }}</a>
+        {% endfor %}
+    </div>
+</div>
 {% endmacro %}
 
-{% macro parse_curators (data) %}
-    {% for item in data %}
-        <a href="/search?curators={{ item.id }}">{{ item.label }}</a>
-    {% endfor %}
+{% macro parse_content_types (key, value) %}
+<div class="media-object">
+    {{ record_label(key)}}
+    <div class="media-object-section">
+        {% for item in value %}
+            <a href="/search?content_types={{ item.id }}">{{ item.label }}</a>
+        {% endfor %}
+    </div>
+</div>
 {% endmacro %}
 
-{% macro parse_creators (data) %}
-    {% for item in data %}
-        <a href="/search?creators={{ item.id }}">{{ item.label }}</a>
-    {% endfor %}
+{% macro parse_curators (key, value) %}
+<div class="media-object">
+    {{ record_label(key)}}
+    <div class="media-object-section">
+        {% for item in value %}
+            <a href="/search?curators={{ item.id }}">{{ item.label }}</a>
+        {% endfor %}
+    </div>
+</div>
 {% endmacro %}
 
-{% macro parse_subjects (data) %}
-    {% for item in data %}
-        <a href="/search?subjects={{ item.id }}">{{ item.label }}</a>
-    {% endfor %}
+{% macro parse_creators (key, value) %}
+<div class="media-object">
+    {{ record_label(key)}}
+    <div class="media-object-section">
+        {% for item in value %}
+            <a href="/search?creators={{ item.id }}">{{ item.label }}</a>
+        {% endfor %}
+    </div>
+</div>
 {% endmacro %}
 
-{% macro parse_series_normalized (data) %}
-    {% for item in data %}
-        <a href="/search?{{ item.query }}">{{ item.series }}</a>
-    {% endfor %}
+{% macro parse_subjects (key, value) %}
+<div class="media-object">
+    {{ record_label(key)}}
+    <div class="media-object-section">
+        {% for item in value %}
+            <a href="/search?subjects={{ item.id }}">{{ item.label }}</a>
+        {% endfor %}
+    </div>
+</div>
 {% endmacro %}
 
-{% macro parse_collection (data) %}
-    <a href="/search?collection={{ data.id }}">{{ data.label }}</a>
+{% macro parse_series_normalized (key, value) %}
+<div class="media-object">
+    {{ record_label(key)}}
+    <div class="media-object-section">
+        {% for item in value %}
+            <a href="/search?{{ item.query }}">{{ item.series }}</a>
+        {% endfor %}
+    </div>
+</div>
 {% endmacro %}
 
-{% macro parse_organisations (data) %}
-    {% for item in data %}
-        <a href="/search?organisations={{ item.id }}">{{ item.label }}</a>
-    {% endfor %}
+{% macro parse_collection (key, value) %}
+<div class="media-object">
+    {{ record_label(key)}}
+    <div class="media-object-section">
+        <a href="/search?collection={{ value.id }}">{{ value.label }}</a>
+    </div>
+</div>
 {% endmacro %}
 
-{% macro parse_locations (data) %}
-    {% for item in data %}
-        <a href="/search?locations={{ item.id }}">{{ item.label }}</a>
-    {% endfor %}
+{% macro parse_organisations (key, value) %}
+<div class="media-object">
+    {{ record_label(key)}}
+    <div class="media-object-section">
+        {% for item in value %}
+            <a href="/search?organisations={{ item.id }}">{{ item.label }}</a>
+        {% endfor %}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_locations (key, value) %}
+<div class="media-object">
+    {{ record_label(key)}}
+    <div class="media-object-section">
+        {% for item in value %}
+            <a href="/search?locations={{ item.id }}">{{ item.label }}</a>
+        {% endfor %}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_desc_data (key, value) %}
+<table>
+<caption><h3>{{ key }}</h3></caption>
+<tbody>
+{% for key, item in value.items() %}
+    <tr>
+        <td>
+            {{ key }}
+        </td>
+        <td>
+            {{ item }}
+        </td>
+    </tr>
+{% endfor %}
+</tbody>
+</table>
+{% endmacro %}
+
+{% macro parse_admin_notes (key, value) %}
+<div class="media-object">
+    {{ record_label(key)}}
+    <div class="media-object-section">
+        {{ value }}
+    </div>
+</div>
 {% endmacro %}
 
 
-{% macro parse_last_updated (data) %}
-    <pre>{{ data }}</pre>
+{% macro parse_contractual_status (key, value) %}
+<div class="media-object">
+    {{ record_label(key)}}
+    <div class="media-object-section">
+        {{ value.label }}
+    </div>
+</div>
 {% endmacro %}
 
-{% macro parse_desc_data (data) %}
-    <table>
-    {% for key, value in data.items() %}
-        <tr>
-            <td>
-                {{ key }}
-            </td>
-            <td>
-                {{ value }}
-            </td>
-        </tr>
-    {% endfor %}
-    </table>
+{% macro parse_label(key, value) %}
+<div class="media-object">
+    {{ record_label(key)}}
+    <div class="media-object-section">
+        {{ value.label }}
+    </div>
+</div>
 {% endmacro %}
 
-{% macro parse_admin_notes (data) %}
-    <pre>{{ data }}</pre>
+{% macro parse_primitive(key, value) %}
+<div class="media-object">
+    {{ record_label(key)}}
+    <div class="media-object-section">
+        {{ value }}
+    </div>
+</div>
 {% endmacro %}
 
-{% macro parse_heading (data) %}
-    <pre>{{ data }}</pre>
+{% macro parse_header(key, value) %}
+    <h3>{{ value }}</h3>
 {% endmacro %}
 
-{% macro parse_availability (data) %}
-    <pre>{{ data.label }}</pre>
-{% endmacro %}
+{% set skip = ['series', 'last_updated'] %}
 
-{% macro parse_contractual_status (data) %}
-    <pre>{{ data.label }}</pre>
-{% endmacro %}
-
-{% macro parse_registration_id (data) %}
-    <pre>{{ data }}</pre>
-{% endmacro %}
-
-{% macro parse_date_from(data) %}
-    <pre>{{ data }}</pre>
-{% endmacro %}
-
-{% macro parse_created_by(data) %}
-    <pre>{{ data }}</pre>
-{% endmacro %}
-
-{% macro parse_id(data) %}
-    <pre>{{ data }}</pre>
-{% endmacro %}
-
-{% macro parse_other_legal_restrictions(data) %}
-    <pre>{{ data.label }}</pre>
-{% endmacro %}
-
-{% macro parse_copyright_status(data) %}
-    <pre>{{ data.label }}</pre>
-{% endmacro %}
-
-{% macro parse_last_updated_by(data) %}
-    <pre>{{ data }}</pre>
-{% endmacro %}
-
-{% macro parse_date_to(data) %}
-    <pre>{{ data }}</pre>
-{% endmacro %}
-
-{% macro parse_created(data) %}
-    <pre>{{ data }}</pre>
-{% endmacro %}
-
-{% macro parse_usability(data) %}
-    <pre>{{ data.label }}</pre>
-{% endmacro %}
-
-{% macro parse_schema(data) %}
-    <pre>{{ data }}</pre>
-{% endmacro %}
-
-{% macro parse_type(data) %}
-    <pre>{{ data }}</pre>
-{% endmacro %}
-
-{% macro parse_header(data) %}
-    <strong>{{ data }}</strong>
-{% endmacro %}
-
-{% set skip = ['series'] %}
-
-{% macro print_record(data) %}
-    {% for key, value in data.items() if not key in skip %}
+{% macro print_record(record_dict) %}
+    {% for key, value in record_dict.items() if not key in skip %}
         {{ parse_header(key) }}
 
         {% if key == 'collectors' %}
-            {{ parse_collectors(value) }}
+            {{ parse_collectors(key, value) }}
         {% elif key == 'content_types' %}
-            {{ parse_content_types(value) }}
+            {{ parse_content_types(key, value) }}
         {% elif key == 'curators' %}
-            {{ parse_curators(value) }}
+            {{ parse_curators(key, value) }}
         {% elif key == 'creators' %}
-            {{ parse_curators(value) }}
+            {{ parse_curators(key, value) }}
         {% elif key == 'collection' %}
-            {{ parse_collection(value) }}
+            {{ parse_collection(key, value) }}
         {% elif key == 'subjects' %}
-            {{ parse_subjects(value) }}
+            {{ parse_subjects(key, value) }}
         {% elif key == 'series_normalized' %}
-            {{ parse_series_normalized(value) }}
+            {{ parse_series_normalized(key, value) }}
         {% elif key == 'organisations' %}
-            {{ parse_organisations(value) }}
-        {% elif key == 'last_updated' %}
-            {{ parse_last_updated(value) }}
+            {{ parse_organisations(key, value) }}
         {% elif key == 'desc_data' %}
-            {{ parse_desc_data(value) }}
+            {{ parse_desc_data(key, value) }}
         {% elif key == 'admin_notes' %}
-            {{ parse_admin_notes(value) }}
-        {% elif key == 'heading' %}
-            {{ parse_heading(value) }}
-        {% elif key == 'availability' %}
-            {{ parse_availability(value) }}
-        {% elif key == 'contractual_status' %}
-            {{ parse_contractual_status(value) }}
-        {% elif key == 'registration_id' %}
-            {{ parse_registration_id(value) }}
-        {% elif key == 'date_from' %}
-            {{ parse_date_from(value) }}
-        {% elif key == 'created_by' %}
-            {{ parse_created_by(value) }}
-        {% elif key == 'id' %}
-            {{ parse_id(value) }}
-        {% elif key == 'other_legal_restrictions' %}
-            {{ parse_other_legal_restrictions(value) }}
-        {% elif key == 'copyright_status' %}
-            {{ parse_copyright_status(value) }}
-        {% elif key == 'last_updated_by' %}
-            {{ parse_last_updated_by(value) }}
-        {% elif key == 'date_to' %}
-            {{ parse_date_to(value) }}
-        {% elif key == 'created' %}
-            {{ parse_created(value) }}
-        {% elif key == 'usability' %}
-            {{ parse_usability(value)}}
-        {% elif key == 'schema' %}
-            {{ parse_schema(value)}}
-        {% elif key == 'type' %}
-            {{ parse_type(value)}}
+            {{ parse_admin_notes(key, value) }}
         {% elif key == 'locations' %}
-            {{ parse_locations(value)}}
+            {{ parse_locations(key, value)}}
+        {% elif key == 'contractual_status' %}
+            {{ parse_label(key, value) }}
+        {% elif key == 'heading' %}
+            {{ parse_primitive(key, value) }}
+        {% elif key == 'availability' %}
+            {{ parse_label(key, value) }}
+        {% elif key == 'registration_id' %}
+            {{ parse_primitive(key, value) }}
+        {% elif key == 'date_from' %}
+            {{ parse_primitive(key, value) }}
+        {% elif key == 'created_by' %}
+            {{ parse_primitive(key, value) }}
+        {% elif key == 'id' %}
+            {{ parse_primitive(key, value) }}
+        {% elif key == 'other_legal_restrictions' %}
+            {{ parse_label(key, value) }}
+        {% elif key == 'copyright_status' %}
+            {{ parse_primitive(key, value) }}
+        {% elif key == 'last_updated_by' %}
+            {{ parse_primitive(key, value) }}
+        {% elif key == 'date_to' %}
+            {{ parse_primitive(key, value) }}
+        {% elif key == 'created' %}
+            {{ parse_primitive(key, value) }}
+        {% elif key == 'usability' %}
+            {{ parse_label(key, value)}}
+        {% elif key == 'schema' %}
+            {{ parse_primitive(key, value)}}
+        {% elif key == 'type' %}
+            {{ parse_primitive(key, value)}}
         {% else %}
             {{ value }}
         {% endif %}
@@ -211,9 +231,5 @@
 {% endmacro %}
 
 {{ print_record(record_dict) }}
-
-<pre>
-    {{ record_json }}
-</pre>
 
 {% endblock content %}
