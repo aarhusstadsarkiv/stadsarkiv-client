@@ -40,12 +40,39 @@ async def get_records_search_results(request: Request):
 
 
 def set_sections(record_dict: dict):
-    keys_main = ['collectors', 'content_types', 'creators', 'date_from', 'curators']
-    keys_description = ['summary', 'collection', 'series_normalized']
-    keys_copyright = ['copyright_status']
-    keys_relations = ['organisations', 'locations']
-    keys_availability = ['availability']
-    keys_copyright_extra = ['contractual_status', 'other_legal_restrictions']
+
+    abstract = ['collectors', 'content_types', 'creators', 'date_from', 'curators', 'id']
+    description = ['heading', 'summary', 'collection', 'series_normalized', 'subjects']
+    copyright = ['copyright_status']
+    relations = ['organisations', 'locations']
+    copyright_extra = ['contractual_status', 'other_legal_restrictions']
+    availability = ['availability']
+    media = ['representations']
+
+    sections = {
+        "abstract": {}, "description": {}, "copyright": {}, "relations": {},
+        "copyright_extra": {}, "availability": {}, "media": {}, "other": {}
+    }
+
+    for key, value in record_dict.items():
+        if key in abstract:
+            sections['abstract'][key] = value
+        elif key in description:
+            sections['description'][key] = value
+        elif key in copyright:
+            sections['copyright'][key] = value
+        elif key in relations:
+            sections['relations'][key] = value
+        elif key in copyright_extra:
+            sections['copyright_extra'][key] = value
+        elif key in availability:
+            sections['availability'] = record_dict[key]
+        elif key in media:
+            sections['media'][key] = value
+        else:
+            sections['other'][key] = value
+
+    return sections
 
 
 async def get_record_view(request: Request):
@@ -53,12 +80,12 @@ async def get_record_view(request: Request):
         record: RecordsIdGet = await api.record_read(request)
         record_dict = record.to_dict()
         record_dict = alter_record(record_dict)
-
-        record_json = json.dumps(record_dict, indent=4, ensure_ascii=False)
+        record_sections = set_sections(record_dict)
+        record_sections_json = json.dumps(record_sections, indent=4, ensure_ascii=False)
         context_values = {
             "title": translate("Entity"),
-            "record_dict": record_dict,
-            "record_json": record_json,
+            "record_sections": record_sections,
+            "record_sections_json": record_sections_json,
         }
 
         context = await get_context(request, context_values=context_values)

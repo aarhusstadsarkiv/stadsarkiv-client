@@ -6,7 +6,7 @@
 
 {% macro record_label (label) %}
 {% set label = "label_record_" + label %}
-<div class="media-object-section media-object-label">
+<div class="label">
     <strong>{{ translate(label) }}</strong>
 </div>
 {% endmacro %}
@@ -14,7 +14,7 @@
 {% macro parse_collectors (key, value) %}
 <div class="media-object">
     {{ record_label(key)}}
-    <div class="media-object-section">
+    <div class="content">
         {% for item in value %}
             <a href="/search?collectors={{ item.id }}">{{ item.label }}</a>
         {% endfor %}
@@ -25,7 +25,7 @@
 {% macro parse_content_types (key, value) %}
 <div class="media-object">
     {{ record_label(key)}}
-    <div class="media-object-section">
+    <div class="content">
         {% for item in value %}
             <a href="/search?content_types={{ item.id }}">{{ item.label }}</a>
         {% endfor %}
@@ -36,7 +36,7 @@
 {% macro parse_curators (key, value) %}
 <div class="media-object">
     {{ record_label(key)}}
-    <div class="media-object-section">
+    <div class="content">
         {% for item in value %}
             <a href="/search?curators={{ item.id }}">{{ item.label }}</a>
         {% endfor %}
@@ -47,7 +47,7 @@
 {% macro parse_creators (key, value) %}
 <div class="media-object">
     {{ record_label(key)}}
-    <div class="media-object-section">
+    <div class="content">
         {% for item in value %}
             <a href="/search?creators={{ item.id }}">{{ item.label }}</a>
         {% endfor %}
@@ -58,7 +58,7 @@
 {% macro parse_subjects (key, value) %}
 <div class="media-object">
     {{ record_label(key)}}
-    <div class="media-object-section">
+    <div class="content">
         {% for item in value %}
             <a href="/search?subjects={{ item.id }}">{{ item.label }}</a>
         {% endfor %}
@@ -69,7 +69,7 @@
 {% macro parse_series_normalized (key, value) %}
 <div class="media-object">
     {{ record_label(key)}}
-    <div class="media-object-section">
+    <div class="content">
         {% for item in value %}
             <a href="/search?{{ item.query }}">{{ item.series }}</a>
         {% endfor %}
@@ -80,7 +80,7 @@
 {% macro parse_collection (key, value) %}
 <div class="media-object">
     {{ record_label(key)}}
-    <div class="media-object-section">
+    <div class="content">
         <a href="/search?collection={{ value.id }}">{{ value.label }}</a>
     </div>
 </div>
@@ -89,7 +89,7 @@
 {% macro parse_organisations (key, value) %}
 <div class="media-object">
     {{ record_label(key)}}
-    <div class="media-object-section">
+    <div class="content">
         {% for item in value %}
             <a href="/search?organisations={{ item.id }}">{{ item.label }}</a>
         {% endfor %}
@@ -100,7 +100,7 @@
 {% macro parse_locations (key, value) %}
 <div class="media-object">
     {{ record_label(key)}}
-    <div class="media-object-section">
+    <div class="content">
         {% for item in value %}
             <a href="/search?locations={{ item.id }}">{{ item.label }}</a>
         {% endfor %}
@@ -111,10 +111,10 @@
 {% macro parse_desc_data (key, value) %}
 <div class="media-object">
     {% for key, item in value.items() %}
-    <div class="media-object-section media-object-label">
+    <div class="label">
         <strong>{{ key }}</strong>
     </div>
-    <div class="media-object-section">
+    <div class="content">
     {{ item }}
     </div>
     {% endfor %}
@@ -124,7 +124,7 @@
 {% macro parse_admin_notes (key, value) %}
 <div class="media-object">
     {{ record_label(key)}}
-    <div class="media-object-section">
+    <div class="content">
         {{ value }}
     </div>
 </div>
@@ -133,7 +133,7 @@
 {% macro parse_contractual_status (key, value) %}
 <div class="media-object">
     {{ record_label(key)}}
-    <div class="media-object-section">
+    <div class="content">
         {{ value.label }}
     </div>
 </div>
@@ -142,7 +142,7 @@
 {% macro parse_label(key, value) %}
 <div class="media-object">
     {{ record_label(key)}}
-    <div class="media-object-section">
+    <div class="content">
         {{ value.label }}
     </div>
 </div>
@@ -150,9 +150,8 @@
 
 {% macro parse_primitive(key, value) %}
 <div class="media-object">
-
     {{ record_label(key)}}
-    <div class="media-object-section">
+    <div class="content">
         {{ value }}
     </div>
 </div>
@@ -161,7 +160,7 @@
 {% macro parse_portrait(key, value) %}
 <div class="media-object">
     {{ record_label(key)}}
-    <div class="media-object-section">
+    <div class="content">
         <img src="{{ value }}" alt="{{ key }}" />
     </div>
 </div>
@@ -175,8 +174,6 @@
 
 {% macro print_record(record_dict) %}
     {% for key, value in record_dict.items() if not key in skip %}
-        {{ parse_header(key) }}
-
         {% if key == 'collectors' %}
             {{ parse_collectors(key, value) }}
         {% elif key == 'content_types' %}
@@ -239,10 +236,17 @@
     {% endfor %}
 {% endmacro %}
 
-{{ print_record(record_dict) }}
+{% macro print_sections(record_sections) %}
+    {% set sections = record_sections %}
+    {% for key, section in sections.items() %}
+        {{ print_record(section) }}        
+    {% endfor %}
+{% endmacro %}
+
+{{ print_sections(record_sections) }}
 
 <pre>
-    {{ record_json }}
+    {{ record_sections_json }}
 </pre>
 
 {% endblock content %}
