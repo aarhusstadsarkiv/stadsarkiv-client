@@ -5,8 +5,9 @@
 {% include "includes/main_title.html" %}
 
 {% macro record_label (label) %}
+{% set label = "label_" + label %}
 <div class="media-object-section media-object-label">
-    <strong>{{ label }}</strong>
+    <strong>{{ translate(label) }}</strong>
 </div>
 {% endmacro %}
 
@@ -108,21 +109,16 @@
 {% endmacro %}
 
 {% macro parse_desc_data (key, value) %}
-<table>
-<caption><h3>{{ key }}</h3></caption>
-<tbody>
-{% for key, item in value.items() %}
-    <tr>
-        <td>
-            {{ key }}
-        </td>
-        <td>
-            {{ item }}
-        </td>
-    </tr>
-{% endfor %}
-</tbody>
-</table>
+<div class="media-object">
+    {% for key, item in value.items() %}
+    <div class="media-object-section media-object-label">
+        <strong>{{ key }}</strong>
+    </div>
+    <div class="media-object-section">
+    {{ item }}
+    </div>
+    {% endfor %}
+</div>
 {% endmacro %}
 
 {% macro parse_admin_notes (key, value) %}
@@ -133,7 +129,6 @@
     </div>
 </div>
 {% endmacro %}
-
 
 {% macro parse_contractual_status (key, value) %}
 <div class="media-object">
@@ -155,9 +150,19 @@
 
 {% macro parse_primitive(key, value) %}
 <div class="media-object">
+
     {{ record_label(key)}}
     <div class="media-object-section">
         {{ value }}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_portrait(key, value) %}
+<div class="media-object">
+    {{ record_label(key)}}
+    <div class="media-object-section">
+        <img src="{{ value }}" alt="{{ key }}" />
     </div>
 </div>
 {% endmacro %}
@@ -196,10 +201,12 @@
             {{ parse_locations(key, value)}}
         {% elif key == 'contractual_status' %}
             {{ parse_label(key, value) }}
-        {% elif key == 'heading' %}
-            {{ parse_primitive(key, value) }}
         {% elif key == 'availability' %}
             {{ parse_label(key, value) }}
+        {% elif key == 'copyright_status' %}
+            {{ parse_label(key, value) }}
+        {% elif key == 'heading' %}
+            {{ parse_primitive(key, value) }}
         {% elif key == 'registration_id' %}
             {{ parse_primitive(key, value) }}
         {% elif key == 'date_from' %}
@@ -210,8 +217,6 @@
             {{ parse_primitive(key, value) }}
         {% elif key == 'other_legal_restrictions' %}
             {{ parse_label(key, value) }}
-        {% elif key == 'copyright_status' %}
-            {{ parse_primitive(key, value) }}
         {% elif key == 'last_updated_by' %}
             {{ parse_primitive(key, value) }}
         {% elif key == 'date_to' %}
@@ -224,12 +229,18 @@
             {{ parse_primitive(key, value)}}
         {% elif key == 'type' %}
             {{ parse_primitive(key, value)}}
+        {% elif key == 'portrait' %}
+            {{ parse_portrait(key, value)}}
         {% else %}
-            {{ value }}
+            {{ parse_primitive(key, value)}}
         {% endif %}
     {% endfor %}
 {% endmacro %}
 
 {{ print_record(record_dict) }}
+
+<pre>
+    {{ record_json }}
+</pre>
 
 {% endblock content %}
