@@ -67,7 +67,7 @@ da = {
     "label_record_availability": "Tilgængelighed",
     "label_record_collection": "Samling",
     "label_record_collectors": "Arkivskaber",
-    "label_record_content_types": "Indholdstyper",
+    "label_record_content_types": "Materialetype",
     "label_record_contractual_status": "Kontraktlig status",
     "label_record_copyright_status": "Copyright status",
     "label_record_created": "Oprettet",
@@ -78,6 +78,7 @@ da = {
     "label_record_date_to": "Datering",
     "label_record_heading": "Overskrift",
     "label_record_id": "Arkiv ID",
+    "label_record_label": "label_record_label",
     "label_record_last_updated_by": "Senest opdateret af",
     "label_record_locations": "Steder",
     "label_record_organisations": "Organisationer",
@@ -87,10 +88,12 @@ da = {
     "label_record_representations": "Representationer",
     "label_record_resources": "Ressourcer",
     "label_record_schema": "Skema",
+    "label_record_sections": "label_record_sections",
     "label_record_series_normalized": "Serie",
     "label_record_subjects": "Emner",
     "label_record_summary": "Abstrakt",
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
-    "label_record_usability": "Ophavsret"
+    "label_record_usability": "Ophavsret",
+    "search": "search"
 }
