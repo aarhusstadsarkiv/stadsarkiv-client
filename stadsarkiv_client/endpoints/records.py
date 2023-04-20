@@ -39,6 +39,15 @@ async def get_records_search_results(request: Request):
         raise HTTPException(404, detail=str(e), headers=None)
 
 
+def set_sections(record_dict: dict):
+    keys_main = ['collectors', 'content_types', 'creators', 'date_from', 'curators']
+    keys_description = ['summary', 'collection', 'series_normalized']
+    keys_copyright = ['copyright_status']
+    keys_relations = ['organisations', 'locations']
+    keys_availability = ['availability']
+    keys_copyright_extra = ['contractual_status', 'other_legal_restrictions']
+
+
 async def get_record_view(request: Request):
     try:
         record: RecordsIdGet = await api.record_read(request)
