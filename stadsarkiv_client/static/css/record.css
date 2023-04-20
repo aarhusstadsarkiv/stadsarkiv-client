@@ -1,3 +1,10 @@
+h3.record-header {
+    border-bottom: 1px solid #cacaca;
+    padding-bottom: 0.2rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
 .media-object {
     display: flex;
     margin-bottom: 1rem;
@@ -15,4 +22,15 @@
 
 .media-object > .content {
     flex: 1 1 0px;
+}
+
+.media-object > .title {
+    padding-top: 30px;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    color: #2b2b2b;
+}
+
+.media-object > .image {
+    max-width: 35%;
 }

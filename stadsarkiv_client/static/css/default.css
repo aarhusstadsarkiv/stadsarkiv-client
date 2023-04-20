@@ -41,12 +41,11 @@ body {
 
 .flash-messages {
 
-    width: auto;
     margin-top: 10px;
     bottom: 10px;
     position: fixed;
     max-width: 95%;
-    width: 800px;
+    width: (--width);
     z-index: 1000;
 }
 
