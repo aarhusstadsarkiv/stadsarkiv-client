@@ -1,9 +1,5 @@
 {% extends "base.html" %}
 
-{% block content %}
-
-{% include "includes/main_title.html" %}
-
 {% macro record_label (label) %}
 {% set label = "label_record_" + label %}
 <div class="label">
@@ -160,7 +156,7 @@
 {% macro parse_portrait(key, value) %}
 <div class="media-object">
     {{ record_label(key)}}
-    <div class="content">
+    <div class="image">
         <img src="{{ value }}" alt="{{ key }}" />
     </div>
 </div>
@@ -170,10 +166,10 @@
     <h3>{{ value }}</h3>
 {% endmacro %}
 
-{% set skip = ['series', 'last_updated'] %}
+{% set skip_record_keys = ['series', 'last_updated'] %}
 
 {% macro print_record(record_dict) %}
-    {% for key, value in record_dict.items() if not key in skip %}
+    {% for key, value in record_dict.items() if not key in skip_record_keys %}
         {% if key == 'collectors' %}
             {{ parse_collectors(key, value) }}
         {% elif key == 'content_types' %}
@@ -236,17 +232,32 @@
     {% endfor %}
 {% endmacro %}
 
+{% macro print_title (title) %}
+<div class="media-object">
+    <div class="title">{{ title }}</div>
+</div>
+{% endmacro %}
+
+{% set skip_section_keys = ['other'] %}
+
 {% macro print_sections(record_sections) %}
-    {% set sections = record_sections %}
-    {% for key, section in sections.items() %}
+    {% for key, section in record_sections.items() if not key in skip_section_keys %}
+        {% set header = "header_record_" + key %}
+        {% if key not in ['abstract'] %}
+        <h3 class="record-header">{{ translate(header) }}</h3>
+        {% endif %}
         {{ print_record(section) }}        
     {% endfor %}
 {% endmacro %}
 
+{% block content %}
+
+{{ print_title(record_sections["description"]["heading"]) }}
 {{ print_sections(record_sections) }}
 
 <pre>
     {{ record_sections_json }}
 </pre>
+
 
 {% endblock content %}

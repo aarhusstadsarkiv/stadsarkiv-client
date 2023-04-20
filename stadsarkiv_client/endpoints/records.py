@@ -39,7 +39,7 @@ async def get_records_search_results(request: Request):
         raise HTTPException(404, detail=str(e), headers=None)
 
 
-def set_sections(record_dict: dict):
+def get_sections(record_dict: dict):
 
     abstract = ['collectors', 'content_types', 'creators', 'date_from', 'curators', 'id']
     description = ['heading', 'summary', 'collection', 'series_normalized', 'subjects']
@@ -51,7 +51,7 @@ def set_sections(record_dict: dict):
 
     sections = {
         "abstract": {}, "description": {}, "copyright": {}, "relations": {},
-        "copyright_extra": {}, "availability": {}, "media": {}, "other": {}
+        "copyright_extra": {}, "availability": {}, "download": {}, "other": {}
     }
 
     for key, value in record_dict.items():
@@ -66,13 +66,30 @@ def set_sections(record_dict: dict):
         elif key in copyright_extra:
             sections['copyright_extra'][key] = value
         elif key in availability:
-            sections['availability'] = record_dict[key]
+            sections['availability'][key] = value
         elif key in media:
-            sections['media'][key] = value
-        else:
-            sections['other'][key] = value
+            sections['download'][key] = value
 
     return sections
+
+
+def get_record_title(record_dict: dict):
+    title = record_dict['heading']
+    if title:
+        return title
+    else:
+        return record_dict['id']
+
+
+def get_record_image(record_dict: dict):
+    image = None
+    try:
+        if record_dict['representations']['record_type'] == 'image':
+            image = record_dict['representations']['record_image']
+    except KeyError:
+        pass
+
+    return image
 
 
 async def get_record_view(request: Request):
@@ -80,10 +97,11 @@ async def get_record_view(request: Request):
         record: RecordsIdGet = await api.record_read(request)
         record_dict = record.to_dict()
         record_dict = alter_record(record_dict)
-        record_sections = set_sections(record_dict)
+        record_sections = get_sections(record_dict)
         record_sections_json = json.dumps(record_sections, indent=4, ensure_ascii=False)
         context_values = {
-            "title": translate("Entity"),
+            "title": get_record_title(record_dict),
+            "image": get_record_image(record_dict),
             "record_sections": record_sections,
             "record_sections_json": record_sections_json,
         }
