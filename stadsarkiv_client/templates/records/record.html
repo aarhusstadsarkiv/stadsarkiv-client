@@ -5,7 +5,7 @@
 {% include "includes/main_title.html" %}
 
 {% macro record_label (label) %}
-{% set label = "label_" + label %}
+{% set label = "label_record_" + label %}
 <div class="media-object-section media-object-label">
     <strong>{{ translate(label) }}</strong>
 </div>
@@ -194,6 +194,8 @@
         {% elif key == 'organisations' %}
             {{ parse_organisations(key, value) }}
         {% elif key == 'desc_data' %}
+            {{ parse_desc_data(key, value) }}
+        {% elif key == 'admin_data' %}
             {{ parse_desc_data(key, value) }}
         {% elif key == 'admin_notes' %}
             {{ parse_admin_notes(key, value) }}
