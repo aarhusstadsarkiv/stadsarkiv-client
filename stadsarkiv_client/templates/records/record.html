@@ -214,24 +214,8 @@
     {% endfor %}        
 {% endmacro %}
 
-{% macro parse_title (title) %}
-<div class="header">
-    <div class="record-content">
-        <div class="title">{{ title }}</div>
-    </div>
-</div>
-
-{% endmacro %}
-
-{% set skip_section_keys = ['other'] %}
-
-
-
-    {% if section not in ['abstract'] %}
-           
-    {% endif %}
-
 {% macro parse_sections(record_sections) %}
+    {% set skip_section_keys = ['other'] %}
     {% for section, section_dict in record_sections.items() if not key in skip_section_keys %}
     {% set header = "header_record_" + section %}
     <div class="record-section {{ section }}">
@@ -240,7 +224,7 @@
             <img src="{{ record['image'] }}" alt="{{ section }}" />
         </div>
         <div class="record-main">
-            <div class="record-title">{{ record['title'] }} TEST</div>
+            <div class="record-title">{{ title }}</div>
             {{ parse_section(section, section_dict) }}
         </div>
         {% else %}
