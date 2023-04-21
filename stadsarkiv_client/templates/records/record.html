@@ -144,6 +144,14 @@
 </div>
 {% endmacro %}
 
+{% macro parse_representations(key, value) %}
+
+{% if value["record_type"] == "image" %}
+<a href="{{ value['record_image'] }}"> {{ translate('Download medium size')}}</a><br />
+<a href="{{ value['large_image'] }}"> {{ translate('Download large size')}}</a>
+{% endif %}
+{% endmacro %}
+
 {% macro parse_primitive(key, value) %}
 <div class="record-content">
     {{ parse_record_label(key)}}
@@ -208,6 +216,8 @@
             {{ parse_label(key, value)}}
         {% elif key == 'portrait' %}
             {{ parse_portrait(key, value)}}
+        {% elif key == 'representations' %}
+            {{ parse_representations(key, value)}}
         {% else %}
             {{ parse_primitive(key, value)}}
         {% endif %}
@@ -216,7 +226,7 @@
 
 {% macro parse_sections(record_sections) %}
     {% set skip_section_keys = ['other'] %}
-    {% for section, section_dict in record_sections.items() if not key in skip_section_keys %}
+    {% for section, section_dict in record_sections.items() if not section in skip_section_keys %}
     {% set header = "header_record_" + section %}
     <div class="record-section {{ section }}">
         {% if section in ['abstract'] %}
@@ -243,5 +253,9 @@
 <div class="record">
     {{ parse_sections(record_sections) }}
 </div>
+
+<p>
+    <a href="{{ request.url.path }}/json">JSON</a>
+</p>
 
 {% endblock content %}
