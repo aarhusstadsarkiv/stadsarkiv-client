@@ -168,8 +168,15 @@
 
 {% set skip_record_keys = ['series', 'last_updated'] %}
 
-{% macro print_record(record_dict) %}
-    {% for key, value in record_dict.items() if not key in skip_record_keys %}
+{% macro parse_section(section, values) %}
+<div class="{{ section }}">
+    {% set header = "header_record_" + section %}
+    
+    {% if section not in ['abstract'] %}
+    <h3 class="record-header">{{ translate(header) }}</h3>
+    {% endif %}
+    
+    {% for key, value in values.items() if not key in skip_record_keys %}
         {% if key == 'collectors' %}
             {{ parse_collectors(key, value) }}
         {% elif key == 'content_types' %}
@@ -230,30 +237,30 @@
             {{ parse_primitive(key, value)}}
         {% endif %}
     {% endfor %}
+</div>
 {% endmacro %}
 
-{% macro print_title (title) %}
-<div class="media-object">
-    <div class="title">{{ title }}</div>
+{% macro parse_title (title) %}
+<div class="header">
+    <div class="media-object">
+        <div class="title">{{ title }}</div>
+    </div>
 </div>
+
 {% endmacro %}
 
 {% set skip_section_keys = ['other'] %}
 
-{% macro print_sections(record_sections) %}
-    {% for key, section in record_sections.items() if not key in skip_section_keys %}
-        {% set header = "header_record_" + key %}
-        {% if key not in ['abstract'] %}
-        <h3 class="record-header">{{ translate(header) }}</h3>
-        {% endif %}
-        {{ print_record(section) }}        
+{% macro parse_sections(record_sections) %}
+    {% for section, section_dict in record_sections.items() if not key in skip_section_keys %}
+        {{ parse_section(section, section_dict) }}        
     {% endfor %}
 {% endmacro %}
 
 {% block content %}
 
-{{ print_title(record_sections["description"]["heading"]) }}
-{{ print_sections(record_sections) }}
+{{ parse_title(record_sections["description"]["heading"]) }}
+{{ parse_sections(record_sections) }}
 
 <pre>
     {{ record_sections_json }}
