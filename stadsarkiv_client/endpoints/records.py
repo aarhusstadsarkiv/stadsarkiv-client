@@ -24,7 +24,7 @@ async def get_records_search(request: Request):
         return templates.TemplateResponse("records/search.html", context)
 
     except Exception as e:
-        # for sure this is a 404
+        log.exception(e)
         raise HTTPException(404, detail=str(e), headers=None)
 
 
@@ -35,7 +35,7 @@ async def get_records_search_results(request: Request):
         return templates.TemplateResponse("records/search.html", context)
 
     except Exception as e:
-        # for sure this is a 404
+        log.exception(e)
         raise HTTPException(404, detail=str(e), headers=None)
 
 
@@ -57,6 +57,5 @@ async def get_record_view(request: Request):
         return templates.TemplateResponse("records/record.html", context)
 
     except Exception as e:
-        # for sure this is a 404
         log.exception(e)
         raise HTTPException(404, detail=str(e), headers=None)
