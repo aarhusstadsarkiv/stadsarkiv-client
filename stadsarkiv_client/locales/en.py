@@ -4,6 +4,8 @@ en = {
     "Create Schema": "Create Schema",
     "Create entity": "Create entity",
     "Create schema": "Create schema",
+    "Download large size": "Download large size",
+    "Download medium size": "Download medium size",
     "E-mail": "E-mail",
     "Email": "Email",
     "Email needs to be correct. Password needs to be at least 8 characters long.": "Email needs to be correct. Password needs to be at least 8 characters long.",
@@ -111,5 +113,5 @@ en = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "search": "search",
+    "search": "search"
 }

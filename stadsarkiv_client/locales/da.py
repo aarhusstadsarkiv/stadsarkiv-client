@@ -4,6 +4,8 @@ da = {
     "Create Schema": "Opret skema",
     "Create entity": "Opret entitet",
     "Create schema": "Opret skema",
+    "Download large size": "Download large size",
+    "Download medium size": "Download medium size",
     "E-mail": "E-mail",
     "Email": "E-mail",
     "Email needs to be correct. Password needs to be at least 8 characters long.": "Email er ikke korrekt. Password skal være mindst 8 tegn langt.",
@@ -105,5 +107,5 @@ da = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Ophavsret",
-    "search": "search",
+    "search": "search"
 }
