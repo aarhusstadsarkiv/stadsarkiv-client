@@ -71,3 +71,7 @@ body {
     background-color: var(--flash-notice-color);
     color: var(--flash-color);
 }
+
+.container-main {
+    padding-top: 25px;
+}

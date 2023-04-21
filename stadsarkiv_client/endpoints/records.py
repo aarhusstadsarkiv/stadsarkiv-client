@@ -42,13 +42,17 @@ async def get_records_search_results(request: Request):
 async def get_record_view(request: Request):
     try:
         record: RecordsIdGet = await api.record_read(request)
+
         record_dict = record.to_dict()
         record_dict = alter_record.alter_record(record_dict)
+
         record_sections = alter_record.get_sections(record_dict)
         record_sections_json = json.dumps(record_sections, indent=4, ensure_ascii=False)
+
+        record_dict["image"] = alter_record.get_record_image(record_dict)      
         context_values = {
             "title": alter_record.get_record_title(record_dict),
-            "image": alter_record.get_record_image(record_dict),
+            "record": record_dict,
             "record_sections": record_sections,
             "record_sections_json": record_sections_json,
         }

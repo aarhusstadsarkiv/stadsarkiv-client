@@ -1,18 +1,59 @@
+.record {
+    
+}
+
+.record-section {
+    display: flex;
+    flex-direction: row;
+}
+
 h3.record-header {
     border-bottom: 1px solid #cacaca;
     padding-bottom: 0.2rem;
     margin-top: 2rem;
     margin-bottom: 1rem;
+    width: 100%;
 }
 
-.media-object {
+.record-image {
+    padding-right: 25px;
+    flex: 1 0 40%;
+    min-width: 40%;
+    
+}
+
+/** 
+ * Style for .record-image when mobile breakpoint is 576px
+ */
+@media (max-width: 576px) {
+
+    .record-section {
+        flex-direction: column;
+    }
+
+    .record-image {
+        flex: 0 0 100%;
+        min-width: 100%;
+        width: 100%;
+    }
+}
+
+.record-image > img {
+    box-shadow: 2px 2px 5px #555; 
+}
+
+.record-main {
+    width: 100%;
+}
+
+.record-content {
     display: flex;
     margin-bottom: 1rem;
     flex-wrap: nowrap;
 }
 
-.media-object > .label {
-    /* text-transform: uppercase; */
+.record-content > .label {
+    text-transform: uppercase;
     font-weight: bold;
     padding-top: 0.2rem;
     font-size: 75%;
@@ -20,17 +61,12 @@ h3.record-header {
     width: 11em;
 }
 
-.media-object > .content {
+.record-content > .content {
     flex: 1 1 0px;
 }
 
-.media-object > .title {
-    padding-top: 30px;
+.record-title {
     font-style: italic;
     margin-bottom: 1.5rem;
     color: #2b2b2b;
-}
-
-.media-object > .image {
-    max-width: 35%;
 }
