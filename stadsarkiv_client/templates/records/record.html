@@ -207,30 +207,10 @@
             {{ parse_label(key, value) }}
         {% elif key == 'copyright_status' %}
             {{ parse_label(key, value) }}
-        {% elif key == 'heading' %}
-            {{ parse_primitive(key, value) }}
-        {% elif key == 'registration_id' %}
-            {{ parse_primitive(key, value) }}
-        {% elif key == 'date_from' %}
-            {{ parse_primitive(key, value) }}
-        {% elif key == 'created_by' %}
-            {{ parse_primitive(key, value) }}
-        {% elif key == 'id' %}
-            {{ parse_primitive(key, value) }}
         {% elif key == 'other_legal_restrictions' %}
             {{ parse_label(key, value) }}
-        {% elif key == 'last_updated_by' %}
-            {{ parse_primitive(key, value) }}
-        {% elif key == 'date_to' %}
-            {{ parse_primitive(key, value) }}
-        {% elif key == 'created' %}
-            {{ parse_primitive(key, value) }}
         {% elif key == 'usability' %}
             {{ parse_label(key, value)}}
-        {% elif key == 'schema' %}
-            {{ parse_primitive(key, value)}}
-        {% elif key == 'type' %}
-            {{ parse_primitive(key, value)}}
         {% elif key == 'portrait' %}
             {{ parse_portrait(key, value)}}
         {% else %}
