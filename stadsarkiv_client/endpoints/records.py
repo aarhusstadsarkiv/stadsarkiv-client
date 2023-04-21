@@ -1,5 +1,6 @@
 from starlette.requests import Request
 from starlette.exceptions import HTTPException
+from starlette.responses import JSONResponse, PlainTextResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.translate import translate
@@ -44,7 +45,9 @@ async def get_record_view(request: Request):
         record: RecordsIdGet = await api.record_read(request)
 
         record_dict = record.to_dict()
+
         record_dict = alter_record.alter_record(record_dict)
+        record_json = json.dumps(record_dict, indent=4, ensure_ascii=False)
 
         record_sections = alter_record.get_sections(record_dict)
         record_sections_json = json.dumps(record_sections, indent=4, ensure_ascii=False)
@@ -53,12 +56,33 @@ async def get_record_view(request: Request):
         context_values = {
             "title": alter_record.get_record_title(record_dict),
             "record": record_dict,
+            "record_json": record_json,
             "record_sections": record_sections,
             "record_sections_json": record_sections_json,
         }
 
         context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("records/record.html", context)
+
+    except Exception as e:
+        log.exception(e)
+        raise HTTPException(404, detail=str(e), headers=None)
+
+
+async def get_record_view_json(request: Request):
+    try:
+        record: RecordsIdGet = await api.record_read(request)
+
+        record_dict = record.to_dict()
+
+        # record_dict = alter_record.alter_record(record_dict)
+        record_json = json.dumps(record_dict, indent=4, ensure_ascii=False)
+
+        # record_sections = alter_record.get_sections(record_dict)
+        # record_sections_json = json.dumps(record_sections, indent=4, ensure_ascii=False)
+
+        return PlainTextResponse(record_json)
+        # templates.TemplateResponse("records/record.html", context)
 
     except Exception as e:
         log.exception(e)
