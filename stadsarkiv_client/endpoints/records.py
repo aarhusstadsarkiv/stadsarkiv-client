@@ -52,7 +52,7 @@ async def get_record_view(request: Request):
         record_sections = alter_record.get_sections(record_dict)
         record_sections_json = json.dumps(record_sections, indent=4, ensure_ascii=False)
 
-        record_dict["image"] = alter_record.get_record_image(record_dict)      
+        record_dict["image"] = alter_record.get_record_image(record_dict)
         context_values = {
             "title": alter_record.get_record_title(record_dict),
             "record": record_dict,
