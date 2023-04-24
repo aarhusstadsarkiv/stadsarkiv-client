@@ -65,8 +65,45 @@ def _normalize_subjects(record: dict):
     return record
 
 
+def _normalize_abstract_dates(record: dict):
+    if "date_from" in record and "date_to" in record:
+        date_from = record["date_from"]
+        date_to = record["date_to"]
+        if date_from == date_to:
+            record["date_normalized"] = date_from
+        else:
+            record["date_normalized"] = date_from + " ~ " + date_to
+
+    return record
+
+
+def _normalize_collection_tags(record: dict):
+
+    collection_tags = []
+
+    try:
+        collection_id = record["collection"]["id"]
+    except KeyError:
+        return record
+
+    if "collection_tags" in record:
+
+        for collection_tag in record["collection_tags"]:
+            tag = {}
+            tag["id"] = collection_id
+            tag["label"] = collection_tag
+            collection_tags.append(tag)
+
+        record["collection_tags_normalized"] = collection_tags
+
+    return record
+
+
 def alter_record(record: dict):
     """Alter subjects, content_types and series to a more sane data structure"""
+
+    record = _normalize_collection_tags(record)
+    record = _normalize_abstract_dates(record)
     record = _normalize_series(record)
     record = _normalize_content_types(record)
     record = _normalize_subjects(record)
@@ -81,8 +118,8 @@ def _sort_section(section: dict, order: list):
 
 
 def get_sections(record_dict: dict):
-    abstract = ["collectors", "content_types_normalized", "creators", "date_from", "curators", "id"]
-    description = ["heading", "summary", "collection", "series_normalized", "subjects_normalized"]
+    abstract = ["collectors", "content_types_normalized", "creators", "date_normalized", "curators", "id"]
+    description = ["heading", "summary", "desc_notes", "collection", "series_normalized", "collection_tags_normalized", "subjects_normalized"]
     copyright = ["copyright_status"]
     relations = ["organisations", "locations", "events", "people"]
     copyright_extra = ["contractual_status", "other_legal_restrictions"]
@@ -128,11 +165,13 @@ def get_sections(record_dict: dict):
 
 
 def get_record_title(record_dict: dict):
-    title = record_dict["heading"]
-    if title:
-        return title
-    else:
-        return record_dict["id"]
+    title = None
+    try:
+        title = record_dict["heading"]
+    except KeyError:
+        pass
+
+    return title
 
 
 def get_record_image(record_dict: dict):
@@ -144,3 +183,9 @@ def get_record_image(record_dict: dict):
         pass
 
     return image
+
+
+def get_sejrs_sedler(record_dict: dict):
+
+    if record_dict["collection"] == 1 or "summary" in record_dict:
+        return record_dict["summary"]

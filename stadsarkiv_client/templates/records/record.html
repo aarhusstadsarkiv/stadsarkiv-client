@@ -117,7 +117,7 @@
     {{ parse_record_label(key)}}
     <div class="content">
         {% for item in value %}
-            <a href="/search?locations={{ item.id }}">{{ item.label }}</a>
+            <p><a href="/search?locations={{ item.id }}">{{ item.label }}</a></p>
         {% endfor %}
     </div>
 </div>
@@ -140,6 +140,17 @@
     <div class="content">
         {% for item in value %}
             <a href="/search?events={{ item.id }}">{{ item.label }}</a>
+        {% endfor %}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_collection_tags_normalized (key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key)}}
+    <div class="content">
+        {% for item in value %}
+            <p><a href="/search?collection={{ item.id }}">{{ item.label }}</a></p>
         {% endfor %}
     </div>
 </div>
@@ -188,9 +199,17 @@
 {% macro parse_representations(key, value) %}
 
 {% if value["record_type"] == "image" %}
-<a href="{{ value['record_image'] }}"> {{ translate('Download medium size')}}</a><br />
-<a href="{{ value['large_image'] }}"> {{ translate('Download large size')}}</a>
+<div class="record-content">
+    {{ parse_record_label('label_representations')}}
+    <div class="content">
+    <a href="{{ value['record_image'] }}"> {{ translate('Download medium size')}}</a><br />
+    <a href="{{ value['large_image'] }}"> {{ translate('Download large size')}}</a>
+
+    </div>
+</div>
 {% endif %}
+
+
 {% endmacro %}
 
 {% macro parse_primitive(key, value) %}
@@ -262,10 +281,41 @@
             {{ parse_portrait(key, value)}}
         {% elif key == 'representations' %}
             {{ parse_representations(key, value)}}
+        {% elif key == 'collection_tags_normalized' %}
+            {{ parse_collection_tags_normalized(key, value) }}
         {% else %}
             {{ parse_primitive(key, value)}}
         {% endif %}
     {% endfor %}        
+{% endmacro %}
+
+{% macro parse_graphic_section(record) %}
+
+{% if 'image' in record %}
+<div class="record-graphic">
+    <img src="{{ record['image'] }}" alt="{{ section }}" />
+</div>
+{% endif %}
+
+{% if 'icon' in record %}
+<div class="record-graphic">
+    <div class="record-icon">
+        {{ record['icon']|safe }}
+    </div>
+    <div>
+        {{ translate('The material is available in the reading room.') }}
+    </div>    
+</div>
+{% endif %}
+
+{% if 'sejrs_sedler' in record %}
+<div class="record-graphic">
+    <div class="record-sejrs-sedler">
+        {{ record['summary'] }}
+    </div>
+</div>
+{% endif %}
+
 {% endmacro %}
 
 {% macro parse_sections(record, record_sections) %}
@@ -274,21 +324,7 @@
     {% set header = "header_record_" + section %}
     <div class="record-section {{ section }}">
         {% if section in ['abstract'] %}
-            {% if 'image' in record %}
-            <div class="record-graphic">
-                <img src="{{ record['image'] }}" alt="{{ section }}" />
-            </div>
-            {% endif %}
-            {% if 'icon' in record %}
-            <div class="record-graphic">
-                <div class="record-icon">
-                    {{ record['icon']|safe }}
-                </div>
-                <div>
-                    {{ translate('The material is available in the reading room.') }}
-                </div>    
-            </div>
-            {% endif %}
+        {{ parse_graphic_section(record) }}
         <div class="record-main">
             <div class="record-title">{{ title }}</div>
             {{ parse_section(section, section_dict) }}

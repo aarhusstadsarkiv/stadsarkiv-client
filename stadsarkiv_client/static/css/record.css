@@ -76,7 +76,15 @@ h3.record-header {
     /** normalize p tag */
     margin: 0; 
     padding: 0; 
+}
 
+.record-sejrs-sedler {
+    white-space: pre-line;
+    font-family: courier;
+    padding: 1.5em;
+    background-color: rgb(250, 250, 196);
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
 }
 
 
