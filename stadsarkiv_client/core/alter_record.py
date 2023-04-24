@@ -21,14 +21,12 @@ def _normalize_series(record: dict):
     """create a normalized series list with URL query for each series"""
 
     if "series" in record and "collection" in record:
-
         series_normalized = []
         series_list = record["series"].split("/")
         collection_id = record["collection"]["id"]
 
         query = "collection=" + str(collection_id) + "&series="
         for series in series_list:
-
             # if not first or last in series add '/' to query
             if series != series_list[0] and series != series_list[-1]:
                 query += urllib.parse.quote("/")
@@ -44,7 +42,8 @@ def _normalize_series(record: dict):
 def _normalize_content_types(record: dict):
     """Transform content_types to a more sane data structure:
     original_data = [{'id': [61, 102], 'label': ['Billeder', 'Situations billeder']}, {'id': [61, 68], 'label': ['Billeder', 'Maleri']}]
-    transformed_data = [[{'id': 61, 'label': 'Billeder'}, {'id': 102, 'label': 'Situations billeder'}], [{'id': 61, 'label': 'Billeder'}, {'id': 68, 'label': 'Maleri'}]]"""
+    transformed_data = [[{'id': 61, 'label': 'Billeder'}, {'id': 102, 'label': 'Situations billeder'}], [{'id': 61, 'label': 'Billeder'}, {'id': 68, 'label': 'Maleri'}]]
+    """
 
     if "content_types" in record:
         content_types = record["content_types"]
@@ -67,7 +66,7 @@ def _normalize_subjects(record: dict):
 
 
 def alter_record(record: dict):
-    """ Alter subjects, content_types and series to a more sane data structure"""
+    """Alter subjects, content_types and series to a more sane data structure"""
     record = _normalize_series(record)
     record = _normalize_content_types(record)
     record = _normalize_subjects(record)
