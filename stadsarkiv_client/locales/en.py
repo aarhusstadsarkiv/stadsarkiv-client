@@ -55,6 +55,7 @@ en = {
     "Submit": "Submit",
     "System can not deliver an email about resetting password. Try again later.": "System can not deliver an email about resetting password. Try again later.",
     "System error. Something went wrong": "System error. Something went wrong",
+    "The material is available in the reading room.": "The material is available in the reading room.",
     "There is no user with this email address.": "There is no user with this email address.",
     "User already exists. Try to login instead.": "User already exists. Try to login instead.",
     "User not found.": "User not found.",
@@ -94,6 +95,7 @@ en = {
     "label_record_date_from": "Date From",
     "label_record_date_to": "Date To",
     "label_record_desc_notes": "label_record_desc_notes",
+    "label_record_events": "label_record_events",
     "label_record_heading": "Heading",
     "label_record_id": "ID",
     "label_record_label": "label_record_label",
@@ -101,6 +103,7 @@ en = {
     "label_record_locations": "Label Locations",
     "label_record_organisations": "Organisations",
     "label_record_other_legal_restrictions": "Other Legal Restrictions",
+    "label_record_people": "label_record_people",
     "label_record_portrait": "Portrait",
     "label_record_registration_id": "Registration ID",
     "label_record_representations": "Representations",
@@ -115,5 +118,5 @@ en = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "search": "search",
+    "search": "search"
 }

@@ -123,6 +123,28 @@
 </div>
 {% endmacro %}
 
+{% macro parse_people (key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key)}}
+    <div class="content">
+        {% for item in value %}
+            <p><a href="/search?people={{ item.id }}">{{ item.label }}</a></p>
+        {% endfor %}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_events (key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key)}}
+    <div class="content">
+        {% for item in value %}
+            <a href="/search?events={{ item.id }}">{{ item.label }}</a>
+        {% endfor %}
+    </div>
+</div>
+{% endmacro %}
+
 {% macro parse_desc_data (key, value) %}
 <div class="record-content">
     {% for key, item in value.items() %}
@@ -204,6 +226,10 @@
             {{ parse_content_types_normalized(key, value) }}
         {% elif key == 'curators' %}
             {{ parse_curators(key, value) }}
+        {% elif key == 'events' %}
+            {{ parse_events(key, value) }}
+        {% elif key == 'people' %}
+            {{ parse_people(key, value) }}
         {% elif key == 'creators' %}
             {{ parse_curators(key, value) }}
         {% elif key == 'collection' %}
@@ -242,15 +268,27 @@
     {% endfor %}        
 {% endmacro %}
 
-{% macro parse_sections(record_sections) %}
+{% macro parse_sections(record, record_sections) %}
     {% set skip_section_keys = ['other'] %}
     {% for section, section_dict in record_sections.items() if not section in skip_section_keys %}
     {% set header = "header_record_" + section %}
     <div class="record-section {{ section }}">
         {% if section in ['abstract'] %}
-        <div class="record-image">
-            <img src="{{ record['image'] }}" alt="{{ section }}" />
-        </div>
+            {% if 'image' in record %}
+            <div class="record-graphic">
+                <img src="{{ record['image'] }}" alt="{{ section }}" />
+            </div>
+            {% endif %}
+            {% if 'icon' in record %}
+            <div class="record-graphic">
+                <div class="record-icon">
+                    {{ record['icon']|safe }}
+                </div>
+                <div>
+                    {{ translate('The material is available in the reading room.') }}
+                </div>    
+            </div>
+            {% endif %}
         <div class="record-main">
             <div class="record-title">{{ title }}</div>
             {{ parse_section(section, section_dict) }}
@@ -269,7 +307,7 @@
 {% block content %}
 
 <div class="record">
-    {{ parse_sections(record_sections) }}
+    {{ parse_sections(record, record_sections) }}
 </div>
 
 <p>

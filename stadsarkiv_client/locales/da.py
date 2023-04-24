@@ -52,6 +52,7 @@ da = {
     "Submit": "Send",
     "System can not deliver an email about resetting password. Try again later.": "Systemet kan ikke sende en email om at nulstille password. Prøv igen senere.",
     "System error. Something went wrong": "System fejl. Fejlen er blevet logget.",
+    "The material is available in the reading room.": "Materialet kan bestilles hjem til gennemsyn på læsesalen.",
     "There is no user with this email address.": "Der er ingen bruger med denne email adresse.",
     "User already exists. Try to login instead.": "Bruger findes allerede. Prøv at logge ind i stedet.",
     "User not found.": "User not found.",
@@ -88,6 +89,7 @@ da = {
     "label_record_date_from": "Dato fra",
     "label_record_date_to": "Datering",
     "label_record_desc_notes": "label_record_desc_notes",
+    "label_record_events": "Begivenheder",
     "label_record_heading": "Overskrift",
     "label_record_id": "Arkiv ID",
     "label_record_label": "label_record_label",
@@ -95,6 +97,7 @@ da = {
     "label_record_locations": "Steder",
     "label_record_organisations": "Organisationer",
     "label_record_other_legal_restrictions": "Andre lovmæssige begrænsninger",
+    "label_record_people": "Personer",
     "label_record_portrait": "Portræt",
     "label_record_registration_id": "Registrations ID",
     "label_record_representations": "Representationer",
@@ -109,5 +112,5 @@ da = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Ophavsret",
-    "search": "search",
+    "search": "search"
 }

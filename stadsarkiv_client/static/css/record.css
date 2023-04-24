@@ -15,10 +15,17 @@ h3.record-header {
     width: 100%;
 }
 
-.record-image {
+.record-graphic {
     padding-right: 25px;
     flex: 1 0 40%;
     min-width: 40%;
+    text-align: center;
+    
+}
+
+.record-icon > span {
+    padding-top: 0px;
+    font-size: 12em;
     
 }
 
@@ -64,6 +71,16 @@ h3.record-header {
 .record-content > .content {
     flex: 1 1 0px;
 }
+
+.record-content > .content > p {
+    /** normalize p tag */
+    margin: 0; 
+    padding: 0; 
+
+}
+
+
+
 
 .record-title {
     font-style: italic;

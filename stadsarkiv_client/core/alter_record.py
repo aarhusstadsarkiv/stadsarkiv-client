@@ -84,7 +84,7 @@ def get_sections(record_dict: dict):
     abstract = ["collectors", "content_types_normalized", "creators", "date_from", "curators", "id"]
     description = ["heading", "summary", "collection", "series_normalized", "subjects_normalized"]
     copyright = ["copyright_status"]
-    relations = ["organisations", "locations"]
+    relations = ["organisations", "locations", "events", "people"]
     copyright_extra = ["contractual_status", "other_legal_restrictions"]
     availability = ["availability"]
     media = ["representations"]
