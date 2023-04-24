@@ -78,7 +78,6 @@ def _normalize_abstract_dates(record: dict):
 
 
 def _normalize_collection_tags(record: dict):
-
     collection_tags = []
 
     try:
@@ -87,7 +86,6 @@ def _normalize_collection_tags(record: dict):
         return record
 
     if "collection_tags" in record:
-
         for collection_tag in record["collection_tags"]:
             tag = {}
             tag["id"] = collection_id
@@ -119,7 +117,15 @@ def _sort_section(section: dict, order: list):
 
 def get_sections(record_dict: dict):
     abstract = ["collectors", "content_types_normalized", "creators", "date_normalized", "curators", "id"]
-    description = ["heading", "summary", "desc_notes", "collection", "series_normalized", "collection_tags_normalized", "subjects_normalized"]
+    description = [
+        "heading",
+        "summary",
+        "desc_notes",
+        "collection",
+        "series_normalized",
+        "collection_tags_normalized",
+        "subjects_normalized",
+    ]
     copyright = ["copyright_status"]
     relations = ["organisations", "locations", "events", "people"]
     copyright_extra = ["contractual_status", "other_legal_restrictions"]
@@ -186,6 +192,5 @@ def get_record_image(record_dict: dict):
 
 
 def get_sejrs_sedler(record_dict: dict):
-
     if record_dict["collection"] == 1 or "summary" in record_dict:
         return record_dict["summary"]
