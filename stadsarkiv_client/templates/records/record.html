@@ -3,7 +3,7 @@
 {% macro parse_record_label (label) %}
 {% set label = "label_record_" + label %}
 <div class="label">
-    <strong>{{ translate(label) }}</strong>
+    <strong>{{ translate(label) }} </strong>
 </div>
 {% endmacro %}
 
@@ -18,13 +18,42 @@
 </div>
 {% endmacro %}
 
-{% macro parse_content_types (key, value) %}
+{% macro parse_content_type (key, value) %}
+<div>
+{% for item in value %}
+    <a href="/search?content_types={{ item.id }}">{{ item.label }}</a>
+    {% if not loop.last %} {{ '>' }} {% endif %}
+{% endfor %}
+</div>
+{% endmacro %}
+
+{% macro parse_content_types_normalized (key, value) %}
 <div class="record-content">
     {{ parse_record_label(key)}}
     <div class="content">
         {% for item in value %}
-            <a href="/search?content_types={{ item.id }}">{{ item.label }}</a>
-        {% endfor %}
+        {{ parse_content_type(key, item) }}
+        {% endfor %}        
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_subject (key, value) %}
+<div>
+{% for item in value %}
+    <a href="/search?subjects={{ item.id }}">{{ item.label }}</a>
+    {% if not loop.last %} {{ '>' }} {% endif %}
+{% endfor %}
+</div>
+{% endmacro %}
+
+{% macro parse_subjects_normalized (key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key)}}
+    <div class="content">
+        {% for item in value %}
+        {{ parse_subject(key, item) }}
+        {% endfor %}        
     </div>
 </div>
 {% endmacro %}
@@ -51,23 +80,13 @@
 </div>
 {% endmacro %}
 
-{% macro parse_subjects (key, value) %}
-<div class="record-content">
-    {{ parse_record_label(key)}}
-    <div class="content">
-        {% for item in value %}
-            <a href="/search?subjects={{ item.id }}">{{ item.label }}</a>
-        {% endfor %}
-    </div>
-</div>
-{% endmacro %}
-
 {% macro parse_series_normalized (key, value) %}
 <div class="record-content">
     {{ parse_record_label(key)}}
     <div class="content">
         {% for item in value %}
             <a href="/search?{{ item.query }}">{{ item.series }}</a>
+            {% if not loop.last %} {{ '>' }} {% endif %}
         {% endfor %}
     </div>
 </div>
@@ -174,24 +193,23 @@
     <h3>{{ value }}</h3>
 {% endmacro %}
 
-{% set skip_record_keys = ['series', 'last_updated'] %}
+{% set skip_record_keys = ['last_updated', 'series', 'content_types', 'subjects'] %}
 
 {% macro parse_section(section, values) %}
     
-
     {% for key, value in values.items() if not key in skip_record_keys %}
         {% if key == 'collectors' %}
             {{ parse_collectors(key, value) }}
-        {% elif key == 'content_types' %}
-            {{ parse_content_types(key, value) }}
+        {% elif key == 'content_types_normalized' %}
+            {{ parse_content_types_normalized(key, value) }}
         {% elif key == 'curators' %}
             {{ parse_curators(key, value) }}
         {% elif key == 'creators' %}
             {{ parse_curators(key, value) }}
         {% elif key == 'collection' %}
             {{ parse_collection(key, value) }}
-        {% elif key == 'subjects' %}
-            {{ parse_subjects(key, value) }}
+        {% elif key == 'subjects_normalized' %}
+            {{ parse_subjects_normalized(key, value) }}
         {% elif key == 'series_normalized' %}
             {{ parse_series_normalized(key, value) }}
         {% elif key == 'organisations' %}

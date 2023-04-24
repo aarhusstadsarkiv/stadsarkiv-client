@@ -84,6 +84,7 @@ en = {
     "label_record_collection": "Collection",
     "label_record_collectors": "Collectors",
     "label_record_content_types": "Content Types",
+    "label_record_content_types_normalized": "label_record_content_types_normalized",
     "label_record_contractual_status": "Contractual Status",
     "label_record_copyright_status": "Copyright Status",
     "label_record_created": "Created",
@@ -109,9 +110,10 @@ en = {
     "label_record_sections": "label_record_sections",
     "label_record_series_normalized": "Series",
     "label_record_subjects": "Subjects",
+    "label_record_subjects_normalized": "label_record_subjects_normalized",
     "label_record_summary": "Summary",
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "search": "search",
+    "search": "search"
 }

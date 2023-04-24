@@ -65,6 +65,12 @@ h3.record-header {
     flex: 1 1 0px;
 }
 
+.record-content > .content > ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
 .record-title {
     font-style: italic;
     margin-bottom: 1.5rem;

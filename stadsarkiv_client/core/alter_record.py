@@ -18,17 +18,17 @@ def _list_dict_id_label(original_data):
 
 
 def _normalize_series(record: dict):
-    """create a series_normalized dict with collection_id and series list"""
+    """create a normalized series list with URL query for each series"""
 
     if "series" in record and "collection" in record:
-        # split string series into list using '/' as separator
-        series_normalized = []
 
+        series_normalized = []
         series_list = record["series"].split("/")
         collection_id = record["collection"]["id"]
 
         query = "collection=" + str(collection_id) + "&series="
         for series in series_list:
+
             # if not first or last in series add '/' to query
             if series != series_list[0] and series != series_list[-1]:
                 query += urllib.parse.quote("/")
@@ -41,14 +41,38 @@ def _normalize_series(record: dict):
     return record
 
 
+def _normalize_content_types(record: dict):
+    """Transform content_types to a more sane data structure:
+    original_data = [{'id': [61, 102], 'label': ['Billeder', 'Situations billeder']}, {'id': [61, 68], 'label': ['Billeder', 'Maleri']}]
+    transformed_data = [[{'id': 61, 'label': 'Billeder'}, {'id': 102, 'label': 'Situations billeder'}], [{'id': 61, 'label': 'Billeder'}, {'id': 68, 'label': 'Maleri'}]]"""
+
+    if "content_types" in record:
+        content_types = record["content_types"]
+        content_types_list = []
+        for content_type in content_types:
+            content_types_list.append(_list_dict_id_label([content_type]))
+        record["content_types_normalized"] = content_types_list
+    return record
+
+
+def _normalize_subjects(record: dict):
+    """Transform subjects to a more sane data structure: Same as content_types"""
+    if "subjects" in record:
+        subjects = record["subjects"]
+        subjects_list = []
+        for content_type in subjects:
+            subjects_list.append(_list_dict_id_label([content_type]))
+        record["subjects_normalized"] = subjects_list
+    return record
+
+
 def alter_record(record: dict):
+    """ Alter subjects, content_types and series to a more sane data structure"""
     record = _normalize_series(record)
-    convert_to_list_of_dicts = ["subjects", "content_types"]
+    record = _normalize_content_types(record)
+    record = _normalize_subjects(record)
 
-    for key, value in record.items():
-        if key in convert_to_list_of_dicts:
-            record[key] = _list_dict_id_label(value)
-
+    log.debug(record)
     return record
 
 
@@ -58,8 +82,8 @@ def _sort_section(section: dict, order: list):
 
 
 def get_sections(record_dict: dict):
-    abstract = ["collectors", "content_types", "creators", "date_from", "curators", "id"]
-    description = ["heading", "summary", "collection", "series_normalized", "subjects"]
+    abstract = ["collectors", "content_types_normalized", "creators", "date_from", "curators", "id"]
+    description = ["heading", "summary", "collection", "series_normalized", "subjects_normalized"]
     copyright = ["copyright_status"]
     relations = ["organisations", "locations"]
     copyright_extra = ["contractual_status", "other_legal_restrictions"]

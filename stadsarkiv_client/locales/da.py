@@ -78,6 +78,7 @@ da = {
     "label_record_collection": "Samling",
     "label_record_collectors": "Arkivskaber",
     "label_record_content_types": "Materialetype",
+    "label_record_content_types_normalized": "Materialtype",
     "label_record_contractual_status": "Kontraktlig status",
     "label_record_copyright_status": "Copyright status",
     "label_record_created": "Oprettet",
@@ -103,9 +104,10 @@ da = {
     "label_record_sections": "label_record_sections",
     "label_record_series_normalized": "Serie",
     "label_record_subjects": "Emner",
+    "label_record_subjects_normalized": "Emner",
     "label_record_summary": "Abstrakt",
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Ophavsret",
-    "search": "search",
+    "search": "search"
 }
