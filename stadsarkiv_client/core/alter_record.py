@@ -78,25 +78,42 @@ def _normalize_abstract_dates(record: dict):
 
 
 def _normalize_hierarchy(collection_id: int, list_tags: list):
+    result = []
+    current_level = 1
+    current_list = []
 
-    dict_list = []
     for tag in list_tags:
-        elem = {}
-
+        tag_dict = {}
         parts = tag.split("/")
+        tag_dict["id"] = collection_id
+        tag_dict["query"] = urllib.parse.quote(tag)
+        tag_dict["label"] = parts[-1]
+        tag_dict["level"] = len(parts)
 
-        query = urllib.parse.quote(tag)
-        elem["id"] = collection_id
-        elem["query"] = query
-        elem["label"] = parts[-1]
-        elem["level"] = len(parts)
+        if tag_dict["level"] == 1:
+            # Append the current list to the result
+            # Starting a new list for a new hierarchy level
+            if current_list:
+                result.append(current_list)
+            current_list = [tag_dict]
+        elif tag_dict["level"] == current_level + 1:
+            # Add a tag to the current list
+            current_list.append(tag_dict)
+        else:
+            raise ValueError("Invalid tag hierarchy")
 
-        dict_list.append(elem)
+        current_level = tag_dict["level"]
 
-    return dict_list
+    if current_list:
+        result.append(current_list)
+
+    return result
 
 
 def _normalize_collection_tags(record: dict):
+
+    log.debug(_normalize_hierarchy(1, ["a", "a/b", "c", "c/d", "c/d/e"]))
+
     collection_tags = []
 
     try:
@@ -105,7 +122,10 @@ def _normalize_collection_tags(record: dict):
         return record
 
     if "collection_tags" in record:
-        collection_tags =  _normalize_hierarchy(collection_id, record["collection_tags"])
+        collection_tags = _normalize_hierarchy(collection_id, record["collection_tags"])
+
+        # test = _normalize_hierarchy(collection_id, record["collection_tags"])
+        # log.debug(test)
         record["collection_tags_normalized"] = collection_tags
 
     return record
@@ -205,7 +225,6 @@ def get_record_image(record_dict: dict):
 
 
 def get_sejrs_sedler(record_dict: dict):
-
     if "collection" not in record_dict:
         return None
 

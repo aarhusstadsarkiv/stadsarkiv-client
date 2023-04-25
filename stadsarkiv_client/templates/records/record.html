@@ -145,13 +145,22 @@
 </div>
 {% endmacro %}
 
+{% macro parse_collection_tag (key, value) %}
+<div>
+{% for item in value %}
+<a href="/search?collection={{ item.id }}&collection_tags={{ item.query }}">{{ item.label }}</a>
+    {% if not loop.last %} {{ '>' }} {% endif %}
+{% endfor %}
+</div>
+{% endmacro %}
+
 {% macro parse_collection_tags_normalized (key, value) %}
 <div class="record-content">
     {{ parse_record_label(key)}}
     <div class="content">
         {% for item in value %}
-            <p><a href="/search?collection={{ item.id }}&collection_tags={{ item.query }}">{{ item.label }}</a></p>
-        {% endfor %}
+        {{ parse_collection_tag(key, item) }}
+        {% endfor %}        
     </div>
 </div>
 {% endmacro %}
