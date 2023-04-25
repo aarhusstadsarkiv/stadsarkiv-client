@@ -77,6 +77,25 @@ def _normalize_abstract_dates(record: dict):
     return record
 
 
+def _normalize_hierarchy(collection_id: int, list_tags: list):
+
+    dict_list = []
+    for tag in list_tags:
+        elem = {}
+
+        parts = tag.split("/")
+
+        query = urllib.parse.quote(tag)
+        elem["id"] = collection_id
+        elem["query"] = query
+        elem["label"] = parts[-1]
+        elem["level"] = len(parts)
+
+        dict_list.append(elem)
+
+    return dict_list
+
+
 def _normalize_collection_tags(record: dict):
     collection_tags = []
 
@@ -86,12 +105,7 @@ def _normalize_collection_tags(record: dict):
         return record
 
     if "collection_tags" in record:
-        for collection_tag in record["collection_tags"]:
-            tag = {}
-            tag["id"] = collection_id
-            tag["label"] = collection_tag
-            collection_tags.append(tag)
-
+        collection_tags =  _normalize_hierarchy(collection_id, record["collection_tags"])
         record["collection_tags_normalized"] = collection_tags
 
     return record
@@ -106,7 +120,6 @@ def alter_record(record: dict):
     record = _normalize_content_types(record)
     record = _normalize_subjects(record)
 
-    log.debug(record)
     return record
 
 
@@ -192,5 +205,9 @@ def get_record_image(record_dict: dict):
 
 
 def get_sejrs_sedler(record_dict: dict):
+
+    if "collection" not in record_dict:
+        return None
+
     if record_dict["collection"] == 1 or "summary" in record_dict:
         return record_dict["summary"]

@@ -150,7 +150,7 @@
     {{ parse_record_label(key)}}
     <div class="content">
         {% for item in value %}
-            <p><a href="/search?collection={{ item.id }}">{{ item.label }}</a></p>
+            <p><a href="/search?collection={{ item.id }}&collection_tags={{ item.query }}">{{ item.label }}</a></p>
         {% endfor %}
     </div>
 </div>
