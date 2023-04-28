@@ -77,7 +77,7 @@ da = {
     "label_record_admin_notes": "label_record_admin_notes",
     "label_record_availability": "Tilgængelighed",
     "label_record_collection": "Samling",
-    "label_record_collection_tags_normalized": "Tags",
+    "label_record_collection_tags_normalized": "Samlingstags",
     "label_record_collectors": "Arkivskaber",
     "label_record_content_types": "Materialetype",
     "label_record_content_types_normalized": "Materialtype",

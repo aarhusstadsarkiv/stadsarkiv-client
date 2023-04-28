@@ -77,18 +77,26 @@ def _normalize_abstract_dates(record: dict):
     return record
 
 
-def _normalize_hierarchy(collection_id: int, list_tags: list):
+def _get_collection_tag(collection_id: int, tag: str):
+    tag_dict = {}
+    parts = tag.split("/")
+    tag_dict["id"] = collection_id
+
+    query_str = str(urllib.parse.quote(tag))
+    tag_dict["query"] = query_str
+    tag_dict["label"] = parts[-1]
+    tag_dict["level"] = len(parts)
+
+    return tag_dict
+
+
+def _normalize_hierarchy(collection_id: int, tags_list: list):
     result = []
     current_level = 1
-    current_list = []
+    current_list: list = []
 
-    for tag in list_tags:
-        tag_dict = {}
-        parts = tag.split("/")
-        tag_dict["id"] = collection_id
-        tag_dict["query"] = urllib.parse.quote(tag)
-        tag_dict["label"] = parts[-1]
-        tag_dict["level"] = len(parts)
+    for tag in tags_list:
+        tag_dict = _get_collection_tag(collection_id, tag)
 
         if tag_dict["level"] == 1:
             # Append the current list to the result
@@ -111,21 +119,18 @@ def _normalize_hierarchy(collection_id: int, list_tags: list):
 
 
 def _normalize_collection_tags(record: dict):
-
-    log.debug(_normalize_hierarchy(1, ["a", "a/b", "c", "c/d", "c/d/e"]))
+    # For future testing
+    # log.debug(_normalize_hierarchy(1, ["a", "a/b", "c", "c/d", "c/d/e"]))
 
     collection_tags = []
 
     try:
-        collection_id = record["collection"]["id"]
+        collection_id: int = record["collection"]["id"]
     except KeyError:
         return record
 
     if "collection_tags" in record:
         collection_tags = _normalize_hierarchy(collection_id, record["collection_tags"])
-
-        # test = _normalize_hierarchy(collection_id, record["collection_tags"])
-        # log.debug(test)
         record["collection_tags_normalized"] = collection_tags
 
     return record
