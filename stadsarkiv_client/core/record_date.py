@@ -9,15 +9,9 @@ def normalize_abstract_dates(record):
                 date_string = record["date_from"]
             elif record["date_from"][0:7] == record["date_to"][0:7]:
                 date_string = record["date_from"][0:7]
-            elif (
-                record["date_from"][0:4] == record["date_to"][0:4]
-                and record["date_from"][5:10] == "01-01"
-            ):
+            elif record["date_from"][0:4] == record["date_to"][0:4] and record["date_from"][5:10] == "01-01":
                 date_string = record["date_from"][0:4]
-            elif (
-                record["date_from"][5:10] == "01-01"
-                and record["date_to"][5:10] == "12-31"
-            ):
+            elif record["date_from"][5:10] == "01-01" and record["date_to"][5:10] == "12-31":
                 date_string = f"{record['date_from'][0:4]} ~ {record['date_to'][0:4]}"
             else:
                 date_string = f"{record['date_from']} ~ {record['date_to']}"
@@ -26,7 +20,7 @@ def normalize_abstract_dates(record):
     elif record.get("date_to"):
         date_string = f"~ {record['date_to']}"
     else:
-        date_string = "Udateret"
+        date_string = translate("No Date")  # Udateret
 
     record["date_normalized"] = date_string
     return record
@@ -46,4 +40,4 @@ def normalize_abstract_dates(record):
     return record """
 
 
-__ALL__ = ['normalize_date_display']
+__ALL__ = ["normalize_date_display"]

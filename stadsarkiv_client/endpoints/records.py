@@ -54,8 +54,6 @@ async def get_record_view(request: Request):
         sejrs_sedler = record_alter.get_sejrs_sedler(record_dict)
         image = record_alter.get_record_image(record_dict)
 
-        log.debug(request['client'][0])
-
         if image:
             record_dict["image"] = record_alter.get_record_image(record_dict)
         elif sejrs_sedler:

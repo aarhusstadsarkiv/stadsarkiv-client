@@ -27,7 +27,7 @@ ICONS = {
 
 
 def _is_readingroom(request: Request) -> bool:
-    ip = request['client'][0]
+    ip = request["client"][0]
     if ip in IP_WHITELIST:
         return True
     return False
@@ -94,7 +94,7 @@ def _normalize_subjects(record: dict):
 
 
 def _get_collection_tag(collection_id: int, tag: str):
-    tag_dict = {}
+    tag_dict: dict = {}
     parts = tag.split("/")
     tag_dict["id"] = collection_id
 
@@ -164,14 +164,13 @@ def _set_icon(record: dict):
 
 
 def _set_representation_variables(record: dict):
-
     # Set record_type if record.representations exists
     record["record_type"] = None
-    if 'representations' in record:
-        record['record_type'] = record['representations'].get('record_type')
+    if "representations" in record:
+        record["record_type"] = record["representations"].get("record_type")
 
     record["has_representations"] = False
-    if record['legal_id'] == 1 and record['contractual_id'] > 2:
+    if record["legal_id"] == 1 and record["contractual_id"] > 2:
         # Then it is a representation, image, audio, video or text
         record["has_representations"] = True
 
@@ -183,15 +182,14 @@ def _set_representation_variables(record: dict):
 
 
 def _set_common_variables(record: dict):
-
     record = _set_icon(record)
 
     # Set other keys in record dict
-    record['copyright_id'] = record['copyright_status'].get('id')
-    record['legal_id'] = record['other_legal_restrictions'].get('id')
-    record['contractual_id'] = record['contractual_status'].get('id')
-    record['availability_id'] = record['availability'].get('id')
-    record['usability_id'] = record['usability'].get('id')
+    record["copyright_id"] = record["copyright_status"].get("id")
+    record["legal_id"] = record["other_legal_restrictions"].get("id")
+    record["contractual_id"] = record["contractual_status"].get("id")
+    record["availability_id"] = record["availability"].get("id")
+    record["usability_id"] = record["usability"].get("id")
 
     return record
 
@@ -205,7 +203,7 @@ def record_alter(request: Request, record: dict):
     record = _normalize_content_types(record)
     record = _normalize_subjects(record)
 
-    record['readingroom'] = _is_readingroom(request)
+    record["readingroom"] = _is_readingroom(request)
     record = _set_common_variables(record)
     record = _set_representation_variables(record)
 
