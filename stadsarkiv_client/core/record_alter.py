@@ -1,4 +1,5 @@
-from stadsarkiv_client.core.logging import get_log
+from .logging import get_log
+from .record_date import normalize_abstract_dates
 import urllib.parse
 
 
@@ -40,7 +41,7 @@ def _normalize_series(record: dict):
 
 
 def _normalize_content_types(record: dict):
-    """Transform content_types to a more sane data structure:
+    """Transform content_types to a more sane data structure ( list of list of dicts)
     original_data = [{'id': [61, 102], 'label': ['Billeder', 'Situations billeder']}, {'id': [61, 68], 'label': ['Billeder', 'Maleri']}]
     transformed_data = [[{'id': 61, 'label': 'Billeder'}, {'id': 102, 'label': 'Situations billeder'}], [{'id': 61, 'label': 'Billeder'}, {'id': 68, 'label': 'Maleri'}]]
     """
@@ -62,18 +63,6 @@ def _normalize_subjects(record: dict):
         for content_type in subjects:
             subjects_list.append(_list_dict_id_label([content_type]))
         record["subjects_normalized"] = subjects_list
-    return record
-
-
-def _normalize_abstract_dates(record: dict):
-    if "date_from" in record and "date_to" in record:
-        date_from = record["date_from"]
-        date_to = record["date_to"]
-        if date_from == date_to:
-            record["date_normalized"] = date_from
-        else:
-            record["date_normalized"] = date_from + " ~ " + date_to
-
     return record
 
 
@@ -136,14 +125,61 @@ def _normalize_collection_tags(record: dict):
     return record
 
 
+ICONS = {
+    "61": {"icon": "far fa-image", "label": "Billeder"},
+    "95": {"icon": "fas fa-laptop", "label": "Elektronisk materiale"},
+    "10": {"icon": "fas fa-gavel", "label": "Forskrifter og vedtægter"},
+    "1": {"icon": "far fa-folder-open", "label": "Kommunale sager og planer"},
+    "75": {"icon": "far fa-map", "label": "Kortmateriale"},
+    "49": {"icon": "far fa-file-alt", "label": "Manuskripter"},
+    "87": {"icon": "fas fa-film", "label": "Medieproduktioner"},
+    "81": {"icon": "fas fa-music", "label": "Musik og lydoptagelser"},
+    "36": {"icon": "fas fa-book", "label": "Publikationer"},
+    "18": {"icon": "fab fa-leanpub", "label": "Registre og protokoller"},
+    "29": {"icon": "far fa-chart-bar", "label": "Statistisk og økonomisk materiale"},
+    "99": {"icon": "far fa-file", "label": "Andet materiale"},
+}
+
+
+def _set_icon(record: dict):
+    """Set icon for the record based on content type"""
+    try:
+        content_type_id = record["content_types_normalized"][0][0]["id"]
+        record["icon"] = ICONS[str(content_type_id)]
+    except KeyError:
+        record["icon"] = ICONS["99"]
+
+    return record
+
+
+def _set_record_variables(record: dict):
+
+    record = _set_icon(record)
+
+    # Set other keys in record dict
+    record['copyright_id'] = record['copyright_status'].get('id')
+    record['legal_id'] = record['other_legal_restrictions'].get('id')
+    record['contractual_id'] = record['contractual_status'].get('id')
+    record['availability_id'] = record['availability'].get('id')
+    record['usability_id'] = record['usability'].get('id')
+
+    # Set record_type if record.representations exists
+    if 'representations' in record:
+        record['record_type'] = record['representations'].get('record_type')
+
+    return record
+
+
 def alter_record(record: dict):
     """Alter subjects, content_types and series to a more sane data structure"""
 
     record = _normalize_collection_tags(record)
-    record = _normalize_abstract_dates(record)
+    record = normalize_abstract_dates(record)
     record = _normalize_series(record)
     record = _normalize_content_types(record)
     record = _normalize_subjects(record)
+
+    record = _set_record_variables(record)
 
     return record
 
