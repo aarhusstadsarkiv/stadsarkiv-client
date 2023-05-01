@@ -7,7 +7,7 @@ from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
 import json
-from stadsarkiv_client.core import alter_record
+from stadsarkiv_client.core import record_alter
 from stadsarkiv_client.core.openaws import (
     SchemaRead,
     EntityRead,
@@ -43,26 +43,26 @@ async def get_records_search_results(request: Request):
 async def get_record_view(request: Request):
     try:
         record: RecordsIdGet = await api.record_read(request)
-
         record_dict = record.to_dict()
 
-        record_dict = alter_record.alter_record(record_dict)
+        record_dict = record_alter.alter_record(record_dict)
         record_json = json.dumps(record_dict, indent=4, ensure_ascii=False)
 
-        record_sections = alter_record.get_sections(record_dict)
+        record_sections = record_alter.get_sections(record_dict)
         record_sections_json = json.dumps(record_sections, indent=4, ensure_ascii=False)
 
-        sejrs_sedler = alter_record.get_sejrs_sedler(record_dict)
-        image = alter_record.get_record_image(record_dict)
+        sejrs_sedler = record_alter.get_sejrs_sedler(record_dict)
+        image = record_alter.get_record_image(record_dict)
+        
         if image:
-            record_dict["image"] = alter_record.get_record_image(record_dict)
+            record_dict["image"] = record_alter.get_record_image(record_dict)
         elif sejrs_sedler:
             record_dict["sejrs_sedler"] = sejrs_sedler
         else:
             record_dict["icon"] = '<span class="material-symbols-outlined">private_connectivity</span>'
 
         context_values = {
-            "title": alter_record.get_record_title(record_dict),
+            "title": record_alter.get_record_title(record_dict),
             "record": record_dict,
             "record_json": record_json,
             "record_sections": record_sections,
@@ -82,6 +82,8 @@ async def get_record_view_json(request: Request):
         record: RecordsIdGet = await api.record_read(request)
 
         record_dict = record.to_dict()
+        record_dict = record.alter_record(record_dict)
+
         record_json = json.dumps(record_dict, indent=4, ensure_ascii=False)
         return PlainTextResponse(record_json)
 

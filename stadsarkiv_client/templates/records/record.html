@@ -206,7 +206,6 @@
 {% endmacro %}
 
 {% macro parse_representations(key, value) %}
-
 {% if value["record_type"] == "image" %}
 <div class="record-content">
     {{ parse_record_label('label_representations')}}
@@ -217,8 +216,27 @@
     </div>
 </div>
 {% endif %}
+{% endmacro %}
 
+{% macro parse_representations_section(record) %}
+{% if record["record_type"] == 'image' %}
+    <img src="{{ record['image'] }}" alt="{{ section }}" />
+{% endif %}
 
+{% if 'icon' in record %}
+<div class="record-icon">
+    {{ record['icon']|safe }}
+</div>
+<div>
+    {{ translate('The material is available in the reading room.') }}
+</div>    
+{% endif %}
+
+{% if 'sejrs_sedler' in record %}
+<div class="record-sejrs-sedler">
+    {{ record['summary'] }}
+</div>
+{% endif %}
 {% endmacro %}
 
 {% macro parse_primitive(key, value) %}
@@ -298,42 +316,15 @@
     {% endfor %}        
 {% endmacro %}
 
-{% macro parse_graphic_section(record) %}
-
-{% if 'image' in record %}
-<div class="record-graphic">
-    <img src="{{ record['image'] }}" alt="{{ section }}" />
-</div>
-{% endif %}
-
-{% if 'icon' in record %}
-<div class="record-graphic">
-    <div class="record-icon">
-        {{ record['icon']|safe }}
-    </div>
-    <div>
-        {{ translate('The material is available in the reading room.') }}
-    </div>    
-</div>
-{% endif %}
-
-{% if 'sejrs_sedler' in record %}
-<div class="record-graphic">
-    <div class="record-sejrs-sedler">
-        {{ record['summary'] }}
-    </div>
-</div>
-{% endif %}
-
-{% endmacro %}
-
 {% macro parse_sections(record, record_sections) %}
     {% set skip_section_keys = ['other'] %}
     {% for section, section_dict in record_sections.items() if not section in skip_section_keys %}
     {% set header = "header_record_" + section %}
     <div class="record-section {{ section }}">
         {% if section in ['abstract'] %}
-        {{ parse_graphic_section(record) }}
+        <div class="record-representation">
+        {{ parse_representations_section(record) }}
+        </div>
         <div class="record-main">
             <div class="record-title">{{ title }}</div>
             {{ parse_section(section, section_dict) }}
