@@ -163,6 +163,16 @@ def _set_icon(record: dict):
     return record
 
 
+def _is_sejrs_sedler(record_dict: dict):
+    if "collection" not in record_dict:
+        return False
+
+    if record_dict["collection"] == 1:
+        return True
+
+    return False
+
+
 def _set_representation_variables(record: dict):
     # Set record_type if record.representations exists
     record["record_type"] = None
@@ -177,6 +187,9 @@ def _set_representation_variables(record: dict):
     record["is_representations_online"] = False
     if record["availability_id"] == 4 or record["readingroom"]:
         record["is_representations_online"] = True
+
+    if _is_sejrs_sedler(record):
+        record["record_type"] = "sejrs_sedler"
 
     return record
 
@@ -204,6 +217,7 @@ def record_alter(request: Request, record: dict):
     record = _normalize_subjects(record)
 
     record["readingroom"] = _is_readingroom(request)
+    record = _set_record_title(record)
     record = _set_common_variables(record)
     record = _set_representation_variables(record)
 
@@ -270,30 +284,12 @@ def get_sections(record_dict: dict):
     return sections
 
 
-def get_record_title(record_dict: dict):
+def _set_record_title(record_dict: dict):
     title = None
     try:
         title = record_dict["heading"]
     except KeyError:
         pass
 
-    return title
-
-
-def get_record_image(record_dict: dict):
-    image = None
-    try:
-        if record_dict["representations"]["record_type"] == "image":
-            image = record_dict["representations"]["record_image"]
-    except KeyError:
-        pass
-
-    return image
-
-
-def get_sejrs_sedler(record_dict: dict):
-    if "collection" not in record_dict:
-        return None
-
-    if record_dict["collection"] == 1 or "summary" in record_dict:
-        return record_dict["summary"]
+    record_dict["title"] = title
+    return record_dict

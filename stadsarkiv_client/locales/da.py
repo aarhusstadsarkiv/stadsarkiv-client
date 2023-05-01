@@ -52,7 +52,7 @@ da = {
     "Submit": "Send",
     "System can not deliver an email about resetting password. Try again later.": "Systemet kan ikke sende en email om at nulstille password. Prøv igen senere.",
     "System error. Something went wrong": "System fejl. Fejlen er blevet logget.",
-    "The material is available in the reading room.": "Materialet kan bestilles hjem til gennemsyn på læsesalen.",
+    "The material is available in the reading room.": "Materialet kan ses på læsesalen.",
     "There is no user with this email address.": "Der er ingen bruger med denne email adresse.",
     "User already exists. Try to login instead.": "Bruger findes allerede. Prøv at logge ind i stedet.",
     "User not found.": "User not found.",

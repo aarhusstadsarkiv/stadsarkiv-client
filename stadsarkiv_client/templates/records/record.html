@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% set title = record["title"] %}
+
 {% macro parse_record_label (label) %}
 {% set label = "label_record_" + label %}
 <div class="label">
@@ -218,27 +220,6 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_representations_section(record) %}
-{% if record["record_type"] == 'image' %}
-    <img src="{{ record['image'] }}" alt="{{ section }}" />
-{% endif %}
-
-{% if 'icon' in record %}
-<div class="record-icon">
-    {{ record['icon']|safe }}
-</div>
-<div>
-    {{ translate('The material is available in the reading room.') }}
-</div>    
-{% endif %}
-
-{% if 'sejrs_sedler' in record %}
-<div class="record-sejrs-sedler">
-    {{ record['summary'] }}
-</div>
-{% endif %}
-{% endmacro %}
-
 {% macro parse_primitive(key, value) %}
 <div class="record-content">
     {{ parse_record_label(key)}}
@@ -316,21 +297,65 @@
     {% endfor %}        
 {% endmacro %}
 
+{% macro parse_representations_media(record) %}
+{% if record["record_type"] == 'image' %}
+    <img src="{{record.portrait}}" alt="{{ section }}" />
+{% endif %}
+
+{% if record["record_type"] == 'sejrs_sedler' %}
+<div class="record-sejrs-sedler">
+    {{ record['summary'] }}
+</div>
+{% endif %}
+
+{% if 'icon' in record %}
+<div class="record-icon">
+    {{ record['icon']|safe }}
+</div>
+<div>
+    {{ translate('The material is available in the reading room.') }}
+</div>    
+{% endif %}
+
+{% if record["availability_id"] == 3 %}
+
+{% endif %}
+{% endmacro %}
+
+{% macro parse_representations_section(record) %}
+{% if record["is_representations_online"] %}
+{{ parse_representations_media(record)}}
+{% endif %}
+{% if record["availability_id"] == 3 %}
+<div class="record-icon">
+    <span class="material-symbols-outlined">private_connectivity</span>
+</div>
+<div>
+    {{ translate('The material is available in the reading room.') }}
+</div>    
+{% endif %}
+{% endmacro %}
+
 {% macro parse_sections(record, record_sections) %}
     {% set skip_section_keys = ['other'] %}
     {% for section, section_dict in record_sections.items() if not section in skip_section_keys %}
     {% set header = "header_record_" + section %}
     <div class="record-section {{ section }}">
-        {% if section in ['abstract'] and record["has_representations"] %}
-        <div class="record-representation">
-        {{ parse_representations_section(record) }}
-        </div>
-        <div class="record-main">
-            <div class="record-title">{{ title }}</div>
-            {{ parse_section(section, section_dict) }}
-        </div>
+        {% if section in ['abstract'] %}
+            {% if record["has_representations"] %}
+            <div class="record-representation">
+            {{ parse_representations_section(record) }}
+            </div>
+            {% else %}
+            <div class="record-representation">
+            IKON
+            </div>
+            {% endif %}
+            <div class="record-main">
+                <div class="record-title">{{ record["title"] }}</div>
+                {{ parse_section(section, section_dict) }}
+            </div>        
         {% else %}
-         
         <div class="record-main">
             <h3 class="record-header">{{ translate(header) }}</h3>
             {{ parse_section(section, section_dict) }}
