@@ -45,7 +45,7 @@ async def get_record_view(request: Request):
         record: RecordsIdGet = await api.record_read(request)
         record_dict = record.to_dict()
 
-        record_dict = record_alter.alter_record(record_dict)
+        record_dict = record_alter.record_alter(request, record_dict)
         record_json = json.dumps(record_dict, indent=4, ensure_ascii=False)
 
         record_sections = record_alter.get_sections(record_dict)
@@ -53,7 +53,9 @@ async def get_record_view(request: Request):
 
         sejrs_sedler = record_alter.get_sejrs_sedler(record_dict)
         image = record_alter.get_record_image(record_dict)
-        
+
+        log.debug(request['client'][0])
+
         if image:
             record_dict["image"] = record_alter.get_record_image(record_dict)
         elif sejrs_sedler:
@@ -82,7 +84,7 @@ async def get_record_view_json(request: Request):
         record: RecordsIdGet = await api.record_read(request)
 
         record_dict = record.to_dict()
-        record_dict = record.alter_record(record_dict)
+        record_dict = record_alter.record_alter(request, record_dict)
 
         record_json = json.dumps(record_dict, indent=4, ensure_ascii=False)
         return PlainTextResponse(record_json)

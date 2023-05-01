@@ -321,7 +321,7 @@
     {% for section, section_dict in record_sections.items() if not section in skip_section_keys %}
     {% set header = "header_record_" + section %}
     <div class="record-section {{ section }}">
-        {% if section in ['abstract'] %}
+        {% if section in ['abstract'] and record["has_representations"] %}
         <div class="record-representation">
         {{ parse_representations_section(record) }}
         </div>

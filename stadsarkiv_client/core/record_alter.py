@@ -1,9 +1,36 @@
 from .logging import get_log
 from .record_date import normalize_abstract_dates
 import urllib.parse
+from starlette.requests import Request
 
 
 log = get_log()
+
+
+IP_WHITELIST = ["193.33.148.24"]
+
+
+ICONS = {
+    "61": {"icon": "far fa-image", "label": "Billeder"},
+    "95": {"icon": "fas fa-laptop", "label": "Elektronisk materiale"},
+    "10": {"icon": "fas fa-gavel", "label": "Forskrifter og vedtægter"},
+    "1": {"icon": "far fa-folder-open", "label": "Kommunale sager og planer"},
+    "75": {"icon": "far fa-map", "label": "Kortmateriale"},
+    "49": {"icon": "far fa-file-alt", "label": "Manuskripter"},
+    "87": {"icon": "fas fa-film", "label": "Medieproduktioner"},
+    "81": {"icon": "fas fa-music", "label": "Musik og lydoptagelser"},
+    "36": {"icon": "fas fa-book", "label": "Publikationer"},
+    "18": {"icon": "fab fa-leanpub", "label": "Registre og protokoller"},
+    "29": {"icon": "far fa-chart-bar", "label": "Statistisk og økonomisk materiale"},
+    "99": {"icon": "far fa-file", "label": "Andet materiale"},
+}
+
+
+def _is_readingroom(request: Request) -> bool:
+    ip = request['client'][0]
+    if ip in IP_WHITELIST:
+        return True
+    return False
 
 
 def _list_dict_id_label(original_data):
@@ -125,22 +152,6 @@ def _normalize_collection_tags(record: dict):
     return record
 
 
-ICONS = {
-    "61": {"icon": "far fa-image", "label": "Billeder"},
-    "95": {"icon": "fas fa-laptop", "label": "Elektronisk materiale"},
-    "10": {"icon": "fas fa-gavel", "label": "Forskrifter og vedtægter"},
-    "1": {"icon": "far fa-folder-open", "label": "Kommunale sager og planer"},
-    "75": {"icon": "far fa-map", "label": "Kortmateriale"},
-    "49": {"icon": "far fa-file-alt", "label": "Manuskripter"},
-    "87": {"icon": "fas fa-film", "label": "Medieproduktioner"},
-    "81": {"icon": "fas fa-music", "label": "Musik og lydoptagelser"},
-    "36": {"icon": "fas fa-book", "label": "Publikationer"},
-    "18": {"icon": "fab fa-leanpub", "label": "Registre og protokoller"},
-    "29": {"icon": "far fa-chart-bar", "label": "Statistisk og økonomisk materiale"},
-    "99": {"icon": "far fa-file", "label": "Andet materiale"},
-}
-
-
 def _set_icon(record: dict):
     """Set icon for the record based on content type"""
     try:
@@ -152,7 +163,26 @@ def _set_icon(record: dict):
     return record
 
 
-def _set_record_variables(record: dict):
+def _set_representation_variables(record: dict):
+
+    # Set record_type if record.representations exists
+    record["record_type"] = None
+    if 'representations' in record:
+        record['record_type'] = record['representations'].get('record_type')
+
+    record["has_representations"] = False
+    if record['legal_id'] == 1 and record['contractual_id'] > 2:
+        # Then it is a representation, image, audio, video or text
+        record["has_representations"] = True
+
+    record["is_representations_online"] = False
+    if record["availability_id"] == 4 or record["readingroom"]:
+        record["is_representations_online"] = True
+
+    return record
+
+
+def _set_common_variables(record: dict):
 
     record = _set_icon(record)
 
@@ -163,14 +193,10 @@ def _set_record_variables(record: dict):
     record['availability_id'] = record['availability'].get('id')
     record['usability_id'] = record['usability'].get('id')
 
-    # Set record_type if record.representations exists
-    if 'representations' in record:
-        record['record_type'] = record['representations'].get('record_type')
-
     return record
 
 
-def alter_record(record: dict):
+def record_alter(request: Request, record: dict):
     """Alter subjects, content_types and series to a more sane data structure"""
 
     record = _normalize_collection_tags(record)
@@ -179,7 +205,9 @@ def alter_record(record: dict):
     record = _normalize_content_types(record)
     record = _normalize_subjects(record)
 
-    record = _set_record_variables(record)
+    record['readingroom'] = _is_readingroom(request)
+    record = _set_common_variables(record)
+    record = _set_representation_variables(record)
 
     return record
 
