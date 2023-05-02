@@ -12,18 +12,18 @@ IP_ALLOW = ["193.33.148.24"]
 
 
 ICONS = {
-    "61": {"icon": "far fa-image", "label": "Billeder"},
-    "95": {"icon": "fas fa-laptop", "label": "Elektronisk materiale"},
-    "10": {"icon": "fas fa-gavel", "label": "Forskrifter og vedtægter"},
-    "1": {"icon": "far fa-folder-open", "label": "Kommunale sager og planer"},
-    "75": {"icon": "far fa-map", "label": "Kortmateriale"},
-    "49": {"icon": "far fa-file-alt", "label": "Manuskripter"},
-    "87": {"icon": "fas fa-film", "label": "Medieproduktioner"},
-    "81": {"icon": "fas fa-music", "label": "Musik og lydoptagelser"},
-    "36": {"icon": "fas fa-book", "label": "Publikationer"},
-    "18": {"icon": "fab fa-leanpub", "label": "Registre og protokoller"},
-    "29": {"icon": "far fa-chart-bar", "label": "Statistisk og økonomisk materiale"},
-    "99": {"icon": "far fa-file", "label": "Andet materiale"},
+    "61": {"icon": "image", "label": "Billeder"},
+    "95": {"icon": "laptop_mac", "label": "Elektronisk materiale"},
+    "10": {"icon": "gavel", "label": "Forskrifter og vedtægter"},
+    "1": {"icon": "folder_open", "label": "Kommunale sager og planer"},
+    "75": {"icon": "map", "label": "Kortmateriale"},
+    "49": {"icon": "description", "label": "Manuskripter"},
+    "87": {"icon": "movie", "label": "Medieproduktioner"},
+    "81": {"icon": "audio_file", "label": "Musik og lydoptagelser"},
+    "36": {"icon": "menu_book", "label": "Publikationer"},
+    "18": {"icon": "local_library", "label": "Registre og protokoller"},
+    "29": {"icon": "bar_chart", "label": "Statistisk og økonomisk materiale"},
+    "99": {"icon": "description", "label": "Andet materiale"},
 }
 
 
@@ -296,3 +296,6 @@ def _set_record_title(record_dict: dict):
 
     record_dict["title"] = title
     return record_dict
+
+
+__ALL__ = [get_sections, record_alter]
