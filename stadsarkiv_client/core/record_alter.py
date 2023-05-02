@@ -284,6 +284,11 @@ def get_sections(record_dict: dict):
     sections["availability"] = _sort_section(sections["availability"], availability)
     sections["download"] = _sort_section(sections["download"], media)
 
+    # check if record_dict does not contain one of the keys ['locations', 'people', 'events', 'organisations', 'objects']
+    # if not, remove relations section
+    if not any(key in record_dict for key in ["locations", "people", "events", "organisations", "objects"]):
+        del sections["relations"]
+
     return sections
 
 
