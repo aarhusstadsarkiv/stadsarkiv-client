@@ -40,4 +40,4 @@ def normalize_abstract_dates(record):
     return record """
 
 
-__ALL__ = ["normalize_date_display"]
+__ALL__ = [normalize_abstract_dates]

@@ -8,7 +8,7 @@ creative_commons_link = '<a href="https://creativecommons.org/licenses/by/4.0/de
 special_notice = "Stadsarkivet modtager gerne oplysninger, som kan hjælpe med at identificere den hidtil ukendte ophavsmand/-kvinde. "
 
 
-def get_special_notice_id(record: dict):
+def _get_special_notice_id(record: dict):
     try:
         id = record["content_types"][0][0].get("id")
     except Exception:
@@ -76,8 +76,11 @@ def normalize_copyright(record: dict):
         lines.append(text)
 
     if copyright_id in [7, 8, 9]:
-        if get_special_notice_id(record):
+        if _get_special_notice_id(record):
             lines.append(special_notice)
 
     record["copyright_status_normalized"] = lines
     return record
+
+
+__ALL__ = [normalize_copyright]
