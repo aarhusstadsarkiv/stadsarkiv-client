@@ -21,7 +21,6 @@ def _get_special_notice_id(record: dict):
 
 
 def normalize_copyright(record: dict):
-
     lines = []
 
     label = record["copyright_status"].get("label")
