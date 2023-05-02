@@ -78,6 +78,10 @@ h3.record-header {
     padding: 0; 
 }
 
+.record-content > .content > p.spacing {
+    margin-bottom: 10px;
+}
+
 .record-sejrs-sedler {
     white-space: pre-line;
     font-family: courier;
