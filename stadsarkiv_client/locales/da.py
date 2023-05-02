@@ -84,7 +84,8 @@ da = {
     "label_record_content_types": "Materialetype",
     "label_record_content_types_normalized": "Materialtype",
     "label_record_contractual_status": "Kontraktlig status",
-    "label_record_copyright_status": "Copyright status",
+    "label_record_copyright_status": "Ophavsret",
+    "label_record_copyright_status_normalized": "Ophavsret",
     "label_record_created": "Oprettet",
     "label_record_created_by": "Oprettet af",
     "label_record_creators": "Kreativt ophav",
@@ -117,5 +118,5 @@ da = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Ophavsret",
-    "search": "search",
+    "search": "search"
 }

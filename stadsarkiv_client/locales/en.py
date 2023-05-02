@@ -91,6 +91,7 @@ en = {
     "label_record_content_types_normalized": "label_record_content_types_normalized",
     "label_record_contractual_status": "Contractual Status",
     "label_record_copyright_status": "Copyright Status",
+    "label_record_copyright_status_normalized": "label_record_copyright_status_normalized",
     "label_record_created": "Created",
     "label_record_created_by": "Created By",
     "label_record_creators": "Creators",
@@ -123,5 +124,5 @@ en = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "search": "search",
+    "search": "search"
 }

@@ -237,6 +237,17 @@
 </div>
 {% endmacro %}
 
+{% macro parse_copyright_status(key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key)}}
+    <div class="content">
+        {% for item in value %}
+        <p>{{ item|safe }}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endmacro %}
+
 {% set skip_record_keys = ['last_updated', 'series', 'content_types', 'subjects'] %}
 
 {% macro parse_section(section, values) %}
@@ -274,8 +285,8 @@
             {{ parse_label(key, value) }}
         {% elif key == 'availability' %}
             {{ parse_label(key, value) }}
-        {% elif key == 'copyright_status' %}
-            {{ parse_label(key, value) }}
+        {% elif key == 'copyright_status_normalized' %}
+            {{ parse_copyright_status(key, value) }}
         {% elif key == 'other_legal_restrictions' %}
             {{ parse_label(key, value) }}
         {% elif key == 'usability' %}

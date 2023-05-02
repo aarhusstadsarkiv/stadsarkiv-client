@@ -54,9 +54,7 @@ verify_ssl = True
 
 
 def get_client() -> Client:
-    client = Client(
-        raise_on_unexpected_status=False, base_url=base_url, timeout=timeout, verify_ssl=verify_ssl
-    )
+    client = Client(raise_on_unexpected_status=False, base_url=base_url, timeout=timeout, verify_ssl=verify_ssl)
     return client
 
 
@@ -120,9 +118,7 @@ async def user_create(request: Request):
     password = str(form.get("password"))
 
     client: Client = get_client()
-    json_body: UserCreate = UserCreate(
-        email=email, password=password, is_active=True, is_superuser=False, is_verified=False
-    )
+    json_body: UserCreate = UserCreate(email=email, password=password, is_active=True, is_superuser=False, is_verified=False)
 
     user_read = await auth_register_post.asyncio(client=client, json_body=json_body)
     if isinstance(user_read, HTTPValidationError):
@@ -179,9 +175,7 @@ async def forgot_password(request: Request) -> None:
 
     client: Client = get_client()
     forgot_password_post: ForgotPasswordPost = ForgotPasswordPost(email=email)
-    forgot_password_response = await auth_forgot_password_post.asyncio(
-        client=client, json_body=forgot_password_post
-    )
+    forgot_password_response = await auth_forgot_password_post.asyncio(client=client, json_body=forgot_password_post)
 
     if isinstance(forgot_password_response, HTTPValidationError):
         raise OpenAwsException(

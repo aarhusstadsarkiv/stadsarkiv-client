@@ -1,5 +1,6 @@
 from .logging import get_log
 from .record_date import normalize_abstract_dates
+from .record_copyright import normalize_copyright
 from .translate import translate
 import urllib.parse
 from starlette.requests import Request
@@ -39,9 +40,7 @@ def _list_dict_id_label(original_data):
     original_data = [{"id": [1, 2, 3], "label": ["a", "b", "c"]}]
     transformed_data = [{"id": 1, "label": "a"}, {"id": 2, "label": "b"}, {"id": 3, "label": "c"}]"""
     transformed_data = [
-        {"id": item["id"][index], "label": item["label"][index]}
-        for item in original_data
-        for index in range(len(item["id"]))
+        {"id": item["id"][index], "label": item["label"][index]} for item in original_data for index in range(len(item["id"]))
     ]
     return transformed_data
 
@@ -212,16 +211,18 @@ def _set_common_variables(record: dict):
 def record_alter(request: Request, record: dict):
     """Alter subjects, content_types and series to a more sane data structure"""
 
-    record = _normalize_collection_tags(record)
-    record = normalize_abstract_dates(record)
-    record = _normalize_series(record)
-    record = _normalize_content_types(record)
-    record = _normalize_subjects(record)
-
     record["allowed_by_ip"] = _is_allowed_by_ip(request)
     record = _set_record_title(record)
     record = _set_common_variables(record)
     record = _set_representation_variables(record)
+
+    record = _normalize_collection_tags(record)
+    record = _normalize_series(record)
+    record = _normalize_content_types(record)
+    record = _normalize_subjects(record)
+
+    record = normalize_abstract_dates(record)
+    record = normalize_copyright(record)
 
     return record
 
@@ -242,7 +243,7 @@ def get_sections(record_dict: dict):
         "collection_tags_normalized",
         "subjects_normalized",
     ]
-    copyright = ["copyright_status"]
+    copyright = ["copyright_status_normalized"]
     relations = ["organisations", "locations", "events", "people"]
     copyright_extra = ["contractual_status", "other_legal_restrictions"]
     availability = ["availability"]
