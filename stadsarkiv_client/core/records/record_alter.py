@@ -1,7 +1,7 @@
-from .logging import get_log
+from ..logging import get_log
 from .record_date import normalize_abstract_dates
 from .record_copyright import normalize_copyright
-from .translate import translate
+from ..translate import translate
 import urllib.parse
 from starlette.requests import Request
 

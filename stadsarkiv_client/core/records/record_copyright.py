@@ -1,4 +1,4 @@
-from .logging import get_log
+from ..logging import get_log
 
 
 log = get_log()
