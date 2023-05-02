@@ -9,7 +9,6 @@ special_notice = "Stadsarkivet modtager gerne oplysninger, som kan hjælpe med a
 
 
 def get_special_notice_id(record: dict):
-
     try:
         id = record["content_types"][0][0].get("id")
     except Exception:
@@ -22,7 +21,6 @@ def get_special_notice_id(record: dict):
 
 
 def normalize_copyright(record: dict):
-
     log.debug(record)
 
     lines = []
@@ -47,15 +45,15 @@ def normalize_copyright(record: dict):
         lines.append(text)
 
     if copyright_id == 4:
-        text = f'Materialet er under ophavsret, men udgives efter aftale under en {creative_commons_link}. '
-        text += 'Materialet må derfor gerne gengives og publiceres, så længe man på passende vis krediterer både ophavsmanden/-kvinden og AarhusArkivet.dk '
+        text = f"Materialet er under ophavsret, men udgives efter aftale under en {creative_commons_link}. "
+        text += "Materialet må derfor gerne gengives og publiceres, så længe man på passende vis krediterer både ophavsmanden/-kvinden og AarhusArkivet.dk "
         lines.append(text)
 
     if copyright_id == 5:
         text = f"Materialet er under ophavsret, men udgives efter aftale under en {creative_commons_link}. "
         text += "Materialet må kun gengives og publiceres i ikke-kommercielle sammenhænge, og under forudsætning af en passende kreditering af både ophavsmanden/-kvinden og AarhusArkivet.dk. "
         text += "Dette udelukker publicering på sociale platforme som Facebook og Instagram. "
-        lines.append(text) 
+        lines.append(text)
 
     if copyright_id == 6:
         text = "Ophavsretsaftalen kræver alle rettigheder forbeholdt. "
