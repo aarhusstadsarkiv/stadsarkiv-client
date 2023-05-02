@@ -166,11 +166,10 @@ def _set_icon(record: dict):
 
 
 def _is_sejrs_sedler(record_dict: dict):
-
     if "collection" not in record_dict:
         return False
 
-    if record_dict["collection"].get('id') == 1:
+    if record_dict["collection"].get("id") == 1:
         return True
 
     return False
@@ -288,7 +287,7 @@ def get_sections(record_dict: dict):
 
 
 def _set_record_title(record_dict: dict):
-    title = translate('No title')
+    title = translate("No title")
     try:
         title = record_dict["heading"]
     except KeyError:
