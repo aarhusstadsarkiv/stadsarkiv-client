@@ -36,6 +36,7 @@ en = {
     "New user": "New user",
     "No such exists.": "No such exists.",
     "No such user exists.": "No such user exists.",
+    "No title": "No title",
     "Password": "Password",
     "Profile": "Profile",
     "Record could not be read.": "Record could not be read.",
@@ -55,6 +56,7 @@ en = {
     "Submit": "Submit",
     "System can not deliver an email about resetting password. Try again later.": "System can not deliver an email about resetting password. Try again later.",
     "System error. Something went wrong": "System error. Something went wrong",
+    "The material can be order home to the reading room.": "The material can be order home to the reading room.",
     "The material is available in the reading room.": "The material is available in the reading room.",
     "There is no user with this email address.": "There is no user with this email address.",
     "User already exists. Try to login instead.": "User already exists. Try to login instead.",
@@ -121,5 +123,5 @@ en = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "search": "search",
+    "search": "search"
 }

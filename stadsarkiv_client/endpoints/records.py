@@ -51,18 +51,6 @@ async def get_record_view(request: Request):
         record_sections = record_alter.get_sections(record_dict)
         record_sections_json = json.dumps(record_sections, indent=4, ensure_ascii=False)
 
-        log.debug(record_json)
-
-        """ sejrs_sedler = record_alter.get_sejrs_sedler(record_dict)
-        image = record_alter.get_record_image(record_dict)
-
-        if image:
-            record_dict["image"] = record_alter.get_record_image(record_dict)
-        elif sejrs_sedler:
-            record_dict["sejrs_sedler"] = sejrs_sedler
-        else:
-            record_dict["icon"] = '<span class="material-symbols-outlined">private_connectivity</span>' """
-
         context_values = {
             # "title": record_alter.get_record_title(record_dict),
             "record": record_dict,

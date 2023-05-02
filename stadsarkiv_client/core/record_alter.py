@@ -1,5 +1,6 @@
 from .logging import get_log
 from .record_date import normalize_abstract_dates
+from .translate import translate
 import urllib.parse
 from starlette.requests import Request
 
@@ -7,7 +8,7 @@ from starlette.requests import Request
 log = get_log()
 
 
-IP_WHITELIST = ["193.33.148.24"]
+IP_ALLOW = ["193.33.148.24"]
 
 
 ICONS = {
@@ -26,9 +27,9 @@ ICONS = {
 }
 
 
-def _is_readingroom(request: Request) -> bool:
+def _is_allowed_by_ip(request: Request) -> bool:
     ip = request["client"][0]
-    if ip in IP_WHITELIST:
+    if ip in IP_ALLOW:
         return True
     return False
 
@@ -55,12 +56,12 @@ def _normalize_series(record: dict):
 
         query = "collection=" + str(collection_id) + "&series="
         for series in series_list:
-            # if not first or last in series add '/' to query
-            if series != series_list[0] and series != series_list[-1]:
+            # if not first part of the url query then add '/' to query
+            if series != series_list[0]:
                 query += urllib.parse.quote("/")
 
             query += urllib.parse.quote(series)
-            entry = {"collection": collection_id, "series": series, "query": query}
+            entry = {"collection": collection_id, "series": series, "search_url": "/search?" + query}
             series_normalized.append(entry)
 
         record["series_normalized"] = series_normalized
@@ -102,6 +103,7 @@ def _get_collection_tag(collection_id: int, tag: str):
     tag_dict["query"] = query_str
     tag_dict["label"] = parts[-1]
     tag_dict["level"] = len(parts)
+    tag_dict["search_url"] = f"/search?collection={collection_id}&collection_tags={query_str}"
 
     return tag_dict
 
@@ -164,10 +166,11 @@ def _set_icon(record: dict):
 
 
 def _is_sejrs_sedler(record_dict: dict):
+
     if "collection" not in record_dict:
         return False
 
-    if record_dict["collection"] == 1:
+    if record_dict["collection"].get('id') == 1:
         return True
 
     return False
@@ -181,11 +184,11 @@ def _set_representation_variables(record: dict):
 
     record["has_representations"] = False
     if record["legal_id"] == 1 and record["contractual_id"] > 2:
-        # Then it is a representation, image, audio, video or text
+        # Then it is a representation, image, audio, video, web_document - or notice about reading room
         record["has_representations"] = True
 
     record["is_representations_online"] = False
-    if record["availability_id"] == 4 or record["readingroom"]:
+    if record["availability_id"] == 4 or record["allowed_by_ip"]:
         record["is_representations_online"] = True
 
     if _is_sejrs_sedler(record):
@@ -216,7 +219,7 @@ def record_alter(request: Request, record: dict):
     record = _normalize_content_types(record)
     record = _normalize_subjects(record)
 
-    record["readingroom"] = _is_readingroom(request)
+    record["allowed_by_ip"] = _is_allowed_by_ip(request)
     record = _set_record_title(record)
     record = _set_common_variables(record)
     record = _set_representation_variables(record)
@@ -285,7 +288,7 @@ def get_sections(record_dict: dict):
 
 
 def _set_record_title(record_dict: dict):
-    title = None
+    title = translate('No title')
     try:
         title = record_dict["heading"]
     except KeyError:

@@ -33,6 +33,7 @@ da = {
     "Menu": "Menu",
     "New user": "Ny bruger",
     "No such user exists.": "Bruger eksisterer ikke.",
+    "No title": "No title",
     "Password": "Password",
     "Profile": "Profil",
     "Record could not be read.": "Entiteten kunne ikke læses.",
@@ -52,6 +53,7 @@ da = {
     "Submit": "Send",
     "System can not deliver an email about resetting password. Try again later.": "Systemet kan ikke sende en email om at nulstille password. Prøv igen senere.",
     "System error. Something went wrong": "System fejl. Fejlen er blevet logget.",
+    "The material can be order home to the reading room.": "The material can be order home to the reading room.",
     "The material is available in the reading room.": "Materialet kan ses på læsesalen.",
     "There is no user with this email address.": "Der er ingen bruger med denne email adresse.",
     "User already exists. Try to login instead.": "Bruger findes allerede. Prøv at logge ind i stedet.",
@@ -115,5 +117,5 @@ da = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Ophavsret",
-    "search": "search",
+    "search": "search"
 }

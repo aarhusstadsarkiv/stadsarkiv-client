@@ -14,7 +14,7 @@
     {{ parse_record_label(key)}}
     <div class="content">
         {% for item in value %}
-            <a href="/search?collectors={{ item.id }}">{{ item.label }}</a>
+            <p><a href="/search?collectors={{ item.id }}">{{ item.label }}</a></p>
         {% endfor %}
     </div>
 </div>
@@ -87,7 +87,7 @@
     {{ parse_record_label(key)}}
     <div class="content">
         {% for item in value %}
-            <a href="/search?{{ item.query }}">{{ item.series }}</a>
+            <a href="{{ item.search_url }}">{{ item.series }}</a>
             {% if not loop.last %} {{ '>' }} {% endif %}
         {% endfor %}
     </div>
@@ -108,7 +108,7 @@
     {{ parse_record_label(key)}}
     <div class="content">
         {% for item in value %}
-            <a href="/search?organisations={{ item.id }}">{{ item.label }}</a>
+            <p><a href="/search?organisations={{ item.id }}">{{ item.label }}</a></p>
         {% endfor %}
     </div>
 </div>
@@ -150,7 +150,7 @@
 {% macro parse_collection_tag (key, value) %}
 <div>
 {% for item in value %}
-<a href="/search?collection={{ item.id }}&collection_tags={{ item.query }}">{{ item.label }}</a>
+<a href="{{ item.search_url }}">{{ item.label }}</a>
     {% if not loop.last %} {{ '>' }} {% endif %}
 {% endfor %}
 </div>
@@ -212,9 +212,8 @@
 <div class="record-content">
     {{ parse_record_label('label_representations')}}
     <div class="content">
-    <a href="{{ value['record_image'] }}"> {{ translate('Download medium size')}}</a><br />
-    <a href="{{ value['large_image'] }}"> {{ translate('Download large size')}}</a>
-
+        <a href="{{ value['record_image'] }}"> {{ translate('Download medium size')}}</a><br />
+        <a href="{{ value['large_image'] }}"> {{ translate('Download large size')}}</a>
     </div>
 </div>
 {% endif %}
@@ -236,10 +235,6 @@
         <img src="{{ value }}" alt="{{ key }}" />
     </div>
 </div>
-{% endmacro %}
-
-{% macro parse_header(key, value) %}
-    <h3>{{ value }}</h3>
 {% endmacro %}
 
 {% set skip_record_keys = ['last_updated', 'series', 'content_types', 'subjects'] %}
@@ -307,32 +302,24 @@
     {{ record['summary'] }}
 </div>
 {% endif %}
+{% endmacro %}
 
-{% if 'icon' in record %}
+{% macro parse_representations_icon(text) %}
 <div class="record-icon">
-    {{ record['icon']|safe }}
+    <span class="material-symbols-outlined">private_connectivity</span>
 </div>
 <div>
-    {{ translate('The material is available in the reading room.') }}
+    {{ text }}
 </div>    
-{% endif %}
-
-{% if record["availability_id"] == 3 %}
-
-{% endif %}
 {% endmacro %}
 
 {% macro parse_representations_section(record) %}
 {% if record["is_representations_online"] %}
 {{ parse_representations_media(record)}}
-{% endif %}
-{% if record["availability_id"] == 3 %}
-<div class="record-icon">
-    <span class="material-symbols-outlined">private_connectivity</span>
-</div>
-<div>
-    {{ translate('The material is available in the reading room.') }}
-</div>    
+{% elif record["availability_id"] == 3 %}
+{{ parse_representations_icon(translate('The material is available in the reading room.'))}}
+{% elif record["availability_id"] == 2 %}
+{{ parse_representations_icon(translate('The material can be order home to the reading room.'))}}
 {% endif %}
 {% endmacro %}
 
