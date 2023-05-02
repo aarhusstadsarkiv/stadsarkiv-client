@@ -73,6 +73,8 @@ da = {
     "header_record_copyright_extra": "Anden juridisk beskyttelse",
     "header_record_description": "Beskrivelse",
     "header_record_download": "Download",
+    "header_record_judicial_right_notes": "Rettighedsnoter",
+    "header_record_judicial_status": "Anden juridisk beskyttelse",
     "header_record_other": "Andet",
     "header_record_relations": "Relationer",
     "label_record_admin_data": "Admin Data",
@@ -108,7 +110,7 @@ da = {
     "label_record_registration_id": "Registrations ID",
     "label_record_representations": "Representationer",
     "label_record_resources": "Ressourcer",
-    "label_record_rights_notes": "label_record_rights_notes",
+    "label_record_rights_notes": "Note",
     "label_record_schema": "Skema",
     "label_record_sections": "label_record_sections",
     "label_record_series_normalized": "Serie",
@@ -118,5 +120,5 @@ da = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Ophavsret",
-    "search": "search",
+    "search": "search"
 }

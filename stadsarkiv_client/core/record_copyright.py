@@ -21,7 +21,6 @@ def _get_special_notice_id(record: dict):
 
 
 def normalize_copyright(record: dict):
-    log.debug(record)
 
     lines = []
 

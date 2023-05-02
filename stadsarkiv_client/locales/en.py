@@ -79,6 +79,8 @@ en = {
     "header_record_copyright_extra": "Copyright Extra",
     "header_record_description": "Description",
     "header_record_download": "Download",
+    "header_record_judicial_right_notes": "header_record_judicial_right_notes",
+    "header_record_judicial_status": "header_record_judicial_status",
     "header_record_other": "Other",
     "header_record_relations": "header_record_relations",
     "label_record_admin_data": "Admin Data",
@@ -124,5 +126,5 @@ en = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "search": "search",
+    "search": "search"
 }

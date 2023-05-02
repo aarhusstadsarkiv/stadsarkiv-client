@@ -245,7 +245,8 @@ def get_sections(record_dict: dict):
     ]
     copyright = ["copyright_status_normalized"]
     relations = ["organisations", "locations", "events", "people"]
-    copyright_extra = ["contractual_status", "other_legal_restrictions"]
+    judicial_right_notes = ["rights_notes"]
+    judicial_status = ["contractual_status", "other_legal_restrictions"]
     availability = ["availability"]
     media = ["representations"]
 
@@ -254,7 +255,8 @@ def get_sections(record_dict: dict):
         "description": {},
         "copyright": {},
         "relations": {},
-        "copyright_extra": {},
+        "judicial_status": {},
+        "judicial_right_notes": {},
         "availability": {},
         "download": {},
         "other": {},
@@ -269,8 +271,10 @@ def get_sections(record_dict: dict):
             sections["copyright"][key] = value
         elif key in relations:
             sections["relations"][key] = value
-        elif key in copyright_extra:
-            sections["copyright_extra"][key] = value
+        elif key in judicial_right_notes:
+            sections["judicial_right_notes"][key] = value
+        elif key in judicial_status:
+            sections["judicial_status"][key] = value
         elif key in availability:
             sections["availability"][key] = value
         elif key in media:
@@ -280,7 +284,8 @@ def get_sections(record_dict: dict):
     sections["description"] = _sort_section(sections["description"], description)
     sections["copyright"] = _sort_section(sections["copyright"], copyright)
     sections["relations"] = _sort_section(sections["relations"], relations)
-    sections["copyright_extra"] = _sort_section(sections["copyright_extra"], copyright_extra)
+    sections["judicial_right_notes"] = _sort_section(sections["judicial_right_notes"], judicial_right_notes)
+    sections["judicial_status"] = _sort_section(sections["judicial_status"], judicial_status)
     sections["availability"] = _sort_section(sections["availability"], availability)
     sections["download"] = _sort_section(sections["download"], media)
 
@@ -288,6 +293,11 @@ def get_sections(record_dict: dict):
     # if not, remove relations section
     if not any(key in record_dict for key in ["locations", "people", "events", "organisations", "objects"]):
         del sections["relations"]
+
+    # check if section judicial_right_notes is empty
+    # if so, remove judicial_right_notes section
+    if not sections["judicial_right_notes"]:
+        del sections["judicial_right_notes"]
 
     return sections
 
