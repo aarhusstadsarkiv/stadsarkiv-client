@@ -1,8 +1,7 @@
 def normalize_contractual_status(record, creators=None):
+    contractual_id = record.get("contractual_id")
 
-    contractual_id = record.get('contractual_id')
-
-    text = ''
+    text = ""
     if contractual_id == 1:
         text = "Materialet er utilgængeligt. Ifølge aftale."
     elif contractual_id == 2:
@@ -10,15 +9,14 @@ def normalize_contractual_status(record, creators=None):
     elif contractual_id == 3:
         text = "Materialet må kun ses på læsesalen. Ifølge aftale."
     elif contractual_id == 4:
+        creators = {"pp": False}
 
-        creators = {'pp': False}
+        if record.get("creators"):
+            for i in record.get("creators"):
+                if i.get("id") == 108691:
+                    creators.update({"pp": True})
 
-        if record.get('creators'):
-            for i in record.get('creators'):
-                if i.get('id') == 108691:
-                    creators.update({'pp': True})
-
-        if creators['pp']:
+        if creators["pp"]:
             text = "Materialet må kun offentliggøres på Aarhus Stadsarkivs hjemmesider. Ifølge aftale."
         else:
             text = "Materialet må offentliggøres på internettet. Ifølge aftale."

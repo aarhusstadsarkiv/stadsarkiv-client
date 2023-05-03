@@ -1,5 +1,5 @@
 def normalize_legal_restrictions(record: dict):
-    """ This is always displayed """
+    """This is always displayed"""
 
     text = ""
     legal_id = record["legal_id"]
@@ -20,7 +20,6 @@ __ALL__ = [normalize_legal_restrictions]
 
 
 def _normalize_legal_restrictions(record: dict):
-
     legal_id = record["legal_id"]
     contractual_id = record["contractual_id"]
     availability_id = record["availability_id"]

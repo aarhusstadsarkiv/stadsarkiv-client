@@ -1,5 +1,4 @@
 def normalize_availability(record: dict):
-
     legal_id = record["legal_id"]
     contractual_id = record["contractual_id"]
     availability_id = record["availability_id"]
