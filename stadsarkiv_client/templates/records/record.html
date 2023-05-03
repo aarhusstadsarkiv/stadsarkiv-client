@@ -136,6 +136,17 @@
 </div>
 {% endmacro %}
 
+{% macro parse_objects(key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key)}}
+    <div class="content">
+        {% for item in value %}
+            <p><a href="/search?objects={{ item.id }}">{{ item.label }}</a></p>
+        {% endfor %}
+    </div>
+</div>
+{% endmacro %}
+
 {% macro parse_events (key, value) %}
 <div class="record-content">
     {{ parse_record_label(key)}}
@@ -168,16 +179,19 @@
 {% endmacro %}
 
 {% macro parse_desc_data (key, value) %}
+{% for key, item in value.items() %}
 <div class="record-content">
-    {% for key, item in value.items() %}
     <div class="label">
+        {% if key == 'source' %}
+        {% set key = 'Original kilde' %}
+        {% endif %}
         <strong>{{ key }}</strong>
     </div>
     <div class="content">
     {{ item }}
     </div>
-    {% endfor %}
 </div>
+{% endfor %}
 {% endmacro %}
 
 {% macro parse_admin_notes (key, value) %}
@@ -263,6 +277,8 @@
             {{ parse_events(key, value) }}
         {% elif key == 'people' %}
             {{ parse_people(key, value) }}
+        {% elif key == 'objects' %}
+            {{ parse_objects(key, value) }}
         {% elif key == 'creators' %}
             {{ parse_curators(key, value) }}
         {% elif key == 'collection' %}

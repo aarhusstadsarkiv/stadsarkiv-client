@@ -1,6 +1,9 @@
 from ..logging import get_log
-from .record_date import normalize_abstract_dates
-from .record_copyright import normalize_copyright
+from .normalize_abstract_dates import normalize_abstract_dates
+from .normalize_copyright_status import normalize_copyright_status
+from .normalize_contractual_status import normalize_contractual_status
+from .normalize_legal_restrictions import normalize_legal_restrictions
+from .normalize_availability import normalize_availability
 from ..translate import translate
 import urllib.parse
 from starlette.requests import Request
@@ -69,8 +72,14 @@ def _normalize_series(record: dict):
 
 def _normalize_content_types(record: dict):
     """Transform content_types to a more sane data structure ( list of list of dicts)
-    original_data = [{'id': [61, 102], 'label': ['Billeder', 'Situations billeder']}, {'id': [61, 68], 'label': ['Billeder', 'Maleri']}]
-    transformed_data = [[{'id': 61, 'label': 'Billeder'}, {'id': 102, 'label': 'Situations billeder'}], [{'id': 61, 'label': 'Billeder'}, {'id': 68, 'label': 'Maleri'}]]
+    original_data = [
+            {'id': [61, 102], 'label': ['Billeder', 'Situations billeder']},
+            {'id': [61, 68], 'label': ['Billeder', 'Maleri']}
+        ]
+    transformed_data = [
+        [{'id': 61, 'label': 'Billeder'}, {'id': 102, 'label': 'Situations billeder'}],
+        [{'id': 61, 'label': 'Billeder'}, {'id': 68, 'label': 'Maleri'}]
+    ]
     """
 
     if "content_types" in record:
@@ -211,6 +220,8 @@ def _set_common_variables(record: dict):
 def record_alter(request: Request, record: dict):
     """Alter subjects, content_types and series to a more sane data structure"""
 
+    record = record.copy()
+
     record["allowed_by_ip"] = _is_allowed_by_ip(request)
     record = _set_record_title(record)
     record = _set_common_variables(record)
@@ -222,7 +233,10 @@ def record_alter(request: Request, record: dict):
     record = _normalize_subjects(record)
 
     record = normalize_abstract_dates(record)
-    record = normalize_copyright(record)
+    record = normalize_copyright_status(record)
+    record = normalize_contractual_status(record)
+    record = normalize_legal_restrictions(record)
+    record = normalize_availability(record)
 
     return record
 
@@ -244,16 +258,18 @@ def get_sections(record_dict: dict):
         "subjects_normalized",
     ]
     copyright = ["copyright_status_normalized"]
-    relations = ["organisations", "locations", "events", "people"]
+    description_data = ["desc_data"]
+    relations = ["organisations", "locations", "events", "people", "objects"]
     judicial_right_notes = ["rights_notes"]
-    judicial_status = ["contractual_status", "other_legal_restrictions"]
-    availability = ["availability"]
+    judicial_status = ["contractual_status_normalized", "other_legal_restrictions_normalized"]
+    availability = ["availability_normalized"]
     media = ["representations"]
 
     sections: dict = {
         "abstract": {},
         "description": {},
         "copyright": {},
+        "description_data": {},
         "relations": {},
         "judicial_status": {},
         "judicial_right_notes": {},
@@ -269,6 +285,8 @@ def get_sections(record_dict: dict):
             sections["description"][key] = value
         elif key in copyright:
             sections["copyright"][key] = value
+        elif key in description_data:
+            sections["description_data"][key] = value
         elif key in relations:
             sections["relations"][key] = value
         elif key in judicial_right_notes:
@@ -283,6 +301,7 @@ def get_sections(record_dict: dict):
     sections["abstract"] = _sort_section(sections["abstract"], abstract)
     sections["description"] = _sort_section(sections["description"], description)
     sections["copyright"] = _sort_section(sections["copyright"], copyright)
+    sections["description_data"] = _sort_section(sections["description_data"], description_data)
     sections["relations"] = _sort_section(sections["relations"], relations)
     sections["judicial_right_notes"] = _sort_section(sections["judicial_right_notes"], judicial_right_notes)
     sections["judicial_status"] = _sort_section(sections["judicial_status"], judicial_status)
@@ -298,6 +317,9 @@ def get_sections(record_dict: dict):
     # if so, remove judicial_right_notes section
     if not sections["judicial_right_notes"]:
         del sections["judicial_right_notes"]
+
+    if not sections["description_data"]:
+        del sections["description_data"]
 
     return sections
 

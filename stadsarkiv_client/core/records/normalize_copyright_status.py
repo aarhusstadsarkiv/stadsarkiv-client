@@ -20,7 +20,7 @@ def _get_special_notice_id(record: dict):
     return False
 
 
-def normalize_copyright(record: dict):
+def normalize_copyright_status(record: dict):
     lines = []
 
     label = record["copyright_status"].get("label")
@@ -44,13 +44,19 @@ def normalize_copyright(record: dict):
 
     if copyright_id == 4:
         text = f"Materialet er under ophavsret, men udgives efter aftale under en {creative_commons_link}. "
-        text += "Materialet må derfor gerne gengives og publiceres, så længe man på passende vis krediterer både ophavsmanden/-kvinden og AarhusArkivet.dk "
+        lines.append(text)
+        text = """
+            Materialet må derfor gerne gengives og publiceres, 
+            så længe man på passende vis krediterer både ophavsmanden/-kvinden og AarhusArkivet.dk """
         lines.append(text)
 
     if copyright_id == 5:
         text = f"Materialet er under ophavsret, men udgives efter aftale under en {creative_commons_link}. "
-        text += "Materialet må kun gengives og publiceres i ikke-kommercielle sammenhænge, og under forudsætning af en passende kreditering af både ophavsmanden/-kvinden og AarhusArkivet.dk. "
-        text += "Dette udelukker publicering på sociale platforme som Facebook og Instagram. "
+        lines.append(text)
+        text += """
+            Materialet må kun gengives og publiceres i ikke-kommercielle sammenhænge, 
+            og under forudsætning af en passende kreditering af både ophavsmanden/-kvinden og AarhusArkivet.dk. 
+            Dette udelukker publicering på sociale platforme som Facebook og Instagram. """
         lines.append(text)
 
     if copyright_id == 6:
@@ -81,4 +87,4 @@ def normalize_copyright(record: dict):
     return record
 
 
-__ALL__ = [normalize_copyright]
+__ALL__ = [normalize_copyright_status]
