@@ -4,6 +4,7 @@ from .normalize_copyright_status import normalize_copyright_status
 from .normalize_contractual_status import normalize_contractual_status
 from .normalize_legal_restrictions import normalize_legal_restrictions
 from .normalize_availability import normalize_availability
+from .normalize_ordering import normalize_ordering
 from ..translate import translate
 import urllib.parse
 from starlette.requests import Request
@@ -237,6 +238,7 @@ def record_alter(request: Request, record: dict):
     record = normalize_contractual_status(record)
     record = normalize_legal_restrictions(record)
     record = normalize_availability(record)
+    record = normalize_ordering(record)
 
     return record
 
@@ -263,6 +265,7 @@ def get_sections(record_dict: dict):
     judicial_right_notes = ["rights_notes"]
     judicial_status = ["contractual_status_normalized", "other_legal_restrictions_normalized"]
     availability = ["availability_normalized"]
+    ordering = ["ordering"]
     media = ["representations"]
 
     sections: dict = {
@@ -274,6 +277,7 @@ def get_sections(record_dict: dict):
         "judicial_status": {},
         "judicial_right_notes": {},
         "availability": {},
+        "ordering": {},
         "download": {},
         "other": {},
     }
@@ -295,6 +299,8 @@ def get_sections(record_dict: dict):
             sections["judicial_status"][key] = value
         elif key in availability:
             sections["availability"][key] = value
+        elif key in ordering:
+            sections["ordering"][key] = value
         elif key in media:
             sections["download"][key] = value
 
@@ -306,6 +312,7 @@ def get_sections(record_dict: dict):
     sections["judicial_right_notes"] = _sort_section(sections["judicial_right_notes"], judicial_right_notes)
     sections["judicial_status"] = _sort_section(sections["judicial_status"], judicial_status)
     sections["availability"] = _sort_section(sections["availability"], availability)
+    sections["ordering"] = _sort_section(sections["ordering"], ordering)
     sections["download"] = _sort_section(sections["download"], media)
 
     # check if record_dict does not contain one of the keys ['locations', 'people', 'events', 'organisations', 'objects']
@@ -320,6 +327,9 @@ def get_sections(record_dict: dict):
 
     if not sections["description_data"]:
         del sections["description_data"]
+
+    if not sections["ordering"]:
+        del sections["ordering"]
 
     return sections
 

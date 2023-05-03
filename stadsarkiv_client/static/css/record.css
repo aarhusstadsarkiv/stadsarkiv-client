@@ -43,6 +43,10 @@ h3.record-header {
         min-width: 100%;
         width: 100%;
     }
+
+    .record-representation {
+        margin-bottom: 20px;
+    }
 }
 
 .record-image > img {

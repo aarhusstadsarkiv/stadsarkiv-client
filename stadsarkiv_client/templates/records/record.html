@@ -262,6 +262,17 @@
 </div>
 {% endmacro %}
 
+{% macro parse_ordering(key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key)}}
+    <div class="content">
+        {% for item in value %}
+        <p class="spacing">{{ item|safe }}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endmacro %}
+
 {% set skip_record_keys = ['last_updated', 'series', 'content_types', 'subjects'] %}
 
 {% macro parse_section(section, values) %}
@@ -309,6 +320,8 @@
             {{ parse_label(key, value)}}
         {% elif key == 'portrait' %}
             {{ parse_portrait(key, value)}}
+        {% elif key == 'ordering' %}
+            {{ parse_ordering(key, value)}}
         {% elif key == 'representations' %}
             {{ parse_representations(key, value)}}
         {% elif key == 'collection_tags_normalized' %}
