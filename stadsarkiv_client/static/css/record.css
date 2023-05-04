@@ -69,7 +69,10 @@ h3.record-header {
     padding-top: 0.2rem;
     font-size: 75%;
     color: #424242;
-    width: 12em;
+    width: 13em;
+    /** always wrap when text is widther than width */
+    word-wrap: break-word;
+
 }
 
 .record-content > .content {

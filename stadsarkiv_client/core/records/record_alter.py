@@ -171,6 +171,20 @@ def _normalize_labels(record: dict):
     return record
 
 
+def _normalize_resources(record: dict):
+    """Transform resources to a more sane data structure: Same as content_types"""
+    if "resources" in record:
+        resources = record["resources"]
+        item_dict_list = []
+        for item_dict in resources:
+            # move type to type
+            item_dict = dict(sorted(item_dict.items(), key=lambda item: item[0] != "type"))
+            item_dict_list.append(item_dict)
+
+        record["resources"] = item_dict_list
+    return record
+
+
 def _set_icon(record: dict):
     """Set icon for the record based on content type"""
     try:
@@ -213,6 +227,17 @@ def _set_representation_variables(record: dict):
     return record
 
 
+def _set_download_variables(record: dict) -> dict:
+    record["is_downloadable"] = (
+        record.get("representations")
+        and record["legal_id"] == 1
+        and record["contractual_id"] > 3
+        and record["usability_id"] in [1, 2, 3]
+        and record["record_type"] != "video"
+    )
+    return record
+
+
 def _set_common_variables(record: dict):
     record = _set_icon(record)
 
@@ -236,11 +261,13 @@ def record_alter(request: Request, record: dict):
     record = _set_common_variables(record)
     record = _set_representation_variables(record)
 
+    record = _set_download_variables(record)
     record = _normalize_collection_tags(record)
     record = _normalize_series(record)
     record = _normalize_content_types(record)
     record = _normalize_subjects(record)
     record = _normalize_labels(record)
+    record = _normalize_resources(record)
 
     record = normalize_abstract_dates(record)
     record = normalize_copyright_status(record)
@@ -283,8 +310,9 @@ def get_sections(record_dict: dict):
         "created",
         "last_updated_by",
         "last_updated",
-        "resources",
     ]
+
+    resources = ["resources"]
     download = ["representations"]
 
     sections: dict = {
@@ -298,6 +326,7 @@ def get_sections(record_dict: dict):
         "availability": {},
         "ordering": {},
         "administration": {},
+        "resources": {},
         "download": {},
         "other": {},
     }
@@ -323,6 +352,8 @@ def get_sections(record_dict: dict):
             sections["ordering"][key] = value
         elif key in administration:
             sections["administration"][key] = value
+        elif key in resources:
+            sections["resources"][key] = value
         elif key in download:
             sections["download"][key] = value
 
@@ -336,6 +367,7 @@ def get_sections(record_dict: dict):
     sections["availability"] = _sort_section(sections["availability"], availability)
     sections["ordering"] = _sort_section(sections["ordering"], ordering)
     sections["administration"] = _sort_section(sections["administration"], administration)
+    sections["resources"] = _sort_section(sections["resources"], resources)
     sections["download"] = _sort_section(sections["download"], download)
 
     # check if record_dict does not contain one of the keys ['locations', 'people', 'events', 'organisations', 'objects']
@@ -353,6 +385,12 @@ def get_sections(record_dict: dict):
 
     if not sections["ordering"]:
         del sections["ordering"]
+
+    if not sections["resources"]:
+        del sections["resources"]
+
+    if not record_dict["is_downloadable"]:
+        del sections["download"]
 
     return sections
 
