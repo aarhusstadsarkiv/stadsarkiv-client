@@ -170,7 +170,7 @@ async def is_logged_in(request: Request) -> bool:
 
 
 async def permissions_as_list(permissions: dict) -> list[str]:
-    """ {'guest': True, 'basic': True, 'employee': True, 'admin': True} """
+    """{'guest': True, 'basic': True, 'employee': True, 'admin': True}"""
     permissions_list = []
     for permission, value in permissions.items():
         if value:
@@ -179,7 +179,7 @@ async def permissions_as_list(permissions: dict) -> list[str]:
 
 
 async def has_permissions(request: Request, permissions: list[str]) -> bool:
-    """ guest, basic, employee, admin """
+    """guest, basic, employee, admin"""
 
     try:
         me = await me_read(request)

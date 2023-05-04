@@ -267,7 +267,16 @@ def get_sections(record_dict: dict):
     availability = ["availability_normalized"]
     ordering = ["ordering"]
     media = ["representations"]
-    administration = ["admin_notes", "admin_data", "registration_id", "created_by", "created", "last_updated_by", "last_updated", "resources"]
+    administration = [
+        "admin_notes",
+        "admin_data",
+        "registration_id",
+        "created_by",
+        "created",
+        "last_updated_by",
+        "last_updated",
+        "resources",
+    ]
 
     sections: dict = {
         "abstract": {},

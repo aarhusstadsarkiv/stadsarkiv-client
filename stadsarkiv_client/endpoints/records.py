@@ -42,7 +42,6 @@ async def get_records_search_results(request: Request):
 
 async def get_record_view(request: Request):
     try:
-
         permissions = await api.me_permissions(request)
         record: RecordsIdGet = await api.record_read(request)
         record_dict = record.to_dict()
