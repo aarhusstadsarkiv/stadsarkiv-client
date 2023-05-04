@@ -42,6 +42,8 @@ async def get_records_search_results(request: Request):
 
 async def get_record_view(request: Request):
     try:
+
+        permissions = await api.me_permissions(request)
         record: RecordsIdGet = await api.record_read(request)
         record_dict = record.to_dict()
 
@@ -54,6 +56,7 @@ async def get_record_view(request: Request):
         context_values = {
             # "title": record_alter.get_record_title(record_dict),
             "record": record_dict,
+            "me_permissions": permissions,
             "record_json": record_json,
             "record_sections": record_sections,
             "record_sections_json": record_sections_json,
