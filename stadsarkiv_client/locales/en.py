@@ -74,6 +74,7 @@ en = {
     "You need to be logged in to access this page.": "You need to be logged in to access this page.",
     "You need to be logged in to view this page.": "You need to be logged in to view this page.",
     "You will need to log in order to get access to your profile": "You will need to log in order to get access to your profile",
+    "header_record_administration": "header_record_administration",
     "header_record_availability": "Availability",
     "header_record_copyright": "Copyright",
     "header_record_copyright_extra": "Copyright Extra",
@@ -132,5 +133,5 @@ en = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "search": "search",
+    "search": "search"
 }

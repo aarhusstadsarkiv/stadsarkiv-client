@@ -266,7 +266,6 @@ def get_sections(record_dict: dict):
     judicial_status = ["contractual_status_normalized", "other_legal_restrictions_normalized"]
     availability = ["availability_normalized"]
     ordering = ["ordering"]
-    media = ["representations"]
     administration = [
         "admin_notes",
         "admin_data",
@@ -277,6 +276,7 @@ def get_sections(record_dict: dict):
         "last_updated",
         "resources",
     ]
+    download = ["representations"]
 
     sections: dict = {
         "abstract": {},
@@ -288,6 +288,7 @@ def get_sections(record_dict: dict):
         "judicial_right_notes": {},
         "availability": {},
         "ordering": {},
+        "administration": {},
         "download": {},
         "other": {},
     }
@@ -311,7 +312,9 @@ def get_sections(record_dict: dict):
             sections["availability"][key] = value
         elif key in ordering:
             sections["ordering"][key] = value
-        elif key in media:
+        elif key in administration:
+            sections["administration"][key] = value
+        elif key in download:
             sections["download"][key] = value
 
     sections["abstract"] = _sort_section(sections["abstract"], abstract)
@@ -323,7 +326,8 @@ def get_sections(record_dict: dict):
     sections["judicial_status"] = _sort_section(sections["judicial_status"], judicial_status)
     sections["availability"] = _sort_section(sections["availability"], availability)
     sections["ordering"] = _sort_section(sections["ordering"], ordering)
-    sections["download"] = _sort_section(sections["download"], media)
+    sections["administration"] = _sort_section(sections["administration"], administration)
+    sections["download"] = _sort_section(sections["download"], download)
 
     # check if record_dict does not contain one of the keys ['locations', 'people', 'events', 'organisations', 'objects']
     # if not, remove relations section

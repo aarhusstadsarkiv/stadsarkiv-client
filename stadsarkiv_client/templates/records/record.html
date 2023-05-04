@@ -242,15 +242,6 @@
 </div>
 {% endmacro %}
 
-{% macro parse_portrait(label, value) %}
-<div class="record-content">
-    {{ parse_record_label(label)}}
-    <div class="image">
-        <img src="{{ value }}" alt="{{ label }}" />
-    </div>
-</div>
-{% endmacro %}
-
 {% macro parse_copyright_status(label, value) %}
 <div class="record-content">
     {{ parse_record_label(label)}}
@@ -318,8 +309,6 @@
             {{ parse_label(key, value) }}
         {% elif key == 'usability' %}
             {{ parse_label(key, value)}}
-        {% elif key == 'portrait' %}
-            {{ parse_portrait(key, value)}}
         {% elif key == 'ordering' %}
             {{ parse_ordering(key, value)}}
         {% elif key == 'representations' %}

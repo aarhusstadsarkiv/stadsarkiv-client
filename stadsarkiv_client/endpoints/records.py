@@ -52,6 +52,9 @@ async def get_record_view(request: Request):
         record_sections = record_alter.get_sections(record_dict)
         record_sections_json = json.dumps(record_sections, indent=4, ensure_ascii=False)
 
+        if "employee" not in permissions:
+            del record_sections["administration"]
+
         context_values = {
             # "title": record_alter.get_record_title(record_dict),
             "me_permissions": permissions,

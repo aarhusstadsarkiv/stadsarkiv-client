@@ -68,6 +68,7 @@ da = {
     "You must be logged in to create an entity": "Du skal være logget ind for at oprette en entitet.",
     "You need to be logged in to view this page.": "Du er ikke logget ind. Log ind for at se siden.",
     "You will need to log in order to get access to your profile": "Du skal logge ind for at se din profil.",
+    "header_record_administration": "header_record_administration",
     "header_record_availability": "Tilgængelighed",
     "header_record_copyright": "Ophavsret",
     "header_record_copyright_extra": "Anden juridisk beskyttelse",
@@ -124,5 +125,5 @@ da = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Ophavsret",
-    "search": "search",
+    "search": "search"
 }
