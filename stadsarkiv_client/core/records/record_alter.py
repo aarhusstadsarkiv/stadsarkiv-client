@@ -163,6 +163,14 @@ def _normalize_collection_tags(record: dict):
     return record
 
 
+def _normalize_labels(record: dict):
+    if "desc_data" in record and "source" in record["desc_data"]:
+        record["desc_data"]["Kilde"] = record["desc_data"]["source"]
+        del record["desc_data"]["source"]
+
+    return record
+
+
 def _set_icon(record: dict):
     """Set icon for the record based on content type"""
     try:
@@ -232,6 +240,7 @@ def record_alter(request: Request, record: dict):
     record = _normalize_series(record)
     record = _normalize_content_types(record)
     record = _normalize_subjects(record)
+    record = _normalize_labels(record)
 
     record = normalize_abstract_dates(record)
     record = normalize_copyright_status(record)
