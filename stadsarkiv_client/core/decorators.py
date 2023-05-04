@@ -31,8 +31,9 @@ def is_authenticated(func=None, message=translate("You need to be logged in to v
         # If permissions are required, check if the user has them
         # User needs to have all permissions in the list
         user_permissions = me["permissions"]
+        user_permissions_list = await api.permissions_as_list(user_permissions)
         for permission in permissions:
-            if permission not in user_permissions:
+            if permission not in user_permissions_list:
                 flash.set_message(
                     request,
                     translate("You do not have the required permissions to view the page."),

@@ -146,8 +146,8 @@ async def me_read(request: Request) -> dict:
     if hasattr(request.state, "me"):
         return request.state.me
 
-    auth_client: AuthenticatedClient = get_auth_client(request)
-    me = await users_me_get.asyncio(client=auth_client)
+    client: AuthenticatedClient = get_auth_client(request)
+    me = await users_me_get.asyncio(client=client)
 
     if isinstance(me, UserRead):
         me_dict = me.to_dict()
@@ -167,6 +167,39 @@ async def is_logged_in(request: Request) -> bool:
         return True
     except Exception:
         return False
+
+
+async def permissions_as_list(permissions: dict) -> list[str]:
+    """ {'guest': True, 'basic': True, 'employee': True, 'admin': True} """
+    permissions_list = []
+    for permission, value in permissions.items():
+        if value:
+            permissions_list.append(permission)
+    return permissions_list
+
+
+async def has_permissions(request: Request, permissions: list[str]) -> bool:
+    """ guest, basic, employee, admin """
+
+    try:
+        me = await me_read(request)
+        user_permissions: dict = me.get("permissions", [])
+        user_permissions_list = await permissions_as_list(user_permissions)
+        for permission in permissions:
+            if permission not in user_permissions_list:
+                return False
+        return True
+    except Exception:
+        return False
+
+
+async def me_permissions(request: Request) -> list[str]:
+    try:
+        me = await me_read(request)
+        user_permissions: dict = me.get("permissions", [])
+        return await permissions_as_list(user_permissions)
+    except Exception:
+        return []
 
 
 async def forgot_password(request: Request) -> None:
