@@ -9,9 +9,9 @@
 </div>
 {% endmacro %}
 
-{% macro parse_collectors (key, value) %}
+{% macro parse_collectors (label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
             <p><a href="/search?collectors={{ item.id }}">{{ item.label }}</a></p>
@@ -20,7 +20,7 @@
 </div>
 {% endmacro %}
 
-{% macro parse_content_type (key, value) %}
+{% macro parse_content_type (label, value) %}
 <div>
 {% for item in value %}
     <a href="/search?content_types={{ item.id }}">{{ item.label }}</a>
@@ -29,18 +29,18 @@
 </div>
 {% endmacro %}
 
-{% macro parse_content_types_normalized (key, value) %}
+{% macro parse_content_types_normalized (label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
-        {{ parse_content_type(key, item) }}
+        {{ parse_content_type(label, item) }}
         {% endfor %}        
     </div>
 </div>
 {% endmacro %}
 
-{% macro parse_subject (key, value) %}
+{% macro parse_subject (value) %}
 <div>
 {% for item in value %}
     <a href="/search?subjects={{ item.id }}">{{ item.label }}</a>
@@ -49,20 +49,20 @@
 </div>
 {% endmacro %}
 
-{% macro parse_subjects_normalized (key, value) %}
+{% macro parse_subjects_normalized (label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
-        {{ parse_subject(key, item) }}
+        {{ parse_subject(item) }}
         {% endfor %}        
     </div>
 </div>
 {% endmacro %}
 
-{% macro parse_curators (key, value) %}
+{% macro parse_curators (label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
             <a href="/search?curators={{ item.id }}">{{ item.label }}</a>
@@ -71,9 +71,9 @@
 </div>
 {% endmacro %}
 
-{% macro parse_creators (key, value) %}
+{% macro parse_creators (label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
             <a href="/search?creators={{ item.id }}">{{ item.label }}</a>
@@ -82,9 +82,9 @@
 </div>
 {% endmacro %}
 
-{% macro parse_series_normalized (key, value) %}
+{% macro parse_series_normalized (label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
             <a href="{{ item.search_url }}">{{ item.series }}</a>
@@ -94,18 +94,18 @@
 </div>
 {% endmacro %}
 
-{% macro parse_collection (key, value) %}
+{% macro parse_collection (label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         <a href="/search?collection={{ value.id }}">{{ value.label }}</a>
     </div>
 </div>
 {% endmacro %}
 
-{% macro parse_organisations (key, value) %}
+{% macro parse_organisations (label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
             <p><a href="/search?organisations={{ item.id }}">{{ item.label }}</a></p>
@@ -114,9 +114,9 @@
 </div>
 {% endmacro %}
 
-{% macro parse_locations (key, value) %}
+{% macro parse_locations (label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
             <p><a href="/search?locations={{ item.id }}">{{ item.label }}</a></p>
@@ -125,9 +125,9 @@
 </div>
 {% endmacro %}
 
-{% macro parse_people (key, value) %}
+{% macro parse_people (label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
             <p><a href="/search?people={{ item.id }}">{{ item.label }}</a></p>
@@ -136,9 +136,9 @@
 </div>
 {% endmacro %}
 
-{% macro parse_objects(key, value) %}
+{% macro parse_objects(label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
             <p><a href="/search?objects={{ item.id }}">{{ item.label }}</a></p>
@@ -147,9 +147,9 @@
 </div>
 {% endmacro %}
 
-{% macro parse_events (key, value) %}
+{% macro parse_events (label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
             <a href="/search?events={{ item.id }}">{{ item.label }}</a>
@@ -158,7 +158,7 @@
 </div>
 {% endmacro %}
 
-{% macro parse_collection_tag (key, value) %}
+{% macro parse_collection_tag (value) %}
 <div>
 {% for item in value %}
 <a href="{{ item.search_url }}">{{ item.label }}</a>
@@ -167,18 +167,18 @@
 </div>
 {% endmacro %}
 
-{% macro parse_collection_tags_normalized (key, value) %}
+{% macro parse_collection_tags_normalized (label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
-        {{ parse_collection_tag(key, item) }}
+        {{ parse_collection_tag(item) }}
         {% endfor %}        
     </div>
 </div>
 {% endmacro %}
 
-{% macro parse_desc_data (key, value) %}
+{% macro parse_desc_data (label, value) %}
 {% for key, item in value.items() %}
 <div class="record-content">
     <div class="label">
@@ -194,34 +194,34 @@
 {% endfor %}
 {% endmacro %}
 
-{% macro parse_admin_notes (key, value) %}
+{% macro parse_admin_notes (label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {{ value }}
     </div>
 </div>
 {% endmacro %}
 
-{% macro parse_contractual_status (key, value) %}
+{% macro parse_contractual_status (label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {{ value.label }}
     </div>
 </div>
 {% endmacro %}
 
-{% macro parse_label(key, value) %}
+{% macro parse_label(label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {{ value.label }}
     </div>
 </div>
 {% endmacro %}
 
-{% macro parse_representations(key, value) %}
+{% macro parse_representations(label, value) %}
 {% if value["record_type"] == "image" %}
 <div class="record-content">
     {{ parse_record_label('label_representations')}}
@@ -233,27 +233,27 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_primitive(key, value) %}
+{% macro parse_label_value(label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {{ value }}
     </div>
 </div>
 {% endmacro %}
 
-{% macro parse_portrait(key, value) %}
+{% macro parse_portrait(label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="image">
-        <img src="{{ value }}" alt="{{ key }}" />
+        <img src="{{ value }}" alt="{{ label }}" />
     </div>
 </div>
 {% endmacro %}
 
-{% macro parse_copyright_status(key, value) %}
+{% macro parse_copyright_status(label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
         <p class="spacing">{{ item|safe }}</p>
@@ -262,9 +262,9 @@
 </div>
 {% endmacro %}
 
-{% macro parse_ordering(key, value) %}
+{% macro parse_ordering(label, value) %}
 <div class="record-content">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
         <p class="spacing">{{ item }}</p>
@@ -327,7 +327,7 @@
         {% elif key == 'collection_tags_normalized' %}
             {{ parse_collection_tags_normalized(key, value) }}
         {% else %}
-            {{ parse_primitive(key, value)}}
+            {{ parse_label_value(key, value)}}
         {% endif %}
     {% endfor %}        
 {% endmacro %}
@@ -376,7 +376,6 @@
             {% else %}
             <div class="record-representation">
                 {{ parse_representations_icon(record["icon"]["icon"], record["icon"]["label"]) }}
-
             </div>
             {% endif %}
             <div class="record-main">
