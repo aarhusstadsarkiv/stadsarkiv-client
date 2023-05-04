@@ -55,8 +55,8 @@ async def get_record_view(request: Request):
 
         context_values = {
             # "title": record_alter.get_record_title(record_dict),
-            "record": record_dict,
             "me_permissions": permissions,
+            "record": record_dict,
             "record_json": record_json,
             "record_sections": record_sections,
             "record_sections_json": record_sections_json,
