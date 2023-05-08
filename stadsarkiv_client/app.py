@@ -11,7 +11,7 @@ log = get_log()
 
 
 log.debug("Environment: " + str(os.getenv("ENVIRONMENT")))
-log.debug(json.dumps(settings, sort_keys=True, indent=4))
+log.debug(json.dumps(settings, sort_keys=True, indent=4, ensure_ascii=False))
 
 
 app = Starlette(
