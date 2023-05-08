@@ -38,6 +38,7 @@ da = {
     "Password": "Password",
     "Profile": "Profil",
     "Record could not be read.": "Entiteten kunne ikke læses.",
+    "Records could not be read.": "Records could not be read.",
     "Register": "Opret",
     "Register to get access to speciel functions": "Opret bruger for at få adgang til specielle funktioner",
     "Remember me": "Husk login på denne computer",
@@ -127,5 +128,5 @@ da = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Ophavsret",
-    "search": "search",
+    "search": "search"
 }

@@ -41,6 +41,7 @@ en = {
     "Password": "Password",
     "Profile": "Profile",
     "Record could not be read.": "Record could not be read.",
+    "Records could not be read.": "Records could not be read.",
     "Register": "Register",
     "Register to get access to speciel functions": "Register to get access to speciel functions",
     "Remember me": "Remember me",
@@ -140,5 +141,5 @@ en = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "search": "search",
+    "search": "search"
 }
