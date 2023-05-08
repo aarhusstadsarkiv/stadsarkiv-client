@@ -251,12 +251,10 @@
 {% endmacro %}
 
 {% macro parse_resources(label, value) %}
-{% if settings.update({'skip_translate': True}) %} {% endif %}
 {% for item in value %}
 {{ parse_label_value_dict(item)}}
 {% if not loop.last %} <hr> {% endif %}
 {% endfor %}
-{% if settings.update({'skip_translate': False}) %} {% endif %}
 {% endmacro %}
 
 {% set skip_record_keys = ['series', 'content_types', 'subjects'] %}

@@ -4,7 +4,7 @@
 {% include "includes/main_title.html" %}
 
 <form method="GET" action="{{ url_for('records_search')}}">
-    <input type="text" name="search" placeholder="{{ translate('Search') }}" aria-label="{{ translate('search') }}"
+    <input type="text" name="q" placeholder="{{ translate('Search') }}" aria-label="{{ translate('search') }}"
         required>
     <button type="submit" class="contrast">{{ translate('Search') }}</button>
 </form>
