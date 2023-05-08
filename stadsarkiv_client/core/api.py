@@ -163,7 +163,6 @@ async def me_read(request: Request) -> dict:
 async def is_logged_in(request: Request) -> bool:
     try:
         me = await me_read(request)
-        log.debug(me)
         return True
     except Exception:
         return False
@@ -352,10 +351,12 @@ async def record_read(request: Request) -> RecordsIdGet:
 
 async def records_search(request: Request):
     client = get_client()
-    json_dict = await request.json()
-    json_dict = json_dict["data"]
 
-    records = await records_search_get.asyncio(client=client)
+    if "q" in request.query_params:
+        q = request.query_params["q"]
+        log.debug(q)
+
+    records = await records_search_get.asyncio(client=client, )
 
     if not isinstance(records, RecordsSearchGet):
         raise OpenAwsException(500, translate("Records could not be read."))

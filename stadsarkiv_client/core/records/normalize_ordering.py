@@ -9,7 +9,6 @@ def normalize_ordering(record: dict):
     legal_id = record.get("legal_id", None)
     contractual_id = record.get("contractual_id", 0)
     curators: list = record.get("curators", [])
-    log.debug(curators)
 
     result = []
     if availability_id == 2 and legal_id == 1 and contractual_id > 2:
