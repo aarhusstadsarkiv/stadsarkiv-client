@@ -33,6 +33,7 @@ async def get_records_search(request: Request):
 
 async def get_record_view(request: Request):
     try:
+
         permissions = await api.me_permissions(request)
         record: RecordsIdGet = await api.record_read(request)
         record_dict = record.to_dict()
@@ -43,10 +44,10 @@ async def get_record_view(request: Request):
         record_sections = record_alter.get_sections(record_dict)
         record_sections_json = json.dumps(record_sections, indent=4, ensure_ascii=False)
 
-        if "administration" in record_dict and "employee" not in permissions:
+        if "administration" in record_sections and "employee" not in permissions:
             del record_sections["administration"]
 
-        if "resources" in record_dict and "employee" not in permissions:
+        if "resources" in record_sections and "employee" not in permissions:
             del record_sections["resources"]
 
         context_values = {

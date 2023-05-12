@@ -84,7 +84,7 @@ da = {
     "header_record_relations": "Relationer",
     "header_record_resources": "Ressourcer",
     "label_record_admin_data": "Admin Data",
-    "label_record_admin_notes": "label_record_admin_notes",
+    "label_record_admin_notes": "Admin. note",
     "label_record_availability_normalized": "Tilgængelighed",
     "label_record_collection": "Samling",
     "label_record_collection_tags_normalized": "Samlingstags",
