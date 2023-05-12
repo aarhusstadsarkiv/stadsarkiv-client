@@ -15,9 +15,12 @@ openapi-python-client generate --config config.yml --url https://dev.openaws.dk/
 
 # copy new client code on top of old client
 cp -rf openaws-client/* openaws-client-tmp/
-cp ../stadsarkiv-client/stadsarkiv_client/core/openaws.py openaws-client-tmp/openaws_client/ 
+
 rm -rf openaws-client
 mv openaws-client-tmp openaws-client
+
+# Add simplifications off imports
+cp ../stadsarkiv_client/core/openaws.py openaws-client/openaws_client 
 
 MESSAGE="Client made using: [openapi-python-client](https://github.com/openapi-generators/openapi-python-client)\n"
 # Add MESSAGE TO the top of the file 'openaws-client/README.md'
