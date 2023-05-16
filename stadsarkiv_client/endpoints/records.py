@@ -20,7 +20,6 @@ log = get_log()
 
 async def get_records_search(request: Request):
     try:
-
         # await api.records_search(request)
         context_values = {"title": translate("Search")}
         context = await get_context(request, context_values=context_values)
@@ -33,7 +32,6 @@ async def get_records_search(request: Request):
 
 async def get_record_view(request: Request):
     try:
-
         permissions = await api.me_permissions(request)
         record: RecordsIdGet = await api.record_read(request)
         record_dict = record.to_dict()
