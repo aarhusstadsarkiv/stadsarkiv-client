@@ -17,8 +17,11 @@ async def get_main_menu(request: Request):
     try:
         me = await api.me_read(request)
         permissions = me["permissions"]
+        permissions = await api.permissions_as_list(permissions)
         logged_in = True
-    except Exception:
+    except Exception as e:
+        log.exception(e)
+        log.debug("Not logged in")
         pass
 
     main_menu: Any = []  # type: ignore
