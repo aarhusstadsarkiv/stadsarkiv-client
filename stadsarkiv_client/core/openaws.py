@@ -14,6 +14,13 @@ from openaws_client.models.user_read import UserRead
 # Register module
 from openaws_client.api.auth import register_register_v1_auth_register_post as auth_register_post
 from openaws_client.models.user_create import UserCreate
+from openaws_client.models.user_permissions import UserPermissions
+from openaws_client.models.user_flag import UserFlag
+
+# Verify
+from openaws_client.api.auth import verify_verify_v1_auth_verify_post as auth_verify_post
+from openaws_client.models.body_verify_verify_v1_auth_verify_post import BodyVerifyVerifyV1AuthVerifyPost as VerifyPost
+
 
 # Forgotten password
 from openaws_client.models.body_reset_forgot_password_v1_auth_forgot_password_post import (
@@ -69,8 +76,12 @@ __ALL__ = [
     AuthJwtLoginPost,
     auth_jwt_login_post,
     BearerResponse,
+    # verify
+    auth_verify_post,
+    VerifyPost,
     # me
     UserRead,
+    UserPermissions,
     users_me_get,
     # errors
     HTTPValidationError,
@@ -78,6 +89,7 @@ __ALL__ = [
     # Register. Forgot password
     ForgotPasswordPost,
     UserCreate,
+    UserFlag,
     auth_register_post,
     auth_forgot_password_post,
     # schema
