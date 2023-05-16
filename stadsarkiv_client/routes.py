@@ -37,6 +37,7 @@ routes = [
     Route("/auth/logout", endpoint=auth.get_logout, name="logout"),
     Route("/auth/post-logout", endpoint=auth.post_logout, name="post_logout", methods=["POST"]),
     Route("/auth/register", endpoint=auth.get_register, name="register"),
+    Route("/auth/verify/{token:str}", endpoint=auth.get_verify, name="verify"),
     Route("/auth/post-register", endpoint=auth.post_register, name="post_register", methods=["POST"]),
     Route("/auth/forgot-password", endpoint=auth.get_forgot_password, name="forgot_password"),
     Route(
