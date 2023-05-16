@@ -30,6 +30,14 @@ from openaws_client.api.auth import (
     reset_forgot_password_v1_auth_forgot_password_post as auth_forgot_password_post,
 )
 
+# reset password
+from openaws_client.models.body_reset_reset_password_v1_auth_reset_password_post import (
+    BodyResetResetPasswordV1AuthResetPasswordPost as ResetPasswordPost,
+)
+from openaws_client.api.auth import (
+    reset_reset_password_v1_auth_reset_password_post as auth_reset_password_post,
+)
+
 # Schema
 from openaws_client.models.schema_create import SchemaCreate
 from openaws_client.models.schema_read import SchemaRead
@@ -79,6 +87,9 @@ __ALL__ = [
     # verify
     auth_verify_post,
     VerifyPost,
+    # reset password
+    auth_reset_password_post,
+    ResetPasswordPost,
     # me
     UserRead,
     UserPermissions,

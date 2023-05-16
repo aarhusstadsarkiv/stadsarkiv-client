@@ -139,6 +139,35 @@ async def post_forgot_password(request: Request):
     return RedirectResponse(url="/auth/forgot-password", status_code=302)
 
 
+async def get_reset_password(request: Request):
+    token = request.path_params["token"]
+    context_values = {"title": translate("Enter new password"), "token": token}
+    context = await get_context(request, context_values=context_values)
+    return templates.TemplateResponse("auth/reset_password.html", context)
+
+
+async def post_reset_password(request: Request):
+
+    try:
+        await api.reset_password(request)
+        flash.set_message(
+            request,
+            translate("Your password has been reset. You can now login."),
+            type="success",
+        )
+        return RedirectResponse(url="/auth/login", status_code=302)
+
+    except OpenAwsException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+    except Exception as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+
+    token = request.path_params["token"]
+    return RedirectResponse(url="/auth/reset-password/" + token, status_code=302)
+
+
 async def post_user_info(request: Request):
     is_logged_in = await api.is_logged_in(request)
     return JSONResponse({"is_logged_in": is_logged_in})

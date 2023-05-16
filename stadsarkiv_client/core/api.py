@@ -8,6 +8,9 @@ from .openaws import (
     # verify
     auth_verify_post,
     VerifyPost,
+    # reset password
+    auth_reset_password_post,
+    ResetPasswordPost,
     # me
     UserRead,
     UserPermissions,
@@ -113,7 +116,7 @@ async def login_jwt(request: Request):
     if isinstance(bearer_response, ErrorModel):
         raise OpenAwsException(
             400,
-            translate("No such user exists."),
+            translate("Email or password is not correct."),
         )
 
 
@@ -235,17 +238,57 @@ async def me_permissions(request: Request) -> list[str]:
 
 
 async def forgot_password(request: Request) -> None:
+
     form = await request.form()
     email = str(form.get("email"))
-
     client: Client = get_client()
-    forgot_password_post: ForgotPasswordPost = ForgotPasswordPost(email=email)
+
+    src_dict = {"email": email}
+    forgot_password_post: ForgotPasswordPost = ForgotPasswordPost.from_dict(src_dict=src_dict)
     forgot_password_response = await auth_forgot_password_post.asyncio(client=client, json_body=forgot_password_post)
 
     if isinstance(forgot_password_response, HTTPValidationError):
         raise OpenAwsException(
             422,
             translate("There is no user with this email address."),
+        )
+
+
+async def reset_password(request: Request) -> None:
+
+    form = await request.form()
+    password_1 = str(form.get("password"))
+    password_2 = str(form.get("password_2"))
+
+    if password_1 != password_2:
+        raise OpenAwsException(
+            400,
+            translate("Passwords do not match."),
+        )
+
+    if len(password_1) < 8:
+        raise OpenAwsException(
+            400,
+            translate("Password needs to be at least 8 characters long."),
+        )
+
+    token = request.path_params["token"]
+    client: Client = get_client()
+    src_dict = {"token": token, "password": password_1}
+
+    reset_password_post: ResetPasswordPost = ResetPasswordPost.from_dict(src_dict=src_dict)
+    reset_password_response = await auth_reset_password_post.asyncio(client=client, json_body=reset_password_post)
+
+    if isinstance(reset_password_response, HTTPValidationError):
+        raise OpenAwsException(
+            422,
+            translate("The password could not be reset. Or the token has expired. Please try again."),
+        )
+
+    if isinstance(reset_password_response, ErrorModel):
+        raise OpenAwsException(
+            400,
+            translate("The password could not be reset. Or the token has expired. Please try again."),
         )
 
 
