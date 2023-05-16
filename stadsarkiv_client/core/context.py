@@ -12,12 +12,12 @@ pm = get_plugin_manager()
 
 
 async def get_main_menu(request: Request):
-    permissions = []
+    permissions_list = []
     logged_in = False
     try:
-        me = await api.me_read(request)
-        permissions = me["permissions"]
-        permissions = await api.permissions_as_list(permissions)
+        me: dict = await api.me_read(request)
+        permissions = me["permissions"]  # type: ignore
+        permissions_list = await api.permissions_as_list(permissions)
         logged_in = True
     except Exception as e:
         log.exception(e)
@@ -36,7 +36,7 @@ async def get_main_menu(request: Request):
         main_menu = [item for item in main_menu if item["name"] != "logout"]
         main_menu = [item for item in main_menu if item["name"] != "profile"]
 
-    if "admin" not in permissions:
+    if "admin" not in permissions_list:
         main_menu = [item for item in main_menu if item["name"] != "schemas"]
         main_menu = [item for item in main_menu if item["name"] != "entities"]
 

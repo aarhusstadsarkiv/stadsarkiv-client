@@ -147,7 +147,6 @@ async def user_create(request: Request):
 
 
 async def user_verify(request: Request):
-
     token = request.path_params["token"]
     client: Client = get_client()
 
@@ -182,7 +181,7 @@ async def me_read(request: Request) -> dict:
 
     client: AuthenticatedClient = get_auth_client(request)
     me = await users_me_get.asyncio(client=client)
-    
+
     if isinstance(me, UserRead):
         me_dict = me.to_dict()
         request.state.me = me_dict
