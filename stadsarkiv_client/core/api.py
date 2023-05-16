@@ -5,8 +5,12 @@ from .openaws import (
     AuthJwtLoginPost,
     auth_jwt_login_post,
     BearerResponse,
+    # verify
+    auth_verify_post,
+    VerifyPost,
     # me
     UserRead,
+    UserPermissions,
     users_me_get,
     # errors
     HTTPValidationError,
@@ -14,6 +18,7 @@ from .openaws import (
     # Register. Forgot password
     ForgotPasswordPost,
     UserCreate,
+    UserFlag,
     auth_register_post,
     auth_forgot_password_post,
     # schema
@@ -118,7 +123,9 @@ async def user_create(request: Request):
     password = str(form.get("password"))
 
     client: Client = get_client()
-    json_body: UserCreate = UserCreate(email=email, password=password, is_active=True, is_superuser=False, is_verified=False)
+
+    src_dict = {"email": email, "password": password}
+    json_body = UserCreate.from_dict(src_dict=src_dict)
 
     user_read = await auth_register_post.asyncio(client=client, json_body=json_body)
     if isinstance(user_read, HTTPValidationError):
@@ -139,6 +146,33 @@ async def user_create(request: Request):
         raise OpenAwsException(500, translate("Something went wrong. Please try again."))
 
 
+async def user_verify(request: Request):
+
+    token = request.path_params["token"]
+    client: Client = get_client()
+
+    src_dict = {"token": token}
+    json_body = VerifyPost.from_dict(src_dict=src_dict)
+    user_read = await auth_verify_post.asyncio(client=client, json_body=json_body)
+
+    if isinstance(user_read, HTTPValidationError):
+        raise OpenAwsException(
+            422,
+            translate("The token is not valid."),
+            "Unauthorized",
+        )
+
+    if isinstance(user_read, ErrorModel):
+        raise OpenAwsException(
+            400,
+            translate("User already verified. Or the token is not valid."),
+            "Unauthorized",
+        )
+
+    if not isinstance(user_read, UserRead):
+        raise OpenAwsException(500, translate("Something went wrong. Please try again."))
+
+
 async def me_read(request: Request) -> dict:
     """cache me on request state. In case of multiple calls to me_read
     in the same request, we don't need to call the api again.
@@ -148,7 +182,7 @@ async def me_read(request: Request) -> dict:
 
     client: AuthenticatedClient = get_auth_client(request)
     me = await users_me_get.asyncio(client=client)
-
+    
     if isinstance(me, UserRead):
         me_dict = me.to_dict()
         request.state.me = me_dict
@@ -162,7 +196,7 @@ async def me_read(request: Request) -> dict:
 
 async def is_logged_in(request: Request) -> bool:
     try:
-        me = await me_read(request)
+        await me_read(request)
         return True
     except Exception:
         return False
@@ -356,7 +390,9 @@ async def records_search(request: Request):
         q = request.query_params["q"]
         log.debug(q)
 
-    records = await records_search_get.asyncio(client=client, )
+    records = await records_search_get.asyncio(
+        client=client,
+    )
 
     if not isinstance(records, RecordsSearchGet):
         raise OpenAwsException(500, translate("Records could not be read."))
