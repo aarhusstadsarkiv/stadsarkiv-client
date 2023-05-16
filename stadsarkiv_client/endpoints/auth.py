@@ -82,6 +82,26 @@ async def post_register(request: Request):
     return RedirectResponse(url="/auth/register", status_code=302)
 
 
+async def get_verify(request: Request):
+    try:
+        await api.user_verify(request)
+        flash.set_message(
+            request,
+            translate("You have been verified. You can now login."),
+            type="success",
+        )
+
+        return RedirectResponse(url="/auth/login", status_code=302)
+    except OpenAwsException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+    except Exception as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+
+    return RedirectResponse(url="/auth/register", status_code=302)
+
+
 @is_authenticated(message=translate("You need to be logged in to view this page."))
 async def get_me_jwt(request: Request):
     try:
