@@ -31,7 +31,6 @@ if not len(log.handlers):
 
 
 def get_log() -> logging.Logger:
-
     return log
 
 
