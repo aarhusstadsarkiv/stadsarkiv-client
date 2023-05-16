@@ -147,7 +147,6 @@ async def get_reset_password(request: Request):
 
 
 async def post_reset_password(request: Request):
-
     try:
         await api.reset_password(request)
         flash.set_message(

@@ -238,7 +238,6 @@ async def me_permissions(request: Request) -> list[str]:
 
 
 async def forgot_password(request: Request) -> None:
-
     form = await request.form()
     email = str(form.get("email"))
     client: Client = get_client()
@@ -255,7 +254,6 @@ async def forgot_password(request: Request) -> None:
 
 
 async def reset_password(request: Request) -> None:
-
     form = await request.form()
     password_1 = str(form.get("password"))
     password_2 = str(form.get("password_2"))
