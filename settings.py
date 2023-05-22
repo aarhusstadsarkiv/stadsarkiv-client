@@ -1,6 +1,7 @@
 settings = {
     "language": "da",
     "fastapi_endpoint": "http://localhost:8000",
+    # "fastapi_endpoint": "https://dev.openaws.dk",
     "cookie": {
         "name": "session",
         "lifetime": 3600,

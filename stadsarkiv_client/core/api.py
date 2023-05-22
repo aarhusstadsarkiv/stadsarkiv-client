@@ -62,7 +62,12 @@ verify_ssl = True
 
 
 def get_client() -> Client:
-    client = Client(raise_on_unexpected_status=False, base_url=base_url, timeout=timeout, verify_ssl=verify_ssl)
+    client = Client(
+        raise_on_unexpected_status=False,
+        base_url=base_url,
+        timeout=timeout,
+        verify_ssl=verify_ssl,
+    )
     return client
 
 
@@ -98,7 +103,8 @@ async def login_jwt(request: Request):
     password = str(form.get("password"))
 
     client: Client = get_client()
-    form_data: AuthJwtLoginPost = AuthJwtLoginPost(username=username, password=password)
+    login_dict = {"username": username, "password": password}
+    form_data: AuthJwtLoginPost = AuthJwtLoginPost.from_dict(src_dict=login_dict)
     bearer_response = await auth_jwt_login_post.asyncio(client=client, form_data=form_data)
 
     if isinstance(bearer_response, BearerResponse):
@@ -444,6 +450,7 @@ __ALL__ = [
     login_jwt,
     me_read,
     forgot_password,
+    reset_password,
     user_create,
     schema_read,
     schema_create,
