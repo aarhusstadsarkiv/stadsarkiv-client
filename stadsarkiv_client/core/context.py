@@ -12,15 +12,9 @@ pm = get_plugin_manager()
 
 
 async def get_main_menu(request: Request):
-    permissions_list = []
-    logged_in = False
-    try:
-        me: dict = await api.me_read(request)
-        permissions = me["permissions"]  # type: ignore
-        permissions_list = await api.permissions_as_list(permissions)
-        logged_in = True
-    except Exception:
-        pass
+
+    logged_in = await api.is_logged_in(request)
+    permissions_list = await api.me_permissions(request)
 
     main_menu: Any = []  # type: ignore
     if "main_menu" in dynamic_settings.settings:
