@@ -1,4 +1,5 @@
 from starlette.requests import Request
+from starlette.responses import RedirectResponse
 from starlette.exceptions import HTTPException
 from .openaws import (
     # auth
@@ -8,6 +9,9 @@ from .openaws import (
     # verify
     auth_verify_post,
     VerifyPost,
+    # request verify
+    auth_request_verify_post,
+    RequestVerifyPost,
     # reset password
     auth_reset_password_post,
     ResetPasswordPost,
@@ -296,6 +300,30 @@ async def reset_password(request: Request) -> None:
         raise OpenAwsException(
             400,
             translate("The password could not be reset. Or the token has expired. Please try again."),
+        )
+
+
+async def user_request_verify(request: Request):
+    """request for at token sent by email. function used in order to verify email."""
+    client: Client = get_auth_client(request)
+
+    try:
+        me = await me_read(request)
+        email = me["email"]
+    except Exception as e:
+        log.debug(e)
+        raise OpenAwsException(
+            422,
+            translate("User information could not be found."),
+        )
+
+    json_body = RequestVerifyPost.from_dict({"email": email})
+    response = await auth_request_verify_post.asyncio(client=client, json_body=json_body)
+    log.debug(response)
+    if response:
+        raise OpenAwsException(
+            422,
+            "Systemet kunne ikke afsende en verificerings e-mail. Prøv igen senere.",
         )
 
 

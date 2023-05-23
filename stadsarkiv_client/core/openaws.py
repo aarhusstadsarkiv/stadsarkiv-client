@@ -21,6 +21,10 @@ from openaws_client.models.user_flag import UserFlag
 from openaws_client.api.auth import verify_verify_v1_auth_verify_post as auth_verify_post
 from openaws_client.models.body_verify_verify_v1_auth_verify_post import BodyVerifyVerifyV1AuthVerifyPost as VerifyPost
 
+# request verify token
+from openaws_client.api.auth import verify_request_token_v1_auth_request_verify_token_post as auth_request_verify_post
+from openaws_client.models.body_verify_request_token_v1_auth_request_verify_token_post import BodyVerifyRequestTokenV1AuthRequestVerifyTokenPost as RequestVerifyPost
+
 
 # Forgotten password
 from openaws_client.models.body_reset_forgot_password_v1_auth_forgot_password_post import (
@@ -87,6 +91,9 @@ __ALL__ = [
     # verify
     auth_verify_post,
     VerifyPost,
+    # request verify
+    auth_request_verify_post,
+    RequestVerifyPost,
     # reset password
     auth_reset_password_post,
     ResetPasswordPost,
