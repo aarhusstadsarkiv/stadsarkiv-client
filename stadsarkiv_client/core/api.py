@@ -67,6 +67,7 @@ def get_client() -> Client:
         base_url=base_url,
         timeout=timeout,
         verify_ssl=verify_ssl,
+        follow_redirects=True,
     )
     return client
 
@@ -82,6 +83,7 @@ def get_auth_client(request: Request) -> AuthenticatedClient:
         base_url=base_url,
         timeout=timeout,
         verify_ssl=verify_ssl,
+        follow_redirects=True,
     )
     return auth_client
 
@@ -206,6 +208,7 @@ async def is_logged_in(request: Request) -> bool:
     try:
         await me_read(request)
         return True
+
     except Exception:
         return False
 
