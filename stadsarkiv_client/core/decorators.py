@@ -16,10 +16,9 @@ def is_authenticated(func=None, message=translate("You need to be logged in to v
 
     @wraps(func)
     async def wrapper(request, *args, **kwargs):
-        try:
-            me = await api.me_read(request)
-        except Exception as e:
-            flash.set_message(request, str(e), type="error")
+        is_logged_in = await api.is_logged_in(request)
+        if not is_logged_in:
+            flash.set_message(request, message, type="error")
             response = RedirectResponse(url="/auth/login", status_code=302, headers={"X-Message": message})
             return response
 
@@ -28,10 +27,7 @@ def is_authenticated(func=None, message=translate("You need to be logged in to v
             response = await func(request, *args, **kwargs)
             return response
 
-        # If permissions are required, check if the user has them
-        # User needs to have all permissions in the list
-        user_permissions = me["permissions"]
-        user_permissions_list = await api.permissions_as_list(user_permissions)
+        user_permissions_list = await api.me_permissions(request)
         for permission in permissions:
             if permission not in user_permissions_list:
                 flash.set_message(
