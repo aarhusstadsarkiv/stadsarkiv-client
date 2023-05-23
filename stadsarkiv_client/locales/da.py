@@ -1,4 +1,5 @@
 da = {
+    "A verify link has been sent to your email. You may verify your account now by clicking the link.": "Et verifikations-link er blevet sendt til din e-mail. Du kan nu verificere din konto ved at klikke på linket.",
     "An email has been sent to you with instructions on how to reset your password.": "En mail er blevet sendt til dig med instruktioner om hvordan du nulstiller dit password.",
     "Are you sure": "Er du sikker på at du vil logge ud?",
     "Change your password": "Ændr dit password",
@@ -59,6 +60,7 @@ da = {
     "Search": "Søg",
     "Search results": "Resulatater",
     "Search this site": "Søg i dette site",
+    "Send verification email": "Send link for at verificere din email",
     "Something went wrong. Please try again.": "Der opstod en fejl prøv igen senere.",
     "Submit": "Send",
     "System can not deliver an email about resetting password. Try again later.": "Systemet kan ikke sende en email om at nulstille password. Prøv igen senere.",
