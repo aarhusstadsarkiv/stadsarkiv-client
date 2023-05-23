@@ -11,7 +11,7 @@
         </tr>
     </thead>
     <tr>
-        <td>id</td>
+        <td>Email</td>
         <td> {{ me["email"] }} </td>
     </tr>
 
@@ -21,18 +21,8 @@
     </tr>
 
     <tr>
-        <td>is_superuser</td>
-        <td> {{ me["is_superuser"] }} </td>
-    </tr>
-
-    <tr>
         <td>is_verified</td>
         <td> {{ me["is_verified"] }} </td>
-    </tr>
-
-    <tr>
-        <td>flags</td>
-        <td> {{ me["flags"] }} </td>
     </tr>
 
     {% for key, value in me["permissions"].items() %}
@@ -42,5 +32,11 @@
     </tr>
     {% endfor %}
 </table>
+
+<p>
+    {% if not me["is_verified"] %}
+    <a href="/auth/send-verify-email">{{ translate("Send verification email") }}</a>
+    {% endif %}
+</p>
 
 {% endblock content %}
