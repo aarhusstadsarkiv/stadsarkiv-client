@@ -1,4 +1,5 @@
 en = {
+    "A verify link has been sent to your email. You may verify your account now by clicking the link.": "A verify link has been sent to your email. You may verify your account now by clicking the link.",
     "An email has been sent to you with instructions on how to reset your password.": "An email has been sent to you with instructions on how to reset your password.",
     "Are you sure": "Are you sure",
     "Change your password": "Change your password",
@@ -62,6 +63,7 @@ en = {
     "Search": "Search",
     "Search results": "Search results",
     "Search this site": "Search this site",
+    "Send verification email": "Send verification email",
     "Something went wrong. Please try again.": "Something went wrong. Please try again.",
     "Submit": "Submit",
     "System can not deliver an email about resetting password. Try again later.": "System can not deliver an email about resetting password. Try again later.",
