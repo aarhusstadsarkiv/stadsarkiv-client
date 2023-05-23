@@ -73,7 +73,7 @@ en = {
     "Update Password": "Update Password",
     "User already exists. Try to login instead.": "User already exists. Try to login instead.",
     "User already verified. Or the token is not valid.": "User already verified. Or the token is not valid.",
-    "User not found.": "User not found.",
+    "User could not be read.": "User could not be read.",
     "View": "View",
     "View schema": "View schema",
     "You are already logged in.": "You are already logged in.",
@@ -154,5 +154,5 @@ en = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "search": "search",
+    "search": "search"
 }
