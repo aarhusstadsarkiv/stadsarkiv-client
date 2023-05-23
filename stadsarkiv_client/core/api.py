@@ -200,7 +200,7 @@ async def me_read(request: Request) -> dict:
 
     raise OpenAwsException(
         422,
-        translate("User not found."),
+        translate("User information could not be found."),
     )
 
 
