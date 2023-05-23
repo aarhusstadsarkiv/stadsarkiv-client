@@ -83,15 +83,16 @@ async def post_register(request: Request):
 
 
 async def get_verify(request: Request):
+
     try:
         await api.user_verify(request)
         flash.set_message(
             request,
-            translate("You have been verified. You can now login."),
+            translate("You have been verified."),
             type="success",
         )
 
-        return RedirectResponse(url="/auth/login", status_code=302)
+        return RedirectResponse(url="/", status_code=302)
     except OpenAwsException as e:
         log.exception(e)
         flash.set_message(request, str(e), type="error")
@@ -99,7 +100,7 @@ async def get_verify(request: Request):
         log.exception(e)
         flash.set_message(request, str(e), type="error")
 
-    return RedirectResponse(url="/auth/register", status_code=302)
+    return RedirectResponse(url="/", status_code=302)
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))
@@ -165,6 +166,25 @@ async def post_reset_password(request: Request):
 
     token = request.path_params["token"]
     return RedirectResponse(url="/auth/reset-password/" + token, status_code=302)
+
+
+async def send_verify_email(request: Request):
+    try:
+        await api.user_request_verify(request)
+        flash.set_message(
+            request,
+            translate("A verify link has been sent to your email. You may verify your account now by clicking the link."),
+            type="success",
+        )
+
+    except OpenAwsException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+    except Exception as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+
+    return RedirectResponse(url="/auth/me", status_code=302)
 
 
 async def post_user_info(request: Request):

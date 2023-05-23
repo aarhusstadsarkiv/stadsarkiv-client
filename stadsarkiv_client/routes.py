@@ -48,6 +48,7 @@ routes = [
     ),
     Route("/auth/reset-password/{token:str}", endpoint=auth.get_reset_password, name="reset_password"),
     Route("/auth/post-reset-password/{token:str}", endpoint=auth.post_reset_password, name="post_reset_password", methods=["POST"]),
+    Route("/auth/send-verify-email", endpoint=auth.send_verify_email, name="send_verify_email"),
     Route("/auth/me", endpoint=auth.get_me_jwt, name="profile"),
     Route("/search", endpoint=search.get_search, name="entities_search"),
     Route("/schema/{schema_type:str}", endpoint=schemas.get_schema, name="schemas"),
