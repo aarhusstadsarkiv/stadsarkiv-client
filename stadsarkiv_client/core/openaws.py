@@ -23,7 +23,9 @@ from openaws_client.models.body_verify_verify_v1_auth_verify_post import BodyVer
 
 # request verify token
 from openaws_client.api.auth import verify_request_token_v1_auth_request_verify_token_post as auth_request_verify_post
-from openaws_client.models.body_verify_request_token_v1_auth_request_verify_token_post import BodyVerifyRequestTokenV1AuthRequestVerifyTokenPost as RequestVerifyPost
+from openaws_client.models.body_verify_request_token_v1_auth_request_verify_token_post import (
+    BodyVerifyRequestTokenV1AuthRequestVerifyTokenPost as RequestVerifyPost,
+)
 
 
 # Forgotten password

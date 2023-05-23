@@ -83,7 +83,6 @@ async def post_register(request: Request):
 
 
 async def get_verify(request: Request):
-
     try:
         await api.user_verify(request)
         flash.set_message(
