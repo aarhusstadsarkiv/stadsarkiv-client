@@ -15,6 +15,7 @@ settings = {
         {"name": "login", "title": "Log ind"},
         {"name": "logout", "title": "Log ud"},
         {"name": "register", "title": "Ny bruger"},
+        {"name": "forgot_password", "title": "Glemt password"},
         {"name": "profile", "title": "Profil"},
         {"name": "schemas", "title": "Schemas"},
         {"name": "entities", "title": "Entities"},
