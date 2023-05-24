@@ -1,6 +1,7 @@
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
 from starlette.exceptions import HTTPException
+from .api_error import OpenAwsException, validate_response
 from .openaws import (
     # auth
     AuthJwtLoginPost,
@@ -92,18 +93,7 @@ def get_auth_client(request: Request) -> AuthenticatedClient:
     return auth_client
 
 
-class OpenAwsException(Exception):
-    def __init__(self, status_code: int, message: str, text: str = ""):
-        self.status_code = status_code
-        self.message = message
-        self.text = text
-        super().__init__(message, status_code, text)
-
-    def __str__(self) -> str:
-        return self.message
-
-
-async def login_jwt(request: Request):
+async def jwt_login_post(request: Request):
     form = await request.form()
     username = str(form.get("username"))
     password = str(form.get("password"))
@@ -113,26 +103,18 @@ async def login_jwt(request: Request):
     form_data: AuthJwtLoginPost = AuthJwtLoginPost.from_dict(src_dict=login_dict)
     bearer_response = await auth_jwt_login_post.asyncio(client=client, form_data=form_data)
 
-    if isinstance(bearer_response, BearerResponse):
-        access_token: str = bearer_response.access_token
-        token_type: str = bearer_response.token_type
-
-        await user.set_user_jwt(request, access_token, token_type)
-
-    if isinstance(bearer_response, HTTPValidationError):
+    validate_response(bearer_response)
+    if not isinstance(bearer_response, BearerResponse):
         raise OpenAwsException(
-            422,
-            translate("User already exists. Try to login instead."),
-        )
+            500, translate("System error. Something went wrong"))
 
-    if isinstance(bearer_response, ErrorModel):
-        raise OpenAwsException(
-            400,
-            translate("Email or password is not correct."),
-        )
+    access_token: str = bearer_response.access_token
+    token_type: str = bearer_response.token_type
+
+    await user.set_user_jwt(request, access_token, token_type)
 
 
-async def user_create(request: Request):
+async def register_post(request: Request):
     form = await request.form()
     email = str(form.get("email"))
     password = str(form.get("password"))
@@ -143,25 +125,13 @@ async def user_create(request: Request):
     json_body = UserCreate.from_dict(src_dict=src_dict)
 
     user_read = await auth_register_post.asyncio(client=client, json_body=json_body)
-    if isinstance(user_read, HTTPValidationError):
-        raise OpenAwsException(
-            422,
-            translate("Email needs to be correct. Password needs to be at least 8 characters long."),
-            "Unauthorized",
-        )
-
-    if isinstance(user_read, ErrorModel):
-        raise OpenAwsException(
-            400,
-            translate("User already exists. Try to login instead."),
-            "Unauthorized",
-        )
-
+    validate_response(user_read)
     if not isinstance(user_read, UserRead):
-        raise OpenAwsException(500, translate("Something went wrong. Please try again."))
+        raise OpenAwsException(
+            500, translate("System error. Something went wrong"))
 
 
-async def user_verify(request: Request):
+async def verify_post(request: Request):
     token = request.path_params["token"]
     client: Client = get_client()
 
@@ -169,25 +139,13 @@ async def user_verify(request: Request):
     json_body = VerifyPost.from_dict(src_dict=src_dict)
     user_read = await auth_verify_post.asyncio(client=client, json_body=json_body)
 
-    if isinstance(user_read, HTTPValidationError):
-        raise OpenAwsException(
-            422,
-            translate("The token is not valid."),
-            "Unauthorized",
-        )
-
-    if isinstance(user_read, ErrorModel):
-        raise OpenAwsException(
-            400,
-            translate("User already verified. Or the token is not valid."),
-            "Unauthorized",
-        )
-
+    validate_response(user_read)
     if not isinstance(user_read, UserRead):
-        raise OpenAwsException(500, translate("Something went wrong. Please try again."))
+        raise OpenAwsException(
+            500, translate("System error. Something went wrong"))
 
 
-async def me_read(request: Request) -> dict:
+async def me_get(request: Request) -> dict:
     """cache me on request state. In case of multiple calls to me_read
     in the same request, we don't need to call the api again.
     """
@@ -204,13 +162,80 @@ async def me_read(request: Request) -> dict:
 
     raise OpenAwsException(
         422,
-        translate("User information could not be found."),
+        translate("You need to be logged in to view this page."),
     )
+
+
+async def forgot_password(request: Request) -> None:
+    form = await request.form()
+    email = str(form.get("email"))
+    client: Client = get_client()
+
+    src_dict = {"email": email}
+    forgot_password_post: ForgotPasswordPost = ForgotPasswordPost.from_dict(src_dict=src_dict)
+    forgot_password_response = await auth_forgot_password_post.asyncio(client=client, json_body=forgot_password_post)
+
+    if isinstance(forgot_password_response, HTTPValidationError):
+        raise OpenAwsException(
+            422,
+            translate("There is no user with this email address."),
+        )
+
+
+async def _validate_passwords(request: Request):
+    form = await request.form()
+    password_1 = str(form.get("password"))
+    password_2 = str(form.get("password_2"))
+
+    if password_1 != password_2:
+        raise OpenAwsException(
+            400,
+            translate("Passwords do not match."),
+        )
+
+    if len(password_1) < 8:
+        raise OpenAwsException(
+            400,
+            translate("Password should be at least 8 characters long"),
+        )
+
+
+async def reset_password_post(request: Request) -> None:
+
+    await _validate_passwords(request)
+
+    form = await request.form()
+    password = str(form.get("password"))
+    token = request.path_params["token"]
+
+    client: Client = get_client()
+    src_dict = {"token": token, "password": password}
+
+    reset_password_post: ResetPasswordPost = ResetPasswordPost.from_dict(src_dict=src_dict)
+    reset_password_response = await auth_reset_password_post.asyncio(client=client, json_body=reset_password_post)
+
+    validate_response(reset_password_response)
+
+
+async def request_verify_post(request: Request):
+    """request for at token sent by email. function used in order to verify email."""
+    client: Client = get_auth_client(request)
+
+    me = await me_get(request)
+    email = me["email"]
+
+    json_body = RequestVerifyPost.from_dict({"email": email})
+    response = await auth_request_verify_post.asyncio(client=client, json_body=json_body)
+    if response:
+        raise OpenAwsException(
+            400,
+            translate("System can not deliver an email about resetting password. Try again later."),
+        )
 
 
 async def is_logged_in(request: Request) -> bool:
     try:
-        await me_read(request)
+        await me_get(request)
         return True
 
     except Exception:
@@ -230,7 +255,7 @@ async def has_permissions(request: Request, permissions: list[str]) -> bool:
     """guest, basic, employee, admin"""
 
     try:
-        me = await me_read(request)
+        me = await me_get(request)
         user_permissions: dict = me.get("permissions", [])
         user_permissions_list = await permissions_as_list(user_permissions)
         for permission in permissions:
@@ -243,88 +268,11 @@ async def has_permissions(request: Request, permissions: list[str]) -> bool:
 
 async def me_permissions(request: Request) -> list[str]:
     try:
-        me = await me_read(request)
+        me = await me_get(request)
         user_permissions: dict = me.get("permissions", [])
         return await permissions_as_list(user_permissions)
     except Exception:
         return []
-
-
-async def forgot_password(request: Request) -> None:
-    form = await request.form()
-    email = str(form.get("email"))
-    client: Client = get_client()
-
-    src_dict = {"email": email}
-    forgot_password_post: ForgotPasswordPost = ForgotPasswordPost.from_dict(src_dict=src_dict)
-    forgot_password_response = await auth_forgot_password_post.asyncio(client=client, json_body=forgot_password_post)
-
-    if isinstance(forgot_password_response, HTTPValidationError):
-        raise OpenAwsException(
-            422,
-            translate("There is no user with this email address."),
-        )
-
-
-async def reset_password(request: Request) -> None:
-    form = await request.form()
-    password_1 = str(form.get("password"))
-    password_2 = str(form.get("password_2"))
-
-    if password_1 != password_2:
-        raise OpenAwsException(
-            400,
-            translate("Passwords do not match."),
-        )
-
-    if len(password_1) < 8:
-        raise OpenAwsException(
-            400,
-            translate("Password needs to be at least 8 characters long."),
-        )
-
-    token = request.path_params["token"]
-    client: Client = get_client()
-    src_dict = {"token": token, "password": password_1}
-
-    reset_password_post: ResetPasswordPost = ResetPasswordPost.from_dict(src_dict=src_dict)
-    reset_password_response = await auth_reset_password_post.asyncio(client=client, json_body=reset_password_post)
-
-    if isinstance(reset_password_response, HTTPValidationError):
-        raise OpenAwsException(
-            422,
-            translate("The password could not be reset. Or the token has expired. Please try again."),
-        )
-
-    if isinstance(reset_password_response, ErrorModel):
-        raise OpenAwsException(
-            400,
-            translate("The password could not be reset. Or the token has expired. Please try again."),
-        )
-
-
-async def user_request_verify(request: Request):
-    """request for at token sent by email. function used in order to verify email."""
-    client: Client = get_auth_client(request)
-
-    try:
-        me = await me_read(request)
-        email = me["email"]
-    except Exception as e:
-        log.debug(e)
-        raise OpenAwsException(
-            422,
-            translate("User information could not be found."),
-        )
-
-    json_body = RequestVerifyPost.from_dict({"email": email})
-    response = await auth_request_verify_post.asyncio(client=client, json_body=json_body)
-    log.debug(response)
-    if response:
-        raise OpenAwsException(
-            422,
-            "Systemet kunne ikke afsende en verificerings e-mail. Prøv igen senere.",
-        )
 
 
 async def schemas_read(request: Request) -> list[SchemaRead]:
@@ -360,7 +308,7 @@ async def schema_read_specific(request: Request, schema_name: str, schema_versio
         return schema
 
     raise OpenAwsException(
-        422,
+        404,
         translate("Schema not found."),
     )
 
@@ -387,7 +335,7 @@ async def schema_create(request: Request) -> SchemaRead:
     if isinstance(schema, HTTPValidationError):
         log.debug(schema)
         raise OpenAwsException(
-            422,
+            400,
             translate("Schema could not be validated"),
             "Unauthorized",
         )
@@ -409,7 +357,7 @@ async def entity_create(request: Request) -> EntityRead:
 
     if isinstance(entity, HTTPValidationError):
         raise OpenAwsException(
-            422,
+            400,
             translate("Entity could not be validated"),
             "Unauthorized",
         )
@@ -478,11 +426,11 @@ async def records_search(request: Request):
 
 
 __ALL__ = [
-    login_jwt,
-    me_read,
+    jwt_login_post,
+    me_get,
     forgot_password,
-    reset_password,
-    user_create,
+    reset_password_post,
+    register_post,
     schema_read,
     schema_create,
     entity_create,

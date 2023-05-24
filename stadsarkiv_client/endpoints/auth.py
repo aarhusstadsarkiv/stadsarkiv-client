@@ -26,7 +26,7 @@ async def get_login(request: Request):
 
 async def post_login_jwt(request: Request):
     try:
-        await api.login_jwt(request)
+        await api.jwt_login_post(request)
         flash.set_message(request, translate("You have been logged in."), type="success", remove=True)
         return RedirectResponse(url="/", status_code=302)
 
@@ -64,7 +64,7 @@ async def get_register(request: Request):
 
 async def post_register(request: Request):
     try:
-        await api.user_create(request)
+        await api.register_post(request)
         flash.set_message(
             request,
             translate("You have been registered. Check your email to confirm your account."),
@@ -84,7 +84,7 @@ async def post_register(request: Request):
 
 async def get_verify(request: Request):
     try:
-        await api.user_verify(request)
+        await api.verify_post(request)
         flash.set_message(
             request,
             translate("You have been verified."),
@@ -105,7 +105,7 @@ async def get_verify(request: Request):
 @is_authenticated(message=translate("You need to be logged in to view this page."))
 async def get_me_jwt(request: Request):
     try:
-        me = await api.me_read(request)
+        me = await api.me_get(request)
         context_values = {"title": translate("Profile"), "me": me}
         context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("auth/me.html", context)
@@ -148,7 +148,7 @@ async def get_reset_password(request: Request):
 
 async def post_reset_password(request: Request):
     try:
-        await api.reset_password(request)
+        await api.reset_password_post(request)
         flash.set_message(
             request,
             translate("Your password has been reset. You can now login."),
@@ -169,7 +169,7 @@ async def post_reset_password(request: Request):
 
 async def send_verify_email(request: Request):
     try:
-        await api.user_request_verify(request)
+        await api.request_verify_post(request)
         flash.set_message(
             request,
             translate("A verify link has been sent to your email. You may verify your account now by clicking the link."),
