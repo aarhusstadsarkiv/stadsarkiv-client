@@ -2,6 +2,7 @@ from .openaws import (
     HTTPValidationError,
     ErrorModel,
 )
+from starlette.requests import Request
 from .translate import translate
 
 
@@ -16,7 +17,7 @@ class OpenAwsException(Exception):
         return self.message
 
 
-def extract_validation_error(error_dict):
+def _extract_validation_error(error_dict):
     try:
         error_detail = error_dict['detail']
         if isinstance(error_detail, list) and len(error_detail) > 0:
@@ -29,7 +30,7 @@ def extract_validation_error(error_dict):
     return "value_error.unknown_error"
 
 
-def extract_model_error(error_dict):
+def _extract_model_error(error_dict):
     try:
         if isinstance(error_dict.get('detail'), dict):
             error_code = error_dict['detail'].get('code')
@@ -41,7 +42,7 @@ def extract_model_error(error_dict):
     return error_code
 
 
-def get_error_string(error):
+def _get_error_string(error):
     # register errors
     if error == "REGISTER_INVALID_PASSWORD":
         return translate("Password should be at least 8 characters long")
@@ -79,13 +80,31 @@ def validate_response(error):
     raise_message = None
     if isinstance(error, ErrorModel):
         error_message = error.to_dict()
-        error_code = extract_model_error(error_message)
-        raise_message = get_error_string(error_code)
+        error_code = _extract_model_error(error_message)
+        raise_message = _get_error_string(error_code)
 
     if isinstance(error, HTTPValidationError):
         error_message = error.to_dict()
-        error_code = extract_validation_error(error_message)
-        raise_message = get_error_string(error_code)
+        error_code = _extract_validation_error(error_message)
+        raise_message = _get_error_string(error_code)
 
     if raise_message:
         raise OpenAwsException(400, raise_message)
+    
+
+async def validate_passwords(request: Request):
+    form = await request.form()
+    password_1 = str(form.get("password"))
+    password_2 = str(form.get("password_2"))
+
+    if password_1 != password_2:
+        raise OpenAwsException(
+            400,
+            translate("Passwords do not match."),
+        )
+
+    if len(password_1) < 8:
+        raise OpenAwsException(
+            400,
+            translate("Password should be at least 8 characters long"),
+        )

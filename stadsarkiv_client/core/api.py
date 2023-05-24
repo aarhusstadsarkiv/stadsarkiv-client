@@ -1,7 +1,7 @@
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
 from starlette.exceptions import HTTPException
-from .api_error import OpenAwsException, validate_response
+from .api_error import OpenAwsException, validate_response, validate_passwords
 from .openaws import (
     # auth
     AuthJwtLoginPost,
@@ -115,6 +115,9 @@ async def jwt_login_post(request: Request):
 
 
 async def register_post(request: Request):
+
+    await validate_passwords(request)
+
     form = await request.form()
     email = str(form.get("email"))
     password = str(form.get("password"))
@@ -182,27 +185,9 @@ async def forgot_password(request: Request) -> None:
         )
 
 
-async def _validate_passwords(request: Request):
-    form = await request.form()
-    password_1 = str(form.get("password"))
-    password_2 = str(form.get("password_2"))
-
-    if password_1 != password_2:
-        raise OpenAwsException(
-            400,
-            translate("Passwords do not match."),
-        )
-
-    if len(password_1) < 8:
-        raise OpenAwsException(
-            400,
-            translate("Password should be at least 8 characters long"),
-        )
-
-
 async def reset_password_post(request: Request) -> None:
 
-    await _validate_passwords(request)
+    await validate_passwords(request)
 
     form = await request.form()
     password = str(form.get("password"))

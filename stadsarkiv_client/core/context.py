@@ -22,6 +22,7 @@ async def get_main_menu(request: Request):
     if logged_in:
         main_menu = [item for item in main_menu if item["name"] != "login"]
         main_menu = [item for item in main_menu if item["name"] != "register"]
+        main_menu = [item for item in main_menu if item["name"] != "forgot_password"]
 
     if not logged_in:
         main_menu = [item for item in main_menu if item["name"] != "logout"]
