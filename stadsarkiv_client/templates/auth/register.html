@@ -4,10 +4,9 @@
 {% include "includes/main_title.html" %}
 
 <form method="post" action="{{ url_for('post_register')}}">
-    <input type="text" name="email" placeholder="{{ translate('Email') }}" aria-label="Login" autocomplete="email"
-        required>
-    <input type="password" name="password" placeholder="{{ translate('Password') }}" aria-label="Password"
-        autocomplete="current-password" required>
+    <input type="text" name="email" placeholder="{{ translate('Email') }}" aria-label="Login" autocomplete="email">
+    <input type="password" name="password" placeholder="{{ translate('Password') }}" aria-label="Password">
+    <input type="password" name="password_2" placeholder="{{ translate('Repeat Password') }}" aria-label="Repeat Password">
     <button type="submit" class="contrast">{{ translate('Register') }}</button>
 </form>
 
