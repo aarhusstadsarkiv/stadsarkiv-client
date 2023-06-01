@@ -10,7 +10,7 @@ function removeFlashMessages() {
 
 setTimeout(function () {
     removeFlashMessages();
-}, 5000);
+}, 20000);
 
 /**
  * Remove flash messages when clicked
