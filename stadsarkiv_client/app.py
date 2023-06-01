@@ -7,6 +7,7 @@ import json
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.logging import get_log
 
+
 log = get_log()
 
 
@@ -15,7 +16,7 @@ log.debug(json.dumps(settings, sort_keys=True, indent=4, ensure_ascii=False))
 
 
 app = Starlette(
-    debug=True,
+    debug=settings["debug"],
     middleware=[session_middleware, session_autoload_middleware],
     routes=routes,
     exception_handlers=exception_handlers,  # type: ignore
