@@ -14,7 +14,7 @@ da = {
     "Email": "E-mail",
     "Email needs to be correct. Password needs to be at least 8 characters long.": "Email er ikke korrekt. Password skal være mindst 8 tegn langt.",
     "Email or password is incorrect. Or your user has not been activated.": "Email eller password er ikke korrekt. Eller din konto er ikke blevet aktiveret.",
-    "Email or password is not correct.": "Email er eller password er ikke korrekt.",
+    "Email or password is not correct.": "Email eller password er ikke korrekt.",
     "Enter new password": "Indtast nyt password",
     "Entities": "Entities",
     "Entity": "Entity",
