@@ -1,4 +1,5 @@
 da = {
+    "404 Not Found": "404 Siden blev ikke fundet",
     "A verify link has been sent to your email. You may verify your account now by clicking the link.": "Et verifikations-link er blevet sendt til din e-mail. Du kan nu verificere din konto ved at klikke på linket.",
     "An email has been sent to you with instructions on how to reset your password.": "En mail er blevet sendt til dig med instruktioner om hvordan du nulstiller dit password.",
     "Are you sure": "Er du sikker på at du vil logge ud?",

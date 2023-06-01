@@ -1,4 +1,5 @@
 en = {
+    "404 Not Found": "404 Not Found",
     "A verify link has been sent to your email. You may verify your account now by clicking the link.": "A verify link has been sent to your email. You may verify your account now by clicking the link.",
     "An email has been sent to you with instructions on how to reset your password.": "An email has been sent to you with instructions on how to reset your password.",
     "Are you sure": "Are you sure",
