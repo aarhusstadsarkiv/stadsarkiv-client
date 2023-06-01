@@ -105,8 +105,7 @@ async def jwt_login_post(request: Request):
 
     validate_response(bearer_response)
     if not isinstance(bearer_response, BearerResponse):
-        raise OpenAwsException(
-            500, translate("System error. Something went wrong"))
+        raise OpenAwsException(500, translate("System error. Something went wrong"))
 
     access_token: str = bearer_response.access_token
     token_type: str = bearer_response.token_type
@@ -115,7 +114,6 @@ async def jwt_login_post(request: Request):
 
 
 async def register_post(request: Request):
-
     await validate_passwords(request)
 
     form = await request.form()
@@ -130,8 +128,7 @@ async def register_post(request: Request):
     user_read = await auth_register_post.asyncio(client=client, json_body=json_body)
     validate_response(user_read)
     if not isinstance(user_read, UserRead):
-        raise OpenAwsException(
-            500, translate("System error. Something went wrong"))
+        raise OpenAwsException(500, translate("System error. Something went wrong"))
 
 
 async def verify_post(request: Request):
@@ -144,8 +141,7 @@ async def verify_post(request: Request):
 
     validate_response(user_read)
     if not isinstance(user_read, UserRead):
-        raise OpenAwsException(
-            500, translate("System error. Something went wrong"))
+        raise OpenAwsException(500, translate("System error. Something went wrong"))
 
 
 async def me_get(request: Request) -> dict:
@@ -186,7 +182,6 @@ async def forgot_password(request: Request) -> None:
 
 
 async def reset_password_post(request: Request) -> None:
-
     await validate_passwords(request)
 
     form = await request.form()

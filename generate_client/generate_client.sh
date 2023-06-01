@@ -10,8 +10,9 @@ fi
 mv openaws-client openaws-client-tmp
 
 # generate new client
+# https://dev.openaws.dk/v1/openapi.json
 # http://localhost:8000/v1/openapi.json 
-openapi-python-client generate --config config.yml --url https://dev.openaws.dk/v1/openapi.json 
+openapi-python-client generate --config config.yml --url https://dev.openaws.dk/v1/openapi.json
 
 # copy new client code on top of old client
 cp -rf openaws-client/* openaws-client-tmp/

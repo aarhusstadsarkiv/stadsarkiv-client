@@ -19,10 +19,10 @@ class OpenAwsException(Exception):
 
 def _extract_validation_error(error_dict):
     try:
-        error_detail = error_dict['detail']
+        error_detail = error_dict["detail"]
         if isinstance(error_detail, list) and len(error_detail) > 0:
             first_error = error_detail[0]
-            error_type = first_error.get('type')
+            error_type = first_error.get("type")
             return error_type
     except (KeyError, IndexError):
         pass
@@ -32,10 +32,10 @@ def _extract_validation_error(error_dict):
 
 def _extract_model_error(error_dict):
     try:
-        if isinstance(error_dict.get('detail'), dict):
-            error_code = error_dict['detail'].get('code')
+        if isinstance(error_dict.get("detail"), dict):
+            error_code = error_dict["detail"].get("code")
         else:
-            error_code = error_dict.get('detail')
+            error_code = error_dict.get("detail")
     except KeyError:
         error_code = "UNKNOWN_MODEL_ERROR"
 
@@ -90,7 +90,7 @@ def validate_response(error):
 
     if raise_message:
         raise OpenAwsException(400, raise_message)
-    
+
 
 async def validate_passwords(request: Request):
     form = await request.form()
