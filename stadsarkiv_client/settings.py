@@ -8,15 +8,16 @@ load()
 log_level = logging.DEBUG
 cookie_httponly = False
 cookie_secure = False
-
+debug = True
 
 if os.getenv("ENVIRONMENT") == "production":
     log_level = logging.INFO
     cookie_httponly = True
     cookie_secure = True
-
+    debug = False
 
 settings = {
+    "debug": debug,
     "version": "0.0.1",
     "language": "da",
     "environment": os.getenv("ENVIRONMENT"),
