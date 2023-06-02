@@ -1,4 +1,5 @@
 from stadsarkiv_client.app import app
+from stadsarkiv_client.core.logging import get_log
 import sys
 
 from starlette.responses import HTMLResponse
@@ -8,6 +9,9 @@ import os
 import unittest
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
+log = get_log()
 
 
 class TestAuth(unittest.TestCase):
@@ -32,14 +36,7 @@ class TestAuth(unittest.TestCase):
         response = client.post("/auth/post-login-jwt", data={"username": "dennis.iversen@gmail.com", "password": "iversen1234"})
         self.assertEqual(response.status_code, 200)
 
-    def _login_post_incorrect(self):
-        client = TestClient(app)
-        client.post("/auth/post-login-jwt", data={"username": "dennis.iversens@gmail.com", "password": "iversen1234"})
-
     def test_login_post_incorrect(self):
         client = TestClient(app)
-        client = TestClient(app)
-        client.post("/auth/post-login-jwt", data={"username": "dennis.iversens@gmail.com", "password": "iversen1234"})
-        
-        
-        # self.assertEqual(response.status_code, 200)
+        response = client.post("/auth/post-login-jwt", data={"username": "dennis.iversens@gmail.com", "password": "iversen1234"})
+        self.assertEqual(response.status_code, 200)
