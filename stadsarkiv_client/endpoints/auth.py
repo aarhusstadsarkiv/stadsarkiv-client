@@ -31,7 +31,6 @@ async def post_login_jwt(request: Request):
         return RedirectResponse(url="/", status_code=302)
 
     except OpenAwsException as e:
-        log.exception(e)
         flash.set_message(request, str(e), type="error")
         return RedirectResponse(url="/auth/login", status_code=302)
     except Exception as e:

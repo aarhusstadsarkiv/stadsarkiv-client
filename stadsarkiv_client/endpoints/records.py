@@ -19,15 +19,20 @@ log = get_log()
 
 
 async def get_records_search(request: Request):
-    try:
-        # await api.records_search(request)
-        context_values = {"title": translate("Search")}
-        context = await get_context(request, context_values=context_values)
-        return templates.TemplateResponse("records/search.html", context)
 
-    except Exception as e:
-        log.exception(e)
-        raise HTTPException(404, detail=str(e), headers=None)
+    query_params = {}
+    if request.query_params:
+        query_params = request.query_params.items()
+        query_params = {k: v for k, v in query_params if k != "q"}
+
+    q = request.query_params.get("q", "")
+
+    records = await api.records_search(request)
+    context_values = {
+        "title": translate("Search"), "records": records, "query_params": query_params, "q": q}
+
+    context = await get_context(request, context_values=context_values)
+    return templates.TemplateResponse("records/search.html", context)
 
 
 async def get_record_view(request: Request):

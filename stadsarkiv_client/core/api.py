@@ -58,6 +58,10 @@ from . import user
 from .translate import translate
 import json
 from .dynamic_settings import settings
+import httpx
+import urllib.parse
+import json
+
 
 log = get_log()
 
@@ -390,30 +394,17 @@ async def record_read(request: Request) -> RecordsIdGet:
 
 async def records_search(request: Request):
     client = get_client()
+    data = {}
 
-    if "q" in request.query_params:
-        q = request.query_params["q"]
-        log.debug(q)
+    if request.query_params:
 
-    records = await records_search_get.asyncio(
-        client=client,
-    )
+        query_str = urllib.parse.urlencode(request.query_params)
+        query_str = urllib.parse.quote(query_str)
 
-    if not isinstance(records, RecordsSearchGet):
-        raise OpenAwsException(500, translate("Records could not be read."))
+        async with httpx.AsyncClient() as client:
+            endpoint = "https://dev.openaws.dk/v1/records?params=" + query_str
+            response = await client.get(endpoint)
 
-    return records
+        data = response.json()
 
-
-__ALL__ = [
-    jwt_login_post,
-    me_get,
-    forgot_password,
-    reset_password_post,
-    register_post,
-    schema_read,
-    schema_create,
-    entity_create,
-    entities_read,
-    record_read,
-]
+    return data

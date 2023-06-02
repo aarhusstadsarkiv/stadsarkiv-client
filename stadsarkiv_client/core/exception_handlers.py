@@ -4,6 +4,7 @@ from starlette.responses import HTMLResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core.logging import get_log
 
 HTML_403_PAGE = "403"
 HTML_404_PAGE = "404"

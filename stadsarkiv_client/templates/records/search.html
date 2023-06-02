@@ -4,9 +4,13 @@
 {% include "includes/main_title.html" %}
 
 <form method="GET" action="{{ url_for('records_search')}}">
-    <input type="text" name="q" placeholder="{{ translate('Search') }}" aria-label="{{ translate('search') }}"
-        required>
+{% for key, value in query_params.items() %}
+    <input type="hidden" name="{{ key }}" value="{{ value }}">
+{% endfor %}
+    <input type="text" name="q" placeholder="{{ translate('Search') }}" aria-label="{{ translate('search') }}" value="{{ q }}">
     <button type="submit" class="contrast">{{ translate('Search') }}</button>
 </form>
+
+{{ records }}
 
 {% endblock content %}
