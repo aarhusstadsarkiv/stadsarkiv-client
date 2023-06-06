@@ -1,5 +1,5 @@
 from starlette.requests import Request
-from starlette.responses import RedirectResponse, JSONResponse 
+from starlette.responses import RedirectResponse, JSONResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.decorators import is_authenticated

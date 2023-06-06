@@ -21,15 +21,15 @@ log = get_log()
 async def get_records_search(request: Request):
 
     query_params = {}
+    q = ""
     if request.query_params:
-        query_params = request.query_params.items()
-        query_params = {k: v for k, v in query_params if k != "q"}
+        query_items = request.query_params.items()
+        query_params = {k: v for k, v in query_items if k != "q"}
 
-    q = request.query_params.get("q", "")
+        q = request.query_params.get("q", "")
 
     records = await api.records_search(request)
-    context_values = {
-        "title": translate("Search"), "records": records, "query_params": query_params, "q": q}
+    context_values = {"title": translate("Search"), "records": records, "query_params": query_params, "q": q}
 
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse("records/search.html", context)

@@ -15,7 +15,6 @@ log = get_log()
 
 
 class TestAuth(unittest.TestCase):
-
     def test_home(self):
         client = TestClient(app)
         response = client.get("/")
