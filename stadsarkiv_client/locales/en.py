@@ -40,6 +40,7 @@ en = {
     "Me failed": "Me failed",
     "Menu": "Menu",
     "New user": "New user",
+    "Next": "Next",
     "No such exists.": "No such exists.",
     "No such user exists.": "No such user exists.",
     "No title": "No title",
@@ -47,6 +48,7 @@ en = {
     "Password needs to be at least 8 characters long.": "Password needs to be at least 8 characters long.",
     "Password should be at least 8 characters long": "Password should be at least 8 characters long",
     "Passwords do not match.": "Passwords do not match.",
+    "Previous": "Previous",
     "Profile": "Profile",
     "Record could not be read.": "Record could not be read.",
     "Records could not be read.": "Records could not be read.",
@@ -159,5 +161,5 @@ en = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "search": "search",
+    "search": "search"
 }

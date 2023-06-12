@@ -29,7 +29,8 @@ async def get_records_search(request: Request):
         q = request.query_params.get("q", "")
 
     records = await api.records_search(request)
-    context_values = {"title": translate("Search"), "records": records, "query_params": query_params, "q": q}
+    records_json = json.dumps(records, indent=4, ensure_ascii=False)
+    context_values = {"title": translate("Search"), "records": records, "query_params": query_params, "q": q, "records_json": records_json}
 
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse("records/search.html", context)

@@ -396,14 +396,13 @@ async def records_search(request: Request):
 
     data = {}
 
-    if request.query_params:
-        query_str = urllib.parse.urlencode(request.query_params)
-        query_str = urllib.parse.quote(query_str)
+    query_str = urllib.parse.urlencode(request.query_params)
+    query_str = urllib.parse.quote(query_str)
 
-        async with httpx.AsyncClient() as client:
-            endpoint = "https://dev.openaws.dk/v1/records?params=" + query_str
-            response = await client.get(endpoint)
+    async with httpx.AsyncClient() as client:
+        endpoint = "https://dev.openaws.dk/v1/records?params=" + query_str
+        response = await client.get(endpoint)
 
-        data = response.json()
+    data = response.json()
 
     return data

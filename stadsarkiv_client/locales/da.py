@@ -38,11 +38,13 @@ da = {
     "Me failed": "Kunne ikke modtage profil oplysninger",
     "Menu": "Menu",
     "New user": "Ny bruger",
+    "Next": "Næste",
     "No such user exists.": "Bruger eksisterer ikke.",
     "No title": "Ingen titel",
     "Password": "Password",
     "Password should be at least 8 characters long": "Password skal være mindst 8 tegn langt",
     "Passwords do not match.": "Passwords er ikke ens",
+    "Previous": "Forrige",
     "Profile": "Profil",
     "Record could not be read.": "Entiteten kunne ikke læses.",
     "Records could not be read.": "Entiteter kunne ikke læses.",
@@ -146,5 +148,5 @@ da = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Ophavsret",
-    "search": "search",
+    "search": "search"
 }
