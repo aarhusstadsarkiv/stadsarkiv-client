@@ -19,7 +19,6 @@ log = get_log()
 
 
 async def get_records_search(request: Request):
-
     query_params = {}
     q = ""
     if request.query_params:

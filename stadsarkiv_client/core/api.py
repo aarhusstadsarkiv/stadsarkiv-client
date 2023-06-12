@@ -393,7 +393,6 @@ async def record_read(request: Request) -> RecordsIdGet:
 
 
 async def records_search(request: Request):
-
     data = {}
 
     query_str = urllib.parse.urlencode(request.query_params)
