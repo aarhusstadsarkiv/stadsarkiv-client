@@ -1,4 +1,4 @@
 [tool.black]
 line-length = 140
 [tool.mypy]
-exclude = ['venv', '.venv', 'generate_client', 'tests']
+exclude = ['venv', '.venv', 'generate_openaws_client', 'tests']

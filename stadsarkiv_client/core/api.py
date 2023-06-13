@@ -70,12 +70,7 @@ verify_ssl = True
 
 
 def get_client() -> Client:
-    client = Client(
-        raise_on_unexpected_status=False,
-        base_url=base_url,
-        timeout=timeout,
-        verify_ssl=verify_ssl
-    )
+    client = Client(raise_on_unexpected_status=False, base_url=base_url, timeout=timeout, verify_ssl=verify_ssl)
     return client
 
 
@@ -85,11 +80,7 @@ def get_auth_client(request: Request) -> AuthenticatedClient:
 
     token = request.session["access_token"]
     auth_client = AuthenticatedClient(
-        raise_on_unexpected_status=False,
-        token=token,
-        base_url=base_url,
-        timeout=timeout,
-        verify_ssl=verify_ssl
+        raise_on_unexpected_status=False, token=token, base_url=base_url, timeout=timeout, verify_ssl=verify_ssl
     )
     return auth_client
 

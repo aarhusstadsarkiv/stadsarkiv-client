@@ -16,7 +16,7 @@ log.debug(json.dumps(settings, sort_keys=True, indent=4, ensure_ascii=False))
 
 
 app = Starlette(
-    debug=settings["debug"],
+    debug=settings["debug"],  # type: ignore
     middleware=[session_middleware, session_autoload_middleware],
     routes=routes,
     exception_handlers=exception_handlers,  # type: ignore
