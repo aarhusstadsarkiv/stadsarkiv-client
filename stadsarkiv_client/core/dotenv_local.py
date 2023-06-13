@@ -8,13 +8,13 @@ log = get_init_logger()
 
 
 def load():
-    dir_path = os.path.dirname(os.path.realpath(__file__))
+    dir_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
     env_dist = dir_path + "/.env-dist"
     load_dotenv(env_dist)
+    log.info(f"Loaded .env-dist file from {env_dist}")
 
     # file exists
     if os.path.exists(".env"):
-        log.info("Loaded local .env file")
+
         load_dotenv(override=True)
-    else:
-        log.info("Local .env file NOT loaded")
+        log.info("Local .env file loaded. Will override .env-dist settings")
