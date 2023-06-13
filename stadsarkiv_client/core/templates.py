@@ -5,6 +5,10 @@ from starlette.templating import Jinja2Templates
 from starlette.requests import Request
 from .translate import translate
 from .dynamic_settings import get_setting
+from .logging import get_log
+
+
+log = get_log()
 
 
 def app_context(request: Request) -> typing.Dict[str, typing.Any]:
@@ -17,6 +21,9 @@ def get_template_dirs() -> list:
     # local templates
     if os.path.exists("templates"):
         template_dirs.append("templates")
+        log.info("Loaded local templates: templates/")
+    else:
+        log.info("Local templates NOT loaded: templates/")
 
     # Full path to module templates
     current_dir = os.path.dirname(os.path.realpath(__file__))
