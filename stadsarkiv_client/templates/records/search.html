@@ -4,7 +4,6 @@
 {% include "includes/main_title.html" %}
 
 
-
 <form method="GET" action="{{ url_for('records_search')}}">
     {% for key, value in query_params.items() %}
     <input type="hidden" name="{{ key }}" value="{{ value }}">

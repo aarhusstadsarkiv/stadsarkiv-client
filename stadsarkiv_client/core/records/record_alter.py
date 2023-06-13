@@ -64,7 +64,7 @@ def _normalize_series(record: dict):
                 query += urllib.parse.quote("/")
 
             query += urllib.parse.quote(series)
-            entry = {"collection": collection_id, "series": series, "search_url": "/search?" + query}
+            entry = {"collection": collection_id, "series": series, "search_query": query}
             series_normalized.append(entry)
 
         record["series_normalized"] = series_normalized
@@ -112,7 +112,7 @@ def _get_collection_tag(collection_id: int, tag: str):
     tag_dict["query"] = query_str
     tag_dict["label"] = parts[-1]
     tag_dict["level"] = len(parts)
-    tag_dict["search_url"] = f"/search?collection={collection_id}&collection_tags={query_str}"
+    tag_dict["search_query"] = f"collection={collection_id}&collection_tags={query_str}"
 
     return tag_dict
 
