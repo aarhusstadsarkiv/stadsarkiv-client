@@ -1,11 +1,9 @@
 from stadsarkiv_client.settings import settings
 from stadsarkiv_client.core.logging import get_log
 
+
 log = get_log()
-
-
 settings_local: dict = {}
-
 
 try:
     from settings import settings as settings_local

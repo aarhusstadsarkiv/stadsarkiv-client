@@ -13,7 +13,6 @@ def load():
     load_dotenv(env_dist)
     log.info(f"Loaded .env-dist file from {env_dist}")
 
-    # file exists
     if os.path.exists(".env"):
 
         load_dotenv(override=True)
