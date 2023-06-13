@@ -7,7 +7,7 @@ from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
 import json
-from stadsarkiv_client.core.records import record_alter
+from stadsarkiv_client.core.records.record_alter import record_alter
 from stadsarkiv_client.core.openaws import (
     SchemaRead,
     EntityRead,
