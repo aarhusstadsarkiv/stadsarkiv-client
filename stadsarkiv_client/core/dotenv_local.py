@@ -17,3 +17,5 @@ def load():
 
         load_dotenv(override=True)
         log.info("Local .env file loaded. Will override .env-dist settings")
+    else:
+        log.info("Local .env file NOT loaded")
