@@ -1,11 +1,11 @@
-from ..logging import get_log
+from stadsarkiv_client.core.logging import get_log
 from .normalize_abstract_dates import normalize_abstract_dates
 from .normalize_copyright_status import normalize_copyright_status
 from .normalize_contractual_status import normalize_contractual_status
 from .normalize_legal_restrictions import normalize_legal_restrictions
 from .normalize_availability import normalize_availability
 from .normalize_ordering import normalize_ordering
-from ..translate import translate
+from stadsarkiv_client.core.translate import translate
 import urllib.parse
 from starlette.requests import Request
 
@@ -404,6 +404,3 @@ def _set_record_title(record_dict: dict):
 
     record_dict["title"] = title
     return record_dict
-
-
-__ALL__ = [get_sections, record_alter]

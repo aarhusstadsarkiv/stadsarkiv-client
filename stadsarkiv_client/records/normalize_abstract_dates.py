@@ -1,4 +1,4 @@
-from ..translate import translate
+from stadsarkiv_client.core.translate import translate
 
 
 def normalize_abstract_dates(record):
