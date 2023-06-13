@@ -105,11 +105,3 @@ async def get_entity_view(request: Request):
     except Exception as e:
         log.exception(e)
         raise HTTPException(404, detail=str(e), headers=None)
-
-
-__ALL__ = [
-    "get_entity_create",
-    "post_entity_create",
-    "get_entities",
-    "get_entity_view",
-]

@@ -18,6 +18,3 @@ def load():
         load_dotenv(override=True)
     else:
         log.info("Local .env file NOT loaded")
-
-
-__ALL__ = ["load"]

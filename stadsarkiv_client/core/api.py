@@ -60,7 +60,6 @@ import json
 from .dynamic_settings import settings
 import httpx
 import urllib.parse
-import json
 
 
 log = get_log()

@@ -26,6 +26,3 @@ def normalize_contractual_status(record, creators=None):
     # return text
     record["contractual_status_normalized"] = text
     return record
-
-
-__ALL__ = [normalize_contractual_status]

@@ -85,6 +85,3 @@ def normalize_copyright_status(record: dict):
 
     record["copyright_status_normalized"] = lines
     return record
-
-
-__ALL__ = [normalize_copyright_status]

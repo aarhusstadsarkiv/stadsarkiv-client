@@ -31,6 +31,3 @@ def normalize_ordering(record: dict):
         record["ordering"] = result
 
     return record
-
-
-__ALL__ = [normalize_ordering]

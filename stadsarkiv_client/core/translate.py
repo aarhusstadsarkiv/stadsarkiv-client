@@ -75,6 +75,3 @@ def save_file_dict(lang) -> None:
         file_contents_da = f"{lang} = {json.dumps(da, indent=4, sort_keys=True, ensure_ascii=False)}"
         with open("stadsarkiv_client/locales/da.py", "w") as f:
             f.write(file_contents_da)
-
-
-__ALL__ = ["translate"]

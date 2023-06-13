@@ -85,7 +85,7 @@ from openaws_client.api.proxies import (
 from openaws_client.models.http_validation_error import HTTPValidationError
 from openaws_client.models.error_model import ErrorModel
 
-__ALL__ = [
+IMPORTS_ALL = [
     # auth
     AuthJwtLoginPost,
     auth_jwt_login_post,

@@ -38,6 +38,3 @@ def normalize_abstract_dates(record):
     else:
         record["date_normalized"] = translate('No date')
     return record """
-
-
-__ALL__ = [normalize_abstract_dates]
