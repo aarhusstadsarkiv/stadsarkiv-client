@@ -16,7 +16,7 @@ MarkupSafe==2.1.2
 mccabe==0.7.0
 mypy==1.1.1
 mypy-extensions==1.0.0
-openaws-client @ git+https://github.com/aarhusstadsarkiv/openaws-client@41848bc21fe32a04b22d20cf5b2dbd3edbf1528c
+openaws-client @ git+https://github.com/aarhusstadsarkiv/openaws-client@e82121529d5de6eb9e6f3a9664a07ccfa9523227
 packaging==23.0
 pathspec==0.11.0
 platformdirs==3.0.0

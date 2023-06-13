@@ -1,6 +1,6 @@
-# How to create the API client
+# How to create the openaws-client client
 
-This will create the openapi-client directory with the generated client.
+This will create the openaws-client from the openapi definition found on dev.openaws.dk
 
 ## Install 
     cd generate_client

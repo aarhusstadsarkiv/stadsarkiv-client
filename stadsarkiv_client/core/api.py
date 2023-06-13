@@ -74,8 +74,7 @@ def get_client() -> Client:
         raise_on_unexpected_status=False,
         base_url=base_url,
         timeout=timeout,
-        verify_ssl=verify_ssl,
-        follow_redirects=True,
+        verify_ssl=verify_ssl
     )
     return client
 
@@ -90,8 +89,7 @@ def get_auth_client(request: Request) -> AuthenticatedClient:
         token=token,
         base_url=base_url,
         timeout=timeout,
-        verify_ssl=verify_ssl,
-        follow_redirects=True,
+        verify_ssl=verify_ssl
     )
     return auth_client
 
