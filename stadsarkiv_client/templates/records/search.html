@@ -2,6 +2,7 @@
 
 {% block content %}
 {% include "includes/main_title.html" %}
+{% set truncate_summary = 300 %}
 
 
 <form method="GET" action="{{ url_for('records_search')}}">
@@ -15,10 +16,10 @@
 
 {% macro parse_search_title(result) %}
 {% if result.label %}
-<div class="summary">{{ result.label }}</div>
+<div class="summary">{{ result.label|truncate(truncate_summary) }}</div>
 {% endif %}
 {% if result.summary %}
-<div class="summary">{{ result.summary }}</div>
+<div class="summary">{{ result.summary|truncate(truncate_summary) }}</div>
 {% endif %}
 {% endmacro %}
 

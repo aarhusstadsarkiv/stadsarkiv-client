@@ -24,7 +24,6 @@ async def get_records_search(request: Request):
     if request.query_params:
         query_items = request.query_params.items()
         query_params = {k: v for k, v in query_items if k != "q"}
-
         q = request.query_params.get("q", "")
 
     records = await api.records_search(request)
