@@ -37,13 +37,11 @@
 {% endmacro %}
 
 {% macro parse_pagination (size, total) %}
-
 {% if not request.query_params.get('start') %}
 {% set start = 0 %}
 {% else %}
 {% set start = request.query_params.get('start') | int %}
 {% endif %}
-
 
 {# start is where to start, e.g. 100, size is how many to show, e.g. 10, total is the total number of results, e.g. 1000 #}
 <div class="pagination">
@@ -54,16 +52,11 @@
     <a href="?q={{ q }}&start={{ start + size }}&size={{ size }}">{{ translate('Next') }}</a>
     {% endif %}
 </div>
-
 {% endmacro %}
-
-
 
 <div class="search-results">
 
-
     {{ parse_pagination(records.size, records.total) }}
-
 
     {% for result in records.result %}
     {% set serie = None %}
@@ -76,9 +69,10 @@
         <a class="search-link" href="/records/{{ result.id }}">
                     
             {{ parse_search_title(result) }}
-            {{ parse_record_content('Samling', result.collectors_label) }}
+            {{ parse_record_content('Skaber', result.collectors_label) }}
+            {# parse_record_content('Samling', result.collectors_label) #}
             {% if serie %}
-            {{ parse_record_content('Serie', serie) }} 
+            {{ parse_record_content('Serie', serie) }}
             {% endif %}
 
         </a>

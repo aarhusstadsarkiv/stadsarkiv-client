@@ -7,7 +7,7 @@ from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
 import json
-from stadsarkiv_client.core.records.record_alter import record_alter
+from stadsarkiv_client.core.records.record_alter import record_alter, get_sections
 from stadsarkiv_client.core.openaws import (
     SchemaRead,
     EntityRead,
@@ -40,10 +40,10 @@ async def get_record_view(request: Request):
         record: RecordsIdGet = await api.record_read(request)
         record_dict = record.to_dict()
 
-        record_dict = record_alter.record_alter(request, record_dict)
+        record_dict = record_alter(request, record_dict)
         record_json = json.dumps(record_dict, indent=4, ensure_ascii=False)
 
-        record_sections = record_alter.get_sections(record_dict)
+        record_sections = get_sections(record_dict)
         record_sections_json = json.dumps(record_sections, indent=4, ensure_ascii=False)
 
         if "administration" in record_sections and "employee" not in permissions:
@@ -53,7 +53,6 @@ async def get_record_view(request: Request):
             del record_sections["resources"]
 
         context_values = {
-            # "title": record_alter.get_record_title(record_dict),
             "me_permissions": permissions,
             "record": record_dict,
             "record_json": record_json,
@@ -74,7 +73,7 @@ async def get_record_view_json(request: Request):
         record: RecordsIdGet = await api.record_read(request)
 
         record_dict = record.to_dict()
-        record_dict = record_alter.record_alter(request, record_dict)
+        record_dict = record_alter(request, record_dict)
 
         record_json = json.dumps(record_dict, indent=4, ensure_ascii=False)
         return PlainTextResponse(record_json)
