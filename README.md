@@ -1,5 +1,3 @@
-# README
-
 Table of Contents
 =================
 
@@ -11,6 +9,8 @@ Table of Contents
    * [Modifying the required module](#modifying-the-required-module)
    * [Fix code](#fix-code)
    * [Generate openaws client](#generate-openaws-client)
+
+# README
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
 
