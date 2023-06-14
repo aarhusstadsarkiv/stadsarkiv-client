@@ -35,11 +35,20 @@ Update version and install latest version:
     pip uninstall -y stadsarkiv-client
     pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@main 
 
-### Run installed modules
+### Run installed module
 
-Serve with default settings. This just serves the module with default pages and auth.  
+Usage: python -m stadsarkiv_client [OPTIONS]
+
+Serve with default settings. This just serves the module with a main menu.  
 
     stadsarkiv-serve --help
+
+    Options:
+    --reload BOOLEAN   Reload uvicorn on changes.
+    --port INTEGER     Server port.
+    --workers INTEGER  Number of workers.
+    --help             Show this message and exit.
+
 
 Or using some options:
 
