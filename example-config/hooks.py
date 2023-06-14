@@ -4,7 +4,10 @@ from starlette.requests import Request
 
 log = get_log()
 
-""" So far there is only the following two hooks, but more will be added in the future."""
+"""
+So far there is only the following two hooks, but more will be added in the future.
+"""
+
 
 # Implementation using the hookimpl decorator
 @hooks.hookimpl(specname="alter_context")
