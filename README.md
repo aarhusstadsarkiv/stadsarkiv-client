@@ -1,6 +1,6 @@
 # README
 
-### Install for development
+## Install for development
 
     git clone https://github.com/aarhusstadsarkiv/stadsarkiv-client.git
 
@@ -16,7 +16,7 @@ Or (Windows)
 
     pip install -r requirements.txt
 
-### Run local development
+## Run local development
 
     python -m stadsarkiv_client
 
@@ -24,7 +24,7 @@ Or:
 
     ./bin/run-module.sh
 
-### Install as requirement
+## Install as requirement
 
     virtualenv venv
 
@@ -35,7 +35,7 @@ Update version and install latest version:
     pip uninstall -y stadsarkiv-client
     pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@main 
 
-### Run installed module
+## Run installed module
 
 Usage: stadsarkiv-serve [OPTIONS]
 
@@ -56,7 +56,7 @@ Or use some options:
 
     stadsarkiv-serve --port 5555 --reload true
 
-### Modifying the module
+## Modifying the module
 
 You may override the default settings by overriding the following files:
 
@@ -72,11 +72,11 @@ All the above files and dirs are optional. You may see an example of the files i
 
 These files and dirs should be placed in the directory where you run the module.
 
-### Fix code
+## Fix code
 
     ./bin/fix.sh
 
-### openaws client
+## openaws client
 
 In order to update the openapi client you can `cd` into the `generate_openaws_client` directory
 
