@@ -8,20 +8,15 @@ from stadsarkiv_client.core.logging import get_log
 log = get_log()
 
 
-async def get_page(request: Request) -> dict:
+async def _get_page(request: Request) -> dict:
     pages = settings["pages"]
     page = next((item for item in pages if item["url"] == request.url.path), {})
     return page
 
 
 async def default(request: Request):
-    page = await get_page(request)
-
-    log.debug(page)
-
-    template = "pages/default.html"
-    if "content" in page:
-        template = page["content"]
+    page = await _get_page(request)
+    template = page["template"]
 
     context_values = {"title": page["title"]}
     context = await get_context(request, context_values=context_values)

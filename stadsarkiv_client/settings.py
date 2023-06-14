@@ -44,6 +44,6 @@ settings = {
         {"name": "records_search", "title": "Søg (som eksisterende aarhusarkiv)"},
     ],
     "pages": [
-        {"name": "home", "title": "Hjem", "content": "pages/home.html", "url": "/"},
+        {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
     ],
 }
