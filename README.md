@@ -1,6 +1,6 @@
 # README
 
-## Install for development
+### Install for development
 
     git clone https://github.com/aarhusstadsarkiv/stadsarkiv-client.git
 
@@ -16,7 +16,7 @@ Or (Windows)
 
     pip install -r requirements.txt
 
-## Run local development
+### Run local development
 
     python -m stadsarkiv_client
 
@@ -24,7 +24,7 @@ Or:
 
     ./bin/run-module.sh
 
-## Install as requirement
+### Install as requirement
 
     virtualenv venv
 
@@ -39,8 +39,6 @@ Update version and install latest version:
 
 Usage: stadsarkiv-serve [OPTIONS]
 
-Serve with default settings. This just serves the module with a main menu.  
-
     stadsarkiv-serve --help
 
     Options:
@@ -50,7 +48,11 @@ Serve with default settings. This just serves the module with a main menu.
     --help             Show this message and exit.
 
 
-Or using some options:
+Serve the default module on port 5555:
+
+    stadsarkiv-serve
+
+Or use some options:
 
     stadsarkiv-serve --port 5555 --reload true
 
@@ -65,40 +67,10 @@ You may override the default settings by overriding the following files:
     templates/
     static/
 
+All the above files and dirs are optional. You may see an example of the files in the 
+[example-config directory](https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/example-config)
+
 These files and dirs should be placed in the directory where you run the module.
-
-See example config:
-
-    https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/example-config
-
-
-
-Example of a [naive implementation of hooks](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/example-config/hooks.py):
-
-### Create .env file
-
-Alter default env:
-
-```.env
-# session secret
-SECRET=SECRET
-# developemnt or production
-ENVIRONMENT=production
-```
-
-### Override translations
-
-    touch language.py
-
-```.py
-language = {
-    "Email": "E-mail",
-}
-```
-
-See existing language keys: 
-
-https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/locales/da.py
 
 ### Fix code
 
@@ -113,5 +85,3 @@ Instructions can be found in the [generate_client/README.md](generate_client/REA
 The client itself is just a python module which has it's own repository at: 
 
 [aarhusstadsarkiv/openaws-client](https://github.com/aarhusstadsarkiv/openaws-client)
-
-
