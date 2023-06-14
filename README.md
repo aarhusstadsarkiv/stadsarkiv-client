@@ -1,18 +1,4 @@
-Table of Contents
-=================
-
-* [README](#readme)
-   * [Install for development](#install-for-development)
-   * [Run for development](#run-for-development)
-   * [Install as requirement](#install-as-requirement)
-   * [Run required module](#run-required-module)
-   * [Modifying the required module](#modifying-the-required-module)
-   * [Fix code](#fix-code)
-   * [Generate openaws client](#generate-openaws-client)
-
-# README
-
-<!-- Created by https://github.com/ekalinin/github-markdown-toc -->
+# stadsarkiv-client
 
 ## Install for development
 
@@ -77,7 +63,7 @@ Or use some options:
 
 ## Modifying the required module
 
-You may override the default settings by overriding the following files and dirs:
+You may override the default module using the following files and dirs:
 
     .env
     settings.py
