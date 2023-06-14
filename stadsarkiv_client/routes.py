@@ -12,7 +12,8 @@ log = get_log()
 def get_static_dirs() -> list:
     static_dir_list = []
 
-    # if "static_local" in settings
+    # If static/ dir exists in current dir, add it to static_dir_list
+    # This will be override the module static files
     if os.path.exists("static"):
         static_dir_local = "static"
         static_dir_list.append(static_dir_local)
@@ -20,7 +21,7 @@ def get_static_dirs() -> list:
     else:
         log.info("Local static files NOT loaded: static/")
 
-    # Module static files
+    # Module static files. Default static files
     static_dir = os.path.dirname(os.path.abspath(__file__)) + "/static"
     static_dir_list.append(static_dir)
     return static_dir_list
@@ -72,7 +73,7 @@ routes = [
 ]
 
 
-# Add pages
+# Add routes for custom pages
 common_pages: Any = []
 if "pages" in settings:
     common_pages = settings["pages"]

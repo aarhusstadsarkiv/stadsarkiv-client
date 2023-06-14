@@ -33,7 +33,6 @@ settings = {
     "fastapi_endpoint": "https://dev.openaws.dk",
     "main_menu": [
         {"name": "home", "title": "Hjem"},
-        {"name": "about", "title": "Om"},
         {"name": "login", "title": "Log ind"},
         {"name": "forgot_password", "title": "Glemt password"},
         {"name": "logout", "title": "Log ud"},
@@ -41,11 +40,10 @@ settings = {
         {"name": "profile", "title": "Profil"},
         {"name": "schemas", "title": "Schemas"},
         {"name": "entities", "title": "Entities"},
-        # {"name": "entities_search", "title": "Søg"},
-        {"name": "records_search", "title": "Søg records"},
+        {"name": "entities_search", "title": "Søg"},
+        {"name": "records_search", "title": "Søg (som eksisterende aarhusarkiv)"},
     ],
     "pages": [
-        {"name": "home", "title": "Hjem", "page": "pages/home.html", "url": "/"},
-        {"name": "about", "title": "Om", "page": "pages/about.html", "url": "/about"},
+        {"name": "home", "title": "Hjem", "content": "pages/home.html", "url": "/"},
     ],
 }
