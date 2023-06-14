@@ -1,5 +1,19 @@
 # README
 
+Table of Contents
+=================
+
+* [README](#readme)
+   * [Install for development](#install-for-development)
+   * [Run for development](#run-for-development)
+   * [Install as requirement](#install-as-requirement)
+   * [Run required module](#run-required-module)
+   * [Modifying the required module](#modifying-the-required-module)
+   * [Fix code](#fix-code)
+   * [Generate openaws client](#generate-openaws-client)
+
+<!-- Created by https://github.com/ekalinin/github-markdown-toc -->
+
 ## Install for development
 
     git clone https://github.com/aarhusstadsarkiv/stadsarkiv-client.git
@@ -61,7 +75,7 @@ Or use some options:
 
     stadsarkiv-serve --port 5555 --reload true
 
-## Modifying the module
+## Modifying the required module
 
 You may override the default settings by overriding the following files and dirs:
 
@@ -84,7 +98,7 @@ Run black, mypy and flake8:
 
     ./bin/fix.sh
 
-## openaws client
+## Generate openaws client
 
 In order to update the openapi client you can `cd` into the `generate_openaws_client` directory
 
