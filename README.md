@@ -72,7 +72,7 @@ You may override the default settings by overriding the following files and dirs
     templates/
     static/
 
-All the above files and dirs are optional. You may see an example of the files in the 
+All the above files and dirs are optional. You may see examples of all the above files in the 
 [example-config directory](https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/example-config)
 
 These files and dirs should be placed in the directory where you run the module from.
