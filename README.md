@@ -14,9 +14,11 @@ Or (Windows)
 
     source venv/Scripts/activate
 
+Install requirements:
+
     pip install -r requirements.txt
 
-## Run local development
+## Run for development
 
     python -m stadsarkiv_client
 
@@ -35,7 +37,7 @@ Update version and install latest version:
     pip uninstall -y stadsarkiv-client
     pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@main 
 
-## Run installed module
+## Run required module
 
 Usage: stadsarkiv-serve [OPTIONS]
 
@@ -47,7 +49,6 @@ Usage: stadsarkiv-serve [OPTIONS]
     --workers INTEGER  Number of workers.
     --help             Show this message and exit.
 
-
 Serve the default module on port 5555:
 
     stadsarkiv-serve
@@ -58,7 +59,7 @@ Or use some options:
 
 ## Modifying the module
 
-You may override the default settings by overriding the following files:
+You may override the default settings by overriding the following files and dirs:
 
     .env
     settings.py
@@ -70,7 +71,7 @@ You may override the default settings by overriding the following files:
 All the above files and dirs are optional. You may see an example of the files in the 
 [example-config directory](https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/example-config)
 
-These files and dirs should be placed in the directory where you run the module.
+These files and dirs should be placed in the directory where you run the module from.
 
 ## Fix code
 
