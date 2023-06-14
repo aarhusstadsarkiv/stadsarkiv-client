@@ -32,15 +32,13 @@
 <body>
 
     <nav class="container">
+        {% include "includes/logo.html" %}
         {% include "includes/navigation.html" %}
     </nav>
     
-
     <main class="container container-main">
-
         {% block content %}
         {% endblock content %}
-
     </main>
 
     <footer class="container">

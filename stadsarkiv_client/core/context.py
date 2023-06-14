@@ -47,22 +47,15 @@ def get_title(request: Request) -> str:
     return title
 
 
-def logged_in(request: Request) -> bool:
-    logged_in = False
-    if "logged_in" in request.session:
-        if request.session["logged_in"]:
-            logged_in = True
-    return logged_in
-
-
 async def get_context(request: Request, context_values: dict = {}) -> dict:
+    logged_in = await api.is_logged_in(request)
     context = {
         "path": request.url.path,
         "request": request,
         "title": get_title(request),
         "flash_messages": get_messages(request),
         "main_menu": await get_main_menu(request),
-        "logged_in": logged_in(request),
+        "logged_in": logged_in,
     }
 
     context.update(context_values)

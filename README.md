@@ -39,29 +39,29 @@ Update version and install latest version:
 
 Serve with default settings. This just serves the module with default pages and auth.  
 
-    stadsarkiv-serve
+    stadsarkiv-serve --help
 
 Or using some options:
 
     stadsarkiv-serve --port 5555 --reload true
 
-### Override defaults
+### Modifying the module
 
-https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/stadsarkiv_client
+https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/example-config
 
 The following folders and the contents can be overridden:
 
-  * templates
-  * static
+    templates/
+    static/
 
 The following files can be overridden:
 
-  * settings.py  
-  * .env
+    settings.py  
+    .env
 
 You may add hooks in the following file:
 
-  * hooks.py
+    hooks.py
 
 Example of a [naive implementation of hooks](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/hooks.py):
 
@@ -96,7 +96,7 @@ https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_clien
 
 ### openaws client
 
-In order to update the openapi client you can `cd` into the `generate_client` directory
+In order to update the openapi client you can `cd` into the `generate_openaws_client` directory
 
 Instructions can be found in the [generate_client/README.md](generate_client/README.md) directory. 
 
