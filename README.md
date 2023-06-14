@@ -35,7 +35,11 @@ Or:
 Update version and install latest version:
 
     pip uninstall -y stadsarkiv-client
-    pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@main 
+    pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@main
+
+You may also install a specific version:
+
+    pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@version
 
 ## Run required module
 
