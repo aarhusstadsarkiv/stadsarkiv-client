@@ -37,7 +37,7 @@ Update version and install latest version:
 
 ### Run installed module
 
-Usage: python -m stadsarkiv_client [OPTIONS]
+Usage: stadsarkiv-serve [OPTIONS]
 
 Serve with default settings. This just serves the module with a main menu.  
 
@@ -56,23 +56,24 @@ Or using some options:
 
 ### Modifying the module
 
-https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/example-config
+You may override the default settings by overriding the following files:
 
-The following folders and the contents can be overridden:
-
+    .env
+    settings.py
+    language.py
+    hooks.py
     templates/
     static/
 
-The following files can be overridden:
+These files and dirs should be placed in the directory where you run the module.
 
-    settings.py  
-    .env
+See example config:
 
-You may add hooks in the following file:
+    https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/example-config
 
-    hooks.py
 
-Example of a [naive implementation of hooks](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/hooks.py):
+
+Example of a [naive implementation of hooks](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/example-config/hooks.py):
 
 ### Create .env file
 
