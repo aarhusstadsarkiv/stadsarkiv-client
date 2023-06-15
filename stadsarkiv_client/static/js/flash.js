@@ -8,9 +8,11 @@ function removeFlashMessages() {
     })
 }
 
+const removeAfterSecs = 20;
+
 setTimeout(function () {
     removeFlashMessages();
-}, 20000);
+}, removeAfterSecs * 1000);
 
 /**
  * Remove flash messages when clicked
@@ -44,7 +46,7 @@ class Flash {
                 if (elem) {
                     elem.remove();
                 }
-            }, remove_after)
+            }, removeAfterSecs * 1000)
         }
 
         var html = `<div class="flash flash-${type} ${class_random}">${str}</div>`;
