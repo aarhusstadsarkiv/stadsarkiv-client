@@ -19,6 +19,7 @@ da = {
     "Entities": "Entities",
     "Entity": "Entity",
     "Entity could not be created": "Entitet kunne ikke oprettes",
+    "Entity could not be created.": "Entity could not be created.",
     "Entity could not be read.": "Entity could not be read.",
     "Entity created": "Entity created",
     "Entity returned is None": "Entitet kunne ikke oprettes. System fejl.",
@@ -148,5 +149,5 @@ da = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Ophavsret",
-    "search": "search",
+    "search": "search"
 }

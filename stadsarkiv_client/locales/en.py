@@ -19,6 +19,7 @@ en = {
     "Entities": "Entities",
     "Entity": "Entity",
     "Entity could not be created": "Entity could not be created",
+    "Entity could not be created.": "Entity could not be created.",
     "Entity could not be read.": "Entity could not be read.",
     "Entity created": "Entity created",
     "Entity returned is None": "Entity returned is None",
@@ -161,5 +162,5 @@ en = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "search": "search",
+    "search": "search"
 }
