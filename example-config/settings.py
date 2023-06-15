@@ -31,12 +31,12 @@ settings = {
     #
     # Custom pages
     #
-    # "name" is the route name. Title is the page title. 
+    # "name" is the route name. Title is the page title.
     # "template" if the page you will use. It is also the content of the page.
     # "url" is the path to the page
     #
     # You can then make another menu which contains some of these pages, e.g. a "footer_items" entry
-    # or something similar. 
+    # or something similar.
     "pages": [
         {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
     ],

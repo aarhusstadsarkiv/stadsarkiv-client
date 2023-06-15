@@ -25,7 +25,6 @@ def get_jwt_headers(request: Request, headers: dict = {}) -> dict:
 
 
 async def jwt_login_post(request: Request):
-
     form = await request.form()
     username = str(form.get("username"))
     password = str(form.get("password"))
@@ -200,7 +199,6 @@ async def me_permissions(request: Request) -> list[str]:
 
 
 async def schemas_read(request: Request):
-
     async with httpx.AsyncClient() as client:
         url = base_url + "/v1/schemas/?offset=0&limit=100000"
         headers = {"Accept": "application/json"}
@@ -226,7 +224,6 @@ async def schema_read(request: Request) -> typing.Any:
 
 
 async def schema_read_specific(request: Request, schema_name: str, schema_version: int):
-
     async with httpx.AsyncClient() as client:
         url = base_url + "/v1/schemas/" + schema_name + "?version=" + str(schema_version)
 
@@ -250,8 +247,7 @@ async def schema_create(request: Request):
 
     async with httpx.AsyncClient() as client:
         url = base_url + "/v1/schemas/"
-        headers = get_jwt_headers(
-            request, {"Content-Type": "application/json", "Accept": "application/json"})
+        headers = get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
         response = await client.post(url, json=data_dict, headers=headers)
 
         if response.status_code == httpx.codes.OK:
@@ -284,7 +280,6 @@ async def entity_create(request: Request) -> typing.Any:
 
 
 async def entities_read(request: Request) -> typing.Any:
-
     headers = get_jwt_headers(request)
     headers["Accept"] = "application/json"
     url = base_url + "/v1/entities/" + "?offset=0&limit=100000"

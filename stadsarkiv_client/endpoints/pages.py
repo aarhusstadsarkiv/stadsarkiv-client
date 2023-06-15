@@ -10,7 +10,7 @@ log = get_log()
 
 async def _get_page(request: Request) -> dict:
     pages = settings["pages"]
-    page = next((item for item in pages if item["url"] == request.url.path), {})
+    page: dict = next((item for item in pages if item["url"] == request.url.path), {})
     return page
 
 
