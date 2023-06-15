@@ -37,10 +37,9 @@ async def get_records_search(request: Request):
 async def get_record_view(request: Request):
     try:
         permissions = await api.me_permissions(request)
-        record: RecordsIdGet = await api.record_read(request)
-        record_dict = record.to_dict()
+        record = await api.record_read(request)
 
-        record_dict = record_alter(request, record_dict)
+        record_dict = record_alter(request, record)
         record_json = json.dumps(record_dict, indent=4, ensure_ascii=False)
 
         record_sections = get_sections(record_dict)
@@ -70,10 +69,8 @@ async def get_record_view(request: Request):
 
 async def get_record_view_json(request: Request):
     try:
-        record: RecordsIdGet = await api.record_read(request)
-
-        record_dict = record.to_dict()
-        record_dict = record_alter(request, record_dict)
+        record = await api.record_read(request)
+        record_dict = record_alter(request, record)
 
         record_json = json.dumps(record_dict, indent=4, ensure_ascii=False)
         return PlainTextResponse(record_json)
