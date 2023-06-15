@@ -212,14 +212,13 @@ async def schemas_read(request: Request):
             response.raise_for_status()
 
 
-async def schema_read(request: Request):
+async def schema_read(request: Request) -> typing.Any:
     schema_type = request.path_params["schema_type"]
 
     async with httpx.AsyncClient() as client:
         url = base_url + "/v1/schemas/" + schema_type
         headers = {"Accept": "application/json"}
-        response = await client.get(url, headers=headers)
-
+        response: httpx.Response = await client.get(url, headers=headers)
         if response.status_code == httpx.codes.OK:
             return response.json()
         else:
