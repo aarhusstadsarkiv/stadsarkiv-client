@@ -76,20 +76,18 @@ def _get_error_string(error):
         return translate("Unknown error. Please try again later.")
 
 
-def validate_response(error):
+def validate_json_response(status_code, error):
     raise_message = None
-    if isinstance(error, ErrorModel):
-        error_message = error.to_dict()
-        error_code = _extract_model_error(error_message)
+    if status_code == 400:
+        error_code = _extract_model_error(error)
         raise_message = _get_error_string(error_code)
 
-    if isinstance(error, HTTPValidationError):
-        error_message = error.to_dict()
-        error_code = _extract_validation_error(error_message)
+    if status_code == 422:
+        error_code = _extract_validation_error(error)
         raise_message = _get_error_string(error_code)
 
     if raise_message:
-        raise OpenAwsException(400, raise_message)
+        raise OpenAwsException(status_code, raise_message)
 
 
 async def validate_passwords(request: Request):
