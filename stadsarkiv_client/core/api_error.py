@@ -71,9 +71,12 @@ def _get_error_string(error):
     if error == "UNKNOWN_MODEL_ERROR":
         return translate("Unknown error. Please try again later.")
 
+    return translate("Unknown error. Please try again later.")
 
-def validate_json_response(status_code, error):
-    raise_message = None
+
+def raise_openaws_exception(status_code, error):
+    raise_message = translate("Unknown error. Please try again later.")
+
     if status_code == 400:
         error_code = _extract_model_error(error)
         raise_message = _get_error_string(error_code)
@@ -82,8 +85,7 @@ def validate_json_response(status_code, error):
         error_code = _extract_validation_error(error)
         raise_message = _get_error_string(error_code)
 
-    if raise_message:
-        raise OpenAwsException(status_code, raise_message)
+    raise OpenAwsException(status_code, raise_message)
 
 
 async def validate_passwords(request: Request):

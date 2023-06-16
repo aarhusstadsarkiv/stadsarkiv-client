@@ -1,5 +1,5 @@
 from starlette.requests import Request
-from .api_error import OpenAwsException, validate_passwords, validate_json_response
+from .api_error import OpenAwsException, validate_passwords, raise_openaws_exception
 from .logging import get_log
 from . import user
 from .translate import translate
@@ -43,7 +43,7 @@ async def jwt_login_post(request: Request):
             await user.set_user_jwt(request, access_token, token_type)
         else:
             json_response = response.json()
-            validate_json_response(response.status_code, json_response)
+            raise_openaws_exception(response.status_code, json_response)
 
 
 async def register_post(request: Request):
@@ -65,7 +65,7 @@ async def register_post(request: Request):
             await user.set_user_jwt(request, access_token, token_type)
         else:
             json_response = response.json()
-            validate_json_response(response.status_code, json_response)
+            raise_openaws_exception(response.status_code, json_response)
 
 
 async def verify_post(request: Request):
@@ -78,7 +78,7 @@ async def verify_post(request: Request):
 
         if response.status_code != httpx.codes.OK:
             json_response = response.json()
-            validate_json_response(response.status_code, json_response)
+            raise_openaws_exception(response.status_code, json_response)
 
 
 async def me_get(request: Request) -> dict:
@@ -120,7 +120,7 @@ async def forgot_password(request: Request) -> None:
 
         if response.status_code != httpx.codes.OK:
             json_response = response.json()
-            validate_json_response(response.status_code, json_response)
+            raise_openaws_exception(response.status_code, json_response)
 
 
 async def reset_password_post(request: Request) -> None:
@@ -137,7 +137,7 @@ async def reset_password_post(request: Request) -> None:
 
         if response.status_code != httpx.codes.OK:
             json_response = response.json()
-            validate_json_response(response.status_code, json_response)
+            raise_openaws_exception(response.status_code, json_response)
 
 
 async def request_verify_post(request: Request):
@@ -153,7 +153,7 @@ async def request_verify_post(request: Request):
 
         if response.status_code != httpx.codes.OK:
             json_response = response.json()
-            validate_json_response(response.status_code, json_response)
+            raise_openaws_exception(response.status_code, json_response)
 
 
 async def is_logged_in(request: Request) -> bool:
@@ -236,7 +236,7 @@ async def schema_read_specific(request: Request, schema_name: str, schema_versio
             response.raise_for_status()
 
 
-async def schema_create(request: Request):
+async def schema_create(request: Request) -> typing.Any:
     form = await request.form()
     schema_type = str(form.get("type"))
     data = str(form.get("data"))
@@ -326,8 +326,7 @@ async def record_read(request: Request) -> typing.Any:
             response.raise_for_status()
 
 
-async def records_search(request: Request):
-    data = {}
+async def records_search(request: Request) -> typing.Any:
 
     query_str = urllib.parse.urlencode(request.query_params)
     query_str = urllib.parse.quote(query_str)
@@ -336,6 +335,7 @@ async def records_search(request: Request):
         endpoint = "https://dev.openaws.dk/v1/records?params=" + query_str
         response = await client.get(endpoint)
 
-    data = response.json()
-
-    return data
+        if response.status_code == httpx.codes.OK:
+            return response.json()
+        else:
+            response.raise_for_status()
