@@ -3,7 +3,6 @@ import logging
 from .dynamic_settings import settings
 from .logging_defs import get_file_handler, get_stream_handler, generate_log_dir
 import warnings
-import inspect
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 

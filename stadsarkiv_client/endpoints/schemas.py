@@ -11,9 +11,6 @@ from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from json import JSONDecodeError
 import json
-from stadsarkiv_client.core.openaws import (
-    SchemaRead,
-)
 
 
 log = get_log()

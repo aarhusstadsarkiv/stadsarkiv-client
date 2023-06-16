@@ -46,7 +46,7 @@ def normalize_copyright_status(record: dict):
         text = f"Materialet er under ophavsret, men udgives efter aftale under en {creative_commons_link}. "
         lines.append(text)
         text = """
-            Materialet må derfor gerne gengives og publiceres, 
+            Materialet må derfor gerne gengives og publiceres,
             så længe man på passende vis krediterer både ophavsmanden/-kvinden og AarhusArkivet.dk """
         lines.append(text)
 
@@ -54,8 +54,8 @@ def normalize_copyright_status(record: dict):
         text = f"Materialet er under ophavsret, men udgives efter aftale under en {creative_commons_link}. "
         lines.append(text)
         text += """
-            Materialet må kun gengives og publiceres i ikke-kommercielle sammenhænge, 
-            og under forudsætning af en passende kreditering af både ophavsmanden/-kvinden og AarhusArkivet.dk. 
+            Materialet må kun gengives og publiceres i ikke-kommercielle sammenhænge,
+            og under forudsætning af en passende kreditering af både ophavsmanden/-kvinden og AarhusArkivet.dk.
             Dette udelukker publicering på sociale platforme som Facebook og Instagram. """
         lines.append(text)
 

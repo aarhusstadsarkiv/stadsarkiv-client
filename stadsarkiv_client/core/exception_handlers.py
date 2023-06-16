@@ -1,6 +1,5 @@
 from starlette.exceptions import HTTPException
 from starlette.requests import Request
-from starlette.responses import HTMLResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.translate import translate
@@ -9,6 +8,8 @@ from stadsarkiv_client.core.logging import get_log
 HTML_403_PAGE = "403"
 HTML_404_PAGE = "404"
 HTML_500_PAGE = "500"
+
+log = get_log()
 
 
 async def not_found(request: Request, exc: HTTPException):

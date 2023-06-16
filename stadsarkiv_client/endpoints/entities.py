@@ -8,12 +8,8 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.decorators import is_authenticated
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core import api
-from stadsarkiv_client.core.api import OpenAwsException
 import json
-from stadsarkiv_client.core.openaws import (
-    SchemaRead,
-    EntityRead,
-)
+
 
 log = get_log()
 

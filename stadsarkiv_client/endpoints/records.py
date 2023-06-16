@@ -1,6 +1,6 @@
 from starlette.requests import Request
 from starlette.exceptions import HTTPException
-from starlette.responses import JSONResponse, PlainTextResponse
+from starlette.responses import PlainTextResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.translate import translate
@@ -8,11 +8,6 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
 import json
 from stadsarkiv_client.records.record_alter import record_alter, get_sections
-from stadsarkiv_client.core.openaws import (
-    SchemaRead,
-    EntityRead,
-    RecordsIdGet,
-)
 
 
 log = get_log()

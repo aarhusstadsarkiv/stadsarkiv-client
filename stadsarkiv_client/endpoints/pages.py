@@ -9,8 +9,8 @@ log = get_log()
 
 
 async def _get_page(request: Request) -> dict:
-    pages = settings["pages"]
-    page: dict = next((item for item in pages if item["url"] == request.url.path), {})
+    pages = settings["pages"]  # type: ignore
+    page = next((item for item in pages if item["url"] == request.url.path), {})  # type: ignore
     return page
 
 
