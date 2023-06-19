@@ -33,5 +33,30 @@ class TestAuth(unittest.TestCase):
 
     def test_login_post_incorrect(self):
         client = TestClient(app)
+        client.follow_redirects = False
         response = client.post("/auth/post-login-jwt", data={"username": "bad.mail@test.com", "password": "bad_password"})
+        # not logged in. Redirect to login
+        self.assertEqual(response.status_code, 302)
+
+    def test_post_logout(self):
+        client = TestClient(app)
+        client.follow_redirects = False
+        response = client.post("/auth/post-logout")
+        # not logged in. Redirect to login
+        self.assertEqual(response.status_code, 302)
+
+    def test_logout(self):
+        client = TestClient(app)
+        client.follow_redirects = False
+        response = client.get("/auth/logout")
+        # not logged in. Redirect to login
+        self.assertEqual(response.status_code, 302)
+
+    def test_me(self):
+
+        client = TestClient(app)
+        response = client.post("/auth/post-login-jwt", data={"username": test_user, "password": test_password})
+        self.assertEqual(response.status_code, 200)
+
+        response = client.get("/auth/me")
         self.assertEqual(response.status_code, 200)
