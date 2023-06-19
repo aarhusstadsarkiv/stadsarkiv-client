@@ -73,7 +73,6 @@ def get_schema_and_values(schema, entity):
     return schema_and_values
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def get_entity_view(request: Request):
     try:
         # content
