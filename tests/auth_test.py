@@ -8,10 +8,11 @@ from starlette.testclient import TestClient
 import os
 import unittest
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-
 log = get_log()
+
+test_user = os.getenv("TEST_USER")
+test_password = os.getenv("TEST_PASSWORD")
+path_append = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 class TestAuth(unittest.TestCase):
