@@ -327,7 +327,6 @@ async def record_read(request: Request) -> typing.Any:
 
 
 async def records_search(request: Request) -> typing.Any:
-
     query_str = urllib.parse.urlencode(request.query_params)
     query_str = urllib.parse.quote(query_str)
 

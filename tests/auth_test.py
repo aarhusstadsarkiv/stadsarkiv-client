@@ -1,18 +1,13 @@
 from stadsarkiv_client.app import app
 from stadsarkiv_client.core.logging import get_log
-import sys
-
-from starlette.responses import HTMLResponse
 from starlette.testclient import TestClient
-
 import os
 import unittest
 
 log = get_log()
 
-test_user = os.getenv("TEST_USER")
-test_password = os.getenv("TEST_PASSWORD")
-path_append = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+test_user = os.getenv("TEST_USER", "")
+test_password = os.getenv("TEST_PASSWORD", "")
 
 
 class TestAuth(unittest.TestCase):
@@ -33,7 +28,7 @@ class TestAuth(unittest.TestCase):
 
     def test_login_post_correct(self):
         client = TestClient(app)
-        response = client.post("/auth/post-login-jwt", data={"username": "dennis.iversen@gmail.com", "password": "iversen1234"})
+        response = client.post("/auth/post-login-jwt", data={"username": test_user, "password": test_password})
         self.assertEqual(response.status_code, 200)
 
     def test_login_post_incorrect(self):

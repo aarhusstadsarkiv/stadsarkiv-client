@@ -22,3 +22,7 @@ jobs:
 
       - name: Run tests
         run: python -m unittest tests/*.py
+        
+      - name: Run mypy
+        run: mypy --config-file pyproject.toml .
+      
