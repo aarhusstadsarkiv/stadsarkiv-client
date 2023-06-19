@@ -36,7 +36,7 @@ async def jwt_login_post(request: Request):
         headers = {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"}
         response = await client.post(url, data=login_dict, headers=headers)
 
-        if response.status_code == httpx.codes.OK:
+        if response.is_success:
             json_response = response.json()
             access_token = json_response["access_token"]
             token_type = json_response["token_type"]
@@ -58,7 +58,7 @@ async def register_post(request: Request):
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json={"email": email, "password": password}, headers=headers)
 
-        if response.status_code == httpx.codes.OK:
+        if response.is_success:
             json_response = response.json()
             access_token = json_response["access_token"]
             token_type = json_response["token_type"]
@@ -76,7 +76,7 @@ async def verify_post(request: Request):
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json={"token": token}, headers=headers)
 
-        if response.status_code != httpx.codes.OK:
+        if not response.is_success:
             json_response = response.json()
             raise_openaws_exception(response.status_code, json_response)
 
@@ -99,7 +99,7 @@ async def me_get(request: Request) -> dict:
             headers=headers,
         )
 
-        if response.status_code == httpx.codes.OK:
+        if response.is_success:
             request.state.me = response.json()
             return response.json()
         else:
@@ -118,7 +118,7 @@ async def forgot_password(request: Request) -> None:
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json={"email": email}, headers=headers)
 
-        if response.status_code != httpx.codes.OK:
+        if not response.is_success:
             json_response = response.json()
             raise_openaws_exception(response.status_code, json_response)
 
@@ -135,7 +135,7 @@ async def reset_password_post(request: Request) -> None:
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json={"password": password, "token": token}, headers=headers)
 
-        if response.status_code != httpx.codes.OK:
+        if not response.is_success:
             json_response = response.json()
             raise_openaws_exception(response.status_code, json_response)
 
@@ -151,7 +151,7 @@ async def request_verify_post(request: Request):
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json={"email": email}, headers=headers)
 
-        if response.status_code != httpx.codes.OK:
+        if not response.is_success:
             json_response = response.json()
             raise_openaws_exception(response.status_code, json_response)
 
@@ -204,7 +204,7 @@ async def schemas_read(request: Request):
         headers = {"Accept": "application/json"}
         response = await client.get(url, headers=headers)
 
-        if response.status_code == httpx.codes.OK:
+        if response.is_success:
             return response.json()
         else:
             response.raise_for_status()
@@ -217,7 +217,7 @@ async def schema_read(request: Request) -> typing.Any:
         url = base_url + "/v1/schemas/" + schema_type
         headers = {"Accept": "application/json"}
         response: httpx.Response = await client.get(url, headers=headers)
-        if response.status_code == httpx.codes.OK:
+        if response.is_success:
             return response.json()
         else:
             response.raise_for_status()
@@ -230,7 +230,7 @@ async def schema_read_specific(request: Request, schema_name: str, schema_versio
         headers = {"Accept": "application/json"}
         response = await client.get(url, headers=headers)
 
-        if response.status_code == httpx.codes.OK:
+        if response.is_success:
             return response.json()
         else:
             response.raise_for_status()
@@ -250,7 +250,7 @@ async def schema_create(request: Request) -> typing.Any:
         headers = get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
         response = await client.post(url, json=data_dict, headers=headers)
 
-        if response.status_code == httpx.codes.OK:
+        if response.is_success:
             return response.json()
         else:
             response.raise_for_status()
@@ -273,7 +273,7 @@ async def entity_create(request: Request) -> typing.Any:
             json=json_data,
         )
 
-        if response.status_code == httpx.codes.OK:
+        if response.is_success:
             return response.json()
         else:
             response.raise_for_status()
@@ -291,7 +291,7 @@ async def entities_read(request: Request) -> typing.Any:
             headers=headers,
         )
 
-        if response.status_code == httpx.codes.OK:
+        if response.is_success:
             return response.json()
         else:
             response.raise_for_status()
@@ -305,7 +305,7 @@ async def entity_read(request: Request) -> typing.Any:
         headers = {"Accept": "application/json"}
         response = await client.get(url, headers=headers)
 
-        if response.status_code == httpx.codes.OK:
+        if response.is_success:
             return response.json()
         else:
             response.raise_for_status()
@@ -320,7 +320,7 @@ async def record_read(request: Request) -> typing.Any:
         headers = {"Accept": "application/json"}
         response = await client.get(url, headers=headers)
 
-        if response.status_code == httpx.codes.OK:
+        if response.is_success:
             return response.json()
         else:
             response.raise_for_status()
@@ -335,7 +335,7 @@ async def records_search(request: Request) -> typing.Any:
         endpoint = "https://dev.openaws.dk/v1/records?params=" + query_str
         response = await client.get(endpoint)
 
-        if response.status_code == httpx.codes.OK:
+        if response.is_success:
             return response.json()
         else:
             response.raise_for_status()
