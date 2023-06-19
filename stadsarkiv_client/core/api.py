@@ -15,7 +15,7 @@ log = get_log()
 base_url = str(settings["fastapi_endpoint"])
 
 
-def get_jwt_headers(request: Request, headers: str = {}) -> dict:
+def get_jwt_headers(request: Request, headers: dict = {}) -> dict:
     if "access_token" not in request.session:
         raise OpenAwsException(401, translate("You need to be logged in to view this page."))
 
