@@ -38,6 +38,7 @@ async def post_login_jwt(request: Request):
         flash.set_message(request, str(e), type="error")
 
 
+@is_authenticated(message=translate("You need to be logged in to view this page."))
 async def get_logout(request: Request):
     context_values = {"title": translate("Logout")}
     context = await get_context(request, context_values=context_values)
