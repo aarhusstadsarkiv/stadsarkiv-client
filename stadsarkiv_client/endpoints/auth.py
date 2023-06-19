@@ -103,7 +103,7 @@ async def get_verify(request: Request):
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))
-async def get_me_jwt(request: str):
+async def get_me_jwt(request: Request):
     try:
         me = await api.users_me_get(request)
         context_values = {"title": translate("Profile"), "me": me}
