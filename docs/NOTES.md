@@ -52,3 +52,31 @@ before_next_results
 
 Register: Man bliver altid verificeret. 
 OK: redirect ikke til login når man forsøger at logge ind uden at det lykkes. 
+
+# records
+
+Sejrs samling: 
+
+000110308
+
+Med Rettighedsnoter:
+
+https://www.aarhusarkivet.dk/records/000125820
+
+Admin:
+
+http://localhost:5555/records/000186239
+
+Ordering: 
+
+https://www.aarhusarkivet.dk/records/000205238
+
+Admin: 
+
+http://localhost:5555/records/000478348
+
+PDF:
+
+records/000186693
+
+

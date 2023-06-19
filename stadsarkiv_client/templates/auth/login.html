@@ -1,21 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<article class="grid">
-    <div>
-        <hgroup>
-            {% include "includes/main_title.html" %}
-            <h2>{{ translate('Login to get access to speciel functions') }}</h2>
-        </hgroup>
-        <form method="post" action="{{ url_for('post_login_jwt')}}">
-            <input type="text" name="username" placeholder="{{ translate('Email') }}" aria-label="Login"
-                autocomplete="email" required>
-            <input type="password" name="password" placeholder="{{ translate('Password') }}" aria-label="Password"
-                autocomplete="current-password" required>
-            <button type="submit" class="contrast">{{ translate('Login') }}</button>
-            <a href="{{ url_for('forgot_password') }}">{{ translate('Forgot your password') }}</a>
-        </form>
-    </div>
-    <div class="auth-image"><img src="/static/assets/login-image.jpg"></div>
-</article>
+{% include "includes/main_title.html" %}
+
+<form method="post" action="{{ url_for('post_login_jwt')}}">
+    <input type="text" name="username" placeholder="{{ translate('Email') }}" aria-label="Login" autocomplete="email"
+        required>
+    <input type="password" name="password" placeholder="{{ translate('Password') }}" aria-label="Password"
+        autocomplete="current-password" required>
+    <button type="submit" class="contrast">{{ translate('Login') }}</button>
+    <a href="{{ url_for('forgot_password') }}">{{ translate('Forgot your password') }}</a>
+</form>
+
 {% endblock content %}

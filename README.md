@@ -1,4 +1,4 @@
-# README
+# stadsarkiv-client
 
 ## Install for development
 
@@ -14,15 +14,17 @@ Or (Windows)
 
     source venv/Scripts/activate
 
+Install requirements:
+
     pip install -r requirements.txt
 
-## Run local development
+## Run for development
 
     python -m stadsarkiv_client
 
 Or: 
 
-    ./run-module.sh
+    ./bin/run-module.sh
 
 ## Install as requirement
 
@@ -33,59 +35,51 @@ Or:
 Update version and install latest version:
 
     pip uninstall -y stadsarkiv-client
-    pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@main 
+    pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@main
 
-### Run installed modules
+You may also install a specific version:
 
-Serve with default settings. This just serves the module with default pages and auth.  
+    pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@version
+
+## Run required module
+
+Usage: stadsarkiv-serve [OPTIONS]
+
+    stadsarkiv-serve --help
+
+    Options:
+    --reload BOOLEAN   Reload uvicorn on changes.
+    --port INTEGER     Server port.
+    --workers INTEGER  Number of workers.
+    --help             Show this message and exit.
+
+Serve the default module on port 5555:
 
     stadsarkiv-serve
 
-Or using some options:
+Or use some options:
 
     stadsarkiv-serve --port 5555 --reload true
 
-### Override defaults
+## Modifying the required module
 
-https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/stadsarkiv_client
+You may override the default module using the following files and dirs:
 
-The following folders and the contents can be overridden:
+    .env
+    settings.py
+    language.py
+    hooks.py
+    templates/
+    static/
 
-  * templates
-  * static
+All the above files and dirs are optional. You may see examples of all the above files in the 
+[example-config directory](https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/example-config)
+(These files are well documented)
 
-The following files can be overridden:
+These files and dirs should be placed in the directory where you run the module from - otherwise they will be ignored.
 
-  * settings.py  
-  * .env
+## Fix code
 
-You may add hooks in the following file:
+Run black, mypy and flake8:
 
-  * hooks.py
-
-Example of a [naive implementation of hooks](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/hooks.py):
-
-### Create .env file
-
-Alter default env:
-
-```.env
-# session secret
-SECRET=SECRET
-# developemnt or production
-ENVIRONMENT=production
-```
-
-### Override translations
-
-    touch language.py
-
-```.py
-language = {
-    "Email": "E-mail",
-}
-```
-
-See existing language keys: 
-
-https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/locales/da.py
+    ./bin/fix.sh

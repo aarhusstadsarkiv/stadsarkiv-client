@@ -159,3 +159,5 @@ cython_debug/
 #.idea/
 #
 logs
+client_test.py
+generate_client/openaws-client

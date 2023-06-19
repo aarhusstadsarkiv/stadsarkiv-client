@@ -1,45 +1,23 @@
 {% extends "base.html" %}
 
-{% block head %}
-<script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
-{% endblock head %}
-
 {% block content %}
-<h1>Create resource</h1>
+{% include "includes/main_title.html" %}
 
-<div id='editor_holder'></div>
-<button id='submit'>Create</button>
-
-<script>
-
-    var schema = {{ schema | safe }};
-
-    // Initialize the editor with a JSON schema
-    var options = {
-        disable_properties: true,
-        disable_collapse: true,
-        disable_edit_json: true,
-        schema: schema.data
-    }
-
-    console.log(options)
-    var editor = new JSONEditor(document.getElementById('editor_holder'), options);
-
-    fetch(getApiUrl("/entities/?type=car"), {
-        method: "POST",
-        body: JSON.stringify({
-          data: editor.getValue()
-      }),
-        credentials: "include",
-        ...props,
-    }).then(async r => {
-        if (r.status == 201) {
-            window.location.href = "resources.html";
-        } else {
-            alert(await r.text());
-        }
-    })
-
-</script>
+<table>
+    <tr>
+        <th>UUID</th>
+        <th>Schema</th>
+    </tr>
+    {% for entity in entities %}
+    <tr>
+        <td>
+            <a href="/entities/view/{{entity.uuid}}">{{ entity.uuid }}</a>
+        </td>
+        <td>
+            {{entity.schema_name }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
 
 {% endblock content %}

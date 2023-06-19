@@ -5,21 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{{ title }}{% endblock title %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/pico.css') }}?v={{ get_setting('version') }}">
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/pico-custom.css') }}?v={{ get_setting('version') }}">
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/flash.css') }}?v={{ get_setting('version') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/light.css') }}?v={{ get_setting('version') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/dolphin.css') }}?v={{ get_setting('version') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/default.css') }}?v={{ get_setting('version') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/record.css') }}?v={{ get_setting('version') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script type="importmap">
         {
           "imports": {
-            "{{ url_for('static', path='/js/flash.js') }}": "{{ url_for('static', path='/js/flash.js') }}?v={{ get_setting('version') }}"
+            "{{ url_for('static', path='/js/flash.js') }}": "{{ url_for('static', path='/js/flash.js') }}?v={{ get_setting('version') }}",
+            "{{ url_for('static', path='/js/requests.js') }}": "{{ url_for('static', path='/js/requests.js') }}?v={{ get_setting('version') }}",
+            "{{ url_for('static', path='/js/config.js') }}": "{{ url_for('static', path='/js/config.js') }}?v={{ get_setting('version') }}"
           }
         }
     </script>
     <script type="module">
-        import {themeSwitcher } from "{{ url_for('static', path='/js/minimal-theme-switcher.js') }}";
-        import { } from "{{ url_for('static', path='/js/main-events.js') }}";
         import { Flash } from "{{ url_for('static', path='/js/flash.js') }}";
-        themeSwitcher.init();
         Flash.setWidth();
     </script>
 
@@ -31,15 +32,13 @@
 <body>
 
     <nav class="container">
+        {% include "includes/logo.html" %}
         {% include "includes/navigation.html" %}
     </nav>
     
-
-    <main class="container">
-
+    <main class="container container-main">
         {% block content %}
         {% endblock content %}
-
     </main>
 
     <footer class="container">
@@ -47,7 +46,4 @@
     </footer>
 
 </body>
-
-
-
 </html>

@@ -1,17 +1,19 @@
 from stadsarkiv_client.hooks import hook_specs
-import pluggy
+import pluggy  # type: ignore
 import inspect
 import sys
-from stadsarkiv_client.utils.logging import get_log
+from stadsarkiv_client.core.logging import get_log
+
 log = get_log()
 
 
 try:
     import hooks
+
     log.info("Loaded local hooks: hooks.py")
 except ImportError:
     log.info("Local hooks NOT loaded: hooks.py")
-    hooks = None
+    hooks = None  # type: ignore
 
 
 def get_plugin_manager() -> pluggy.PluginManager:

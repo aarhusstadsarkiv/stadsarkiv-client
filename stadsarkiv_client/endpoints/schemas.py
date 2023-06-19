@@ -1,64 +1,59 @@
 from starlette.requests import Request
+from starlette.exceptions import HTTPException
 from starlette.responses import RedirectResponse
-from stadsarkiv_client.utils.templates import templates
-from stadsarkiv_client.utils.context import get_context
-from stadsarkiv_client.api_client.api_schemas import APISchema
-from stadsarkiv_client.api_client.api_base import APIBase
-# from stadsarkiv_client.utils import flash
-from stadsarkiv_client.utils.translate import translate
-from stadsarkiv_client.utils.logging import get_log
-from stadsarkiv_client.utils import flash
+from stadsarkiv_client.core.decorators import is_authenticated
+from stadsarkiv_client.core.templates import templates
+from stadsarkiv_client.core.context import get_context
+from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core import flash
+from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core.api import OpenAwsException
+from stadsarkiv_client.core import api
 from json import JSONDecodeError
 import json
+
+
 log = get_log()
 
 
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def get_schemas(request: Request):
-
-    api_schema = APISchema(request=request)
-    schemas = await api_schema.get_schemas()
-
-    context_values = {"title": translate("Schemas"), "schemas": schemas}
-    context = get_context(request, context_values=context_values)
-
-    return templates.TemplateResponse('schemas/schemas.html', context)
-
-
-async def get_schema(request: Request):
-
-    schema_type = request.path_params['schema_type']
-
-    api_schema = APISchema(request=request)
-    schema = await api_schema.get_schema(schema_type=schema_type)
-
-    context_values = {"title": translate("Schemas"), "schema": schema}
-    context = get_context(request, context_values=context_values)
-
-    return templates.TemplateResponse('schemas/schema.html', context)
-
-
-async def post_schema(request: Request):
-
     try:
+        schemas = await api.schemas(request)
+        context_values = {"title": translate("Schemas"), "schemas": schemas}
+        context = await get_context(request, context_values=context_values)
+        return templates.TemplateResponse("schemas/schemas.html", context)
+    except Exception as e:
+        log.exception(e)
+        raise HTTPException(status_code=404, detail=str(e))
 
-        form = await request.form()
-        type = str(form.get('type'))
-        data = str(form.get('data'))
 
-        data_dict = {}
-        data_dict["type"] = type
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
+async def get_schema(request: Request):
+    try:
+        schema = await api.schema_get(request)
+        # schema_dict = schema.to_dict()
+        schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
+        context_values = {"title": translate("Schemas"), "schema": schema_json}
+        context = await get_context(request, context_values=context_values)
 
-        data = json.loads(data)
-        data_dict["data"] = data
+        return templates.TemplateResponse("schemas/schema.html", context)
 
-        schema = APIBase(request=request)
-        schema.jwt_post_json(url="/schemas/", json=data_dict)
+    except Exception as e:
+        log.exception(e)
+        raise HTTPException(status_code=404, detail=str(e))
+
+
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
+async def post_schema(request: Request):
+    try:
+        await api.schema_create(request)
         flash.set_message(request, translate("Schema created."), type="success")
 
     except JSONDecodeError:
         flash.set_message(request, translate("Invalid JSON in data."), type="error")
-    except Exception as e:
-        log.info(e)
-        flash.set_message(request, e.args[0], type="error")
+    except OpenAwsException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
 
-    return RedirectResponse(url='/schemas', status_code=302)
+    return RedirectResponse(url="/schemas", status_code=302)

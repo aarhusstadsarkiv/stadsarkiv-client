@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "includes/main_title.html" %}
+{% set truncate_summary = 300 %}
+
+
+<form method="GET" action="{{ url_for('records_search')}}">
+    {% for key, value in query_params.items() %}
+    <input type="hidden" name="{{ key }}" value="{{ value }}">
+    {% endfor %}
+    <input type="text" name="q" placeholder="{{ translate('Search') }}" aria-label="{{ translate('search') }}"
+        value="{{ q }}">
+    <button type="submit" class="contrast">{{ translate('Search') }}</button>
+</form>
+
+{% macro parse_search_title(result) %}
+{% if result.label %}
+<div class="summary">{{ result.label|truncate(truncate_summary) }}</div>
+{% endif %}
+{% if result.summary %}
+<div class="summary">{{ result.summary|truncate(truncate_summary) }}</div>
+{% endif %}
+{% endmacro %}
+
+{% macro parse_record_content(label, content) %}
+{% if content %}
+<div class="record-content" style="padding-top: 0.2em; margin-bottom: 0.2em">
+    <div class="label" style="width: 6em;">
+        <strong>{{ label }}</strong>
+    </div>
+    <div class="search-content">
+        {{ content }}
+    </div>
+</div>
+{% endif %}
+{% endmacro %}
+
+{% macro parse_pagination (size, total) %}
+{% if not request.query_params.get('start') %}
+{% set start = 0 %}
+{% else %}
+{% set start = request.query_params.get('start') | int %}
+{% endif %}
+
+{# start is where to start, e.g. 100, size is how many to show, e.g. 10, total is the total number of results, e.g. 1000 #}
+<div class="pagination">
+    {% if start > 0 %}
+    <a href="?q={{ q }}&start={{ start - size }}&size={{ size }}">{{ translate('Previous') }}</a>
+    {% endif %}
+    {% if start + size < total %}
+    <a href="?q={{ q }}&start={{ start + size }}&size={{ size }}">{{ translate('Next') }}</a>
+    {% endif %}
+</div>
+{% endmacro %}
+
+<div class="search-results">
+
+    {{ parse_pagination(records.size, records.total) }}
+
+    {% for result in records.result %}
+    {% set serie = None %}
+    {% if result.series is iterable %}
+    {% set serie = result.series | last %}
+    {% endif %}
+    
+    <div class="search-result">
+        
+        <a class="search-link" href="/records/{{ result.id }}">
+                    
+            {{ parse_search_title(result) }}
+            {{ parse_record_content('Skaber', result.collectors_label) }}
+            {# parse_record_content('Samling', result.collectors_label) #}
+            {% if serie %}
+            {{ parse_record_content('Serie', serie) }}
+            {% endif %}
+
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    .search-results {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .search-result { 
+        box-sizing: border-box;
+        background-color: #fefefe;
+
+        padding: 20px;
+        border-top: 1px solid #e6e6e6;
+
+    }
+
+    .search-result:hover {
+        background-color: #f0f0f0;
+    }
+
+    .pagination {
+        
+    }
+
+    .search-link {
+        text-decoration: none;
+    }
+
+    .search-link:hover {
+        text-decoration: none;
+    }
+
+    .search-label {
+        color: #646464;
+        display: inline-block;
+        width: 5em;
+        font-weight: bold;
+    }
+
+    .search-content {
+        color: grey;
+    }
+
+</style>
+
+
+
+
+
+<pre>
+    {{ records_json }}
+</pre>
+
+{% endblock content %}

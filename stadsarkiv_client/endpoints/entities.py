@@ -1,56 +1,96 @@
 from starlette.requests import Request
-from starlette.responses import RedirectResponse
-from stadsarkiv_client.utils.templates import templates
-from stadsarkiv_client.utils.context import get_context
-from stadsarkiv_client.api_client.api_schemas import APISchema
-from stadsarkiv_client.api_client.api_base import APIBase
-# from stadsarkiv_client.utils import flash
-from stadsarkiv_client.utils.translate import translate
-from stadsarkiv_client.utils.logging import get_log
-from stadsarkiv_client.utils import flash
-from json import JSONDecodeError
+from starlette.exceptions import HTTPException
+from starlette.responses import JSONResponse
+from stadsarkiv_client.core.templates import templates
+from stadsarkiv_client.core.context import get_context
+from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core.decorators import is_authenticated
+from stadsarkiv_client.core import flash
+from stadsarkiv_client.core import api
 import json
+
+
 log = get_log()
 
 
-async def entity_create(request: Request):
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
+async def get_entity_create(request: Request):
+    try:
+        schema = await api.schema_get(request)
 
-    schema_type = request.path_params['schema_type']
+        """ Type needs to be altered to name before being used with the json editor
+        type is e.g. car
+        name is e.g. car_2 """
 
-    api_schema = APISchema(request=request)
-    schema = await api_schema.get_schema(schema_type=schema_type, as_text=True)
-    schema = schema.decode("utf-8")
+        schema["type"] = schema["name"]
+        schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
 
-    log.debug(schema)
+        context_values = {"title": translate("Entities"), "schema": schema_json}
+        context = await get_context(request, context_values=context_values)
 
-    context_values = {"title": translate("Entities"), "schema": schema}
-    context = get_context(request, context_values=context_values)
+        return templates.TemplateResponse("entities/entities_create.html", context)
 
-    return templates.TemplateResponse('entities/entities.html', context)
+    except Exception as e:
+        # for sure this is a 404
+        raise HTTPException(404, detail=str(e), headers=None)
 
 
-async def post_entity(request: Request):
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
+async def post_entity_create(request: Request):
+    # {"data":{"make":"Toyota","year":2008,"model":"test","safety":-1},"schema_name":"car_1"}
 
     try:
+        await api.entity_post(request)
+        flash.set_message(request, translate("Entity created"), type="success", remove=True)
+        return JSONResponse({"message": translate("Entity created"), "error": False})
 
-        form = await request.form()
-        type = str(form.get('type'))
-        data = str(form.get('data'))
-
-        data_dict = {}
-        data_dict["type"] = type
-
-        data = json.loads(data)
-        data_dict["data"] = data
-
-        schema = APIBase(request=request)
-        schema.jwt_post_json(url="/schemas/", json=data_dict)
-        flash.set_message(request, translate("Schema created."), type="success")
-
-    except JSONDecodeError:
-        flash.set_message(request, translate("Invalid JSON in data."), type="error")
     except Exception as e:
-        log.info(e)
-        flash.set_message(request, e.args[0], type="error")
+        log.exception(e)
+        return JSONResponse({"message": translate("Entity could not be created"), "error": True})
 
-    return RedirectResponse(url='/schemas', status_code=302)
+
+@is_authenticated(message=translate("You need to be logged in to view this page."))
+async def get_entities(request: Request):
+    try:
+        entities: list = await api.entities_get(request)
+        context_values = {"title": translate("Entities"), "entities": entities}
+        context = await get_context(request, context_values=context_values)
+        return templates.TemplateResponse("entities/entities.html", context)
+
+    except Exception as e:
+        log.exception(e)
+
+
+def get_schema_and_values(schema, entity):
+    schema_and_values = schema["data"]["properties"]
+    data = entity["data"]
+
+    for key, _value in schema_and_values.items():
+        if key in data:
+            schema_and_values[key]["value"] = data[key]
+
+    return schema_and_values
+
+
+async def get_entity_view(request: Request):
+    try:
+        # content
+        entity: dict = await api.entity_get(request)
+
+        # schema is e.g. person_1
+        schema_name: str = entity["schema_name"].split("_")[0]
+        schema_version = entity["schema_name"].split("_")[1]
+
+        # schema
+        schema = await api.schema_get_version(request, schema_name, schema_version)
+
+        schema_and_values = get_schema_and_values(schema, entity)
+
+        context_values = {"title": translate("Entity"), "schema_and_values": schema_and_values}
+        context = await get_context(request, context_values=context_values)
+        return templates.TemplateResponse("entities/entity.html", context)
+
+    except Exception as e:
+        log.exception(e)
+        raise HTTPException(404, detail=str(e), headers=None)

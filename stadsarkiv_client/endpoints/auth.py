@@ -1,163 +1,190 @@
 from starlette.requests import Request
-from starlette.responses import RedirectResponse
-from stadsarkiv_client.utils.templates import templates
-from stadsarkiv_client.utils.context import get_context
-from stadsarkiv_client.api_client.api_auth import APIAuth
-from stadsarkiv_client.utils import flash
-from stadsarkiv_client.utils.translate import translate
-from stadsarkiv_client.utils.logging import get_log
+from starlette.responses import RedirectResponse, JSONResponse
+from stadsarkiv_client.core.templates import templates
+from stadsarkiv_client.core.context import get_context
+from stadsarkiv_client.core.decorators import is_authenticated
+from stadsarkiv_client.core import flash
+from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core import user
+from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core.api import OpenAwsException
+from stadsarkiv_client.core import api
+
 log = get_log()
 
 
 async def get_login(request: Request):
-
     context_values = {"title": translate("Login")}
-    context = get_context(request, context_values=context_values)
+    context = await get_context(request, context_values=context_values)
 
-    if "logged_in" in request.session:
-        if request.session["logged_in"]:
-            return RedirectResponse(url='/', status_code=302)
+    if await api.is_logged_in(request):
+        flash.set_message(request, translate("You are already logged in."), type="error", remove=True)
+        return RedirectResponse(url="/", status_code=302)
 
-    return templates.TemplateResponse('auth/login.html', context)
-
-
-async def post_login_cookie(request: Request):
-
-    try:
-
-        form = await request.form()
-        username = str(form.get('username'))
-        password = str(form.get('password'))
-
-        fastapi_client = APIAuth(request=request)
-        cookie_dict = await fastapi_client.login_cookie(username, password)
-
-        request.session["logged_in"] = True
-        request.session["login_type"] = "cookie"
-        request.session["_auth"] = cookie_dict["_auth"]
-
-        flash.set_message(request, translate("You have been logged in."), type="success")
-        return RedirectResponse(url='/', status_code=302)
-    except Exception as e:
-        log.info(e)
-        flash.set_message(request, e.args[0], type="error")
-        return RedirectResponse(url='/auth/login', status_code=302)
+    return templates.TemplateResponse("auth/login.html", context)
 
 
 async def post_login_jwt(request: Request):
-
     try:
+        await api.auth_jwt_login_post(request)
+        flash.set_message(request, translate("You have been logged in."), type="success", remove=True)
+        return RedirectResponse(url="/", status_code=302)
 
-        form = await request.form()
-        username = str(form.get('username'))
-        password = str(form.get('password'))
-
-        fastapi_client = APIAuth(request)
-        bearer_token = await fastapi_client.login_jwt(username, password)
-
-        request.session["logged_in"] = True
-        request.session["access_token"] = bearer_token["access_token"]
-        request.session["token_type"] = bearer_token["token_type"]
-        request.session["login_type"] = "jwt"
-
-        flash.set_message(request, translate("You have been logged in."), type="success")
-        return RedirectResponse(url='/', status_code=302)
+    except OpenAwsException as e:
+        flash.set_message(request, str(e), type="error")
+        return RedirectResponse(url="/auth/login", status_code=302)
     except Exception as e:
-        log.info(e)
-        flash.set_message(request, e.args[0], type="error")
-        return RedirectResponse(url='/auth/login', status_code=302)
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
 
 
 async def get_logout(request: Request):
-
     context_values = {"title": translate("Logout")}
-    context = get_context(request, context_values=context_values)
-    return templates.TemplateResponse('auth/logout.html', context)
+    context = await get_context(request, context_values=context_values)
+    return templates.TemplateResponse("auth/logout.html", context)
 
 
 async def post_logout(request: Request):
     try:
-
-        request.session.pop('logged_in', None)
-        flash.set_message(request, translate(
-            "You have been logged out."), type="success")
+        await user.logout(request)
+        flash.set_message(request, translate("You have been logged out."), type="success")
     except Exception as e:
-        log.info(e)
-        flash.set_message(request, translate(
-            "Error logging out."), type="error")
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
 
-    return RedirectResponse(url='/auth/login', status_code=302)
+    return RedirectResponse(url="/auth/login", status_code=302)
 
 
 async def get_register(request: Request):
     context_values = {"title": translate("Register")}
-    context = get_context(request, context_values=context_values)
-    return templates.TemplateResponse('auth/register.html', context)
+    context = await get_context(request, context_values=context_values)
+    return templates.TemplateResponse("auth/register.html", context)
 
 
 async def post_register(request: Request):
     try:
-        form = await request.form()
-        email = str(form.get('email'))
-        password = str(form.get('password'))
+        await api.auth_register_post(request)
+        flash.set_message(
+            request,
+            translate("You have been registered. Check your email to confirm your account."),
+            type="success",
+        )
 
-        fastapi_client = APIAuth(request=request)
-        register_dict = {"email": email, "password": password}
-
-        await fastapi_client.register(register_dict)
-
-        flash.set_message(request, translate(
-            "You have been registered. Check your email to confirm your account."), type="success")
+        return RedirectResponse(url="/auth/login", status_code=302)
+    except OpenAwsException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
     except Exception as e:
-        log.info(e)
-        flash.set_message(request, e.args[0], type="error")
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
 
-    return RedirectResponse(url='/auth/register', status_code=302)
+    return RedirectResponse(url="/auth/register", status_code=302)
 
 
-async def get_me(request: Request):
-    me = None
+async def get_verify(request: Request):
     try:
-        fastapi_client = APIAuth(request=request)
-        # me = None
-        if request.session["login_type"] == "jwt":
-            access_token = request.session["access_token"]
-            token_type = request.session["token_type"]
-            me = await fastapi_client.me_jwt(access_token, token_type)
-        else:
-            me = await fastapi_client.me_cookie(cookie=request.session["_auth"])
+        await api.auth_verify_post(request)
+        flash.set_message(
+            request,
+            translate("You have been verified."),
+            type="success",
+        )
 
-        context_values = {"title": translate("Profile"), "me": me}
-        context = get_context(request, context_values=context_values)
-
-        return templates.TemplateResponse('auth/me.html', context)
+        return RedirectResponse(url="/", status_code=302)
+    except OpenAwsException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
     except Exception as e:
-        log.info(e)
-        flash.set_message(request, e.args[0], type="error")
-        return RedirectResponse(url='/auth/login', status_code=302)
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+
+    return RedirectResponse(url="/", status_code=302)
+
+
+@is_authenticated(message=translate("You need to be logged in to view this page."))
+async def get_me_jwt(request: Request):
+    try:
+        me = await api.users_me_get(request)
+        context_values = {"title": translate("Profile"), "me": me}
+        context = await get_context(request, context_values=context_values)
+        return templates.TemplateResponse("auth/me.html", context)
+    except Exception as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+        return RedirectResponse(url="/auth/login", status_code=302)
 
 
 async def get_forgot_password(request: Request):
-
     context_values = {"title": translate("Forgot your password")}
-    context = get_context(request, context_values=context_values)
-    return templates.TemplateResponse('auth/forgot_password.html', context)
+    context = await get_context(request, context_values=context_values)
+    return templates.TemplateResponse("auth/forgot_password.html", context)
 
 
 async def post_forgot_password(request: Request):
-
     try:
-        form = await request.form()
-        email = str(form.get('email'))
-
-        fastapi_client = APIAuth(request=request)
-
-        await fastapi_client.forgot_password(email)
-
-        flash.set_message(request, translate(
-            "You have been registered. Check your email to confirm your account."), type="success")
+        await api.auth_forgot_password(request)
+        flash.set_message(
+            request,
+            translate("An email has been sent to you with instructions on how to reset your password."),
+            type="success",
+        )
+    except OpenAwsException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
     except Exception as e:
-        log.info(e)
-        flash.set_message(request, e.args[0], type="error")
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
 
-    return RedirectResponse(url='/auth/register', status_code=302)
+    return RedirectResponse(url="/auth/forgot-password", status_code=302)
+
+
+async def get_reset_password(request: Request):
+    token = request.path_params["token"]
+    context_values = {"title": translate("Enter new password"), "token": token}
+    context = await get_context(request, context_values=context_values)
+    return templates.TemplateResponse("auth/reset_password.html", context)
+
+
+async def post_reset_password(request: Request):
+    try:
+        await api.auth_reset_password_post(request)
+        flash.set_message(
+            request,
+            translate("Your password has been reset. You can now login."),
+            type="success",
+        )
+        return RedirectResponse(url="/auth/login", status_code=302)
+
+    except OpenAwsException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+    except Exception as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+
+    token = request.path_params["token"]
+    return RedirectResponse(url="/auth/reset-password/" + token, status_code=302)
+
+
+async def send_verify_email(request: Request):
+    try:
+        await api.auth_request_verify_post(request)
+        flash.set_message(
+            request,
+            translate("A verify link has been sent to your email. You may verify your account now by clicking the link."),
+            type="success",
+        )
+
+    except OpenAwsException as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+    except Exception as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+
+    return RedirectResponse(url="/auth/me", status_code=302)
+
+
+async def post_user_info(request: Request):
+    is_logged_in = await api.is_logged_in(request)
+    return JSONResponse({"is_logged_in": is_logged_in})

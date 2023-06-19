@@ -1,6 +1,13 @@
 <div class="flash-messages">
     {% for message in flash_messages %}
-        <div class="flash flash-{{ message.type }}">
+
+        {% if message.remove %}
+            {% set class = "flash-remove" %}
+        {% else %}
+            {% set class = "" %}
+        {% endif %}
+
+        <div class="flash flash-{{ message.type }} {{ class }}">
             {{ message.message }}
         </div>
     {% endfor %}
