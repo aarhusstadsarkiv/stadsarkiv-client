@@ -78,6 +78,7 @@ en = {
     "The token is not valid. You need to request a new mail with a new token.": "The token is not valid. You need to request a new mail with a new token.",
     "The token is not valid. You will need to a new token to verify your email.": "The token is not valid. You will need to a new token to verify your email.",
     "There is no user with this email address.": "There is no user with this email address.",
+    "Unknown error. Please try again later.": "Unknown error. Please try again later.",
     "Update Password": "Update Password",
     "User already exists. Try to login instead.": "User already exists. Try to login instead.",
     "User could not be read.": "User could not be read.",
