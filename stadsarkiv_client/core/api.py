@@ -15,7 +15,7 @@ log = get_log()
 base_url = str(settings["fastapi_endpoint"])
 
 
-def get_jwt_headers(request: Request, headers: dict = {}) -> dict:
+def _get_jwt_headers(request: Request, headers: dict = {}) -> dict:
     if "access_token" not in request.session:
         raise OpenAwsException(401, translate("You need to be logged in to view this page."))
 
@@ -24,7 +24,7 @@ def get_jwt_headers(request: Request, headers: dict = {}) -> dict:
     return headers
 
 
-async def jwt_login_post(request: Request):
+async def auth_jwt_login_post(request: Request):
     form = await request.form()
     username = str(form.get("username"))
     password = str(form.get("password"))
@@ -46,7 +46,7 @@ async def jwt_login_post(request: Request):
             raise_openaws_exception(response.status_code, json_response)
 
 
-async def register_post(request: Request):
+async def auth_register_post(request: Request):
     await validate_passwords(request)
 
     form = await request.form()
@@ -68,7 +68,7 @@ async def register_post(request: Request):
             raise_openaws_exception(response.status_code, json_response)
 
 
-async def verify_post(request: Request):
+async def auth_verify_post(request: Request):
     token = request.path_params["token"]
 
     async with httpx.AsyncClient() as client:
@@ -81,14 +81,14 @@ async def verify_post(request: Request):
             raise_openaws_exception(response.status_code, json_response)
 
 
-async def me_get(request: Request) -> dict:
+async def users_me_get(request: Request) -> dict:
     """cache me on request state. In case of multiple calls to me_read
     in the same request, we don't need to call the api again.
     """
     if hasattr(request.state, "me"):
         return request.state.me
 
-    headers = get_jwt_headers(request, {"Accept": "application/json"})
+    headers = _get_jwt_headers(request, {"Accept": "application/json"})
 
     url = base_url + "/v1/users/me"
 
@@ -109,7 +109,7 @@ async def me_get(request: Request) -> dict:
             )
 
 
-async def forgot_password(request: Request) -> None:
+async def auth_forgot_password(request: Request) -> None:
     form = await request.form()
     email = str(form.get("email"))
 
@@ -123,7 +123,7 @@ async def forgot_password(request: Request) -> None:
             raise_openaws_exception(response.status_code, json_response)
 
 
-async def reset_password_post(request: Request) -> None:
+async def auth_reset_password_post(request: Request) -> None:
     await validate_passwords(request)
 
     form = await request.form()
@@ -140,10 +140,10 @@ async def reset_password_post(request: Request) -> None:
             raise_openaws_exception(response.status_code, json_response)
 
 
-async def request_verify_post(request: Request):
+async def auth_request_verify_post(request: Request):
     """request for at token sent by email. function used in order to verify email."""
 
-    me = await me_get(request)
+    me = await users_me_get(request)
     email = me["email"]
 
     async with httpx.AsyncClient() as client:
@@ -158,7 +158,7 @@ async def request_verify_post(request: Request):
 
 async def is_logged_in(request: Request) -> bool:
     try:
-        await me_get(request)
+        await users_me_get(request)
         return True
 
     except Exception:
@@ -178,7 +178,7 @@ async def has_permissions(request: Request, permissions: list[str]) -> bool:
     """guest, basic, employee, admin"""
 
     try:
-        me = await me_get(request)
+        me = await users_me_get(request)
         user_permissions: dict = me.get("permissions", [])
         user_permissions_list = await permissions_as_list(user_permissions)
         for permission in permissions:
@@ -191,14 +191,14 @@ async def has_permissions(request: Request, permissions: list[str]) -> bool:
 
 async def me_permissions(request: Request) -> list[str]:
     try:
-        me = await me_get(request)
+        me = await users_me_get(request)
         user_permissions: dict = me.get("permissions", [])
         return await permissions_as_list(user_permissions)
     except Exception:
         return []
 
 
-async def schemas_read(request: Request):
+async def schemas(request: Request):
     async with httpx.AsyncClient() as client:
         url = base_url + "/v1/schemas/?offset=0&limit=100000"
         headers = {"Accept": "application/json"}
@@ -210,7 +210,7 @@ async def schemas_read(request: Request):
             response.raise_for_status()
 
 
-async def schema_read(request: Request) -> typing.Any:
+async def schema_get(request: Request) -> typing.Any:
     schema_type = request.path_params["schema_type"]
 
     async with httpx.AsyncClient() as client:
@@ -223,7 +223,7 @@ async def schema_read(request: Request) -> typing.Any:
             response.raise_for_status()
 
 
-async def schema_read_specific(request: Request, schema_name: str, schema_version: int):
+async def schema_get_version(request: Request, schema_name: str, schema_version: int):
     async with httpx.AsyncClient() as client:
         url = base_url + "/v1/schemas/" + schema_name + "?version=" + str(schema_version)
 
@@ -247,7 +247,7 @@ async def schema_create(request: Request) -> typing.Any:
 
     async with httpx.AsyncClient() as client:
         url = base_url + "/v1/schemas/"
-        headers = get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
+        headers = _get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
         response = await client.post(url, json=data_dict, headers=headers)
 
         if response.is_success:
@@ -256,13 +256,13 @@ async def schema_create(request: Request) -> typing.Any:
             response.raise_for_status()
 
 
-async def entity_create(request: Request) -> typing.Any:
+async def entity_post(request: Request) -> typing.Any:
     schema_type = request.path_params["schema_type"]
     json_dict = await request.json()
     json_dict = json_dict["data"]
 
     json_data = {"data": json_dict, "schema_name": schema_type}
-    headers = get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
+    headers = _get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
     url = base_url + "/v1/entities/"
 
     async with httpx.AsyncClient() as client:
@@ -279,8 +279,8 @@ async def entity_create(request: Request) -> typing.Any:
             response.raise_for_status()
 
 
-async def entities_read(request: Request) -> typing.Any:
-    headers = get_jwt_headers(request)
+async def entities_get(request: Request) -> typing.Any:
+    headers = _get_jwt_headers(request)
     headers["Accept"] = "application/json"
     url = base_url + "/v1/entities/" + "?offset=0&limit=100000"
 
@@ -297,7 +297,7 @@ async def entities_read(request: Request) -> typing.Any:
             response.raise_for_status()
 
 
-async def entity_read(request: Request) -> typing.Any:
+async def entity_get(request: Request) -> typing.Any:
     entity_id = request.path_params["uuid"]
 
     async with httpx.AsyncClient() as client:
@@ -311,7 +311,7 @@ async def entity_read(request: Request) -> typing.Any:
             response.raise_for_status()
 
 
-async def record_read(request: Request) -> typing.Any:
+async def proxies_record_get(request: Request) -> typing.Any:
     # e.g. 000478348
     record_id = request.path_params["record_id"]
 
@@ -326,7 +326,8 @@ async def record_read(request: Request) -> typing.Any:
             response.raise_for_status()
 
 
-async def records_search(request: Request) -> typing.Any:
+async def proxies_records(request: Request) -> typing.Any:
+    """search records"""
     query_str = urllib.parse.urlencode(request.query_params)
     query_str = urllib.parse.quote(query_str)
 

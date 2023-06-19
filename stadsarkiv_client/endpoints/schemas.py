@@ -19,7 +19,7 @@ log = get_log()
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def get_schemas(request: Request):
     try:
-        schemas = await api.schemas_read(request)
+        schemas = await api.schemas(request)
         context_values = {"title": translate("Schemas"), "schemas": schemas}
         context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("schemas/schemas.html", context)
@@ -31,7 +31,7 @@ async def get_schemas(request: Request):
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def get_schema(request: Request):
     try:
-        schema = await api.schema_read(request)
+        schema = await api.schema_get(request)
         # schema_dict = schema.to_dict()
         schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
         context_values = {"title": translate("Schemas"), "schema": schema_json}

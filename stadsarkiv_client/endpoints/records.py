@@ -21,7 +21,7 @@ async def get_records_search(request: Request):
         query_params = {k: v for k, v in query_items if k != "q"}
         q = request.query_params.get("q", "")
 
-    records = await api.records_search(request)
+    records = await api.proxies_records(request)
     records_json = json.dumps(records, indent=4, ensure_ascii=False)
     context_values = {"title": translate("Search"), "records": records, "query_params": query_params, "q": q, "records_json": records_json}
 
@@ -32,7 +32,7 @@ async def get_records_search(request: Request):
 async def get_record_view(request: Request):
     try:
         permissions = await api.me_permissions(request)
-        record = await api.record_read(request)
+        record = await api.proxies_record_get(request)
 
         record_dict = record_alter(request, record)
         record_json = json.dumps(record_dict, indent=4, ensure_ascii=False)
@@ -64,7 +64,7 @@ async def get_record_view(request: Request):
 
 async def get_record_view_json(request: Request):
     try:
-        record = await api.record_read(request)
+        record = await api.proxies_record_get(request)
         record_dict = record_alter(request, record)
 
         record_json = json.dumps(record_dict, indent=4, ensure_ascii=False)

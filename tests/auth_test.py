@@ -33,5 +33,5 @@ class TestAuth(unittest.TestCase):
 
     def test_login_post_incorrect(self):
         client = TestClient(app)
-        response = client.post("/auth/post-login-jwt", data={"username": "dennis.iversens@gmail.com", "password": "iversen1234"})
+        response = client.post("/auth/post-login-jwt", data={"username": "bad.mail@test.com", "password": "bad_password"})
         self.assertEqual(response.status_code, 200)

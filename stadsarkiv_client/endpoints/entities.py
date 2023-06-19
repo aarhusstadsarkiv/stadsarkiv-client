@@ -17,7 +17,7 @@ log = get_log()
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def get_entity_create(request: Request):
     try:
-        schema = await api.schema_read(request)
+        schema = await api.schema_get(request)
 
         """ Type needs to be altered to name before being used with the json editor
         type is e.g. car
@@ -41,7 +41,7 @@ async def post_entity_create(request: Request):
     # {"data":{"make":"Toyota","year":2008,"model":"test","safety":-1},"schema_name":"car_1"}
 
     try:
-        await api.entity_create(request)
+        await api.entity_post(request)
         flash.set_message(request, translate("Entity created"), type="success", remove=True)
         return JSONResponse({"message": translate("Entity created"), "error": False})
 
@@ -53,7 +53,7 @@ async def post_entity_create(request: Request):
 @is_authenticated(message=translate("You need to be logged in to view this page."))
 async def get_entities(request: Request):
     try:
-        entities: list = await api.entities_read(request)
+        entities: list = await api.entities_get(request)
         context_values = {"title": translate("Entities"), "entities": entities}
         context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("entities/entities.html", context)
@@ -76,14 +76,14 @@ def get_schema_and_values(schema, entity):
 async def get_entity_view(request: Request):
     try:
         # content
-        entity: dict = await api.entity_read(request)
+        entity: dict = await api.entity_get(request)
 
         # schema is e.g. person_1
         schema_name: str = entity["schema_name"].split("_")[0]
         schema_version = entity["schema_name"].split("_")[1]
 
         # schema
-        schema = await api.schema_read_specific(request, schema_name, schema_version)
+        schema = await api.schema_get_version(request, schema_name, schema_version)
 
         schema_and_values = get_schema_and_values(schema, entity)
 
