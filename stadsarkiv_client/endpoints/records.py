@@ -35,10 +35,7 @@ async def get_record_view(request: Request):
         record = await api.proxies_record_get(request)
 
         record_dict = record_alter(request, record)
-        record_json = json.dumps(record_dict, indent=4, ensure_ascii=False)
-
         record_sections = get_sections(record_dict)
-        record_sections_json = json.dumps(record_sections, indent=4, ensure_ascii=False)
 
         if "administration" in record_sections and "employee" not in permissions:
             del record_sections["administration"]
@@ -49,9 +46,7 @@ async def get_record_view(request: Request):
         context_values = {
             "me_permissions": permissions,
             "record": record_dict,
-            "record_json": record_json,
             "record_sections": record_sections,
-            "record_sections_json": record_sections_json,
         }
 
         context = await get_context(request, context_values=context_values)

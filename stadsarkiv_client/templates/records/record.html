@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% import "macros/record.html" as record_macros %}  
+{% import "macros/record.html" as macros_record %}  
 
 {% set title = record["title"] %}
 {% set search_url = "/records-search" %}
@@ -8,7 +8,7 @@
 {% block content %}
 
 <div class="record">
-    {{ record_macros.parse_sections(record, record_sections) }}
+    {{ macros_record.parse_sections(record, record_sections) }}
 </div>
 
 <p>

@@ -69,9 +69,11 @@ routes = [
     Route("/records-search", endpoint=records.get_records_search, name="records_search"),
     Route("/records/{record_id:str}", endpoint=records.get_record_view, name="record_view"),
     Route("/records/{record_id:str}/json", endpoint=records.get_record_view_json, name="record_view_json"),
-    Route("/test", endpoint=testing.test, name="test"),
-    Route("/test-entities-macro", endpoint=testing.test_entitites_macro, name="test"),
 ]
+
+if settings["environment"] == 'development':
+    routes.append(Route("/test", endpoint=testing.test, name="test"))
+    routes.append(Route("/test-entity/{record_id:str}", endpoint=testing.test_entitites_macro, name="test"))
 
 
 # Add routes for custom pages

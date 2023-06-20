@@ -19,12 +19,12 @@ async def test(request: Request):
 
 
 async def test_entitites_macro(request: Request):
-    context_variables = {"title": "Test entities macro"}
 
-    record_id = "000110308"
+    record_id = request.path_params["record_id"]
 
-    record = await api.proxies_record_get_by_id(record_id)
-    log.debug(record)
+    entity = await api.proxies_record_get_by_id(record_id)
+    entity_json = json.dumps(entity, indent=4, ensure_ascii=False)
+    context_variables = {"title": "Test entities macro", "entity": entity, "entity_json": entity_json}
 
     context = await get_context(request, context_variables)
     return templates.TemplateResponse("testing/test_entities_macro.html", context)
