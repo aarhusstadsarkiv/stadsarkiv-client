@@ -19,7 +19,6 @@ async def test(request: Request):
 
 
 async def test_entitites_macro(request: Request):
-
     record_id = request.path_params["record_id"]
 
     log.debug(record_id)
