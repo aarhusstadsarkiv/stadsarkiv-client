@@ -70,7 +70,7 @@ routes = [
     Route("/records/{record_id:str}", endpoint=records.get_record_view, name="record_view"),
     Route("/records/{record_id:str}/json", endpoint=records.get_record_view_json, name="record_view_json"),
     Route("/test", endpoint=testing.test, name="test"),
-    Route("/test-entities-macro", endpoint=testing.test_entitites_macro, name="test"),
+    Route("/test-entities-macro/{record_id:str}", endpoint=testing.test_entitites_macro, name="test"),
 ]
 
 
