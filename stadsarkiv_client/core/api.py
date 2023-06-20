@@ -311,10 +311,8 @@ async def entity_get(request: Request) -> typing.Any:
             response.raise_for_status()
 
 
-async def proxies_record_get(request: Request) -> typing.Any:
+async def proxies_record_get_by_id(record_id: str) -> typing.Any:
     # e.g. 000478348
-    record_id = request.path_params["record_id"]
-
     async with httpx.AsyncClient() as client:
         url = base_url + "/v1/records/" + record_id
         headers = {"Accept": "application/json"}
@@ -326,14 +324,20 @@ async def proxies_record_get(request: Request) -> typing.Any:
             response.raise_for_status()
 
 
+async def proxies_record_get(request: Request) -> typing.Any:
+    # e.g. 000478348
+    record_id = request.path_params["record_id"]
+    return await proxies_record_get_by_id(record_id)
+
+
 async def proxies_records(request: Request) -> typing.Any:
     """search records"""
     query_str = urllib.parse.urlencode(request.query_params)
     query_str = urllib.parse.quote(query_str)
 
     async with httpx.AsyncClient() as client:
-        endpoint = "https://dev.openaws.dk/v1/records?params=" + query_str
-        response = await client.get(endpoint)
+        url = base_url + "/v1/records?params=" + query_str
+        response = await client.get(url)
 
         if response.is_success:
             return response.json()
