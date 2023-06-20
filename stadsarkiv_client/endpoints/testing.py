@@ -19,9 +19,8 @@ async def test(request: Request):
 
 
 async def test_entitites_macro(request: Request):
-    record_id = request.path_params["record_id"]
 
-    log.debug(record_id)
+    record_id = request.path_params["record_id"]
 
     entity = await api.proxies_record_get_by_id(record_id)
     entity_json = json.dumps(entity, indent=4, ensure_ascii=False)
