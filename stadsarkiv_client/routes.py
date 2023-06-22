@@ -71,7 +71,7 @@ routes = [
     Route("/records/{record_id:str}/json", endpoint=records.get_record_view_json, name="record_view_json"),
 ]
 
-if settings["environment"] == 'development':
+if settings["environment"] == "development":
     routes.append(Route("/test", endpoint=testing.test, name="test"))
     routes.append(Route("/test-entity/{record_id:str}", endpoint=testing.test_entitites_macro, name="test"))
 
