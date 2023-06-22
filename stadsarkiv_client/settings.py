@@ -30,7 +30,7 @@ settings = {
         "secure": cookie_secure,
         "samesite": "lax",
     },
-    "fastapi_endpoint": "https://dev.openaws.dk",
+    "api_base_url": "https://dev.openaws.dk/v1",
     "main_menu": [
         {"name": "home", "title": "Hjem"},
         {"name": "login", "title": "Log ind"},

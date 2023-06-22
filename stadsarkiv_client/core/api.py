@@ -12,7 +12,7 @@ import typing
 
 log = get_log()
 
-base_url = str(settings["fastapi_endpoint"])
+base_url = str(settings["api_base_url"])
 
 
 def _get_jwt_headers(request: Request, headers: dict = {}) -> dict:
@@ -32,7 +32,7 @@ async def auth_jwt_login_post(request: Request):
     login_dict = {"username": username, "password": password}
 
     async with httpx.AsyncClient() as client:
-        url = base_url + "/v1/auth/jwt/login"
+        url = base_url + "/auth/jwt/login"
         headers = {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"}
         response = await client.post(url, data=login_dict, headers=headers)
 
@@ -54,7 +54,7 @@ async def auth_register_post(request: Request):
     password = str(form.get("password"))
 
     async with httpx.AsyncClient() as client:
-        url = base_url + "/v1/auth/register"
+        url = base_url + "/auth/register"
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json={"email": email, "password": password}, headers=headers)
 
@@ -72,7 +72,7 @@ async def auth_verify_post(request: Request):
     token = request.path_params["token"]
 
     async with httpx.AsyncClient() as client:
-        url = base_url + "/v1/auth/verify"
+        url = base_url + "/auth/verify"
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json={"token": token}, headers=headers)
 
@@ -90,7 +90,7 @@ async def users_me_get(request: Request) -> dict:
 
     headers = _get_jwt_headers(request, {"Accept": "application/json"})
 
-    url = base_url + "/v1/users/me"
+    url = base_url + "/users/me"
 
     async with httpx.AsyncClient() as client:
         response = await client.get(
@@ -114,7 +114,7 @@ async def auth_forgot_password(request: Request) -> None:
     email = str(form.get("email"))
 
     async with httpx.AsyncClient() as client:
-        url = base_url + "/v1/auth/forgot-password"
+        url = base_url + "/auth/forgot-password"
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json={"email": email}, headers=headers)
 
@@ -131,7 +131,7 @@ async def auth_reset_password_post(request: Request) -> None:
     token = request.path_params["token"]
 
     async with httpx.AsyncClient() as client:
-        url = base_url + "/v1/auth/reset-password"
+        url = base_url + "/auth/reset-password"
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json={"password": password, "token": token}, headers=headers)
 
@@ -147,7 +147,7 @@ async def auth_request_verify_post(request: Request):
     email = me["email"]
 
     async with httpx.AsyncClient() as client:
-        url = base_url + "/v1/auth/request-verify-token"
+        url = base_url + "/auth/request-verify-token"
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json={"email": email}, headers=headers)
 
@@ -200,7 +200,7 @@ async def me_permissions(request: Request) -> list[str]:
 
 async def schemas(request: Request):
     async with httpx.AsyncClient() as client:
-        url = base_url + "/v1/schemas/?offset=0&limit=100000"
+        url = base_url + "/schemas/?offset=0&limit=100000"
         headers = {"Accept": "application/json"}
         response = await client.get(url, headers=headers)
 
@@ -214,7 +214,7 @@ async def schema_get(request: Request) -> typing.Any:
     schema_type = request.path_params["schema_type"]
 
     async with httpx.AsyncClient() as client:
-        url = base_url + "/v1/schemas/" + schema_type
+        url = base_url + "/schemas/" + schema_type
         headers = {"Accept": "application/json"}
         response: httpx.Response = await client.get(url, headers=headers)
         if response.is_success:
@@ -225,7 +225,7 @@ async def schema_get(request: Request) -> typing.Any:
 
 async def schema_get_version(request: Request, schema_name: str, schema_version: int):
     async with httpx.AsyncClient() as client:
-        url = base_url + "/v1/schemas/" + schema_name + "?version=" + str(schema_version)
+        url = base_url + "/schemas/" + schema_name + "?version=" + str(schema_version)
 
         headers = {"Accept": "application/json"}
         response = await client.get(url, headers=headers)
@@ -246,7 +246,7 @@ async def schema_create(request: Request) -> typing.Any:
     data_dict["data"] = json.loads(data)
 
     async with httpx.AsyncClient() as client:
-        url = base_url + "/v1/schemas/"
+        url = base_url + "/schemas/"
         headers = _get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
         response = await client.post(url, json=data_dict, headers=headers)
 
@@ -263,7 +263,7 @@ async def entity_post(request: Request) -> typing.Any:
 
     json_data = {"data": json_dict, "schema_name": schema_type}
     headers = _get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
-    url = base_url + "/v1/entities/"
+    url = base_url + "/entities/"
 
     async with httpx.AsyncClient() as client:
         response = await client.post(
@@ -282,7 +282,7 @@ async def entity_post(request: Request) -> typing.Any:
 async def entities_get(request: Request) -> typing.Any:
     headers = _get_jwt_headers(request)
     headers["Accept"] = "application/json"
-    url = base_url + "/v1/entities/" + "?offset=0&limit=100000"
+    url = base_url + "/entities/" + "?offset=0&limit=100000"
 
     async with httpx.AsyncClient() as client:
         response = await client.get(
@@ -301,7 +301,7 @@ async def entity_get(request: Request) -> typing.Any:
     entity_id = request.path_params["uuid"]
 
     async with httpx.AsyncClient() as client:
-        url = base_url + "/v1/entities/" + entity_id
+        url = base_url + "/entities/" + entity_id
         headers = {"Accept": "application/json"}
         response = await client.get(url, headers=headers)
 
@@ -314,7 +314,7 @@ async def entity_get(request: Request) -> typing.Any:
 async def proxies_record_get_by_id(record_id: str) -> typing.Any:
     # e.g. 000478348
     async with httpx.AsyncClient() as client:
-        url = base_url + "/v1/records/" + record_id
+        url = base_url + "/records/" + record_id
         headers = {"Accept": "application/json"}
         response = await client.get(url, headers=headers)
 
@@ -336,7 +336,7 @@ async def proxies_records(request: Request) -> typing.Any:
     query_str = urllib.parse.quote(query_str)
 
     async with httpx.AsyncClient() as client:
-        url = base_url + "/v1/records?params=" + query_str
+        url = base_url + "/records?params=" + query_str
         response = await client.get(url)
 
         if response.is_success:
