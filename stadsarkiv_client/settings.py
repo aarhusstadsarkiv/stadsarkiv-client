@@ -46,4 +46,35 @@ settings = {
     "pages": [
         {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
     ],
+    "record_sections": {
+        "Kernedata": ["collectors", "content_types_normalized", "creators", "date_normalized", "curators", "id"],
+        "Beskrivelse": [
+            "heading",
+            "summary",
+            "desc_notes",
+            "collection",
+            "series",
+            "collection_tags",
+            "subjects",
+        ],
+        "Ophavsret": ["copyright_status"],
+        "Beskrivelsesdata": ["desc_data"],
+        "Relationer": ["organisations", "locations", "events", "people", "objects"],
+        "Rettighedsnoter": ["rights_notes"],
+        "Anden juridisk beskyttelse": ["contractual_status", "other_legal_restrictions"],
+        "Tilgængelighed": ["availability"],
+        "Bestilling": ["ordering"],
+        "Administration": [
+            "admin_notes",
+            "admin_data",
+            "registration_id",
+            "created_by",
+            "created",
+            "last_updated_by",
+            "last_updated",
+        ],
+
+        "Resourcer": ["resources"],
+        "Download": ["representations"],
+    },
 }
