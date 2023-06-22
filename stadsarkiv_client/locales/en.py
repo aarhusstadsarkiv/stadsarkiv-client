@@ -117,6 +117,7 @@ en = {
     "label_record_availability": "Availability",
     "label_record_availability_normalized": "label_record_availability_normalized",
     "label_record_collection": "Collection",
+    "label_record_collection_tags": "label_record_collection_tags",
     "label_record_collection_tags_normalized": "label_record_collection_tags_normalized",
     "label_record_collectors": "Collectors",
     "label_record_content_types": "Content Types",
@@ -132,6 +133,7 @@ en = {
     "label_record_date_from": "Date From",
     "label_record_date_normalized": "label_record_date_normalized",
     "label_record_date_to": "Date To",
+    "label_record_desc_data": "label_record_desc_data",
     "label_record_desc_notes": "label_record_desc_notes",
     "label_record_events": "label_record_events",
     "label_record_formidlingsegnet": "label_record_formidlingsegnet",
@@ -154,6 +156,7 @@ en = {
     "label_record_rights_notes": "label_record_rights_notes",
     "label_record_schema": "Schema",
     "label_record_sections": "label_record_sections",
+    "label_record_series": "label_record_series",
     "label_record_series_normalized": "Series",
     "label_record_source": "label_record_source",
     "label_record_stedsangivelse": "label_record_stedsangivelse",
@@ -163,5 +166,5 @@ en = {
     "label_record_thumbnail": "Thumbnail",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "search": "search",
+    "search": "search"
 }
