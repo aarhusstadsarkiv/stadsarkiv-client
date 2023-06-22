@@ -1,45 +1,62 @@
-{% macro parse_header(header, is_type) %}
-<hr>
-<h2>{{ header }}</h2>
+{% set settings = {'skip_translate': False} %}
+
+{% macro parse_record_label (label) %}
+<div class="label">
+    {% if settings.skip_translate %}
+    <strong>{{ label }} </strong>
+    {% else %}
+    {% set label = "label_record_" + label %}
+    <strong>{{ translate(label) }} </strong>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro parse_record_value (label, value) %}
+<div class="record-content">
+    {{ parse_record_label(label)}}
+    <div class="content">
+        <p>
+            {{ parse_value_(value) }}
+        </p>
+    </div>
+</div>
 {% endmacro %}
 
 {% macro parse_value(value) %}
-<p>{{ value }}</p>
+{{ value }}
 {% endmacro %}
 
 {% macro parse_key_value(key, value) %}
 {% if is_primitive(value) %}
-<p><strong>{{ key }}</strong>: {{ value }}</p>
+<strong>{{ key }}</strong>: {{ value }}
 {% elif is_list_of_primitives(value) %}
-<p><strong>{{ key }}</strong>:  {{ parse_list(value) }}</p>
+<strong>{{ key }}</strong>: {{ parse_list(value) }}
 {% else %}
-<p>Unknown type: {{ value }}</p>
+Unknown type: {{ value }}
 {% endif %}
 {% endmacro %}
 
 {% macro parse_list(value) %}
-<p>
-{% for item in value %}
+{% for item in value %} 
 {{ item }}
 {% if not loop.last %}
 {{ ", " }}
 {% endif %}
 {% endfor %}
-</p>
 {% endmacro %}
 
 {% macro parse_primitive(key, value) %}
-{{ parse_header(key) }}
+{{ parse_record_label(key) }}
 {{ parse_value(value) }}
 {% endmacro %}
 
 {% macro parse_dict(value) %}
 {% for key, value in value.items () %}
-{{ parse_key_value(key, value) }}
+{{ parse_key_value(key, value) }}<br>
 {% endfor %}
 {% endmacro %}
 
-{% macro parse_list_of_primitives (key, value) %}
+{% macro parse_list_of_primitives (value) %}
 {{ parse_list (value)}}
 {% endmacro %}
 
@@ -49,25 +66,38 @@
 {% endfor %}
 {% endmacro %}
 
-{% macro parse_entity(entity) %}
-{% for key, value in entity.items() %}
-    {% if is_primitive(value) %}
-    {{ parse_primitive(key, value) }}
-    {% endif %}
+{% macro parse_value_(value )%}
+{% if is_primitive(value) %}
+{{ value }}
+{% endif %}
 
-    {% if is_dict(value) %}
-    {{ parse_header(key) }}
-    {{ parse_dict(value) }}
-    {% endif %}
+{% if is_dict(value) %}
+{{ parse_dict(value) }}
+{% endif %}
 
-    {% if is_list_of_primitives(value) %}
-    {{ parse_header(key) }}
-    {{ parse_list_of_primitives(key, value) }}
-    {% endif %}
+{% if is_list_of_primitives(value) %}
+{{ parse_list (value)}}
+{% endif %}
 
-    {% if is_list_of_dicts(value) %}
-    {{ parse_header(key) }}
-    {{ parse_list_of_dicts(key, value) }}
-    {% endif %}
+{% if is_list_of_dicts(value) %}
+{{ parse_list_of_dicts(key, value) }}
+{% endif %}
+{% endmacro %}
+
+{% macro parse_section(section) %}
+{% for key, value in section.items() %}
+    {{ parse_record_value(key, value) }}
 {% endfor %}
+{% endmacro %}
+
+{% macro parse_sections (sections) %}
+<div class="record">
+    {% for key, section in sections.items() %}
+    <div class="record-section">
+        <div class="record-main">
+            <h3 class="record-header">{{ key }}</h3> {{ parse_section(section) }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endmacro %}

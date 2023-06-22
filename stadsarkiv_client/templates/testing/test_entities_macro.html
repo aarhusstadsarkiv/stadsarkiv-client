@@ -4,10 +4,13 @@
 {% block content %}
 {% include "includes/main_title.html" %}
 
-{{ macros_entity.parse_entity(entity) }}
+{{ macros_entity.parse_sections(sections) }}
 
 <pre>
+
     {{ to_json(entity) }}
+
+    {{ to_json(sections) }}
 </pre>
 
 {% endblock content %}
