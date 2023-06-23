@@ -1,7 +1,7 @@
 from starlette.requests import Request
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
-from stadsarkiv_client.core import dynamic_settings
+from stadsarkiv_client.core.dynamic_settings import settings
 import json
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
@@ -11,36 +11,56 @@ log = get_log()
 
 
 async def test(request: Request):
-    settings = dynamic_settings.settings
+
     settings_json = json.dumps(settings, indent=4, ensure_ascii=False)
     context_variables = {"settings": settings_json, "title": "Test"}
     context = await get_context(request, context_variables)
     return templates.TemplateResponse("testing/test.html", context)
 
 
-def extract_data(sections, data):
-    extracted_data = {}
+def get_section_data(sections, data):
+    section_data = {}
 
     for section, keys in sections.items():
-        extracted_values = {}
+        section_values = {}
         for key in keys:
             if key in data:
-                extracted_values[key] = data[key]
+                section_values[key] = data[key]
 
-        if extracted_values:
-            extracted_data[section] = extracted_values
+        if section_values:
+            section_data[section] = section_values
 
-    return extracted_data
+    return section_data
+
+
+def get_record_with_types(record):
+
+    record_altered = {}
+    for key, value in record.items():
+        record_item = {}
+        record_item["value"] = value
+        record_item["name"] = key
+
+        try:
+            definition = settings["record_definitions"][key]
+            record_item["type"] = definition["type"]
+        except KeyError:
+            record_item["type"] = "unknown"
+
+        record_altered[key] = record_item
+
+    return record_altered
 
 
 async def test_entitites_macro(request: Request):
     record_id = request.path_params["record_id"]
-    settings = dynamic_settings.settings
     record_sections = settings["record_sections"]
 
     entity = await api.proxies_record_get_by_id(record_id)
-    sections = extract_data(record_sections, entity)
+    entity = get_record_with_types(entity)
 
+    sections = get_section_data(record_sections, entity)
+    log.debug(sections)
     entity_json = json.dumps(entity, indent=4, ensure_ascii=False)
     context_variables = {"title": "Test entities macro", "entity": entity, "entity_json": entity_json, "sections": sections}
 

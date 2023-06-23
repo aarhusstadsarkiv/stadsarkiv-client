@@ -1,5 +1,7 @@
 {% set settings = {'skip_translate': False} %}
 
+{% set search_url = '/records-search' %}
+
 {% macro parse_record_label (label) %}
 <div class="label">
     {% if settings.skip_translate %}

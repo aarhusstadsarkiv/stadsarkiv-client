@@ -1,4 +1,5 @@
 {% set settings = {'skip_translate': False} %}
+{% set search_base_url = "/records-search" %}
 
 {% macro parse_record_label (label) %}
 <div class="label">
@@ -11,82 +12,43 @@
 </div>
 {% endmacro %}
 
-{% macro parse_record_value (label, value) %}
+{% macro parse_string (key, field) %}
 <div class="record-content">
-    {{ parse_record_label(label)}}
+    {{ parse_record_label(key)}}
     <div class="content">
         <p>
-            {{ parse_value_(value) }}
+            {{ field["value"] }}
         </p>
     </div>
 </div>
 {% endmacro %}
 
-{% macro parse_value(value) %}
-{{ value }}
+{% macro parse_link_list (key, field) %}
+<div class="record-content">
+    {{ parse_record_label(key) }}
+    <div class="content">
+            {% for link in field["value"] %}
+            <p>
+                <a href="{{ search_base_url }}?{{ key}}={{ link['id'] }}">{{ link["label"] }}</a>
+            </p>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endmacro %}
 
-{% macro parse_key_value(key, value) %}
-{% if is_primitive(value) %}
-<strong>{{ key }}</strong>: {{ value }}
-{% elif is_list_of_primitives(value) %}
-<strong>{{ key }}</strong>: {{ parse_list(value) }}
-{% else %}
-Unknown type: {{ value }}
-{% endif %}
-{% endmacro %}
 
-{% macro parse_list(value) %}
-{% for item in value %} 
-{{ item }}
-{% if not loop.last %}
-{{ ", " }}
-{% endif %}
-{% endfor %}
-{% endmacro %}
-
-{% macro parse_primitive(key, value) %}
-{{ parse_record_label(key) }}
-{{ parse_value(value) }}
-{% endmacro %}
-
-{% macro parse_dict(value) %}
-{% for key, value in value.items () %}
-{{ parse_key_value(key, value) }}<br>
-{% endfor %}
-{% endmacro %}
-
-{% macro parse_list_of_primitives (value) %}
-{{ parse_list (value)}}
-{% endmacro %}
-
-{% macro parse_list_of_dicts (key, value) %}
-{% for item in value %}
-{{ parse_dict(item) }}
-{% endfor %}
-{% endmacro %}
-
-{% macro parse_value_(value )%}
-{% if is_primitive(value) %}
-{{ value }}
-{% endif %}
-
-{% if is_dict(value) %}
-{{ parse_dict(value) }}
-{% endif %}
-
-{% if is_list_of_primitives(value) %}
-{{ parse_list (value)}}
-{% endif %}
-
-{% if is_list_of_dicts(value) %}
-{{ parse_list_of_dicts(key, value) }}
-{% endif %}
-{% endmacro %}
 
 {% macro parse_section(section) %}
 {% for key, value in section.items() %}
-    {{ parse_record_value(key, value) }}
+    {% set type = value["type"] %}
+    {% if type == "string" %}
+    {{ parse_string(key, value) }}
+    {% elif type == "link_list" %}
+    {{ parse_link_list(key, value )}}
+    {% else %}
+    {{ value }}
+    {% endif %}
 {% endfor %}
 {% endmacro %}
 
