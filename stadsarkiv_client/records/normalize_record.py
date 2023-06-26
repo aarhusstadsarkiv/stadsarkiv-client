@@ -215,11 +215,7 @@ def normalize_link_dicts(keys, record: dict):
     for key in keys:
         if key in record:
             item = record[key]
-            log.debug(key)
-            log.debug(item)
             item["search_query"] = key + "=" + str(item["id"])
-            # for item in record[key]:
-            #     item["search_query"] = key + "=" + str(item["id"])
     return record
 
 
