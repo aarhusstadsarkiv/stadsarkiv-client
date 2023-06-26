@@ -70,7 +70,6 @@ settings = {
             "last_updated_by",
             "last_updated",
         ],
-
         "Resourcer": ["resources"],
         "Download": ["representations"],
     },

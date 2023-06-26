@@ -36,7 +36,7 @@ def get_list_of_type(type: str):
     """get a list of a type, e.g. string from record_definitions"""
     record_definitions = settings["record_definitions"]
     type_list = []
-    for key, item in record_definitions.items():
+    for key, item in record_definitions.items():  # type: ignore
         if item["type"] == type:
             type_list.append(key)
 
@@ -44,7 +44,6 @@ def get_list_of_type(type: str):
 
 
 def record_alter(request: Request, record: dict):
-
     record = record.copy()
 
     record["allowed_by_ip"] = normalize_record.is_allowed_by_ip(request)

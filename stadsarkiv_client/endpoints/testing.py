@@ -12,7 +12,6 @@ log = get_log()
 
 
 async def test(request: Request):
-
     settings_json = json.dumps(settings, indent=4, ensure_ascii=False)
     context_variables = {"settings": settings_json, "title": "Test"}
     context = await get_context(request, context_variables)
@@ -35,7 +34,6 @@ def get_section_data(sections, data):
 
 
 def get_record_with_types(record):
-
     record_altered = {}
     for key, value in record.items():
         record_item = {}
@@ -74,7 +72,8 @@ async def test_entitites_macro(request: Request):
         "record": record,
         "record_json": entity_json,
         "sections": sections,
-        "record_org": record_org}
+        "record_org": record_org,
+    }
 
     context = await get_context(request, context_variables)
     return templates.TemplateResponse("testing/test_entities_macro.html", context)
