@@ -5,6 +5,7 @@ from stadsarkiv_client.core.dynamic_settings import settings
 import json
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
+from stadsarkiv_client.records.record_alter import record_alter
 
 
 log = get_log()
@@ -54,15 +55,26 @@ def get_record_with_types(record):
 
 async def test_entitites_macro(request: Request):
     record_id = request.path_params["record_id"]
+
+    record = await api.proxies_record_get_by_id(record_id)
+    record_org = record.copy()
+
+    record = record_alter(request, record)
+
+    # record = normalize_record.normalize_link_dicts(link_dict, record)
+
     record_sections = settings["record_sections"]
+    record = get_record_with_types(record)
 
-    entity = await api.proxies_record_get_by_id(record_id)
-    entity = get_record_with_types(entity)
+    sections = get_section_data(record_sections, record)
 
-    sections = get_section_data(record_sections, entity)
-    log.debug(sections)
-    entity_json = json.dumps(entity, indent=4, ensure_ascii=False)
-    context_variables = {"title": "Test entities macro", "entity": entity, "entity_json": entity_json, "sections": sections}
+    entity_json = json.dumps(record, indent=4, ensure_ascii=False)
+    context_variables = {
+        "title": "Test entities macro",
+        "record": record,
+        "record_json": entity_json,
+        "sections": sections,
+        "record_org": record_org}
 
     context = await get_context(request, context_variables)
     return templates.TemplateResponse("testing/test_entities_macro.html", context)

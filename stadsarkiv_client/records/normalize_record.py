@@ -58,10 +58,10 @@ def normalize_series(record: dict):
                 query += urllib.parse.quote("/")
 
             query += urllib.parse.quote(series)
-            entry = {"collection": collection_id, "series": series, "search_query": query}
+            entry = {"collection": collection_id, "label": series, "search_query": query}
             series_normalized.append(entry)
 
-        record["series_normalized"] = series_normalized
+        record["series"] = [series_normalized]
     return record
 
 
@@ -82,7 +82,15 @@ def normalize_content_types(record: dict):
         content_types_list = []
         for content_type in content_types:
             content_types_list.append(_list_dict_id_label([content_type]))
-        record["content_types_normalized"] = content_types_list
+
+        """ add search query to each content type """
+        for content_type in content_types_list:
+
+            for item in content_type:
+                log.debug(item)
+                item["search_query"] = "content_types=" + str(item["id"])
+
+        record["content_types"] = content_types_list
     return record
 
 
@@ -93,7 +101,12 @@ def normalize_subjects(record: dict):
         subjects_list = []
         for content_type in subjects:
             subjects_list.append(_list_dict_id_label([content_type]))
-        record["subjects_normalized"] = subjects_list
+
+        """ add search query to each subject """
+        for subject in subjects_list:
+            for item in subject:
+                item["search_query"] = "subjects=" + str(item["id"])
+        record["subjects"] = subjects_list
     return record
 
 
@@ -152,8 +165,14 @@ def normalize_collection_tags(record: dict):
 
     if "collection_tags" in record:
         collection_tags = normalize_hierarchy(collection_id, record["collection_tags"])
-        record["collection_tags_normalized"] = collection_tags
+        record["collection_tags"] = collection_tags
 
+    return record
+
+
+def normalize_admin_data(record: dict):
+    if "admin_data" in record:
+        record["admin_data"] = [record["admin_data"]]
     return record
 
 
@@ -179,10 +198,32 @@ def normalize_resources(record: dict):
     return record
 
 
+def normalize_link_lists(keys, record: dict):
+    """add search_query to each link_list given in keys list"""
+    for key in keys:
+        if key in record:
+            for item in record[key]:
+                item["search_query"] = key + "=" + str(item["id"])
+    return record
+
+
+def normalize_link_dicts(keys, record: dict):
+    """add search_query to each link_dict given in keys list"""
+    for key in keys:
+        if key in record:
+            item = record[key]
+            log.debug(key)
+            log.debug(item)
+            item["search_query"] = key + "=" + str(item["id"])
+            # for item in record[key]:
+            #     item["search_query"] = key + "=" + str(item["id"])
+    return record
+
+
 def _set_icon(record: dict):
     """Set icon for the record based on content type"""
     try:
-        content_type_id = record["content_types_normalized"][0][0]["id"]
+        content_type_id = record["content_types"][0][0]["id"]
         record["icon"] = ICONS[str(content_type_id)]
     except KeyError:
         record["icon"] = ICONS["99"]

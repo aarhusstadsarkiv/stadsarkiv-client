@@ -1,13 +1,12 @@
 from stadsarkiv_client.core.logging import get_log
-from .normalize_abstract_dates import normalize_abstract_dates
-from .normalize_copyright_status import normalize_copyright_status
-from .normalize_contractual_status import normalize_contractual_status
-from .normalize_legal_restrictions import normalize_legal_restrictions
-from .normalize_availability import normalize_availability
-from .normalize_ordering import normalize_ordering
-from stadsarkiv_client.core.translate import translate
-from .import normalize_record
-import urllib.parse
+from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
+from stadsarkiv_client.records.normalize_copyright_status import normalize_copyright_status
+from stadsarkiv_client.records.normalize_contractual_status import normalize_contractual_status
+from stadsarkiv_client.records.normalize_legal_restrictions import normalize_legal_restrictions
+from stadsarkiv_client.records.normalize_availability import normalize_availability
+from stadsarkiv_client.records.normalize_ordering import normalize_ordering
+from stadsarkiv_client.records import normalize_record
+from stadsarkiv_client.core.dynamic_settings import settings
 from starlette.requests import Request
 
 
@@ -33,8 +32,18 @@ ICONS = {
 }
 
 
+def get_list_of_type(type: str):
+    """get a list of a type, e.g. string from record_definitions"""
+    record_definitions = settings["record_definitions"]
+    type_list = []
+    for key, item in record_definitions.items():
+        if item["type"] == type:
+            type_list.append(key)
+
+    return type_list
+
+
 def record_alter(request: Request, record: dict):
-    """Alter subjects, content_types and series to a more sane data structure"""
 
     record = record.copy()
 
@@ -44,12 +53,19 @@ def record_alter(request: Request, record: dict):
     record = normalize_record.set_representation_variables(record)
 
     record = normalize_record.set_download_variables(record)
+    record = normalize_record.normalize_admin_data(record)
     record = normalize_record.normalize_collection_tags(record)
     record = normalize_record.normalize_series(record)
     record = normalize_record.normalize_content_types(record)
     record = normalize_record.normalize_subjects(record)
     record = normalize_record.normalize_labels(record)
     record = normalize_record.normalize_resources(record)
+
+    link_list = get_list_of_type("link_list")
+    record = normalize_record.normalize_link_lists(link_list, record)
+
+    link_dict = get_list_of_type("link_dict")
+    record = normalize_record.normalize_link_dicts(link_dict, record)
 
     record = normalize_abstract_dates(record)
     record = normalize_copyright_status(record)
@@ -66,16 +82,31 @@ def _sort_section(section: dict, order: list):
     return sorted_section
 
 
+def get_section_data(sections, data):
+    section_data = {}
+
+    for section, keys in sections.items():
+        section_values = {}
+        for key in keys:
+            if key in data:
+                section_values[key] = data[key]
+
+        if section_values:
+            section_data[section] = section_values
+
+    return section_data
+
+
 def get_sections(record_dict: dict):
-    abstract = ["collectors", "content_types_normalized", "creators", "date_normalized", "curators", "id"]
+    abstract = ["collectors", "content_types", "creators", "date_normalized", "curators", "id"]
     description = [
         "heading",
         "summary",
         "desc_notes",
         "collection",
-        "series_normalized",
-        "collection_tags_normalized",
-        "subjects_normalized",
+        "series",
+        "collection_tags",
+        "subjects",
     ]
     copyright = ["copyright_status_normalized"]
     description_data = ["desc_data"]

@@ -33,7 +33,7 @@
 </div>
 {% endmacro %}
 
-{% macro parse_content_types_normalized (label, value) %}
+{% macro parse_content_types (label, value) %}
 <div class="record-content">
     {{ parse_record_label(label)}}
     <div class="content">
@@ -91,7 +91,7 @@
     {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
-            <a href="{{ search_url }}?{{ item.search_query }}">{{ item.series }}</a>
+            <a href="{{ search_url }}?{{ item.search_query }}">{{ item.label }}</a>
             {% if not loop.last %} {{ '>' }} {% endif %}
         {% endfor %}
     </div>
@@ -165,7 +165,7 @@
 {% macro parse_collection_tag (value) %}
 <div>
 {% for item in value %}
-<a href="{{ search_url }}?{{ search_query }}">{{ item.label }}</a>
+<a href="{{ search_url }}?{{ item.search_query }}">{{ item.label }}</a>
     {% if not loop.last %} {{ '>' }} {% endif %}
 {% endfor %}
 </div>
@@ -256,15 +256,13 @@
 {% endfor %}
 {% endmacro %}
 
-{% set skip_record_keys = ['series', 'content_types', 'subjects'] %}
-
 {% macro parse_section(section, values) %}
     
     {% for key, value in values.items() if not key in skip_record_keys %}
         {% if key == 'collectors' %}
             {{ parse_collectors(key, value) }}
-        {% elif key == 'content_types_normalized' %}
-            {{ parse_content_types_normalized(key, value) }}
+        {% elif key == 'content_types' %}
+            {{ parse_content_types(key, value) }}
         {% elif key == 'curators' %}
             {{ parse_curators(key, value) }}
         {% elif key == 'events' %}
@@ -277,17 +275,13 @@
             {{ parse_curators(key, value) }}
         {% elif key == 'collection' %}
             {{ parse_collection(key, value) }}
-        {% elif key == 'subjects_normalized' %}
+        {% elif key == 'subjects' %}
             {{ parse_subjects_normalized(key, value) }}
-        {% elif key == 'series_normalized' %}
-            {{ parse_series_normalized(key, value) }}
+        {% elif key == 'series' %}
+            {{ parse_collection_tags_normalized(key, value) }}
         {% elif key == 'organisations' %}
             {{ parse_organisations(key, value) }}
         {% elif key == 'desc_data' %}
-            {% if settings.update({'skip_translate': True}) %} {% endif %}
-            {{ parse_label_value_dict(value) }}
-            {% if settings.update({'skip_translate': False}) %} {% endif %}
-        {% elif key == 'admin_data' %}
             {% if settings.update({'skip_translate': True}) %} {% endif %}
             {{ parse_label_value_dict(value) }}
             {% if settings.update({'skip_translate': False}) %} {% endif %}
@@ -297,7 +291,7 @@
             {{ parse_label(key, value) }}
         {% elif key == 'availability' %}
             {{ parse_label(key, value) }}
-        {% elif key == 'copyright_status_normalized' %}
+        {% elif key == 'copyright_status' %}
             {{ parse_copyright_status(key, value) }}
         {% elif key == 'other_legal_restrictions' %}
             {{ parse_label(key, value) }}
@@ -307,11 +301,11 @@
             {{ parse_ordering(key, value)}}
         {% elif key == 'representations' %}
             {{ parse_representations(key, value)}}
-        {% elif key == 'resources' %}
+        {% elif key == 'resources' or key == 'admin_data' %}
             {% if settings.update({'skip_translate': True}) %} {% endif %}
             {{ parse_resources(key, value) }}
             {% if settings.update({'skip_translate': False}) %} {% endif %}
-        {% elif key == 'collection_tags_normalized' %}
+        {% elif key == 'collection_tags' %}
             {{ parse_collection_tags_normalized(key, value) }}
         {% else %}
             {{ parse_label_value(key, value)}}
