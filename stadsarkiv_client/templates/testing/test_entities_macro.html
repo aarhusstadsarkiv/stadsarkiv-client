@@ -62,6 +62,18 @@
 </div>
 {% endmacro %}
 
+{% macro parse_string_list (key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key) }}
+    <div class="content">
+        {% for item in value %}
+        <p>{{ item|safe }}</p>
+        {% endfor %}
+
+    </div>
+</div>
+{% endmacro %}
+
 {% macro parse_list_in_hierarchy (value) %}
 <div>
 {% for item in value %}
@@ -96,6 +108,8 @@
     {{ parse_key_value_dicts(value ) }}
     {% if settings.update({'skip_translate': False}) %} {% endif %}
 
+    {% elif type == "string_list" %}
+    {{ parse_string_list(key, value ) }}
     {% elif type == "link_list" %}
     {{ parse_link_list(key, value ) }}
     {% elif type == "link_dict" %}

@@ -84,7 +84,7 @@ settings = {
         "locations": {"type": "link_list"},
         "potrait": {"type": "link"},
         "series": {"type": "link_list_hierarchy"},
-        "desc_data": {"type": "key_value_dict"},
+        "desc_data": {"type": "key_value_dicts"},
         "availability": {"type": "label_dict"},
         "contractual_status_normalized": {"type": "string"},
         "other_legal_restrictions_normalized": {"type": "string"},
@@ -103,7 +103,7 @@ settings = {
         "schema": {"type": "string"},
         "curators": {"type": "link_list"},
         "copyright_status": {"type": "label_dict"},
-        "copyright_status_normalized": {"type": "string"},
+        "copyright_status_normalized": {"type": "string_list"},
         "collection": {"type": "link_dict"},
         "last_updated_by": {"type": "string"},
         "original_id": {"type": "string"},
@@ -119,7 +119,7 @@ settings = {
         "events": {"type": "link_list"},
         "ordering": {"type": "ordering"},
         "creators": {"type": "link_list"},
-        "desc_notes": {"type": "key_value_dict"},
+        "desc_notes": {"type": "string"},
         "heading": {"type": "string"},
     }
 }

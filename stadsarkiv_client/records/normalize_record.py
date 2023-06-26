@@ -170,9 +170,13 @@ def normalize_collection_tags(record: dict):
     return record
 
 
-def normalize_admin_data(record: dict):
+def normalize_dict_data(record: dict):
+    """Transform dict value data to list of dict data. Then there is only one data structure to handle"""
     if "admin_data" in record:
         record["admin_data"] = [record["admin_data"]]
+
+    if "desc_data" in record:
+        record["desc_data"] = [record["desc_data"]]
     return record
 
 

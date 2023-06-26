@@ -53,7 +53,7 @@ def record_alter(request: Request, record: dict):
     record = normalize_record.set_representation_variables(record)
 
     record = normalize_record.set_download_variables(record)
-    record = normalize_record.normalize_admin_data(record)
+    record = normalize_record.normalize_dict_data(record)
     record = normalize_record.normalize_collection_tags(record)
     record = normalize_record.normalize_series(record)
     record = normalize_record.normalize_content_types(record)
