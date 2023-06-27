@@ -74,7 +74,7 @@
 </div>
 {% endmacro %}
 
-{% macro parse_list_in_hierarchy (value) %}
+{% macro _parse_list_in_hierarchy (value) %}
 <div>
 {% for item in value %}
 <a href="{{ search_base_url }}?{{ item.search_query }}">{{ item.label }}</a>
@@ -88,7 +88,7 @@
     {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
-        {{ parse_list_in_hierarchy(item) }}
+        {{ _parse_list_in_hierarchy(item) }}
         {% endfor %}        
     </div>
 </div>
@@ -103,7 +103,7 @@
     {% if type == "string" or type == "date" %}
     {{ parse_string(key, value) }}
     {% elif type == "key_value_dicts" %}
-
+    
     {% if settings.update({'skip_translate': True}) %} {% endif %}
     {{ parse_key_value_dicts(value ) }}
     {% if settings.update({'skip_translate': False}) %} {% endif %}
@@ -143,7 +143,7 @@
 
 <pre>
 
-    {{ to_json(record) }}
+    {{ to_json(record_original) }}
 
 </pre>
 

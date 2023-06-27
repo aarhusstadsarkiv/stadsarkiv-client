@@ -281,10 +281,6 @@
             {{ parse_collection_tags_normalized(key, value) }}
         {% elif key == 'organisations' %}
             {{ parse_organisations(key, value) }}
-        {% elif key == 'desc_data' %}
-            {% if settings.update({'skip_translate': True}) %} {% endif %}
-            {{ parse_label_value_dict(value) }}
-            {% if settings.update({'skip_translate': False}) %} {% endif %}
         {% elif key == 'locations' %}
             {{ parse_locations(key, value)}}
         {% elif key == 'contractual_status' %}
@@ -301,7 +297,7 @@
             {{ parse_ordering(key, value)}}
         {% elif key == 'representations' %}
             {{ parse_representations(key, value)}}
-        {% elif key == 'resources' or key == 'admin_data' %}
+        {% elif key == 'resources' or key == 'admin_data' or key == 'desc_data' %}
             {% if settings.update({'skip_translate': True}) %} {% endif %}
             {{ parse_resources(key, value) }}
             {% if settings.update({'skip_translate': False}) %} {% endif %}

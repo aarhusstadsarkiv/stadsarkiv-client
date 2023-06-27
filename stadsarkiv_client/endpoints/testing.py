@@ -33,7 +33,7 @@ def get_section_data(sections, data):
     return section_data
 
 
-def get_record_with_types(record):
+def get_record_and_types(record):
     record_altered = {}
     for key, value in record.items():
         record_item = {}
@@ -55,24 +55,18 @@ async def test_entitites_macro(request: Request):
     record_id = request.path_params["record_id"]
 
     record = await api.proxies_record_get_by_id(record_id)
-    record_org = record.copy()
-
-    record = record_alter(request, record)
-
-    # record = normalize_record.normalize_link_dicts(link_dict, record)
+    record_altered = record_alter(request, record)
 
     record_sections = settings["record_sections"]
-    record = get_record_with_types(record)
+    record_and_types = get_record_and_types(record_altered)
 
-    sections = get_section_data(record_sections, record)
-
-    entity_json = json.dumps(record, indent=4, ensure_ascii=False)
+    sections = get_section_data(record_sections, record_and_types)
     context_variables = {
-        "title": "Test entities macro",
-        "record": record,
-        "record_json": entity_json,
+        "title": record_altered["title"],
+        "record_original": record,
+        "record_and_types": record_and_types,
+        "record_altered": record_altered,
         "sections": sections,
-        "record_org": record_org,
     }
 
     context = await get_context(request, context_variables)

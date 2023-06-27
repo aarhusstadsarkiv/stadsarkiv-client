@@ -287,10 +287,12 @@ def set_common_variables(record: dict):
 
 def set_record_title(record_dict: dict):
     title = translate("No title")
-    try:
-        title = record_dict["heading"]
-    except KeyError:
-        pass
+    record_title = record_dict.get("title")
+    if not record_title:
+        record_title = record_dict.get("heading")
+
+    if record_title:
+        title = record_title
 
     record_dict["title"] = title
     return record_dict

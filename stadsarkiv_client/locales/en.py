@@ -164,7 +164,8 @@ en = {
     "label_record_subjects_normalized": "label_record_subjects_normalized",
     "label_record_summary": "Summary",
     "label_record_thumbnail": "Thumbnail",
+    "label_record_title": "label_record_title",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "search": "search",
+    "search": "search"
 }

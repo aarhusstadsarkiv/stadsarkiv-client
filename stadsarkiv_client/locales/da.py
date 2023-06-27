@@ -155,7 +155,8 @@ da = {
     "label_record_subjects_normalized": "Emner",
     "label_record_summary": "Abstrakt",
     "label_record_thumbnail": "Thumbnail",
+    "label_record_title": "label_record_title",
     "label_record_type": "Type",
     "label_record_usability": "Ophavsret",
-    "search": "search",
+    "search": "search"
 }
