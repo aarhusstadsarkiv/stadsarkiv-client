@@ -86,7 +86,6 @@ def normalize_content_types(record: dict):
         """ add search query to each content type """
         for content_type in content_types_list:
             for item in content_type:
-                log.debug(item)
                 item["search_query"] = "content_types=" + str(item["id"])
 
         record["content_types"] = content_types_list

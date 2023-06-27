@@ -94,6 +94,27 @@
 </div>
 {% endmacro %}
 
+{% macro parse_representations(label, value) %}
+{% if value["record_type"] == "image" %}
+<div class="record-content">
+    {{ parse_record_label('label_representations')}}
+    <div class="content">
+        <a href="{{ value['record_image'] }}"> {{ translate('Download medium size')}}</a><br />
+        <a href="{{ value['large_image'] }}"> {{ translate('Download large size')}}</a>
+    </div>
+</div>
+{% endif %}
+{% if value["record_type"] == "web_document" %}
+<div class="record-content">
+    {{ parse_record_label('label_representations')}}
+    <div class="content">
+        <a href="{{ value['web_document_url'] }}"> {{ translate('Download PDF')}}</a><br />
+
+    </div>
+</div>
+{% endif %}
+{% endmacro %}
+
 {% macro parse_section(section) %}
 {% for key, field in section.items() %}
 
@@ -116,6 +137,8 @@
     {{ parse_link_dict(key, value ) }}
     {% elif type == "link_list_hierarchy" %}
     {{ parse_link_list_hierarchy(key, value ) }}
+    {% elif type == "representations" %}
+    {{ parse_representations(key, value ) }}
     {% else %}
     {{ key }} {{ field }}
     {% endif %}
@@ -125,6 +148,21 @@
 {% macro parse_representations_media(record) %}
 {% if record["record_type"] == 'image' %}
     <img src="{{record.portrait}}" alt="{{ section }}" />
+{% endif %}
+
+{% if record["record_type"] == 'video' %}
+<video poster="{{ record.representations.get('record_image') }}" preload="metadata">
+    <source src="{{ record.representations.get('record_file') }}?sp=r&st=2023-02-03T12:19:05Z&se=2030-04-01T19:19:05Z&spr=https&sv=2021-06-08&sr=c&sig=QK9mOWt0oZ%2FtiY5biruFo0eGPirtjHYEQ061tPuZYHU%3D" type="video/mp4" />
+    <p>This browser doesn't support video tag.</p>
+</video>
+{% endif %}
+
+{% if record["record_type"] == 'audio' %}
+<figcaption>Klik for at lytte til lydfilen</figcaption><br />
+<audio style="width:100%;" controls="" preload="metadata">
+    <source src="{{ record.representations.get('record_file') }}?sp=r&st=2023-02-03T12:19:05Z&se=2030-04-01T19:19:05Z&spr=https&sv=2021-06-08&sr=c&sig=QK9mOWt0oZ%2FtiY5biruFo0eGPirtjHYEQ061tPuZYHU%3D" type="audio/mpeg" />
+    <p>This browser doesn't support the audio tag.</p>
+</audio>
 {% endif %}
 
 {% if record["record_type"] == 'web_document' %}

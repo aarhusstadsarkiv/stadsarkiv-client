@@ -97,6 +97,8 @@ settings = {
         "subjects": {"type": "link_list_hierarchy"},
         "admin_data": {"type": "key_value_dicts"},
         "type": {"type": "string"},
+        "rights_notes": {"type": "string"},
+        "admin_notes": {"type": "string"},
         "thumbnail": {"type": "url"},
         "resources": {"type": "key_value_dicts"},
         "schema": {"type": "string"},
@@ -107,7 +109,7 @@ settings = {
         "last_updated_by": {"type": "string"},
         "original_id": {"type": "string"},
         "date_to": {"type": "string"},
-        "representations": {"type": "media"},
+        "representations": {"type": "representations"},  # special type
         "collection_tags": {"type": "link_list_hierarchy"},
         "created": {"type": "date"},
         "summary": {"type": "string"},
