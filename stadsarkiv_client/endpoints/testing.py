@@ -70,4 +70,4 @@ async def test_entitites_macro(request: Request):
     }
 
     context = await get_context(request, context_variables)
-    return templates.TemplateResponse("testing/test_entities_macro.html", context)
+    return templates.TemplateResponse("records/record.html", context)

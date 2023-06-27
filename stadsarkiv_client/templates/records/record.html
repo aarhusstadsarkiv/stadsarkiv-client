@@ -1,18 +1,202 @@
+{% set settings = {'skip_translate': False} %}
+{% set search_base_url = "/records-search" %}
+{% set debug = True %}
+
+{% macro parse_record_label (label) %}
+<div class="label">
+    {% if settings.skip_translate %}
+    <strong>{{ label }} </strong>
+    {% else %}
+    {% set label = "label_record_" + label %}
+    <strong>{{ translate(label) }} </strong>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro parse_string (key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key)}}
+    <div class="content">
+        <p>
+            {{ value }}
+        </p>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro _parse_key_value_dict (value) %}
+{% for key, item in value.items() %}
+{{ parse_string(key, item) }}
+{% endfor %}
+{% endmacro %}
+
+{% macro parse_key_value_dicts(value) %}
+{% for item in value %}
+{{ _parse_key_value_dict(item)}}
+{% if not loop.last %} <hr> {% endif %}
+{% endfor %}
+{% endmacro %}
+
+{% macro parse_link_dict(key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key) }}
+    <div class="content">
+        <p>
+            <a href="{{ search_base_url }}?{{ value['search_query'] }}">{{ value["label"] }}</a>
+        </p>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_link_list (key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key) }}
+    <div class="content">
+            {% for link in value %}
+            <p>
+                <a href="{{ search_base_url }}?{{ key}}={{ link['id'] }}">{{ link["label"] }}</a>
+            </p>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_string_list (key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key) }}
+    <div class="content">
+        {% for item in value %}
+        <p>{{ item|safe }}</p>
+        {% endfor %}
+
+    </div>
+</div>
+{% endmacro %}
+
+{% macro _parse_list_in_hierarchy (value) %}
+<div>
+{% for item in value %}
+<a href="{{ search_base_url }}?{{ item.search_query }}">{{ item.label }}</a>
+    {% if not loop.last %} {{ '>' }} {% endif %}
+{% endfor %}
+</div>
+{% endmacro %}
+
+{% macro parse_link_list_hierarchy (label, value) %}
+<div class="record-content">
+    {{ parse_record_label(label)}}
+    <div class="content">
+        {% for item in value %}
+        {{ _parse_list_in_hierarchy(item) }}
+        {% endfor %}        
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_section(section) %}
+{% for key, field in section.items() %}
+
+    {% set type = field["type"] %}
+    {% set value = field["value"] %}
+
+    {% if type == "string" or type == "date" %}
+    {{ parse_string(key, value) }}
+    {% elif type == "key_value_dicts" %}
+    
+    {% if settings.update({'skip_translate': True}) %} {% endif %}
+    {{ parse_key_value_dicts(value ) }}
+    {% if settings.update({'skip_translate': False}) %} {% endif %}
+
+    {% elif type == "string_list" %}
+    {{ parse_string_list(key, value ) }}
+    {% elif type == "link_list" %}
+    {{ parse_link_list(key, value ) }}
+    {% elif type == "link_dict" %}
+    {{ parse_link_dict(key, value ) }}
+    {% elif type == "link_list_hierarchy" %}
+    {{ parse_link_list_hierarchy(key, value ) }}
+    {% else %}
+    {{ key }} {{ field }}
+    {% endif %}
+{% endfor %}
+{% endmacro %}
+
+{% macro parse_representations_media(record) %}
+{% if record["record_type"] == 'image' %}
+    <img src="{{record.portrait}}" alt="{{ section }}" />
+{% endif %}
+
+{% if record["record_type"] == 'web_document' %}
+<a href="{{record.representations.get('web_document_url')}}">
+    <img src="{{record.portrait}}" alt="{{ section }}" />
+</a>
+{% endif %}
+
+{% if record["record_type"] == 'sejrs_sedler' %}
+<div class="record-sejrs-sedler">
+    {{ record['summary'] }}
+</div>
+{% endif %}
+{% endmacro %}
+
+{% macro parse_representations_icon(icon, label) %}
+<div class="record-icon">
+    <span class="material-symbols-outlined">{{ icon }}</span>
+</div>
+<div>
+    {{ label }}
+</div>    
+{% endmacro %}
+
+{% macro parse_representations_section(record) %}
+{% if record["is_representations_online"] %}
+{{ parse_representations_media(record)}}
+{% elif record["availability_id"] == 3 %}
+{{ parse_representations_icon('lock', translate('The material is available in the reading room.'))}}
+{% elif record["availability_id"] == 2 %}
+{{ parse_representations_icon('lock', translate('The material can be order home to the reading room.'))}}
+{% endif %}
+{% endmacro %}
+
+{% macro parse_sections(record, record_sections) %}
+    {% for section, section_dict in record_sections.items() if not section in skip_section_keys %}
+
+    <div class="record-section">
+        {% if section in ['Kernedata'] %}
+            <div class="record-representation">
+            {% if record["has_representations"] %}
+            {{ parse_representations_section(record) }}
+            </div>
+            {% else %}
+            <div class="record-representation">
+                {{ parse_representations_icon(record["icon"]["icon"], record["icon"]["label"]) }}
+            </div>
+            {% endif %}
+            <div class="record-main">
+                <div class="record-title">{{ record["title"] }}</div>
+                {{ parse_section(section_dict) }}
+            </div>        
+        {% else %}
+        <div class="record-main">
+            <h3 class="record-header">{{ section }}</h3>
+            {{ parse_section(section_dict) }}
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+{% endmacro %}
+
 {% extends "base.html" %}
 
-{% import "macros/record.html" as macros_record %}  
-
-{% set title = record["title"] %}
-{% set search_url = "/records-search" %}
-
 {% block content %}
+{# include "includes/main_title.html" #}
 
-<div class="record">
-    {{ macros_record.parse_sections(record, record_sections) }}
-</div>
+{{ parse_sections(record_altered, sections) }}
 
 <p>
     <a href="{{ request.url.path }}/json">JSON</a>
 </p>
+
 
 {% endblock content %}
