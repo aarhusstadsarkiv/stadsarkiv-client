@@ -1,7 +1,7 @@
 from typing import Any
 import logging
-from .dynamic_settings import settings
-from .logging_defs import get_file_handler, get_stream_handler, generate_log_dir
+from stadsarkiv_client.core.dynamic_settings import settings
+from stadsarkiv_client.core import logging_defs
 import warnings
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
@@ -20,12 +20,12 @@ class customHandler(logging.Handler):
 if not len(log.handlers):
     # log.addHandler(customHandler())
     if "file" in settings["log_handlers"]:  # type: ignore
-        generate_log_dir()
-        fh = get_file_handler(level)
+        logging_defs.generate_log_dir()
+        fh = logging_defs.get_file_handler(level)
         log.addHandler(fh)
 
     if "stream" in settings["log_handlers"]:  # type: ignore
-        ch = get_stream_handler(level)
+        ch = logging_defs.get_stream_handler(level)
         log.addHandler(ch)
 
 

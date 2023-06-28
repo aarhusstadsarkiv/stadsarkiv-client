@@ -11,7 +11,7 @@ settings = {
         "secure": True,
         "samesite": "lax",
     },
-    "fastapi_endpoint": "https://dev.openaws.dk",
+    "api_base_url": "https://dev.openaws.dk/v1",
     #
     # Main menu containing built-in endpoints, but you may remove these and generate your own menu.
     # You may also add other "menus", e.g. "footer_items" or something similar.
@@ -40,4 +40,37 @@ settings = {
     "pages": [
         {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
     ],
+    #
+    # records display
+    #
+    "record_sections": {
+        "Kernedata": ["collectors", "content_types_normalized", "creators", "date_normalized", "curators", "id"],
+        "Beskrivelse": [
+            "heading",
+            "summary",
+            "desc_notes",
+            "collection",
+            "series",
+            "collection_tags",
+            "subjects",
+        ],
+        "Ophavsret": ["copyright_status_normalized"],
+        "Beskrivelsesdata": ["desc_data"],
+        "Relationer": ["organisations", "locations", "events", "people", "objects"],
+        "judicial_right_notes": ["rights_notes"],
+        "judicial_status": ["contractual_status", "other_legal_restrictions"],
+        "Tilgængelighed": ["availability"],
+        "Bestilling": ["ordering"],
+        "Administration": [
+            "admin_notes",
+            "admin_data",
+            "registration_id",
+            "created_by",
+            "created",
+            "last_updated_by",
+            "last_updated",
+        ],
+        "Resourcer": ["resources"],
+        "Download": ["representations"],
+    },
 }

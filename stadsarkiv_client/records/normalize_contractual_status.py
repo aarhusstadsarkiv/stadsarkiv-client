@@ -1,4 +1,5 @@
 def normalize_contractual_status(record, creators=None):
+    """Add contractual_status_normalized to record"""
     contractual_id = record.get("contractual_id")
 
     text = ""

@@ -1,5 +1,5 @@
 from starlette.requests import Request
-from .translate import translate
+from stadsarkiv_client.core.translate import translate
 
 
 class OpenAwsException(Exception):

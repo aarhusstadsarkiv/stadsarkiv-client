@@ -11,7 +11,7 @@ special_notice = "Stadsarkivet modtager gerne oplysninger, som kan hjælpe med a
 def _get_special_notice_id(record: dict):
     try:
         id = record["content_types"][0][0].get("id")
-    except Exception:
+    except KeyError:
         id = None
 
     if id != 36:
@@ -21,6 +21,7 @@ def _get_special_notice_id(record: dict):
 
 
 def normalize_copyright_status(record: dict):
+    """Add copyright_status_normalized to record"""
     lines = []
 
     label = record["copyright_status"].get("label")
