@@ -1,10 +1,10 @@
 from starlette.requests import Request
-from .api_error import OpenAwsException, validate_passwords, raise_openaws_exception
-from .logging import get_log
-from . import user
-from .translate import translate
+from stadsarkiv_client.core.api_error import OpenAwsException, validate_passwords, raise_openaws_exception
+from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core import user
+from stadsarkiv_client.core.translate import translate
 import json
-from .dynamic_settings import settings
+from stadsarkiv_client.core.dynamic_settings import settings
 import httpx
 import urllib.parse
 import typing

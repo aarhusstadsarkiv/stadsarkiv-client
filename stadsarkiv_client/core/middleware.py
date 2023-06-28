@@ -1,7 +1,7 @@
 import re
 from starsessions import CookieStore, SessionMiddleware, SessionAutoloadMiddleware
 from starlette.middleware import Middleware
-from .dynamic_settings import settings
+from stadsarkiv_client.core.dynamic_settings import settings
 import os
 
 
