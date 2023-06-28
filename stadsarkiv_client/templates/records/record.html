@@ -215,8 +215,9 @@
 
     <div class="record-section">
         {% if section in ['Kernedata'] %}
-            <div class="record-representation">
+            
             {% if record["has_representations"] %}
+            <div class="record-representation">
             {{ parse_representations_section(record) }}
             </div>
             {% else %}
