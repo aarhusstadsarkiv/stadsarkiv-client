@@ -3,9 +3,10 @@ import os
 from jinja2 import FileSystemLoader
 from starlette.templating import Jinja2Templates
 from starlette.requests import Request
-from .translate import translate
-from .dynamic_settings import get_setting
-from .logging import get_log
+from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core.dynamic_settings import get_setting
+from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core.format_date import format_date
 import json
 
 
@@ -50,4 +51,5 @@ def to_json(variable):
 
 templates.env.globals.update(translate=translate)
 templates.env.globals.update(get_setting=get_setting)
+templates.env.globals.update(format_date=format_date)
 templates.env.globals.update(to_json=to_json)

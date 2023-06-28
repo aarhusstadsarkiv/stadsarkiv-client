@@ -24,6 +24,17 @@
 </div>
 {% endmacro %}
 
+{% macro parse_date (key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key)}}
+    <div class="content">
+        <p>
+            {{ format_date(value) }}
+        </p>
+    </div>
+</div>
+{% endmacro %}
+
 {% macro _parse_key_value_dict (value) %}
 {% for key, item in value.items() %}
 {{ parse_string(key, item) }}
@@ -120,8 +131,11 @@
     {% set type = field["type"] %}
     {% set value = field["value"] %}
 
-    {% if type == "string" or type == "date" %}
+    {% if type == "string" %}
     {{ parse_string(key, value) }}
+    {% elif type == "date" %}
+    {{ parse_date(key, value) }}
+    
     {% elif type == "key_value_dicts" %}
     
     {% if settings.update({'skip_translate': True}) %} {% endif %}
