@@ -1,6 +1,7 @@
 from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
 from stadsarkiv_client.core.translate import translate
+import typing
 
 
 log = get_log()
@@ -26,7 +27,11 @@ ICONS = {
 
 
 def _is_allowed_by_ip(request: Request) -> bool:
-    ip = request["client"][0]
+    try:
+        ip = request["client"][0]
+    except KeyError:
+        return False
+
     if ip in IP_ALLOW:
         return True
     return False
@@ -64,27 +69,6 @@ def _is_sejrs_sedler(record_dict: dict):
     return False
 
 
-def _set_representation_variables(record: dict):
-    # Set record_type if record.representations exists
-    record["record_type"] = None
-    if "representations" in record:
-        record["record_type"] = record["representations"].get("record_type")
-
-    record["has_representations"] = False
-    if record["legal_id"] == 1 and record["contractual_id"] > 2:
-        # Then it is a representation, image, audio, video, web_document - or notice about reading room
-        record["has_representations"] = True
-
-    record["is_representations_online"] = False
-    if record["availability_id"] == 4 or record["allowed_by_ip"]:
-        record["is_representations_online"] = True
-
-    if _is_sejrs_sedler(record):
-        record["record_type"] = "sejrs_sedler"
-
-    return record
-
-
 def _is_downloadable(metadata: dict) -> bool:
     return (
         metadata.get("representations", False)
@@ -107,8 +91,27 @@ def _get_record_title(record_dict: dict):
     return title
 
 
-def get_meta_data(request: Request, record: dict):
+def set_representations(meta_data: dict, record: dict):
+    # meta_data["record_type"] = "unknown"
+    if "representations" in record:
+        meta_data["record_type"] = record["representations"].get("record_type", "unknown")
 
+    meta_data["has_representations"] = False
+    if meta_data["legal_id"] == 1 and meta_data["contractual_id"] > 2:
+        # Then it is a representation, image, audio, video, web_document - or notice about reading room
+        meta_data["has_representations"] = True
+
+    meta_data["is_representations_online"] = False
+    if meta_data["availability_id"] == 4 or meta_data["allowed_by_ip"]:
+        meta_data["is_representations_online"] = True
+
+    if _is_sejrs_sedler(record):
+        meta_data["record_type"] = "sejrs_sedler"
+
+    return meta_data
+
+
+def get_meta_data(request: Request, record: dict) -> dict[str, typing.Any]:
     meta_data = {}
 
     meta_data["allowed_by_ip"] = _is_allowed_by_ip(request)
@@ -122,21 +125,7 @@ def get_meta_data(request: Request, record: dict):
     meta_data["usability_id"] = record["usability"].get("id")
 
     # This shuld be altered to record_represenation_type
-    meta_data["record_type"] = None
-    if "representations" in record:
-        meta_data["record_type"] = record["representations"].get("record_type")
-
-    meta_data["has_representations"] = False
-    if meta_data["legal_id"] == 1 and meta_data["contractual_id"] > 2:
-        # Then it is a representation, image, audio, video, web_document - or notice about reading room
-        meta_data["has_representations"] = True
-
-    meta_data["is_representations_online"] = False
-    if meta_data["availability_id"] == 4 or meta_data["allowed_by_ip"]:
-        meta_data["is_representations_online"] = True
-
-    if _is_sejrs_sedler(record):
-        meta_data["record_type"] = "sejrs_sedler"
+    meta_data = set_representations(meta_data, record)
 
     meta_data["is_downloadable"] = _is_downloadable(meta_data)
     return meta_data

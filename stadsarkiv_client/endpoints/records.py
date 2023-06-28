@@ -56,7 +56,6 @@ async def get_record_view(request: Request):
 
 async def get_record_view_json(request: Request):
     try:
-
         record_id = request.path_params["record_id"]
         type = request.path_params["type"]
         record_sections = settings["record_sections"]
@@ -66,9 +65,9 @@ async def get_record_view_json(request: Request):
         metadata = get_meta_data(request, record)
         record = {**record, **metadata}
 
-        record_altered = record_alter(request, record)
-        record_and_types = get_record_and_types(record_altered)
-        record_sections = get_section_data(record_sections, record_and_types)
+        record_altered = record_alter.record_alter(request, record)
+        record_and_types = record_alter.get_record_and_types(record_altered)
+        sections = record_alter.get_section_data(record_sections, record_and_types)
 
         if type == "record":
             record_json = json.dumps(record, indent=4, ensure_ascii=False)
@@ -83,7 +82,7 @@ async def get_record_view_json(request: Request):
             return PlainTextResponse(record_and_types_json)
 
         elif type == "record_sections":
-            record_sections_json = json.dumps(record_sections, indent=4, ensure_ascii=False)
+            record_sections_json = json.dumps(sections, indent=4, ensure_ascii=False)
             return PlainTextResponse(record_sections_json)
         else:
             raise HTTPException(404, detail="type not found", headers=None)
