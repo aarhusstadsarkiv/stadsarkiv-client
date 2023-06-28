@@ -2,6 +2,7 @@ from stadsarkiv_client.core.translate import translate
 
 
 def normalize_abstract_dates(record):
+    """Add date_normalized to record"""
     date_string = ""
     if record.get("date_from"):
         if record.get("date_to"):

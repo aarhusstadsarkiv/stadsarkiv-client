@@ -1,5 +1,6 @@
 from stadsarkiv_client.core.logging import get_log
 import urllib.parse
+from stadsarkiv_client.core.dynamic_settings import settings
 
 
 log = get_log()
@@ -15,7 +16,7 @@ def _list_dict_id_label(original_data):
     return transformed_data
 
 
-def normalize_series(record: dict):
+def _normalize_series(record: dict):
     """create a normalized series list with URL query for each series"""
 
     if "series" in record and "collection" in record:
@@ -37,7 +38,7 @@ def normalize_series(record: dict):
     return record
 
 
-def normalize_content_types(record: dict):
+def _normalize_content_types(record: dict):
     """Transform content_types to a more sane data structure ( list of list of dicts)
     original_data = [
             {'id': [61, 102], 'label': ['Billeder', 'Situations billeder']},
@@ -64,7 +65,7 @@ def normalize_content_types(record: dict):
     return record
 
 
-def normalize_subjects(record: dict):
+def _normalize_subjects(record: dict):
     """Transform subjects to a more sane data structure: Same as content_types"""
     if "subjects" in record:
         subjects = record["subjects"]
@@ -122,7 +123,7 @@ def normalize_hierarchy(collection_id: int, tags_list: list):
     return result
 
 
-def normalize_collection_tags(record: dict):
+def _normalize_collection_tags(record: dict):
     # For future testing
     # log.debug(_normalize_hierarchy(1, ["a", "a/b", "c", "c/d", "c/d/e"]))
 
@@ -140,7 +141,7 @@ def normalize_collection_tags(record: dict):
     return record
 
 
-def normalize_dict_data(record: dict):
+def _normalize_dict_data(record: dict):
     """Transform dict value data to list of dict data. Then there is only one data structure to handle"""
     if "admin_data" in record:
         record["admin_data"] = [record["admin_data"]]
@@ -150,7 +151,7 @@ def normalize_dict_data(record: dict):
     return record
 
 
-def normalize_labels(record: dict):
+def _normalize_labels(record: dict):
     if "desc_data" in record and "source" in record["desc_data"]:
         record["desc_data"]["Kilde"] = record["desc_data"]["source"]
         del record["desc_data"]["source"]
@@ -158,7 +159,7 @@ def normalize_labels(record: dict):
     return record
 
 
-def normalize_resources(record: dict):
+def _normalize_resources(record: dict):
     """Transform resources to a more sane data structure: Same as content_types"""
     if "resources" in record:
         resources = record["resources"]
@@ -172,7 +173,7 @@ def normalize_resources(record: dict):
     return record
 
 
-def normalize_link_lists(keys, record: dict):
+def _normalize_link_lists(keys, record: dict):
     """add search_query to each link_list given in keys list"""
     for key in keys:
         if key in record:
@@ -181,10 +182,40 @@ def normalize_link_lists(keys, record: dict):
     return record
 
 
-def normalize_link_dicts(keys, record: dict):
+def _normalize_link_dicts(keys, record: dict):
     """add search_query to each link_dict given in keys list"""
     for key in keys:
         if key in record:
             item = record[key]
             item["search_query"] = key + "=" + str(item["id"])
+    return record
+
+
+def _get_list_of_type(type: str):
+    """get a list of a type, e.g. string from record_definitions"""
+    record_definitions = settings["record_definitions"]
+    type_list = []
+    for key, item in record_definitions.items():  # type: ignore
+        if item["type"] == type:
+            type_list.append(key)
+
+    return type_list
+
+
+def normalize_record_data(record: dict):
+    """Normalize record data to a more sane data structure"""
+    record = _normalize_dict_data(record)
+    record = _normalize_collection_tags(record)
+    record = _normalize_series(record)
+    record = _normalize_content_types(record)
+    record = _normalize_subjects(record)
+    record = _normalize_labels(record)
+    record = _normalize_resources(record)
+
+    link_list = _get_list_of_type("link_list")
+    record = _normalize_link_lists(link_list, record)
+
+    link_dict = _get_list_of_type("link_dict")
+    record = _normalize_link_dicts(link_dict, record)
+
     return record

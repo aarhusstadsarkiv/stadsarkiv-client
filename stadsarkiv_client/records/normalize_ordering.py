@@ -5,6 +5,7 @@ log = get_log()
 
 
 def normalize_ordering(record: dict):
+    """Add ordering to record"""
     availability_id = record.get("availability_id", None)
     legal_id = record.get("legal_id", None)
     contractual_id = record.get("contractual_id", 0)

@@ -1,5 +1,5 @@
 def normalize_legal_restrictions(record: dict):
-    """This is always displayed"""
+    """Add legal_restrictions_normalized to record"""
 
     text = ""
     legal_id = record["legal_id"]

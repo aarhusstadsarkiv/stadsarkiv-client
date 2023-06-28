@@ -5,7 +5,7 @@ from stadsarkiv_client.records.normalize_contractual_status import normalize_con
 from stadsarkiv_client.records.normalize_legal_restrictions import normalize_legal_restrictions
 from stadsarkiv_client.records.normalize_availability import normalize_availability
 from stadsarkiv_client.records.normalize_ordering import normalize_ordering
-from stadsarkiv_client.records import normalize_record
+from stadsarkiv_client.records.normalize_record import normalize_record_data
 from stadsarkiv_client.core.dynamic_settings import settings
 from starlette.requests import Request
 
@@ -27,19 +27,7 @@ def _get_list_of_type(type: str):
 def record_alter(request: Request, record: dict):
     record = record.copy()
 
-    record = normalize_record.normalize_dict_data(record)
-    record = normalize_record.normalize_collection_tags(record)
-    record = normalize_record.normalize_series(record)
-    record = normalize_record.normalize_content_types(record)
-    record = normalize_record.normalize_subjects(record)
-    record = normalize_record.normalize_labels(record)
-    record = normalize_record.normalize_resources(record)
-
-    link_list = _get_list_of_type("link_list")
-    record = normalize_record.normalize_link_lists(link_list, record)
-
-    link_dict = _get_list_of_type("link_dict")
-    record = normalize_record.normalize_link_dicts(link_dict, record)
+    record = normalize_record_data(record)
 
     record = normalize_abstract_dates(record)
     record = normalize_copyright_status(record)
