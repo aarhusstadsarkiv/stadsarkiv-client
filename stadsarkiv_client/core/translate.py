@@ -15,31 +15,7 @@ except ImportError:
     language_local = {}
 
 
-def translate(key: str) -> str:
-    translation = ""
-
-    # Add key to language files if not exists
-    if key not in da:
-        add_key_language_file("da", key)
-
-    if key not in en:
-        add_key_language_file("en", key)
-
-    # If local language file exists, use that. Else use default language
-    if settings["language"] == "da":
-        translation = get_translation_override(key)
-        if not translation:
-            translation = da[key]
-
-    if settings["language"] == "en":
-        translation = get_translation_override(key)
-        if not translation:
-            translation = en[key]
-
-    return translation
-
-
-def get_translation_override(key: str) -> str:
+def _get_translation_override(key: str) -> str:
     """Get translation from local language file if exists"""
     translation = ""
 
@@ -50,19 +26,19 @@ def get_translation_override(key: str) -> str:
     return translation
 
 
-def add_key_language_file(lang, key) -> None:
+def _add_key_language_file(lang, key) -> None:
     if lang == "da":
         da[key] = key
 
-        save_file_dict("da")
+        _save_file_dict("da")
 
     if lang == "en":
         en[key] = key
 
-        save_file_dict("en")
+        _save_file_dict("en")
 
 
-def save_file_dict(lang) -> None:
+def _save_file_dict(lang) -> None:
     if settings["environment"] == "production":
         return
 
@@ -75,3 +51,27 @@ def save_file_dict(lang) -> None:
         file_contents_da = f"{lang} = {json.dumps(da, indent=4, sort_keys=True, ensure_ascii=False)}"
         with open("stadsarkiv_client/locales/da.py", "w") as f:
             f.write(file_contents_da)
+
+
+def translate(key: str) -> str:
+    translation = ""
+
+    # Add key to language files if not exists
+    if key not in da:
+        _add_key_language_file("da", key)
+
+    if key not in en:
+        _add_key_language_file("en", key)
+
+    # If local language file exists, use that. Else use default language
+    if settings["language"] == "da":
+        translation = _get_translation_override(key)
+        if not translation:
+            translation = da[key]
+
+    if settings["language"] == "en":
+        translation = _get_translation_override(key)
+        if not translation:
+            translation = en[key]
+
+    return translation

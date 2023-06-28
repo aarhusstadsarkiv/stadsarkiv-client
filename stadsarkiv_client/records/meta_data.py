@@ -37,17 +37,6 @@ def _is_allowed_by_ip(request: Request) -> bool:
     return False
 
 
-def _set_icon(record: dict):
-    """Set icon for the record based on content type"""
-    try:
-        content_type_id = record["content_types"][0][0]["id"]
-        record["icon"] = ICONS[str(content_type_id)]
-    except KeyError:
-        record["icon"] = ICONS["99"]
-
-    return record
-
-
 def _get_icon(record: dict):
     """Get icon for the record based on content type"""
     try:
@@ -91,7 +80,7 @@ def _get_record_title(record_dict: dict):
     return title
 
 
-def set_representations(meta_data: dict, record: dict):
+def _set_representations(meta_data: dict, record: dict):
     # meta_data["record_type"] = "unknown"
     if "representations" in record:
         meta_data["record_type"] = record["representations"].get("record_type", "unknown")
@@ -125,7 +114,7 @@ def get_meta_data(request: Request, record: dict) -> dict[str, typing.Any]:
     meta_data["usability_id"] = record["usability"].get("id")
 
     # This shuld be altered to record_represenation_type
-    meta_data = set_representations(meta_data, record)
+    meta_data = _set_representations(meta_data, record)
 
     meta_data["is_downloadable"] = _is_downloadable(meta_data)
     return meta_data

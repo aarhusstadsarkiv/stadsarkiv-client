@@ -20,7 +20,7 @@ def normalize_abstract_dates(record):
     elif record.get("date_to"):
         date_string = f"~ {record['date_to']}"
     else:
-        date_string = translate("No Date")  # Udateret
+        date_string = translate("No Date")
 
     record["date_normalized"] = date_string
     return record

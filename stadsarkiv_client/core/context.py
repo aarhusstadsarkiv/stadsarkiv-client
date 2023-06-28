@@ -1,6 +1,6 @@
 from typing import Any
 from starlette.requests import Request
-from .flash import get_messages
+from stadsarkiv_client.core.flash import get_messages
 from stadsarkiv_client.core import dynamic_settings
 from stadsarkiv_client.hooks.manager import get_plugin_manager
 from stadsarkiv_client.core import api
@@ -11,7 +11,7 @@ log = get_log()
 pm = get_plugin_manager()
 
 
-async def get_main_menu(request: Request):
+async def _get_main_menu(request: Request):
     logged_in = await api.is_logged_in(request)
     permissions_list = await api.me_permissions(request)
 
@@ -54,7 +54,7 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
         "request": request,
         "title": get_title(request),
         "flash_messages": get_messages(request),
-        "main_menu": await get_main_menu(request),
+        "main_menu": await _get_main_menu(request),
         "logged_in": logged_in,
     }
 
