@@ -59,7 +59,7 @@ settings = {
         ],
         "Ophavsret": ["copyright_status_normalized"],
         "Beskrivelsesdata": ["desc_data"],
-        "Relationer": ["organisations", "locations", "events", "people", "objects"],
+        "Relationer": ["locations", "organisations", "events", "people", "objects"],
         "Rettighedsnoter": ["rights_notes"],
         "Anden juridisk beskyttelse": ["contractual_status_normalized", "other_legal_restrictions_normalized"],
         "Tilgængelighed": ["availability_normalized"],
