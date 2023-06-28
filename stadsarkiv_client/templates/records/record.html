@@ -1,6 +1,8 @@
 {% set settings = {'skip_translate': False} %}
 {% set search_base_url = "/records-search" %}
 {% set debug = True %}
+{# the follwing is needed for allowing searching in media, e.g. video or audio #}
+{% set azure_allow_media_search = "sp=r&st=2023-02-03T12:19:05Z&se=2030-04-01T19:19:05Z&spr=https&sv=2021-06-08&sr=c&sig=QK9mOWt0oZ%2FtiY5biruFo0eGPirtjHYEQ061tPuZYHU%3D" %}
 
 {% macro parse_record_label (label) %}
 <div class="label">
@@ -164,16 +166,16 @@
 {% endif %}
 
 {% if record["record_type"] == 'video' %}
-<video poster="{{ record.representations.get('record_image') }}" preload="metadata">
-    <source src="{{ record.representations.get('record_file') }}?sp=r&st=2023-02-03T12:19:05Z&se=2030-04-01T19:19:05Z&spr=https&sv=2021-06-08&sr=c&sig=QK9mOWt0oZ%2FtiY5biruFo0eGPirtjHYEQ061tPuZYHU%3D" type="video/mp4" />
+<video controls="" poster="{{ record.representations.get('record_image') }}" preload="metadata">
+    <source src="{{ record.representations.get('record_file') }}?{{ azure_allow_media_search }}" type="video/mp4" />
     <p>This browser doesn't support video tag.</p>
 </video>
 {% endif %}
 
 {% if record["record_type"] == 'audio' %}
 <figcaption>Klik for at lytte til lydfilen</figcaption><br />
-<audio style="width:100%;" controls="" preload="metadata">
-    <source src="{{ record.representations.get('record_file') }}?sp=r&st=2023-02-03T12:19:05Z&se=2030-04-01T19:19:05Z&spr=https&sv=2021-06-08&sr=c&sig=QK9mOWt0oZ%2FtiY5biruFo0eGPirtjHYEQ061tPuZYHU%3D" type="audio/mpeg" />
+<audio controls="" preload="metadata">
+    <source src="{{ record.representations.get('record_file') }}?{{ azure_allow_media_search }}" type="audio/mpeg" />
     <p>This browser doesn't support the audio tag.</p>
 </audio>
 {% endif %}
