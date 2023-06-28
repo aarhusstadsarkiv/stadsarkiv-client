@@ -68,7 +68,7 @@ routes = [
     Route("/entities/view/{uuid:str}", endpoint=entities.get_entity_view, name="entity_view"),
     Route("/records-search", endpoint=records.get_records_search, name="records_search"),
     Route("/records/{record_id:str}", endpoint=records.get_record_view, name="record_view"),
-    Route("/records/{record_id:str}/json", endpoint=records.get_record_view_json, name="record_view_json"),
+    Route("/records/{record_id:str}/json/{type:str}", endpoint=records.get_record_view_json, name="record_view_json"),
 ]
 
 if settings["environment"] == "development":

@@ -233,7 +233,16 @@
 {{ parse_sections(record_altered, sections) }}
 
 <p>
-    <a href="{{ request.url.path }}/json">JSON</a>
+    <a href="{{ request.url.path }}/json/record">JSON (From API)</a>
+</p>
+<p>
+    <a href="{{ request.url.path }}/json/record_altered">JSON (Normalized)</a>
+</p>
+<p>
+    <a href="{{ request.url.path }}/json/record_and_types">JSON (With types)</a>
+</p>
+<p>
+    <a href="{{ request.url.path }}/json/record_sections">JSON (Record in sections)</a>
 </p>
 
 

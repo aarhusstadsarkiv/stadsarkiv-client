@@ -87,18 +87,34 @@ async def get_record_view(request: Request):
 
 async def get_record_view_json(request: Request):
     try:
+
         record_id = request.path_params["record_id"]
+        type = request.path_params["type"]
+        record_sections = settings["record_sections"]
+
         record = await api.proxies_record_get_by_id(record_id)
         record_altered = record_alter(request, record)
-
-        record_sections = settings["record_sections"]
         record_and_types = get_record_and_types(record_altered)
+        record_sections = get_section_data(record_sections, record_and_types)
 
-        sections = get_section_data(record_sections, record_and_types)
+        if type == "record":
+            record_json = json.dumps(record, indent=4, ensure_ascii=False)
+            return PlainTextResponse(record_json)
 
-        record_json = json.dumps(record, indent=4, ensure_ascii=False)
-        return PlainTextResponse(record_json)
+        elif type == "record_altered":
+            record_altered_json = json.dumps(record_altered, indent=4, ensure_ascii=False)
+            return PlainTextResponse(record_altered_json)
+
+        elif type == "record_and_types":
+            record_and_types_json = json.dumps(record_and_types, indent=4, ensure_ascii=False)
+            return PlainTextResponse(record_and_types_json)
+
+        elif type == "record_sections":
+            record_sections_json = json.dumps(record_sections, indent=4, ensure_ascii=False)
+            return PlainTextResponse(record_sections_json)
+        else:
+            raise HTTPException(404, detail="type not found", headers=None)
 
     except Exception as e:
         log.exception(e)
-        raise HTTPException(404, detail=str(e), headers=None)
+        raise HTTPException(500, detail=str(e), headers=None)
