@@ -135,7 +135,7 @@ da = {
     "label_record_last_updated": "Senest opdateret",
     "label_record_last_updated_by": "Senest opdateret af",
     "label_record_locations": "Steder",
-    "label_record_ordering": "Bestilling",
+    "label_record_ordering_normalized": "Bestilling",
     "label_record_organisations": "Organisationer",
     "label_record_other_legal_restrictions": "Lovgivning",
     "label_record_other_legal_restrictions_normalized": "Lovgivning",
@@ -155,5 +155,5 @@ da = {
     "label_record_title": "label_record_title",
     "label_record_type": "Type",
     "label_record_usability": "Ophavsret",
-    "search": "search",
+    "search": "search"
 }

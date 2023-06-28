@@ -63,9 +63,9 @@ async def get_record_view_json(request: Request):
         record = await api.proxies_record_get_by_id(record_id)
 
         metadata = get_meta_data(request, record)
-        record = {**record, **metadata}
+        record_altered = {**record, **metadata}
 
-        record_altered = record_alter.record_alter(request, record)
+        record_altered = record_alter.record_alter(request, record_altered)
         record_and_types = record_alter.get_record_and_types(record_altered)
         sections = record_alter.get_section_data(record_sections, record_and_types)
 

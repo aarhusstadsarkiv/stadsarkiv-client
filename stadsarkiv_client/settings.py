@@ -63,7 +63,7 @@ settings = {
         "Rettighedsnoter": ["rights_notes"],
         "Anden juridisk beskyttelse": ["contractual_status_normalized", "other_legal_restrictions_normalized"],
         "Tilgængelighed": ["availability_normalized"],
-        "Bestilling": ["ordering"],
+        "Bestilling": ["ordering_normalized"],
         "Administration": [
             "admin_notes",
             "admin_data",
@@ -118,7 +118,7 @@ settings = {
         "people": {"type": "link_list"},
         "objects": {"type": "link_list"},
         "events": {"type": "link_list"},
-        "ordering": {"type": "string_list"},
+        "ordering_normalized": {"type": "string_list"},
         "creators": {"type": "link_list"},
         "desc_notes": {"type": "string"},
         "heading": {"type": "string"},

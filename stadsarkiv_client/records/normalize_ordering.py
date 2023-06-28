@@ -29,6 +29,6 @@ def normalize_ordering(record: dict):
         result.append("")
 
     if result:
-        record["ordering"] = result
+        record["ordering_normalized"] = result
 
     return record

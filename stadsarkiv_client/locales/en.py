@@ -145,6 +145,7 @@ en = {
     "label_record_last_updated_by": "Last Updated By",
     "label_record_locations": "Label Locations",
     "label_record_ordering": "label_record_ordering",
+    "label_record_ordering_normalized": "label_record_ordering_normalized",
     "label_record_organisations": "Organisations",
     "label_record_other_legal_restrictions": "Other Legal Restrictions",
     "label_record_other_legal_restrictions_normalized": "label_record_other_legal_restrictions_normalized",
@@ -167,5 +168,5 @@ en = {
     "label_record_title": "label_record_title",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "search": "search",
+    "search": "search"
 }
