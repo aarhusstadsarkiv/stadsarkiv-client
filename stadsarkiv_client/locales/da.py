@@ -155,5 +155,5 @@ da = {
     "label_record_title": "label_record_title",
     "label_record_type": "Type",
     "label_record_usability": "Ophavsret",
-    "search": "search"
+    "search": "search",
 }
