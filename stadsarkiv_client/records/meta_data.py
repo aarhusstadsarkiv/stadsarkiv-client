@@ -25,7 +25,7 @@ ICONS = {
 }
 
 
-def is_allowed_by_ip(request: Request) -> bool:
+def _is_allowed_by_ip(request: Request) -> bool:
     ip = request["client"][0]
     if ip in IP_ALLOW:
         return True
@@ -43,6 +43,17 @@ def _set_icon(record: dict):
     return record
 
 
+def _get_icon(record: dict):
+    """Get icon for the record based on content type"""
+    try:
+        content_type_id = record["content_types"][0][0]["id"]
+        icon = ICONS[str(content_type_id)]
+    except KeyError:
+        icon = ICONS["99"]
+
+    return icon
+
+
 def _is_sejrs_sedler(record_dict: dict):
     if "collection" not in record_dict:
         return False
@@ -53,7 +64,7 @@ def _is_sejrs_sedler(record_dict: dict):
     return False
 
 
-def set_representation_variables(record: dict):
+def _set_representation_variables(record: dict):
     # Set record_type if record.representations exists
     record["record_type"] = None
     if "representations" in record:
@@ -74,31 +85,17 @@ def set_representation_variables(record: dict):
     return record
 
 
-def set_download_variables(record: dict) -> dict:
-    record["is_downloadable"] = (
-        record.get("representations")
-        and record["legal_id"] == 1
-        and record["contractual_id"] > 3
-        and record["usability_id"] in [1, 2, 3]
-        and record["record_type"] != "video"
+def _is_downloadable(metadata: dict) -> bool:
+    return (
+        metadata.get("representations", False)
+        and metadata["legal_id"] == 1
+        and metadata["contractual_id"] > 3
+        and metadata["usability_id"] in [1, 2, 3]
+        and metadata["record_type"] != "video"
     )
-    return record
 
 
-def set_common_variables(record: dict):
-    record = _set_icon(record)
-
-    # Set other keys in record dict
-    record["copyright_id"] = record["copyright_status"].get("id")
-    record["legal_id"] = record["other_legal_restrictions"].get("id")
-    record["contractual_id"] = record["contractual_status"].get("id")
-    record["availability_id"] = record["availability"].get("id")
-    record["usability_id"] = record["usability"].get("id")
-
-    return record
-
-
-def set_record_title(record_dict: dict):
+def _get_record_title(record_dict: dict):
     title = translate("No title")
     record_title = record_dict.get("title")
     if not record_title:
@@ -107,14 +104,39 @@ def set_record_title(record_dict: dict):
     if record_title:
         title = record_title
 
-    record_dict["title"] = title
-    return record_dict
+    return title
 
 
 def get_meta_data(request: Request, record: dict):
-    record["allowed_by_ip"] = is_allowed_by_ip(request)
-    record = set_record_title(record)
-    record = set_common_variables(record)
-    record = set_representation_variables(record)
-    record = set_download_variables(record)
-    return record
+
+    meta_data = {}
+
+    meta_data["allowed_by_ip"] = _is_allowed_by_ip(request)
+    meta_data["title"] = _get_record_title(record)
+    meta_data["icon"] = _get_icon(record)
+
+    meta_data["copyright_id"] = record["copyright_status"].get("id")
+    meta_data["legal_id"] = record["other_legal_restrictions"].get("id")
+    meta_data["contractual_id"] = record["contractual_status"].get("id")
+    meta_data["availability_id"] = record["availability"].get("id")
+    meta_data["usability_id"] = record["usability"].get("id")
+
+    # This shuld be altered to record_represenation_type
+    meta_data["record_type"] = None
+    if "representations" in record:
+        meta_data["record_type"] = record["representations"].get("record_type")
+
+    meta_data["has_representations"] = False
+    if meta_data["legal_id"] == 1 and meta_data["contractual_id"] > 2:
+        # Then it is a representation, image, audio, video, web_document - or notice about reading room
+        meta_data["has_representations"] = True
+
+    meta_data["is_representations_online"] = False
+    if meta_data["availability_id"] == 4 or meta_data["allowed_by_ip"]:
+        meta_data["is_representations_online"] = True
+
+    if _is_sejrs_sedler(record):
+        meta_data["record_type"] = "sejrs_sedler"
+
+    meta_data["is_downloadable"] = _is_downloadable(meta_data)
+    return meta_data

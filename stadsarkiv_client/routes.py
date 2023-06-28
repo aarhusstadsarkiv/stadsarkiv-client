@@ -73,7 +73,6 @@ routes = [
 
 if settings["environment"] == "development":
     routes.append(Route("/test", endpoint=testing.test, name="test"))
-    routes.append(Route("/test-entity/{record_id:str}", endpoint=testing.test_entitites_macro, name="test"))
 
 
 # Add routes for custom pages

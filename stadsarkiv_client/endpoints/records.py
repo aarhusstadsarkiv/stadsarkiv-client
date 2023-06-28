@@ -7,7 +7,8 @@ from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
 import json
-from stadsarkiv_client.records.record_alter import record_alter
+from stadsarkiv_client.records import record_alter
+from stadsarkiv_client.records.meta_data import get_meta_data
 from stadsarkiv_client.core.dynamic_settings import settings
 
 
@@ -30,53 +31,21 @@ async def get_records_search(request: Request):
     return templates.TemplateResponse("records/search.html", context)
 
 
-def get_section_data(sections, data):
-    section_data = {}
-
-    for section, keys in sections.items():
-        section_values = {}
-        for key in keys:
-            if key in data:
-                section_values[key] = data[key]
-
-        if section_values:
-            section_data[section] = section_values
-
-    return section_data
-
-
-def get_record_and_types(record):
-    record_altered = {}
-    for key, value in record.items():
-        record_item = {}
-        record_item["value"] = value
-        record_item["name"] = key
-
-        try:
-            definition = settings["record_definitions"][key]
-            record_item["type"] = definition["type"]
-        except KeyError:
-            record_item["type"] = "unknown"
-
-        record_altered[key] = record_item
-
-    return record_altered
-
-
 async def get_record_view(request: Request):
     record_id = request.path_params["record_id"]
+    record_sections = settings["record_sections"]
 
     record = await api.proxies_record_get_by_id(record_id)
-    record_altered = record_alter(request, record)
 
-    record_sections = settings["record_sections"]
-    record_and_types = get_record_and_types(record_altered)
+    metadata = get_meta_data(request, record)
+    record = {**record, **metadata}
 
-    sections = get_section_data(record_sections, record_and_types)
+    record_altered = record_alter.record_alter(request, record)
+    record_and_types = record_alter.get_record_and_types(record_altered)
+    sections = record_alter.get_section_data(record_sections, record_and_types)
+
     context_variables = {
         "title": record_altered["title"],
-        "record_original": record,
-        "record_and_types": record_and_types,
         "record_altered": record_altered,
         "sections": sections,
     }
@@ -93,6 +62,10 @@ async def get_record_view_json(request: Request):
         record_sections = settings["record_sections"]
 
         record = await api.proxies_record_get_by_id(record_id)
+
+        metadata = get_meta_data(request, record)
+        record = {**record, **metadata}
+
         record_altered = record_alter(request, record)
         record_and_types = get_record_and_types(record_altered)
         record_sections = get_section_data(record_sections, record_and_types)
