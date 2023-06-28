@@ -5,6 +5,7 @@ from stadsarkiv_client.records.normalize_contractual_status import normalize_con
 from stadsarkiv_client.records.normalize_legal_restrictions import normalize_legal_restrictions
 from stadsarkiv_client.records.normalize_availability import normalize_availability
 from stadsarkiv_client.records.normalize_ordering import normalize_ordering
+from stadsarkiv_client.records.meta_data import get_meta_data
 from stadsarkiv_client.records import normalize_record
 from stadsarkiv_client.core.dynamic_settings import settings
 from starlette.requests import Request
@@ -46,12 +47,8 @@ def get_list_of_type(type: str):
 def record_alter(request: Request, record: dict):
     record = record.copy()
 
-    record["allowed_by_ip"] = normalize_record.is_allowed_by_ip(request)
-    record = normalize_record.set_record_title(record)
-    record = normalize_record.set_common_variables(record)
-    record = normalize_record.set_representation_variables(record)
+    record = get_meta_data(request, record)
 
-    record = normalize_record.set_download_variables(record)
     record = normalize_record.normalize_dict_data(record)
     record = normalize_record.normalize_collection_tags(record)
     record = normalize_record.normalize_series(record)
