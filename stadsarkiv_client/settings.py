@@ -118,7 +118,7 @@ settings = {
         "people": {"type": "link_list"},
         "objects": {"type": "link_list"},
         "events": {"type": "link_list"},
-        "ordering": {"type": "ordering"},
+        "ordering": {"type": "string_list"},
         "creators": {"type": "link_list"},
         "desc_notes": {"type": "string"},
         "heading": {"type": "string"},
