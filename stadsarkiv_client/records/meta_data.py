@@ -81,7 +81,7 @@ def _get_record_title(record_dict: dict):
 
 
 def _set_representations(meta_data: dict, record: dict):
-    # meta_data["record_type"] = "unknown"
+    meta_data["record_type"] = "unknown"
     if "representations" in record:
         meta_data["record_type"] = record["representations"].get("record_type", "unknown")
 
