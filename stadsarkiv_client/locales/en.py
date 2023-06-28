@@ -167,5 +167,5 @@ en = {
     "label_record_title": "label_record_title",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "search": "search"
+    "search": "search",
 }

@@ -83,6 +83,5 @@ def normalize_copyright_status(record: dict):
         if _get_special_notice_id(record):
             lines.append(special_notice)
 
-    # convert lines to string
     record["copyright_status_normalized"] = lines
     return record

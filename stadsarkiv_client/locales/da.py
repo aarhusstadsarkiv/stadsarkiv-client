@@ -128,7 +128,6 @@ da = {
     "label_record_desc_data": "Deskriptiv data",
     "label_record_desc_notes": "Deskriptiv note",
     "label_record_events": "Begivenheder",
-    "label_record_formidlingsegnet": "label_record_formidlingsegnet",
     "label_record_heading": "Overskrift",
     "label_record_id": "Arkiv ID",
     "label_record_label": "label_record_label",
@@ -149,8 +148,6 @@ da = {
     "label_record_schema": "Skema",
     "label_record_series": "Serie",
     "label_record_series_normalized": "Serie",
-    "label_record_source": "label_record_source",
-    "label_record_stedsangivelse": "label_record_stedsangivelse",
     "label_record_subjects": "Emner",
     "label_record_subjects_normalized": "Emner",
     "label_record_summary": "Abstrakt",
@@ -158,5 +155,5 @@ da = {
     "label_record_title": "label_record_title",
     "label_record_type": "Type",
     "label_record_usability": "Ophavsret",
-    "search": "search"
+    "search": "search",
 }

@@ -87,7 +87,6 @@ async def get_record_view(request: Request):
 
 async def get_record_view_json(request: Request):
     try:
-
         record_id = request.path_params["record_id"]
         record = await api.proxies_record_get_by_id(record_id)
         record_altered = record_alter(request, record)
