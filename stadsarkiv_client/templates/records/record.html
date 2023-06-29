@@ -67,7 +67,7 @@
     <div class="content">
             {% for link in value %}
             <p>
-                <a href="{{ search_base_url }}?{{ key}}={{ link['id'] }}">{{ link["label"] }}</a>
+                <a href="{{ search_base_url }}?{{ link['search_query'] }}">{{ link["label"] }}</a>
             </p>
             {% endfor %}
         </ul>
@@ -90,7 +90,7 @@
 {% macro _parse_list_in_hierarchy (value) %}
 <div>
 {% for item in value %}
-<a href="{{ search_base_url }}?{{ item.search_query }}">{{ item.label }}</a>
+<a href="{{ search_base_url }}?{{ item['search_query'] }}">{{ item['label'] }}</a>
     {% if not loop.last %} {{ '>' }} {% endif %}
 {% endfor %}
 </div>
@@ -162,7 +162,7 @@
 
 {% macro parse_representations_media(record) %}
 {% if record["record_type"] == 'image' %}
-    <img src="{{record.portrait}}" alt="{{ section }}" />
+    <img src="{{record['portrait']}}" alt="{{ section }}" />
 {% endif %}
 
 {% if record["record_type"] == 'video' %}
