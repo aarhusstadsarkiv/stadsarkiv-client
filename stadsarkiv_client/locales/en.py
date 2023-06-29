@@ -103,7 +103,7 @@ en = {
     "availability_contractual_id_2": "Materialet er kun tilgængeligt gennem ansøgning.",
     "availability_availability_id_2": "Materialet skal bestilles hjem til læsesalen, før det kan beses.",
     "availability_availability_id_3": "Materialet er tilgængeligt på læsesalen. Der kræves ikke forudgående bestilling for at se materialet på læsesalen. Man skal blot møde op i åbningstiderne.",
-    "copyright_creative_commons_license": "Materialet er under ophavsret, men udgives efter aftale under en <a href=\"https://creativecommons.org/licenses/by/4.0/deed.da\">Creative Commons Navngivelse licens</a>. ",
+    "copyright_creative_commons_license": 'Materialet er under ophavsret, men udgives efter aftale under en <a href="https://creativecommons.org/licenses/by/4.0/deed.da">Creative Commons Navngivelse licens</a>. ',
     "copyright_id_1": "Materialet har ikke værkshøjde og er derfor ikke beskyttet af ophavsret. Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. ",
     "copyright_id_2": "Materialet er i offentlig eje, da ophavsretten er udløbet. Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. ",
     "copyright_id_3": "Materialet er frigivet af alle ophavsretsholdere til offentlig eje. Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. ",
@@ -184,5 +184,5 @@ en = {
     "label_record_title": "label_record_title",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "search": "search"
+    "search": "search",
 }
