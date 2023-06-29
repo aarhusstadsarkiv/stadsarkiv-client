@@ -197,7 +197,5 @@ en = {
     "label_record_title": "label_record_title",
     "label_record_type": "Type",
     "label_record_usability": "Usability",
-    "legal_restrictions_id_1": "legal_restrictions_id_1",
-    "ordering_by_mail": "ordering_by_mail",
     "search": "search",
 }
