@@ -1,11 +1,12 @@
 from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core.translate import translate
 
 
 log = get_log()
 
 
-creative_commons_link = '<a href="https://creativecommons.org/licenses/by/4.0/deed.da">Creative Commons Navngivelse licens</a>'
-special_notice = "Stadsarkivet modtager gerne oplysninger, som kan hjælpe med at identificere den hidtil ukendte ophavsmand/-kvinde. "
+creative_commons_license = translate("copyright_creative_commons_license")
+special_notice = translate("copyright_special_notice")
 
 
 def _get_special_notice_id(record: dict):
@@ -22,62 +23,48 @@ def _get_special_notice_id(record: dict):
 
 def normalize_copyright_status(record: dict):
     """Add copyright_status_normalized to record"""
-    lines = []
+    copyright_id = record["copyright_id"]
 
+    lines = []
     label = record["copyright_status"].get("label")
     lines.append(label)
 
-    copyright_id = record["copyright_id"]
     if copyright_id == 1:
-        text = "Materialet har ikke værkshøjde og er derfor ikke beskyttet af ophavsret. "
-        text += "Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. "
+        text = translate("copyright_id_1")
         lines.append(text)
 
     if copyright_id == 2:
-        text = "Materialet er i offentlig eje, da ophavsretten er udløbet. "
-        text += "Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. "
+        text = translate("copyright_id_2")
         lines.append(text)
 
     if copyright_id == 3:
-        text = "Materialet er frigivet af alle ophavsretsholdere til offentlig eje. "
-        text += "Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. "
+        text = translate("copyright_id_3")
         lines.append(text)
 
     if copyright_id == 4:
-        text = f"Materialet er under ophavsret, men udgives efter aftale under en {creative_commons_link}. "
-        lines.append(text)
-        text = """
-            Materialet må derfor gerne gengives og publiceres,
-            så længe man på passende vis krediterer både ophavsmanden/-kvinden og AarhusArkivet.dk """
+        lines.append(creative_commons_license)
+        text = translate("copyright_id_4")
         lines.append(text)
 
     if copyright_id == 5:
-        text = f"Materialet er under ophavsret, men udgives efter aftale under en {creative_commons_link}. "
-        lines.append(text)
-        text += """
-            Materialet må kun gengives og publiceres i ikke-kommercielle sammenhænge,
-            og under forudsætning af en passende kreditering af både ophavsmanden/-kvinden og AarhusArkivet.dk.
-            Dette udelukker publicering på sociale platforme som Facebook og Instagram. """
+        lines.append(creative_commons_license)
+        text = translate("copyright_id_5")
         lines.append(text)
 
     if copyright_id == 6:
-        text = "Ophavsretsaftalen kræver alle rettigheder forbeholdt. "
-        text += "Materialet må derfor hverken gengives eller publiceres andetsteds. "
+        text = translate("copyright_id_6")
         lines.append(text)
 
     if copyright_id == 7:
-        text = "En eller flere nødvendige ophavsretsaftaler mangler, ofte på grund af ukendte skabere eller rettighedshavere. "
-        text = "Materialet må derfor hverken gengives eller publiceres andetsteds. "
+        text = translate("copyright_id_7")
         lines.append(text)
 
     if copyright_id == 8:
-        text = "Vi har endnu ikke undersøgt materialets ophavsretslige forhold. "
-        text += "Materialet må derfor hverken gengives eller publiceres andetsteds. "
+        text = translate("copyright_id_8")
         lines.append(text)
 
     if copyright_id == 9:
-        text = "Materialets ophavsretslige status er undersøgt, men stadig uafklaret. "
-        text += "Materialet må derfor hverken gengives eller publiceres andetsteds. "
+        text = translate("copyright_id_9")
         lines.append(text)
 
     if copyright_id in [7, 8, 9]:
