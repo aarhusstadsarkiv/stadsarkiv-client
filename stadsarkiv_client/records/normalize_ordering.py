@@ -1,5 +1,5 @@
 from stadsarkiv_client.core.logging import get_log
-
+from stadsarkiv_client.core.translate import translate
 
 log = get_log()
 
@@ -13,20 +13,12 @@ def normalize_ordering(record: dict):
 
     result = []
     if availability_id == 2 and legal_id == 1 and contractual_id > 2:
-        result.append(
-            "Du kan bestille materialet ved at sende en mail til stadsarkiv@aarhus.dk "
-            "hvori du angiver materialets arkiv-ID, som kan ses øverst på siden."
-        )
+        result.append(translate("ordering_by_mail"))
         for curator in curators:
             if curator.get("id") == 2:
-                result.append(
-                    "Hvis materialet ligger hos Rigsarkivet, skal bestillingen sendes dertil. "
-                    "Gå ind på Rigsarkivets hjemmeside og find materialet der. "
-                    "Efterfølgende kan det så bestilles hjem til en af deres læsesale."
-                )
+                result.append(translate("ordering_from_rigsarkivet"))
             elif curator.get("id") == 4:
-                result.append("Materialet kan ses på Aarhus Teaters Arkiv.")
-        result.append("")
+                result.append(translate("ordering_aarhus_teatret"))
 
     if result:
         record["ordering_normalized"] = result
