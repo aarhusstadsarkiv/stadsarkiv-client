@@ -42,6 +42,8 @@ templates = Jinja2Templates(
     directory="",
     context_processors=[app_context],
     loader=loader,
+    trim_blocks=True,
+    lstrip_blocks=True,
 )
 
 

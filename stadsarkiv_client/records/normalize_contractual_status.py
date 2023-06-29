@@ -1,14 +1,18 @@
+from stadsarkiv_client.core.translate import translate
+
+
 def normalize_contractual_status(record, creators=None):
     """Add contractual_status_normalized to record"""
-    contractual_id = record.get("contractual_id")
 
-    text = ""
+    contractual_id = record.get("contractual_id")
+    text = translate("contractual_status_default")
+
     if contractual_id == 1:
-        text = "Materialet er utilgængeligt. Ifølge aftale."
+        text = translate("contractual_status_id_1")
     elif contractual_id == 2:
-        text = "Materialet er kun tilgængeligt gennem ansøgning. Ifølge aftale."
+        text = translate("contractual_status_id_2")
     elif contractual_id == 3:
-        text = "Materialet må kun ses på læsesalen. Ifølge aftale."
+        text = translate("contractual_status_id_3")
     elif contractual_id == 4:
         creators = {"pp": False}
 
@@ -18,12 +22,9 @@ def normalize_contractual_status(record, creators=None):
                     creators.update({"pp": True})
 
         if creators["pp"]:
-            text = "Materialet må kun offentliggøres på Aarhus Stadsarkivs hjemmesider. Ifølge aftale."
+            text = translate("contractual_status_id_4_pp")
         else:
-            text = "Materialet må offentliggøres på internettet. Ifølge aftale."
-    else:
-        text = "Materialet er ikke begrænset af kontraktuelle klausuler."
+            text = translate("contractual_status_id_4")
 
-    # return text
     record["contractual_status_normalized"] = text
     return record
