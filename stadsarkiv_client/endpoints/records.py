@@ -16,6 +16,17 @@ from stadsarkiv_client.facets import FACETS
 log = get_log()
 
 
+def transform_facets(data):
+    transformed_data = {}
+    for key, value in data.items():
+        if isinstance(value, dict):
+            transformed_buckets = {bucket["value"]: bucket["count"] for bucket in value["buckets"]}
+            transformed_data[key] = transformed_buckets
+        else:
+            transformed_data[key] = value
+    return transformed_data
+
+
 async def get_records_search(request: Request):
     query_params = {}
     q = ""
@@ -25,8 +36,16 @@ async def get_records_search(request: Request):
         q = request.query_params.get("q", "")
 
     records = await api.proxies_records(request)
-    records_json = json.dumps(records, indent=4, ensure_ascii=False)
-    context_values = {"title": translate("Search"), "records": records, "query_params": query_params, "q": q, "records_json": records_json}
+    facets_transformed = transform_facets(records["facets"])
+
+    context_values = {
+        "title": translate("Search"),
+        "records": records,
+        "query_params": query_params,
+        "q": q,
+        "facets": FACETS,
+        "facets_transformed": facets_transformed,
+    }
 
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse("records/search.html", context)
