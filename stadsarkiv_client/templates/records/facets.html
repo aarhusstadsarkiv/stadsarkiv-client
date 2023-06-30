@@ -1,0 +1,30 @@
+{% set record_search_url = "/records-search" %}
+
+{% macro parse_facets(facets, top_level_key) %}
+<ul>
+    {% for facet in facets %}
+    <li>
+        <a href="{{ record_search_url }}?{{ top_level_key }}={{ facet['id'] }}">{{ facet['label'] }}</a>
+        {% if 'children' in facet %}
+        {{ parse_facets(facet['children'], top_level_key) }}
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endmacro %}
+
+{% macro parse_top_level_facets(facets) %}
+<ul>
+    {% for top_level_key, top_level_value in facets.items() %}
+    <li><a href="{{ record_search_url }}">{{ top_level_value['label'] }}</a>
+        {{ parse_facets(top_level_value['content'], top_level_key) }}
+    </li>
+    {% endfor %}
+</ul>
+{% endmacro %}
+
+{% extends "base.html" %}
+{% block content %}
+{% include "includes/main_title.html" %}
+{{ parse_top_level_facets(facets)}}
+{% endblock content %}

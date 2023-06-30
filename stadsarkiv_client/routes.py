@@ -72,6 +72,7 @@ routes = [
 ]
 
 if settings["environment"] == "development":
+    routes.append(Route("/facets", endpoint=records.get_facets_test, name="records_facets_test"))
     routes.append(Route("/test", endpoint=testing.test, name="test"))
 
 
