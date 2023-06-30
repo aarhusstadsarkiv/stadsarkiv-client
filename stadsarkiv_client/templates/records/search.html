@@ -4,7 +4,11 @@
 {% include "includes/main_title.html" %}
 {% set truncate_summary = 300 %}
 
+{# include macros from records/macros/facets.html #}
+{% import "records/macros/facets.html" as macro_facets %}
 
+
+{% macro parse_search_form() %}
 <form method="GET" action="{{ url_for('records_search')}}">
     {% for key, value in query_params.items() %}
     <input type="hidden" name="{{ key }}" value="{{ value }}">
@@ -13,6 +17,7 @@
         value="{{ q }}">
     <button type="submit" class="contrast">{{ translate('Search') }}</button>
 </form>
+{% endmacro %}
 
 {% macro parse_search_title(result) %}
 {% if result.label %}
@@ -54,6 +59,7 @@
 </div>
 {% endmacro %}
 
+{% macro parse_search_results(records) %}
 <div class="search-results">
 
     {{ parse_pagination(records.size, records.total) }}
@@ -79,53 +85,14 @@
     </div>
     {% endfor %}
 </div>
+{% endmacro %}
 
-<style>
-    .search-results {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .search-result { 
-        box-sizing: border-box;
-        background-color: #fefefe;
-
-        padding: 20px;
-        border-top: 1px solid #e6e6e6;
-
-    }
-
-    .search-result:hover {
-        background-color: #f0f0f0;
-    }
-
-    .pagination {
-        
-    }
-
-    .search-link {
-        text-decoration: none;
-    }
-
-    .search-link:hover {
-        text-decoration: none;
-    }
-
-    .search-label {
-        color: #646464;
-        display: inline-block;
-        width: 5em;
-        font-weight: bold;
-    }
-
-    .search-content {
-        color: grey;
-    }
-
-</style>
+{{ parse_search_form() }}
+{{ macro_facets.parse_top_level_facets(facets, facets_transformed) }} 
+{{ parse_search_results(records) }}
 
 <pre>
-    {{ records_json }}
+    {{ to_json(facets_transformed) }}
 </pre>
 
 {% endblock content %}

@@ -22,6 +22,7 @@
 {% endmacro %}
 
 {% macro parse_top_level_facets(facets) %}
+<div class="facets">
 <ul>
     {% for top_level_key, top_level_value in facets.items() %}
     <li>
@@ -34,6 +35,7 @@
     </li>
     {% endfor %}
 </ul>
+</div>
 {% endmacro %}
 
 {% extends "base.html" %}
@@ -52,6 +54,13 @@
     ul li ul {
         margin-left: 10px;
     }
+
+    details summary {
+        position: relative;
+        padding-right: 1em;
+    }
+
+
 </style>
 {{ parse_top_level_facets(facets)}}
 {% endblock content %}
