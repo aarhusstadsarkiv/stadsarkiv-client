@@ -5,12 +5,20 @@
 {% set truncate_summary = 300 %}
 {% set record_search_url = "/records-search" %}
 
-{% macro _parse_facets(facets, top_level_key, facets_transformed) %}
+{% macro _parse_facets(facets, top_level_key, facets_search) %}
 <ul>
     {% for facet in facets %}
     <li>
+        
         {% set facet_id = facet["id"] %}
-        {% set count = facets_transformed[top_level_key][facet_id] %}
+
+        {% set facet_transformed = facets_search[top_level_key][facet_id] %}
+
+        {% if "count" in facet_transformed %}
+        {% set count = facet_transformed["count"] %}
+        {% else %}
+        {% set count = 0 %}
+        {% endif %}
 
         {% if count %}
             {% if 'children' in facet %}
@@ -18,7 +26,7 @@
                 <summary>
                     <a href="{{ record_search_url }}?{{ query_str}}{{ top_level_key }}={{ facet['id'] }}">{{ facet['label'] }} ({{count }})</a>
                 </summary>
-                {{ _parse_facets(facet['children'], top_level_key, facets_transformed) }}
+                {{ _parse_facets(facet['children'], top_level_key, facets_search) }}
             </details>
             {% else %}
             <a href="{{ record_search_url }}?{{ query_str }}{{ top_level_key }}={{ facet['id'] }}">{{ facet['label'] }} ({{count }})</a>
@@ -30,7 +38,7 @@
 </ul>
 {% endmacro %}
 
-{% macro parse_top_level_facets(facets, facets_transformed) %}
+{% macro parse_top_level_facets(facets, facets_search) %}
 <div class="facets">
     
 <ul>
@@ -40,7 +48,7 @@
             <summary>
                 <a href="{{ record_search_url }}">{{ top_level_value['label'] }}</a>
             </summary>
-            {{ _parse_facets(top_level_value['content'], top_level_key, facets_transformed) }}
+            {{ _parse_facets(top_level_value['content'], top_level_key, facets_search) }}
         </details>
     </li>
     {% endfor %}
@@ -128,12 +136,12 @@
 </div>
 {% endmacro %}
 
-{{ parse_top_level_facets(facets, facets_transformed) }}
+{{ parse_top_level_facets(facets, facets_search) }}
 {{ parse_search_form() }}
 {{ parse_search_results(records) }}
 
 <pre>
-    {{ to_json(records) }}
+    {{ to_json(facets_search) }}
 </pre>
 
 {% endblock content %}

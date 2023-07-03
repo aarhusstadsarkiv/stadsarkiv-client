@@ -17,15 +17,31 @@ from stadsarkiv_client.core import query
 log = get_log()
 
 
-def transform_facets(data):
-    transformed_data = {}
+def alter_search_facets(data):
+    """Transform search facets from this format:
+
+    {
+        'availability': {'buckets': [{'value': '2', 'count': 1}]}
+    }
+
+    to this format:
+
+    {
+        "availability": {
+            "2": {
+                "value": "2",
+                "count": 1
+            }
+        }
+    }
+    """
+
+    altered_search_facets = {}
     for key, value in data.items():
-        if isinstance(value, dict):
-            transformed_buckets = {bucket["value"]: bucket["count"] for bucket in value["buckets"]}
-            transformed_data[key] = transformed_buckets
-        else:
-            transformed_data[key] = value
-    return transformed_data
+        transformed_buckets = {bucket["value"]: bucket for bucket in value["buckets"]}
+        altered_search_facets[key] = transformed_buckets
+
+    return altered_search_facets
 
 
 async def get_records_search(request: Request):
@@ -34,7 +50,7 @@ async def get_records_search(request: Request):
     query_str = await query.get_params_as_query_str(request)
 
     records = await api.proxies_records(request)
-    facets_transformed = transform_facets(records["facets"])
+    facets_search = alter_search_facets(records["facets"])
 
     context_values = {
         "title": translate("Search"),
@@ -42,8 +58,9 @@ async def get_records_search(request: Request):
         "query_params": query_params,
         "query_str": query_str,
         "q": q,
+        "record_facets": records["facets"],
         "facets": FACETS,
-        "facets_transformed": facets_transformed,
+        "facets_search": facets_search,
     }
 
     context = await get_context(request, context_values=context_values)
