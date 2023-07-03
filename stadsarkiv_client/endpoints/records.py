@@ -11,6 +11,7 @@ from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.meta_data import get_meta_data
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.facets import FACETS
+from stadsarkiv_client.core import query
 
 
 log = get_log()
@@ -28,12 +29,9 @@ def transform_facets(data):
 
 
 async def get_records_search(request: Request):
-    query_params = {}
-    q = ""
-    if request.query_params:
-        query_items = request.query_params.items()
-        query_params = {k: v for k, v in query_items if k != "q"}
-        q = request.query_params.get("q", "")
+    q = await query.get_search_query(request)
+    query_params = await query.get_params_as_tuple_list(request, remove_keys=["q"])
+    query_str = await query.get_params_as_query_str(request)
 
     records = await api.proxies_records(request)
     facets_transformed = transform_facets(records["facets"])
@@ -42,6 +40,7 @@ async def get_records_search(request: Request):
         "title": translate("Search"),
         "records": records,
         "query_params": query_params,
+        "query_str": query_str,
         "q": q,
         "facets": FACETS,
         "facets_transformed": facets_transformed,

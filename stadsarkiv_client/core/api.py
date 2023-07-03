@@ -6,8 +6,9 @@ from stadsarkiv_client.core.translate import translate
 import json
 from stadsarkiv_client.core.dynamic_settings import settings
 import httpx
-import urllib.parse
 import typing
+from stadsarkiv_client.core import query
+from urllib.parse import quote
 
 
 log = get_log()
@@ -331,9 +332,9 @@ async def proxies_record_get(request: Request) -> typing.Any:
 
 
 async def proxies_records(request: Request) -> typing.Any:
-    """search records"""
-    query_str = urllib.parse.urlencode(request.query_params)
-    query_str = urllib.parse.quote(query_str)
+
+    query_str = await query.get_params_as_query_str(request)
+    query_str = quote(query_str)
 
     async with httpx.AsyncClient() as client:
         url = base_url + "/records?params=" + query_str
