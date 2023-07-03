@@ -3,14 +3,55 @@
 {% block content %}
 {% include "includes/main_title.html" %}
 {% set truncate_summary = 300 %}
+{% set record_search_url = "/records-search" %}
 
-{# include macros from records/macros/facets.html #}
-{% import "records/macros/facets.html" as macro_facets %}
+{% macro _parse_facets(facets, top_level_key, facets_transformed) %}
+<ul>
+    {% for facet in facets %}
+    <li>
+        {% set facet_id = facet["id"] %}
+        {% set count = facets_transformed[top_level_key][facet_id] %}
+
+        {% if count %}
+            {% if 'children' in facet %}
+            <details>
+                <summary>
+                    <a href="{{ record_search_url }}?{{ query_str}}{{ top_level_key }}={{ facet['id'] }}">{{ facet['label'] }} ({{count }})</a>
+                </summary>
+                {{ _parse_facets(facet['children'], top_level_key, facets_transformed) }}
+            </details>
+            {% else %}
+            <a href="{{ record_search_url }}?{{ query_str }}{{ top_level_key }}={{ facet['id'] }}">{{ facet['label'] }} ({{count }})</a>
+            {% endif %}
+        {% endif %}
+
+    </li>
+    {% endfor %}
+</ul>
+{% endmacro %}
+
+{% macro parse_top_level_facets(facets, facets_transformed) %}
+<div class="facets">
+    
+<ul>
+    {% for top_level_key, top_level_value in facets.items() %}
+    <li>
+        <details>
+            <summary>
+                <a href="{{ record_search_url }}">{{ top_level_value['label'] }}</a>
+            </summary>
+            {{ _parse_facets(top_level_value['content'], top_level_key, facets_transformed) }}
+        </details>
+    </li>
+    {% endfor %}
+</ul>
+</div>
+{% endmacro %}
 
 
 {% macro parse_search_form() %}
 <form method="GET" action="{{ url_for('records_search')}}">
-    {% for key, value in query_params.items() %}
+    {% for key, value in query_params %}
     <input type="hidden" name="{{ key }}" value="{{ value }}">
     {% endfor %}
     <input type="text" name="q" placeholder="{{ translate('Search') }}" aria-label="{{ translate('search') }}"
@@ -87,12 +128,12 @@
 </div>
 {% endmacro %}
 
+{{ parse_top_level_facets(facets, facets_transformed) }}
 {{ parse_search_form() }}
-{{ macro_facets.parse_top_level_facets(facets, facets_transformed) }} 
 {{ parse_search_results(records) }}
 
 <pre>
-    {{ to_json(facets_transformed) }}
+    {{ to_json(records) }}
 </pre>
 
 {% endblock content %}
