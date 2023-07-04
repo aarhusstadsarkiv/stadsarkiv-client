@@ -3,52 +3,54 @@
 {% block content %}
 {% include "includes/main_title.html" %}
 {% set truncate_summary = 300 %}
-{% set record_search_url = "/records-search" %}
+{% set search_base_url = "/records-search" %}
 
-{% macro _parse_facets(facets, top_level_key, facets_search) %}
+
+{% macro parse_facet_link(top_level_key, facet) %}
+
+{% if facet["checked"] %}
+{{ facet['label'] }} ({{ facet["count"] }})
+{% else %}
+<a href="{{ search_base_url }}?{{ facet['search_query'] }}">{{ facet['label'] }} ({{ facet["count"] }})</a>
+{% endif %}
+
+{% endmacro %}
+
+
+{% macro parse_facets(top_level_key, facets_content) %}
 <ul>
-    {% for facet in facets %}
+    {% for facet in facets_content %}
     <li>
         
-        {% set facet_id = facet["id"] %}
-
-        {% set facet_transformed = facets_search[top_level_key][facet_id] %}
-
-        {% if "count" in facet_transformed %}
-        {% set count = facet_transformed["count"] %}
+        {% if 'children' in facet and facet["count"] %}
+        <details>
+            <summary>
+                {{ parse_facet_link(top_level_key, facet) }}
+            </summary>
+            {{ parse_facets(top_level_key, facet['children'] ) }}
+        </details>
         {% else %}
-        {% set count = 0 %}
-        {% endif %}
-
-        {% if count %}
-            {% if 'children' in facet %}
-            <details>
-                <summary>
-                    <a href="{{ record_search_url }}?{{ query_str}}{{ top_level_key }}={{ facet['id'] }}">{{ facet['label'] }} ({{count }})</a>
-                </summary>
-                {{ _parse_facets(facet['children'], top_level_key, facets_search) }}
-            </details>
-            {% else %}
-            <a href="{{ record_search_url }}?{{ query_str }}{{ top_level_key }}={{ facet['id'] }}">{{ facet['label'] }} ({{count }})</a>
+            {% if facet["count"] %}
+            {{ parse_facet_link(top_level_key, facet) }}
             {% endif %}
         {% endif %}
+
 
     </li>
     {% endfor %}
 </ul>
 {% endmacro %}
 
-{% macro parse_top_level_facets(facets, facets_search) %}
-<div class="facets">
-    
+{% macro parse_top_level_facets(facets) %}
+<div class="facets">  
 <ul>
     {% for top_level_key, top_level_value in facets.items() %}
     <li>
         <details>
             <summary>
-                <a href="{{ record_search_url }}">{{ top_level_value['label'] }}</a>
+                {{ top_level_value['label'] }}
             </summary>
-            {{ _parse_facets(top_level_value['content'], top_level_key, facets_search) }}
+            {{ parse_facets(top_level_key, top_level_value['content']) }}
         </details>
     </li>
     {% endfor %}
@@ -125,7 +127,6 @@
                     
             {{ parse_search_title(result) }}
             {{ parse_record_content('Skaber', result.collectors_label) }}
-            {# parse_record_content('Samling', result.collectors_label) #}
             {% if serie %}
             {{ parse_record_content('Serie', serie) }}
             {% endif %}
@@ -136,12 +137,12 @@
 </div>
 {% endmacro %}
 
-{{ parse_top_level_facets(facets, facets_search) }}
+{{ parse_top_level_facets(facets) }}
 {{ parse_search_form() }}
 {{ parse_search_results(records) }}
 
 <pre>
-    {{ to_json(facets_search) }}
+    {{ to_json(facets) }}
 </pre>
 
 {% endblock content %}

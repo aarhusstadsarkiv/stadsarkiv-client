@@ -17,31 +17,66 @@ from stadsarkiv_client.core import query
 log = get_log()
 
 
-def alter_search_facets(data):
-    """Transform search facets from this format:
+class NormalizeFacets:
 
-    {
-        'availability': {'buckets': [{'value': '2', 'count': 1}]}
-    }
+    def __init__(self, records, query_params=[], query_str=""):
+        self.facets_search = self.get_facets_search(records["facets"])
+        self.query_params = query_params
+        self.query_str = query_str
 
-    to this format:
+    def get_facets_search(self, data):
+        """Transform search facets from this format:
 
-    {
-        "availability": {
-            "2": {
-                "value": "2",
-                "count": 1
+        {
+            'availability': {'buckets': [{'value': '2', 'count': 1}]}
+        }
+
+        to this format:
+
+        {
+            "availability": {
+                "2": {
+                    "value": "2",
+                    "count": 1
+                }
             }
         }
-    }
-    """
+        """
 
-    altered_search_facets = {}
-    for key, value in data.items():
-        transformed_buckets = {bucket["value"]: bucket for bucket in value["buckets"]}
-        altered_search_facets[key] = transformed_buckets
+        altered_search_facets = {}
+        for key, value in data.items():
+            transformed_buckets = {bucket["value"]: bucket for bucket in value["buckets"]}
+            altered_search_facets[key] = transformed_buckets
 
-    return altered_search_facets
+        return altered_search_facets
+
+    def alter_facets_section(self, top_level_key, facets_content):
+        """Alter the facets content with the count from the search facets. Also add
+        a checked key to the facets content if the facet is checked in the query_params."""
+        for facet in facets_content:
+            if "children" in facet:
+                self.alter_facets_section(top_level_key, facet["children"])
+
+            try:
+                facet["count"] = self.facets_search[top_level_key][facet["id"]]["count"]
+            except KeyError:
+                facet["count"] = False
+
+            # check if the facet is checked, meaning it exist in the query_params
+            search = (top_level_key, facet["id"])
+            if search in self.query_params:
+                facet["checked"] = True
+                facet["search_query"] = self.query_str
+            else:
+                facet["checked"] = False
+                facet["search_query"] = self.query_str + f"{top_level_key}={facet['id']}&"
+
+    def get_altered_facets(self):
+        facets = FACETS.copy()
+        for key, value in facets.items():
+            self.alter_facets_section(key, value["content"])
+
+        return facets
 
 
 async def get_records_search(request: Request):
@@ -50,7 +85,8 @@ async def get_records_search(request: Request):
     query_str = await query.get_params_as_query_str(request)
 
     records = await api.proxies_records(request)
-    facets_search = alter_search_facets(records["facets"])
+    alter_facets_content = NormalizeFacets(records, query_params=query_params, query_str=query_str)
+    facets = alter_facets_content.get_altered_facets()
 
     context_values = {
         "title": translate("Search"),
@@ -59,8 +95,7 @@ async def get_records_search(request: Request):
         "query_str": query_str,
         "q": q,
         "record_facets": records["facets"],
-        "facets": FACETS,
-        "facets_search": facets_search,
+        "facets": facets,
     }
 
     context = await get_context(request, context_values=context_values)
