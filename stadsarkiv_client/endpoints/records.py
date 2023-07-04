@@ -18,7 +18,6 @@ log = get_log()
 
 
 class NormalizeFacets:
-
     def __init__(self, records, query_params=[], query_str=""):
         self.facets_search = self.get_facets_search(records["facets"])
         self.query_params = query_params
