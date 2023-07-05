@@ -10,38 +10,27 @@ import json
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.meta_data import get_meta_data
 from stadsarkiv_client.core.dynamic_settings import settings
-from stadsarkiv_client.facets_simple import FACETS
+from stadsarkiv_client.facets import FACETS
 from stadsarkiv_client.core import query
 
 
 log = get_log()
 
 
-def find_checked_labels(data, parent_labels=None):
-    if parent_labels is None:
-        parent_labels = []
-
-    checked_labels = []
-
-    for item in data:
-        if item.get("checked") is True:
-            checked_labels.append({"label": " / ".join(parent_labels + [item["label"]])})
-
-        if "children" in item:
-            checked_labels.extend(find_checked_labels(item["children"], parent_labels + [item["label"]]))
-
-    return checked_labels
-
-
 class NormalizeFacets:
     def __init__(self, records, query_params=[], query_str=""):
-        self.facets_search = self.get_facets_search(records["facets"])
+        self.facets_search = self._get_facets_search(records["facets"])
         self.query_params = query_params
         self.query_str = query_str
         self.facets = FACETS.copy()
-        log.debug(query_params)
+        for key, value in self.facets.items():
+            self._transform_facets(key, value["content"])
 
-    def get_facets_search(self, data):
+        self.facets_checked = []
+        for key, value in self.facets.items():
+            self._get_list_of_checked_facets(key, value["content"], self.facets)
+
+    def _get_facets_search(self, data):
         """Transform search facets from this format:
 
         {
@@ -67,32 +56,44 @@ class NormalizeFacets:
 
         return altered_search_facets
 
-    def alter_facets_section(self, top_level_key, facets_content):
+    def _transform_facets(self, top_level_key, facets_content):
         """Alter the facets content with the count from the search facets. Also add
         a checked key to the facets content if the facet is checked in the query_params."""
         for facet in facets_content:
             if "children" in facet:
-                self.alter_facets_section(top_level_key, facet["children"])
+                self._transform_facets(top_level_key, facet["children"])
 
             try:
                 facet["count"] = self.facets_search[top_level_key][facet["id"]]["count"]
             except KeyError:
-                facet["count"] = False
+                facet["count"] = 0
 
             # check if the facet is checked, meaning it exist in the query_params
             search = (top_level_key, facet["id"])
             if search in self.query_params:
                 facet["checked"] = True
                 facet["search_query"] = self.query_str
+                facet["remove_query"] = self.query_str.replace(f"{top_level_key}={facet['id']}&", "")
+                facet["alter_label"] = translate("label_record_" + top_level_key) + " > " + facet["label"]
+                facet["reverse_query"] = self.query_str.replace(f"{top_level_key}={facet['id']}&", f"-{top_level_key}={facet['id']}&")
             else:
                 facet["checked"] = False
                 facet["search_query"] = self.query_str + f"{top_level_key}={facet['id']}&"
 
-    def get_altered_facets(self):
-        for key, value in self.facets.items():
-            # log.debug(value)
-            self.alter_facets_section(key, value["content"])
+    def get_checked_facets(self):
+        """ get a list of facets that are checked (meaning that they are filters)."""
+        return self.facets_checked
 
+    def _get_list_of_checked_facets(self, top_level_key, facets_content, facets):
+        for facet in facets_content:
+            if "children" in facet:
+                self._get_list_of_checked_facets(top_level_key, facet["children"], facets)
+
+            if facet["checked"]:
+                facets.append(facet)
+
+    def get_altered_facets(self):
+        """Return normalized facets."""
         return self.facets
 
 
@@ -101,14 +102,10 @@ async def get_records_search(request: Request):
     query_params = await query.get_list(request, remove_keys=["q"])
     query_str = await query.get_str(request)
 
-    log.debug(query_str)
-
     records = await api.proxies_records(request)
     alter_facets_content = NormalizeFacets(records, query_params=query_params, query_str=query_str)
     facets = alter_facets_content.get_altered_facets()
-
-    checked_labels = find_checked_labels(facets["content_types"]["content"])
-    # log.debug(checked_labels)
+    facets_filters = alter_facets_content.get_checked_facets()
 
     context_values = {
         "title": translate("Search"),
@@ -118,6 +115,7 @@ async def get_records_search(request: Request):
         "q": q,
         "record_facets": records["facets"],
         "facets": facets,
+        "facets_filters": facets_filters,
     }
 
     context = await get_context(request, context_values=context_values)
