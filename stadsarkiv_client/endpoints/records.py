@@ -10,11 +10,27 @@ import json
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.meta_data import get_meta_data
 from stadsarkiv_client.core.dynamic_settings import settings
-from stadsarkiv_client.facets import FACETS
+from stadsarkiv_client.facets_simple import FACETS
 from stadsarkiv_client.core import query
 
 
 log = get_log()
+
+
+def find_checked_labels(data, parent_labels=None):
+    if parent_labels is None:
+        parent_labels = []
+
+    checked_labels = []
+
+    for item in data:
+        if item.get("checked") is True:
+            checked_labels.append({"label": " / ".join(parent_labels + [item["label"]])})
+
+        if "children" in item:
+            checked_labels.extend(find_checked_labels(item["children"], parent_labels + [item["label"]]))
+
+    return checked_labels
 
 
 class NormalizeFacets:
@@ -22,6 +38,8 @@ class NormalizeFacets:
         self.facets_search = self.get_facets_search(records["facets"])
         self.query_params = query_params
         self.query_str = query_str
+        self.facets = FACETS.copy()
+        log.debug(query_params)
 
     def get_facets_search(self, data):
         """Transform search facets from this format:
@@ -71,21 +89,26 @@ class NormalizeFacets:
                 facet["search_query"] = self.query_str + f"{top_level_key}={facet['id']}&"
 
     def get_altered_facets(self):
-        facets = FACETS.copy()
-        for key, value in facets.items():
+        for key, value in self.facets.items():
+            # log.debug(value)
             self.alter_facets_section(key, value["content"])
 
-        return facets
+        return self.facets
 
 
 async def get_records_search(request: Request):
-    q = await query.get_search_query(request)
-    query_params = await query.get_params_as_tuple_list(request, remove_keys=["q"])
-    query_str = await query.get_params_as_query_str(request)
+    q = await query.get_search(request)
+    query_params = await query.get_list(request, remove_keys=["q"])
+    query_str = await query.get_str(request)
+
+    log.debug(query_str)
 
     records = await api.proxies_records(request)
     alter_facets_content = NormalizeFacets(records, query_params=query_params, query_str=query_str)
     facets = alter_facets_content.get_altered_facets()
+
+    checked_labels = find_checked_labels(facets["content_types"]["content"])
+    # log.debug(checked_labels)
 
     context_values = {
         "title": translate("Search"),

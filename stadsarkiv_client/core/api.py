@@ -332,7 +332,7 @@ async def proxies_record_get(request: Request) -> typing.Any:
 
 
 async def proxies_records(request: Request) -> typing.Any:
-    query_str = await query.get_params_as_query_str(request)
+    query_str = await query.get_str(request)
     query_str = quote(query_str)
 
     async with httpx.AsyncClient() as client:

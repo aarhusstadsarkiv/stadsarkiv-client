@@ -5,17 +5,20 @@ from urllib.parse import quote_plus
 log = get_log()
 
 
-async def get_params_as_tuple_list(request: Request, remove_keys=[]):
+async def get_list(request: Request, remove_keys=[]):
+    """Get query params from request and return it as a list of tuples.
+    e.g. [('content_types', '96')]"""
     query_params = request.query_params
     items = query_params.multi_items()
     items = [(key, value) for key, value in items if key not in remove_keys]
     return items
 
 
-async def get_params_as_query_str(request: Request, remove_keys=[]):
-    """Get query params from request and return it as a encoded string."""
+async def get_str(request: Request, remove_keys=[]):
+    """Get query params from request and return it as a quote plus encoded string.
+    E.g. 'content_types=96&content_types=97&'"""
 
-    items = await get_params_as_tuple_list(request, remove_keys=remove_keys)
+    items = await get_list(request, remove_keys=remove_keys)
     query_str = ""
     for key, value in items:
         query_str += f"{key}={quote_plus(value)}&"
@@ -23,8 +26,9 @@ async def get_params_as_query_str(request: Request, remove_keys=[]):
     return query_str
 
 
-async def get_search_query(request: Request):
-    """Get search query "q" from request and return it as a string."""
+async def get_search(request: Request):
+    """Get search query "q" from request and return it as a string.
+    E.g. 'test search'"""
     query_params = request.query_params
     q = query_params.get("q", "")
     return q
