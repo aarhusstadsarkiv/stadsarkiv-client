@@ -18,7 +18,7 @@ if os.getenv("ENVIRONMENT") == "production":
 
 settings = {
     "debug": debug,
-    "version": "0.0.1",
+    "version": "0.0.2",
     "language": "da",
     "environment": os.getenv("ENVIRONMENT"),
     "log_level": log_level,

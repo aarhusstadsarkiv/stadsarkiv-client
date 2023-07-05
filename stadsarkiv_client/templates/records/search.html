@@ -100,42 +100,42 @@
 {% set total_pages = pagination_data["total_pages"] %}
 {% set current_page = pagination_data["current_page"] %}
 
-<div class="pagination-total">
-    {% if total == 0 %}
-    {{ translate('No search results') }}
-    {% elif total == 1 %}
-    {{ total }} {{ translate('Search result') }}
-    {% elif total == 10000 %}
-    {{ translate('More than 10.000 search results') }}
-    {% else %}
-    {{ total }} {{ translate('Search results') }}
-    {% endif %}
-</div>
 
 <div class="pagination">
-    {% if current_page > 1 %}
-    <a href="{{ search_base_url }}?{{ query_str }}&start=0&size={{ size }}">{{ translate('First page') }}</a>
-    <a href="{{ search_base_url }}?{{ query_str }}&start={{ start - size }}&size={{ size }}">{{ translate('Previous') }}</a>
-    {% else %}
-    <span class="disabled">{{ translate('First page') }}</span>
-    <span class="disabled">{{ translate('Previous') }}</span>
-    {% endif %}
 
-    {% if current_page < total_pages %}
-    <a href="{{ search_base_url }}?{{ query_str }}&start={{ start + size }}&size={{ size }}">{{ translate('Next')}}</a>
-    <a href="{{ search_base_url }}?{{ query_str }}&start={{ (total_pages - 1) * size }}&size={{ size }}">{{ translate('Last page') }}</a>
-    {% else %}
-    <span class="disabled">{{ translate('Next') }}</span>
-    <span class="disabled">{{ translate('Last page') }}</span>
-    {% endif %}
+    <div class="pagination-total">
+        {% if total == 0 %}
+        {{ translate('No search results') }}
+        {% elif total == 1 %}
+        {{ total }} {{ translate('Search result') }}
+        {% elif total == 10000 %}
+        {{ translate('More than 10.000 search results') }}
+        {% else %}
+        {{ total }} {{ translate('Search results') }}
+        {% endif %}
+    </div>
+
+    <div class="pagination-pages">
+        {% if current_page > 1 %}
+        <a href="{{ search_base_url }}?{{ query_str }}&start=0&size={{ size }}">{{ translate('First page') }}</a>
+        <a href="{{ search_base_url }}?{{ query_str }}&start={{ start - size }}&size={{ size }}">{{ translate('Previous') }}</a>
+        {% else %}
+        <span class="disabled">{{ translate('First page') }}</span>
+        <span class="disabled">{{ translate('Previous') }}</span>
+        {% endif %}
+        {% if current_page < total_pages %}
+        <a href="{{ search_base_url }}?{{ query_str }}&start={{ start + size }}&size={{ size }}">{{ translate('Next')}}</a>
+        <a href="{{ search_base_url }}?{{ query_str }}&start={{ (total_pages - 1) * size }}&size={{ size }}">{{ translate('Last page') }}</a>
+        {% else %}
+        <span class="disabled">{{ translate('Next') }}</span>
+        <span class="disabled">{{ translate('Last page') }}</span>
+        {% endif %}
+    </div>
 </div>
 {% endmacro %}
 
 {% macro parse_search_results(records) %}
 <div class="search-results">
-
-    {{ parse_pagination(pagination_data) }}
-
     {% for result in records.result %}
     {% set serie = None %}
     {% if result.series is iterable %}
@@ -155,65 +155,30 @@
     {% endfor %}
 </div>
 {% endmacro %}
-
+{% block head %}
+<script src="{{ url_for('static', path='/js/search.js') }}?v={{ get_setting('version') }}"></script>
+{% endblock head %}
 {% block content %}
 
 {{ parse_search_form() }}
 {{ parse_facets_filters(facets_filters) }}
 {{ parse_top_level_facets(facets) }}
+{{ parse_pagination(pagination_data) }}
 {{ parse_search_results(records) }}
 
 <pre>
     {{ to_json(records) }}
 </pre>
 
-
-<script>
-    try {
-        expandTree();
-        window.addEventListener('beforeunload', saveTree);
-        
-    } catch (error) {
-        // unset local storage if it fails. The tree may be updated and the saved state may be invalid
-        localStorage.removeItem('treeState');
-        console.log(error);
-    }
-
-    // Function to save the state of the tree to local storage
-    function saveTree() {
-        const detailsElements = document.querySelectorAll('details');
-        const state = [];
-
-        detailsElements.forEach((detailsElement) => {
-            const isOpen = detailsElement.hasAttribute('open');
-            state.push(isOpen);
-        });
-
-        localStorage.setItem('treeState', JSON.stringify(state));
-    }
-
-    // Function to expand the tree based on the saved state from local storage
-    function expandTree() {
-        const savedState = localStorage.getItem('treeState');
-
-        if (savedState) {
-            const state = JSON.parse(savedState);
-            const detailsElements = document.querySelectorAll('details');
-
-            detailsElements.forEach((detailsElement, index) => {
-                const isOpen = state[index];
-                if (isOpen) {
-                    detailsElement.setAttribute('open', 'true');
-                } else {
-                    detailsElement.removeAttribute('open');
-                }
-            });
-        }
-    }
-</script>
 <style>
     .remove {
         color: var(--flash-error-color);
+    }
+
+    .pagination {
+        border: 1px darkblue solid;
+        padding: 10px;
+    
     }
 </style>
 
