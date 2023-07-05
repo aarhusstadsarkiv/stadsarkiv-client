@@ -5,23 +5,30 @@
 {% set truncate_summary = 300 %}
 {% set search_base_url = "/records-search" %}
 
+{% macro parse_facets_filters(facets_filters) %}
+<ul>
+    {% for facet in facets_filters %}
+    <li>
+        <a class="remove" href="{{ search_base_url }}?{{ facet['remove_query'] }}">{{ translate('Remove facet') }}</a> <span>{{ facet['alter_label'] }}</span>
+    </li>
+    {% endfor %}
+</ul>
+{% endmacro %}
 
 {% macro parse_facet_link(top_level_key, facet) %}
-
 {% if facet["checked"] %}
-{{ facet['label'] }} ({{ facet["count"] }})
+{{ facet['label'] }} ({{ facet["count"] }}) <span class="disabled">({{ translate('Selected') }})</span>
+{% elif facet["count"] == 0 %}
+{{ facet['label'] }} ({{ facet["count"] }}) <span class="disabled"></span>
 {% else %}
 <a href="{{ search_base_url }}?{{ facet['search_query'] }}">{{ facet['label'] }} ({{ facet["count"] }})</a>
 {% endif %}
-
 {% endmacro %}
-
 
 {% macro parse_facets(top_level_key, facets_content) %}
 <ul>
     {% for facet in facets_content %}
     <li>
-        
         {% if 'children' in facet and facet["count"] %}
         <details>
             <summary>
@@ -30,34 +37,29 @@
             {{ parse_facets(top_level_key, facet['children'] ) }}
         </details>
         {% else %}
-            {% if facet["count"] %}
-            {{ parse_facet_link(top_level_key, facet) }}
-            {% endif %}
+        {{ parse_facet_link(top_level_key, facet) }}
         {% endif %}
-
-
     </li>
     {% endfor %}
 </ul>
 {% endmacro %}
 
 {% macro parse_top_level_facets(facets) %}
-<div class="facets">  
-<ul>
-    {% for top_level_key, top_level_value in facets.items() %}
-    <li>
-        <details>
-            <summary>
-                {{ top_level_value['label'] }}
-            </summary>
-            {{ parse_facets(top_level_key, top_level_value['content']) }}
-        </details>
-    </li>
-    {% endfor %}
-</ul>
+<div class="facets">
+    <ul>
+        {% for top_level_key, top_level_value in facets.items() %}
+        <li>
+            <details>
+                <summary>
+                    {{ top_level_value['label'] }}
+                </summary>
+                {{ parse_facets(top_level_key, top_level_value['content']) }}
+            </details>
+        </li>
+        {% endfor %}
+    </ul>
 </div>
 {% endmacro %}
-
 
 {% macro parse_search_form() %}
 <form method="GET" action="{{ url_for('records_search')}}">
@@ -99,14 +101,15 @@
 {% set start = request.query_params.get('start') | int %}
 {% endif %}
 
-{# start is where to start, e.g. 100, size is how many to show, e.g. 10, total is the total number of results, e.g. 1000 #}
+{# start is where to start, e.g. 100, size is how many to show, e.g. 10, total is the total number of results, e.g. 1000
+#}
 <div class="pagination">
     {% if start > 0 %}
     <a href="?q={{ q }}&start={{ start - size }}&size={{ size }}">{{ translate('Previous') }}</a>
     {% endif %}
-    {% if start + size < total %}
-    <a href="?q={{ q }}&start={{ start + size }}&size={{ size }}">{{ translate('Next') }}</a>
-    {% endif %}
+    {% if start + size < total %} <a href="?q={{ q }}&start={{ start + size }}&size={{ size }}">{{ translate('Next')
+        }}</a>
+        {% endif %}
 </div>
 {% endmacro %}
 
@@ -120,11 +123,11 @@
     {% if result.series is iterable %}
     {% set serie = result.series | last %}
     {% endif %}
-    
+
     <div class="search-result">
-        
+
         <a class="search-link" href="/records/{{ result.id }}">
-                    
+
             {{ parse_search_title(result) }}
             {{ parse_record_content('Skaber', result.collectors_label) }}
             {% if serie %}
@@ -137,12 +140,56 @@
 </div>
 {% endmacro %}
 
+{{ parse_facets_filters(facets_filters) }}
 {{ parse_top_level_facets(facets) }}
 {{ parse_search_form() }}
 {{ parse_search_results(records) }}
 
+
+
+
 <pre>
     {{ to_json(facets) }}
 </pre>
+<script>
+    expandTree();
+    window.addEventListener('beforeunload', saveTree);
 
+    // Function to save the state of the tree to local storage
+    function saveTree() {
+        const detailsElements = document.querySelectorAll('details');
+        const state = [];
+
+        detailsElements.forEach((detailsElement) => {
+            const isOpen = detailsElement.hasAttribute('open');
+            state.push(isOpen);
+        });
+
+        localStorage.setItem('treeState', JSON.stringify(state));
+    }
+
+    // Function to expand the tree based on the saved state from local storage
+    function expandTree() {
+        const savedState = localStorage.getItem('treeState');
+
+        if (savedState) {
+            const state = JSON.parse(savedState);
+            const detailsElements = document.querySelectorAll('details');
+
+            detailsElements.forEach((detailsElement, index) => {
+                const isOpen = state[index];
+                if (isOpen) {
+                    detailsElement.setAttribute('open', 'true');
+                } else {
+                    detailsElement.removeAttribute('open');
+                }
+            });
+        }
+    }
+</script>
+<style>
+    .remove {
+        color: var(--flash-error-color);
+    }
+</style>
 {% endblock content %}
