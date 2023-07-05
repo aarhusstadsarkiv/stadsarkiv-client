@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 
-{% block content %}
-{% include "includes/main_title.html" %}
 {% set truncate_summary = 300 %}
 {% set search_base_url = "/records-search" %}
 
@@ -95,22 +93,76 @@
 {% endmacro %}
 
 {% macro parse_pagination (size, total) %}
+{% if total > 10000 %}
+{% set total = 10000 %}
+{% endif %}
 {% if not request.query_params.get('start') %}
 {% set start = 0 %}
 {% else %}
-{% set start = request.query_params.get('start') | int %}
+{% set start = request.query_params.get('start', 0) | int %}
 {% endif %}
+{% if not request.query_params.get('size') %}
+{% set size = 20 %}
+{% else %}
+{% set size = request.query_params.get('size') | int %}
+{% endif %}
+{% set total_pages = (total // size) + (1 if total % size != 0 else 0) %}
+{% set current_page = (start // size) + 1 %}
 
-{# start is where to start, e.g. 100, size is how many to show, e.g. 10, total is the total number of results, e.g. 1000
-#}
-<div class="pagination">
-    {% if start > 0 %}
-    <a href="?q={{ q }}&start={{ start - size }}&size={{ size }}">{{ translate('Previous') }}</a>
+<div class="pagination-total">
+    {% if total == 0 %}
+    {{ translate('No search results') }}
+    {% elif total == 1 %}
+    {{ total }} {{ translate('Search result') }}
+    {% elif total == 10000 %}
+    {{ translate('More than 10.000 search results') }}
+    {% else %}
+    {{ total }} {{ translate('Search results') }}
     {% endif %}
-    {% if start + size < total %} <a href="?q={{ q }}&start={{ start + size }}&size={{ size }}">{{ translate('Next')
-        }}</a>
-        {% endif %}
 </div>
+
+<div class="pagination">
+    {% if current_page > 1 %}
+    <a href="{{ search_base_url }}?{{ query_str }}&start=0&size={{ size }}">First page</a>
+    <a href="{{ search_base_url }}?{{ query_str }}&start={{ start - size }}&size={{ size }}">{{ translate('Previous') }}</a>
+    {% else %}
+    <span class="disabled">First page</span>
+    <span class="disabled">{{ translate('Previous') }}</span>
+    {% endif %}
+
+    {% if current_page < total_pages %}
+    <a href="{{ search_base_url }}?{{ query_str }}&start={{ start + size }}&size={{ size }}">{{ translate('Next')}}</a>
+    <a href="{{ search_base_url }}?{{ query_str }}&start={{ (total_pages - 1) * size }}&size={{ size }}">{{ translate('Last page') }}</a>
+    {% else %}
+    <span class="disabled">{{ translate('Next') }}</span>
+    <span class="disabled">{{ translate('Last page') }}</span>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro pagination(size, total) %}
+    {% set per_page = size %}
+    {% set total_pages = (total // per_page) + (1 if total % per_page != 0 else 0) %}
+    {% set current_page = request.query_params.get('page', 1) | int %}
+    
+    
+    <div class="pagination">
+        {% if current_page > 1 %}
+            <a href="?page=1">First page</a>
+            <a href="?page={{ current_page - 1 }}">Previous page</a>
+        {% else %}
+            <span class="disabled">First page</span>
+            <span class="disabled">Previous page</span>
+        {% endif %}
+        
+        {% if current_page < total_pages %}
+            <a href="?page={{ current_page + 1 }}">Next page</a>
+            <a href="?page={{ total_pages }}">Last page</a>
+        {% else %}
+            <span class="disabled">Next page</span>
+            <span class="disabled">Last page</span>
+        {% endif %}
+    </div>
 {% endmacro %}
 
 {% macro parse_search_results(records) %}
@@ -125,7 +177,6 @@
     {% endif %}
 
     <div class="search-result">
-
         <a class="search-link" href="/records/{{ result.id }}">
 
             {{ parse_search_title(result) }}
@@ -133,27 +184,34 @@
             {% if serie %}
             {{ parse_record_content('Serie', serie) }}
             {% endif %}
-
         </a>
     </div>
     {% endfor %}
 </div>
 {% endmacro %}
 
+{% block content %}
+
+{{ parse_search_form() }}
 {{ parse_facets_filters(facets_filters) }}
 {{ parse_top_level_facets(facets) }}
-{{ parse_search_form() }}
 {{ parse_search_results(records) }}
 
-
-
-
 <pre>
-    {{ to_json(facets) }}
+    {{ to_json(records) }}
 </pre>
+
+
 <script>
-    expandTree();
-    window.addEventListener('beforeunload', saveTree);
+    try {
+        expandTree();
+        window.addEventListener('beforeunload', saveTree);
+        
+    } catch (error) {
+        // unset local storage if it fails. The tree may be updated and the saved state may be invalid
+        localStorage.removeItem('treeState');
+        console.log(error);
+    }
 
     // Function to save the state of the tree to local storage
     function saveTree() {
@@ -192,4 +250,5 @@
         color: var(--flash-error-color);
     }
 </style>
+
 {% endblock content %}

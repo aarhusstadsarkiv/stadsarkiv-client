@@ -21,7 +21,7 @@ log = get_log()
 async def get_records_search(request: Request):
     q = await query.get_search(request)
     query_params = await query.get_list(request, remove_keys=["q"])
-    query_str = await query.get_str(request)
+    query_str = await query.get_str(request, remove_keys=["start", "size"])
 
     records = await api.proxies_records(request)
     alter_facets_content = NormalizeFacets(records, query_params=query_params, query_str=query_str)
