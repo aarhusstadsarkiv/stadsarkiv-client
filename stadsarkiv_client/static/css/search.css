@@ -54,3 +54,33 @@
     position: relative;
     padding-right: 1em;
 }
+
+.remove {
+    color: var(--flash-error-color);
+}
+
+.record-content {
+    padding-top: 0.2em; margin-bottom: 0.2em
+}
+
+.record-content > label {
+    width: 6em;
+}
+
+.pagination {
+    border: 1px darkblue solid;
+    padding: 10px;
+
+}
+
+input, button {
+    display: inline-block !important;
+}
+
+#from-year, #to-year {
+    width: 60px;
+}
+
+#from-month, #to-month, #from-day, #to-day {
+    width: 50px;
+}

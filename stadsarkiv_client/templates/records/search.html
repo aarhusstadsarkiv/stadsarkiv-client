@@ -55,6 +55,14 @@
             </details>
         </li>
         {% endfor %}
+        <li>
+            <details>
+                <summary>
+                    {{ translate('Search date') }}
+                </summary>
+                {{ parse_date_form() }}
+            </details>
+        </li>
     </ul>
 </div>
 {% endmacro %}
@@ -81,8 +89,8 @@
 
 {% macro parse_record_content(label, content) %}
 {% if content %}
-<div class="record-content" style="padding-top: 0.2em; margin-bottom: 0.2em">
-    <div class="label" style="width: 6em;">
+<div class="record-content">
+    <div class="label">
         <strong>{{ label }}</strong>
     </div>
     <div class="search-content">
@@ -99,7 +107,6 @@
 {% set start = pagination_data["start"] %}
 {% set total_pages = pagination_data["total_pages"] %}
 {% set current_page = pagination_data["current_page"] %}
-
 
 <div class="pagination">
 
@@ -155,6 +162,28 @@
     {% endfor %}
 </div>
 {% endmacro %}
+
+{% macro parse_date_form () %}
+<div class="search-date">
+    <form id="search-date">
+        {% for key, value in query_params %}
+        <input type="hidden" name="{{ key }}" value="{{ value }}">
+        {% endfor %}
+        <label for="from-year">{{ translate('Date From') }}</label><br />
+        <input oninput="validateDateInput(this)" type="text"  maxlength="4" id="from-year" name="from-year" placeholder="1600" min="1200" max="{{ current_year }}">
+        <input oninput="validateDateInput(this)" type="text" maxlength="2" id="from-month" name="from-month" placeholder="01" min="01" max="12" >
+        <input oninput="validateDateInput(this)" type="text" maxlength="2" id="from-day" name="from-day" placeholder="01" min="01" max="31" >
+        <br>
+        <label for="to-year">{{ translate('Date To') }}</label><br />
+        <input oninput="validateDateInput(this)" type="text" pattern="\d*" maxlength="4" id="to-year" name="to-year" placeholder="2020" min="1200" max="{{ current_year }}">
+        <input oninput="validateDateInput(this)" type="text" pattern="\d*" maxlength="2" id="to-month" name="to-month" placeholder="MM" min="1" max="12" >
+        <input oninput="validateDateInput(this)" type="text" pattern="\d*" maxlength="2" id="to-day" name="to-day" placeholder="DD" min="1" max="31" >
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+{% endmacro %}
+
 {% block head %}
 <script src="{{ url_for('static', path='/js/search.js') }}?v={{ get_setting('version') }}"></script>
 {% endblock head %}
@@ -166,20 +195,18 @@
 {{ parse_pagination(pagination_data) }}
 {{ parse_search_results(records) }}
 
-<pre>
-    {{ to_json(records) }}
-</pre>
+<script>
+    var searchDate = document.getElementById("search-date");
+
+    function validateDateInput(input) {
+        input.value = input.value.replace(/\D/g, '');
+    }
+
+</script>
 
 <style>
-    .remove {
-        color: var(--flash-error-color);
-    }
 
-    .pagination {
-        border: 1px darkblue solid;
-        padding: 10px;
-    
-    }
+
 </style>
 
 {% endblock content %}

@@ -8,6 +8,7 @@ from stadsarkiv_client.core.dynamic_settings import get_setting
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.format_date import format_date
 import json
+from datetime import datetime
 
 
 log = get_log()
@@ -51,7 +52,11 @@ def to_json(variable):
     return json.dumps(variable, indent=4, ensure_ascii=False)
 
 
+current_year = datetime.now().strftime("%Y")
+
+
 templates.env.globals.update(translate=translate)
 templates.env.globals.update(get_setting=get_setting)
 templates.env.globals.update(format_date=format_date)
+templates.env.globals.update(current_year=current_year)
 templates.env.globals.update(to_json=to_json)
