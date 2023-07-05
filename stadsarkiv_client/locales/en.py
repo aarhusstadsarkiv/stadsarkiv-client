@@ -25,6 +25,7 @@ en = {
     "Entity returned is None": "Entity returned is None",
     "Failed to create entity": "Failed to create entity",
     "Failed to get schemas": "Failed to get schemas",
+    "First page": "First page",
     "Forgot your password": "Forgot your password",
     "Get a reset link by email": "Get a reset link by email",
     "Get instructions by email": "Get instructions by email",

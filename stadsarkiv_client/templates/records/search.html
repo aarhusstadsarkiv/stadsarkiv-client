@@ -92,22 +92,13 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_pagination (size, total) %}
-{% if total > 10000 %}
-{% set total = 10000 %}
-{% endif %}
-{% if not request.query_params.get('start') %}
-{% set start = 0 %}
-{% else %}
-{% set start = request.query_params.get('start', 0) | int %}
-{% endif %}
-{% if not request.query_params.get('size') %}
-{% set size = 20 %}
-{% else %}
-{% set size = request.query_params.get('size') | int %}
-{% endif %}
-{% set total_pages = (total // size) + (1 if total % size != 0 else 0) %}
-{% set current_page = (start // size) + 1 %}
+{% macro parse_pagination (pagination_data) %}
+
+{% set total = pagination_data["total"] %}
+{% set size = pagination_data["size"] %}
+{% set start = pagination_data["start"] %}
+{% set total_pages = pagination_data["total_pages"] %}
+{% set current_page = pagination_data["current_page"] %}
 
 <div class="pagination-total">
     {% if total == 0 %}
@@ -123,10 +114,10 @@
 
 <div class="pagination">
     {% if current_page > 1 %}
-    <a href="{{ search_base_url }}?{{ query_str }}&start=0&size={{ size }}">First page</a>
+    <a href="{{ search_base_url }}?{{ query_str }}&start=0&size={{ size }}">{{ translate('First page') }}</a>
     <a href="{{ search_base_url }}?{{ query_str }}&start={{ start - size }}&size={{ size }}">{{ translate('Previous') }}</a>
     {% else %}
-    <span class="disabled">First page</span>
+    <span class="disabled">{{ translate('First page') }}</span>
     <span class="disabled">{{ translate('Previous') }}</span>
     {% endif %}
 
@@ -140,35 +131,10 @@
 </div>
 {% endmacro %}
 
-{% macro pagination(size, total) %}
-    {% set per_page = size %}
-    {% set total_pages = (total // per_page) + (1 if total % per_page != 0 else 0) %}
-    {% set current_page = request.query_params.get('page', 1) | int %}
-    
-    
-    <div class="pagination">
-        {% if current_page > 1 %}
-            <a href="?page=1">First page</a>
-            <a href="?page={{ current_page - 1 }}">Previous page</a>
-        {% else %}
-            <span class="disabled">First page</span>
-            <span class="disabled">Previous page</span>
-        {% endif %}
-        
-        {% if current_page < total_pages %}
-            <a href="?page={{ current_page + 1 }}">Next page</a>
-            <a href="?page={{ total_pages }}">Last page</a>
-        {% else %}
-            <span class="disabled">Next page</span>
-            <span class="disabled">Last page</span>
-        {% endif %}
-    </div>
-{% endmacro %}
-
 {% macro parse_search_results(records) %}
 <div class="search-results">
 
-    {{ parse_pagination(records.size, records.total) }}
+    {{ parse_pagination(pagination_data) }}
 
     {% for result in records.result %}
     {% set serie = None %}

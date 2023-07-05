@@ -18,6 +18,29 @@ from stadsarkiv_client.core import query
 log = get_log()
 
 
+def get_pagination_data(request: Request, size, total):
+    result = {}
+
+    if total > 10000:
+        total = 10000
+
+    result["total"] = total
+
+    start = int(request.query_params.get("start", 0))
+    result["start"] = start
+
+    size = int(request.query_params.get("size", 20))
+    result["size"] = size
+
+    total_pages = (total // size) + (1 if total % size != 0 else 0)
+    result["total_pages"] = total_pages
+
+    current_page = (start // size) + 1
+    result["current_page"] = current_page
+
+    return result
+
+
 async def get_records_search(request: Request):
     q = await query.get_search(request)
     query_params = await query.get_list(request, remove_keys=["q"])
@@ -27,6 +50,7 @@ async def get_records_search(request: Request):
     alter_facets_content = NormalizeFacets(records, query_params=query_params, query_str=query_str)
     facets = alter_facets_content.get_altered_facets()
     facets_filters = alter_facets_content.get_checked_facets()
+    pagination_data = get_pagination_data(request, records["size"], records["total"])
 
     context_values = {
         "title": translate("Search"),
@@ -37,6 +61,7 @@ async def get_records_search(request: Request):
         "record_facets": records["facets"],
         "facets": facets,
         "facets_filters": facets_filters,
+        "pagination_data": pagination_data,
     }
 
     context = await get_context(request, context_values=context_values)
