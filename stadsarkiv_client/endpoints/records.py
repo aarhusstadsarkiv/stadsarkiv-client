@@ -81,7 +81,7 @@ class NormalizeFacets:
                 facet["search_query"] = self.query_str + f"{top_level_key}={facet['id']}&"
 
     def get_checked_facets(self):
-        """ get a list of facets that are checked (meaning that they are filters)."""
+        """get a list of facets that are checked (meaning that they are filters)."""
         return self.facets_checked
 
     def _get_list_of_checked_facets(self, top_level_key, facets_content, facets):
