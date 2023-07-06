@@ -83,6 +83,9 @@ en = {
     "Submit": "Submit",
     "System can not deliver an email about resetting password. Try again later.": "System can not deliver an email about resetting password. Try again later.",
     "System error. Something went wrong": "System error. Something went wrong",
+    "The date may not exceed current date": "The date may not exceed current date",
+    "The date needs to be 1200 or later": "The date needs to be 1200 or later",
+    "The date shall be between 1200 and the current date": "The date shall be between 1200 and the current date",
     "The material can be order home to the reading room.": "The material can be order home to the reading room.",
     "The material is available in the reading room.": "The material is available in the reading room.",
     "The password could not be reset. Or the token has expired. Please try again.": "The password could not be reset. Or the token has expired. Please try again.",
@@ -121,7 +124,7 @@ en = {
     "contractual_status_id_3": "Materialet må kun ses på læsesalen. Ifølge aftale.",
     "contractual_status_id_4": "Materialet må offentliggøres på internettet. Ifølge aftale.",
     "contractual_status_id_4_pp": "Materialet må kun offentliggøres på Aarhus Stadsarkivs hjemmesider. Ifølge aftale.",
-    "copyright_creative_commons_license": 'Materialet er under ophavsret, men udgives efter aftale under en <a href="https://creativecommons.org/licenses/by/4.0/deed.da">Creative Commons Navngivelse licens</a>. ',
+    "copyright_creative_commons_license": "Materialet er under ophavsret, men udgives efter aftale under en <a href=\"https://creativecommons.org/licenses/by/4.0/deed.da\">Creative Commons Navngivelse licens</a>. ",
     "copyright_id_1": "Materialet har ikke værkshøjde og er derfor ikke beskyttet af ophavsret. Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. ",
     "copyright_id_2": "Materialet er i offentlig eje, da ophavsretten er udløbet. Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. ",
     "copyright_id_3": "Materialet er frigivet af alle ophavsretsholdere til offentlig eje. Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. ",
@@ -210,5 +213,5 @@ en = {
     "ordering_aarhus_teatret": "Materialet kan ses på Aarhus Teaters Arkiv.",
     "ordering_by_mail": "Du kan bestille materialet ved at sende en mail til stadsarkiv@aarhus.dk, hvori du angiver materialets arkiv-ID, som kan ses øverst på siden.",
     "ordering_from_rigsarkivet": "Hvis materialet ligger hos Rigsarkivet, skal bestillingen sendes dertil. Gå ind på Rigsarkivets hjemmeside og find materialet der. Efterfølgende kan det så bestilles hjem til en af deres læsesale.",
-    "search": "search",
+    "search": "search"
 }
