@@ -41,6 +41,22 @@ def get_pagination_data(request: Request, size, total):
     return result
 
 
+def get_dates(request: Request):
+    dates = {}
+    dates_from = request.query_params.get("date_from", None)
+    dates_to = request.query_params.get("date_to", None)
+
+    # split dates. From format: yyyymmdd and not yyyy-mm-dd
+    if dates_from:
+        dates["from_year"], dates["from_month"], dates["from_day"] = dates_from[:4], dates_from[4:6], dates_from[6:]
+
+    if dates_to:
+        dates["to_year"], dates["to_month"], dates["to_day"] = dates_to[:4], dates_to[4:6], dates_to[6:]
+
+    return dates
+    # return dates
+
+
 async def get_records_search(request: Request):
     q = await query.get_search(request)
     query_params = await query.get_list(request, remove_keys=["q"])
@@ -61,6 +77,7 @@ async def get_records_search(request: Request):
         "record_facets": records["facets"],
         "facets": facets,
         "facets_filters": facets_filters,
+        "dates": get_dates(request),
         "pagination_data": pagination_data,
     }
 

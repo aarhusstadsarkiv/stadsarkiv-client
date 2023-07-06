@@ -16,6 +16,7 @@
         {
           "imports": {
             "{{ url_for('static', path='/js/flash.js') }}": "{{ url_for('static', path='/js/flash.js') }}?v={{ get_setting('version') }}",
+            "{{ url_for('static', path='/js/events.js') }}": "{{ url_for('static', path='/js/events.js') }}?v={{ get_setting('version') }}",
             "{{ url_for('static', path='/js/search.js') }}": "{{ url_for('static', path='/js/search.js') }}?v={{ get_setting('version') }}",
             "{{ url_for('static', path='/js/requests.js') }}": "{{ url_for('static', path='/js/requests.js') }}?v={{ get_setting('version') }}",
             "{{ url_for('static', path='/js/config.js') }}": "{{ url_for('static', path='/js/config.js') }}?v={{ get_setting('version') }}"
@@ -23,7 +24,7 @@
         }
     </script>
     <script type="module">
-        import { Flash } from "{{ url_for('static', path='/js/flash.js') }}";
+        import { Flash } from "/static/js/flash.js";
         Flash.setWidth();
     </script>
 
