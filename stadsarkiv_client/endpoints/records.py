@@ -11,7 +11,6 @@ from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.normalize_facets import NormalizeFacets
 from stadsarkiv_client.records.meta_data import get_meta_data
 from stadsarkiv_client.core.dynamic_settings import settings
-from stadsarkiv_client.facets import FACETS
 from stadsarkiv_client.core import query
 
 
@@ -106,11 +105,6 @@ async def get_record_view(request: Request):
 
     context = await get_context(request, context_variables)
     return templates.TemplateResponse("records/record.html", context)
-
-
-async def get_facets_test(request: Request):
-    context = await get_context(request, {"facets": FACETS})
-    return templates.TemplateResponse("records/facets.html", context)
 
 
 async def get_record_view_json(request: Request):
