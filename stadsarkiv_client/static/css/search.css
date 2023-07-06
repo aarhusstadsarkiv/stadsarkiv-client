@@ -84,3 +84,8 @@ input, button {
 #from-month, #to-month, #from-day, #to-day {
     width: 50px;
 }
+
+details > summary.red {
+    
+    list-style: none;
+}

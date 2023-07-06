@@ -2,32 +2,32 @@ import { Events } from '/static/js/events.js';
 import { Flash } from '/static/js/flash.js';
 
 // Function to save the state of the tree to local storage
-function saveTree() {
-    const detailsElements = document.querySelectorAll('details');
-    const state = [];
+function saveTree(event) {
 
-    detailsElements.forEach((detailsElement) => {
-        const isOpen = detailsElement.hasAttribute('open');
-        state.push(isOpen);
+    event.preventDefault();
+
+    const openFacets = [];
+    const summaryElements = document.querySelectorAll('.facets details summary');
+
+    summaryElements.forEach(summaryElement => {
+        if (summaryElement.parentElement.open) {
+            const dataId = summaryElement.getAttribute('data-id');
+            openFacets.push(dataId);
+        }
     });
 
-    localStorage.setItem('treeState', JSON.stringify(state));
+    localStorage.setItem('treeState', JSON.stringify(openFacets));
 }
 
 // Function to expand the tree based on the saved state from local storage
 function expandTree() {
-    const savedState = localStorage.getItem('treeState');
-
-    if (savedState) {
-        const state = JSON.parse(savedState);
-        const detailsElements = document.querySelectorAll('details');
-
-        detailsElements.forEach((detailsElement, index) => {
-            const isOpen = state[index];
-            if (isOpen) {
-                detailsElement.setAttribute('open', 'true');
-            } else {
-                detailsElement.removeAttribute('open');
+    const openFacets = JSON.parse(localStorage.getItem('treeState'));
+    if (openFacets && openFacets.length) {
+        const summaryElements = document.querySelectorAll('.facets details summary');
+        summaryElements.forEach(summaryElement => {
+            const dataId = summaryElement.getAttribute('data-id');
+            if (openFacets.includes(dataId)) {
+                summaryElement.parentElement.open = true;
             }
         });
     }
@@ -55,24 +55,21 @@ function isValidDate(dateString) {
 }
 
 /**
- * Search form
- * Check if dates are valid and add hidden date inputs to form
- * formatted to yyyymmdd
+ * Search form submit event
  */
-Events.addEventListenerMultiple('#search-date', 'submit', function (e) {
-    e.preventDefault();
+let searchDateElem = document.getElementById('search-date');
+searchDateElem.addEventListener('submit', function (event) {
+    event.preventDefault();
+
     let fromYear = document.getElementById('from-year').value;
     let fromMonth = document.getElementById('from-month').value || '01';
     let fromDay = document.getElementById('from-day').value || '01';
-
-    // let currentYear = new Date().getFullYear();
-
     let toYear = document.getElementById('to-year').value;
     let toMonth = document.getElementById('to-month').value || '12';
     let toDay = document.getElementById('to-day').value || '31';
 
     if (!fromYear && !toYear) {
-        Flash.setMessage('Du skal indtaste en dato mellem 1200 og aktuel data', 'error');
+        Flash.setMessage('Du skal indtaste en datoer mellem 1200 og aktuel data', 'error');
         return;
     }
 
@@ -80,46 +77,33 @@ Events.addEventListenerMultiple('#search-date', 'submit', function (e) {
     let fromDate = `${fromYear}-${fromMonth}-${fromDay}`;
     let toDate = `${toYear}-${toMonth}-${toDay}`;
 
+    if (toYear && !isValidDate(toDate)) {
+        Flash.setMessage('Til dato er ikke gyldig', 'error');
+        return;
+    }
+
+    if (fromYear && !isValidDate(fromDate)) {
+        Flash.setMessage('Fra dato er ikke gyldig', 'error');
+        return;
+    }
+
+    // Redirect to new url
+    let url = window.location.href;
+
+    // Add date_from and date_to to url
+    let urlParams = new URLSearchParams(window.location.search);
     if (isValidDate(fromDate)) {
-        // add hidden input to form
-        let input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'date_from';
-        input.value = `${fromYear}${fromMonth}${fromDay}`;
-        document.getElementById('search-date').appendChild(input);
-    } else {
-        if (fromYear) {
-            Flash.setMessage('Fra dato er ikke gyldig', 'error');
-            return;
-        }
+        urlParams.set('date_from', `${fromYear}${fromMonth}${fromDay}`);
+    }
+    if (isValidDate(toDate)) {
+        urlParams.set('date_to', `${toYear}${toMonth}${toDay}`);
     }
 
-    if (toYear && isValidDate(toDate)) {
-        // add hidden input to form
-        let input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'date_to';
-        input.value = `${toYear}${toMonth}${toDay}`;;
-        document.getElementById('search-date').appendChild(input);
-    } else {
-        if (toYear) {
-            Flash.setMessage('Til dato er ikke gyldig', 'error');
-            return;
-        }
-    }
+    // Save the tree state
+    saveTree(event);
 
-    // Set disabled on existing inputs to prevent them from being submitted
-    document.getElementById('from-year').disabled = true;
-    document.getElementById('from-month').disabled = true;
-    document.getElementById('from-day').disabled = true;
-    document.getElementById('to-year').disabled = true;
-    document.getElementById('to-month').disabled = true;
-    document.getElementById('to-day').disabled = true;
-
-    // Submit new form to current url with new hidden inputs
-    document.getElementById('search-date').submit();
-
-});
+    window.location.href = url.split('?')[0] + '?' + urlParams.toString();
+})
 
 /**
  * Ensure only numbers can be entered in the date fields
@@ -132,19 +116,43 @@ Events.addEventListenerMultiple('#search-date > input', 'input', function (e) {
 /**
  * Expand tree based on saved state
  */
-document.addEventListener('DOMContentLoaded', () => {
+
+function searchEvents() {
+
     try {
-        expandTree();
-        window.addEventListener('beforeunload', saveTree);
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            // Expand the tree based on the saved state
+            console.log("Loading")
+            expandTree();
+        })
+
+        // 'beforeunload' will not work when e.g. searching for /search to /search?date_from=20200101
+        // Instead we check all links
+        window.addEventListener('click', function (event) {
+
+            if (event.target.tagName === 'A') {
+                event.preventDefault();
+                saveTree(event);
+                window.location.href = event.target.href;
+            }
+        })
+
+        // Also add event listener to search form with id 'search-date'
+        let searchElem = document.getElementById('search');
+        searchElem.addEventListener('submit', function (event) {
+            saveTree(event);
+            searchElem.submit();
+        })
+
+        // The search-date form is handled in the above.
+
 
     } catch (error) {
         // unset local storage if it fails. The tree may be updated and the saved state may be invalid
         localStorage.removeItem('treeState');
         console.log(error);
     }
-});
+}
 
-
-let Search = {};
-
-export { Search }
+export { searchEvents }

@@ -28,14 +28,18 @@
     {% for facet in facets_content %}
     <li>
         {% if 'children' in facet and facet["count"] %}
-        <details>
-            <summary>
+        <details >
+            <summary data-id="{{ facet['id'] }}">
                 {{ parse_facet_link(top_level_key, facet) }}
             </summary>
             {{ parse_facets(top_level_key, facet['children'] ) }}
         </details>
         {% else %}
-        {{ parse_facet_link(top_level_key, facet) }}
+        <details>
+            <summary class="red" data-id="{{ facet['id'] }}">
+                {{ parse_facet_link(top_level_key, facet) }}
+            </summary>
+        </details>
         {% endif %}
     </li>
     {% endfor %}
@@ -48,7 +52,7 @@
         {% for top_level_key, top_level_value in facets.items() %}
         <li>
             <details>
-                <summary>
+                <summary data-id="{{ top_level_key }}">
                     {{ top_level_value['label'] }}
                 </summary>
                 {{ parse_facets(top_level_key, top_level_value['content']) }}
@@ -57,7 +61,7 @@
         {% endfor %}
         <li>
             <details>
-                <summary>
+                <summary data-id="date_search">
                     {{ translate('Search date') }}
                 </summary>
                 {{ parse_date_form() }}
@@ -68,7 +72,7 @@
 {% endmacro %}
 
 {% macro parse_search_form() %}
-<form method="GET" action="{{ url_for('records_search')}}">
+<form id="search" method="GET" action="{{ url_for('records_search')}}">
     {% for key, value in query_params %}
     <input type="hidden" name="{{ key }}" value="{{ value }}">
     {% endfor %}
@@ -171,14 +175,14 @@
         <input type="hidden" name="{{ key }}" value="{{ value }}">
         {% endfor %}
         <label for="from-year" title="{{ translate('The date shall be between 1200 and the current date')}}">{{ translate('Date From') }}</label><br />
-        <input type="text" maxlength="4" id="from-year" name="from-year" placeholder="1600" min="1200" max="{{ current_year }}" value="{{ dates['from_year']}}">
-        <input type="text" maxlength="2" id="from-month" name="from-month" placeholder="01" min="01" max="12" value="{{ dates['from_month']}}" >
-        <input type="text" maxlength="2" id="from-day" name="from-day" placeholder="01" min="01" max="31" value="{{ dates['from_day']}}">
+        <input type="text" maxlength="4" id="from-year" name="from-year" placeholder="1600" value="{{ dates['from_year']}}">
+        <input type="text" maxlength="2" id="from-month" name="from-month" placeholder="01" value="{{ dates['from_month']}}" >
+        <input type="text" maxlength="2" id="from-day" name="from-day" placeholder="01" value="{{ dates['from_day']}}">
         <br>
         <label for="to-year" title="{{ translate('The date shall be between 1200 and the current date')}}">{{ translate('Date To') }}</label><br />
-        <input type="text" maxlength="4" id="to-year" name="to-year" placeholder="2020" min="1200" max="{{ current_year }}" value="{{ dates['to_year']}}">
-        <input type="text" maxlength="2" id="to-month" name="to-month" placeholder="12" min="1" max="12" value="{{ dates['to_month']}}" >
-        <input type="text" maxlength="2" id="to-day" name="to-day" placeholder="31" min="1" max="31" value="{{ dates['to_day']}}" >
+        <input type="text" maxlength="4" id="to-year" name="to-year" placeholder="2020" value="{{ dates['to_year']}}">
+        <input type="text" maxlength="2" id="to-month" name="to-month" placeholder="12" value="{{ dates['to_month']}}" >
+        <input type="text" maxlength="2" id="to-day" name="to-day" placeholder="31"  value="{{ dates['to_day']}}" >
         <br>
         <input type="submit" value="{{ translate('Search') }}">
     </form>
@@ -194,7 +198,10 @@
 {{ parse_search_results(records) }}
 
 <script type="module">
-    import { Search } from "/static/js/search.js";  
+    import { searchEvents } from "/static/js/search.js";
+    searchEvents();
+
+ 
 </script>
 
 {% endblock content %}
