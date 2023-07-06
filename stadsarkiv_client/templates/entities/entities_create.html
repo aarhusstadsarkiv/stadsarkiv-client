@@ -33,7 +33,7 @@
         try {
             let user_info = await Requests.asyncPostJson(getApiUrl('/auth/user-info'));
             if (!user_info.is_logged_in) {
-                Flash.setFlashMessage("{{ translate('You must be logged in to create an entity') }}", 'error', true)
+                Flash.setMessage("{{ translate('You must be logged in to create an entity') }}", 'error', true)
                 return;
             }
         } catch (e) {
@@ -47,7 +47,7 @@
             // `path` is a dot separated path into the JSON object (e.g. "root.path.to.field")
             errors.forEach(error => {
                 let message = "Client validation. Path: " + error.path + " - " + error.message;
-                Flash.setFlashMessage(message, 'error')
+                Flash.setMessage(message, 'error')
             })
 
         } else {
@@ -64,7 +64,7 @@
                 let url = `/entities/post-entity/${schema_type}`;
                 const res = await Requests.asyncPostJson(getApiUrl(url), post_json);
                 if (res.error) {
-                    Flash.setFlashMessage(res.message, 'error', true)
+                    Flash.setMessage(res.message, 'error', true)
                 }
                 else {
                     // Rediect to current page

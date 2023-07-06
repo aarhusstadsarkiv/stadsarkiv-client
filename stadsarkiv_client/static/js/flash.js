@@ -30,7 +30,12 @@ class Flash {
         flashMessagesElem.style.width = containerElem.offsetWidth + "px"
     }
 
-    static setFlashMessage(str, type, remove_after) {
+    /**
+     * @param {str} The message to display
+     * @param {type}  'info', 'success', 'warning', 'error' or any other you may use in your app. 
+     * @param {remove_after} remove the message after some seconds 
+     */
+    static setMessage(str, type, remove_after) {
         var messageElem = document.querySelector(".flash-messages");
         messageElem.innerHTML = '';
 
@@ -61,5 +66,3 @@ window.addEventListener('resize', function () {
 })
 
 export {Flash}
-
-// document.getElementById("mydiv").offsetWidth
