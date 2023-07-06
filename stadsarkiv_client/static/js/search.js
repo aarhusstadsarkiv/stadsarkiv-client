@@ -87,15 +87,25 @@ Events.addEventListenerMultiple('#search-date', 'submit', function (e) {
         input.name = 'date_from';
         input.value = `${fromYear}${fromMonth}${fromDay}`;
         document.getElementById('search-date').appendChild(input);
+    } else {
+        if (fromYear) {
+            Flash.setMessage('Fra dato er ikke gyldig', 'error');
+            return;
+        }
     }
 
-    if (isValidDate(toDate)) {
+    if (toYear && isValidDate(toDate)) {
         // add hidden input to form
         let input = document.createElement('input');
         input.type = 'hidden';
         input.name = 'date_to';
         input.value = `${toYear}${toMonth}${toDay}`;;
         document.getElementById('search-date').appendChild(input);
+    } else {
+        if (toYear) {
+            Flash.setMessage('Til dato er ikke gyldig', 'error');
+            return;
+        }
     }
 
     // Set disabled on existing inputs to prevent them from being submitted
