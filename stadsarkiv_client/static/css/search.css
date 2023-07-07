@@ -86,6 +86,5 @@ input, button {
 }
 
 details > summary.closed {
-    background-color: grey;
     list-style: none;
 }
