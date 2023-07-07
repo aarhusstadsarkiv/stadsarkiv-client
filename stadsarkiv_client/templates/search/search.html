@@ -3,7 +3,7 @@
 {% block content %}
 {% include "includes/main_title.html" %}
 
-<form method="GET" action="{{ url_for('entities_search')}}">
+<form method="GET" action="{{ url_for('search')}}">
     <input type="text" name="search" placeholder="{{ translate('Search') }}" aria-label="{{ translate('search') }}">
     <button type="submit" class="contrast">{{ translate('Search') }}</button>
 </form>

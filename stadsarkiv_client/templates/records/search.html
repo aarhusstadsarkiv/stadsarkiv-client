@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% set truncate_summary = 300 %}
-{% set search_base_url = "/records-search" %}
+{% set search_base_url = get_setting('search_base_url') %}
 
 {% macro parse_facets_filters(facets_filters) %}
 <ul>
@@ -168,6 +168,7 @@
 {% endmacro %}
 
 {% macro parse_date_form () %}
+<!-- test -->
 <div class="search-date">
     <form id="search-date">
         {% set ignore_keys = ['date_to', 'date_from'] %}
@@ -191,17 +192,23 @@
 
 {% block content %}
 
+{% if get_setting('debug')  %}
+<p>
+    <a href="/search/json?{{ request.query_params.__str__() }}">JSON</a>
+</p>
+{% endif %}
+
 {{ parse_search_form() }}
 {{ parse_facets_filters(facets_filters) }}
 {{ parse_top_level_facets(facets) }}
 {{ parse_pagination(pagination_data) }}
 {{ parse_search_results(records) }}
 
+
 <script type="module">
     import { searchEvents } from "/static/js/search.js";
     searchEvents();
 
- 
 </script>
 
 {% endblock content %}

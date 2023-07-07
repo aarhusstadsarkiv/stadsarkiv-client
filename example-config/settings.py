@@ -40,6 +40,7 @@ settings = {
     "pages": [
         {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
     ],
+    "search_base_url": "/search",
     #
     # records display
     #

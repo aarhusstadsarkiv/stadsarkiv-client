@@ -40,12 +40,12 @@ settings = {
         {"name": "profile", "title": "Profil"},
         {"name": "schemas", "title": "Schemas"},
         {"name": "entities", "title": "Entities"},
-        {"name": "entities_search", "title": "Søg"},
-        {"name": "records_search", "title": "Søg (som eksisterende aarhusarkiv)"},
+        {"name": "records_search", "title": "Søg"},
     ],
     "pages": [
         {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
     ],
+    "search_base_url": "/search",
     "record_sections": {
         "Kernedata": ["collectors", "content_types", "creators", "date_normalized", "curators", "id"],
         "Beskrivelse": [

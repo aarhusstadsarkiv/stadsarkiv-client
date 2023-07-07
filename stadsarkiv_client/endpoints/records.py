@@ -53,7 +53,6 @@ def get_dates(request: Request):
         dates["to_year"], dates["to_month"], dates["to_day"] = dates_to[:4], dates_to[4:6], dates_to[6:]
 
     return dates
-    # return dates
 
 
 async def get_records_search(request: Request):
@@ -62,9 +61,10 @@ async def get_records_search(request: Request):
     query_str = await query.get_str(request, remove_keys=["start", "size"])
 
     records = await api.proxies_records(request)
-    alter_facets_content = NormalizeFacets(records, query_params=query_params, query_str=query_str)
+    alter_facets_content = NormalizeFacets(request=request, records=records, query_params=query_params, query_str=query_str)
     facets = alter_facets_content.get_altered_facets()
     facets_filters = alter_facets_content.get_checked_facets()
+
     pagination_data = get_pagination_data(request, records["size"], records["total"])
 
     context_values = {
@@ -82,6 +82,12 @@ async def get_records_search(request: Request):
 
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse("records/search.html", context)
+
+
+async def get_records_search_json(request: Request):
+    records = await api.proxies_records(request)
+    record_json = json.dumps(records, indent=4, ensure_ascii=False)
+    return PlainTextResponse(record_json)
 
 
 async def get_record_view(request: Request):

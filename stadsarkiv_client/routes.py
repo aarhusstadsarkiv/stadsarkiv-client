@@ -53,7 +53,7 @@ routes = [
     Route("/auth/post-reset-password/{token:str}", endpoint=auth.post_reset_password, name="post_reset_password", methods=["POST"]),
     Route("/auth/send-verify-email", endpoint=auth.send_verify_email, name="send_verify_email"),
     Route("/auth/me", endpoint=auth.get_me_jwt, name="profile"),
-    Route("/search", endpoint=search.get_search, name="entities_search"),
+    # Route("/search", endpoint=search.get_search, name="entities_search"),
     Route("/schema/{schema_type:str}", endpoint=schemas.get_schema, name="schemas"),
     Route("/schemas", endpoint=schemas.get_schemas, name="schemas"),
     Route("/schemas/post-schema", endpoint=schemas.post_schema, name="post_schema", methods=["POST"]),
@@ -66,7 +66,8 @@ routes = [
         methods=["POST"],
     ),
     Route("/entities/view/{uuid:str}", endpoint=entities.get_entity_view, name="entity_view"),
-    Route("/records-search", endpoint=records.get_records_search, name="records_search"),
+    Route("/search", endpoint=records.get_records_search, name="records_search"),
+    Route("/search/json", endpoint=records.get_records_search_json, name="records_search_json"),
     Route("/records/{record_id:str}", endpoint=records.get_record_view, name="record_view"),
     Route("/records/{record_id:str}/json/{type:str}", endpoint=records.get_record_view_json, name="record_view_json"),
 ]
