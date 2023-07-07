@@ -28,15 +28,15 @@
     {% for facet in facets_content %}
     <li>
         {% if 'children' in facet and facet["count"] %}
-        <details >
-            <summary data-id="{{ facet['id'] }}">
+        <details data-id="{{ facet['id'] }}" >
+            <summary>
                 {{ parse_facet_link(top_level_key, facet) }}
             </summary>
             {{ parse_facets(top_level_key, facet['children'] ) }}
         </details>
         {% else %}
-        <details>
-            <summary class="red" data-id="{{ facet['id'] }}">
+        <details data-id="{{ facet['id'] }}">
+            <summary class="closed">
                 {{ parse_facet_link(top_level_key, facet) }}
             </summary>
         </details>
@@ -51,8 +51,8 @@
     <ul>
         {% for top_level_key, top_level_value in facets.items() %}
         <li>
-            <details>
-                <summary data-id="{{ top_level_key }}">
+            <details data-id="{{ top_level_key }}">
+                <summary >
                     {{ top_level_value['label'] }}
                 </summary>
                 {{ parse_facets(top_level_key, top_level_value['content']) }}

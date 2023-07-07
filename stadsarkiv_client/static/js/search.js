@@ -7,11 +7,11 @@ function saveTree(event) {
     event.preventDefault();
 
     const openFacets = [];
-    const summaryElements = document.querySelectorAll('.facets details summary');
+    const detailsElements = document.querySelectorAll('.facets details');
 
-    summaryElements.forEach(summaryElement => {
-        if (summaryElement.parentElement.open) {
-            const dataId = summaryElement.getAttribute('data-id');
+    detailsElements.forEach(detailElement => {
+        if (detailElement.open) {
+            const dataId = detailElement.getAttribute('data-id');
             openFacets.push(dataId);
         }
     });
@@ -23,11 +23,11 @@ function saveTree(event) {
 function expandTree() {
     const openFacets = JSON.parse(localStorage.getItem('treeState'));
     if (openFacets && openFacets.length) {
-        const summaryElements = document.querySelectorAll('.facets details summary');
-        summaryElements.forEach(summaryElement => {
-            const dataId = summaryElement.getAttribute('data-id');
+        const detailElements = document.querySelectorAll('.facets details');
+        detailElements.forEach(detailElement => {
+            const dataId = detailElement.getAttribute('data-id');
             if (openFacets.includes(dataId)) {
-                summaryElement.parentElement.open = true;
+                detailElement.open = true;
             }
         });
     }
@@ -37,6 +37,7 @@ function expandTree() {
  * Check if a string is a valid date
  */
 function isValidDate(dateString) {
+
     // Parse the input string as yyyy-mm-dd
     var dateParts = dateString.split("-");
     var year = parseInt(dateParts[0], 10);
@@ -57,73 +58,71 @@ function isValidDate(dateString) {
 /**
  * Search form submit event
  */
-let searchDateElem = document.getElementById('search-date');
-searchDateElem.addEventListener('submit', function (event) {
-    event.preventDefault();
+function onSearchDateEvent() {
+    let searchDateElem = document.getElementById('search-date');
+    searchDateElem.addEventListener('submit', function (event) {
+        event.preventDefault();
 
-    let fromYear = document.getElementById('from-year').value;
-    let fromMonth = document.getElementById('from-month').value || '01';
-    let fromDay = document.getElementById('from-day').value || '01';
-    let toYear = document.getElementById('to-year').value;
-    let toMonth = document.getElementById('to-month').value || '12';
-    let toDay = document.getElementById('to-day').value || '31';
+        let fromYear = document.getElementById('from-year').value;
+        let fromMonth = document.getElementById('from-month').value || '01';
+        let fromDay = document.getElementById('from-day').value || '01';
+        let toYear = document.getElementById('to-year').value;
+        let toMonth = document.getElementById('to-month').value || '12';
+        let toDay = document.getElementById('to-day').value || '31';
 
-    if (!fromYear && !toYear) {
-        Flash.setMessage('Du skal indtaste en datoer mellem 1200 og aktuel data', 'error');
-        return;
-    }
+        if (!fromYear && !toYear) {
+            Flash.setMessage('Du skal indtaste en datoer mellem 1200 og aktuel data', 'error');
+            return;
+        }
 
-    // One date must be valid now
-    let fromDate = `${fromYear}-${fromMonth}-${fromDay}`;
-    let toDate = `${toYear}-${toMonth}-${toDay}`;
+        // One date has been entered now
+        let fromDate = `${fromYear}-${fromMonth}-${fromDay}`;
+        let toDate = `${toYear}-${toMonth}-${toDay}`;
 
-    if (toYear && !isValidDate(toDate)) {
-        Flash.setMessage('Til dato er ikke gyldig', 'error');
-        return;
-    }
+        if (toYear && !isValidDate(toDate)) {
+            Flash.setMessage('Til dato er ikke gyldig', 'error');
+            return;
+        }
 
-    if (fromYear && !isValidDate(fromDate)) {
-        Flash.setMessage('Fra dato er ikke gyldig', 'error');
-        return;
-    }
+        if (fromYear && !isValidDate(fromDate)) {
+            Flash.setMessage('Fra dato er ikke gyldig', 'error');
+            return;
+        }
 
-    // Redirect to new url
-    let url = window.location.href;
+        // Redirect to new url and add date_from and date_to to url
+        let url = window.location.href;
+        let urlParams = new URLSearchParams(window.location.search);
+        if (isValidDate(fromDate)) {
+            urlParams.set('date_from', `${fromYear}${fromMonth}${fromDay}`);
+        }
+        if (isValidDate(toDate)) {
+            urlParams.set('date_to', `${toYear}${toMonth}${toDay}`);
+        }
 
-    // Add date_from and date_to to url
-    let urlParams = new URLSearchParams(window.location.search);
-    if (isValidDate(fromDate)) {
-        urlParams.set('date_from', `${fromYear}${fromMonth}${fromDay}`);
-    }
-    if (isValidDate(toDate)) {
-        urlParams.set('date_to', `${toYear}${toMonth}${toDay}`);
-    }
+        saveTree(event);
+        window.location.href = url.split('?')[0] + '?' + urlParams.toString();
+    });
+}
 
-    // Save the tree state
-    saveTree(event);
 
-    window.location.href = url.split('?')[0] + '?' + urlParams.toString();
-})
-
-/**
- * Ensure only numbers can be entered in the date fields
- */
-Events.addEventListenerMultiple('#search-date > input', 'input', function (e) {
-    let input = e.target;
-    input.value = input.value.replace(/\D/g, '');
-});
 
 /**
  * Expand tree based on saved state
  */
-
 function searchEvents() {
 
     try {
 
+        onSearchDateEvent();
+        
+        // Ensure only numbers can be entered in the date fields
+        Events.addEventListenerMultiple('#search-date > input', 'input', function (e) {
+            let input = e.target;
+            input.value = input.value.replace(/\D/g, '');
+        });
+
+        // Expand the tree based on the saved state
         document.addEventListener('DOMContentLoaded', function (event) {
-            // Expand the tree based on the saved state
-            console.log("Loading")
             expandTree();
         })
 
@@ -145,11 +144,9 @@ function searchEvents() {
             searchElem.submit();
         })
 
-        // The search-date form is handled in the above.
-
-
     } catch (error) {
-        // unset local storage if it fails. The tree may be updated and the saved state may be invalid
+        // unset local storage if it fails. 
+        // The tree may be updated and the saved state may be invalid
         localStorage.removeItem('treeState');
         console.log(error);
     }

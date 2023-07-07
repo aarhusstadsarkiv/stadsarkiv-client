@@ -85,7 +85,7 @@ input, button {
     width: 50px;
 }
 
-details > summary.red {
-    
+details > summary.closed {
+    background-color: grey;
     list-style: none;
 }
