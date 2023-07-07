@@ -2,9 +2,7 @@ import { Events } from '/static/js/events.js';
 import { Flash } from '/static/js/flash.js';
 
 // Function to save the state of the tree to local storage
-function saveTree(event) {
-
-    event.preventDefault();
+function saveTree() {
 
     const openFacets = [];
     const detailsElements = document.querySelectorAll('.facets details');
@@ -99,7 +97,7 @@ function onSearchDateEvent() {
             urlParams.set('date_to', `${toYear}${toMonth}${toDay}`);
         }
 
-        saveTree(event);
+        saveTree();
         window.location.href = url.split('?')[0] + '?' + urlParams.toString();
     });
 }
@@ -132,7 +130,7 @@ function searchEvents() {
 
             if (event.target.tagName === 'A') {
                 event.preventDefault();
-                saveTree(event);
+                saveTree();
                 window.location.href = event.target.href;
             }
         })
@@ -140,7 +138,8 @@ function searchEvents() {
         // Also add event listener to search form with id 'search-date'
         let searchElem = document.getElementById('search');
         searchElem.addEventListener('submit', function (event) {
-            saveTree(event);
+            event.preventDefault();
+            saveTree();
             searchElem.submit();
         })
 
