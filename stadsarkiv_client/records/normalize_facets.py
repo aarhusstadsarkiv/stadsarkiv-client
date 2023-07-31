@@ -8,7 +8,20 @@ from stadsarkiv_client.facets import QUERY_PARAMS
 log = get_log()
 
 
-def get_records_filter(records, key) -> dict:
+def str_to_date(date: str):
+    """convert date string to date string with correct format
+    e.g. 20221231 to 2022-12-31
+    """
+    if not date:
+        return None
+
+    if len(date) == 8:
+        return f"{date[:4]}-{date[4:6]}-{date[6:]}"
+
+    return date
+
+
+def _get_records_filter(records, key) -> dict:
     """Get a single filter from records"""
 
     if not records.get("filters"):
@@ -31,7 +44,7 @@ class NormalizeFacets:
         self.facets_search = self._get_facets_search(records["facets"])
         self.query_params = query_params
         self.query_str = query_str
-        self.facets = FACETS
+        self.FACETS = FACETS
 
     def _get_facets_search(self, data):
         """Transform search facets from this format:
@@ -59,68 +72,110 @@ class NormalizeFacets:
 
         return altered_search_facets
 
-    def _transform_facets(self, top_level_key, facets_content):
-        """Alter the facets content with the count from the search facets. Also add
-        a checked key to the facets content if the facet is checked in the query_params."""
+    def _transform_facets(self, top_level_key, facets_content, path=None):
+
+        if path is None:
+            log.debug(facets_content)
+            path = [self.FACETS[top_level_key]["label"]]
+
         for facet in facets_content:
+            current_path = path + [facet['label']]
+            facet['path'] = current_path
+            facet['path_str'] = ' > '.join(current_path)
+
             if "children" in facet:
-                self._transform_facets(top_level_key, facet["children"])
+                self._transform_facets(top_level_key, facet["children"], current_path)
 
             try:
                 facet["count"] = self.facets_search[top_level_key][facet["id"]]["count"]
             except KeyError:
                 facet["count"] = 0
 
-            # check if the facet is checked, meaning it exist in the query_params
             search = (top_level_key, facet["id"])
+            facet["remove_query"] = self.query_str.replace(f"{top_level_key}={facet['id']}&", "")
+
+            label = ""
+            try:
+                label = QUERY_PARAMS[top_level_key]["label"]
+            except KeyError:
+                pass
+
+            full_label = f"{label} {facet['label']}"
+            facet["alter_label"] = full_label
+            facet["reverse_query"] = self.query_str.replace(f"{top_level_key}={facet['id']}&", f"-{top_level_key}={facet['id']}&")
+
             if search in self.query_params:
                 facet["checked"] = True
                 facet["search_query"] = self.query_str
-                facet["remove_query"] = self.query_str.replace(f"{top_level_key}={facet['id']}&", "")
-                facet["alter_label"] = translate("label_record_" + top_level_key) + " > " + facet["label"]
-                facet["reverse_query"] = self.query_str.replace(f"{top_level_key}={facet['id']}&", f"-{top_level_key}={facet['id']}&")
             else:
                 facet["checked"] = False
                 facet["search_query"] = self.query_str + f"{top_level_key}={facet['id']}&"
 
-    def get_checked_facets(self):
-        """get a list of facets that are checked (meaning that they are working filters).
-        Also add a remove_query key to the facet, which is the query string without the facet.
-        """
-        self.facets_checked = []
-
-        for key, value in self.facets.items():
-            self._transform_facets_checked(key, value["content"], self.facets_checked)
-
-        ignore_keys = ["subjects", "content_types", "usability", "availability", "size", "start"]
-
-        query_params = QUERY_PARAMS
-        for key, value in query_params.items():
-            if key not in ignore_keys and self.request.query_params.get(key):
-                facet = {"id": self.request.query_params.get(key)}
-                facet["alter_label"] = value["label"]
-
-                filter = get_records_filter(self.records, key)
-                if not filter.get("unresolved"):
-                    facet["alter_label"] = filter.get("value")
-                else:
-                    facet["alter_label"] = f"NOT RESOLVED '{key}'={facet['id']}"
-
-                facet["remove_query"] = self.query_str.replace(f"{key}={facet['id']}&", "")
-                self.facets_checked.append(facet)
-
-        return self.facets_checked
-
-    def _transform_facets_checked(self, top_level_key, facets_content, facets):
+    def _set_facets_checked(self, top_level_key, facets_content, facets_checked):
         for facet in facets_content:
             if "children" in facet:
-                self._transform_facets_checked(top_level_key, facet["children"], facets)
+                self._set_facets_checked(top_level_key, facet["children"], facets_checked)
 
             if facet["checked"]:
-                facets.append(facet)
+                facets_checked.append(facet)
 
-    def get_altered_facets(self):
-        for key, value in self.facets.items():
+    def _get_checked_facets_flatten(self):
+        facets_checked = []
+
+        for key, value in FACETS.items():
+            self._set_facets_checked(key, value["content"], facets_checked)
+
+        return facets_checked
+
+    def _get_label(self, key, value):
+        """Get the label for a facet. If the facet is a date, then the label is
+        the date in a readable format. If the facet is a subject, then the label
+        is the subject translated to the current language."""
+        if key == "date_from" or key == "date_to":
+            label = QUERY_PARAMS["date_from"]["label"]
+            return label + ' ' + str_to_date(value)
+
+        if key == "subjects":
+            return "Subjects"
+
+        return value
+
+    def get_checked_facets(self):
+        """get a list of facets that are checked (meaning that they are working filters).
+        Add a remove_query key to the facet, which is the query string without the facet.
+        """
+        facets_checked = self._get_checked_facets_flatten()
+        ignore_keys = ["subjects", "content_types", "usability", "availability", "size", "start"]
+
+        for query_name, definition in QUERY_PARAMS.items():
+            if query_name not in ignore_keys and self.request.query_params.get(query_name):
+                # facet = {"id": self.request.query_params.get(key)}
+                facet = {}
+
+                query_value = self.request.query_params.get(query_name)
+                # query_name = key
+                # query_value = self.request.query_params.get(key)
+                # log.debug(facet)
+                # records_filter = _get_records_filter(self.records, key)
+                # log.debug(value)
+
+                # if records_filter.get("unresolved"):
+                try:
+                    label = definition.get("label")
+                except KeyError:
+                    continue
+
+                facet["alter_label"] = f"{label} (Unresolved) '{query_name}'={query_value}"
+
+                facet["remove_query"] = self.query_str.replace(f"{query_name}={query_value}&", "")
+                facets_checked.append(facet)
+
+        return facets_checked
+
+    def get_transformed_facets(self):
+        """Alter the facets content with the count from the search facets. Also add
+        a checked key to the facets content if the facet is checked in the query_params."""
+        for key, value in FACETS.items():
             self._transform_facets(key, value["content"])
 
-        return self.facets
+        return self.FACETS

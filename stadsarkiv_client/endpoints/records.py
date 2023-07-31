@@ -61,9 +61,9 @@ async def get_records_search(request: Request):
     query_str = await query.get_str(request, remove_keys=["start", "size"])
 
     records = await api.proxies_records(request)
-    alter_facets_content = NormalizeFacets(request=request, records=records, query_params=query_params, query_str=query_str)
-    facets = alter_facets_content.get_altered_facets()
-    facets_filters = alter_facets_content.get_checked_facets()
+    normalized_facets = NormalizeFacets(request=request, records=records, query_params=query_params, query_str=query_str)
+    facets = normalized_facets.get_transformed_facets()
+    facets_filters = normalized_facets.get_checked_facets()
 
     pagination_data = get_pagination_data(request, records["size"], records["total"])
 

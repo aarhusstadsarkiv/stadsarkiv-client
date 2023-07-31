@@ -7,7 +7,7 @@
 <ul>
     {% for facet in facets_filters %}
     <li>
-        <a class="remove" href="{{ search_base_url }}?{{ facet['remove_query'] }}">{{ translate('Remove facet') }}</a> <span>{{ facet['alter_label'] }}</span>
+        <a class="remove" href="{{ search_base_url }}?{{ facet['remove_query'] }}">{{ translate('Remove facet') }}</a> <span>{{ facet['path_str'] }}</span>
     </li>
     {% endfor %}
 </ul>
