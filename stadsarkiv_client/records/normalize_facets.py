@@ -9,7 +9,11 @@ log = get_log()
 
 
 def get_records_filter(records, key) -> dict:
-    """Get collector from records."""
+    """Get a single filter from records"""
+
+    if not records.get("filters"):
+        return {}
+
     try:
         filters = records["filters"]
         for filter in filters:
@@ -59,7 +63,6 @@ class NormalizeFacets:
         """Alter the facets content with the count from the search facets. Also add
         a checked key to the facets content if the facet is checked in the query_params."""
         for facet in facets_content:
-
             if "children" in facet:
                 self._transform_facets(top_level_key, facet["children"])
 
@@ -81,7 +84,6 @@ class NormalizeFacets:
                 facet["search_query"] = self.query_str + f"{top_level_key}={facet['id']}&"
 
     def get_checked_facets(self):
-
         """get a list of facets that are checked (meaning that they are working filters).
         Also add a remove_query key to the facet, which is the query string without the facet.
         """
@@ -90,17 +92,16 @@ class NormalizeFacets:
         for key, value in self.facets.items():
             self._transform_facets_checked(key, value["content"], self.facets_checked)
 
-        ignore_keys = ["subjects", "content_types", "usability", "availability"]
+        ignore_keys = ["subjects", "content_types", "usability", "availability", "size", "start"]
 
         query_params = QUERY_PARAMS
         for key, value in query_params.items():
-
             if key not in ignore_keys and self.request.query_params.get(key):
                 facet = {"id": self.request.query_params.get(key)}
                 facet["alter_label"] = value["label"]
 
                 filter = get_records_filter(self.records, key)
-                if not filter.get('unresolved'):
+                if not filter.get("unresolved"):
                     facet["alter_label"] = filter.get("value")
                 else:
                     facet["alter_label"] = f"NOT RESOLVED '{key}'={facet['id']}"
