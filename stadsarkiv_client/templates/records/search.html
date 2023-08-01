@@ -73,8 +73,9 @@
 
 {% macro parse_search_form() %}
 <form id="search" method="GET" action="{{ url_for('records_search')}}">
-    {% for key, value in query_params %}
-    <input type="hidden" name="{{ key }}" value="{{ value }}">
+    {% for key, value in query_params if key not in ['start'] %}
+
+            <input type="hidden" name="{{ key }}" value="{{ value }}">
     {% endfor %}
     <input type="text" name="q" placeholder="{{ translate('Search') }}" aria-label="{{ translate('search') }}"
         value="{{ q }}">
@@ -128,15 +129,15 @@
 
     <div class="pagination-pages">
         {% if current_page > 1 %}
-        <a href="{{ search_base_url }}?{{ query_str }}&start=0&size={{ size }}">{{ translate('First page') }}</a>
-        <a href="{{ search_base_url }}?{{ query_str }}&start={{ start - size }}&size={{ size }}">{{ translate('Previous') }}</a>
+        <a href="{{ search_base_url }}?{{ query_str }}start=0&size={{ size }}">{{ translate('First page') }}</a>
+        <a href="{{ search_base_url }}?{{ query_str }}start={{ start - size }}&size={{ size }}">{{ translate('Previous') }}</a>
         {% else %}
         <span class="disabled">{{ translate('First page') }}</span>
         <span class="disabled">{{ translate('Previous') }}</span>
         {% endif %}
         {% if current_page < total_pages %}
-        <a href="{{ search_base_url }}?{{ query_str }}&start={{ start + size }}&size={{ size }}">{{ translate('Next')}}</a>
-        <a href="{{ search_base_url }}?{{ query_str }}&start={{ (total_pages - 1) * size }}&size={{ size }}">{{ translate('Last page') }}</a>
+        <a href="{{ search_base_url }}?{{ query_str }}start={{ start + size }}&size={{ size }}">{{ translate('Next')}}</a>
+        <a href="{{ search_base_url }}?{{ query_str }}start={{ (total_pages - 1) * size }}&size={{ size }}">{{ translate('Last page') }}</a>
         {% else %}
         <span class="disabled">{{ translate('Next') }}</span>
         <span class="disabled">{{ translate('Last page') }}</span>
@@ -207,7 +208,7 @@
 {{ parse_top_level_facets(facets) }}
 {{ parse_pagination(pagination_data) }}
 {{ parse_search_results(records) }}
-{% if pagination_data["total"] > pagination_data["size"] %}
+{% if pagination_data["total"] > pagination_data["size"] * pagination_data["current_page"] %}
 {{ parse_pagination(pagination_data) }}
 {% endif %}
 
