@@ -67,10 +67,41 @@
     width: 6em;
 }
 
-.pagination {
-    border: 1px darkblue solid;
-    padding: 10px;
+.pagination-total {
+    font-weight: 600;
+    color: var(--text-bright);
+    background-color: var(--background-body);
 
+}
+
+.pagination {
+    display: flex;
+    padding: 20px 0;
+}
+
+.pagination-pages {
+    display: flex;
+    gap: 10px;
+}
+
+.pagination-pages a {
+    background-color: var(--navigation-background-color);
+    color: var(--text-bright);
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.pagination-pages a:hover {
+    background-color: var(--background-alt);
+}
+
+.pagination-pages .disabled {
+    padding: 5px 10px;
+    background-color: #cccccc;
+    color: #666666;
+    border-radius: 5px;
 }
 
 input, button {

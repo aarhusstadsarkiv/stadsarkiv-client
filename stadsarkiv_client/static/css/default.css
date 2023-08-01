@@ -40,7 +40,7 @@
 }
 
 .main-menu>a:hover {
-    background: var(--background-body);
+    background: var(--background-alt);
     
 }
 
@@ -108,5 +108,3 @@ body {
 .navigation {
     display: flex;
 }
-
-

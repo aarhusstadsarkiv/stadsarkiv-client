@@ -7,7 +7,8 @@
 <ul>
     {% for facet in facets_filters %}
     <li>
-        <a class="remove" href="{{ search_base_url }}?{{ facet['remove_query'] }}">{{ translate('Remove facet') }}</a> <span>{{ facet['checked_label'] }}</span>
+        <a class="remove" href="{{ search_base_url }}?{{ facet['remove_query'] }}">{{ translate('Remove facet') }}</a>
+        <span>{{ facet['checked_label'] }}</span>
     </li>
     {% endfor %}
 </ul>
@@ -28,7 +29,7 @@
     {% for facet in facets_content %}
     <li>
         {% if 'children' in facet and facet["count"] %}
-        <details data-id="{{ facet['id'] }}" >
+        <details data-id="{{ facet['id'] }}">
             <summary>
                 {{ parse_facet_link(top_level_key, facet) }}
             </summary>
@@ -52,7 +53,7 @@
         {% for top_level_key, top_level_value in facets.items() %}
         <li>
             <details data-id="{{ top_level_key }}">
-                <summary >
+                <summary>
                     {{ top_level_value['label'] }}
                 </summary>
                 {{ parse_facets(top_level_key, top_level_value['content']) }}
@@ -74,8 +75,7 @@
 {% macro parse_search_form() %}
 <form id="search" method="GET" action="{{ url_for('records_search')}}">
     {% for key, value in query_params if key not in ['start'] %}
-
-            <input type="hidden" name="{{ key }}" value="{{ value }}">
+    <input type="hidden" name="{{ key }}" value="{{ value }}">
     {% endfor %}
     <input type="text" name="q" placeholder="{{ translate('Search') }}" aria-label="{{ translate('search') }}"
         value="{{ q }}">
@@ -105,6 +105,21 @@
 {% endif %}
 {% endmacro %}
 
+{% macro pagination_total(pagination_data) %}
+{% set total = pagination_data["total"] %}
+<div class="pagination-total">
+    {% if total == 0 %}
+    {{ translate('No search results') }}
+    {% elif total == 1 %}
+    {{ total }} {{ translate('Search result') }}
+    {% elif total == 10000 %}
+    {{ translate('More than 10.000 search results') }}
+    {% else %}
+    {{ total }} {{ translate('Search results') }}
+    {% endif %}
+</div>
+{% endmacro %}
+
 {% macro parse_pagination (pagination_data) %}
 
 {% set total = pagination_data["total"] %}
@@ -115,32 +130,22 @@
 
 <div class="pagination">
 
-    <div class="pagination-total">
-        {% if total == 0 %}
-        {{ translate('No search results') }}
-        {% elif total == 1 %}
-        {{ total }} {{ translate('Search result') }}
-        {% elif total == 10000 %}
-        {{ translate('More than 10.000 search results') }}
-        {% else %}
-        {{ total }} {{ translate('Search results') }}
-        {% endif %}
-    </div>
-
     <div class="pagination-pages">
         {% if current_page > 1 %}
         <a href="{{ search_base_url }}?{{ query_str }}start=0&size={{ size }}">{{ translate('First page') }}</a>
-        <a href="{{ search_base_url }}?{{ query_str }}start={{ start - size }}&size={{ size }}">{{ translate('Previous') }}</a>
+        <a href="{{ search_base_url }}?{{ query_str }}start={{ start - size }}&size={{ size }}">{{ translate('Previous')
+            }}</a>
         {% else %}
         <span class="disabled">{{ translate('First page') }}</span>
         <span class="disabled">{{ translate('Previous') }}</span>
         {% endif %}
-        {% if current_page < total_pages %}
-        <a href="{{ search_base_url }}?{{ query_str }}start={{ start + size }}&size={{ size }}">{{ translate('Next')}}</a>
-        <a href="{{ search_base_url }}?{{ query_str }}start={{ (total_pages - 1) * size }}&size={{ size }}">{{ translate('Last page') }}</a>
+        {% if current_page < total_pages %} <a
+            href="{{ search_base_url }}?{{ query_str }}start={{ start + size }}&size={{ size }}">{{
+            translate('Next')}}</a>
+            <a href="{{ search_base_url }}?{{ query_str }}start={{ (total_pages - 1) * size }}&size={{ size }}">{{ translate('Last page') }}</a>
         {% else %}
-        <span class="disabled">{{ translate('Next') }}</span>
-        <span class="disabled">{{ translate('Last page') }}</span>
+            <span class="disabled">{{ translate('Next') }}</span>
+            <span class="disabled">{{ translate('Last page') }}</span>
         {% endif %}
     </div>
 </div>
@@ -176,15 +181,19 @@
         {% for key, value in query_params if key not in ignore_keys %}
         <input type="hidden" name="{{ key }}" value="{{ value }}">
         {% endfor %}
-        <label for="from-year" title="{{ translate('The date shall be between 1200 and the current date')}}">{{ translate('Date From') }}</label><br />
-        <input type="text" maxlength="4" id="from-year" name="from-year" placeholder="1600" value="{{ dates['from_year']}}">
-        <input type="text" maxlength="2" id="from-month" name="from-month" placeholder="01" value="{{ dates['from_month']}}" >
+        <label for="from-year" title="{{ translate('The date shall be between 1200 and the current date')}}">{{
+            translate('Date From') }}</label><br />
+        <input type="text" maxlength="4" id="from-year" name="from-year" placeholder="1600"
+            value="{{ dates['from_year']}}">
+        <input type="text" maxlength="2" id="from-month" name="from-month" placeholder="01"
+            value="{{ dates['from_month']}}">
         <input type="text" maxlength="2" id="from-day" name="from-day" placeholder="01" value="{{ dates['from_day']}}">
         <br>
-        <label for="to-year" title="{{ translate('The date shall be between 1200 and the current date')}}">{{ translate('Date To') }}</label><br />
+        <label for="to-year" title="{{ translate('The date shall be between 1200 and the current date')}}">{{
+            translate('Date To') }}</label><br />
         <input type="text" maxlength="4" id="to-year" name="to-year" placeholder="2020" value="{{ dates['to_year']}}">
-        <input type="text" maxlength="2" id="to-month" name="to-month" placeholder="12" value="{{ dates['to_month']}}" >
-        <input type="text" maxlength="2" id="to-day" name="to-day" placeholder="31"  value="{{ dates['to_day']}}" >
+        <input type="text" maxlength="2" id="to-month" name="to-month" placeholder="12" value="{{ dates['to_month']}}">
+        <input type="text" maxlength="2" id="to-day" name="to-day" placeholder="31" value="{{ dates['to_day']}}">
         <br>
         <input type="submit" value="{{ translate('Search') }}">
     </form>
@@ -197,7 +206,7 @@
 
 {% block content %}
 
-{% if get_setting('debug')  %}
+{% if get_setting('debug') %}
 <p>
     <a href="/search/json?{{ request.query_params.__str__() }}">JSON</a>
 </p>
@@ -206,6 +215,7 @@
 {{ parse_search_form() }}
 {{ parse_facets_filters(facets_filters) }}
 {{ parse_top_level_facets(facets) }}
+{{ pagination_total(pagination_data) }}
 {{ parse_pagination(pagination_data) }}
 {{ parse_search_results(records) }}
 {% if pagination_data["total"] > pagination_data["size"] * pagination_data["current_page"] %}
