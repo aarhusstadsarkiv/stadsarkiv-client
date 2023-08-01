@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{{ title }}{% endblock title %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/search.css') }}?v={{ get_setting('version') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/light.css') }}?v={{ get_setting('version') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/dolphin.css') }}?v={{ get_setting('version') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/default.css') }}?v={{ get_setting('version') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/record.css') }}?v={{ get_setting('version') }}">
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script type="importmap">
-        {
-          "imports": {
-            "{{ url_for('static', path='/js/flash.js') }}": "{{ url_for('static', path='/js/flash.js') }}?v={{ get_setting('version') }}",
-            "{{ url_for('static', path='/js/events.js') }}": "{{ url_for('static', path='/js/events.js') }}?v={{ get_setting('version') }}",
-            "{{ url_for('static', path='/js/search.js') }}": "{{ url_for('static', path='/js/search.js') }}?v={{ get_setting('version') }}",
-            "{{ url_for('static', path='/js/requests.js') }}": "{{ url_for('static', path='/js/requests.js') }}?v={{ get_setting('version') }}",
-            "{{ url_for('static', path='/js/config.js') }}": "{{ url_for('static', path='/js/config.js') }}?v={{ get_setting('version') }}"
-          }
-        }
-    </script>
+            {
+              "imports": {
+                "{{ url_for('static', path='/js/flash.js') }}": "{{ url_for('static', path='/js/flash.js') }}?v={{ get_setting('version') }}",
+                "{{ url_for('static', path='/js/events.js') }}": "{{ url_for('static', path='/js/events.js') }}?v={{ get_setting('version') }}",
+                "{{ url_for('static', path='/js/search.js') }}": "{{ url_for('static', path='/js/search.js') }}?v={{ get_setting('version') }}",
+                "{{ url_for('static', path='/js/requests.js') }}": "{{ url_for('static', path='/js/requests.js') }}?v={{ get_setting('version') }}",
+                "{{ url_for('static', path='/js/config.js') }}": "{{ url_for('static', path='/js/config.js') }}?v={{ get_setting('version') }}"
+              }
+            }
+        </script>
     <script type="module">
         import { Flash } from "/static/js/flash.js";
         Flash.setWidth();
@@ -30,16 +30,16 @@
 
     {% block head %}
     {% endblock head %}
-    
+
 </head>
 
 <body>
 
-    <nav class="container">
+    <nav class="container-fluid navigation">
         {% include "includes/logo.html" %}
         {% include "includes/navigation.html" %}
     </nav>
-    
+
     <main class="container container-main">
         {% block content %}
         {% endblock content %}
@@ -50,4 +50,5 @@
     </footer>
 
 </body>
+
 </html>

@@ -32,7 +32,6 @@ settings = {
     },
     "api_base_url": "https://dev.openaws.dk/v1",
     "main_menu": [
-        {"name": "home", "title": "Hjem"},
         {"name": "login", "title": "Log ind"},
         {"name": "forgot_password", "title": "Glemt password"},
         {"name": "logout", "title": "Log ud"},

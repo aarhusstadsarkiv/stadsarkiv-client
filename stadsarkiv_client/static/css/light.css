@@ -19,5 +19,11 @@
   --form-text: #1d1d1d;
   --variable: #39a33c;
   --highlight: #ff0;
-  --width: 1200px;
+  --body-width: 100%;
+  --container-width: 1200px;
+  --navigation-background-color: cornflowerblue;
+  --flash-color: white;
+  --flash-success-color: #28a745;
+  --flash-notice-color: #1b1f23;
+  --flash-error-color: #d73a49;
 }

@@ -75,13 +75,12 @@ class NormalizeFacets:
     def _transform_facets(self, top_level_key, facets_content, path=None):
 
         if path is None:
-            log.debug(facets_content)
             path = [self.FACETS[top_level_key]["label"]]
 
         for facet in facets_content:
             current_path = path + [facet['label']]
             facet['path'] = current_path
-            facet['path_str'] = ' > '.join(current_path)
+            facet['checked_label'] = ' > '.join(current_path)
 
             if "children" in facet:
                 self._transform_facets(top_level_key, facet["children"], current_path)
@@ -131,14 +130,14 @@ class NormalizeFacets:
         """Get the label for a facet. If the facet is a date, then the label is
         the date in a readable format. If the facet is a subject, then the label
         is the subject translated to the current language."""
+        label = QUERY_PARAMS[key]["label"]
         if key == "date_from" or key == "date_to":
-            label = QUERY_PARAMS["date_from"]["label"]
             return label + ' ' + str_to_date(value)
 
-        if key == "subjects":
-            return "Subjects"
+        if key == "q":
+            return label + ' ' + value
 
-        return value
+        return None
 
     def get_checked_facets(self):
         """get a list of facets that are checked (meaning that they are working filters).
@@ -149,25 +148,20 @@ class NormalizeFacets:
 
         for query_name, definition in QUERY_PARAMS.items():
             if query_name not in ignore_keys and self.request.query_params.get(query_name):
-                # facet = {"id": self.request.query_params.get(key)}
-                facet = {}
 
                 query_value = self.request.query_params.get(query_name)
-                # query_name = key
-                # query_value = self.request.query_params.get(key)
-                # log.debug(facet)
-                # records_filter = _get_records_filter(self.records, key)
-                # log.debug(value)
-
-                # if records_filter.get("unresolved"):
                 try:
                     label = definition.get("label")
                 except KeyError:
                     continue
 
-                facet["alter_label"] = f"{label} (Unresolved) '{query_name}'={query_value}"
-
+                facet = {}
                 facet["remove_query"] = self.query_str.replace(f"{query_name}={query_value}&", "")
+                checked_label = self._get_label(query_name, query_value)
+                if not checked_label:
+                    checked_label = f"{label} (Unresolved) '{query_name}'={query_value}"
+
+                facet["checked_label"] = checked_label
                 facets_checked.append(facet)
 
         return facets_checked

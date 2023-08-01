@@ -1,37 +1,55 @@
-.app-menu {
-    display: table;
+/**
+ * .app-menu is inside a flex container
+ * .app-menu should be placed to the right of the flex container
+ * But this is to the left of the flex container
+ * Can you help me?
+ */ 
+
+ 
+.navigation {
+    display: flex;
+    justify-content: space-between; 
+    background-color: var(--navigation-background-color);
 }
 
-.app-menu>a {
-    color: var(--text-muted);
-    font-size: 0.9em;
-    padding: 4px;
-    margin-right: 4px;
+.logo {
+    margin-left: 10px;
+    align-self: flex-start;
+}
+
+.main-menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    align-self: flex-end;
+}
+
+.main-menu>a {
+    color: black;
+    font-size: 1.4em;
+    font-weight: 600;
+    padding: 8px;
+    
+    margin-right: 8px;
     text-decoration: none;
     border-radius: 6px;
-    background-color: var(--background-alt);
+    transition: background-color 0.2s ease-in-out;
+    text-transform: uppercase;
 }
 
-.app-menu>a:hover {
-    background: var(--button-hover);
+.main-menu>a:hover {
+    background: var(--background-body);
+    
 }
 
-.app-menu>a.active {
+.main-menu>a.active {
     color: var(--form-text);
 }
 
-.app-menu-admin {
+.menu-admin {
     margin-top: 10px;
-}
-
-/**
-  * Default CSS style for template
-  */
-  :root {
-    --flash-color: white;
-    --flash-success-color: #28a745;
-    --flash-notice-color: #1b1f23;
-    --flash-error-color: #d73a49;
 }
 
 body {
@@ -72,6 +90,23 @@ body {
     color: var(--flash-color);
 }
 
+
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+}
+
+.container-fluid {
+    margin: 0 auto;
+    max-width: 100%;
+}
+
 .container-main {
     padding-top: 25px;
 }
+
+.navigation {
+    display: flex;
+}
+
+

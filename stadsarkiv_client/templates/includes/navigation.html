@@ -1,4 +1,4 @@
-<div class="app-menu">
+<div class="main-menu">
     {% for menu_item in main_menu %}
         <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
     {% endfor %}
