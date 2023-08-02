@@ -73,14 +73,13 @@ class NormalizeFacets:
         return altered_search_facets
 
     def _transform_facets(self, top_level_key, facets_content, path=None):
-
         if path is None:
             path = [self.FACETS[top_level_key]["label"]]
 
         for facet in facets_content:
-            current_path = path + [facet['label']]
-            facet['path'] = current_path
-            facet['checked_label'] = ' > '.join(current_path)
+            current_path = path + [facet["label"]]
+            facet["path"] = current_path
+            facet["checked_label"] = " > ".join(current_path)
 
             if "children" in facet:
                 self._transform_facets(top_level_key, facet["children"], current_path)
@@ -132,10 +131,10 @@ class NormalizeFacets:
         is the subject translated to the current language."""
         label = QUERY_PARAMS[key]["label"]
         if key == "date_from" or key == "date_to":
-            return label + ' ' + str_to_date(value)
+            return label + " " + str_to_date(value)
 
         if key == "q":
-            return label + ' ' + value
+            return label + " " + value
 
         return None
 
@@ -148,7 +147,6 @@ class NormalizeFacets:
 
         for query_name, definition in QUERY_PARAMS.items():
             if query_name not in ignore_keys and self.request.query_params.get(query_name):
-
                 query_value = self.request.query_params.get(query_name)
                 try:
                     label = definition.get("label")
