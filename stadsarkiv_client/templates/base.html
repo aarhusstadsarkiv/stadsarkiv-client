@@ -25,7 +25,6 @@
         </script>
     <script type="module">
         import { Flash } from "/static/js/flash.js";
-        Flash.setWidth();
     </script>
 
     {% block head %}
@@ -40,14 +39,17 @@
         {% include "includes/navigation.html" %}
     </nav>
 
-    <main class="container container-main">
+    <main class="container">
         {% block content %}
         {% endblock content %}
+        
     </main>
 
     <footer class="container">
+        <p>Footer</p>
         {% include "includes/flash.html" %}
     </footer>
+
 
 </body>
 

@@ -24,19 +24,14 @@ document.addEventListener("click", function (e) {
 })
 
 class Flash {
-    static setWidth() {
-        let containerElem = document.querySelector('.container')
-        let flashMessagesElem = document.querySelector('.flash-messages')
-        flashMessagesElem.style.width = containerElem.offsetWidth + "px"
-    }
 
     /**
      * @param {str} The message to display
      * @param {type}  'info', 'success', 'warning', 'error' or any other you may use in your app. 
      * @param {remove_after} remove the message after some seconds 
      */
-    static setMessage(str, type, remove_after) {
-        var messageElem = document.querySelector(".flash-messages");
+    static setMessage(message, type, remove_after) {
+        let messageElem = document.querySelector(".flash-messages");
         messageElem.innerHTML = '';
 
         if (!type) {
@@ -54,7 +49,7 @@ class Flash {
             }, removeAfterSecs * 1000)
         }
 
-        var html = `<div class="flash flash-${type} ${class_random}">${str}</div>`;
+        var html = `<div class="flash flash-${type} ${class_random}">${message}</div>`;
         messageElem.insertAdjacentHTML('afterbegin', html);
         messageElem.scrollIntoView();
     }
@@ -62,7 +57,7 @@ class Flash {
 
 // On screen resize, set the width of the flash messages
 window.addEventListener('resize', function () {
-    Flash.setWidth()
+    Flash.setWidth(selector)
 })
 
 export {Flash}
