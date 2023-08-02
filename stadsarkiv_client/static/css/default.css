@@ -44,7 +44,7 @@ body {
 
 .flash-messages {
     margin-top: 10px;
-    bottom: 10px;
+    bottom: 20px;
     left: 2%;
     position: fixed;
     width: 96%;
@@ -60,7 +60,6 @@ body {
 .flash-success {
     background-color: var(--flash-success-color);
     color: var(--flash-color);
-    opacity: 0.9;
 }
 
 .flash-error {
@@ -103,13 +102,13 @@ body {
 
 .container-left {
     position: absolute;
-    width: 360px;
+    width: 350px;
     margin-left: 20px;
     height: 100%;
 }
 
 .container-main-center {
-    margin-left: 420px;
+    margin-left: 375px;
     max-width: 100%;
     height: 100%;
 }
@@ -117,4 +116,8 @@ body {
 .container-search {
     width: 100%;
     margin-left: 420px;
+}
+
+summary {
+    cursor: pointer;
 }

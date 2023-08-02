@@ -151,4 +151,33 @@ function searchEvents() {
     }
 }
 
+
+var selectElement = document.querySelector('.select-size');
+selectElement.addEventListener('change', function() {
+    document.getElementById('size').submit();
+});
+
+var selectElement = document.querySelector('.select-sort');
+selectElement.addEventListener('change', function() {
+
+    var selectedValue = selectElement.value;
+    if (selectedValue == 'date_to') {
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'direction';
+        input.value = 'desc';
+        document.getElementById('sort').appendChild(input);
+    }
+
+    if (selectedValue == 'date_from') {
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'direction';
+        input.value = 'asc';
+        document.getElementById('sort').appendChild(input);
+    }
+
+    document.getElementById('sort').submit();
+});
+
 export { searchEvents }

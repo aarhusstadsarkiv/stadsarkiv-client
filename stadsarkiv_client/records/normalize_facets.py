@@ -143,7 +143,7 @@ class NormalizeFacets:
         Add a remove_query key to the facet, which is the query string without the facet.
         """
         facets_checked = self._get_checked_facets_flatten()
-        ignore_keys = ["subjects", "content_types", "usability", "availability", "size", "start"]
+        ignore_keys = ["subjects", "content_types", "usability", "availability", "size", "start", "sort", "direction"]
 
         for query_name, definition in QUERY_PARAMS.items():
             if query_name not in ignore_keys and self.request.query_params.get(query_name):

@@ -73,14 +73,65 @@
 {% endmacro %}
 
 {% macro parse_search_form() %}
-<form id="search" method="GET" action="{{ url_for('records_search')}}">
-    {% for key, value in query_params if key not in ['start'] %}
+<div>
+<form id="search" method="get" action="{{ url_for('records_search')}}">
+    {% for key, value in query_params if key not in ['start', 'q'] %}
     <input type="hidden" name="{{ key }}" value="{{ value }}">
     {% endfor %}
     <input type="text" name="q" placeholder="{{ translate('Search') }}" aria-label="{{ translate('search') }}"
         value="{{ q }}">
     <button type="submit" class="contrast">{{ translate('Search') }}</button>
 </form>
+</div>
+{% endmacro %}
+
+{% macro parse_size_form() %}
+<div class="search-option">
+<form class="size" id="size" method="get" action="{{ url_for('records_search')}}">
+    {% for key, value in query_params if key not in ['start', 'size'] %}
+    <input type="hidden" name="{{ key }}" value="{{ value }}">
+    {% endfor %}
+    <select name="size" class="select-size">
+        <option value="20" {% if size == "20" %}selected{% endif %}>20 per side</option>
+        <option value="50" {% if size == "50" %}selected{% endif %}>50 per side</option>
+        <option value="100" {% if size == "100" %}selected{% endif %}>100 per side</option>
+    </select>
+</form>
+</div>
+{% endmacro %}
+
+{% macro parse_sort_form() %}
+<div class="search-option">
+<form class="sort" id="sort" method="get" action="{{ url_for('records_search')}}">
+    {% for key, value in query_params if key not in ['sort', 'direction'] %}
+    <input type="hidden" name="{{ key }}" value="{{ value }}">
+    {% endfor %}
+    <select name="sort" class="select-sort">
+        <option value="_score" {% if sort == "_score" %}selected{% endif %}>Relavans</option>
+        <option value="date_from" {% if sort == "date_from" %}selected{% endif %}>Ældste dato først</option>
+        <option value="date_to" {% if sort == "date_to" %}selected{% endif %}>Nyeste dato først</option>
+    </select>
+</form>
+</div>
+{% endmacro %}
+
+{% macro parse_search() %}
+<div class="search-form">
+{{ parse_search_form() }}
+    <div class="search-options">
+        {{ parse_size_form() }}
+        {{ parse_sort_form() }}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_search_title(result) %}
+{% if result.label %}
+<div class="summary">{{ result.label|truncate(truncate_summary) }}</div>
+{% endif %}
+{% if result.summary %}
+<div class="summary">{{ result.summary|truncate(truncate_summary) }}</div>
+{% endif %}
 {% endmacro %}
 
 {% macro parse_search_title(result) %}
@@ -204,22 +255,19 @@
 {% endblock head %}
 
 {% block content %}
-
-
-    <div class="container-left">
-        {{ parse_top_level_facets(facets) }}
-    </div>
-    <div class="container-main-center">
-    {{ parse_search_form() }}
-    {{ parse_facets_filters(facets_filters) }}
-    {{ pagination_total(pagination_data) }}
-    {{ parse_pagination(pagination_data) }}
-    {{ parse_search_results(records) }}
-    {% if pagination_data["total"] > pagination_data["size"] * pagination_data["current_page"] %}
-    {{ parse_pagination(pagination_data) }}
-    {% endif %}
-    </div>
-
+<div class="container-left">
+    {{ parse_top_level_facets(facets) }}
+</div>
+<div class="container-main-center">
+{{ parse_search() }}
+{{ parse_facets_filters(facets_filters) }}
+{{ pagination_total(pagination_data) }}
+{{ parse_pagination(pagination_data) }}
+{{ parse_search_results(records) }}
+{% if pagination_data["total"] > pagination_data["size"] * pagination_data["current_page"] %}
+{{ parse_pagination(pagination_data) }}
+{% endif %}
+</div>
 
 <script type="module">
     import { searchEvents } from "/static/js/search.js";

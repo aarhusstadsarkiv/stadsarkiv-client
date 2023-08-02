@@ -123,3 +123,18 @@ button {
 details>summary.closed {
     list-style: none;
 }
+
+.search-form {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.search-options {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-self: flex-end;
+}
+.search-option {
+    margin-right: 10px;
+}

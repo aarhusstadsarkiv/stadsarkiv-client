@@ -57,8 +57,11 @@ def get_dates(request: Request):
 
 async def get_records_search(request: Request):
     q = await query.get_search(request)
-    query_params = await query.get_list(request, remove_keys=["q"])
+    query_params = await query.get_list(request, remove_keys=[])
     query_str = await query.get_str(request, remove_keys=["start", "size"])
+
+    size = request.query_params.get("size", 20)
+    sort = request.query_params.get("sort", "relevance")
 
     records = await api.proxies_records(request)
     normalized_facets = NormalizeFacets(request=request, records=records, query_params=query_params, query_str=query_str)
@@ -73,6 +76,8 @@ async def get_records_search(request: Request):
         "query_params": query_params,
         "query_str": query_str,
         "q": q,
+        "sort": sort,
+        "size": size,
         "record_facets": records["facets"],
         "facets": facets,
         "facets_filters": facets_filters,
