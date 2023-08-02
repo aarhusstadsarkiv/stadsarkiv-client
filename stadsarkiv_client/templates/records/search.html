@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "search.html" %}
 
 {% set truncate_summary = 300 %}
 {% set search_base_url = get_setting('search_base_url') %}
@@ -174,7 +174,6 @@
 {% endmacro %}
 
 {% macro parse_date_form () %}
-<!-- test -->
 <div class="search-date">
     <form id="search-date">
         {% set ignore_keys = ['date_to', 'date_from'] %}
@@ -206,27 +205,25 @@
 
 {% block content %}
 
-{% if get_setting('debug') %}
-<p>
-    <a href="/search/json?{{ request.query_params.__str__() }}">JSON</a>
-</p>
-{% endif %}
-
-{{ parse_search_form() }}
-{{ parse_facets_filters(facets_filters) }}
-{{ parse_top_level_facets(facets) }}
-{{ pagination_total(pagination_data) }}
-{{ parse_pagination(pagination_data) }}
-{{ parse_search_results(records) }}
-{% if pagination_data["total"] > pagination_data["size"] * pagination_data["current_page"] %}
-{{ parse_pagination(pagination_data) }}
-{% endif %}
-
+<div class="container-fluid">
+    <div class="container-left">
+        {{ parse_top_level_facets(facets) }}
+    </div>
+    <div class="container-main-center">
+    {{ parse_search_form() }}
+    {{ parse_facets_filters(facets_filters) }}
+    {{ pagination_total(pagination_data) }}
+    {{ parse_pagination(pagination_data) }}
+    {{ parse_search_results(records) }}
+    {% if pagination_data["total"] > pagination_data["size"] * pagination_data["current_page"] %}
+    {{ parse_pagination(pagination_data) }}
+    {% endif %}
+    </div>
+</div>
 
 <script type="module">
     import { searchEvents } from "/static/js/search.js";
     searchEvents();
-
 </script>
 
 {% endblock content %}

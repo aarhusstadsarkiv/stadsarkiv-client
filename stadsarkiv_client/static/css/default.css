@@ -1,14 +1,6 @@
-/**
- * .app-menu is inside a flex container
- * .app-menu should be placed to the right of the flex container
- * But this is to the left of the flex container
- * Can you help me?
- */ 
-
- 
 .navigation {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     background-color: var(--navigation-background-color);
 }
 
@@ -31,7 +23,7 @@
     font-size: 1.4em;
     font-weight: 600;
     padding: 8px;
-    
+
     margin-right: 8px;
     text-decoration: none;
     border-radius: 6px;
@@ -41,7 +33,7 @@
 
 .main-menu>a:hover {
     background: var(--background-alt);
-    
+
 }
 
 .main-menu>a.active {
@@ -58,12 +50,11 @@ body {
 
 
 .flash-messages {
-
     margin-top: 10px;
     bottom: 10px;
     position: fixed;
     max-width: 95%;
-    width: (--width);
+    width: var(--width);
     z-index: 1000;
 }
 
@@ -78,7 +69,6 @@ body {
     color: var(--flash-color);
     opacity: 0.9;
 }
-
 
 .flash-error {
     background-color: var(--flash-error-color);
@@ -103,6 +93,33 @@ body {
 
 .container-main {
     padding-top: 25px;
+}
+
+/**
+ * regarding the search page
+ */
+.container-fluid-search {
+    margin: 0 auto;
+    margin-top: 20px;
+    max-width: 100%;
+    position: relative;
+}
+
+.container-left {
+    position: absolute;
+    width: 360px;
+    margin-left: 20px;
+    height: 100%;
+}
+
+.container-main-center {
+    margin-left: 420px;
+    height: 100%;
+}
+
+.container-search {
+    width: 100%;
+    margin-left: 420px;
 }
 
 .navigation {
