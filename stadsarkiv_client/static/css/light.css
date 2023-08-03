@@ -23,7 +23,7 @@
   --container-width: 1200px;
   --navigation-background-color: cornflowerblue;
   --flash-color: white;
-  --flash-success-color: #28a745;
+  --flash-success-color: forestgreen;
   --flash-notice-color: #1b1f23;
-  --flash-error-color: #d73a49;
+  --flash-error-color: crimson;
 }
