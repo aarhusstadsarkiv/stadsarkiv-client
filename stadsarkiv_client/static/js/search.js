@@ -152,15 +152,15 @@ function searchEvents() {
 }
 
 
-var selectElement = document.querySelector('.select-size');
-selectElement.addEventListener('change', function() {
+var selectSize = document.querySelector('.select-size');
+selectSize.addEventListener('change', function() {
     document.getElementById('size').submit();
 });
 
-var selectElement = document.querySelector('.select-sort');
-selectElement.addEventListener('change', function() {
+var selectSort = document.querySelector('.select-sort');
+selectSort.addEventListener('change', function() {
 
-    var selectedValue = selectElement.value;
+    var selectedValue = selectSort.value;
     if (selectedValue == 'date_to') {
         var input = document.createElement('input');
         input.type = 'hidden';
