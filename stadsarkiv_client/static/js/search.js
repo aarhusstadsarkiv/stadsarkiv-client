@@ -154,6 +154,7 @@ function searchEvents() {
 
 var selectSize = document.querySelector('.select-size');
 selectSize.addEventListener('change', function() {
+    saveTree();
     document.getElementById('size').submit();
 });
 
@@ -177,6 +178,7 @@ selectSort.addEventListener('change', function() {
         document.getElementById('sort').appendChild(input);
     }
 
+    saveTree();
     document.getElementById('sort').submit();
 });
 
