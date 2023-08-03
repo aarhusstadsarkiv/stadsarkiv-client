@@ -55,12 +55,18 @@ def _get_dates(request: Request):
     return dates
 
 
-async def get_records_search(request: Request):
+def _get_size_sort(request: Request):
+    """Get size and sort from request. If not request, get from cookies. Or default"""
+    size = request.query_params.get("size", request.cookies.get("size", "20"))
+    sort = request.query_params.get("sort", request.cookies.get("sort", "date_from"))
+    return size, sort
 
-    # Get default size and sort from cookies. If not set, use default values
-    size = request.query_params.get("size", request.cookies.get('size', "20"))
-    sort = request.query_params.get("sort", request.cookies.get('sort', "date_from"))
-    add_list_items = [('size', size), ('sort', sort)]
+
+def _get_default_query_params(request: Request):
+    """Get default query_params for records search"""
+
+    size, sort = _get_size_sort(request)
+    add_list_items = [("size", size), ("sort", sort)]
 
     direction = None
     if sort == "date_to":
@@ -72,7 +78,13 @@ async def get_records_search(request: Request):
     if direction:
         add_list_items.append(("direction", direction))
 
-    query_params = await query.get_list(request, remove_keys=['start', 'size', 'sort', 'direction'], add_list_items=add_list_items)
+    return add_list_items
+
+
+async def get_records_search(request: Request):
+    size, sort = _get_size_sort(request)
+    add_list_items = _get_default_query_params(request)
+    query_params = await query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
     query_str = await query.get_str(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
 
     records = await api.proxies_records(request, add_list_items=add_list_items)
@@ -95,19 +107,19 @@ async def get_records_search(request: Request):
         "pagination_data": pagination_data,
     }
 
-    # Set a cookie that lasts a year
-    ONE_YEAR = 60 * 60 * 24 * 365 * 1
+    DAYS_365 = 60 * 60 * 24 * 365 * 1
 
     context = await get_context(request, context_values=context_values)
     response = templates.TemplateResponse("records/search.html", context)
-    response.set_cookie(key="size", value=size, httponly=True, max_age=ONE_YEAR, expires=ONE_YEAR)
-    response.set_cookie(key="sort", value=sort, httponly=True, max_age=ONE_YEAR, expires=ONE_YEAR)
+    response.set_cookie(key="size", value=size, httponly=True, max_age=DAYS_365, expires=DAYS_365)
+    response.set_cookie(key="sort", value=sort, httponly=True, max_age=DAYS_365, expires=DAYS_365)
 
     return response
 
 
 async def get_records_search_json(request: Request):
-    records = await api.proxies_records(request)
+    add_list_items = _get_default_query_params(request)
+    records = await api.proxies_records(request, add_list_items=add_list_items)
     record_json = json.dumps(records, indent=4, ensure_ascii=False)
     return PlainTextResponse(record_json)
 
