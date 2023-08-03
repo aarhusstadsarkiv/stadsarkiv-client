@@ -1,8 +1,24 @@
 from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core.logging import get_log
 
 
-def normalize_abstract_dates(record):
+log = get_log()
+
+
+def split_date_str(date):
+    # Alter a string date like 19570101 into 1957-01-01
+    return f"{date[0:4]}-{date[4:6]}-{date[6:8]}"
+
+
+def normalize_abstract_dates(record, split=False):
     """Add date_normalized to record"""
+
+    if split:
+        if "date_from" in record:
+            record["date_from"] = split_date_str(record["date_from"])
+        if "date_to" in record:
+            record["date_to"] = split_date_str(record["date_to"])
+
     date_string = ""
     if record.get("date_from"):
         if record.get("date_to"):

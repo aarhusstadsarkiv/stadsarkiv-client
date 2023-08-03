@@ -1,5 +1,5 @@
 {% extends "search.html" %}
-
+{% set settings = {'skip_translate': False} %}
 {% set truncate_summary = 300 %}
 {% set search_base_url = get_setting('search_base_url') %}
 
@@ -143,17 +143,26 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_record_content(label, content) %}
-{% if content %}
+{% macro parse_record_label (label) %}
+<div class="label">
+    {% if settings.skip_translate %}
+    <strong>{{ label }} </strong>
+    {% else %}
+    {% set label = "label_record_" + label %}
+    <strong>{{ translate(label) }} </strong>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro parse_string (key, value) %}
 <div class="record-content">
-    <div class="label">
-        <strong>{{ label }}</strong>
-    </div>
-    <div class="search-content">
-        {{ content }}
+    {{ parse_record_label(key)}}
+    <div class="content">
+        <p>
+            {{ value }}
+        </p>
     </div>
 </div>
-{% endif %}
 {% endmacro %}
 
 {% macro pagination_total(pagination_data) %}
@@ -212,9 +221,12 @@
     <div class="search-result">
         <a class="search-link" href="/records/{{ result.id }}">
             {{ parse_search_title(result) }}
-            {{ parse_record_content('Skaber', result.collectors_label) }}
+            {% if result.collectors_label %}
+            {{ parse_string('collectors_label', result.collectors_label) }}
+            {% endif %}
+            {{ parse_string('date_normalized', result.date_normalized) }}
             {% if serie %}
-            {{ parse_record_content('Serie', serie) }}
+            {{ parse_string('series', serie) }}
             {% endif %}
         </a>
     </div>
@@ -270,10 +282,7 @@
     <a href="/search/json?{{ query_str }}">JSON</a>
 </p>
 {% endif %}
-
 </div>
-
-
 
 <script type="module">
     import { searchEvents } from "/static/js/search.js";

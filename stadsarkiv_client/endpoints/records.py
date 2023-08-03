@@ -12,6 +12,7 @@ from stadsarkiv_client.records.normalize_facets import NormalizeFacets
 from stadsarkiv_client.records.meta_data import get_meta_data
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import query
+from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
 
 
 log = get_log()
@@ -81,6 +82,13 @@ def _get_default_query_params(request: Request):
     return add_list_items
 
 
+def _normalize_search(records):
+    """Normalize search records"""
+    for record in records["result"]:
+        record = normalize_abstract_dates(record, split=True)
+    return records
+
+
 async def get_records_search(request: Request):
     size, sort = _get_size_sort(request)
     add_list_items = _get_default_query_params(request)
@@ -88,6 +96,8 @@ async def get_records_search(request: Request):
     query_str = await query.get_str(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
 
     records = await api.proxies_records(request, add_list_items=add_list_items)
+    records = _normalize_search(records)
+
     normalized_facets = NormalizeFacets(request=request, records=records, query_params=query_params, query_str=query_str)
     facets = normalized_facets.get_transformed_facets()
     facets_filters = normalized_facets.get_checked_facets()
@@ -120,6 +130,7 @@ async def get_records_search(request: Request):
 async def get_records_search_json(request: Request):
     add_list_items = _get_default_query_params(request)
     records = await api.proxies_records(request, add_list_items=add_list_items)
+    records = _normalize_search(records)
     record_json = json.dumps(records, indent=4, ensure_ascii=False)
     return PlainTextResponse(record_json)
 
