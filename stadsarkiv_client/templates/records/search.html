@@ -92,9 +92,9 @@
     <input type="hidden" name="{{ key }}" value="{{ value }}">
     {% endfor %}
     <select name="size" class="select-size">
-        <option value="20" {% if size == "20" %}selected{% endif %}>20 per side</option>
-        <option value="50" {% if size == "50" %}selected{% endif %}>50 per side</option>
-        <option value="100" {% if size == "100" %}selected{% endif %}>100 per side</option>
+        <option value="20" {% if size == "20" %}selected{% endif %}>{{ translate('20 per page') }}</option>
+        <option value="50" {% if size == "50" %}selected{% endif %}>{{ translate('50 per page') }}</option>
+        <option value="100" {% if size == "100" %}selected{% endif %}>{{ translate('100 per page') }}</option>
     </select>
 </form>
 </div>
@@ -107,9 +107,9 @@
     <input type="hidden" name="{{ key }}" value="{{ value }}">
     {% endfor %}
     <select name="sort" class="select-sort">
-        <option value="_score" {% if sort == "_score" %}selected{% endif %}>Relavans</option>
-        <option value="date_from" {% if sort == "date_from" %}selected{% endif %}>Ældste dato først</option>
-        <option value="date_to" {% if sort == "date_to" %}selected{% endif %}>Nyeste dato først</option>
+        <option value="_score" {% if sort == "_score" %}selected{% endif %}>{{ translate('Relavance') }}</option>
+        <option value="date_from" {% if sort == "date_from" %}selected{% endif %}>{{ translate('Oldest date first') }}</option>
+        <option value="date_to" {% if sort == "date_to" %}selected{% endif %}>{{ translate('Newest date first') }}</option>
     </select>
 </form>
 </div>
@@ -180,7 +180,6 @@
 {% set current_page = pagination_data["current_page"] %}
 
 <div class="pagination">
-
     <div class="pagination-pages">
         {% if current_page > 1 %}
         <a href="{{ search_base_url }}?{{ query_str }}start=0">{{ translate('First page') }}</a>
@@ -212,7 +211,6 @@
 
     <div class="search-result">
         <a class="search-link" href="/records/{{ result.id }}">
-
             {{ parse_search_title(result) }}
             {{ parse_record_content('Skaber', result.collectors_label) }}
             {% if serie %}
@@ -267,7 +265,15 @@
 {% if pagination_data["total"] > pagination_data["size"] * pagination_data["current_page"] %}
 {{ parse_pagination(pagination_data) }}
 {% endif %}
+{% if get_setting('debug') %}
+<p>
+    <a href="/search/json?{{ query_str }}">JSON</a>
+</p>
+{% endif %}
+
 </div>
+
+
 
 <script type="module">
     import { searchEvents } from "/static/js/search.js";

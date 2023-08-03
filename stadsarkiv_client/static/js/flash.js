@@ -55,9 +55,4 @@ class Flash {
     }
 }
 
-// // On screen resize, set the width of the flash messages
-// window.addEventListener('resize', function () {
-//     Flash.setWidth(selector)
-// })
-
 export {Flash}

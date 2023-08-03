@@ -249,6 +249,8 @@
 
 {{ parse_sections(record_altered, sections) }}
 
+{% if get_setting('debug') %}
+
 <p>
     <a href="{{ request.url.path }}/json/record">JSON (From API)</a>
 </p>
@@ -262,5 +264,6 @@
     <a href="{{ request.url.path }}/json/record_sections">JSON (Record in sections)</a>
 </p>
 
+{% endif %}
 
 {% endblock content %}
