@@ -88,7 +88,7 @@
 {% macro parse_size_form() %}
 <div class="search-option">
 <form class="size" id="size" method="get" action="{{ url_for('records_search')}}">
-    {% for key, value in query_params if key not in ['start', 'size'] %}
+    {% for key, value in query_params if key not in ['start', 'size'] %} 
     <input type="hidden" name="{{ key }}" value="{{ value }}">
     {% endfor %}
     <select name="size" class="select-size">
@@ -183,17 +183,17 @@
 
     <div class="pagination-pages">
         {% if current_page > 1 %}
-        <a href="{{ search_base_url }}?{{ query_str }}start=0&size={{ size }}">{{ translate('First page') }}</a>
-        <a href="{{ search_base_url }}?{{ query_str }}start={{ start - size }}&size={{ size }}">{{ translate('Previous')
+        <a href="{{ search_base_url }}?{{ query_str }}start=0">{{ translate('First page') }}</a>
+        <a href="{{ search_base_url }}?{{ query_str }}start={{ start - size }}">{{ translate('Previous')
             }}</a>
         {% else %}
         <span class="disabled">{{ translate('First page') }}</span>
         <span class="disabled">{{ translate('Previous') }}</span>
         {% endif %}
         {% if current_page < total_pages %} <a
-            href="{{ search_base_url }}?{{ query_str }}start={{ start + size }}&size={{ size }}">{{
+            href="{{ search_base_url }}?{{ query_str }}start={{ start + size }}">{{
             translate('Next')}}</a>
-            <a href="{{ search_base_url }}?{{ query_str }}start={{ (total_pages - 1) * size }}&size={{ size }}">{{ translate('Last page') }}</a>
+            <a href="{{ search_base_url }}?{{ query_str }}start={{ (total_pages - 1) * size }}">{{ translate('Last page') }}</a>
         {% else %}
             <span class="disabled">{{ translate('Next') }}</span>
             <span class="disabled">{{ translate('Last page') }}</span>

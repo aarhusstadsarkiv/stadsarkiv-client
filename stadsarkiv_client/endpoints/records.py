@@ -17,7 +17,7 @@ from stadsarkiv_client.core import query
 log = get_log()
 
 
-def get_pagination_data(request: Request, size, total):
+def _get_pagination_data(request: Request, size, total):
     result = {}
 
     if total > 10000:
@@ -28,7 +28,7 @@ def get_pagination_data(request: Request, size, total):
     start = int(request.query_params.get("start", 0))
     result["start"] = start
 
-    size = int(request.query_params.get("size", 20))
+    size = int(request.query_params.get("size", size))
     result["size"] = size
 
     total_pages = (total // size) + (1 if total % size != 0 else 0)
@@ -40,7 +40,7 @@ def get_pagination_data(request: Request, size, total):
     return result
 
 
-def get_dates(request: Request):
+def _get_dates(request: Request):
     dates = {}
     dates_from = request.query_params.get("date_from", None)
     dates_to = request.query_params.get("date_to", None)
@@ -56,37 +56,54 @@ def get_dates(request: Request):
 
 
 async def get_records_search(request: Request):
-    q = await query.get_search(request)
-    query_params = await query.get_list(request, remove_keys=[])
-    query_str = await query.get_str(request, remove_keys=["start", "size"])
 
-    size = request.query_params.get("size", 20)
-    sort = request.query_params.get("sort", "relevance")
+    # Get default size and sort from cookies. If not set, use default values
+    size = request.query_params.get("size", request.cookies.get('size', "20"))
+    sort = request.query_params.get("sort", request.cookies.get('sort', "date_from"))
+    add_list_items = [('size', size), ('sort', sort)]
 
-    records = await api.proxies_records(request)
+    direction = None
+    if sort == "date_to":
+        direction = request.query_params.get("direction", "desc")
+
+    if sort == "date_from":
+        direction = request.query_params.get("direction", "asc")
+
+    if direction:
+        add_list_items.append(("direction", direction))
+
+    query_params = await query.get_list(request, remove_keys=['start', 'size', 'sort', 'direction'], add_list_items=add_list_items)
+    query_str = await query.get_str(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
+
+    records = await api.proxies_records(request, add_list_items=add_list_items)
     normalized_facets = NormalizeFacets(request=request, records=records, query_params=query_params, query_str=query_str)
     facets = normalized_facets.get_transformed_facets()
     facets_filters = normalized_facets.get_checked_facets()
-
-    pagination_data = get_pagination_data(request, records["size"], records["total"])
+    pagination_data = _get_pagination_data(request, records["size"], records["total"])
 
     context_values = {
         "title": translate("Search"),
         "records": records,
         "query_params": query_params,
         "query_str": query_str,
-        "q": q,
         "sort": sort,
         "size": size,
         "record_facets": records["facets"],
         "facets": facets,
         "facets_filters": facets_filters,
-        "dates": get_dates(request),
+        "dates": _get_dates(request),
         "pagination_data": pagination_data,
     }
 
+    # Set a cookie that lasts a year
+    ONE_YEAR = 60 * 60 * 24 * 365 * 1
+
     context = await get_context(request, context_values=context_values)
-    return templates.TemplateResponse("records/search.html", context)
+    response = templates.TemplateResponse("records/search.html", context)
+    response.set_cookie(key="size", value=size, httponly=True, max_age=ONE_YEAR, expires=ONE_YEAR)
+    response.set_cookie(key="sort", value=sort, httponly=True, max_age=ONE_YEAR, expires=ONE_YEAR)
+
+    return response
 
 
 async def get_records_search_json(request: Request):
