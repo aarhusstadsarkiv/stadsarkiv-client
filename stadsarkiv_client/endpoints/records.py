@@ -90,9 +90,12 @@ def _normalize_search(records):
 
 
 async def get_records_search(request: Request):
+    q = await query.get_search(request)
     size, sort = _get_size_sort(request)
     add_list_items = _get_default_query_params(request)
     query_params = await query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
+
+    log.debug(f"query_params: {query_params}")
     query_str = await query.get_str(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
 
     records = await api.proxies_records(request, add_list_items=add_list_items)
@@ -104,6 +107,7 @@ async def get_records_search(request: Request):
     pagination_data = _get_pagination_data(request, records["size"], records["total"])
 
     context_values = {
+        "q": q,
         "title": translate("Search"),
         "records": records,
         "query_params": query_params,
