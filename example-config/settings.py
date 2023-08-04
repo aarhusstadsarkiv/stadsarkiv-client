@@ -1,4 +1,4 @@
-settings = {
+settings: dict[str, typing.Any] = {
     "language": "da",
     "log_handlers": ["stream"],  # [ "stream", "file"]
     #
@@ -17,7 +17,6 @@ settings = {
     # You may also add other "menus", e.g. "footer_items" or something similar.
     #
     "main_menu": [
-        {"name": "home", "title": "Hjem"},
         {"name": "login", "title": "Log ind"},
         {"name": "forgot_password", "title": "Glemt password"},
         {"name": "logout", "title": "Log ud"},
@@ -74,6 +73,7 @@ settings = {
         "Resourcer": ["resources"],
         "Download": ["representations"],
     },
+    "record_sections_employee": ["Administration", "Resourcer"],
     "record_definitions": {
         "last_updated": {"type": "date"},
         "date_normalized": {"type": "string"},

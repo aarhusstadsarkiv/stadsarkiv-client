@@ -1,6 +1,7 @@
 import logging
 import os
 from stadsarkiv_client.core.dotenv_local import load
+import typing
 
 load()
 
@@ -16,7 +17,7 @@ if os.getenv("ENVIRONMENT") == "production":
     cookie_secure = True
     debug = False
 
-settings = {
+settings: dict[str, typing.Any] = {
     "debug": debug,
     "version": "0.0.4",
     "language": "da",

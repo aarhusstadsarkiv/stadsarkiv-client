@@ -144,7 +144,6 @@ async def get_record_view(request: Request):
     record_sections = settings["record_sections"]
     record_sections_employee = settings["record_sections_employee"]
     permissions = await api.me_permissions(request)
-
     record = await api.proxies_record_get_by_id(record_id)
 
     metadata = get_meta_data(request, record)
