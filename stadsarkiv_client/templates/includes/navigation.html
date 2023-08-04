@@ -2,4 +2,10 @@
     {% for menu_item in main_menu %}
         <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
     {% endfor %}
+    
 </div>
+<a id ="menu-hamburger" href="#" class="icon">
+    <span class="material-symbols-outlined">
+        menu
+    </span>
+</a>

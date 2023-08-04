@@ -26,4 +26,7 @@
   --flash-success-color: forestgreen;
   --flash-notice-color: #1b1f23;
   --flash-error-color: crimson;
+  --breakpoint-small: 576px; /* can not be used in media queries - just to remember */
+  --breakpoint-medium: 768px;
+  --breakpoint-large: 992px;
 }

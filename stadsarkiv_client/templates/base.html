@@ -2,9 +2,10 @@
 <html lang="da">
 
 <head>
+    <title>{% block title %}{{ title }}{% endblock title %}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}{{ title }}{% endblock title %}</title>
+
     <link rel="stylesheet" href="{{ url_for('static', path='/css/light.css') }}?v={{ get_setting('version') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/dolphin.css') }}?v={{ get_setting('version') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/default.css') }}?v={{ get_setting('version') }}">
@@ -22,9 +23,10 @@
                 "{{ url_for('static', path='/js/config.js') }}": "{{ url_for('static', path='/js/config.js') }}?v={{ get_setting('version') }}"
               }
             }
-        </script>
+    </script>
     <script type="module">
         import { Flash } from "/static/js/flash.js";
+        import { } from "/static/js/main-events.js";
     </script>
 
     {% block head %}
@@ -34,15 +36,17 @@
 
 <body>
 
-    <nav class="container-fluid navigation">
-        {% include "includes/logo.html" %}
-        {% include "includes/navigation.html" %}
-    </nav>
+    <div class="container-sticky">
+        <nav class="container-fluid navigation">
+            {% include "includes/logo.html" %}
+            {% include "includes/navigation.html" %}
+        </nav>
+    </div>
 
     <main class="container">
         {% block content %}
         {% endblock content %}
-        
+
     </main>
 
     <footer class="container">

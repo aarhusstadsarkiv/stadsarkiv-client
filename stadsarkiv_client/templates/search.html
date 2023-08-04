@@ -25,6 +25,7 @@
         </script>
     <script type="module">
         import { Flash } from "/static/js/flash.js";
+        import { } from "/static/js/main-events.js";
     </script>
 
     {% block head %}
@@ -34,10 +35,12 @@
 
 <body>
 
-    <nav class="container-fluid navigation">
-        {% include "includes/logo.html" %}
-        {% include "includes/navigation.html" %}
-    </nav>
+    <div class="container-sticky">
+        <nav class="container-fluid navigation">
+            {% include "includes/logo.html" %}
+            {% include "includes/navigation.html" %}
+        </nav>
+    </div>
 
     <main class="container-fluid-search">
         {% block content %}
