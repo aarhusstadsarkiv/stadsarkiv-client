@@ -1,3 +1,6 @@
+import typing
+
+
 settings: dict[str, typing.Any] = {
     "language": "da",
     "log_handlers": ["stream"],  # [ "stream", "file"]
