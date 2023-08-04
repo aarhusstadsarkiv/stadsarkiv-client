@@ -75,6 +75,7 @@ settings = {
         "Resourcer": ["resources"],
         "Download": ["representations"],
     },
+    "record_sections_employee": ["Administration", "Resourcer"],
     "record_definitions": {
         "last_updated": {"type": "date"},
         "date_normalized": {"type": "string"},

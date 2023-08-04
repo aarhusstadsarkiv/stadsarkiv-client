@@ -142,6 +142,8 @@ async def get_records_search_json(request: Request):
 async def get_record_view(request: Request):
     record_id = request.path_params["record_id"]
     record_sections = settings["record_sections"]
+    record_sections_employee = settings["record_sections_employee"]
+    permissions = await api.me_permissions(request)
 
     record = await api.proxies_record_get_by_id(record_id)
 
@@ -151,6 +153,11 @@ async def get_record_view(request: Request):
     record_altered = record_alter.record_alter(request, record)
     record_and_types = record_alter.get_record_and_types(record_altered)
     sections = record_alter.get_section_data(record_sections, record_and_types)
+
+    if "employee" not in permissions:
+        for section in record_sections_employee:
+            if section in sections:
+                del sections[section]
 
     context_variables = {
         "title": record_altered["title"],
