@@ -10,6 +10,9 @@ function removeFlashMessages() {
 
 const removeAfterSecs = 20;
 
+/**
+ * Remove loaded flash messages after some seconds
+ */
 setTimeout(function () {
     removeFlashMessages();
 }, removeAfterSecs * 1000);
@@ -26,12 +29,13 @@ document.addEventListener("click", function (e) {
 class Flash {
 
     /**
+     * Set a flash message
      * @param {str} The message to display
      * @param {type}  'info', 'success', 'warning', 'error' or any other you may use in your app. 
      * @param {remove_after} remove the message after some seconds 
      */
     static setMessage(message, type, remove_after) {
-        let messageElem = document.querySelector(".flash-messages");
+        const messageElem = document.querySelector(".flash-messages");
         messageElem.innerHTML = '';
 
         if (!type) {
@@ -49,7 +53,7 @@ class Flash {
             }, removeAfterSecs * 1000)
         }
 
-        var html = `<div class="flash flash-${type} ${class_random}">${message}</div>`;
+        const html = `<div class="flash flash-${type} ${class_random}">${message}</div>`;
         messageElem.insertAdjacentHTML('afterbegin', html);
         messageElem.scrollIntoView();
     }

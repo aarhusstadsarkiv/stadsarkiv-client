@@ -37,13 +37,13 @@ function expandTree() {
 function isValidDate(dateString) {
 
     // Parse the input string as yyyy-mm-dd
-    var dateParts = dateString.split("-");
-    var year = parseInt(dateParts[0], 10);
-    var month = parseInt(dateParts[1], 10);
-    var day = parseInt(dateParts[2], 10);
+    const dateParts = dateString.split("-");
+    const year = parseInt(dateParts[0], 10);
+    const month = parseInt(dateParts[1], 10);
+    const day = parseInt(dateParts[2], 10);
 
     // Create a new Date object using the parsed values
-    var date = new Date(year, month - 1, day);
+    const date = new Date(year, month - 1, day);
 
     // Check if the parsed date is valid
     return (
@@ -57,16 +57,16 @@ function isValidDate(dateString) {
  * Search form submit event
  */
 function onSearchDateEvent() {
-    let searchDateElem = document.getElementById('search-date');
+    const searchDateElem = document.getElementById('search-date');
     searchDateElem.addEventListener('submit', function (event) {
         event.preventDefault();
 
-        let fromYear = document.getElementById('from-year').value;
-        let fromMonth = document.getElementById('from-month').value || '01';
-        let fromDay = document.getElementById('from-day').value || '01';
-        let toYear = document.getElementById('to-year').value;
-        let toMonth = document.getElementById('to-month').value || '12';
-        let toDay = document.getElementById('to-day').value || '31';
+        const fromYear = document.getElementById('from-year').value;
+        const fromMonth = document.getElementById('from-month').value || '01';
+        const fromDay = document.getElementById('from-day').value || '01';
+        const toYear = document.getElementById('to-year').value;
+        const toMonth = document.getElementById('to-month').value || '12';
+        const toDay = document.getElementById('to-day').value || '31';
 
         if (!fromYear && !toYear) {
             Flash.setMessage('Du skal indtaste en datoer mellem 1200 og aktuel data', 'error');
@@ -74,8 +74,8 @@ function onSearchDateEvent() {
         }
 
         // One date has been entered now
-        let fromDate = `${fromYear}-${fromMonth}-${fromDay}`;
-        let toDate = `${toYear}-${toMonth}-${toDay}`;
+        const fromDate = `${fromYear}-${fromMonth}-${fromDay}`;
+        const toDate = `${toYear}-${toMonth}-${toDay}`;
 
         if (toYear && !isValidDate(toDate)) {
             Flash.setMessage('Til dato er ikke gyldig', 'error');
@@ -88,8 +88,8 @@ function onSearchDateEvent() {
         }
 
         // Redirect to new url and add date_from and date_to to url
-        let url = window.location.href;
-        let urlParams = new URLSearchParams(window.location.search);
+        const url = window.location.href;
+        const urlParams = new URLSearchParams(window.location.search);
         if (isValidDate(fromDate)) {
             urlParams.set('date_from', `${fromYear}${fromMonth}${fromDay}`);
         }
@@ -102,8 +102,6 @@ function onSearchDateEvent() {
     });
 }
 
-
-
 /**
  * Expand tree based on saved state
  */
@@ -112,10 +110,10 @@ function searchEvents() {
     try {
 
         onSearchDateEvent();
-        
+
         // Ensure only numbers can be entered in the date fields
         Events.addEventListenerMultiple('#search-date > input', 'input', function (e) {
-            let input = e.target;
+            const input = e.target;
             input.value = input.value.replace(/\D/g, '');
         });
 
@@ -136,7 +134,7 @@ function searchEvents() {
         })
 
         // Also add event listener to search form with id 'search-date'
-        let searchElem = document.getElementById('search');
+        const searchElem = document.getElementById('search');
         searchElem.addEventListener('submit', function (event) {
             event.preventDefault();
             saveTree();
@@ -152,18 +150,18 @@ function searchEvents() {
 }
 
 
-var selectSize = document.querySelector('.select-size');
-selectSize.addEventListener('change', function() {
+const selectSize = document.querySelector('.select-size');
+selectSize.addEventListener('change', function () {
     saveTree();
     document.getElementById('size').submit();
 });
 
-var selectSort = document.querySelector('.select-sort');
-selectSort.addEventListener('change', function() {
+const selectSort = document.querySelector('.select-sort');
+selectSort.addEventListener('change', function () {
 
-    var selectedValue = selectSort.value;
+    const selectedValue = selectSort.value;
     if (selectedValue == 'date_to') {
-        var input = document.createElement('input');
+        const input = document.createElement('input');
         input.type = 'hidden';
         input.name = 'direction';
         input.value = 'desc';
@@ -171,7 +169,7 @@ selectSort.addEventListener('change', function() {
     }
 
     if (selectedValue == 'date_from') {
-        var input = document.createElement('input');
+        const input = document.createElement('input');
         input.type = 'hidden';
         input.name = 'direction';
         input.value = 'asc';
