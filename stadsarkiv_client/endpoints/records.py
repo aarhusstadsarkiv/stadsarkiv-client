@@ -160,6 +160,7 @@ async def get_record_view(request: Request):
 
     context_variables = {
         "title": record_altered["title"],
+        "meta_title": record_altered["meta_title"],
         "record_altered": record_altered,
         "sections": sections,
     }
