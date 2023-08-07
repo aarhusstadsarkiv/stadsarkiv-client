@@ -47,8 +47,8 @@
 </ul>
 {% endmacro %}
 
-{% macro parse_top_level_facets(facets) %}
-<div class="facets">
+{% macro parse_top_level_facets(facets, facets_class, date_form_class ) %}
+<div class="{{ facets_class }}">
     <ul>
         {% for top_level_key, top_level_value in facets.items() %}
         <li>
@@ -65,7 +65,7 @@
                 <summary data-id="date_search">
                     {{ translate('Search date') }}
                 </summary>
-                {{ parse_date_form() }}
+                {{ parse_date_form(date_form_class) }}
             </details>
         </li>
     </ul>
@@ -234,26 +234,26 @@
 </div>
 {% endmacro %}
 
-{% macro parse_date_form () %}
-<div class="search-date">
-    <form id="search-date">
+{% macro parse_date_form (date_form_class) %}
+<div>
+    <form class="{{ date_form_class }}">
         {% set ignore_keys = ['date_to', 'date_from'] %}
         {% for key, value in query_params if key not in ignore_keys %}
         <input type="hidden" name="{{ key }}" value="{{ value }}">
         {% endfor %}
         <label for="from-year" title="{{ translate('The date shall be between 1200 and the current date')}}">{{
             translate('Date From') }}</label><br />
-        <input type="text" maxlength="4" id="from-year" name="from-year" placeholder="1600"
+        <input type="text" maxlength="4" id="from-year" class="from-year" name="from-year" placeholder="1600"
             value="{{ dates['from_year']}}">
-        <input type="text" maxlength="2" id="from-month" name="from-month" placeholder="01"
+        <input type="text" maxlength="2" id="from-month" class="from-month" name="from-month" placeholder="01"
             value="{{ dates['from_month']}}">
-        <input type="text" maxlength="2" id="from-day" name="from-day" placeholder="01" value="{{ dates['from_day']}}">
+        <input type="text" maxlength="2" id="from-day" class="from-day" name="from-day" placeholder="01" value="{{ dates['from_day']}}">
         <br>
         <label for="to-year" title="{{ translate('The date shall be between 1200 and the current date')}}">{{
             translate('Date To') }}</label><br />
-        <input type="text" maxlength="4" id="to-year" name="to-year" placeholder="2020" value="{{ dates['to_year']}}">
-        <input type="text" maxlength="2" id="to-month" name="to-month" placeholder="12" value="{{ dates['to_month']}}">
-        <input type="text" maxlength="2" id="to-day" name="to-day" placeholder="31" value="{{ dates['to_day']}}">
+        <input type="text" maxlength="4" id="to-year" class="to-year" name="to-year" placeholder="2020" value="{{ dates['to_year']}}">
+        <input type="text" maxlength="2" id="to-month" class="to-month" name="to-month" placeholder="12" value="{{ dates['to_month']}}">
+        <input type="text" maxlength="2" id="to-day" class="to-day" name="to-day" placeholder="31" value="{{ dates['to_day']}}">
         <br>
         <input type="submit" value="{{ translate('Search') }}">
     </form>
@@ -266,11 +266,15 @@
 
 {% block content %}
 <div class="container-left">
-{{ parse_top_level_facets(facets) }}
+    {{ parse_top_level_facets(facets, "facets", "search-date") }}
 </div>
 <div class="container-main-center">
+
 {{ parse_search() }}
 {{ parse_facets_filters(facets_filters) }}
+<div class="container-main-facets">
+    {{ parse_top_level_facets(facets, 'facets', 'search-date-main') }}
+</div>
 {{ pagination_total(pagination_data) }}
 {{ parse_pagination(pagination_data) }}
 {{ parse_search_results(records) }}

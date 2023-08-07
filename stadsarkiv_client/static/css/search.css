@@ -114,15 +114,15 @@ button {
     display: inline-block !important;
 }
 
-#from-year,
-#to-year {
+.from-year,
+.to-year {
     width: 60px;
 }
 
-#from-month,
-#to-month,
-#from-day,
-#to-day {
+.from-month,
+.to-month,
+.from-day,
+.to-day {
     width: 50px;
 }
 

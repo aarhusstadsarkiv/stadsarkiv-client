@@ -17,6 +17,13 @@ function saveTree() {
     localStorage.setItem('treeState', JSON.stringify(openFacets));
 }
 
+function collapseTree() {
+    const detailsElements = document.querySelectorAll('.facets details');
+    detailsElements.forEach(detailElement => {
+        detailElement.open = false;
+    });
+}
+
 // Function to expand the tree based on the saved state from local storage
 function expandTree() {
     const openFacets = JSON.parse(localStorage.getItem('treeState'));
@@ -56,20 +63,20 @@ function isValidDate(dateString) {
 /**
  * Search form submit event
  */
-function onSearchDateEvent() {
-    const searchDateElem = document.getElementById('search-date');
+function onSearchDateEvent(dateFormClass) {
+    const searchDateElem = document.querySelector(dateFormClass);
     searchDateElem.addEventListener('submit', function (event) {
         event.preventDefault();
-
-        const fromYear = document.getElementById('from-year').value;
-        const fromMonth = document.getElementById('from-month').value || '01';
-        const fromDay = document.getElementById('from-day').value || '01';
-        const toYear = document.getElementById('to-year').value;
-        const toMonth = document.getElementById('to-month').value || '12';
-        const toDay = document.getElementById('to-day').value || '31';
+        
+        const fromYear = document.querySelector(`${dateFormClass} .from-year`).value;
+        const fromMonth = document.querySelector(`${dateFormClass} .from-month`).value || '01';
+        const fromDay = document.querySelector(`${dateFormClass} .from-day`).value || '01';
+        const toYear = document.querySelector(`${dateFormClass} .to-year`).value;
+        const toMonth = document.querySelector(`${dateFormClass} .to-month`).value || '12';
+        const toDay = document.querySelector(`${dateFormClass} .to-day`).value || '31';
 
         if (!fromYear && !toYear) {
-            Flash.setMessage('Du skal indtaste en datoer mellem 1200 og aktuel data', 'error');
+            Flash.setMessage('Du skal indtaste en dato mellem 1200 og aktuel data', 'error');
             return;
         }
 
@@ -109,17 +116,40 @@ function searchEvents() {
 
     try {
 
-        onSearchDateEvent();
+        // Two date search forms on search page
+        onSearchDateEvent('.search-date');
+        onSearchDateEvent('.search-date-main');
 
         // Ensure only numbers can be entered in the date fields
-        Events.addEventListenerMultiple('#search-date > input', 'input', function (e) {
+        Events.addEventListenerMultiple('.search-date > input', 'input', function (e) {
+            const input = e.target;
+            input.value = input.value.replace(/\D/g, '');
+        });
+
+        Events.addEventListenerMultiple('.search-date-main > input', 'input', function (e) {
             const input = e.target;
             input.value = input.value.replace(/\D/g, '');
         });
 
         // Expand the tree based on the saved state
         document.addEventListener('DOMContentLoaded', function (event) {
-            expandTree();
+            // Check if tree threshold has been reached
+            const maxWidth = 768;
+            const width = window.innerWidth;
+            if (width > maxWidth) {
+                expandTree();
+            }
+        })
+
+        window.addEventListener('resize', function (event) {
+            // Check if tree threshold has been reached
+            const maxWidth = 768;
+            const width = window.innerWidth;
+            if (width > maxWidth) {
+                expandTree();
+            } else {
+                collapseTree();
+            }
         })
 
         // 'beforeunload' will not work when e.g. searching for /search to /search?date_from=20200101

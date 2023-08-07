@@ -79,10 +79,6 @@
     }
 }
 
-body {
-    overflow: scroll;
-}
-
 
 .flash-messages {
     margin-top: 10px;
@@ -163,8 +159,12 @@ body {
     height: 100%;
 }
 
+.container-main-facets {
+    display: none;
+}
+
 /**
- * When the width goes 992px or below, the container-left is hidden
+ * When the width goes 768px or below, the container-left is hidden
  */
 @media (max-width: 768px) {
     .container-left {
@@ -172,6 +172,10 @@ body {
     }
     .container-main-center {
         margin-left: 20px;
+    }
+
+    .container-main-facets {
+        display: block;
     }
 }
 

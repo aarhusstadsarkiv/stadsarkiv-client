@@ -5,7 +5,6 @@ body {
     margin: 0px auto;
     color: var(--text-main);
     background: var(--background-body);
-
 }
 
 /**
@@ -328,9 +327,7 @@ tbody tr:nth-child(even) button:hover {
     background-color: var(--background-body);
 }
 
-
 footer {
-    border-top: 1px solid var(--border);
     padding-top: 10px;
     color: var(--text-muted);
 }
