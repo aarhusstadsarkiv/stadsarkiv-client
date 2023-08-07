@@ -16,4 +16,7 @@ document.getElementById('menu-hamburger').addEventListener('click', function (ev
     }
 });
 
+const menu = document.querySelector('.main-menu');
+menu.style.display = "none";
+
 export { }
