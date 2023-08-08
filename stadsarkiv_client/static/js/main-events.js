@@ -1,8 +1,3 @@
-/**
- * Burger menu
- */
-
-
 document.getElementById('menu-hamburger').addEventListener('click', function (event) {
     event.preventDefault();
     const menu = document.querySelector('.main-menu');
@@ -15,8 +10,5 @@ document.getElementById('menu-hamburger').addEventListener('click', function (ev
         menuText.textContent = "menu"; 
     }
 });
-
-const menu = document.querySelector('.main-menu');
-menu.style.display = "none";
 
 export { }
