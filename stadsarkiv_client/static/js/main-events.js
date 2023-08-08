@@ -4,10 +4,10 @@ document.getElementById('menu-hamburger').addEventListener('click', function (ev
     const menuText = document.querySelector('#menu-hamburger > .material-symbols-outlined');
     if (menu.style.display === "none" || menu.style.display === "") {
         menu.style.display = "block";
-        menuText.textContent = "menu_open"; 
+        menuText.textContent = "menu_open";
     } else {
         menu.style.display = "none";
-        menuText.textContent = "menu"; 
+        menuText.textContent = "menu";
     }
 });
 

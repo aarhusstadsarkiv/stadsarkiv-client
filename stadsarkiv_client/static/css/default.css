@@ -164,9 +164,10 @@
 }
 
 /**
- * When the width goes 768px or below, the container-left is hidden
+ * When the width goes 992px or below, the container-left is hidden
+ * When changing this you will need to change search.js as well 
  */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .container-left {
         display: none;
     }

@@ -39,6 +39,7 @@ en = {
     "Invalid JSON in data.": "Invalid JSON in data.",
     "Invalid JSON.": "Invalid JSON.",
     "Invalid entity data": "Invalid entity data",
+    "Last\n                page": "Last\n                page",
     "Last page": "Last page",
     "Login": "Login",
     "Login to get access to speciel functions": "Login to get access to speciel functions",

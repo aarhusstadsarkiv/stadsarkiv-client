@@ -74,50 +74,52 @@
 
 {% macro parse_search_form() %}
 <div>
-<form id="search" method="get" action="{{ url_for('records_search')}}">
-    {% for key, value in query_params if key not in ['start', 'q'] %}
-    <input type="hidden" name="{{ key }}" value="{{ value }}">
-    {% endfor %}
-    <input type="text" name="q" placeholder="{{ translate('Search') }}" aria-label="{{ translate('search') }}"
-        value="{{ q }}">
-    <button type="submit" class="contrast">{{ translate('Search') }}</button>
-</form>
+    <form id="search" method="get" action="{{ url_for('records_search')}}">
+        {% for key, value in query_params if key not in ['start', 'q'] %}
+        <input type="hidden" name="{{ key }}" value="{{ value }}">
+        {% endfor %}
+        <input type="text" name="q" placeholder="{{ translate('Search') }}" aria-label="{{ translate('search') }}"
+            value="{{ q }}">
+        <button type="submit" class="contrast">{{ translate('Search') }}</button>
+    </form>
 </div>
 {% endmacro %}
 
 {% macro parse_size_form() %}
 <div class="search-option">
-<form class="size" id="size" method="get" action="{{ url_for('records_search')}}">
-    {% for key, value in query_params if key not in ['start', 'size'] %} 
-    <input type="hidden" name="{{ key }}" value="{{ value }}">
-    {% endfor %}
-    <select name="size" class="select-size">
-        <option value="20" {% if size == "20" %}selected{% endif %}>{{ translate('20 per page') }}</option>
-        <option value="50" {% if size == "50" %}selected{% endif %}>{{ translate('50 per page') }}</option>
-        <option value="100" {% if size == "100" %}selected{% endif %}>{{ translate('100 per page') }}</option>
-    </select>
-</form>
+    <form class="size" id="size" method="get" action="{{ url_for('records_search')}}">
+        {% for key, value in query_params if key not in ['start', 'size'] %}
+        <input type="hidden" name="{{ key }}" value="{{ value }}">
+        {% endfor %}
+        <select name="size" class="select-size">
+            <option value="20" {% if size=="20" %}selected{% endif %}>{{ translate('20 per page') }}</option>
+            <option value="50" {% if size=="50" %}selected{% endif %}>{{ translate('50 per page') }}</option>
+            <option value="100" {% if size=="100" %}selected{% endif %}>{{ translate('100 per page') }}</option>
+        </select>
+    </form>
 </div>
 {% endmacro %}
 
 {% macro parse_sort_form() %}
 <div class="search-option">
-<form class="sort" id="sort" method="get" action="{{ url_for('records_search')}}">
-    {% for key, value in query_params if key not in ['sort', 'direction'] %}
-    <input type="hidden" name="{{ key }}" value="{{ value }}">
-    {% endfor %}
-    <select name="sort" class="select-sort">
-        <option value="_score" {% if sort == "_score" %}selected{% endif %}>{{ translate('Relavance') }}</option>
-        <option value="date_from" {% if sort == "date_from" %}selected{% endif %}>{{ translate('Oldest date first') }}</option>
-        <option value="date_to" {% if sort == "date_to" %}selected{% endif %}>{{ translate('Newest date first') }}</option>
-    </select>
-</form>
+    <form class="sort" id="sort" method="get" action="{{ url_for('records_search')}}">
+        {% for key, value in query_params if key not in ['sort', 'direction'] %}
+        <input type="hidden" name="{{ key }}" value="{{ value }}">
+        {% endfor %}
+        <select name="sort" class="select-sort">
+            <option value="_score" {% if sort=="_score" %}selected{% endif %}>{{ translate('Relavance') }}</option>
+            <option value="date_from" {% if sort=="date_from" %}selected{% endif %}>{{ translate('Oldest date first') }}
+            </option>
+            <option value="date_to" {% if sort=="date_to" %}selected{% endif %}>{{ translate('Newest date first') }}
+            </option>
+        </select>
+    </form>
 </div>
 {% endmacro %}
 
 {% macro parse_search() %}
 <div class="search-form">
-{{ parse_search_form() }}
+    {{ parse_search_form() }}
     <div class="search-options">
         {{ parse_size_form() }}
         {{ parse_sort_form() }}
@@ -127,19 +129,19 @@
 
 {% macro parse_search_title(result) %}
 {% if result.label %}
-<div class="summary">{{ result.label|truncate(truncate_summary) }}</div>
+<div class="search-summary">{{ result.label|truncate(truncate_summary) }}</div>
 {% endif %}
 {% if result.summary %}
-<div class="summary">{{ result.summary|truncate(truncate_summary) }}</div>
+<div class="search-summary">{{ result.summary|truncate(truncate_summary) }}</div>
 {% endif %}
 {% endmacro %}
 
 {% macro parse_search_title(result) %}
 {% if result.label %}
-<div class="summary">{{ result.label|truncate(truncate_summary) }}</div>
+<div class="search-summary">{{ result.label|truncate(truncate_summary) }}</div>
 {% endif %}
 {% if result.summary %}
-<div class="summary">{{ result.summary|truncate(truncate_summary) }}</div>
+<div class="search-summary">{{ result.summary|truncate(truncate_summary) }}</div>
 {% endif %}
 {% endmacro %}
 
@@ -198,14 +200,14 @@
         <span class="disabled">{{ translate('First page') }}</span>
         <span class="disabled">{{ translate('Previous') }}</span>
         {% endif %}
-        {% if current_page < total_pages %} <a
-            href="{{ search_base_url }}?{{ query_str }}start={{ start + size }}">{{
+        {% if current_page < total_pages %} <a href="{{ search_base_url }}?{{ query_str }}start={{ start + size }}">{{
             translate('Next')}}</a>
-            <a href="{{ search_base_url }}?{{ query_str }}start={{ (total_pages - 1) * size }}">{{ translate('Last page') }}</a>
-        {% else %}
+            <a href="{{ search_base_url }}?{{ query_str }}start={{ (total_pages - 1) * size }}">{{ translate('Last
+                page') }}</a>
+            {% else %}
             <span class="disabled">{{ translate('Next') }}</span>
             <span class="disabled">{{ translate('Last page') }}</span>
-        {% endif %}
+            {% endif %}
     </div>
 </div>
 {% endmacro %}
@@ -220,14 +222,24 @@
 
     <div class="search-result">
         <a class="search-link" href="/records/{{ result.id }}">
-            {{ parse_search_title(result) }}
-            {% if result.collectors_label %}
-            {{ parse_string('collectors_label', result.collectors_label) }}
+
+            {% if result.thumbnail %}
+            <div class="search-thumbnail">
+                <img src="{{ result.thumbnail }}" alt="{{ result.label }}">
+            </div>
             {% endif %}
-            {{ parse_string('date_normalized', result.date_normalized) }}
-            {% if serie %}
-            {{ parse_string('series', serie) }}
-            {% endif %}
+
+            <div class="search-details">
+                {{ parse_search_title(result) }}
+                {% if result.collectors_label %}
+                {{ parse_string('collectors_label', result.collectors_label) }}
+                {% endif %}
+                {{ parse_string('date_normalized', result.date_normalized) }}
+                {% if serie %}
+                {{ parse_string('series', serie) }}
+                {% endif %}
+            </div>
+            
         </a>
     </div>
     {% endfor %}
@@ -247,13 +259,17 @@
             value="{{ dates['from_year']}}">
         <input type="text" maxlength="2" id="from-month" class="from-month" name="from-month" placeholder="01"
             value="{{ dates['from_month']}}">
-        <input type="text" maxlength="2" id="from-day" class="from-day" name="from-day" placeholder="01" value="{{ dates['from_day']}}">
+        <input type="text" maxlength="2" id="from-day" class="from-day" name="from-day" placeholder="01"
+            value="{{ dates['from_day']}}">
         <br>
         <label for="to-year" title="{{ translate('The date shall be between 1200 and the current date')}}">{{
             translate('Date To') }}</label><br />
-        <input type="text" maxlength="4" id="to-year" class="to-year" name="to-year" placeholder="2020" value="{{ dates['to_year']}}">
-        <input type="text" maxlength="2" id="to-month" class="to-month" name="to-month" placeholder="12" value="{{ dates['to_month']}}">
-        <input type="text" maxlength="2" id="to-day" class="to-day" name="to-day" placeholder="31" value="{{ dates['to_day']}}">
+        <input type="text" maxlength="4" id="to-year" class="to-year" name="to-year" placeholder="2020"
+            value="{{ dates['to_year']}}">
+        <input type="text" maxlength="2" id="to-month" class="to-month" name="to-month" placeholder="12"
+            value="{{ dates['to_month']}}">
+        <input type="text" maxlength="2" id="to-day" class="to-day" name="to-day" placeholder="31"
+            value="{{ dates['to_day']}}">
         <br>
         <input type="submit" value="{{ translate('Search') }}">
     </form>
@@ -270,22 +286,22 @@
 </div>
 <div class="container-main-center">
 
-{{ parse_search() }}
-{{ parse_facets_filters(facets_filters) }}
-<div class="container-main-facets">
-    {{ parse_top_level_facets(facets, 'facets', 'search-date-main') }}
-</div>
-{{ pagination_total(pagination_data) }}
-{{ parse_pagination(pagination_data) }}
-{{ parse_search_results(records) }}
-{% if pagination_data["total"] > pagination_data["size"] * pagination_data["current_page"] %}
-{{ parse_pagination(pagination_data) }}
-{% endif %}
-{% if get_setting('debug') %}
-<p>
-    <a href="/search/json?{{ query_str }}">JSON</a>
-</p>
-{% endif %}
+    {{ parse_search() }}
+    {{ parse_facets_filters(facets_filters) }}
+    <div class="container-main-facets">
+        {{ parse_top_level_facets(facets, 'facets', 'search-date-main') }}
+    </div>
+    {{ pagination_total(pagination_data) }}
+    {{ parse_pagination(pagination_data) }}
+    {{ parse_search_results(records) }}
+    {% if pagination_data["total"] > pagination_data["size"] * pagination_data["current_page"] %}
+    {{ parse_pagination(pagination_data) }}
+    {% endif %}
+    {% if get_setting('debug') %}
+    <p>
+        <a href="/search/json?{{ query_str }}">JSON</a>
+    </p>
+    {% endif %}
 </div>
 
 <script type="module">

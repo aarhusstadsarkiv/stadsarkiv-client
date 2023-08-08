@@ -37,6 +37,7 @@ da = {
     "Invalid JSON in data.": "Invalid JSON i data.",
     "Invalid JSON.": "Ugyldig JSON.",
     "Invalid entity data": "Ugyldig entitets data",
+    "Last\n                page": "Last\n                page",
     "Last page": "Sidste",
     "Login": "Log ind",
     "Login to get access to speciel functions": "Login for at få adgang til specielle funktioner",

@@ -134,7 +134,7 @@ function searchEvents() {
         // Expand the tree based on the saved state
         document.addEventListener('DOMContentLoaded', function (event) {
             // Check if tree threshold has been reached
-            const maxWidth = 768;
+            const maxWidth = 992;
             const width = window.innerWidth;
             if (width > maxWidth) {
                 expandTree();
@@ -143,7 +143,7 @@ function searchEvents() {
 
         window.addEventListener('resize', function (event) {
             // Check if tree threshold has been reached
-            const maxWidth = 768;
+            const maxWidth = 992;
             const width = window.innerWidth;
             if (width > maxWidth) {
                 expandTree();

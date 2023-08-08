@@ -7,26 +7,14 @@
 .search-result {
     box-sizing: border-box;
     background-color: var(--background-body);
-    padding: 20px;
+    padding: 10px;
+    padding-left: 2px;
     border-top: 1px solid #e6e6e6;
 
 }
 
 .search-result:hover {
     background-color: #fafafa;
-}
-
-.search-link {
-    color: #000000;
-    text-decoration: none;
-}
-
-.summary {
-    color: var(--links);
-}
-
-.search-link:hover {
-    text-decoration: none;
 }
 
 .search-label {
@@ -135,12 +123,62 @@ details>summary.closed {
     justify-content: space-between;
     flex-wrap: wrap;
 }
+
 .search-options {
     display: flex;
     flex-direction: row;
     align-items: center;
     align-self: flex-end;
 }
+
 .search-option {
     margin-right: 10px;
+}
+
+.search-link {
+    color: #000000;
+    text-decoration: none;
+}
+
+.search-link:hover {
+    text-decoration: none;
+}
+
+.search-link {
+    display: flex;
+}
+
+.search-thumbnail {
+    margin-right: 10px;
+}
+
+.search-thumbnail img {
+    min-width: 120px;
+    height: auto;
+    width: 120px;
+
+}
+
+.search-details {
+    flex-grow: 1;
+}
+
+.search-summary {
+    color: var(--links);
+}
+
+/*
+ First summary is the title
+ */
+.search-summary:first-of-type {
+    font-weight: 600;
+    margin-bottom: 0.2em;
+}
+
+/**
+ * Override of the general record.css
+ */
+.record-content>.label {
+    width: 6em;
+    min-width: 6em;
 }
