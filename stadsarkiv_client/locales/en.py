@@ -1,4 +1,5 @@
 en = {
+    "1 per page": "1 per page",
     "100 per page": "100 per page",
     "20 per page": "20 per page",
     "404 Not Found": "404 Not Found",
@@ -41,6 +42,7 @@ en = {
     "Invalid entity data": "Invalid entity data",
     "Last\n                page": "Last\n                page",
     "Last page": "Last page",
+    "Latest search": "Latest search",
     "Login": "Login",
     "Login to get access to speciel functions": "Login to get access to speciel functions",
     "Logout": "Logout",

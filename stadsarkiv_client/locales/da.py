@@ -39,6 +39,7 @@ da = {
     "Invalid entity data": "Ugyldig entitets data",
     "Last\n                page": "Last\n                page",
     "Last page": "Sidste",
+    "Latest search": "Seneste søgning",
     "Login": "Log ind",
     "Login to get access to speciel functions": "Login for at få adgang til specielle funktioner",
     "Logout": "Log ud",
