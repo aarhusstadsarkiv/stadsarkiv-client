@@ -54,6 +54,8 @@ async def _get_record_pagination_data(request: Request):
 
     try:
         search_cookie = json.loads(search_cookie)
+        assert isinstance(search_cookie, dict)
+
         query_params = search_cookie["query_params"]
 
         # Use for record pagination. Size must be 1.
