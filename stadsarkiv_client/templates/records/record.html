@@ -4,6 +4,28 @@
 {# the follwing is needed for allowing searching in media, e.g. video or audio #}
 {% set azure_allow_media_search = "sp=r&st=2023-02-03T12:19:05Z&se=2030-04-01T19:19:05Z&spr=https&sv=2021-06-08&sr=c&sig=QK9mOWt0oZ%2FtiY5biruFo0eGPirtjHYEQ061tPuZYHU%3D" %}
 
+{% macro parse_record_pagination(record_pagination) %}
+<div class="record-pagination">
+    <div class="record-current-search">
+        {{translate('Latest search') }}: "{{ record_pagination["q"] }}"
+    </div>
+    <div class="record-prev-next">
+        {% if record_pagination.prev_record is none %}
+        <span class="disabled">&lt;</span>
+        {% else %}
+        <a href="/records/{{ record_pagination.prev_record }}?search={{ record_pagination.prev_page }}">&lt;</a>
+        {% endif %}
+        {% if record_pagination.next_record is none %}
+        <span class="disabled">&gt;</span>
+        {% else %}
+        <a href="/records/{{ record_pagination.next_record }}?search={{ record_pagination.next_page }}">&gt;</a>
+        {% endif %}
+    </div>
+</div>
+{% endmacro %}
+
+
+
 {% macro parse_record_label (label) %}
 <div class="label">
     {% if settings.skip_translate %}
@@ -246,6 +268,9 @@
 {% block content %}
 {# include "includes/main_title.html" #}
 
+{% if record_pagination %}
+{{ parse_record_pagination(record_pagination) }}
+{% endif %}
 {{ parse_sections(record_altered, sections) }}
 
 {% if get_setting('debug') %}

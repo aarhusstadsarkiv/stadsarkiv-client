@@ -30,7 +30,7 @@
     <li>
         {% if 'children' in facet and facet["count"] %}
         <details data-id="{{ facet['id'] }}">
-            <summary>
+            <summary class="facets-clickable">
                 {{ parse_facet_link(top_level_key, facet) }}
             </summary>
             {{ parse_facets(top_level_key, facet['children'] ) }}
@@ -53,7 +53,7 @@
         {% for top_level_key, top_level_value in facets.items() %}
         <li>
             <details data-id="{{ top_level_key }}">
-                <summary>
+                <summary class="facets-clickable">
                     {{ top_level_value['label'] }}
                 </summary>
                 {{ parse_facets(top_level_key, top_level_value['content']) }}
@@ -62,7 +62,7 @@
         {% endfor %}
         <li>
             <details>
-                <summary data-id="date_search">
+                <summary data-id="date_search" class="facets-clickable">
                     {{ translate('Search date') }}
                 </summary>
                 {{ parse_date_form(date_form_class) }}
@@ -183,8 +183,6 @@
 {% endmacro %}
 
 {% macro parse_pagination (pagination_data) %}
-
-{% set total = pagination_data["total"] %}
 {% set size = pagination_data["size"] %}
 {% set start = pagination_data["start"] %}
 {% set total_pages = pagination_data["total_pages"] %}
@@ -213,15 +211,18 @@
 {% endmacro %}
 
 {% macro parse_search_results(records) %}
+{% set start = records["start"]|int %}
+{% set size = records["size"]|int %}
 <div class="search-results">
     {% for result in records.result %}
     {% set serie = None %}
     {% if result.series is iterable %}
     {% set serie = result.series | last %}
     {% endif %}
+    {% set current = loop.index + start %}
 
     <div class="search-result">
-        <a class="search-link" href="/records/{{ result.id }}">
+        <a class="search-link" href="/records/{{ result.id }}?search={{ current }}">
 
             {% if result.thumbnail %}
             <div class="search-thumbnail">
