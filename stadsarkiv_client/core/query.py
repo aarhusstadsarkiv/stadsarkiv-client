@@ -21,6 +21,12 @@ async def get_str(request: Request, remove_keys=[], add_list_items=[]):
 
     items = await get_list(request, remove_keys=remove_keys)
     items += add_list_items
+    query_str = await get_str_from_list(items)
+    return query_str
+
+
+async def get_str_from_list(items):
+    """Get list of tuples and return it as a quote plus encoded string."""
     query_str = ""
     for key, value in items:
         query_str += f"{key}={quote_plus(value)}&"

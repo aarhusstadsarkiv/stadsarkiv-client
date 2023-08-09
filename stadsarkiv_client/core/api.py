@@ -331,8 +331,22 @@ async def proxies_record_get(request: Request) -> typing.Any:
     return await proxies_record_get_by_id(record_id)
 
 
-async def proxies_records(request: Request, add_list_items) -> typing.Any:
-    query_str = await query.get_str(request, remove_keys=[], add_list_items=add_list_items)
+async def proxies_records(request: Request, remove_keys=[], add_list_items=[]) -> typing.Any:
+    query_str = await query.get_str(request, remove_keys=remove_keys, add_list_items=add_list_items)
+    query_str = quote(query_str)
+
+    async with httpx.AsyncClient() as client:
+        url = base_url + "/records?params=" + query_str
+        response = await client.get(url)
+
+        if response.is_success:
+            return response.json()
+        else:
+            response.raise_for_status()
+
+
+async def proxies_records_from_list(query_params) -> typing.Any:
+    query_str = await query.get_str_from_list(query_params)
     query_str = quote(query_str)
 
     async with httpx.AsyncClient() as client:

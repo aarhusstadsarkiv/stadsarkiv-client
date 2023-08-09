@@ -18,7 +18,7 @@ from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstrac
 log = get_log()
 
 
-def _get_pagination_data(request: Request, size, total):
+def _get_search_pagination_data(request: Request, size, total):
     result = {}
 
     if total > 10000:
@@ -39,6 +39,69 @@ def _get_pagination_data(request: Request, size, total):
     result["current_page"] = current_page
 
     return result
+
+
+async def _get_record_pagination_data(request: Request):
+    search_query = request.query_params.get("search", None)
+    if not search_query:
+        return None
+
+    """Use search cooke and request param 'search' to calculate pagination data for record view"""
+    search_cookie = request.cookies.get("search", None)
+
+    if not search_cookie:
+        return None
+
+    try:
+        search_cookie = json.loads(search_cookie)
+        query_params = search_cookie["query_params"]
+
+        # Use for record pagination. Size must be 1.
+        # Other query params can be used
+        query_params = [item for item in query_params if item[0] != "size"]
+        query_params.append(("size", "1"))
+
+        # convert list of lists to list of tuples
+        query_params = [tuple(item) for item in query_params]
+        search_cookie["query_params"] = query_params
+
+    except Exception:
+        return None
+
+    return search_cookie
+
+
+async def _get_record_prev_next(request: Request, search_query_params):
+    current_page = int(request.query_params.get("search", 0))
+
+    has_next = current_page < search_query_params["total"]
+    has_prev = current_page > 1
+
+    next_page = current_page + 1 if has_next else None
+    prev_page = current_page - 1 if has_prev else None
+
+    search_query_params["next_page"] = next_page
+    search_query_params["prev_page"] = prev_page
+
+    query_params = search_query_params["query_params"]
+
+    if next_page:
+        start = ("start", str(next_page - 1))
+        query_params.append(start)
+        records = await api.proxies_records_from_list(query_params)
+        search_query_params["next_record"] = records["result"][0]["id"]
+    else:
+        search_query_params["next_record"] = None
+
+    if prev_page:
+        start = ("start", str(prev_page - 1))
+        query_params.append(start)
+        records = await api.proxies_records_from_list(query_params)
+        search_query_params["prev_record"] = records["result"][0]["id"]
+    else:
+        search_query_params["prev_record"] = None
+
+    return search_query_params
 
 
 def _get_dates(request: Request):
@@ -64,7 +127,7 @@ def _get_size_sort(request: Request):
 
 
 def _get_default_query_params(request: Request):
-    """Get default query_params for records search"""
+    """Get default query_params for records search."""
 
     size, sort = _get_size_sort(request)
     add_list_items = [("size", size), ("sort", sort)]
@@ -93,18 +156,19 @@ async def get_records_search(request: Request):
     q = await query.get_search(request)
     size, sort = _get_size_sort(request)
     add_list_items = _get_default_query_params(request)
+
+    # size, sort, direction are read from query params
+    # If not set they may be read from cookies
+    # last resort is default values
     query_params = await query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
-
-    log.debug(f"query_params: {query_params}")
     query_str = await query.get_str(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
-
-    records = await api.proxies_records(request, add_list_items=add_list_items)
+    records = await api.proxies_records(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
     records = _normalize_search(records)
 
     normalized_facets = NormalizeFacets(request=request, records=records, query_params=query_params, query_str=query_str)
     facets = normalized_facets.get_transformed_facets()
     facets_filters = normalized_facets.get_checked_facets()
-    pagination_data = _get_pagination_data(request, records["size"], records["total"])
+    pagination_data = _get_search_pagination_data(request, records["size"], records["total"])
 
     context_values = {
         "q": q,
@@ -125,6 +189,15 @@ async def get_records_search(request: Request):
 
     context = await get_context(request, context_values=context_values)
     response = templates.TemplateResponse("records/search.html", context)
+
+    search_cookie_value = {
+        "query_params": query_params,
+        "total": pagination_data["total"],
+        "q": q
+        # "total_pages": pagination_data["total_pages"],
+    }
+
+    response.set_cookie(key="search", value=json.dumps(search_cookie_value), httponly=True)
     response.set_cookie(key="size", value=size, httponly=True, max_age=DAYS_365, expires=DAYS_365)
     response.set_cookie(key="sort", value=sort, httponly=True, max_age=DAYS_365, expires=DAYS_365)
 
@@ -140,6 +213,10 @@ async def get_records_search_json(request: Request):
 
 
 async def get_record_view(request: Request):
+    record_pagination = await _get_record_pagination_data(request)
+    if record_pagination:
+        record_pagination = await _get_record_prev_next(request, record_pagination)
+
     record_id = request.path_params["record_id"]
     record_sections = settings["record_sections"]
     record_sections_employee = settings["record_sections_employee"]
@@ -163,6 +240,7 @@ async def get_record_view(request: Request):
         "meta_title": record_altered["meta_title"],
         "record_altered": record_altered,
         "sections": sections,
+        "record_pagination": record_pagination,
     }
 
     context = await get_context(request, context_variables)
