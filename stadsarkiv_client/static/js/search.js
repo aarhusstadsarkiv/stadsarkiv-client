@@ -17,7 +17,7 @@ function saveTree() {
 }
 
 function collapseTree() {
-    const detailsElements = document.querySelectorAll('.container-left .facets details');
+    const detailsElements = document.querySelectorAll('.container-main-facets .facets details');
     detailsElements.forEach(detailElement => {
         detailElement.open = false;
     });
