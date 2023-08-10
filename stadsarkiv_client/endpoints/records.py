@@ -13,6 +13,7 @@ from stadsarkiv_client.records.meta_data import get_meta_data
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import query
 from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
+import asyncio
 
 
 log = get_log()
@@ -41,7 +42,7 @@ def _get_search_pagination_data(request: Request, size, total):
     return result
 
 
-async def _get_record_pagination_data(request: Request):
+async def _get_last_search_cookie(request: Request):
     search_query = request.query_params.get("search", None)
     if not search_query:
         return None
@@ -73,8 +74,15 @@ async def _get_record_pagination_data(request: Request):
     return search_cookie
 
 
-async def _get_record_prev_next(request: Request, search_query_params):
+async def _get_record_prev_next(request: Request):
+
+    search_query_params = await _get_last_search_cookie(request)
+    if not search_query_params:
+        return None
+
     current_page = int(request.query_params.get("search", 0))
+    if not current_page:
+        return None
 
     has_next = current_page < search_query_params["total"]
     has_prev = current_page > 1
@@ -85,23 +93,33 @@ async def _get_record_prev_next(request: Request, search_query_params):
     search_query_params["next_page"] = next_page
     search_query_params["prev_page"] = prev_page
 
-    query_params = search_query_params["query_params"]
+    query_params = search_query_params["query_params"].copy()
 
-    if next_page:
-        start = ("start", str(next_page - 1))
-        query_params.append(start)
-        records = await api.proxies_records_from_list(query_params)
-        search_query_params["next_record"] = records["result"][0]["id"]
-    else:
-        search_query_params["next_record"] = None
+    async def get_next_record():
+        if next_page:
+            next_query_params = query_params.copy()
+            search_params = [("start", str(next_page - 1))]
+            next_query_params.extend(search_params)
+            records = await api.proxies_records_from_list(next_query_params)
+            return records["result"][0]["id"]
+        else:
+            return None
 
-    if prev_page:
-        start = ("start", str(prev_page - 1))
-        query_params.append(start)
-        records = await api.proxies_records_from_list(query_params)
-        search_query_params["prev_record"] = records["result"][0]["id"]
-    else:
-        search_query_params["prev_record"] = None
+    async def get_prev_record():
+        if prev_page:
+            prev_query_params = query_params.copy()
+            search_params = [("start", str(prev_page - 1))]
+            prev_query_params.extend(search_params)
+            records = await api.proxies_records_from_list(prev_query_params)
+            return records["result"][0]["id"]
+        else:
+            return None
+
+    # Gather both API calls concurrently
+    next_record, prev_record = await asyncio.gather(get_next_record(), get_prev_record())
+
+    search_query_params["next_record"] = next_record
+    search_query_params["prev_record"] = prev_record
 
     return search_query_params
 
@@ -196,7 +214,6 @@ async def get_records_search(request: Request):
         "query_params": query_params,
         "total": pagination_data["total"],
         "q": q
-        # "total_pages": pagination_data["total_pages"],
     }
 
     response.set_cookie(key="search", value=json.dumps(search_cookie_value), httponly=True)
@@ -215,10 +232,7 @@ async def get_records_search_json(request: Request):
 
 
 async def get_record_view(request: Request):
-    record_pagination = await _get_record_pagination_data(request)
-    if record_pagination:
-        record_pagination = await _get_record_prev_next(request, record_pagination)
-
+    record_pagination = await _get_record_prev_next(request)
     record_id = request.path_params["record_id"]
     record_sections = settings["record_sections"]
     record_sections_employee = settings["record_sections_employee"]
