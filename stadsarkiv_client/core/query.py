@@ -5,7 +5,7 @@ from urllib.parse import quote_plus
 log = get_log()
 
 
-def get_list(request: Request, remove_keys=[], add_list_items=[]):
+def get_list(request: Request, remove_keys: list = [], add_list_items: list = []) -> list:
     """Get query params from request and return it as a list of tuples.
     e.g. [('content_types', '96')]"""
     query_params = request.query_params
@@ -15,7 +15,7 @@ def get_list(request: Request, remove_keys=[], add_list_items=[]):
     return items
 
 
-def get_str(request: Request, remove_keys=[], add_list_items=[]):
+def get_str(request: Request, remove_keys: list = [], add_list_items: list = []) -> str:
     """Get query params from request and return it as a quote plus encoded string.
     E.g. 'content_types=96&content_types=97&'"""
 
@@ -25,7 +25,7 @@ def get_str(request: Request, remove_keys=[], add_list_items=[]):
     return query_str
 
 
-def get_str_from_list(items):
+def get_str_from_list(items: list) -> str:
     """Get list of tuples and return it as a quote plus encoded string."""
     query_str = ""
     for key, value in items:
@@ -34,7 +34,7 @@ def get_str_from_list(items):
     return query_str
 
 
-def get_search(request: Request):
+def get_search(request: Request) -> str:
     """Get search query "q" from request and return it as a string.
     E.g. 'test search'"""
     query_params = request.query_params

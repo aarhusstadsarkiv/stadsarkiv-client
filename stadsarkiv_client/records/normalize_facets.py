@@ -1,4 +1,3 @@
-from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
 from stadsarkiv_client.facets import FACETS

@@ -1,5 +1,5 @@
 from starlette.routing import Route, Mount
-from .endpoints import auth, search, testing, pages, schemas, entities, records
+from .endpoints import auth, testing, pages, schemas, entities, records
 import os
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.multi_static import MultiStaticFiles
