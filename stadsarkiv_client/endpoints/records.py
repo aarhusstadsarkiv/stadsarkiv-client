@@ -119,6 +119,7 @@ async def _get_record_prev_next(request: Request):
 
     search_query_params["next_record"] = next_record
     search_query_params["prev_record"] = prev_record
+    search_query_params["current_page"] = current_page
 
     return search_query_params
 
