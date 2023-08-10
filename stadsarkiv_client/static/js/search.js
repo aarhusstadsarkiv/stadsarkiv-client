@@ -5,8 +5,7 @@ import { Flash } from '/static/js/flash.js';
 function saveTree() {
 
     const openFacets = [];
-    const detailsElements = document.querySelectorAll('.facets details');
-
+    const detailsElements = document.querySelectorAll('.container-left .facets details');
     detailsElements.forEach(detailElement => {
         if (detailElement.open) {
             const dataId = detailElement.getAttribute('data-id');
@@ -18,7 +17,7 @@ function saveTree() {
 }
 
 function collapseTree() {
-    const detailsElements = document.querySelectorAll('.facets details');
+    const detailsElements = document.querySelectorAll('.container-left .facets details');
     detailsElements.forEach(detailElement => {
         detailElement.open = false;
     });
@@ -28,7 +27,7 @@ function collapseTree() {
 function expandTree() {
     const openFacets = JSON.parse(localStorage.getItem('treeState'));
     if (openFacets && openFacets.length) {
-        const detailElements = document.querySelectorAll('.facets details');
+        const detailElements = document.querySelectorAll('.container-left .facets details');
         detailElements.forEach(detailElement => {
             const dataId = detailElement.getAttribute('data-id');
             if (openFacets.includes(dataId)) {
