@@ -1,3 +1,7 @@
+import functools
+import time
+import pickle
+import os
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.logging import get_log
@@ -43,3 +47,39 @@ def is_authenticated(func=None, message=translate("You need to be logged in to v
         return response
 
     return wrapper
+
+
+CACHE_DIR = "./cache"
+
+# Ensure the cache directory exists
+if not os.path.exists(CACHE_DIR):
+    os.makedirs(CACHE_DIR)
+
+
+def disk_cache(ttl: int):
+    def decorator(func):
+        @functools.wraps(func)
+        async def wrapper(*args, **kwargs):
+            # Generate a cache key based on the function's name and its arguments.
+            cache_key = f"{func.__name__}_{str(args)}_{str(kwargs)}"
+            cache_file = os.path.join(CACHE_DIR, f"cache_{hash(cache_key)}.pkl")
+
+            if os.path.exists(cache_file):
+                with open(cache_file, "rb") as f:
+                    cache_data = pickle.load(f)
+                    if time.time() - cache_data["timestamp"] <= ttl:
+                        log.debug("Using cached result for %s", cache_key)
+                        return cache_data["response"]
+
+            result = await func(*args, **kwargs)
+
+            # Cache the result along with the current timestamp
+            with open(cache_file, "wb") as f:
+                log.debug("Caching result for %s", cache_key)
+                pickle.dump({"response": result, "timestamp": time.time()}, f)
+
+            return result
+
+        return wrapper
+
+    return decorator
