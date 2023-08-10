@@ -75,7 +75,6 @@ async def _get_last_search_cookie(request: Request):
 
 
 async def _get_record_prev_next(request: Request):
-
     search_query_params = await _get_last_search_cookie(request)
     if not search_query_params:
         return None
@@ -173,15 +172,15 @@ def _normalize_search(records):
 
 
 async def get_records_search(request: Request):
-    q = await query.get_search(request)
+    q = query.get_search(request)
     size, sort = _get_size_sort(request)
     add_list_items = _get_default_query_params(request)
 
     # size, sort, direction are read from query params
     # If not set they may be read from cookies
     # last resort is default values
-    query_params = await query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
-    query_str = await query.get_str(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
+    query_params = query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
+    query_str = query.get_str(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
     records = await api.proxies_records(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
     records = _normalize_search(records)
 
@@ -213,7 +212,8 @@ async def get_records_search(request: Request):
     search_cookie_value = {
         "query_params": query_params,
         "total": pagination_data["total"],
-        "q": q
+        "q": q,
+        "query_str": query_str,
     }
 
     response.set_cookie(key="search", value=json.dumps(search_cookie_value), httponly=True)

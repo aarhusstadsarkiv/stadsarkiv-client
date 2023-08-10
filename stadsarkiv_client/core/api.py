@@ -332,7 +332,7 @@ async def proxies_record_get(request: Request) -> typing.Any:
 
 
 async def proxies_records(request: Request, remove_keys=[], add_list_items=[]) -> typing.Any:
-    query_str = await query.get_str(request, remove_keys=remove_keys, add_list_items=add_list_items)
+    query_str = query.get_str(request, remove_keys=remove_keys, add_list_items=add_list_items)
     query_str = quote(query_str)
 
     async with httpx.AsyncClient() as client:
@@ -346,7 +346,7 @@ async def proxies_records(request: Request, remove_keys=[], add_list_items=[]) -
 
 
 async def proxies_records_from_list(query_params) -> typing.Any:
-    query_str = await query.get_str_from_list(query_params)
+    query_str = query.get_str_from_list(query_params)
     query_str = quote(query_str)
 
     async with httpx.AsyncClient() as client:

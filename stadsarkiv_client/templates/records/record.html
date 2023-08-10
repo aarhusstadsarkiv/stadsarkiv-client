@@ -7,7 +7,7 @@
 {% macro parse_record_pagination(record_pagination) %}
 <div class="record-pagination">
     <div class="record-current-search">
-        {{translate('Latest search') }}: "{{ record_pagination["q"] }}"
+        <a href="/search?{{ record_pagination['query_str'] }}">{{translate('Latest search') }}</a>
     </div>
     <div class="record-prev-next">
         {% if record_pagination.prev_record is none %}
