@@ -47,7 +47,7 @@ async def get_logout(request: Request):
 
 async def post_logout(request: Request):
     try:
-        await user.logout(request)
+        user.logout(request)
         flash.set_message(request, translate("You have been logged out."), type="success")
     except Exception as e:
         log.exception(e)
