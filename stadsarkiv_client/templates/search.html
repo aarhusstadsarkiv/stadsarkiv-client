@@ -23,7 +23,11 @@
         {% endblock content %}
     </main>
 
-    <footer class="container-fluid"></footer>
+    <div class="container-fluid">
+        <footer>
+            {% include "includes/footer.html" %}
+        </footer>
+    </div>
     {% include "includes/flash.html" %}
 </body>
 
