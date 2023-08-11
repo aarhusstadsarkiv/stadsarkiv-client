@@ -11,4 +11,18 @@ document.getElementById('menu-hamburger').addEventListener('click', function (ev
     }
 });
 
+/**
+ * Add resize event listener to window
+ */
+window.addEventListener('resize', function (event) {
+    const menuText = document.querySelector('#menu-hamburger > .material-symbols-outlined');
+    const menu = document.querySelector('.main-menu');
+    if (window.innerWidth > 768) {
+        menu.style.display = "flex";
+        menuText.textContent = "menu";
+    } else {
+        menu.style.display = "none";
+    }
+});
+
 export { }
