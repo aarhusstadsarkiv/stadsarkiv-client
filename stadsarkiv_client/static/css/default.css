@@ -3,6 +3,11 @@
     align-self: flex-start;
 }
 
+.logo img {
+    padding: 8px;
+    max-height: 40px;
+}
+
 .main-menu {
     display: flex;
     flex-direction: row;
@@ -13,7 +18,7 @@
 }
 
 .main-menu>a {
-    color: black;
+    color: white;
     font-size: 1.2em;
     font-weight: 600;
     padding: 8px;
@@ -25,7 +30,7 @@
 }
 
 .main-menu>a:hover {
-    background: var(--background-alt);
+    background: #ffffff22;
 
 }
 
@@ -55,7 +60,7 @@
 @media (max-width: 768px) {
     #menu-hamburger {
         display: block;
-        color: black;
+        color: white;
         z-index: 110;
     }
 
@@ -65,8 +70,8 @@
         position: absolute;
         top: 55px;
         right: 5px;
-        background-color: white;
-        border: 1px solid var(--background-alt);
+        background-color: var(--navigation-background-color);
+        border: 1px solid var(--background);
         padding: 10px;
         font-size: 0.8em;
         min-width: 175px;
@@ -117,10 +122,11 @@
 }
 
 .container {
-    padding-top: 25px;
+    padding-top: 20px;
     max-width: var(--container-width);
     margin: 0 auto;
     padding-left: 20px;
+    padding-right: 20px;
 }
 
 .container-sticky {
@@ -173,6 +179,7 @@
     }
     .container-main-center {
         margin-left: 20px;
+        margin-right: 20px;
     }
 
     .container-main-facets {
@@ -183,3 +190,4 @@
 summary {
     cursor: pointer;
 }
+
