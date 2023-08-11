@@ -5,6 +5,7 @@
 
 .logo img {
     padding: 8px;
+    margin-top: 4px;
     max-height: 40px;
 }
 
@@ -12,10 +13,15 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 6px;
+    margin-bottom: 12px;
     align-self: flex-end;
 }
+
+/**
+ * Media query that set's .main-menu to display-flex when larger than 768px
+ */
+
 
 .main-menu>a {
     color: white;
@@ -68,8 +74,8 @@
         display: none;
         flex-direction: column;
         position: absolute;
-        top: 55px;
-        right: 5px;
+        top: 60px;
+        right: 0px;
         background-color: var(--navigation-background-color);
         border: 1px solid var(--background);
         padding: 10px;
@@ -149,7 +155,6 @@
     margin-top: 20px;
     max-width: 100%;
     position: relative;
-    margin-right: 10px;
 }
 
 .container-left {
