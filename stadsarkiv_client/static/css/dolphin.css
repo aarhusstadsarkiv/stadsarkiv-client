@@ -5,7 +5,11 @@ body {
     margin: 0px auto;
     color: var(--text-main);
     background: var(--background-body);
-    overflow: scroll;    
+    min-height: 100vh; 
+    display:flex; 
+    flex-direction:column;
+    overflow: scroll;
+    overflow-x: hidden;
 }
 
 /**

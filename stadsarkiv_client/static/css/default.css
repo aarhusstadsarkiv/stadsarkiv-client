@@ -21,8 +21,6 @@
 /**
  * Media query that set's .main-menu to display-flex when larger than 768px
  */
-
-
 .main-menu>a {
     color: white;
     font-size: 1.2em;
@@ -55,7 +53,7 @@
     margin-top: 14px;
 }
 
-#menu-hamburger > span {
+#menu-hamburger>span {
     font-size: 1.2em;
 }
 
@@ -83,13 +81,12 @@
         min-width: 175px;
     }
 
-    .main-menu > a {
+    .main-menu>a {
         margin-right: 0;
         margin-bottom: 8px;
         display: block;
     }
 }
-
 
 .flash-messages {
     margin-top: 10px;
@@ -128,11 +125,11 @@
 }
 
 .container {
-    padding-top: 20px;
+    padding: 20px;
+    width: 100%;
     max-width: var(--container-width);
     margin: 0 auto;
-    padding-left: 20px;
-    padding-right: 20px;
+
 }
 
 .container-sticky {
@@ -144,7 +141,7 @@
 
 .container-fluid {
     margin: 0 auto;
-    max-width: 100%;
+    min-width: 100%;
 }
 
 /**
@@ -182,6 +179,7 @@
     .container-left {
         display: none;
     }
+
     .container-main-center {
         margin-left: 20px;
         margin-right: 20px;
@@ -196,3 +194,6 @@ summary {
     cursor: pointer;
 }
 
+main {
+    flex:1; 
+}
