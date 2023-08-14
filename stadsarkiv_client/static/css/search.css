@@ -131,7 +131,7 @@ details>summary.closed {
     align-self: flex-end;
 }
 
-.search-option {
+.search-option, .search-button {
     margin-right: 10px;
 }
 
