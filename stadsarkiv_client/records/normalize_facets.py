@@ -2,6 +2,7 @@ from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
 from stadsarkiv_client.facets import FACETS
 from stadsarkiv_client.facets import QUERY_PARAMS
+from urllib.parse import quote_plus
 
 
 log = get_log()
@@ -144,22 +145,25 @@ class NormalizeFacets:
         facets_checked = self._get_checked_facets_flatten()
         ignore_keys = ["subjects", "content_types", "usability", "availability", "size", "start", "sort", "direction"]
 
-        for query_name, definition in QUERY_PARAMS.items():
-            if query_name not in ignore_keys and self.request.query_params.get(query_name):
-                query_value = self.request.query_params.get(query_name)
-                try:
-                    label = definition.get("label")
-                except KeyError:
-                    continue
+        for query_name, query_value in self.query_params:
+            if query_name not in QUERY_PARAMS or query_name in ignore_keys:
+                continue
 
-                facet = {}
-                facet["remove_query"] = self.query_str.replace(f"{query_name}={query_value}&", "")
-                checked_label = self._get_label(query_name, query_value)
-                if not checked_label:
-                    checked_label = f"{label} (Unresolved) '{query_name}'={query_value}"
+            definition = QUERY_PARAMS[query_name]
 
-                facet["checked_label"] = checked_label
-                facets_checked.append(facet)
+            try:
+                label = definition.get("label")
+            except KeyError:
+                continue
+
+            facet = {}
+            facet["remove_query"] = self.query_str.replace(f"{query_name}={quote_plus(query_value)}&", "")
+            checked_label = self._get_label(query_name, query_value)
+            if not checked_label:
+                checked_label = f"{label} (Unresolved) '{query_name}'={query_value}"
+
+            facet["checked_label"] = checked_label
+            facets_checked.append(facet)
 
         return facets_checked
 

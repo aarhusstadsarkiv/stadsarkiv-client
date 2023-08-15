@@ -147,7 +147,7 @@ def _get_size_sort(request: Request):
 
 
 def _get_default_query_params(request: Request):
-    """Get default query_params for records search."""
+    """Get default query_params for records search as list of tuples"""
 
     size, sort = _get_size_sort(request)
     add_list_items = [("size", size), ("sort", sort)]
@@ -181,6 +181,7 @@ async def get_records_search(request: Request):
     # If not set they may be read from cookies
     # last resort is default values
     query_params = query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
+
     query_str = query.get_str(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
     records = await api.proxies_records(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
     records = _normalize_search(records)
