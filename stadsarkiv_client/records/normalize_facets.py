@@ -157,6 +157,7 @@ class NormalizeFacets:
                 continue
 
             facet = {}
+            facet["type"] = query_name
             facet["remove_query"] = self.query_str.replace(f"{query_name}={quote_plus(query_value)}&", "")
             checked_label = self._get_label(query_name, query_value)
             if not checked_label:

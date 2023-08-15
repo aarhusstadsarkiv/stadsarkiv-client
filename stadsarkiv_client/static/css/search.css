@@ -131,6 +131,11 @@ details>summary.closed {
     align-self: flex-end;
 }
 
+.search-citation {
+    background-color: var(--highlight);
+    display: inline-block;
+}
+
 .search-option, .search-button {
     margin-right: 10px;
 }

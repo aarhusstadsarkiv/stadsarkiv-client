@@ -172,7 +172,7 @@ def _normalize_search(records):
     return records
 
 
-def _get_collection(query_params):
+def _get_collection_id(query_params):
     """Get collection from query_params"""
     for key, value in query_params:
         if key == "collection":
@@ -188,11 +188,12 @@ async def get_records_search(request: Request):
     # If not set they may be read from cookies
     # last resort is default values
     query_params = query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
-    collection = _get_collection(query_params)
-    if collection:
-        collection = await api.proxies_collection(request, collection)
-        # citation = collection["citation"]
-        # summary = collection["summary"]
+    collection_id = _get_collection_id(query_params)
+    collection = None
+
+    if collection_id:
+        collection = await api.proxies_collection(collection_id=collection_id)
+        collection["id"] = collection_id
 
     query_str = query.get_str(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
     records = await api.proxies_records(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
@@ -216,6 +217,7 @@ async def get_records_search(request: Request):
         "facets_filters": facets_filters,
         "dates": _get_dates(request),
         "pagination_data": pagination_data,
+        "collection": collection,
     }
 
     DAYS_365 = 60 * 60 * 24 * 365 * 1
