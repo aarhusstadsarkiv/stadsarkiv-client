@@ -188,9 +188,20 @@ async def get_collections_view(request: Request):
 
     collection = {}
     collection["id"] = collection_id
+    # collection_json = json.dumps(collection, indent=4, ensure_ascii=False)
+    context_variables = {
+
+    }
+
+    context = await get_context(request, context_variables)
+    return templates.TemplateResponse("records/collections.html", context)
+
+
+async def get_collections_view_json(request: Request):
+    collection_id = request.path_params["collection_id"]
+    collection = await api.proxies_collection(collection_id=collection_id)
     collection_json = json.dumps(collection, indent=4, ensure_ascii=False)
     return PlainTextResponse(collection_json)
-    pass
 
 
 async def get_records_search(request: Request):
