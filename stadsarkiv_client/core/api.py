@@ -9,6 +9,7 @@ import httpx
 import typing
 from stadsarkiv_client.core import query
 from urllib.parse import quote
+from stadsarkiv_client.core.decorators import disk_cache
 
 
 log = get_log()
@@ -337,6 +338,17 @@ async def proxies_records(request: Request, remove_keys=[], add_list_items=[]) -
 
     async with httpx.AsyncClient() as client:
         url = base_url + "/records?params=" + query_str
+        response = await client.get(url)
+
+        if response.is_success:
+            return response.json()
+        else:
+            response.raise_for_status()
+
+
+async def proxies_collection(request: Request, collection: str) -> typing.Any:
+    async with httpx.AsyncClient() as client:
+        url = f"https://www.aarhusarkivet.dk/collections/{collection}?fmt=json"
         response = await client.get(url)
 
         if response.is_success:
