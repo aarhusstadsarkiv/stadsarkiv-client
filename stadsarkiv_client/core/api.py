@@ -9,7 +9,6 @@ import httpx
 import typing
 from stadsarkiv_client.core import query
 from urllib.parse import quote
-from stadsarkiv_client.core.decorators import disk_cache
 
 
 log = get_log()

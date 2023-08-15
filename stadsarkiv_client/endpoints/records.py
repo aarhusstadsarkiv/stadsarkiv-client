@@ -191,10 +191,8 @@ async def get_records_search(request: Request):
     collection = _get_collection(query_params)
     if collection:
         collection = await api.proxies_collection(request, collection)
-        # log.debug(collection)
-        citation = collection["citation"]
-        summary = collection["summary"]
-        log.debug(summary)
+        # citation = collection["citation"]
+        # summary = collection["summary"]
 
     query_str = query.get_str(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
     records = await api.proxies_records(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
