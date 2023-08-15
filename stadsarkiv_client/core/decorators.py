@@ -61,10 +61,8 @@ def disk_cache(ttl: int, use_args: list = [], use_kwargs: list = []):
     """Cache the result of a function to disk."""
 
     def decorator(func):
-
         @functools.wraps(func)
         async def wrapper(*args, **kwargs):
-
             relevant_kwargs = {k: v for k, v in kwargs.items() if k in use_kwargs}
             relevant_args = [arg for i, arg in enumerate(args) if i in use_args]
 

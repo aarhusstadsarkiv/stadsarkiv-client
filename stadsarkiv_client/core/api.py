@@ -346,9 +346,8 @@ async def proxies_records(request: Request, remove_keys=[], add_list_items=[]) -
             response.raise_for_status()
 
 
-@disk_cache(60 * 60, use_kwargs=['collection_id'])
+@disk_cache(60 * 60, use_kwargs=["collection_id"])
 async def proxies_collection(collection_id: str) -> typing.Any:
-
     async with httpx.AsyncClient() as client:
         url = f"https://www.aarhusarkivet.dk/collections/{collection_id}?fmt=json"
         response = await client.get(url)
