@@ -2,4 +2,14 @@
 
 {% block content %}
 {% include "includes/main_title.html" %}
+
+<strong>Abstrakt</strong>
+<p>{{ collection['summary'] }}</p>
+
+<strong>Beskrivelse</strong>
+<p>{{ collection['description'] }}</p>
+
+<a href="/collections/{{ collection['id'] }}/json">JSON</a>
+
+
 {% endblock content %}

@@ -180,17 +180,15 @@ def _get_collection_id(query_params):
 
 
 async def get_collections_view(request: Request):
-    # return simple json test
-    # get url param collection_id
 
     collection_id = request.path_params["collection_id"]
-    # collection = await api.proxies_collection(collection_id=collection_id)
+    collection = await api.proxies_collection(collection_id=collection_id)
 
-    collection = {}
+    # collection = {}
     collection["id"] = collection_id
-    # collection_json = json.dumps(collection, indent=4, ensure_ascii=False)
     context_variables = {
-
+        "title": collection["display_label"],
+        "collection": collection,
     }
 
     context = await get_context(request, context_variables)
