@@ -179,6 +179,20 @@ def _get_collection_id(query_params):
             return value
 
 
+async def get_collections_view(request: Request):
+    # return simple json test
+    # get url param collection_id
+
+    collection_id = request.path_params["collection_id"]
+    # collection = await api.proxies_collection(collection_id=collection_id)
+
+    collection = {}
+    collection["id"] = collection_id
+    collection_json = json.dumps(collection, indent=4, ensure_ascii=False)
+    return PlainTextResponse(collection_json)
+    pass
+
+
 async def get_records_search(request: Request):
     q = query.get_search(request)
     size, sort = _get_size_sort(request)

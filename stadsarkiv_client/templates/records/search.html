@@ -5,7 +5,7 @@
 
 {% macro parse_facets_info(facet) %}
 {% if facet["type"] == "collection" %}
-<div class="search-citation"><a title="Læs mere om samlingen: {{ collection['citation'] }}" href="/collection/{{ collection['id'] }}">{{ collection["display_label"] }}</a></div>
+<div class="search-citation"><a title="Læs mere om samlingen: {{ collection['citation'] }}" href="/collections/{{ collection['id'] }}">{{ collection["display_label"] }}</a></div>
 {% endif %}
 {% endmacro %}
 

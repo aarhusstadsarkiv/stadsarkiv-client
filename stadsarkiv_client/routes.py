@@ -70,6 +70,7 @@ routes = [
     Route("/search/json", endpoint=records.get_records_search_json, name="records_search_json"),
     Route("/records/{record_id:str}", endpoint=records.get_record_view, name="record_view"),
     Route("/records/{record_id:str}/json/{type:str}", endpoint=records.get_record_view_json, name="record_view_json"),
+    Route("/collections/{collection_id:str}", endpoint=records.get_collections_view, name="collection_view"),
 ]
 
 if settings["environment"] == "development":
