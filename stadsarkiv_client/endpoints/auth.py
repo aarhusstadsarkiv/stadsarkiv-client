@@ -77,7 +77,7 @@ async def post_register(request: Request):
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
-        flash.set_message(request, str(e), type="error")
+        flash.set_message(request, str(e), type="error", use_settings=True)
 
     return RedirectResponse(url="/auth/register", status_code=302)
 
@@ -97,7 +97,7 @@ async def get_verify(request: Request):
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
-        flash.set_message(request, str(e), type="error")
+        flash.set_message(request, str(e), type="error", use_settings=True)
 
     return RedirectResponse(url="/", status_code=302)
 
@@ -134,7 +134,7 @@ async def post_forgot_password(request: Request):
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
-        flash.set_message(request, str(e), type="error")
+        flash.set_message(request, str(e), type="error", use_settings=True)
 
     return RedirectResponse(url="/auth/forgot-password", status_code=302)
 
@@ -161,7 +161,7 @@ async def post_reset_password(request: Request):
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
-        flash.set_message(request, str(e), type="error")
+        flash.set_message(request, str(e), type="error", use_settings=True)
 
     token = request.path_params["token"]
     return RedirectResponse(url="/auth/reset-password/" + token, status_code=302)
@@ -181,7 +181,7 @@ async def send_verify_email(request: Request):
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
-        flash.set_message(request, str(e), type="error")
+        flash.set_message(request, str(e), type="error", use_settings=True)
 
     return RedirectResponse(url="/auth/me", status_code=302)
 
