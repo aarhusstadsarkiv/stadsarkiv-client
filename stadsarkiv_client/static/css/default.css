@@ -18,9 +18,6 @@
     align-self: flex-end;
 }
 
-/**
- * Media query that set's .main-menu to display-flex when larger than 768px
- */
 .main-menu>a {
     color: white;
     font-size: 1.2em;
