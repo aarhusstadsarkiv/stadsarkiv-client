@@ -66,37 +66,50 @@
     <a href="/search?collection={{ collection['id'] }}">Vis alle resultater i samlingen</a>
 </p>
 
-
+{% if collection['has_abstract'] %}
 <h3 class="record-header">Abstrakt</h3>
 {{ parse_section('Abstrakt', 'summary')}}
 {{ parse_section('Beskrivelse', 'description')}}
 {{ parse_section('Opbygning', 'content_and_scope')}}
+{% endif %}
 
+{% if collection['has_access_usage'] %}
 <h3 class="record-header">Tilgængelighed og brug</h3>
 {{ parse_section('Tilgængelighed', 'access')}}
 {{ parse_section('Juridiske forhold', 'legal_status')}}
 {{ parse_section('Digitalisering', 'level_of_digitisation')}}
 {{ parse_section('Citation', 'citation')}}
+{% endif %}
 
+{% if collection['has_history'] %}
 <h3 class="record-header">Afleveringshistorik</h3>
 {{ parse_section('Afleveringshistorik', 'custodial_history')}}
 {{ parse_section('Kassation', 'level_of_kassation')}}
+{{ parse_section('Indkomstens status', 'accrual_status')}}
+{% endif %}
 
+{% if collection['has_literature'] %}
 <h3 class="record-header">Litteratur</h3>
 {{ parse_section('Kassation', 'level_of_kassation')}}
 {{ parse_link_list('Litteratur', 'sources')}}
+{% endif %}
 
+{% if collection['has_series'] %}
 <h3 class="record-header">Arkivserier</h3>
 <p>
     Browse i samlingens serier. Klik på en given serie for at se, hvilke materialer, der er placeret her
 </p>
 {{ parse_tree (collection['series']) }}
+{% endif %}
+
+{% if collection['has_collection_tags'] %}
 
 <h3 class="record-header">Samlingstags</h3>
 <p>
     Browse i samlingens tags. Klik på et tag for at se, hvilke materialer, der er opmærket med dette.
 </p>
 {{ parse_tree (collection['collection_tags']) }}
+{% endif %}
 
 <p><a href="/collections/{{ collection['id'] }}/json">JSON</a></p>
 
