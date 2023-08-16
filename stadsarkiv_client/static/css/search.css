@@ -43,10 +43,6 @@
     margin-left: 10px;
 }
 
-/* .facets-clickable {
-    color: var(--links)
-} */
-
 .remove {
     color: var(--flash-error-color);
 }

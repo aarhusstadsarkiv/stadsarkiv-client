@@ -180,7 +180,6 @@ def _get_collection_id(query_params):
 
 
 async def get_collections_view(request: Request):
-
     collection_id = request.path_params["collection_id"]
     collection = await api.proxies_collection(collection_id=collection_id)
 

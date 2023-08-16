@@ -1,5 +1,36 @@
 {% extends "base.html" %}
 
+{% macro parse_node(node) %}
+{% set label = node.label|trim %}
+{% set series = node.path|urlencode%}
+{% if not label %}
+{% set label = "Ingen titel" %}
+{% endif %}
+<a href="/search?collection=2&series={{ series }}">{{ label }}</a>
+{% endmacro %}
+
+
+{% macro parse_tree(nodes) %}
+    <ul>
+    {% for node in nodes %}
+        <li>
+            {% if node.children %}
+                <details>
+                    <summary>{{ parse_node(node) }}</summary>
+                    {{ parse_tree(node.children) }}
+                </details>
+            {% else %}
+                {{ parse_node(node) }}
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% endmacro %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/collections.css') }}?v={{ get_setting('version') }}">
+{% endblock head %}
+
 {% block content %}
 {% include "includes/main_title.html" %}
 
@@ -8,6 +39,13 @@
 
 <strong>Beskrivelse</strong>
 <p>{{ collection['description'] }}</p>
+
+<strong>Opbygning</strong>
+<p>{{ collection['content_and_scope'] }}</p>
+
+{{ parse_tree (collection['series']) }}
+
+{{ parse_tree (collection['collection_tags']) }}
 
 <a href="/collections/{{ collection['id'] }}/json">JSON</a>
 
