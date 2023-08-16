@@ -6,9 +6,8 @@
 {% if not label %}
 {% set label = "Ingen titel" %}
 {% endif %}
-<a href="/search?collection=2&series={{ series }}">{{ label }}</a>
+<a href="/search?collection={{ collection['id'] }}&series={{ series }}">{{ label }}</a>
 {% endmacro %}
-
 
 {% macro parse_tree(nodes) %}
     <ul>
@@ -27,27 +26,78 @@
     </ul>
 {% endmacro %}
 
+{% macro parse_section(title, section) %}
+{% if collection[section] %}
+    <div class="record-content">
+        <div class="label">
+            {{ title }}
+        </div>
+        <div class="content">
+            {{ paragraphs(collection[section])|safe }}
+        </div>
+    </div>
+{% endif %}
+{% endmacro %}
+
+{% macro parse_link_list(title, section) %}
+{% if collection[section] %}
+<div class="record-content">
+    <div class="label">
+        {{ title }}
+    </div>
+    <div class="content">
+        {% for source in collection[section] %}
+        <p>
+            <a href="{{ source }}">{{ urldecode(source)|truncate(40) }}</a>
+        </p>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endmacro %}
+
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/collections.css') }}?v={{ get_setting('version') }}">
 {% endblock head %}
 
 {% block content %}
 {% include "includes/main_title.html" %}
+<p>
+    <a href="/search?collection={{ collection['id'] }}">Vis alle resultater i samlingen</a>
+</p>
+
 
 <h3 class="record-header">Abstrakt</h3>
-<p>{{ collection['summary'] }}</p>
+{{ parse_section('Abstrakt', 'summary')}}
+{{ parse_section('Beskrivelse', 'description')}}
+{{ parse_section('Opbygning', 'content_and_scope')}}
 
-<h3 class="record-header">Beskrivelse</h3>
-<p>{{ collection['description'] }}</p>
+<h3 class="record-header">Tilgængelighed og brug</h3>
+{{ parse_section('Tilgængelighed', 'access')}}
+{{ parse_section('Juridiske forhold', 'legal_status')}}
+{{ parse_section('Digitalisering', 'level_of_digitisation')}}
+{{ parse_section('Citation', 'citation')}}
 
-<h3 class="record-header">Opbygning</h3>
-<p>{{ collection['content_and_scope'] }}</p>
+<h3 class="record-header">Afleveringshistorik</h3>
+{{ parse_section('Afleveringshistorik', 'custodial_history')}}
+{{ parse_section('Kassation', 'level_of_kassation')}}
 
+<h3 class="record-header">Litteratur</h3>
+{{ parse_section('Kassation', 'level_of_kassation')}}
+{{ parse_link_list('Litteratur', 'sources')}}
+
+<h3 class="record-header">Arkivserier</h3>
+<p>
+    Browse i samlingens serier. Klik på en given serie for at se, hvilke materialer, der er placeret her
+</p>
 {{ parse_tree (collection['series']) }}
 
+<h3 class="record-header">Samlingstags</h3>
+<p>
+    Browse i samlingens tags. Klik på et tag for at se, hvilke materialer, der er opmærket med dette.
+</p>
 {{ parse_tree (collection['collection_tags']) }}
 
-<a href="/collections/{{ collection['id'] }}/json">JSON</a>
-
+<p><a href="/collections/{{ collection['id'] }}/json">JSON</a></p>
 
 {% endblock content %}
