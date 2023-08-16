@@ -125,7 +125,7 @@
 }
 
 .container {
-    padding: 0 20px;
+    padding: 20px 20px;
     width: 100%;
     max-width: var(--container-width);
     margin: 0 auto;

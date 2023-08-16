@@ -1,28 +1,25 @@
 .record-section {
     display: flex;
     flex-direction: row;
-    gap: 20px; 
+    gap: 20px;
+    margin: 20px 0;
+
 }
 
 h3.record-header {
     border-bottom: 1px solid #cacaca;
     padding-bottom: 0.2rem;
-    margin-top: 1.6rem;
-    margin-bottom: 1rem;
     width: 100%;
 }
 
 .record-representation {
-    flex: 1 0 40%;
-    min-width: 40%;
-    text-align: center;
-    
+    flex: 1 0 45%;
 }
 
-.record-icon > span {
+.record-icon>span {
     padding-top: 0px;
     font-size: 12em;
-    
+
 }
 
 @media (max-width: 992px) {
@@ -42,8 +39,8 @@ h3.record-header {
     }
 }
 
-.record-image > img {
-    box-shadow: 2px 2px 5px #555; 
+.record-image>img {
+    box-shadow: 2px 2px 5px #555;
 }
 
 .record-main {
@@ -54,33 +51,38 @@ h3.record-header {
     display: flex;
     margin-bottom: 1rem;
     flex-wrap: nowrap;
+    align-items: flex-start;
 }
 
-.record-content > .label {
+@media (max-width: 576px) {
+    .record-content {
+        flex-direction: column;
+    }
+}
+
+
+.record-content>.label {
     text-transform: uppercase;
     font-weight: bold;
-    padding-top: 0.2rem;
+    padding: 0.2rem 0;
     font-size: 75%;
-    width: 13em;
     min-width: 13em;
-    word-wrap: break-word;
-
 }
 
-.record-content > .content {
+.record-content>.content {
     flex: 1 1 0px;
 }
 
-.record-content > .content > p {
-    margin: 0; 
-    padding: 0; 
+.record-content>.content>p {
+    margin: 0;
+    padding-bottom: 10px;
 }
 
-.record-content > .content > p.spacing {
+.record-content>.content>p.spacing {
     margin-bottom: 10px;
 }
 
-.record-content > .content > p.spacing:last-child {
+.record-content>.content>p.spacing:last-child {
     margin-bottom: 0px;
 }
 
@@ -91,7 +93,6 @@ h3.record-header {
     background-color: rgb(250, 250, 196);
     border-radius: 5px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
-    text-align: left;
 }
 
 .record-title {
@@ -115,12 +116,13 @@ h3.record-header {
 
 .record-prev-next {
     display: flex;
-    gap: 10px; 
+    gap: 10px;
 }
 
-.record-search-link, .record-pages-info {
+.record-search-link,
+.record-pages-info {
     font-size: 1.0em;
-    margin-right: 20px; 
+    margin-right: 20px;
 }
 
 @media screen and (max-width: 568px) {
@@ -129,7 +131,8 @@ h3.record-header {
     }
 }
 
-.record-prev-next a, .record-prev-next span {
+.record-prev-next a,
+.record-prev-next span {
     display: inline-block;
     padding: 5px 15px;
     border: 1px solid var(--border);
@@ -152,6 +155,7 @@ h3.record-header {
     background-color: var(--selection);
 }
 
-.record-prev-next a, .record-prev-next span {
+.record-prev-next a,
+.record-prev-next span {
     min-width: 40px;
 }
