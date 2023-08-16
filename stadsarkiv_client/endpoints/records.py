@@ -9,7 +9,7 @@ from stadsarkiv_client.core import api
 import json
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.normalize_facets import NormalizeFacets
-from stadsarkiv_client.records.meta_data import get_meta_data
+from stadsarkiv_client.records.meta_data_record import get_meta_data
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import query
 from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
