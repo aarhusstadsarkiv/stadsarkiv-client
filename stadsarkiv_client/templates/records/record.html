@@ -31,10 +31,10 @@
 {% macro parse_record_label (label) %}
 <div class="label">
     {% if settings.skip_translate %}
-    <strong>{{ label }} </strong>
+    {{ label }}
     {% else %}
     {% set label = "label_record_" + label %}
-    <strong>{{ translate(label) }} </strong>
+    {{ translate(label) }}
     {% endif %}
 </div>
 {% endmacro %}
@@ -211,9 +211,7 @@
 {% endif %}
 
 {% if record["record_type"] == 'sejrs_sedler' %}
-<div class="record-sejrs-sedler">
-    {{ record['summary'] }}
-</div>
+<div class="record-sejrs-sedler">{{ record['summary']|trim }}</div>
 {% endif %}
 {% endmacro %}
 
