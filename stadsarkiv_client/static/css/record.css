@@ -1,6 +1,7 @@
 .record-section {
     display: flex;
     flex-direction: row;
+    gap: 20px; 
 }
 
 h3.record-header {
@@ -12,7 +13,6 @@ h3.record-header {
 }
 
 .record-representation {
-    padding-right: 25px;
     flex: 1 0 40%;
     min-width: 40%;
     text-align: center;

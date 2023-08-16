@@ -34,13 +34,13 @@
 {% block content %}
 {% include "includes/main_title.html" %}
 
-<strong>Abstrakt</strong>
+<h3 class="record-header">Abstrakt</h3>
 <p>{{ collection['summary'] }}</p>
 
-<strong>Beskrivelse</strong>
+<h3 class="record-header">Beskrivelse</h3>
 <p>{{ collection['description'] }}</p>
 
-<strong>Opbygning</strong>
+<h3 class="record-header">Opbygning</h3>
 <p>{{ collection['content_and_scope'] }}</p>
 
 {{ parse_tree (collection['series']) }}

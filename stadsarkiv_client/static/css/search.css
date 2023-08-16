@@ -7,9 +7,7 @@
 .search-result {
     box-sizing: border-box;
     background-color: var(--background-body);
-    padding: 10px;
-    padding-left: 2px;
-    margin-right: 2px;
+    padding: 10px 0;
     border-top: 1px solid #e6e6e6;
 
 }
