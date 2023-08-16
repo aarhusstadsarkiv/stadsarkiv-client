@@ -8,6 +8,7 @@ from stadsarkiv_client.core.dynamic_settings import get_setting
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.format_date import format_date
 import json
+import re
 
 
 log = get_log()
@@ -51,7 +52,20 @@ def to_json(variable):
     return json.dumps(variable, indent=4, ensure_ascii=False)
 
 
+def paragraphs(value):
+    """Normalize newlines, then wrap content split by newlines in <p></p>."""
+    # Normalize newlines
+    normalized = re.sub(r'(\r\n|\r|\n)+', '\n', value).strip()
+
+    # Split by newline and wrap each segment in <p></p>
+    segments = normalized.split('\n')
+    wrapped = ['<p>{}</p>'.format(segment) for segment in segments]
+
+    return ''.join(wrapped)
+
+
 templates.env.globals.update(translate=translate)
 templates.env.globals.update(get_setting=get_setting)
 templates.env.globals.update(format_date=format_date)
 templates.env.globals.update(to_json=to_json)
+templates.env.globals.update(paragraphs=paragraphs)
