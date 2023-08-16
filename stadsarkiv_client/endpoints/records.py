@@ -9,10 +9,11 @@ from stadsarkiv_client.core import api
 import json
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.normalize_facets import NormalizeFacets
-from stadsarkiv_client.records.meta_data_record import get_meta_data
+from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import query
 from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
+from stadsarkiv_client.collections.meta_data_collections import get_collection_meta_data
 import asyncio
 
 
@@ -183,6 +184,9 @@ async def get_collections_view(request: Request):
     collection_id = request.path_params["collection_id"]
     collection = await api.proxies_collection(collection_id=collection_id)
 
+    meta_data = get_collection_meta_data(collection)
+    collection = {**collection, **meta_data}
+
     # collection = {}
     collection["id"] = collection_id
     context_variables = {
@@ -197,6 +201,10 @@ async def get_collections_view(request: Request):
 async def get_collections_view_json(request: Request):
     collection_id = request.path_params["collection_id"]
     collection = await api.proxies_collection(collection_id=collection_id)
+
+    meta_data = get_collection_meta_data(collection)
+    collection = {**collection, **meta_data}
+
     collection_json = json.dumps(collection, indent=4, ensure_ascii=False)
     return PlainTextResponse(collection_json)
 
@@ -277,7 +285,7 @@ async def get_record_view(request: Request):
     permissions = await api.me_permissions(request)
     record = await api.proxies_record_get_by_id(record_id)
 
-    metadata = get_meta_data(request, record)
+    metadata = get_record_meta_data(request, record)
     record = {**record, **metadata}
 
     record_altered = record_alter.record_alter(request, record)
@@ -309,7 +317,7 @@ async def get_record_view_json(request: Request):
 
         record = await api.proxies_record_get_by_id(record_id)
 
-        metadata = get_meta_data(request, record)
+        metadata = get_record_meta_data(request, record)
         record_altered = {**record, **metadata}
 
         record_altered = record_alter.record_alter(request, record_altered)

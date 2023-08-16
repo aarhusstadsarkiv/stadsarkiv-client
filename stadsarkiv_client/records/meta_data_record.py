@@ -111,7 +111,7 @@ def _get_meta_title(record_dict: dict):
     return title
 
 
-def get_meta_data(request: Request, record: dict) -> dict[str, typing.Any]:
+def get_record_meta_data(request: Request, record: dict) -> dict[str, typing.Any]:
     meta_data = {}
 
     meta_data["allowed_by_ip"] = _is_allowed_by_ip(request)
