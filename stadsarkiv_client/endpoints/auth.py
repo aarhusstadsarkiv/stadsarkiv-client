@@ -25,6 +25,7 @@ async def get_login(request: Request):
 
 
 async def post_login_jwt(request: Request):
+
     try:
         await api.auth_jwt_login_post(request)
         flash.set_message(request, translate("You have been logged in."), type="success", remove=True)
@@ -35,7 +36,7 @@ async def post_login_jwt(request: Request):
         return RedirectResponse(url="/auth/login", status_code=302)
     except Exception as e:
         log.exception(e)
-        flash.set_message(request, str(e), type="error")
+        flash.set_message(request, str(e), type="error", use_settings=True)
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))

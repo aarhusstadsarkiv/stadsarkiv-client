@@ -1,7 +1,8 @@
 import typing
+from stadsarkiv_client.core.dynamic_settings import settings
 
 
-def set_message(request, message, type="notice", remove=True) -> None:
+def set_message(request, message, type="notice", remove=True, use_settings=False) -> None:
     """Set a flash message to be displayed to the user.
     Args:
         request: The request object.
@@ -11,6 +12,9 @@ def set_message(request, message, type="notice", remove=True) -> None:
     """
     if type not in ["notice", "success", "warning", "error"]:
         type = "notice"
+
+    if use_settings:
+        message = settings["custom_error"]
 
     request.session.setdefault("flash", []).append({"type": type, "message": message, "remove": remove})
 

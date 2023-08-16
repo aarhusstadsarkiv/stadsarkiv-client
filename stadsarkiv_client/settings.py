@@ -31,6 +31,7 @@ settings: dict[str, typing.Any] = {
         "secure": cookie_secure,
         "samesite": "lax",
     },
+    "custom_error": "Der skete en system fejl. Prøv igen lidt senere!",
     "api_base_url": "https://dev.openaws.dk/v1",
     "main_menu": [
         {"name": "login", "title": "Log ind"},
