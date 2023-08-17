@@ -56,12 +56,38 @@
 {% endif %}
 {% endmacro %}
 
+{% macro slider(images) %}
+<div class="slideshow-container">
+
+    {% for image in images %}
+    <div class="slide">
+        <img src="{{ image }}" alt="Slide {{ loop.index }}">
+    </div>
+    {% endfor %}
+
+    <a href="#" class="prev">&#10094;</a>
+    <a href="#" class="next">&#10095;</a>
+
+    <div class="slide-counter">
+        <span class="current-slide">1</span> / <span class="total-slides">2</span>
+    </div>
+</div>
+<script type="module">
+    import { } from "/static/js/slideshow.js";
+</script>
+
+{% endmacro %}
+
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/collections.css') }}?v={{ get_setting('version') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/slideshow.css') }}?v={{ get_setting('version') }}">
 {% endblock head %}
 
 {% block content %}
 {% include "includes/main_title.html" %}
+
+{{ slider(collection['highlights'])}}
+
 <p>
     <a href="/search?collection={{ collection['id'] }}">Vis alle resultater i samlingen</a>
 </p>
