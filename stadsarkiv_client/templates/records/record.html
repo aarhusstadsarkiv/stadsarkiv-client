@@ -186,7 +186,10 @@
 
 {% macro parse_representations_media(record) %}
 {% if record["record_type"] == 'image' %}
-    <img src="{{record['portrait']}}" alt="{{ section }}" />
+    <img class="record-image" src="{{record['portrait']}}" alt="{{ section }}" />
+    <div id="overlay" class="overlay-hidden">
+        <img id="overlay-image" src="{{record['representations']['large_image']}}" alt="Large Image">
+    </div>
 {% endif %}
 
 {% if record["record_type"] == 'video' %}
@@ -264,6 +267,10 @@
 {% endmacro %}
 
 {% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
+{% endblock head %}
 
 {% block content %}
 {# include "includes/main_title.html" #}
