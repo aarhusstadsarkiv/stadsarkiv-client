@@ -55,6 +55,13 @@ def _has_collection_tags(collection: dict):
     return False
 
 
+def _has_highlights(collection: dict):
+    if "highlights" in collection and len(collection["highlights"]) > 0:
+        return True
+
+    return False
+
+
 def get_collection_meta_data(collection: dict):
     meta_data = {}
     meta_data["has_abstract"] = _has_abstract(collection)
@@ -63,5 +70,6 @@ def get_collection_meta_data(collection: dict):
     meta_data["has_litteratur"] = _has_litteratur(collection)
     meta_data["has_series"] = _has_series(collection)
     meta_data["has_collection_tags"] = _has_collection_tags(collection)
+    meta_data["has_highlights"] = _has_highlights(collection)
 
     return meta_data

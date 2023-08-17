@@ -57,7 +57,6 @@
 {% endmacro %}
 
 {% macro slider(images) %}
-
 <div class="slideshow-container">
     {% for image in images %}
     <div class="slide">
@@ -87,7 +86,9 @@
 {% block content %}
 {% include "includes/main_title.html" %}
 
+{% if collection['has_highlights'] %}
 {{ slider(collection['highlights'])}}
+{% endif %}
 
 <p>
     <a href="/search?collection={{ collection['id'] }}">Vis alle resultater i samlingen</a>
