@@ -57,8 +57,8 @@
 {% endmacro %}
 
 {% macro slider(images) %}
-<div class="slideshow-container">
 
+<div class="slideshow-container">
     {% for image in images %}
     <div class="slide">
         <img src="{{ image }}" alt="Slide {{ loop.index }}">
@@ -72,6 +72,7 @@
         <span class="current-slide">1</span> / <span class="total-slides">2</span>
     </div>
 </div>
+
 <script type="module">
     import { } from "/static/js/slideshow.js";
 </script>

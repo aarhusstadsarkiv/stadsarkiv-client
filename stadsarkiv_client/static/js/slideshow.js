@@ -13,12 +13,12 @@ function showSlide(n) {
 
     // wrap to the start
     if (n >= slides.length) {
-        currentSlideIndex = 0;  
+        currentSlideIndex = 0;
     }
 
     // wrap to the end
     if (n < 0) {
-        currentSlideIndex = slides.length - 1;  
+        currentSlideIndex = slides.length - 1;
     }
 
     // Hide all slides
@@ -36,14 +36,24 @@ function showSlide(n) {
 }
 
 
-document.querySelector(".prev").addEventListener("click", function(event) {
+document.querySelector(".prev").addEventListener("click", function (event) {
     event.preventDefault();
     moveSlide(-1);
-})
+});
 
-document.querySelector(".next").addEventListener("click", function(event) {
+document.querySelector(".next").addEventListener("click", function (event) {
     event.preventDefault();
     moveSlide(1);
-})
+});
 
-export {  }
+document.addEventListener("keydown", function (event) {
+    if (event.key === "ArrowLeft") {
+        moveSlide(-1);
+        event.preventDefault();
+    } else if (event.key === "ArrowRight") {
+        moveSlide(1);
+        event.preventDefault();
+    }
+});
+
+export { }

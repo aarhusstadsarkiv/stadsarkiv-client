@@ -16,12 +16,12 @@
         {% if record_pagination.prev_record is none %}
         <span class="disabled">&lt;</span>
         {% else %}
-        <a href="/records/{{ record_pagination.prev_record }}?search={{ record_pagination.prev_page }}">&lt;</a>
+        <a class="prev" href="/records/{{ record_pagination.prev_record }}?search={{ record_pagination.prev_page }}">&lt;</a>
         {% endif %}
         {% if record_pagination.next_record is none %}
         <span class="disabled">&gt;</span>
         {% else %}
-        <a href="/records/{{ record_pagination.next_record }}?search={{ record_pagination.next_page }}">&gt;</a>
+        <a class="next" href="/records/{{ record_pagination.next_record }}?search={{ record_pagination.next_page }}">&gt;</a>
         {% endif %}
         
     </div>
@@ -289,5 +289,9 @@
 </p>
 
 {% endif %}
+
+<script type="module">
+    import {  } from "/static/js/record.js";
+</script>
 
 {% endblock content %}
