@@ -1,8 +1,10 @@
 .slideshow-container {
+    width: 100%;
+    margin: 0 auto;
     height: 0;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio; adjust as needed */
+    padding-bottom: 400px;
     position: relative;
-    background-color: #f5f5f5; /* to fill gaps with a color */
+    background-color: #f5f5f5;
 }
 
 .slideshow-container img {
@@ -31,7 +33,7 @@
     transition: 0.6s;
     border-radius: 0 3px 3px 0;
     user-select: none;
-    background-color: grey;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .next {
@@ -46,8 +48,8 @@
 
 .slide-counter {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    top: 0;
+    right: 0;
     color: white;
     background-color: rgba(0, 0, 0, 0.5);
     padding: 5px 10px;
