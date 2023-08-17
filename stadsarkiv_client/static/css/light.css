@@ -1,6 +1,10 @@
 :root {
   --background-body: #fff;
-  --background: #efefef;
+
+  /**
+   * Used in slideshow.css
+   */
+  --background: #efefef; 
   --background-alt: aliceblue;
   --selection: #9e9e9e;
   --text-main: #363636;
@@ -29,4 +33,6 @@
   --breakpoint-small: 576px; /* can not be used in media queries - just to remember */
   --breakpoint-medium: 768px;
   --breakpoint-large: 992px;
+  --transparent-black: rgba(0, 0, 0, 0.5);
+  --transparent-blacker: rgba(0, 0, 0, 0.8);
 }

@@ -39,8 +39,9 @@ h3.record-header {
     }
 }
 
-.record-image>img {
-    box-shadow: 2px 2px 5px #555;
+.record-image  {
+    /* box-shadow: 2px 2px 5px #555; */
+    cursor: pointer;
 }
 
 .record-main {
