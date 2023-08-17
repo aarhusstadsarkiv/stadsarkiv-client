@@ -144,7 +144,7 @@ h3.record-header {
     transition: background-color 0.3s ease;
 }
 
-.record-prev-next a:hover {
+.record-prev-next a:hover, a.active  {
     background-color: #e0e0e0;
     border-color: #c0c0c0;
 }
