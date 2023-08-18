@@ -1,3 +1,8 @@
+// Display .prev .next .slide-counter
+document.querySelector(".prev").style.display = "block";
+document.querySelector(".next").style.display = "block";
+document.querySelector(".slide-counter").style.display = "block";
+
 let currentSlideIndex = 0;
 
 showSlide(currentSlideIndex);
@@ -35,24 +40,38 @@ function showSlide(n) {
     totalSlidesElem.textContent = slides.length;
 }
 
+// Add auto slide show
+const SECONDS = 15;
+let autoSlideShow = setInterval(function () {
+    moveSlide(1);
+}, 1000 * SECONDS);
 
-document.querySelector(".prev").addEventListener("click", function (event) {
+// Click events
+const prev = document.querySelector(".prev");
+const next = document.querySelector(".next");
+
+prev.addEventListener("click", function (event) {
+    clearInterval(autoSlideShow);
     event.preventDefault();
     moveSlide(-1);
 });
 
-document.querySelector(".next").addEventListener("click", function (event) {
+next.addEventListener("click", function (event) {
+    clearInterval(autoSlideShow);
     event.preventDefault();
     moveSlide(1);
 });
 
+// Keyboard events
 document.addEventListener("keydown", function (event) {
     if (event.key === "ArrowLeft") {
+        clearInterval(autoSlideShow);
+        event.preventDefault();
         moveSlide(-1);
-        event.preventDefault();
     } else if (event.key === "ArrowRight") {
-        moveSlide(1);
+        clearInterval(autoSlideShow);
         event.preventDefault();
+        moveSlide(1);
     }
 });
 
