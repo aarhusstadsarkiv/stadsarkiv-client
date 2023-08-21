@@ -3,6 +3,7 @@
 {% set debug = True %}
 {# the follwing is needed for allowing searching in media, e.g. video or audio #}
 {% set azure_allow_media_search = "sp=r&st=2023-02-03T12:19:05Z&se=2030-04-01T19:19:05Z&spr=https&sv=2021-06-08&sr=c&sig=QK9mOWt0oZ%2FtiY5biruFo0eGPirtjHYEQ061tPuZYHU%3D" %}
+{% import "macros/common_fields.html" as common_fields %}
 
 {% macro parse_record_pagination(record_pagination) %}
 <div class="record-pagination">
@@ -151,39 +152,6 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_section(section) %}
-{% for key, field in section.items() %}
-
-    {% set type = field["type"] %}
-    {% set value = field["value"] %}
-
-    {% if type == "string" %}
-    {{ parse_string(key, value) }}
-    {% elif type == "date" %}
-    {{ parse_date(key, value) }}
-    
-    {% elif type == "key_value_dicts" %}
-    
-    {% if settings.update({'skip_translate': True}) %} {% endif %}
-    {{ parse_key_value_dicts(value ) }}
-    {% if settings.update({'skip_translate': False}) %} {% endif %}
-
-    {% elif type == "string_list" %}
-    {{ parse_string_list(key, value ) }}
-    {% elif type == "link_list" %}
-    {{ parse_link_list(key, value ) }}
-    {% elif type == "link_dict" %}
-    {{ parse_link_dict(key, value ) }}
-    {% elif type == "link_list_hierarchy" %}
-    {{ parse_link_list_hierarchy(key, value ) }}
-    {% elif type == "representations" %}
-    {{ parse_representations(key, value ) }}
-    {% else %}
-    {{ key }} {{ field }}
-    {% endif %}
-{% endfor %}
-{% endmacro %}
-
 {% macro parse_representations_media(record) %}
 {% if record["record_type"] == 'image' %}
     <img class="record-image" src="{{record['portrait']}}" alt="{{ section }}" />
@@ -227,7 +195,7 @@
 </div>    
 {% endmacro %}
 
-{% macro parse_representations_section(record) %}
+{% macro parse_representations_block(record) %}
 {% if record["is_representations_online"] %}
 {{ parse_representations_media(record)}}
 {% elif record["availability_id"] == 3 %}
@@ -237,33 +205,81 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_sections(record, record_sections) %}
-    {% for section, section_dict in record_sections.items() %}
+{% macro parse_representation_block(record) %}
+{% if record["has_representations"] %}
+<div class="record-representation">
+{{ parse_representations_block(record) }}
+</div>
+{% else %}
+<div class="record-representation">
+    {{ parse_representations_icon(record["icon"]["icon"], record["icon"]["label"]) }}
+</div>
+{% endif %}
+{% endmacro %}
 
-    <div class="record-section">
-        {% if section in ['Kernedata'] %}
-            
-            {% if record["has_representations"] %}
-            <div class="record-representation">
-            {{ parse_representations_section(record) }}
-            </div>
-            {% else %}
-            <div class="record-representation">
-                {{ parse_representations_icon(record["icon"]["icon"], record["icon"]["label"]) }}
-            </div>
-            {% endif %}
-            <div class="record-main">
-                <div class="record-title">{{ record["title"] }}</div>
-                {{ parse_section(section_dict) }}
-            </div>        
-        {% else %}
-        <div class="record-main">
-            <h3 class="record-header">{{ section }}</h3>
-            {{ parse_section(section_dict) }}
-        </div>
+{% macro parse_block_section(field) %}
+
+{% set type = field["type"] %}
+{% set value = field["value"] %}
+{% set key = field["name"] %}
+
+{% if type == "string" %}
+{{ parse_string(key, value) }}
+{% elif type == "date" %}
+{{ parse_date(key, value) }}
+
+{% elif type == "key_value_dicts" %}
+{{ "test"}}
+{% if settings.update({'skip_translate': True}) %} {% endif %}
+{{ parse_key_value_dicts(value ) }}
+{% if settings.update({'skip_translate': False}) %} {% endif %}
+
+{% elif type == "string_list" %}
+{{ parse_string_list(key, value ) }}
+{% elif type == "link_list" %}
+{{ parse_link_list(key, value ) }}
+{% elif type == "link_dict" %}
+{{ parse_link_dict(key, value ) }}
+{% elif type == "link_list_hierarchy" %}
+{{ parse_link_list_hierarchy(key, value ) }}
+{% elif type == "representations" %}
+{{ parse_representations(key, value ) }}
+{% else %}
+{{ key }} {{ field }}
+{% endif %}
+
+{% endmacro %}
+
+{% macro parse_block_common(title, block_keys) %}
+{% if key_exist_in_dict(block_keys, record_and_types) %}
+<div class="record-section">
+    <div class="record-main">
+        <h3 class="record-header">{{ title }}</h3>
+        {% for key in block_keys %}
+        {% if key in record_and_types %}
+        {{ parse_block_section(record_and_types[key]) }}
         {% endif %}
+        {% endfor %}
     </div>
-    {% endfor %}
+</div> 
+{% endif %}
+{% endmacro %}
+
+{% macro parse_block_first(block_keys) %}
+{% if key_exist_in_dict(block_keys, record_and_types) %}
+<div class="record-section">
+    {{ parse_representation_block(record_altered) }}
+
+    <div class="record-main">
+        <div class="record-title">{{ record_altered["title"] }}</div>
+        {% for key in block_keys %}
+        {% if key in record_and_types %}
+        {{ parse_block_section(record_and_types[key]) }}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div> 
+{% endif %}
 {% endmacro %}
 
 {% extends "base.html" %}
@@ -275,7 +291,34 @@
 {% block content %}
 
 {{ parse_record_pagination(record_pagination) }}
-{{ parse_sections(record_altered, sections) }}
+{% set keys = ["collectors", "content_types", "creators", "date_normalized", "curators", "id"] %}
+{{ parse_block_first(keys) }}
+{% set keys = ["heading", "summary", "desc_notes", "collection", "series", "collection_tags", "subjects" ] %}
+{{ parse_block_common('Beskrivelse', keys) }}
+{% set keys = ["copyright_status_normalized"] %}
+{{ parse_block_common('Ophavsret', keys) }}
+{% set keys = ["desc_data"] %}
+{{ parse_block_common('Beskrivelsesdata', keys) }}
+{% set keys = ["locations", "organisations", "events", "people", "objects"] %}
+{{ parse_block_common('Relationer', keys) }}
+{% set keys = ["rights_notes"] %}
+{{ parse_block_common('Rettighedsnoter', keys) }}
+{% set keys = ["contractual_status_normalized", "other_legal_restrictions_normalized"] %}
+{{ parse_block_common('Anden juridisk beskyttelse', keys) }}
+{% set keys = ["availability_normalized"] %}
+{{ parse_block_common('Tilgængelighed', keys) }}
+{% set keys = ["ordering_normalized"] %}
+{{ parse_block_common('Bestilling', keys) }}
+{% set keys = ["admin_notes", "admin_data", "registration_id", "created_by", "created", "last_updated_by", "last_updated"] %}
+
+{% if is_employee %}
+{{ parse_block_common('Administration', keys) }}
+{% set keys = ["resources"] %}
+{{ parse_block_common('Resourcer', keys) }}
+{% endif %}
+
+{% set keys = ["representations"] %}
+{{ parse_block_common('Download', keys) }}
 
 {% if get_setting('debug') %}
 
@@ -287,9 +330,6 @@
 </p>
 <p>
     <a href="{{ request.url.path }}/json/record_and_types">JSON (With types)</a>
-</p>
-<p>
-    <a href="{{ request.url.path }}/json/record_sections">JSON (Record in sections)</a>
 </p>
 
 {% endif %}

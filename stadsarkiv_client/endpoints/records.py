@@ -10,7 +10,6 @@ import json
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.normalize_facets import NormalizeFacets
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
-from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import query
 from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
 
@@ -284,8 +283,6 @@ async def get_records_search_json(request: Request):
 async def get_record_view(request: Request):
     record_pagination = await _get_record_prev_next(request)
     record_id = request.path_params["record_id"]
-    record_sections = settings["record_sections"]
-    record_sections_employee = settings["record_sections_employee"]
     permissions = await api.me_permissions(request)
     record = await api.proxies_record_get_by_id(record_id)
 
@@ -294,18 +291,13 @@ async def get_record_view(request: Request):
 
     record_altered = record_alter.record_alter(request, record)
     record_and_types = record_alter.get_record_and_types(record_altered)
-    sections = record_alter.get_section_data(record_sections, record_and_types)
-
-    if "employee" not in permissions:
-        for section in record_sections_employee:
-            if section in sections:
-                del sections[section]
 
     context_variables = {
+        "is_employee": "employee" in permissions,
         "title": record_altered["title"],
         "meta_title": record_altered["meta_title"],
         "record_altered": record_altered,
-        "sections": sections,
+        "record_and_types": record_and_types,
         "record_pagination": record_pagination,
     }
 
@@ -317,7 +309,6 @@ async def get_record_view_json(request: Request):
     try:
         record_id = request.path_params["record_id"]
         type = request.path_params["type"]
-        record_sections = settings["record_sections"]
 
         record = await api.proxies_record_get_by_id(record_id)
 
@@ -326,7 +317,6 @@ async def get_record_view_json(request: Request):
 
         record_altered = record_alter.record_alter(request, record_altered)
         record_and_types = record_alter.get_record_and_types(record_altered)
-        sections = record_alter.get_section_data(record_sections, record_and_types)
 
         if type == "record":
             record_json = json.dumps(record, indent=4, ensure_ascii=False)
@@ -339,10 +329,6 @@ async def get_record_view_json(request: Request):
         elif type == "record_and_types":
             record_and_types_json = json.dumps(record_and_types, indent=4, ensure_ascii=False)
             return PlainTextResponse(record_and_types_json)
-
-        elif type == "record_sections":
-            record_sections_json = json.dumps(sections, indent=4, ensure_ascii=False)
-            return PlainTextResponse(record_sections_json)
         else:
             raise HTTPException(404, detail="type not found", headers=None)
 

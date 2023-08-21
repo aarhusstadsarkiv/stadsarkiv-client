@@ -1,0 +1,128 @@
+{% set settings = {'skip_translate': False} %}
+{% set search_base_url = get_setting('search_base_url') %}
+
+{% macro parse_record_pagination(record_pagination) %}
+<div class="record-pagination">
+    <div class="record-search-link">
+        <a href="/search?{{ record_pagination['query_str'] }}">{{translate('Latest search') }}</a> 
+    </div>
+    <div class="record-pages-info">
+        ({{ translate ('Page') }} {{ record_pagination["current_page"] }} / {{ record_pagination["total"] }})
+    </div>
+    <div class="record-prev-next">
+        {% if record_pagination.prev_record is none %}
+        <span class="disabled">&lt;</span>
+        {% else %}
+        <a class="prev" href="/records/{{ record_pagination.prev_record }}?search={{ record_pagination.prev_page }}">&lt;</a>
+        {% endif %}
+        {% if record_pagination.next_record is none %}
+        <span class="disabled">&gt;</span>
+        {% else %}
+        <a class="next" href="/records/{{ record_pagination.next_record }}?search={{ record_pagination.next_page }}">&gt;</a>
+        {% endif %}   
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_record_label (label) %}
+<div class="label">
+    {% if settings.skip_translate %}
+    {{ label }}
+    {% else %}
+    {% set label = "label_record_" + label %}
+    {{ translate(label) }}
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro parse_string (key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key)}}
+    <div class="content">
+        <p>
+            {{ value }}
+        </p>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_date (key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key)}}
+    <div class="content">
+        <p>
+            {{ format_date(value) }}
+        </p>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro _parse_key_value_dict (value) %}
+{% for key, item in value.items() %}
+{{ parse_string(key, item) }}
+{% endfor %}
+{% endmacro %}
+
+{% macro parse_key_value_dicts(value) %}
+{% for item in value %}
+{{ _parse_key_value_dict(item)}}
+{% if not loop.last %} <hr> {% endif %}
+{% endfor %}
+{% endmacro %}
+
+{% macro parse_link_dict(key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key) }}
+    <div class="content">
+        <p>
+            <a href="{{ search_base_url }}?{{ value['search_query'] }}">{{ value["label"] }}</a>
+        </p>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_link_list (key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key) }}
+    <div class="content">
+            {% for link in value %}
+            <p>
+                <a href="{{ search_base_url }}?{{ link['search_query'] }}">{{ link["label"] }}</a>
+            </p>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_string_list (key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key) }}
+    <div class="content">
+        {% for item in value %}
+        <p>{{ item|safe }}</p>
+        {% endfor %}
+
+    </div>
+</div>
+{% endmacro %}
+
+{% macro _parse_list_in_hierarchy (value) %}
+<div>
+{% for item in value %}
+<a href="{{ search_base_url }}?{{ item['search_query'] }}">{{ item['label'] }}</a>
+    {% if not loop.last %} {{ '>' }} {% endif %}
+{% endfor %}
+</div>
+{% endmacro %}
+
+{% macro parse_link_list_hierarchy (label, value) %}
+<div class="record-content">
+    {{ parse_record_label(label)}}
+    <div class="content">
+        {% for item in value %}
+        {{ _parse_list_in_hierarchy(item) }}
+        {% endfor %}        
+    </div>
+</div>
+{% endmacro %}

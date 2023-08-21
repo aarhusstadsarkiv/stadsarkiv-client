@@ -18,7 +18,6 @@ def record_alter(request: Request, record: dict):
     record = record.copy()
 
     record = normalize_record_data(record)
-
     record = normalize_abstract_dates(record)
     record = normalize_copyright_status(record)
     record = normalize_contractual_status(record)
@@ -27,21 +26,6 @@ def record_alter(request: Request, record: dict):
     record = normalize_ordering(record)
 
     return record
-
-
-def get_section_data(sections, data):
-    section_data = {}
-
-    for section, keys in sections.items():
-        section_values = {}
-        for key in keys:
-            if key in data:
-                section_values[key] = data[key]
-
-        if section_values:
-            section_data[section] = section_values
-
-    return section_data
 
 
 def get_record_and_types(record):
