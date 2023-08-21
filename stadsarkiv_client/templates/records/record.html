@@ -1,8 +1,7 @@
-{% set settings = {'skip_translate': False} %}
 {% set search_base_url = get_setting('search_base_url') %}
 {% set debug = True %}
-{# the follwing is needed for allowing searching in media, e.g. video or audio #}
 {% set azure_allow_media_search = "sp=r&st=2023-02-03T12:19:05Z&se=2030-04-01T19:19:05Z&spr=https&sv=2021-06-08&sr=c&sig=QK9mOWt0oZ%2FtiY5biruFo0eGPirtjHYEQ061tPuZYHU%3D" %}
+
 {% import "macros/common_fields.html" as common_fields %}
 
 {% macro parse_record_pagination(record_pagination) %}
@@ -25,109 +24,6 @@
         <a class="next" href="/records/{{ record_pagination.next_record }}?search={{ record_pagination.next_page }}">&gt;</a>
         {% endif %}
         
-    </div>
-</div>
-{% endmacro %}
-
-{% macro parse_record_label (label) %}
-<div class="label">
-    {% if settings.skip_translate %}
-    {{ label }}
-    {% else %}
-    {% set label = "label_record_" + label %}
-    {{ translate(label) }}
-    {% endif %}
-</div>
-{% endmacro %}
-
-{% macro parse_string (key, value) %}
-<div class="record-content">
-    {{ parse_record_label(key)}}
-    <div class="content">
-        <p>
-            {{ value }}
-        </p>
-    </div>
-</div>
-{% endmacro %}
-
-{% macro parse_date (key, value) %}
-<div class="record-content">
-    {{ parse_record_label(key)}}
-    <div class="content">
-        <p>
-            {{ format_date(value) }}
-        </p>
-    </div>
-</div>
-{% endmacro %}
-
-{% macro _parse_key_value_dict (value) %}
-{% for key, item in value.items() %}
-{{ parse_string(key, item) }}
-{% endfor %}
-{% endmacro %}
-
-{% macro parse_key_value_dicts(value) %}
-{% for item in value %}
-{{ _parse_key_value_dict(item)}}
-{% if not loop.last %} <hr> {% endif %}
-{% endfor %}
-{% endmacro %}
-
-{% macro parse_link_dict(key, value) %}
-<div class="record-content">
-    {{ parse_record_label(key) }}
-    <div class="content">
-        <p>
-            <a href="{{ search_base_url }}?{{ value['search_query'] }}">{{ value["label"] }}</a>
-        </p>
-    </div>
-</div>
-{% endmacro %}
-
-{% macro parse_link_list (key, value) %}
-<div class="record-content">
-    {{ parse_record_label(key) }}
-    <div class="content">
-            {% for link in value %}
-            <p>
-                <a href="{{ search_base_url }}?{{ link['search_query'] }}">{{ link["label"] }}</a>
-            </p>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-{% endmacro %}
-
-{% macro parse_string_list (key, value) %}
-<div class="record-content">
-    {{ parse_record_label(key) }}
-    <div class="content">
-        {% for item in value %}
-        <p>{{ item|safe }}</p>
-        {% endfor %}
-
-    </div>
-</div>
-{% endmacro %}
-
-{% macro _parse_list_in_hierarchy (value) %}
-<div>
-{% for item in value %}
-<a href="{{ search_base_url }}?{{ item['search_query'] }}">{{ item['label'] }}</a>
-    {% if not loop.last %} {{ '>' }} {% endif %}
-{% endfor %}
-</div>
-{% endmacro %}
-
-{% macro parse_link_list_hierarchy (label, value) %}
-<div class="record-content">
-    {{ parse_record_label(label)}}
-    <div class="content">
-        {% for item in value %}
-        {{ _parse_list_in_hierarchy(item) }}
-        {% endfor %}        
     </div>
 </div>
 {% endmacro %}
@@ -224,24 +120,24 @@
 {% set key = field["name"] %}
 
 {% if type == "string" %}
-{{ parse_string(key, value) }}
+{{ common_fields.parse_string(key, value) }}
 {% elif type == "date" %}
-{{ parse_date(key, value) }}
+{{ common_fields.parse_date(key, value) }}
 
 {% elif type == "key_value_dicts" %}
-{{ "test"}}
-{% if settings.update({'skip_translate': True}) %} {% endif %}
-{{ parse_key_value_dicts(value ) }}
-{% if settings.update({'skip_translate': False}) %} {% endif %}
+
+{% if common_fields.settings.update({'skip_translate': True}) %} {% endif %}
+{{ common_fields.parse_key_value_dicts(value ) }}
+{% if common_fields.settings.update({'skip_translate': False}) %} {% endif %}
 
 {% elif type == "string_list" %}
-{{ parse_string_list(key, value ) }}
+{{ common_fields.parse_string_list(key, value ) }}
 {% elif type == "link_list" %}
-{{ parse_link_list(key, value ) }}
+{{ common_fields.parse_link_list(key, value ) }}
 {% elif type == "link_dict" %}
-{{ parse_link_dict(key, value ) }}
+{{ common_fields.parse_link_dict(key, value ) }}
 {% elif type == "link_list_hierarchy" %}
-{{ parse_link_list_hierarchy(key, value ) }}
+{{ common_fields.parse_link_list_hierarchy(key, value ) }}
 {% elif type == "representations" %}
 {{ parse_representations(key, value ) }}
 {% else %}
