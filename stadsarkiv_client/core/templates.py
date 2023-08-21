@@ -69,9 +69,18 @@ def urldecode(value):
     return urllib.parse.unquote(value)
 
 
+def key_exist_in_dict(keys: list, data: dict):
+    for key in keys:
+        if key in data:
+            return True
+
+    return False
+
+
 templates.env.globals.update(translate=translate)
 templates.env.globals.update(get_setting=get_setting)
 templates.env.globals.update(format_date=format_date)
 templates.env.globals.update(to_json=to_json)
 templates.env.globals.update(paragraphs=paragraphs)
 templates.env.globals.update(urldecode=urldecode)
+templates.env.globals.update(key_exist_in_dict=key_exist_in_dict)
