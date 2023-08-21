@@ -64,7 +64,7 @@ def _has_highlights(collection: dict):
 
 def get_collection_meta_data(collection: dict):
     meta_data = {}
-    meta_data["has_abstract"] = _has_abstract(collection)
+    # meta_data["has_abstract"] = _has_abstract(collection)
     meta_data["has_access_usage"] = _has_access_usage(collection)
     meta_data["has_history"] = _has_history(collection)
     meta_data["has_litteratur"] = _has_litteratur(collection)

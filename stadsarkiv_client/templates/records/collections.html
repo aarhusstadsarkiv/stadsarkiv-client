@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
+{% import "macros/common_fields.html" as common_fields %}
+{% if common_fields.settings.update({'skip_translate': True}) %} {% endif %}
+
 {% macro parse_node(node) %}
 {% set label = node.label|trim %}
 {% set series = node.path|urlencode%}
@@ -26,51 +29,6 @@
     </ul>
 {% endmacro %}
 
-{% macro parse_string_list (title, value) %}
-{% if collection[value] %}
-<div class="record-content">
-    <div class="label">
-        {{ title }}
-    </div>
-    <div class="content">
-        {% for item in collection[value] %}
-        <p>{{ item|safe }}</p>
-        {% endfor %}
-    </div>
-</div>
-{% endif %}
-{% endmacro %}
-
-{% macro parse_section(title, section) %}
-{% if collection[section] %}
-    <div class="record-content">
-        <div class="label">
-            {{ title }}
-        </div>
-        <div class="content">
-            {{ paragraphs(collection[section])|safe }}
-        </div>
-    </div>
-{% endif %}
-{% endmacro %}
-
-{% macro parse_link_list(title, section) %}
-{% if collection[section] %}
-<div class="record-content">
-    <div class="label">
-        {{ title }}
-    </div>
-    <div class="content">
-        {% for source in collection[section] %}
-        <p>
-            <a href="{{ source }}">{{ urldecode(source)|truncate(40) }}</a>
-        </p>
-        {% endfor %}
-    </div>
-</div>
-{% endif %}
-{% endmacro %}
-
 {% macro parse_slideshow(images) %}
 <div class="slideshow-container">
     {% for image in images %}
@@ -91,11 +49,13 @@
 </script>
 {% endmacro %}
 
+
+
 {% macro parse_abstract() %}
 <div class="record-main">
     <div>
         {# collectors, curators, date_from, date_to, bulk_years, extent #}
-        {{ parse_string_list("Test", 'collectors') }}
+        {# parse_string_list("Test", 'collectors') #}
     </div>
 </div>
 {% endmacro %}
@@ -124,67 +84,106 @@
     <a href="/search?collection={{ collection['id'] }}">Vis alle resultater i samlingen</a>
 </p>
 
-{% if collection['has_abstract'] %}
-<div class="record-main">
-<h3 class="record-header">Abstrakt</h3>
-{{ parse_section('Abstrakt', 'summary')}}
-{{ parse_section('Beskrivelse', 'description')}}
-{{ parse_section('Opbygning', 'content_and_scope')}}
-</div>
+{% macro parse_block_section(field) %}
+
+{% set type = field["type"] %}
+{% set value = field["value"] %}
+{% set key = field["name"] %}
+
+{% if type == "string" %}
+{{ common_fields.parse_string(key, value) }}
+{% elif type == "date" %}
+{{ common_fields.parse_date(key, value) }}
+
+{% elif type == "key_value_dicts" %}
+
+
+{{ common_fields.parse_key_value_dicts(value ) }}
+
+
+{% elif type == "string_list" %}
+{{ common_fields.parse_string_list(key, value ) }}
+{% elif type == "link_list" %}
+{{ common_fields.parse_link_list(key, value ) }}
+{% elif type == "link_dict" %}
+{{ common_fields.parse_link_dict(key, value ) }}
+{% elif type == "link_list_hierarchy" %}
+{{ common_fields.parse_link_list_hierarchy(key, value ) }}
+{% else %}
+{{ key }} {{ field }}
 {% endif %}
 
-{% if collection['has_access_usage'] %}
-<div class="record-main">
-<h3 class="record-header">Tilgængelighed og brug</h3>
-{{ parse_section('Tilgængelighed', 'access')}}
-{{ parse_section('Juridiske forhold', 'legal_status')}}
-{{ parse_section('Digitalisering', 'level_of_digitisation')}}
-{{ parse_section('Citation', 'citation')}}
-</div>
+{% endmacro %}
+
+{% macro parse_block_common(title, block_keys) %}
+{% if key_exist_in_dict(block_keys, collection) %}
+<div class="record-section">
+    <div class="record-main">
+        <h3 class="record-header">{{ title }}</h3>
+        {% for key in block_keys %}
+        {% if key in collection %}
+        {{ parse_block_section(collection[key]) }}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div> 
+{% endif %}
+{% endmacro %}
+
+
+{% set keys = ["summary_test", "description_test", "content_and_scope_test"] %}
+{% if key_exist_in_dict(keys, collection) %}
+{{ parse_block_common('Abstrakt', keys) }}
+{% endif %}
+
+{% set keys = ["access_test", "legal_status_test", "level_of_digitisation_test", 'citation_test'] %}
+{% if key_exist_in_dict(keys, collection) %}
+{{ parse_block_common('Tilgængelighed og brug', keys) }}
 {% endif %}
 
 {% if collection['has_provenance'] %}
 {% endif %}
 
-{% if collection['has_history'] %}
-<div class="record-main">
-<h3 class="record-header">Afleveringshistorik</h3>
-{{ parse_section('Afleveringshistorik', 'custodial_history')}}
-{{ parse_section('Kassation', 'level_of_kassation')}}
-{{ parse_section('Indkomstens status', 'accrual_status')}}
+{% set keys = ["custodial_history_test", "level_of_kassation_test", "accrual_status_test"] %}
+{% if key_exist_in_dict(keys, collection) %}
+{{ parse_block_common('Afleveringshistorik', keys) }}
+{% endif %}
+
+{% set keys = ["level_of_kassation_test", "sources_test"] %}
+{% if key_exist_in_dict(keys, collection) %}
+{{ parse_block_common('Kassation', keys) }}
+{% endif %}
+
+{% set keys = ["series"] %}
+{% if key_exist_in_dict(keys, collection) %}
+<div class="record-section">
+    <div class="record-main">
+    <h3 class="record-header">Arkivserier</h3>
+    <p>
+        Browse i samlingens serier. Klik på en given serie for at se, hvilke materialer, der er placeret her
+    </p>
+    {{ parse_tree (collection['series']) }}
+    </div>
 </div>
 {% endif %}
 
-{% if collection['has_literature'] %}
-<div class="record-main">
-<h3 class="record-header">Litteratur</h3>
-{{ parse_section('Kassation', 'level_of_kassation')}}
-{{ parse_link_list('Litteratur', 'sources')}}
+{% set keys = ["collection_tags"] %}
+{% if key_exist_in_dict(keys, collection) %}
+<div class="record-section">
+    <div class="record-main">
+    <h3 class="record-header">Samlingstags</h3>
+    <p>
+        Browse i samlingens tags. Klik på et tag for at se, hvilke materialer, der er opmærket med dette.
+    </p>
+    {{ parse_tree (collection['collection_tags']) }}
+    </div>
 </div>
 {% endif %}
 
-{% if collection['has_series'] %}
-<div class="record-main">
-<h3 class="record-header">Arkivserier</h3>
-<p>
-    Browse i samlingens serier. Klik på en given serie for at se, hvilke materialer, der er placeret her
-</p>
-{{ parse_tree (collection['series']) }}
-</div>
-{% endif %}
-
-{% if collection['has_collection_tags'] %}
-<div class="record-main">
-<h3 class="record-header">Samlingstags</h3>
-<p>
-    Browse i samlingens tags. Klik på et tag for at se, hvilke materialer, der er opmærket med dette.
-</p>
-{{ parse_tree (collection['collection_tags']) }}
-</div>
-{% endif %}
-
+{% if get_setting('debug') %}
 <div class="record-main">
 <h3 class="record-header">Metadata</h3>
 <p><a href="/collections/{{ collection['id'] }}/json">JSON</a></p>
 </div>
+{% endif %}
 {% endblock content %}

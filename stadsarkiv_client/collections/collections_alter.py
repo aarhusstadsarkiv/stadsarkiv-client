@@ -64,19 +64,22 @@ def collections_alter(collection: dict):
 
     for elem in type_str:
         if elem in collection:
-            collection[elem + "type"] = _str_to_type_str(elem, collection[elem])
+            collection[elem + "_test"] = _str_to_type_str(elem, collection[elem])
 
     if "sources" in collection:
         links = _split_to_links("sources", collection["sources"])
+        collection["sources_test"] = links
         log.debug(f"links: {links}")
 
     if "collectors" in collection:
         links = _split_to_links("collectors", collection["collectors"])
         log.debug(f"links: {links}")
+        collection["collectors_test"] = links
 
     if "curators" in collection:
         links = _split_to_links("curators", collection["curators"])
         log.debug(f"links: {links}")
+        collection["curators_test"] = links
         # collection['collectors'] = _split_to_links(collection['collectors'])
 
     return collection
