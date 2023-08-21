@@ -30,7 +30,7 @@
 {% macro parse_representations(label, value) %}
 {% if value["record_type"] == "image" %}
 <div class="record-content">
-    {{ parse_record_label('label_representations')}}
+    {{ common_fields.parse_record_label('label_representations')}}
     <div class="content">
         <a href="{{ value['record_image'] }}"> {{ translate('Download medium size')}}</a><br />
         <a href="{{ value['large_image'] }}"> {{ translate('Download large size')}}</a>
@@ -39,7 +39,7 @@
 {% endif %}
 {% if value["record_type"] == "web_document" %}
 <div class="record-content">
-    {{ parse_record_label('label_representations')}}
+    {{ common_fields.parse_record_label('label_representations')}}
     <div class="content">
         <a href="{{ value['web_document_url'] }}"> {{ translate('Download PDF')}}</a><br />
     </div>
