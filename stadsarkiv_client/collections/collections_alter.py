@@ -47,10 +47,20 @@ def _str_to_type_str(name: str, value: str):
 
 
 def collections_alter(collection: dict):
-
-    type_str = ["summary", "description", "content_and_scope", "access",
-                "legal_status", "level_of_digitisation", "citation", "custodial_history",
-                "level_of_kassation", "accrual_status", "system_of_arrangement", "archival_history"]
+    type_str = [
+        "summary",
+        "description",
+        "content_and_scope",
+        "access",
+        "legal_status",
+        "level_of_digitisation",
+        "citation",
+        "custodial_history",
+        "level_of_kassation",
+        "accrual_status",
+        "system_of_arrangement",
+        "archival_history",
+    ]
 
     for elem in type_str:
         if elem in collection:

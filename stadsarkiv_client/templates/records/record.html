@@ -238,7 +238,7 @@
 {% endmacro %}
 
 {% macro parse_sections(record, record_sections) %}
-    {% for section, section_dict in record_sections.items() if not section in skip_section_keys %}
+    {% for section, section_dict in record_sections.items() %}
 
     <div class="record-section">
         {% if section in ['Kernedata'] %}
@@ -273,11 +273,8 @@
 {% endblock head %}
 
 {% block content %}
-{# include "includes/main_title.html" #}
 
-{% if record_pagination %}
 {{ parse_record_pagination(record_pagination) }}
-{% endif %}
 {{ parse_sections(record_altered, sections) }}
 
 {% if get_setting('debug') %}

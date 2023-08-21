@@ -1,6 +1,6 @@
 from stadsarkiv_client.core.logging import get_log
 import urllib.parse
-from stadsarkiv_client.core.dynamic_settings import settings
+from stadsarkiv_client.records.record_definitions import record_definitions
 
 
 log = get_log()
@@ -193,7 +193,7 @@ def _normalize_link_dicts(keys, record: dict):
 
 def _get_list_of_type(type: str):
     """get a list of a type, e.g. string from record_definitions"""
-    record_definitions = settings["record_definitions"]
+    # record_definitions = settings["record_definitions"]
     type_list = []
     for key, item in record_definitions.items():  # type: ignore
         if item["type"] == type:
