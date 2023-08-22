@@ -126,3 +126,12 @@
     </div>
 </div>
 {% endmacro %}
+
+{% macro parse_representations_icon(icon, label) %}
+<div class="record-icon">
+    <span class="material-symbols-outlined">{{ icon }}</span>
+</div>
+<div class="record-label">
+    {{ label }}
+</div>    
+{% endmacro %}
