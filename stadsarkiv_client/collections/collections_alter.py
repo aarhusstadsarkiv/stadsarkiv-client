@@ -78,9 +78,7 @@ def collections_alter(collection: dict):
             collection[elem] = _str_to_type_str(elem, collection[elem])
 
     if "sources" in collection:
-
         if _str_is_link(collection["sources"][0]):
-
             sources = {
                 "type": "link_list_external",
                 "value": collection["sources"],

@@ -14,7 +14,6 @@ from stadsarkiv_client.core import query
 from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
 
 from stadsarkiv_client.collections import collections_alter
-from stadsarkiv_client.collections.meta_data_collections import get_collection_meta_data
 import asyncio
 
 
@@ -186,8 +185,8 @@ async def get_collections_view(request: Request):
     collection = await api.proxies_collection(collection_id=collection_id)
     collection = collections_alter.collections_alter(collection)
 
-    meta_data = get_collection_meta_data(collection)
-    collection = {**collection, **meta_data}
+    # meta_data = get_collection_meta_data(collection)
+    # collection = {**collection, **meta_data}
 
     # collection = {}
     collection["id"] = collection_id
@@ -205,8 +204,8 @@ async def get_collections_view_json(request: Request):
     collection = await api.proxies_collection(collection_id=collection_id)
     collection = collections_alter.collections_alter(collection)
 
-    meta_data = get_collection_meta_data(collection)
-    collection = {**collection, **meta_data}
+    # meta_data = get_collection_meta_data(collection)
+    # collection = {**collection, **meta_data}
 
     collection_json = json.dumps(collection, indent=4, ensure_ascii=False)
     return PlainTextResponse(collection_json)
