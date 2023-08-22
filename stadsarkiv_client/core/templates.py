@@ -72,6 +72,15 @@ def urldecode(value):
 def key_exist_in_dict(keys: list, data: dict):
     for key in keys:
         if key in data:
+
+            # Check if the value is empty
+            if data[key] == "":
+                return False
+            if data[key] == []:
+                return False
+            if data[key] == {}:
+                return False
+
             return True
 
     return False
