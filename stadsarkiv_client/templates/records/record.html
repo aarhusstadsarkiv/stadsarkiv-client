@@ -120,6 +120,8 @@
 
 {% if type == "string" %}
 {{ common_fields.parse_string(key, value) }}
+{% elif type == "paragraphs" %}
+{{ common_fields.parse_paragraphs(key, value) }}
 {% elif type == "date" %}
 {{ common_fields.parse_date(key, value) }}
 
@@ -133,6 +135,8 @@
 {{ common_fields.parse_string_list(key, value ) }}
 {% elif type == "link_list" %}
 {{ common_fields.parse_link_list(key, value ) }}
+{% elif type == "link_list_external" %}
+{{ common_fields.parse_link_list_external(key, value ) }}
 {% elif type == "link_dict" %}
 {{ common_fields.parse_link_dict(key, value ) }}
 {% elif type == "link_list_hierarchy" %}

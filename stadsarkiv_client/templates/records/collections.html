@@ -60,51 +60,25 @@
 </div>
 {% endmacro %}
 
-{% block head %}
-<link rel="stylesheet" href="{{ url_for('static', path='/css/collections.css') }}?v={{ get_setting('version') }}">
-<link rel="stylesheet" href="{{ url_for('static', path='/css/slideshow.css') }}?v={{ get_setting('version') }}">
-{% endblock head %}
-
-{% block content %}
-
-{% include "includes/main_title.html" %}
-
-<div class="record-section">
-    <div class="record-representation">
-    {% if collection['has_highlights'] %}
-    {{ parse_slideshow(collection['highlights'])}}
-    {% endif %}
-    </div>
-    <div class="record-main">
-    {{ parse_abstract() }}
-    </div>
-</div>
-
-<p>
-    <a href="/search?collection={{ collection['id'] }}">Vis alle resultater i samlingen</a>
-</p>
-
 {% macro parse_block_section(field) %}
 
 {% set type = field["type"] %}
 {% set value = field["value"] %}
 {% set key = field["name"] %}
 
-{% if type == "string" %}
-{{ common_fields.parse_string(key, value) }}
+{% if type == "paragraphs" %}
+{{ common_fields.parse_paragraphs(key, value) }}
 {% elif type == "date" %}
 {{ common_fields.parse_date(key, value) }}
 
 {% elif type == "key_value_dicts" %}
-
-
 {{ common_fields.parse_key_value_dicts(value ) }}
-
-
 {% elif type == "string_list" %}
 {{ common_fields.parse_string_list(key, value ) }}
 {% elif type == "link_list" %}
 {{ common_fields.parse_link_list(key, value ) }}
+{% elif type == "link_list_external" %}
+{{ common_fields.parse_link_list_external(key, value ) }}
 {% elif type == "link_dict" %}
 {{ common_fields.parse_link_dict(key, value ) }}
 {% elif type == "link_list_hierarchy" %}
@@ -130,13 +104,61 @@
 {% endif %}
 {% endmacro %}
 
+{% macro parse_block_first(block_keys) %}
 
-{% set keys = ["summary_test", "description_test", "content_and_scope_test"] %}
+{% if key_exist_in_dict(block_keys, collection) %}
+<div class="record-section">
+    
+    <div class="record-representation">
+    {% if collection['highlights'] %}
+    {{ parse_slideshow(collection['highlights'])}}
+    {% endif %}
+    </div>
+
+    <div class="record-main">
+        {% for key in block_keys %}
+        {% if key in collection %}
+        {{ parse_block_section(collection[key]) }}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div> 
+{% endif %}
+{% endmacro %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/collections.css') }}?v={{ get_setting('version') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/slideshow.css') }}?v={{ get_setting('version') }}">
+{% endblock head %}
+
+{% block content %}
+
+{% include "includes/main_title.html" %}
+
+<!-- <div class="record-section">
+    <div class="record-representation">
+    {% if collection['has_highlights'] %}
+    {{ parse_slideshow(collection['highlights'])}}
+    {% endif %}
+    </div>
+    <div class="record-main">
+    {{ parse_abstract() }}
+    </div>
+</div> -->
+
+<p>
+    <a href="/search?collection={{ collection['id'] }}">Vis alle resultater i samlingen</a>
+</p>
+
+{% set keys = ['collectors', 'curators', 'date_from', 'date_to', 'bulk_years', 'extent'] %}
+{{ parse_block_first(keys) }}
+
+{% set keys = ["summary", "description", "content_and_scope"] %}
 {% if key_exist_in_dict(keys, collection) %}
 {{ parse_block_common('Abstrakt', keys) }}
 {% endif %}
 
-{% set keys = ["access_test", "legal_status_test", "level_of_digitisation_test", 'citation_test'] %}
+{% set keys = ["access", "legal_status", "level_of_digitisation", 'citation'] %}
 {% if key_exist_in_dict(keys, collection) %}
 {{ parse_block_common('Tilgængelighed og brug', keys) }}
 {% endif %}
@@ -144,12 +166,12 @@
 {% if collection['has_provenance'] %}
 {% endif %}
 
-{% set keys = ["custodial_history_test", "level_of_kassation_test", "accrual_status_test"] %}
+{% set keys = ["custodial_history", "level_of_kassation", "accrual_status"] %}
 {% if key_exist_in_dict(keys, collection) %}
 {{ parse_block_common('Afleveringshistorik', keys) }}
 {% endif %}
 
-{% set keys = ["level_of_kassation_test", "sources_test"] %}
+{% set keys = ["level_of_kassation", "sources", "accrual_status"] %}
 {% if key_exist_in_dict(keys, collection) %}
 {{ parse_block_common('Kassation', keys) }}
 {% endif %}

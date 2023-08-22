@@ -23,6 +23,15 @@
 </div>
 {% endmacro %}
 
+{% macro parse_paragraphs (key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key)}}
+    <div class="content">
+        {{ paragraphs(value|trim)|safe }}
+    </div>
+</div>
+{% endmacro %}
+
 {% macro parse_date (key, value) %}
 <div class="record-content">
     {{ parse_record_label(key)}}
@@ -65,6 +74,20 @@
             {% for link in value %}
             <p>
                 <a href="{{ search_base_url }}?{{ link['search_query'] }}">{{ link["label"] }}</a>
+            </p>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_link_list_external (key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key) }}
+    <div class="content">
+            {% for link in value %}
+            <p>
+                <a href="{{ link }}">{{ urldecode(link) }}</a>
             </p>
             {% endfor %}
         </ul>

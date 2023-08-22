@@ -40,7 +40,7 @@ def _split_to_links(name: str, values: list):
 
 def _str_to_type_str(name: str, value: str):
     return {
-        "type": "string",
+        "type": "paragraphs",
         "value": value,
         "name": name,
     }
@@ -60,26 +60,32 @@ def collections_alter(collection: dict):
         "accrual_status",
         "system_of_arrangement",
         "archival_history",
+        "extent",
+        "bulk_years",
     ]
 
     for elem in type_str:
         if elem in collection:
-            collection[elem + "_test"] = _str_to_type_str(elem, collection[elem])
+            collection[elem] = _str_to_type_str(elem, collection[elem])
 
     if "sources" in collection:
-        links = _split_to_links("sources", collection["sources"])
-        collection["sources_test"] = links
-        log.debug(f"links: {links}")
+        sources = {
+            "type": "link_list_external",
+            "value": collection["sources"],
+            "name": "sources",
+        }
+
+        collection["sources"] = sources
+        log.debug(f"links: {sources}")
 
     if "collectors" in collection:
         links = _split_to_links("collectors", collection["collectors"])
         log.debug(f"links: {links}")
-        collection["collectors_test"] = links
+        collection["collectors"] = links
 
     if "curators" in collection:
         links = _split_to_links("curators", collection["curators"])
         log.debug(f"links: {links}")
-        collection["curators_test"] = links
-        # collection['collectors'] = _split_to_links(collection['collectors'])
+        collection["curators"] = links
 
     return collection
