@@ -184,11 +184,6 @@ async def get_collections_view(request: Request):
     collection_id = request.path_params["collection_id"]
     collection = await api.proxies_collection(collection_id=collection_id)
     collection = collections_alter.collections_alter(collection)
-
-    # meta_data = get_collection_meta_data(collection)
-    # collection = {**collection, **meta_data}
-
-    # collection = {}
     collection["id"] = collection_id
     context_variables = {
         "title": collection["display_label"],
@@ -203,10 +198,6 @@ async def get_collections_view_json(request: Request):
     collection_id = request.path_params["collection_id"]
     collection = await api.proxies_collection(collection_id=collection_id)
     collection = collections_alter.collections_alter(collection)
-
-    # meta_data = get_collection_meta_data(collection)
-    # collection = {**collection, **meta_data}
-
     collection_json = json.dumps(collection, indent=4, ensure_ascii=False)
     return PlainTextResponse(collection_json)
 
