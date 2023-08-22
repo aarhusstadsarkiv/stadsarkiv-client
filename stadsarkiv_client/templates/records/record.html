@@ -85,9 +85,9 @@
 {% if record["is_representations_online"] %}
 {{ parse_representations_media(record)}}
 {% elif record["availability_id"] == 3 %}
-{{ common_fields.parse_representations_icon('lock', translate('The material is available in the reading room.'))}}
+{{ common_fields.parse_icon('lock', translate('The material is available in the reading room.'))}}
 {% elif record["availability_id"] == 2 %}
-{{ common_fields.parse_representations_icon('lock', translate('The material can be order home to the reading room.'))}}
+{{ common_fields.parse_icon('lock', translate('The material can be order home to the reading room.'))}}
 {% endif %}
 {% endmacro %}
 
@@ -98,7 +98,7 @@
 </div>
 {% else %}
 <div class="record-representation">
-    {{ common_fields.parse_representations_icon(record["icon"]["icon"], record["icon"]["label"]) }}
+    {{ common_fields.parse_icon(record["icon"]["icon"], record["icon"]["label"]) }}
 </div>
 {% endif %}
 {% endmacro %}
