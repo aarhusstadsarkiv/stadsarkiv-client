@@ -1,7 +1,4 @@
-{% extends "base.html" %}
-
 {% import "macros/common_fields.html" as common_fields %}
-{# if common_fields.settings.update({'skip_translate': True}) %} {% endif #}
 
 {% macro parse_node(node) %}
 {% set label = node.label|trim %}
@@ -47,17 +44,6 @@
 <script type="module">
     import { } from "/static/js/slideshow.js";
 </script>
-{% endmacro %}
-
-
-
-{% macro parse_abstract() %}
-<div class="record-main">
-    <div>
-        {# collectors, curators, date_from, date_to, bulk_years, extent #}
-        {# parse_string_list("Test", 'collectors') #}
-    </div>
-</div>
 {% endmacro %}
 
 {% macro parse_block_section(field) %}
@@ -107,17 +93,17 @@
 {% endmacro %}
 
 {% macro parse_block_first(block_keys) %}
-
 {% if key_exist_in_dict(block_keys, collection) %}
 <div class="record-section">
-    
-    
     {% if collection['highlights'] %}
     <div class="record-representation">
         {{ parse_slideshow(collection['highlights'])}}
     </div>
+    {% else %}
+    <div class="record-representation">
+        {{ common_fields.parse_representations_icon('package_2', 'Samling') }}
+    </div>
     {% endif %}
-
     <div class="record-main">
         {% for key in block_keys %}
         {% if key in collection %}
@@ -128,6 +114,10 @@
 </div> 
 {% endif %}
 {% endmacro %}
+
+{% extends "base.html" %}
+
+{% block body_class %}collections{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/collections.css') }}?v={{ get_setting('version') }}">
@@ -184,9 +174,11 @@
 {% endif %}
 
 {% if get_setting('debug') %}
-<div class="record-main">
-<h3 class="record-header">Metadata</h3>
-<p><a href="/collections/{{ collection['id'] }}/json">JSON</a></p>
+<div class="record-section">
+    <div class="record-main">
+    <h3 class="record-header">Metadata</h3>
+    <p><a href="/collections/{{ collection['id'] }}/json">JSON</a></p>
+    </div>
 </div>
 {% endif %}
 {% endblock content %}

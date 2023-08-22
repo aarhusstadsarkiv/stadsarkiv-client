@@ -81,22 +81,13 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_representations_icon(icon, label) %}
-<div class="record-icon">
-    <span class="material-symbols-outlined">{{ icon }}</span>
-</div>
-<div class="record-label">
-    {{ label }}
-</div>    
-{% endmacro %}
-
 {% macro parse_representations_block(record) %}
 {% if record["is_representations_online"] %}
 {{ parse_representations_media(record)}}
 {% elif record["availability_id"] == 3 %}
-{{ parse_representations_icon('lock', translate('The material is available in the reading room.'))}}
+{{ common_fields.parse_representations_icon('lock', translate('The material is available in the reading room.'))}}
 {% elif record["availability_id"] == 2 %}
-{{ parse_representations_icon('lock', translate('The material can be order home to the reading room.'))}}
+{{ common_fields.parse_representations_icon('lock', translate('The material can be order home to the reading room.'))}}
 {% endif %}
 {% endmacro %}
 
@@ -107,7 +98,7 @@
 </div>
 {% else %}
 <div class="record-representation">
-    {{ parse_representations_icon(record["icon"]["icon"], record["icon"]["label"]) }}
+    {{ common_fields.parse_representations_icon(record["icon"]["icon"], record["icon"]["label"]) }}
 </div>
 {% endif %}
 {% endmacro %}
@@ -183,6 +174,8 @@
 
 {% extends "base.html" %}
 
+{% block body_class %}record{% endblock %}
+
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
 {% endblock head %}
@@ -220,16 +213,20 @@
 {{ parse_block_common('Download', keys) }}
 
 {% if get_setting('debug') %}
-
-<p>
-    <a href="{{ request.url.path }}/json/record">JSON (From API)</a>
-</p>
-<p>
-    <a href="{{ request.url.path }}/json/record_altered">JSON (Normalized)</a>
-</p>
-<p>
-    <a href="{{ request.url.path }}/json/record_and_types">JSON (With types)</a>
-</p>
+<div class="record-section">
+    <div class="record-main">
+    <h3 class="record-header">Metadata</h3>
+    <p>
+        <a href="{{ request.url.path }}/json/record">JSON (Fra API)</a>
+    </p>
+    <p>
+        <a href="{{ request.url.path }}/json/record_altered">JSON (Omdannet)</a>
+    </p>
+    <p>
+        <a href="{{ request.url.path }}/json/record_and_types">JSON (Typer)</a>
+    </p>
+    </div>
+</div>
 
 {% endif %}
 
