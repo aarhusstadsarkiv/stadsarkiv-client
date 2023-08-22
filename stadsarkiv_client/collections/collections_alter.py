@@ -1,5 +1,6 @@
 from stadsarkiv_client.core.logging import get_log
 
+
 log = get_log()
 
 
@@ -46,6 +47,13 @@ def _str_to_type_str(name: str, value: str):
     }
 
 
+def _str_is_link(value: str):
+    if value.find("http") != -1:
+        return True
+
+    return False
+
+
 def collections_alter(collection: dict):
     type_str = [
         "summary",
@@ -62,6 +70,7 @@ def collections_alter(collection: dict):
         "archival_history",
         "extent",
         "bulk_years",
+        "accumulation_range",
     ]
 
     for elem in type_str:
@@ -69,23 +78,38 @@ def collections_alter(collection: dict):
             collection[elem] = _str_to_type_str(elem, collection[elem])
 
     if "sources" in collection:
-        sources = {
-            "type": "link_list_external",
-            "value": collection["sources"],
-            "name": "sources",
-        }
+
+        if _str_is_link(collection["sources"][0]):
+
+            sources = {
+                "type": "link_list_external",
+                "value": collection["sources"],
+                "name": "sources",
+            }
+        else:
+            sources = {
+                "type": "string_list",
+                "value": collection["sources"],
+                "name": "sources",
+            }
 
         collection["sources"] = sources
-        log.debug(f"links: {sources}")
 
     if "collectors" in collection:
         links = _split_to_links("collectors", collection["collectors"])
-        log.debug(f"links: {links}")
         collection["collectors"] = links
 
     if "curators" in collection:
         links = _split_to_links("curators", collection["curators"])
-        log.debug(f"links: {links}")
         collection["curators"] = links
+
+    # Add Yderår: outer_years
+    if "date_from" and "date_to" in collection:
+        outer_years = collection["date_from"] + "-" + collection["date_to"]
+        collection["outer_years"] = {
+            "type": "string",
+            "value": outer_years,
+            "name": "outer_years",
+        }
 
     return collection
