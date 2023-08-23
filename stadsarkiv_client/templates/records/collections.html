@@ -47,34 +47,7 @@
 {% endmacro %}
 
 {% macro parse_block_section(field) %}
-
-{% set type = field["type"] %}
-{% set value = field["value"] %}
-{% set key = field["name"] %}
-
-{% if type == "string" %}
-{{ common_fields.parse_string(key, value) }}
-{% elif type == "paragraphs" %}
-{{ common_fields.parse_paragraphs(key, value) }}
-{% elif type == "date" %}
-{{ common_fields.parse_date(key, value) }}
-
-{% elif type == "key_value_dicts" %}
-{{ common_fields.parse_key_value_dicts(value ) }}
-{% elif type == "string_list" %}
-{{ common_fields.parse_string_list(key, value ) }}
-{% elif type == "link_list" %}
-{{ common_fields.parse_link_list(key, value ) }}
-{% elif type == "link_list_external" %}
-{{ common_fields.parse_link_list_external(key, value ) }}
-{% elif type == "link_dict" %}
-{{ common_fields.parse_link_dict(key, value ) }}
-{% elif type == "link_list_hierarchy" %}
-{{ common_fields.parse_link_list_hierarchy(key, value ) }}
-{% else %}
-{{ key }} {{ field }}
-{% endif %}
-
+{{ common_fields.parse_block_section(field) }}
 {% endmacro %}
 
 {% macro parse_block_common(title, block_keys) %}

@@ -27,26 +27,6 @@
 </div>
 {% endmacro %}
 
-{% macro parse_representations(label, value) %}
-{% if value["record_type"] == "image" %}
-<div class="record-content">
-    {{ common_fields.parse_record_label('label_representations')}}
-    <div class="content">
-        <a href="{{ value['record_image'] }}"> {{ translate('Download medium size')}}</a><br />
-        <a href="{{ value['large_image'] }}"> {{ translate('Download large size')}}</a>
-    </div>
-</div>
-{% endif %}
-{% if value["record_type"] == "web_document" %}
-<div class="record-content">
-    {{ common_fields.parse_record_label('label_representations')}}
-    <div class="content">
-        <a href="{{ value['web_document_url'] }}"> {{ translate('Download PDF')}}</a><br />
-    </div>
-</div>
-{% endif %}
-{% endmacro %}
-
 {% macro parse_representations_media(record) %}
 {% if record["record_type"] == 'image' %}
     <img class="record-image" src="{{record['portrait']}}" alt="{{ section }}" />
@@ -103,43 +83,6 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_block_section(field) %}
-
-{% set type = field["type"] %}
-{% set value = field["value"] %}
-{% set key = field["name"] %}
-
-{% if type == "string" %}
-{{ common_fields.parse_string(key, value) }}
-{% elif type == "paragraphs" %}
-{{ common_fields.parse_paragraphs(key, value) }}
-{% elif type == "date" %}
-{{ common_fields.parse_date(key, value) }}
-
-{% elif type == "key_value_dicts" %}
-
-{% if common_fields.settings.update({'skip_translate': True}) %} {% endif %}
-{{ common_fields.parse_key_value_dicts(value ) }}
-{% if common_fields.settings.update({'skip_translate': False}) %} {% endif %}
-
-{% elif type == "string_list" %}
-{{ common_fields.parse_string_list(key, value ) }}
-{% elif type == "link_list" %}
-{{ common_fields.parse_link_list(key, value ) }}
-{% elif type == "link_list_external" %}
-{{ common_fields.parse_link_list_external(key, value ) }}
-{% elif type == "link_dict" %}
-{{ common_fields.parse_link_dict(key, value ) }}
-{% elif type == "link_list_hierarchy" %}
-{{ common_fields.parse_link_list_hierarchy(key, value ) }}
-{% elif type == "representations" %}
-{{ parse_representations(key, value ) }}
-{% else %}
-{{ key }} {{ field }}
-{% endif %}
-
-{% endmacro %}
-
 {% macro parse_block_common(title, block_keys) %}
 {% if key_exist_in_dict(block_keys, record_and_types) %}
 <div class="record-section">
@@ -147,7 +90,7 @@
         <h3 class="record-header">{{ title }}</h3>
         {% for key in block_keys %}
         {% if key in record_and_types %}
-        {{ parse_block_section(record_and_types[key]) }}
+        {{ common_fields.parse_block_section(record_and_types[key]) }}
         {% endif %}
         {% endfor %}
     </div>
@@ -164,7 +107,7 @@
         <div class="record-title">{{ record_altered["title"] }}</div>
         {% for key in block_keys %}
         {% if key in record_and_types %}
-        {{ parse_block_section(record_and_types[key]) }}
+        {{ common_fields.parse_block_section(record_and_types[key]) }}
         {% endif %}
         {% endfor %}
     </div>

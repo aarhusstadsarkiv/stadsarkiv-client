@@ -135,3 +135,57 @@
     {{ label }}
 </div>    
 {% endmacro %}
+
+{% macro parse_representations(label, value) %}
+{% if value["record_type"] == "image" %}
+<div class="record-content">
+    {{ parse_record_label('label_representations')}}
+    <div class="content">
+        <a href="{{ value['record_image'] }}"> {{ translate('Download medium size')}}</a><br />
+        <a href="{{ value['large_image'] }}"> {{ translate('Download large size')}}</a>
+    </div>
+</div>
+{% endif %}
+{% if value["record_type"] == "web_document" %}
+<div class="record-content">
+    {{ parse_record_label('label_representations')}}
+    <div class="content">
+        <a href="{{ value['web_document_url'] }}"> {{ translate('Download PDF')}}</a><br />
+    </div>
+</div>
+{% endif %}
+{% endmacro %}
+
+{% macro parse_block_section(field) %}
+
+{% set type = field["type"] %}
+{% set value = field["value"] %}
+{% set key = field["name"] %}
+
+{% if type == "string" %}
+{{ parse_string(key, value) }}
+{% elif type == "paragraphs" %}
+{{ parse_paragraphs(key, value) }}
+{% elif type == "date" %}
+{{ parse_date(key, value) }}
+
+{% elif type == "key_value_dicts" %}
+
+{% if settings.update({'skip_translate': True}) %} {% endif %}
+{{ parse_key_value_dicts(value ) }}
+{% if settings.update({'skip_translate': False}) %} {% endif %}
+
+{% elif type == "string_list" %}
+{{ parse_string_list(key, value ) }}
+{% elif type == "link_list" %}
+{{ parse_link_list(key, value ) }}
+{% elif type == "link_list_external" %}
+{{ parse_link_list_external(key, value ) }}
+{% elif type == "link_dict" %}
+{{ parse_link_dict(key, value ) }}
+{% elif type == "link_list_hierarchy" %}
+{{ parse_link_list_hierarchy(key, value ) }}
+{% elif type == "representations" %}
+{{ parse_representations(key, value ) }}
+{% endif %}
+{% endmacro %}
