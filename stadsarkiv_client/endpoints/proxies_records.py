@@ -13,7 +13,7 @@ from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.core import query
 from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
 
-from stadsarkiv_client.collections import collections_alter
+from stadsarkiv_client.resources import collections_alter
 import asyncio
 
 
