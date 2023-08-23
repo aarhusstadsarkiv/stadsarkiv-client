@@ -1,5 +1,5 @@
 from starlette.routing import Route, Mount
-from .endpoints import auth, proxies_records, testing, pages, schemas, entities
+from .endpoints import auth, proxies_records, proxies_search, proxies_resources, testing, pages, schemas, entities
 import os
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.multi_static import MultiStaticFiles
@@ -66,12 +66,12 @@ routes = [
         methods=["POST"],
     ),
     Route("/entities/view/{uuid:str}", endpoint=entities.get_entity_view, name="entity_view"),
-    Route("/search", endpoint=proxies_records.get_records_search, name="records_search"),
-    Route("/search/json", endpoint=proxies_records.get_records_search_json, name="records_search_json"),
+    Route("/search", endpoint=proxies_search.get_records_search, name="records_search"),
+    Route("/search/json", endpoint=proxies_search.get_records_search_json, name="records_search_json"),
     Route("/records/{record_id:str}", endpoint=proxies_records.get_record_view, name="record_view"),
     Route("/records/{record_id:str}/json/{type:str}", endpoint=proxies_records.get_record_view_json, name="record_view_json"),
-    Route("/collections/{collection_id:str}", endpoint=proxies_records.get_collections_view, name="collection_view"),
-    Route("/collections/{collection_id:str}/json", endpoint=proxies_records.get_collections_view_json, name="collection_view_json"),
+    Route("/collections/{collection_id:str}", endpoint=proxies_resources.get_collections_view, name="collection_view"),
+    Route("/collections/{collection_id:str}/json", endpoint=proxies_resources.get_collections_view_json, name="collection_view_json"),
 ]
 
 if settings["environment"] == "development":
