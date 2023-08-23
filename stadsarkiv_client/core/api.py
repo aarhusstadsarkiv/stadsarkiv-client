@@ -358,6 +358,17 @@ async def proxies_collection(collection_id: str) -> typing.Any:
             response.raise_for_status()
 
 
+async def proxies_entity_by_type(type: str, collection_id: str) -> typing.Any:
+    async with httpx.AsyncClient() as client:
+        url = f"https://www.aarhusarkivet.dk/{type}/{collection_id}?fmt=json"
+        response = await client.get(url)
+
+        if response.is_success:
+            return response.json()
+        else:
+            response.raise_for_status()
+
+
 @disk_cache(60 * 60, use_args=[0])
 async def proxies_records_from_list(query_params) -> typing.Any:
     query_str = query.get_str_from_list(query_params)
