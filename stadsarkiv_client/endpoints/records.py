@@ -265,7 +265,6 @@ async def get_records_search(request: Request):
 async def get_records_search_json(request: Request):
     add_list_items = _get_default_query_params(request)
     records = await api.proxies_records(request, add_list_items=add_list_items)
-    records = _normalize_search(records)
     record_json = json.dumps(records, indent=4, ensure_ascii=False)
     return PlainTextResponse(record_json)
 
