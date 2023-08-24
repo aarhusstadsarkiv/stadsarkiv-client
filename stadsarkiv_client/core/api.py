@@ -358,9 +358,9 @@ async def proxies_collection(collection_id: str) -> typing.Any:
             response.raise_for_status()
 
 
-async def proxies_entity_by_type(type: str, collection_id: str) -> typing.Any:
+async def proxies_entity_by_type(type: str, id: str) -> typing.Any:
     async with httpx.AsyncClient() as client:
-        url = f"https://www.aarhusarkivet.dk/{type}/{collection_id}?fmt=json"
+        url = f"https://www.aarhusarkivet.dk/{type}/{id}?fmt=json"
         response = await client.get(url)
 
         if response.is_success:
