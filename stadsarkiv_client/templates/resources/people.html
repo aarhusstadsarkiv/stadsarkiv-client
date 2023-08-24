@@ -1,0 +1,53 @@
+{% import "macros/common_fields.html" as common_fields %}
+
+{% macro parse_block_section(field) %}
+{{ common_fields.parse_block_section(field) }}
+{% endmacro %}
+
+{% macro parse_block_common(title, block_keys) %}
+{% if key_exist_in_dict(block_keys, collection) %}
+<div class="record-section">
+    <div class="record-main">
+        <h3 class="record-header">{{ title }}</h3>
+        {% for key in block_keys %}
+        {% if key in collection %}
+        {{ parse_block_section(collection[key]) }}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div> 
+{% endif %}
+{% endmacro %}
+
+
+{% extends "base.html" %}
+
+{% block body_class %}people{% endblock %}
+
+
+{% block content %}
+
+{% include "includes/main_title.html" %}
+
+<p>
+    <a href="/search?people={{ collection['id'] }}">Vis alle resultater i samlingen</a>
+</p>
+
+{% set keys = ["access", "legal_status", "level_of_digitisation", 'citation', 'associated_material'] %}
+{{ parse_block_common('Tilgængelighed og brug', keys) }}
+
+{% set keys = ["sources"] %}
+{{ parse_block_common('Literatur og kilder', keys) }}
+
+
+
+
+{% if get_setting('debug') %}
+<div class="record-section">
+    <div class="record-main">
+    <h3 class="record-header">Metadata</h3>
+    <p><a href="/collections/{{ collection['id'] }}/json">JSON</a></p>
+    </div>
+</div>
+{% endif %}
+{% endblock content %}

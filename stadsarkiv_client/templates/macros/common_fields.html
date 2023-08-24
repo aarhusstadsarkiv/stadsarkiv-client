@@ -189,3 +189,18 @@
 {{ parse_representations(key, value ) }}
 {% endif %}
 {% endmacro %}
+
+{% macro parse_block_common(title, block_keys, data) %}
+{% if key_exist_in_dict(block_keys, data) %}
+<div class="record-section">
+    <div class="record-main">
+        <h3 class="record-header">{{ title }}</h3>
+        {% for key in block_keys %}
+        {% if key in data %}
+        {{ parse_block_section(data[key]) }}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div> 
+{% endif %}
+{% endmacro %}
