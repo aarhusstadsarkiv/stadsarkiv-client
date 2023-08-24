@@ -23,7 +23,6 @@ type_str = [
 ]
 
 string_link_list = [
-    "sources",
     "collectors",
     "curators",
 ]
@@ -47,4 +46,7 @@ def collections_alter(collection: dict):
             collection[elem] = normalize_fields.get_string_or_link_list(elem, collection[elem])
 
     collection = normalize_fields.set_outer_years(collection)
+    if "sources" in collection:
+        collection["sources"] = normalize_fields.get_sources_normalized(collection["sources"])
+
     return collection

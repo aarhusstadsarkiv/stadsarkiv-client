@@ -5,6 +5,7 @@ log = get_log()
 
 
 def _should_linkify(value: str):
+    value = value.strip()
     if value.find(";") != -1:
         return True
 
@@ -20,8 +21,16 @@ def _get_link_list(name: str, values: list):
     return links
 
 
+def _is_http_link(value: str):
+    value = value.strip()
+    if value.find("http") != -1:
+        return True
+
+    return False
+
+
 def get_string_or_link_list(name: str, values: list):
-    """Get string or link_list as field"""
+    """Get string list and convert to link list if needed if string contains ';'"""
     should_linkify = _should_linkify(values[0])
     if should_linkify:
         links = _get_link_list(name, values)
@@ -37,6 +46,21 @@ def get_string_or_link_list(name: str, values: list):
             "type": "string_list",
             "value": values,
             "name": name,
+        }
+
+
+def get_sources_normalized(data: list):
+    if _is_http_link(data[0]):
+        return {
+            "type": "link_list_external",
+            "value": data,
+            "name": "sources",
+        }
+    else:
+        return {
+            "type": "string_list",
+            "value": data,
+            "name": "sources",
         }
 
 
