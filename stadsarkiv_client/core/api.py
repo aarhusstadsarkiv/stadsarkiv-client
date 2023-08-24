@@ -316,7 +316,7 @@ async def entity_get(request: Request) -> typing.Any:
 async def proxies_record_get_by_id(record_id: str) -> typing.Any:
     # e.g. 000478348
     async with httpx.AsyncClient() as client:
-        url = base_url + "/records/" + record_id
+        url = base_url + "/proxy/records/" + record_id
         headers = {"Accept": "application/json"}
         response = await client.get(url, headers=headers)
 
@@ -337,7 +337,7 @@ async def proxies_records(request: Request, remove_keys=[], add_list_items=[]) -
     query_str = quote(query_str)
 
     async with httpx.AsyncClient() as client:
-        url = base_url + "/records?params=" + query_str
+        url = base_url + "/proxy/records?params=" + query_str
         response = await client.get(url)
 
         if response.is_success:
@@ -375,7 +375,7 @@ async def proxies_records_from_list(query_params) -> typing.Any:
     query_str = quote(query_str)
 
     async with httpx.AsyncClient() as client:
-        url = base_url + "/records?params=" + query_str
+        url = base_url + "/proxy/records?params=" + query_str
         response = await client.get(url)
 
         if response.is_success:
