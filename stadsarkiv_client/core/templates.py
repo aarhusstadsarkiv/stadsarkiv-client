@@ -62,7 +62,8 @@ def paragraphs(value):
     segments = normalized.split("\n")
     wrapped = ["<p>{}</p>".format(segment) for segment in segments]
 
-    return "".join(wrapped)
+    string = "".join(wrapped)
+    return string
 
 
 def urldecode(value):

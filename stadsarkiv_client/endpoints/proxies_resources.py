@@ -5,7 +5,7 @@ from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
-from stadsarkiv_client.resources import collections_alter
+from stadsarkiv_client.resources import collections_alter, people_alter
 import json
 
 log = get_log()
@@ -32,15 +32,15 @@ async def _get_people_view(request: Request):
     id = request.path_params["id"]
     resource_type = request.path_params["resource_type"]
     people = await api.proxies_entity_by_type(resource_type, id=id)
-    people = collections_alter.collections_alter(people)
+    people = people_alter.people_alter(people)
     people["id"] = people
     context_variables = {
         "title": people["display_label"],
-        "data": people,
+        "people": people,
     }
 
     context = await get_context(request, context_variables)
-    return templates.TemplateResponse("records/collections.html", context)
+    return templates.TemplateResponse("resources/people.html", context)
 
 
 async def get_resources_view(request: Request):

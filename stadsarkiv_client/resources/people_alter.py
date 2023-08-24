@@ -56,7 +56,6 @@ log = get_log()
 
 type_str = [
     "description",
-    "display_label",
     "content_and_scope",
     "gender",
     "date_of_birth",
@@ -76,6 +75,14 @@ string_link_list = [
 ]
 
 
+def _list_to_type_list(name: str, value: list):
+    return {
+        "type": "string_list",
+        "value": value,
+        "name": name,
+    }
+
+
 def _str_to_type_str(name: str, value: str):
     return {
         "type": "paragraphs",
@@ -84,14 +91,18 @@ def _str_to_type_str(name: str, value: str):
     }
 
 
-def people_alter(collection: dict):
+def people_alter(people: dict):
     for elem in type_str:
-        if elem in collection:
-            collection[elem] = _str_to_type_str(elem, collection[elem])
+        if elem in people:
+            people[elem] = _str_to_type_str(elem, people[elem])
+
+    for elem in lists:
+        if elem in people:
+            people[elem] = _list_to_type_list(elem, people[elem])
 
     for elem in string_link_list:
-        if elem in collection:
-            collection[elem] = normalize_fields.get_string_or_link_list(elem, collection[elem])
+        if elem in people:
+            people[elem] = normalize_fields.get_string_or_link_list(elem, people[elem])
 
-    collection = normalize_fields.set_outer_years(collection)
-    return collection
+    people = normalize_fields.set_outer_years(people)
+    return people
