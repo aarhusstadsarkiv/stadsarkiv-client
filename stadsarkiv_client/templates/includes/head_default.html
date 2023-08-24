@@ -1,3 +1,13 @@
+<title>
+  {% if meta_title %}
+  {{ meta_title }}
+  {% elif title %}
+  {{ title }}
+  {% else %}
+  {{ "Ingen titel" }}
+  {% endif %}
+</title>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
