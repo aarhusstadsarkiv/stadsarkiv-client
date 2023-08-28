@@ -86,7 +86,7 @@
     {{ parse_record_label(key) }}
     <div class="content">
         {% for item in value %}
-        <p>{{ linkify(item)|safe }}</p>
+        <p>{{ item|safe }}</p>
         {% endfor %}
 
     </div>

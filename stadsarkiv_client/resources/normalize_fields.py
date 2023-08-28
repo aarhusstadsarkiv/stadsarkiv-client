@@ -1,4 +1,6 @@
 from stadsarkiv_client.core.logging import get_log
+import re
+from urllib.parse import unquote
 
 
 log = get_log()
@@ -21,12 +23,15 @@ def _get_link_list(name: str, values: list):
     return links
 
 
-def _is_http_link(value: str):
-    value = value.strip()
-    if value.find("http") != -1:
-        return True
+def _linkify_str(text):
+    pattern = r"(https?://\S+)"
 
-    return False
+    def replace_with_link(match):
+        url = match.group(1)
+        decoded_url = unquote(url)
+        return f'<a href="{url}">{decoded_url}</a>'
+
+    return re.sub(pattern, replace_with_link, text)
 
 
 def get_string_or_link_list(name: str, values: list):
@@ -50,6 +55,10 @@ def get_string_or_link_list(name: str, values: list):
 
 
 def get_sources_normalized(data: list):
+    # iterate data and linkify
+    for i in range(len(data)):
+        data[i] = _linkify_str(data[i])
+
     return {
         "type": "string_list",
         "value": data,

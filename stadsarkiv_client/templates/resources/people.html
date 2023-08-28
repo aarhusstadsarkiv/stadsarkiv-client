@@ -12,13 +12,11 @@
     <a href="/search?people={{ people['id'] }}">Vis alle resultater i samlingen</a>
 </p>
 
-{{ people }}
-
-{% set keys = ["occupation", "firstnames", "lastnames", "date_of_birth", "date_of_death", "place_of_birth", "place_of_death"] %}
-{{ common_fields.parse_block_common('Tilgængelighed og brug', keys, people) }}
+{% set keys = ["firstnames", "lastnames", "gender", "date_of_birth", "place_of_birth", "date_of_death", "place_of_death", "occupation"] %}
+{{ common_fields.parse_block_common('Stamdata', keys, people) }}
 
 {% set keys = ["sources"] %}
-{{ common_fields.parse_block_common('Literatur og kilder', keys, people) }}
+{{ common_fields.parse_block_common('Kilder', keys, people) }}
 
 {% if get_setting('debug') %}
 <div class="record-section">

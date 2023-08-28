@@ -33,7 +33,6 @@ async def _get_people_view(request: Request):
     resource_type = request.path_params["resource_type"]
     people = await api.proxies_entity_by_type(resource_type, id=id)
     people = people_alter.people_alter(people)
-    people["id"] = people
     context_variables = {
         "title": people["display_label"],
         "people": people,

@@ -69,11 +69,11 @@ h3.record-header {
 
 .record-content>.content>p {
     margin: 0;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
 }
 
 .record-content>.content>p.spacing {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .record-content>.content>p.spacing:last-child {
