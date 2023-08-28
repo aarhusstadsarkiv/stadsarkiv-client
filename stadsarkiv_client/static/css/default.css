@@ -153,12 +153,11 @@
 .container-left {
     min-width: 350px;
     margin-left: 20px;
-    height: 100%;
 }
 
 .container-main-center {
-    max-width: 100%;
-    height: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .container-main-facets {
@@ -172,11 +171,6 @@
 @media (max-width: 992px) {
     .container-left {
         display: none;
-    }
-
-    .container-main-center {
-        margin-left: 20px;
-        margin-right: 20px;
     }
 
     .container-main-facets {
