@@ -50,18 +50,11 @@ def get_string_or_link_list(name: str, values: list):
 
 
 def get_sources_normalized(data: list):
-    if _is_http_link(data[0]):
-        return {
-            "type": "link_list_external",
-            "value": data,
-            "name": "sources",
-        }
-    else:
-        return {
-            "type": "string_list",
-            "value": data,
-            "name": "sources",
-        }
+    return {
+        "type": "string_list",
+        "value": data,
+        "name": "sources",
+    }
 
 
 def set_outer_years(data: dict):

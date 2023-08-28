@@ -81,26 +81,12 @@
 </div>
 {% endmacro %}
 
-{% macro parse_link_list_external (key, value) %}
-<div class="record-content">
-    {{ parse_record_label(key) }}
-    <div class="content">
-            {% for link in value %}
-            <p>
-                <a href="{{ link }}">{{ urldecode(link) }}</a>
-            </p>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-{% endmacro %}
-
 {% macro parse_string_list (key, value) %}
 <div class="record-content">
     {{ parse_record_label(key) }}
     <div class="content">
         {% for item in value %}
-        <p>{{ item|safe }}</p>
+        <p>{{ linkify(item)|safe }}</p>
         {% endfor %}
 
     </div>
@@ -179,8 +165,6 @@
 {{ parse_string_list(key, value ) }}
 {% elif type == "link_list" %}
 {{ parse_link_list(key, value ) }}
-{% elif type == "link_list_external" %}
-{{ parse_link_list_external(key, value ) }}
 {% elif type == "link_dict" %}
 {{ parse_link_dict(key, value ) }}
 {% elif type == "link_list_hierarchy" %}
