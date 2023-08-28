@@ -4,6 +4,7 @@
 {% import "macros/common_fields.html" as common_fields %}
 
 {% macro parse_record_pagination(record_pagination) %}
+{% if record_pagination %}
 <div class="record-pagination">
     <div class="record-search-link">
         <a href="/search?{{ record_pagination['query_str'] }}">{{translate('Latest search') }}</a> 
@@ -25,6 +26,7 @@
         
     </div>
 </div>
+{% endif %}
 {% endmacro %}
 
 {% macro parse_representations_media(record) %}
