@@ -86,6 +86,12 @@ def key_exist_in_dict(keys: list, data: dict):
     return False
 
 
+def linkify(text):
+    """Linkify text."""
+    pattern = r"(https?://\S+)"
+    return re.sub(pattern, r'<a href="\1">\1</a>', text)
+
+
 templates.env.globals.update(translate=translate)
 templates.env.globals.update(get_setting=get_setting)
 templates.env.globals.update(format_date=format_date)
@@ -93,3 +99,4 @@ templates.env.globals.update(to_json=to_json)
 templates.env.globals.update(paragraphs=paragraphs)
 templates.env.globals.update(urldecode=urldecode)
 templates.env.globals.update(key_exist_in_dict=key_exist_in_dict)
+templates.env.globals.update(linkify=linkify)
