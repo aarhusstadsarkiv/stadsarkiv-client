@@ -1,0 +1,52 @@
+{#
+    "addr_nr": "3",
+    "alt_names": [
+      "Vor Frue Kirke"
+    ],
+    "description": "Frue Kirkeplads 3 / Vestergade 21",
+    "display_label": "Frue Kirkeplads 3",
+    "domain": "locations",
+    "id": "000024421",
+    "latitude": 56.15806561,
+    "local_area": "City",
+    "longitude": 10.20479614,
+    "name": "Frue Kirkeplads",
+    "parish": "Vor Frue",
+    "rotation": 84.0,
+    "schema": "address",
+    "sources": [
+      "http://aarhuswiki.dk/wiki/Vor_Frue_Kirke"
+    ],
+    "version_nr": 1,
+    "zipcode": "8000"
+#}
+
+{% import "macros/common_fields.html" as common_fields %}
+
+{% extends "base.html" %}
+
+{% block body_class %}locations{% endblock %}
+
+{% block content %}
+
+{% include "includes/main_title.html" %}
+
+<p>
+    <a href="/search?locations={{ locations['id'] }}">Vis alle resultater i samlingen</a>
+</p>
+
+{% set keys = ["firstnames", "lastnames", "gender", "date_of_birth", "place_of_birth", "date_of_death", "place_of_death", "occupation"] %}
+{{ common_fields.parse_block_common('Stamdata', keys, locations) }}
+
+{% set keys = ["sources"] %}
+{{ common_fields.parse_block_common('Kilder', keys, locations) }}
+
+{% if get_setting('debug') %}
+<div class="record-section">
+    <div class="record-main">
+    <h3 class="record-header">Metadata</h3>
+    <p><a href="/collections/{{ locations['id'] }}/json">JSON</a></p>
+    </div>
+</div>
+{% endif %}
+{% endblock content %}

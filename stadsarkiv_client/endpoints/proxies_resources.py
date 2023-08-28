@@ -42,6 +42,20 @@ async def _get_people_view(request: Request):
     return templates.TemplateResponse("resources/people.html", context)
 
 
+async def _get_locations_view(request: Request):
+    id = request.path_params["id"]
+    resource_type = request.path_params["resource_type"]
+    location = await api.proxies_entity_by_type(resource_type, id=id)
+    location = people_alter.people_alter(location)
+    context_variables = {
+        "title": location["display_label"],
+        "location": location,
+    }
+
+    context = await get_context(request, context_variables)
+    return templates.TemplateResponse("resources/people.html", context)
+
+
 async def get_resources_view(request: Request):
     # id = request.path_params["id"]
     resource_type = request.path_params["resource_type"]
@@ -55,8 +69,11 @@ async def get_resources_view(request: Request):
     if resource_type == "people":
         return await _get_people_view(request)
 
+    if resource_type == "locations":
+        return await _get_locations_view(request)
 
-async def get_collections_view_json(request: Request):
+
+async def get_resources_view_json(request: Request):
     id = request.path_params["id"]
     resource_type = request.path_params["resource_type"]
     collection = await api.proxies_entity_by_type(resource_type, id)

@@ -71,7 +71,7 @@ routes = [
     Route("/records/{record_id:str}", endpoint=proxies_records.get_record_view, name="record_view"),
     Route("/records/{record_id:str}/json/{type:str}", endpoint=proxies_records.get_record_view_json, name="record_view_json"),
     Route("/{resource_type:str}/{id:str}", endpoint=proxies_resources.get_resources_view, name="collection_view"),
-    Route("/{resource_type:str}/{id:str}/json", endpoint=proxies_resources.get_collections_view_json, name="collection_view_json"),
+    Route("/{resource_type:str}/{id:str}/json", endpoint=proxies_resources.get_resources_view_json, name="collection_view_json"),
 ]
 
 if settings["environment"] == "development":
