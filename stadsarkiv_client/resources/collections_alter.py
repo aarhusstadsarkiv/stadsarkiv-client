@@ -28,18 +28,10 @@ string_link_list = [
 ]
 
 
-def _str_to_type_str(name: str, value: str):
-    return {
-        "type": "paragraphs",
-        "value": value,
-        "name": name,
-    }
-
-
 def collections_alter(collection: dict):
     for elem in type_str:
         if elem in collection:
-            collection[elem] = _str_to_type_str(elem, collection[elem])
+            collection[elem] = normalize_fields.str_to_type_str(elem, collection[elem])
 
     for elem in string_link_list:
         if elem in collection:

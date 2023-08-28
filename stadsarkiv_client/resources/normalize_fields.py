@@ -34,6 +34,22 @@ def _linkify_str(text):
     return re.sub(pattern, replace_with_link, text)
 
 
+def list_to_type_list(name: str, value: list):
+    return {
+        "type": "string_list",
+        "value": value,
+        "name": name,
+    }
+
+
+def str_to_type_str(name: str, value: str):
+    return {
+        "type": "paragraphs",
+        "value": value,
+        "name": name,
+    }
+
+
 def get_string_or_link_list(name: str, values: list):
     """Get string list and convert to link list if needed if string contains ';'"""
     should_linkify = _should_linkify(values[0])
@@ -81,4 +97,16 @@ def set_outer_years(data: dict):
             "value": data["date_from"],
             "name": "outer_years",
         }
+    return data
+
+
+def set_latitude_longitude(data: dict):
+    """Set latitude and longitude fields on dict"""
+    if "latitude" and "longitude" in data:
+        data["latitude_longitude"] = {
+            "type": "string",
+            "value": str(data["latitude"]) + ", " + str(data["longitude"]),
+            "name": "latitude_longitude",
+        }
+
     return data

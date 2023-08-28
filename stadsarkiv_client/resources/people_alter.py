@@ -21,30 +21,14 @@ lists = [
 ]
 
 
-def _list_to_type_list(name: str, value: list):
-    return {
-        "type": "string_list",
-        "value": value,
-        "name": name,
-    }
-
-
-def _str_to_type_str(name: str, value: str):
-    return {
-        "type": "paragraphs",
-        "value": value,
-        "name": name,
-    }
-
-
 def people_alter(people: dict):
     for elem in type_str:
         if elem in people:
-            people[elem] = _str_to_type_str(elem, people[elem])
+            people[elem] = normalize_fields.str_to_type_str(elem, people[elem])
 
     for elem in lists:
         if elem in people:
-            people[elem] = _list_to_type_list(elem, people[elem])
+            people[elem] = normalize_fields.list_to_type_list(elem, people[elem])
 
     if "sources" in people:
         people["sources"] = normalize_fields.get_sources_normalized(people["sources"])

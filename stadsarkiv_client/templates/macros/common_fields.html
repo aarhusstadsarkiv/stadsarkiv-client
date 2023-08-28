@@ -94,12 +94,12 @@
 {% endmacro %}
 
 {% macro _parse_list_in_hierarchy (value) %}
-<div>
+<p>
 {% for item in value %}
 <a href="{{ search_base_url }}?{{ item['search_query'] }}">{{ item['label'] }}</a>
     {% if not loop.last %} {{ '>' }} {% endif %}
 {% endfor %}
-</div>
+</p>
 {% endmacro %}
 
 {% macro parse_link_list_hierarchy (label, value) %}
