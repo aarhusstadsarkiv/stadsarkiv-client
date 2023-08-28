@@ -198,6 +198,7 @@ en = {
     "label_record_extent": "label_record_extent",
     "label_record_firstnames": "label_record_firstnames",
     "label_record_formidlingsegnet": "label_record_formidlingsegnet",
+    "label_record_gender": "label_record_gender",
     "label_record_heading": "Heading",
     "label_record_id": "ID",
     "label_record_label": "label_record_label",
