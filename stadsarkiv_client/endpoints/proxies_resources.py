@@ -5,12 +5,11 @@ from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
-from stadsarkiv_client.resources import collections_alter, people_alter, locations_alter
+from stadsarkiv_client.resources import collections_alter, people_alter, locations_alter, creators_alter
+from stadsarkiv_client.facets import RESOURCE_TYPES
 import json
 
 log = get_log()
-
-resource_types = ["creators", "people", "places", "collections", "locations"]
 
 
 async def _get_collections_view(request: Request):
@@ -58,10 +57,26 @@ async def _get_locations_view(request: Request):
     return templates.TemplateResponse("resources/locations.html", context)
 
 
+async def _get_creators_view(request: Request):
+    id = request.path_params["id"]
+    resource_type = request.path_params["resource_type"]
+
+    creator = await api.proxies_entity_by_type(resource_type, id=id)
+    title = creator["display_label"]
+    creator = creators_alter.creators_alter(creator)
+    context_variables = {
+        "title": title,
+        "creator": creator,
+    }
+
+    context = await get_context(request, context_variables)
+    return templates.TemplateResponse("resources/creators.html", context)
+
+
 async def get_resources_view(request: Request):
     resource_type = request.path_params["resource_type"]
 
-    if resource_type not in resource_types:
+    if resource_type not in RESOURCE_TYPES:
         raise HTTPException(status_code=404, detail="Resource type not found")
 
     if resource_type == "collections":
@@ -72,6 +87,9 @@ async def get_resources_view(request: Request):
 
     if resource_type == "locations":
         return await _get_locations_view(request)
+
+    if resource_type == "creators":
+        return await _get_creators_view(request)
 
 
 async def get_resources_view_json(request: Request):

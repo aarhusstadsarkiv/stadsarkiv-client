@@ -1,4 +1,5 @@
 from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core.translate import translate
 import re
 from urllib.parse import unquote
 
@@ -7,6 +8,9 @@ log = get_log()
 
 
 def _should_linkify(value: str):
+    """Check if string should be linkified. '1;collection'
+    Split into id and label. If ';' in string, return True
+    """
     value = value.strip()
     if value.find(";") != -1:
         return True
@@ -107,6 +111,44 @@ def set_latitude_longitude(data: dict):
             "type": "string",
             "value": str(data["latitude"]) + ", " + str(data["longitude"]),
             "name": "latitude_longitude",
+        }
+
+    return data
+
+
+def set_creators_link_list(data: dict):
+    """Set creator_link field on dict."""
+
+    if "is_creator" in data and data["is_creator"]:
+        value = [
+            {
+                "search_query": f"creators={data['id']}",
+                "label": translate("See all records this creator has created"),
+            }
+        ]
+        data["creators_link"] = {
+            "type": "link_list",
+            "value": value,
+            "name": "creators_link",
+        }
+
+    return data
+
+
+def set_collectors_link_list(data: dict):
+    """Set creator_link field on dict."""
+
+    if "is_creator" in data and data["is_creative_creator"]:
+        value = [
+            {
+                "search_query": f"collectors={data['id']}",
+                "label": translate("See all records this organization has collected"),
+            }
+        ]
+        data["collectors_link"] = {
+            "type": "link_list",
+            "value": value,
+            "name": "collectors_link",
         }
 
     return data
