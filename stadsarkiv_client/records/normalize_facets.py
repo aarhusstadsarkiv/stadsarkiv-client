@@ -2,13 +2,15 @@ from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
 from stadsarkiv_client.facets import FACETS
 from stadsarkiv_client.facets import QUERY_PARAMS
+
+# from stadsarkiv_client.facets import RESOURCE_TYPES
 from urllib.parse import quote_plus
 
 
 log = get_log()
 
 
-def str_to_date(date: str):
+def _str_to_date(date: str):
     """convert date string to date string with correct format
     e.g. 20221231 to 2022-12-31
     """
@@ -131,12 +133,16 @@ class NormalizeFacets:
         is the subject translated to the current language."""
         label = QUERY_PARAMS[key]["label"]
         if key == "date_from" or key == "date_to":
-            return label + " " + str_to_date(value)
+            return label + " " + _str_to_date(value)
 
         if key == "q":
             return label + " " + value
 
         return None
+
+    def _get_entity_link(self, key, value):
+        """Get the link to entity if the entity can be displayed"""
+        pass
 
     def get_checked_facets(self):
         """get a list of facets that are checked (meaning that they are working filters).
@@ -164,6 +170,7 @@ class NormalizeFacets:
                 checked_label = f"{label} (Unresolved) '{query_name}'={query_value}"
 
             facet["checked_label"] = checked_label
+            log.debug(facet)
             facets_checked.append(facet)
 
         return facets_checked
