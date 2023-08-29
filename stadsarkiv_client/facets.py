@@ -959,3 +959,6 @@ QUERY_PARAMS = {
         "search_filter": False,
     },
 }
+
+# These entities have pages on the frontend
+RESOURCE_TYPES = ["creators", "people", "places", "collections", "locations", "creators"]
