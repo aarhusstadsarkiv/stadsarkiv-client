@@ -14,8 +14,6 @@ def _str_to_date(date: str):
     """convert date string to date string with correct format
     e.g. 20221231 to 2022-12-31
     """
-    if not date:
-        return None
 
     if len(date) == 8:
         return f"{date[:4]}-{date[4:6]}-{date[6:]}"
@@ -40,13 +38,16 @@ def _get_records_filter(records, key) -> dict:
 
 
 class NormalizeFacets:
-    def __init__(self, request: Request, records, query_params=[], query_str=""):
+    def __init__(self, request: Request, records: dict, query_params: list = [], query_str: str = ""):
         self.request = request
         self.records = records
         self.facets_search = self._get_facets_search(records["facets"])
         self.query_params = query_params
         self.query_str = query_str
+        self.filters = records.get("filters", [])
         self.FACETS = FACETS
+
+        log.debug(self.filters)
 
     def _get_facets_search(self, data):
         """Transform search facets from this format:
@@ -74,8 +75,8 @@ class NormalizeFacets:
 
         return altered_search_facets
 
-    def _transform_facets(self, top_level_key, facets_content, path=None):
-        if path is None:
+    def _transform_facets(self, top_level_key: str, facets_content: dict, path: list = []):
+        if not path:
             path = [self.FACETS[top_level_key]["label"]]
 
         for facet in facets_content:
@@ -96,7 +97,7 @@ class NormalizeFacets:
 
             label = ""
             try:
-                label = QUERY_PARAMS[top_level_key]["label"]
+                label = str(QUERY_PARAMS[top_level_key]["label"])
             except KeyError:
                 pass
 
@@ -111,7 +112,7 @@ class NormalizeFacets:
                 facet["checked"] = False
                 facet["search_query"] = self.query_str + f"{top_level_key}={facet['id']}&"
 
-    def _set_facets_checked(self, top_level_key, facets_content, facets_checked):
+    def _set_facets_checked(self, top_level_key: str, facets_content: dict, facets_checked: list = []):
         for facet in facets_content:
             if "children" in facet:
                 self._set_facets_checked(top_level_key, facet["children"], facets_checked)
@@ -127,18 +128,26 @@ class NormalizeFacets:
 
         return facets_checked
 
-    def _get_label(self, key, value):
-        """Get the label for a facet. If the facet is a date, then the label is
-        the date in a readable format. If the facet is a subject, then the label
-        is the subject translated to the current language."""
-        label = QUERY_PARAMS[key]["label"]
-        if key == "date_from" or key == "date_to":
-            return label + " " + _str_to_date(value)
+    def _get_label(self, query_name: str, query_value: str):
+        """
+        Get the label for a facet.
+        The label is found in QUERY_PARAMS:
 
-        if key == "q":
-            return label + " " + value
+        If the facet is a date, then part of the label is the date in a readable format.
+        If the key is the search query ('q') then part of the label is the search query.
 
-        return None
+        The label is not found in QUERY_PARAMS:
+        If the key is not found in QUERY_PARAMS. Then try to get the resolved filter from records.
+        """
+        label = str(QUERY_PARAMS[query_name]["label"])
+
+        if query_name == "date_from" or query_name == "date_to":
+            return label + " " + _str_to_date(query_value)
+
+        if query_name == "q":
+            return label + " " + query_value
+
+        return f"{label} (Unresolved) '{query_name}'={query_value}"
 
     def _get_entity_link(self, key, value):
         """Get the link to entity if the entity can be displayed"""
@@ -155,25 +164,25 @@ class NormalizeFacets:
             if query_name not in QUERY_PARAMS or query_name in ignore_keys:
                 continue
 
-            definition = QUERY_PARAMS[query_name]
+            # definition = QUERY_PARAMS[query_name]
 
-            try:
-                label = definition.get("label")
-            except KeyError:
-                continue
-
+            # try:
+            #     label = definition.get("label")
+            # except KeyError:
+            #     continue
+            log.debug(query_name)
             facet = {}
             facet["type"] = query_name
             facet["remove_query"] = self.query_str.replace(f"{query_name}={quote_plus(query_value)}&", "")
-            checked_label = self._get_label(query_name, query_value)
-            if not checked_label:
-                checked_label = f"{label} (Unresolved) '{query_name}'={query_value}"
 
+            checked_label = self._get_label(query_name, str(query_value))  # query_value to str in case it is an int
             facet["checked_label"] = checked_label
-            log.debug(facet)
             facets_checked.append(facet)
 
         return facets_checked
+
+    def _get_unresolved_facet(self, facet):
+        pass
 
     def get_transformed_facets(self):
         """Alter the facets content with the count from the search facets. Also add
