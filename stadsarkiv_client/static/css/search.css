@@ -110,6 +110,7 @@ button {
 
 details>summary.closed {
     list-style: none;
+    cursor: unset;
 }
 
 .search-form {
