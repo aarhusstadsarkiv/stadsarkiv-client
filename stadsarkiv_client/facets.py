@@ -1,3 +1,7 @@
+from stadsarkiv_client.core.logging import get_log
+
+log = get_log()
+
 FACETS = {
     "content_types": {
         "label": "Materialetype",
@@ -804,48 +808,6 @@ QUERY_PARAMS = {
         "negatable": False,
         "search_filter": False,
     },
-    "creators": {
-        "label": "Ophavsretsholder",
-        "repeatable": True,
-        "type": "object",
-        "negatable": True,
-        "search_filter": True,
-    },
-    "locations": {
-        "label": "Stedsangivelse",
-        "repeatable": True,
-        "type": "object",
-        "negatable": True,
-        "search_filter": True,
-    },
-    "events": {
-        "label": "Begivenhed",
-        "repeatable": True,
-        "type": "object",
-        "negatable": True,
-        "search_filter": True,
-    },
-    "people": {
-        "label": "Person",
-        "repeatable": True,
-        "type": "object",
-        "negatable": True,
-        "search_filter": True,
-    },
-    "organisations": {
-        "label": "Organisation",
-        "repeatable": True,
-        "type": "object",
-        "negatable": True,
-        "search_filter": True,
-    },
-    "collection": {
-        "label": "Samling",
-        "repeatable": False,
-        "type": "object",
-        "negatable": True,
-        "search_filter": True,
-    },
     "date_from": {
         "label": "Tidligste dato",
         "repeatable": False,
@@ -859,6 +821,56 @@ QUERY_PARAMS = {
         "type": "date",
         "negatable": False,
         "search_filter": True,
+    },
+    # entities
+    "creators": {
+        "label": "Ophavsretsholder",
+        "repeatable": True,
+        "type": "object",
+        "negatable": True,
+        "search_filter": True,
+        "entity": True,
+    },
+    "locations": {
+        "label": "Stedsangivelse",
+        "repeatable": True,
+        "type": "object",
+        "negatable": True,
+        "search_filter": True,
+        "entity": True,
+    },
+    "events": {
+        "label": "Begivenhed",
+        "repeatable": True,
+        "type": "object",
+        "negatable": True,
+        "search_filter": True,
+        "entity": True,
+    },
+    "people": {
+        "label": "Person",
+        "repeatable": True,
+        "type": "object",
+        "negatable": True,
+        "search_filter": True,
+        "entity": True,
+    },
+    "organisations": {
+        "label": "Organisation",
+        "repeatable": True,
+        "type": "object",
+        "negatable": True,
+        "search_filter": True,
+        "entity": True,
+    },
+    "collection": {
+        "label": "Samling",
+        "repeatable": False,
+        "type": "object",
+        "negatable": True,
+        "search_filter": True,
+        "entity": True,
+        "entity_type": "collections",
     },
     "subjects": {
         "label": "Emnekategori",
@@ -908,6 +920,7 @@ QUERY_PARAMS = {
         "type": "object",
         "negatable": True,
         "search_filter": True,
+        "entity": False,
     },
     "availability": {
         "label": "Tilgængelighed",
@@ -960,5 +973,13 @@ QUERY_PARAMS = {
     },
 }
 
-# These entities have pages on the frontend
-RESOURCE_TYPES = ["creators", "people", "places", "collections", "locations", "creators"]
+
+RESOURCE_TYPES = []
+
+# Get all resource types
+for key, value in QUERY_PARAMS.items():
+    if value.get("entity", False):
+        if value.get("entity_type", False):
+            RESOURCE_TYPES.append(value.get("entity_type"))
+        else:
+            RESOURCE_TYPES.append(key)
