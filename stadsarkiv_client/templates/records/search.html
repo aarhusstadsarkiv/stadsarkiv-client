@@ -14,7 +14,11 @@
     {% for facet in facets_filters %}
     <li>
         <a class="remove" href="{{ search_base_url }}?{{ facet['remove_query'] }}">{{ translate('Remove facet') }}</a>
+        {% if facet["entity_path"] %}
+        <span><a href="{{ facet['entity_path'] }}">{{ facet['checked_label'] }}</a></span>
+        {% else %}
         <span>{{ facet['checked_label'] }}</span>
+        {% endif %}
         {{ parse_facets_info(facet) }}
     </li>
     {% endfor %}
