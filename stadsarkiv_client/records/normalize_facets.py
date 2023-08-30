@@ -62,7 +62,6 @@ class NormalizeFacets:
             path = [self.FACETS[top_level_key]["label"]]
 
         for facet in facets_content:
-
             current_path = path + [facet["label"]]
             facet["path"] = current_path
 
@@ -95,7 +94,6 @@ class NormalizeFacets:
                 self.facets_checked.append(facet_checked)
 
             else:
-
                 facet["count"] = facet_count
                 facet["checked"] = False
                 facet["search_query"] = self.query_str + f"{top_level_key}={facet['id']}&"
