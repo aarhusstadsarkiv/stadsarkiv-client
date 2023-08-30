@@ -158,6 +158,7 @@
 .container-main-center {
     margin-left: 20px;
     margin-right: 20px;
+    width: 100%;
 }
 
 .container-main-facets {
