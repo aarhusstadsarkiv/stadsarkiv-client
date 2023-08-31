@@ -87,7 +87,6 @@ def _set_representations(meta_data: dict, record: dict):
 
     meta_data["has_representations"] = False
     if meta_data["legal_id"] == 1 and meta_data["contractual_id"] > 2:
-        # Then it is a representation, image, audio, video, web_document - or notice about reading room
         meta_data["has_representations"] = True
 
     meta_data["is_representations_online"] = False
