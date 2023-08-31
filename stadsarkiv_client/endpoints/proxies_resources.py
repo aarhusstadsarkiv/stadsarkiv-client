@@ -15,10 +15,12 @@ async def _get_collections_view(request: Request):
     id = request.path_params["id"]
     resource_type = request.path_params["resource_type"]
     collection = await api.proxies_entity_by_type(resource_type, id=id)
+    collection["id_real"] = id
+    title = collection["display_label"]
     collection = collections_alter.collections_alter(collection)
-    collection["id"] = id
+
     context_variables = {
-        "title": collection["display_label"],
+        "title": title,
         "collection": collection,
     }
 
@@ -30,9 +32,11 @@ async def _get_people_view(request: Request):
     id = request.path_params["id"]
     resource_type = request.path_params["resource_type"]
     people = await api.proxies_entity_by_type(resource_type, id=id)
+    people["id_real"] = id
+    title = people["display_label"]
     people = people_alter.people_alter(people)
     context_variables = {
-        "title": people["display_label"],
+        "title": title,
         "people": people,
     }
 
@@ -46,6 +50,7 @@ async def _get_locations_view(request: Request):
 
     location = await api.proxies_entity_by_type(resource_type, id=id)
     title = location["display_label"]
+    location["id_real"] = id
     location = locations_alter.locations_alter(location)
     context_variables = {
         "title": title,
@@ -62,7 +67,9 @@ async def _get_creators_view(request: Request):
 
     creator = await api.proxies_entity_by_type(resource_type, id=id)
     title = creator["display_label"]
+    creator["id_real"] = id
     creator = creators_alter.creators_alter(creator)
+
     context_variables = {
         "title": title,
         "creator": creator,
