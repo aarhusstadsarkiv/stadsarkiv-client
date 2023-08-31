@@ -870,7 +870,15 @@ QUERY_PARAMS = {
         "negatable": True,
         "search_filter": True,
         "entity": True,
-        "entity_type": "collections",
+        "entity_path": "collections",
+    },
+    "collectors": {
+        "label": "Arkivskaber",
+        "repeatable": True,
+        "type": "object",
+        "negatable": True,
+        "search_filter": True,
+        "entity": True,
     },
     "subjects": {
         "label": "Emnekategori",
@@ -907,20 +915,15 @@ QUERY_PARAMS = {
         "negatable": True,
         "search_filter": True,
     },
-    "collectors": {
-        "label": "Arkivskaber",
-        "repeatable": True,
-        "type": "object",
-        "negatable": True,
-        "search_filter": True,
-    },
     "curators": {
         "label": "Kurator",
         "repeatable": True,
         "type": "object",
         "negatable": True,
         "search_filter": True,
-        "entity": False,
+        "entity": True,
+        # if label_only is True then the entity can not be displayed
+        "label_only": True,
     },
     "availability": {
         "label": "Tilgængelighed",
@@ -979,7 +982,4 @@ RESOURCE_TYPES = []
 # Get all resource types
 for key, value in QUERY_PARAMS.items():
     if value.get("entity", False):
-        if value.get("entity_type", False):
-            RESOURCE_TYPES.append(value.get("entity_type"))
-        else:
-            RESOURCE_TYPES.append(key)
+        RESOURCE_TYPES.append(key)
