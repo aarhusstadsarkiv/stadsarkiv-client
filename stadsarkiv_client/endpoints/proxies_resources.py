@@ -6,7 +6,6 @@ from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
 from stadsarkiv_client.resources import collections_alter, people_alter, locations_alter, creators_alter
-from stadsarkiv_client.facets import RESOURCE_TYPES
 import json
 
 log = get_log()
@@ -76,20 +75,19 @@ async def _get_creators_view(request: Request):
 async def get_resources_view(request: Request):
     resource_type = request.path_params["resource_type"]
 
-    if resource_type not in RESOURCE_TYPES:
-        raise HTTPException(status_code=404, detail="Resource type not found")
-
     if resource_type == "collections":
         return await _get_collections_view(request)
 
-    if resource_type == "people":
+    elif resource_type == "people":
         return await _get_people_view(request)
 
-    if resource_type == "locations":
+    elif resource_type == "locations":
         return await _get_locations_view(request)
 
-    if resource_type == "creators":
+    elif resource_type == "creators":
         return await _get_creators_view(request)
+
+    raise HTTPException(status_code=404, detail="Resource type not found")
 
 
 async def get_resources_view_json(request: Request):

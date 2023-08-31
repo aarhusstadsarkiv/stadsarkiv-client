@@ -22,12 +22,13 @@ def _str_to_date(date: str):
 
 
 class NormalizeFacets:
-    def __init__(self, request: Request, records, query_params=[], query_str=""):
+    def __init__(self, request: Request, records, query_params=[], facets_resolved={}, query_str=""):
         self.request = request
         self.records = records
         self.facets_search = self._get_facets_search(records["facets"])
         self.query_params = query_params
         self.query_str = query_str
+        self.facets_resolved = facets_resolved
         self.facets_checked: list = []
         self.FACETS = FACETS
 
@@ -98,16 +99,47 @@ class NormalizeFacets:
                 facet["checked"] = False
                 facet["search_query"] = self.query_str + f"{top_level_key}={facet['id']}&"
 
+    def _get_inner_dict(self, outer_key, inner_key):
+        """Get the inner dict from the facets_resolved dict."""
+        facets_resolved = self.facets_resolved
+        if outer_key in facets_resolved:
+            if inner_key in facets_resolved[outer_key]:
+                return facets_resolved[outer_key][inner_key]
+        return None
+
     def _get_label(self, key, value):
         """Get the label for a facet."""
-        label = QUERY_PARAMS[key]["label"]
+        label_settings = QUERY_PARAMS[key]["label"]
+        resolved = self._get_inner_dict(key, value)
+
+        if resolved:
+            resolved_label = resolved["display_label"]
+            return label_settings + " " + resolved_label
+
         if key == "date_from" or key == "date_to":
-            return label + " " + _str_to_date(value)
+            return label_settings + " " + _str_to_date(value)
 
         if key == "q":
-            return f"{label} '{value}'"
+            return f"{label_settings} '{value}'"
 
-        return label + " " + value
+        return label_settings + " " + value
+
+    def _get_entity_path(self, key):
+        """collection -> collections. All other entities correspond to the key."""
+        try:
+            return QUERY_PARAMS[key]["entity_path"]
+        except KeyError:
+            return key
+
+    def _get_enitity_url(self, key, value):
+        """Get the link for a facet."""
+        resolved = self._get_inner_dict(key, value)
+        definition = QUERY_PARAMS[key]
+
+        if resolved and not definition.get("label_only", False):
+            entity_path = self._get_entity_path(key)
+            return f"/{entity_path}/{value}"
+        return None
 
     def get_checked_facets(self):
         """get a list of facets that are checked (meaning that they are working filters).
@@ -133,6 +165,7 @@ class NormalizeFacets:
             facet_checked["query_value"] = query_value
             facet_checked["remove_query"] = self.query_str.replace(f"{query_name}={quote_plus(query_value)}&", "")
             facet_checked["checked_label"] = checked_label
+            facet_checked["entity_url"] = self._get_enitity_url(query_name, query_value)
             facets_checked.append(facet_checked)
 
         # Sort the search filters based on the query_params order

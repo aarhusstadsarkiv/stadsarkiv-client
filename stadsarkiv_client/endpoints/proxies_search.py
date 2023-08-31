@@ -9,6 +9,7 @@ import json
 from stadsarkiv_client.records.normalize_facets import NormalizeFacets
 from stadsarkiv_client.core import query
 from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
+from stadsarkiv_client.facets import RESOURCE_TYPES
 
 
 log = get_log()
@@ -85,11 +86,10 @@ def _normalize_search(records):
     return records
 
 
-def _get_collection_id(query_params):
-    """Get collection from query_params"""
-    for key, value in query_params:
-        if key == "collection":
-            return value
+def _get_resolve_query_str(query_params: list):
+    resolve_query_params = [(k, v) for k, v in query_params if k in RESOURCE_TYPES]
+    resolve_query_string = query.get_str_from_list(resolve_query_params)
+    return resolve_query_string
 
 
 async def get_records_search(request: Request):
@@ -101,20 +101,17 @@ async def get_records_search(request: Request):
     # If not set they may be read from cookies
     # last resort is default values
     query_params = query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
-    # collection_id = _get_collection_id(query_params)
-    # collection = None
-
-    # if collection_id:
-    #     collection = await api.proxies_collection(collection_id=collection_id)
-    #     collection["id"] = collection_id
-
     query_str = query.get_str(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
     search_result = await api.proxies_records(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
     search_result = _normalize_search(search_result)
 
-    log.debug(search_result)
+    resolve_query_str = _get_resolve_query_str(query_params)
+    facets_resolved = await api.proxies_resolve(query_str=resolve_query_str)
 
-    normalized_facets = NormalizeFacets(request=request, records=search_result, query_params=query_params, query_str=query_str)
+    normalized_facets = NormalizeFacets(
+        request=request, records=search_result, query_params=query_params, facets_resolved=facets_resolved, query_str=query_str
+    )
+
     facets = normalized_facets.get_transformed_facets()
     facets_filters = normalized_facets.get_checked_facets()
     pagination_data = _get_search_pagination_data(request, search_result["size"], search_result["total"])
