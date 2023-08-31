@@ -24,12 +24,14 @@ lists = [
 
 
 def locations_alter(location: dict):
+    location = normalize_fields.set_sources_normalized(location)
     location = normalize_fields.set_latitude_longitude(location)
-    for elem in type_str:
-        if elem in location:
-            location[elem] = normalize_fields.str_to_type_str(elem, location[elem])
+    location = normalize_fields.get_resource_and_types(location)
+    # for elem in type_str:
+    #     if elem in location:
+    #         location[elem] = normalize_fields.str_to_type_str(elem, location[elem])
 
-    if "sources" in location:
-        location["sources"] = normalize_fields.get_sources_normalized(location["sources"])
+    # if "sources" in location:
+    #     location["sources"] = normalize_fields.get_sources_normalized(location["sources"])
 
     return location

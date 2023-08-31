@@ -1,5 +1,6 @@
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.resources.resource_definitions import resource_definitions
 import re
 from urllib.parse import unquote
 
@@ -76,31 +77,28 @@ def get_string_or_link_list(name: str, values: list):
 
 def get_sources_normalized(data: list):
     # iterate data and linkify
+    data_normalized = []
     for i in range(len(data)):
-        data[i] = _linkify_str(data[i])
+        data_normalized.append(_linkify_str(data[i]))
 
-    return {
-        "type": "string_list",
-        "value": data,
-        "name": "sources",
-    }
+    return data_normalized
+
+
+def set_sources_normalized(data: dict):
+    """Set sources field on dict"""
+    if "sources" in data:
+        data["sources_normalized"] = get_sources_normalized(data["sources"])
+
+    return data
 
 
 def set_outer_years(data: dict):
     """Set outer_years field on dict"""
     if "date_from" and "date_to" in data:
         outer_years = data["date_from"] + "-" + data["date_to"]
-        data["outer_years"] = {
-            "type": "string",
-            "value": outer_years,
-            "name": "outer_years",
-        }
+        data["outer_years"] = outer_years
     elif "date_from" in data:
-        data["outer_years"] = {
-            "type": "string",
-            "value": data["date_from"],
-            "name": "outer_years",
-        }
+        data["outer_years"] = data["date_from"]
     return data
 
 
@@ -110,7 +108,7 @@ def set_latitude_longitude(data: dict):
         data["latitude_longitude"] = {
             "type": "string",
             "value": str(data["latitude"]) + ", " + str(data["longitude"]),
-            "name": "latitude_longitude",
+            "name": "latitude_longitude_normalized",
         }
 
     return data
@@ -122,15 +120,11 @@ def set_creators_link_list(data: dict):
     if "is_creator" in data and data["is_creator"]:
         value = [
             {
-                "search_query": f"creators={data['id']}",
+                "search_query": f"creators={data['id_real']}",
                 "label": translate("See all records this creator has created"),
             }
         ]
-        data["creators_link"] = {
-            "type": "link_list",
-            "value": value,
-            "name": "creators_link",
-        }
+        data["creators_link"] = value
 
     return data
 
@@ -141,14 +135,28 @@ def set_collectors_link_list(data: dict):
     if "is_creator" in data and data["is_creative_creator"]:
         value = [
             {
-                "search_query": f"collectors={data['id']}",
+                "search_query": f"collectors={data['id_real']}",
                 "label": translate("See all records this organization has collected"),
             }
         ]
-        data["collectors_link"] = {
-            "type": "link_list",
-            "value": value,
-            "name": "collectors_link",
-        }
+        data["collectors_link"] = value
 
     return data
+
+
+def get_resource_and_types(resource):
+    record_altered = {}
+    for key, value in resource.items():
+        resource_item = {}
+        resource_item["value"] = value
+        resource_item["name"] = key
+
+        try:
+            definition = resource_definitions[key]
+            resource_item["type"] = definition["type"]
+            record_altered[key] = resource_item
+        except KeyError:
+            # Don't alter if not defined
+            record_altered[key] = value
+
+    return record_altered
