@@ -32,10 +32,10 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?locations={{ location['id'] }}">Vis alle resultater i samlingen</a>
+    <a href="/search?locations={{ id_real }}">Vis alle resultater i samlingen</a>
 </p>
 
-{% set keys = ["name", "addr_nr", "zipcode", "latitude_longitude", "parish"] %}
+{% set keys = ["name", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area"] %}
 {{ common_fields.parse_block_common('Stamdata', keys, location) }}
 
 {% set keys = [ "description"] %}
@@ -48,7 +48,7 @@
 <div class="record-section">
     <div class="record-main">
     <h3 class="record-header">Metadata</h3>
-    <p><a href="/locations/{{ location['id'] }}/json">JSON</a></p>
+    <p><a href="/locations/{{ id_real }}/json">JSON</a></p>
     </div>
 </div>
 {% endif %}

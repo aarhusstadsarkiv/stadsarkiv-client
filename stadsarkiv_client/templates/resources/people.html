@@ -9,20 +9,20 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?people={{ people['id'] }}">Vis alle resultater i samlingen</a>
+    <a href="/search?people={{ people['id_real'] }}">Vis alle resultater i samlingen</a>
 </p>
 
 {% set keys = ["firstnames", "lastnames", "gender", "date_of_birth", "place_of_birth", "date_of_death", "place_of_death", "occupation"] %}
 {{ common_fields.parse_block_common('Stamdata', keys, people) }}
 
-{% set keys = ["sources"] %}
+{% set keys = ["sources_normalized"] %}
 {{ common_fields.parse_block_common('Kilder', keys, people) }}
 
 {% if get_setting('debug') %}
 <div class="record-section">
     <div class="record-main">
     <h3 class="record-header">Metadata</h3>
-    <p><a href="/people/{{ people['id'] }}/json">JSON</a></p>
+    <p><a href="/people/{{ people['id_real'] }}/json">JSON</a></p>
     </div>
 </div>
 {% endif %}

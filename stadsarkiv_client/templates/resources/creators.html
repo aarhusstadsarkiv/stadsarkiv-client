@@ -32,23 +32,23 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?creators={{ creator['id'] }}">Vis alle resultater i samlingen</a>
+    <a href="/search?creators={{ creator['id_real'] }}">Vis alle resultater i samlingen</a>
 </p>
 
-{% set keys = ["collectors_link", "creators_link", "date_from", "date_to", "industry"] %}
+{% set keys = ["collectors_link", "creators_link", "firstnames", "lastnames", "gender", "occupation", "date_from", "date_to", "industry"] %}
 {{ common_fields.parse_block_common('Stamdata', keys, creator) }}
 
 {% set keys = [ "description"] %}
 {{ common_fields.parse_block_common('Beskrivelse', keys, creator) }}
 
-{% set keys = ["sources"] %}
+{% set keys = ["sources_normalized"] %}
 {{ common_fields.parse_block_common('Kilder', keys, creator) }}
 
 {% if get_setting('debug') %}
 <div class="record-section">
     <div class="record-main">
     <h3 class="record-header">Metadata</h3>
-    <p><a href="/creators/{{ creator['id'] }}/json">JSON</a></p>
+    <p><a href="/creators/{{ creator['id_real'] }}/json">JSON</a></p>
     </div>
 </div>
 {% endif %}

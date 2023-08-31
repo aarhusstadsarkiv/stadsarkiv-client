@@ -6,7 +6,7 @@
 {% if not label %}
 {% set label = "Ingen titel" %}
 {% endif %}
-<a href="/search?collection={{ collection['id'] }}&series={{ series }}">{{ label }}</a>
+<a href="/search?collection={{ collection['id_real'] }}&series={{ series }}">{{ label }}</a>
 {% endmacro %}
 
 {% macro parse_tree(nodes) %}
@@ -83,7 +83,7 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?collection={{ collection['id'] }}">Vis alle resultater i samlingen</a>
+    <a href="/search?collection={{ collection['id_real'] }}">Vis alle resultater i samlingen</a>
 </p>
 
 {% set keys = ['collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}
@@ -98,7 +98,7 @@
 {% set keys = ["custodial_history", "accumulation_range", "level_of_kassation", "accrual_status"] %}
 {{ common_fields.parse_block_common('Afleveringshistorik', keys, collection) }}
 
-{% set keys = ["sources"] %}
+{% set keys = ["sources_normalized"] %}
 {{ common_fields.parse_block_common('Literatur og kilder', keys, collection) }}
 
 {% set keys = ["series"] %}
@@ -131,7 +131,7 @@
 <div class="record-section">
     <div class="record-main">
     <h3 class="record-header">Metadata</h3>
-    <p><a href="/collections/{{ collection['id'] }}/json">JSON</a></p>
+    <p><a href="/collections/{{ collection['id_real'] }}/json">JSON</a></p>
     </div>
 </div>
 {% endif %}
