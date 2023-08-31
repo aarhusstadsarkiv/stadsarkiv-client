@@ -32,7 +32,7 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?locations={{ id_real }}">Vis alle resultater i samlingen</a>
+    <a href="/search?locations={{ location['id_real'] }}">Vis alle resultater i samlingen</a>
 </p>
 
 {% set keys = ["name", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area"] %}
@@ -41,14 +41,14 @@
 {% set keys = [ "description"] %}
 {{ common_fields.parse_block_common('Beskrivelse', keys, location) }}
 
-{% set keys = ["sources"] %}
+{% set keys = ["sources_normalized"] %}
 {{ common_fields.parse_block_common('Kilder', keys, location) }}
 
 {% if get_setting('debug') %}
 <div class="record-section">
     <div class="record-main">
     <h3 class="record-header">Metadata</h3>
-    <p><a href="/locations/{{ id_real }}/json">JSON</a></p>
+    <p><a href="/locations/{{ location['id_real'] }}/json">JSON</a></p>
     </div>
 </div>
 {% endif %}
