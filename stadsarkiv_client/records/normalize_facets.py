@@ -135,12 +135,12 @@ class NormalizeFacets:
             facet_checked["checked_label"] = checked_label
             facets_checked.append(facet_checked)
 
-        log.debug(self.query_params)
+        # Sort the search filters based on the query_params order
+        query_order = {(name, value): index for index, (name, value) in enumerate(self.query_params)}
 
-        for facet_checked in facets_checked:
-            log.debug(facet_checked)
-
-        return facets_checked
+        # Sort the search filters based on the query_order
+        sorted_facets_checked = sorted(facets_checked, key=lambda x: query_order.get((x["query_name"], x["query_value"]), float("inf")))
+        return sorted_facets_checked
 
     def get_transformed_facets(self):
         """Alter the facets content with the count from the search facets. Also add
