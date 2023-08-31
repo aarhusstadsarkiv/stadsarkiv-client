@@ -362,17 +362,27 @@ async def proxies_entity_by_type(type: str, id: str) -> typing.Any:
     async with httpx.AsyncClient() as client:
         # url = f"https://www.aarhusarkivet.dk/{type}/{id}?fmt=json"
         if type == "collections":
-            url = "https://openaws.appspot.com/collections/" + id
+            url = f"https://openaws.appspot.com/collections/{id}"
 
         else:
-            url = "https://openaws.appspot.com/entities/" + id
+            url = f"https://openaws.appspot.com/entities/{id}"
 
         # url = f"https://www.aarhusarkivet.dk/{type}/{id}?fmt=json"
         response = await client.get(url)
-        log.debug(url)
 
         if response.is_success:
             return response.json()["result"]
+        else:
+            response.raise_for_status()
+
+
+async def proxies_resolve(query_str) -> typing.Any:
+    """resolve query params"""
+    async with httpx.AsyncClient() as client:
+        url = f"https://openaws.appspot.com/resolve_params?{query_str}"
+        response = await client.get(url)
+        if response.is_success:
+            return response.json()["resolved_params"]
         else:
             response.raise_for_status()
 
