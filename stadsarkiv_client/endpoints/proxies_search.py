@@ -101,36 +101,36 @@ async def get_records_search(request: Request):
     # If not set they may be read from cookies
     # last resort is default values
     query_params = query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
-    collection_id = _get_collection_id(query_params)
-    collection = None
+    # collection_id = _get_collection_id(query_params)
+    # collection = None
 
-    if collection_id:
-        collection = await api.proxies_collection(collection_id=collection_id)
-        collection["id"] = collection_id
+    # if collection_id:
+    #     collection = await api.proxies_collection(collection_id=collection_id)
+    #     collection["id"] = collection_id
 
     query_str = query.get_str(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
-    records = await api.proxies_records(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
-    records = _normalize_search(records)
+    search_result = await api.proxies_records(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
+    search_result = _normalize_search(search_result)
 
-    normalized_facets = NormalizeFacets(request=request, records=records, query_params=query_params, query_str=query_str)
+    log.debug(search_result)
+
+    normalized_facets = NormalizeFacets(request=request, records=search_result, query_params=query_params, query_str=query_str)
     facets = normalized_facets.get_transformed_facets()
     facets_filters = normalized_facets.get_checked_facets()
-    pagination_data = _get_search_pagination_data(request, records["size"], records["total"])
+    pagination_data = _get_search_pagination_data(request, search_result["size"], search_result["total"])
 
     context_values = {
         "q": q,
         "title": translate("Search"),
-        "records": records,
+        "search_result": search_result,
         "query_params": query_params,
         "query_str": query_str,
         "sort": sort,
         "size": size,
-        "record_facets": records["facets"],
         "facets": facets,
         "facets_filters": facets_filters,
         "dates": _get_dates(request),
         "pagination_data": pagination_data,
-        "collection": collection,
     }
 
     DAYS_365 = 60 * 60 * 24 * 365 * 1

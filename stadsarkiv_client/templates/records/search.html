@@ -220,11 +220,11 @@
 </div>
 {% endmacro %}
 
-{% macro parse_search_results(records) %}
-{% set start = records["start"]|int %}
-{% set size = records["size"]|int %}
+{% macro parse_search_result(search_result) %}
+{% set start = search_result["start"]|int %}
+{% set size = search_result["size"]|int %}
 <div class="search-results">
-    {% for result in records.result %}
+    {% for result in search_result.result %}
     {% set serie = None %}
     {% if result.series is iterable %}
     {% set serie = result.series | last %}
@@ -304,7 +304,7 @@
     </div>
     {{ pagination_total(pagination_data) }}
     {{ parse_pagination(pagination_data) }}
-    {{ parse_search_results(records) }}
+    {{ parse_search_result(search_result) }}
     {% if pagination_data["total"] > pagination_data["size"] * pagination_data["current_page"] %}
     {{ parse_pagination(pagination_data) }}
     {% endif %}
