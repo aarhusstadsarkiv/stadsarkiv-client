@@ -39,22 +39,6 @@ def _linkify_str(text):
     return re.sub(pattern, replace_with_link, text)
 
 
-def list_to_type_list(name: str, value: list):
-    return {
-        "type": "string_list",
-        "value": value,
-        "name": name,
-    }
-
-
-def str_to_type_str(name: str, value: str):
-    return {
-        "type": "paragraphs",
-        "value": value,
-        "name": name,
-    }
-
-
 def get_string_or_link_list(name: str, values: list):
     """Get string list and convert to link list if needed if string contains ';'"""
     should_linkify = _should_linkify(values[0])
