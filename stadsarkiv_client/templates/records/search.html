@@ -3,12 +3,6 @@
 {% set truncate_summary = 300 %}
 {% set search_base_url = get_setting('search_base_url') %}
 
-{% macro parse_facets_info(facet) %}
-{% if facet["type"] == "collection" %}
-<div class="search-citation"><a title="Læs mere om samlingen: {{ collection['citation'] }}" href="/collections/{{ collection['id'] }}">{{ collection["display_label"] }}</a></div>
-{% endif %}
-{% endmacro %}
-
 {% macro parse_facets_filters(facets_filters) %}
 <ul>
     {% for facet in facets_filters %}
@@ -19,7 +13,6 @@
         {% else %}
         <span>{{ facet['checked_label'] }}</span>
         {% endif %}
-        {{ parse_facets_info(facet) }}
     </li>
     {% endfor %}
 </ul>
