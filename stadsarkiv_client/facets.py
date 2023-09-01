@@ -975,11 +975,3 @@ QUERY_PARAMS = {
         "search_filter": False,
     },
 }
-
-
-RESOURCE_TYPES = []
-
-# Get all resource types
-for key, value in QUERY_PARAMS.items():
-    if value.get("entity", False):
-        RESOURCE_TYPES.append(key)

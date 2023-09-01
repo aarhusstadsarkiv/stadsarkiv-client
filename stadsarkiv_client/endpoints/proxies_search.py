@@ -9,10 +9,21 @@ import json
 from stadsarkiv_client.records.normalize_facets import NormalizeFacets
 from stadsarkiv_client.core import query
 from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
-from stadsarkiv_client.facets import RESOURCE_TYPES
+from stadsarkiv_client.facets import QUERY_PARAMS
 
 
 log = get_log()
+
+
+def _get_resource_types():
+    resource_types = []
+
+    # Get all resource types
+    for key, value in QUERY_PARAMS.items():
+        if value.get("entity", False):
+            resource_types.append(key)
+
+    return resource_types
 
 
 def _get_search_pagination_data(request: Request, size, total):
@@ -98,7 +109,8 @@ def _normalize_search(records):
 
 
 def _get_resolve_query_str(query_params: list, record_params: list):
-    resolve_query_params = [(k, v) for k, v in query_params if k in RESOURCE_TYPES]
+    resource_types = _get_resource_types()
+    resolve_query_params = [(k, v) for k, v in query_params if k in resource_types]
 
     resolve_query_params.extend(record_params)
     resolve_query_params = list(set(resolve_query_params))
