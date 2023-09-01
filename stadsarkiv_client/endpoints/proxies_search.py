@@ -9,7 +9,7 @@ import json
 from stadsarkiv_client.records.normalize_facets import NormalizeFacets
 from stadsarkiv_client.core import query
 from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
-from stadsarkiv_client.facets import QUERY_PARAMS
+from stadsarkiv_client.query_params import QUERY_PARAMS
 
 
 log = get_log()

@@ -1,7 +1,7 @@
 from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
 from stadsarkiv_client.facets import FACETS
-from stadsarkiv_client.facets import QUERY_PARAMS
+from stadsarkiv_client.query_params import QUERY_PARAMS
 from urllib.parse import quote_plus
 
 
