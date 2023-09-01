@@ -36,6 +36,7 @@ class Flash {
      */
     static setMessage(message, type, remove_after) {
         const messageElem = document.querySelector(".flash-messages");
+        messageElem.focus();
         messageElem.innerHTML = '';
 
         if (!type) {
@@ -55,7 +56,6 @@ class Flash {
 
         const html = `<div class="flash flash-${type} ${class_random}">${message}</div>`;
         messageElem.insertAdjacentHTML('afterbegin', html);
-        messageElem.scrollIntoView();
     }
 }
 
