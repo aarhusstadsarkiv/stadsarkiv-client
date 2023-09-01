@@ -15,7 +15,7 @@ from stadsarkiv_client.facets import QUERY_PARAMS
 log = get_log()
 
 
-def _get_resource_types():
+def _get_resource_types() -> list:
     resource_types = []
 
     # Get all resource types
@@ -26,7 +26,7 @@ def _get_resource_types():
     return resource_types
 
 
-def _get_search_pagination_data(request: Request, size, total):
+def _get_search_pagination_data(request: Request, size: int, total: int):
     result = {}
 
     if total > 10000:
@@ -90,7 +90,7 @@ def _get_default_query_params(request: Request):
     return add_list_items
 
 
-def _normalize_search(records):
+def _normalize_search(records: dict):
     """Normalize search records"""
     facets_resolved = records["facets_resolved"]
 
