@@ -152,6 +152,7 @@ da = {
     "label_record_collectors_label": "Skaber",
     "label_record_collectors_link": "Arkivskaber",
     "label_record_content_and_scope": "Opbygning",
+    "label_record_content_type": "Type",
     "label_record_content_types": "Materialetype",
     "label_record_content_types_normalized": "Materialtype",
     "label_record_contractual_status": "Aftaleforhold",

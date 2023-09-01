@@ -181,6 +181,7 @@ en = {
     "label_record_collectors_label": "label_record_collectors_label",
     "label_record_collectors_link": "label_record_collectors_link",
     "label_record_content_and_scope": "label_record_content_and_scope",
+    "label_record_content_type": "label_record_content_type",
     "label_record_content_types": "Content Types",
     "label_record_content_types_normalized": "label_record_content_types_normalized",
     "label_record_contractual_status": "Contractual Status",
