@@ -245,10 +245,18 @@
                 {% if result.collectors_label %}
                 {{ parse_string('collectors_label', result.collectors_label) }}
                 {% endif %}
-                {{ parse_string('date_normalized', result.date_normalized) }}
+                {% if result.collection %}
+                {{ parse_string('collection', result.collection) }}
+                {% endif %}
                 {% if serie %}
                 {{ parse_string('series', serie) }}
                 {% endif %}
+                {{ parse_string('date_normalized', result.date_normalized) }}
+                {% if result.content_type %}
+                {{ parse_string('content_type', result.content_type) }}
+                {% endif %}
+                
+                
             </div>
             
         </a>

@@ -81,15 +81,42 @@ def _get_default_query_params(request: Request):
 
 def _normalize_search(records):
     """Normalize search records"""
+    facets_resolved = records["facets_resolved"]
+
     for record in records["result"]:
         record = normalize_abstract_dates(record, split=True)
+
+        # Add collection as string
+        if "collection_id" in record and record["collection_id"]:
+            record["collection"] = facets_resolved["collection"].get(record["collection_id"]).get("display_label", None)
+
+        if "content_types" in record:
+            content_type = record["content_types"][-1]
+            record["content_type"] = facets_resolved["content_types"].get(content_type).get("display_label", None)
+
     return records
 
 
-def _get_resolve_query_str(query_params: list):
+def _get_resolve_query_str(query_params: list, record_params: list):
     resolve_query_params = [(k, v) for k, v in query_params if k in RESOURCE_TYPES]
+
+    resolve_query_params.extend(record_params)
+    resolve_query_params = list(set(resolve_query_params))
+
     resolve_query_string = query.get_str_from_list(resolve_query_params)
     return resolve_query_string
+
+
+def _get_resolve_records(records: list):
+    """resolve collection and content_types from records"""
+    resolve_records = []
+    for record in records:
+        if "collection_id" in record and record["collection_id"]:
+            resolve_records.append(("collection", record["collection_id"]))
+        if "content_types" in record:
+            type = record["content_types"][-1]
+            resolve_records.append(("content_types", type))
+    return resolve_records
 
 
 async def get_records_search(request: Request):
@@ -103,10 +130,13 @@ async def get_records_search(request: Request):
     query_params = query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
     query_str = query.get_str(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
     search_result = await api.proxies_records(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
-    search_result = _normalize_search(search_result)
 
-    resolve_query_str = _get_resolve_query_str(query_params)
+    # resolve facets
+    result_params = _get_resolve_records(search_result["result"])
+    resolve_query_str = _get_resolve_query_str(query_params, result_params)
     facets_resolved = await api.proxies_resolve(query_str=resolve_query_str)
+    search_result["facets_resolved"] = facets_resolved
+    search_result = _normalize_search(search_result)
 
     normalized_facets = NormalizeFacets(
         request=request, records=search_result, query_params=query_params, facets_resolved=facets_resolved, query_str=query_str
