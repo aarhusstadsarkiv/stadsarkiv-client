@@ -27,8 +27,7 @@ settings: dict[str, typing.Any] = {
         {"name": "profile", "title": "Profil"},
         {"name": "schemas", "title": "Schemas"},
         {"name": "entities", "title": "Entities"},
-        {"name": "entities_search", "title": "Søg"},
-        {"name": "records_search", "title": "Søg (som eksisterende aarhusarkiv)"},
+        {"name": "records_search", "title": "Søg"},
     ],
     #
     # Custom pages
