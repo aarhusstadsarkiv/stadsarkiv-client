@@ -5,7 +5,6 @@ import typing
 
 load()
 
-
 log_level = logging.DEBUG
 cookie_httponly = False
 cookie_secure = False
