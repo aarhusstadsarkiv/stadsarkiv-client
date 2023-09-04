@@ -1,8 +1,12 @@
 from stadsarkiv_client.settings import settings
+from stadsarkiv_client.settings_facets import settings_facets
 from stadsarkiv_client.core.logging import get_log
 
-
 log = get_log()
+
+log.debug("Loading dynamic settings")
+
+
 settings_local: dict = {}
 
 try:
@@ -13,12 +17,22 @@ except ImportError:
     log.info("Local settings file NOT loaded: settings.py")
     pass
 
-
-for key, value in settings_local.items():
-    settings[key] = value
+settings.update(settings_local)
 
 
 def get_setting(key):
-    if key not in settings:
-        raise KeyError(f"Key {key} not found in settings")
-    return settings[key]
+    return settings.get(key, None)
+
+
+settings_facets_local: dict = {}
+
+try:
+    from settings_facets import settings_facets as settings_facets_local  # type: ignore
+
+    log.info("Loaded local settings_facets.py file: settings_facets.py")
+
+except ImportError:
+    log.info("Local settings_facets.py file NOT loaded: settings_facets.py")
+    pass
+
+settings_facets.update(settings_facets_local)
