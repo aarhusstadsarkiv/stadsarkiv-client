@@ -7,7 +7,7 @@ from stadsarkiv_client.core.logging import get_log
 log = get_log()
 
 try:
-    from language import language as language_local
+    from language import language as language_local  # type: ignore
 
     log.info("Loaded local language file: language.py")
 except ImportError:

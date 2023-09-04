@@ -1,6 +1,6 @@
 from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
-from stadsarkiv_client.settings_facets import settings_facets
+from stadsarkiv_client.core.dynamic_settings import settings_facets
 from stadsarkiv_client.settings_query_params import settings_query_params
 from urllib.parse import quote_plus
 
@@ -30,7 +30,7 @@ class NormalizeFacets:
         self.query_str = query_str
         self.facets_resolved = facets_resolved
         self.facets_checked: list = []
-        self.FACETS = settings_facets
+        self.facets = settings_facets
 
     def _get_facets_search(self, data):
         """Transform search facets from this format:
@@ -60,7 +60,7 @@ class NormalizeFacets:
 
     def _transform_facets(self, top_level_key, facets_content, path=None):
         if path is None:
-            path = [self.FACETS[top_level_key]["label"]]
+            path = [self.facets[top_level_key]["label"]]
 
         for facet in facets_content:
             current_path = path + [facet["label"]]
@@ -181,4 +181,4 @@ class NormalizeFacets:
         for key, value in settings_facets.items():
             self._transform_facets(key, value["content"])
 
-        return self.FACETS
+        return self.facets

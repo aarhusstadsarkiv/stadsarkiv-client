@@ -8,12 +8,12 @@ log = get_log()
 
 
 try:
-    import hooks
+    import hooks  # type: ignore
 
     log.info("Loaded local hooks: hooks.py")
 except ImportError:
     log.info("Local hooks NOT loaded: hooks.py")
-    hooks = None  # type: ignore
+    hooks = None
 
 
 def get_plugin_manager() -> pluggy.PluginManager:
