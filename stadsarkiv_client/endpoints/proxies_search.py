@@ -9,7 +9,7 @@ import json
 from stadsarkiv_client.records.normalize_facets import NormalizeFacets
 from stadsarkiv_client.core import query
 from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
-from stadsarkiv_client.query_params import QUERY_PARAMS
+from stadsarkiv_client.settings_query_params import settings_query_params
 
 
 log = get_log()
@@ -19,7 +19,7 @@ def _get_resource_types() -> list:
     resource_types = []
 
     # Get all resource types
-    for key, value in QUERY_PARAMS.items():
+    for key, value in settings_query_params.items():
         if value.get("entity", False):
             resource_types.append(key)
 

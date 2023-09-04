@@ -1,7 +1,7 @@
 from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
-from stadsarkiv_client.facets import FACETS
-from stadsarkiv_client.query_params import QUERY_PARAMS
+from stadsarkiv_client.settings_facets import settings_facets
+from stadsarkiv_client.settings_query_params import settings_query_params
 from urllib.parse import quote_plus
 
 
@@ -30,7 +30,7 @@ class NormalizeFacets:
         self.query_str = query_str
         self.facets_resolved = facets_resolved
         self.facets_checked: list = []
-        self.FACETS = FACETS
+        self.FACETS = settings_facets
 
     def _get_facets_search(self, data):
         """Transform search facets from this format:
@@ -109,7 +109,7 @@ class NormalizeFacets:
 
     def _get_label(self, key, value):
         """Get the label for a facet."""
-        label_settings = QUERY_PARAMS[key]["label"]
+        label_settings = settings_query_params[key]["label"]
         resolved = self._get_inner_dict(key, value)
 
         if resolved:
@@ -127,14 +127,14 @@ class NormalizeFacets:
     def _get_entity_path(self, key):
         """collection -> collections. All other entities correspond to the key."""
         try:
-            return QUERY_PARAMS[key]["entity_path"]
+            return settings_query_params[key]["entity_path"]
         except KeyError:
             return key
 
     def _get_enitity_url(self, key, value):
         """Get the link for a facet."""
         resolved = self._get_inner_dict(key, value)
-        definition = QUERY_PARAMS[key]
+        definition = settings_query_params[key]
 
         if resolved and not definition.get("label_only", False):
             entity_path = self._get_entity_path(key)
@@ -148,10 +148,10 @@ class NormalizeFacets:
         facets_checked = self.facets_checked
 
         # Ignore menu facets. Then have been set in the _transform_facets method.
-        ignore_keys = [key for key in FACETS.keys()]
+        ignore_keys = [key for key in settings_facets.keys()]
         ignore_keys.extend(["size", "start", "sort", "direction"])
         for query_name, query_value in self.query_params:
-            if query_name not in QUERY_PARAMS or query_name in ignore_keys:
+            if query_name not in settings_query_params or query_name in ignore_keys:
                 continue
 
             if not query_value:
@@ -178,7 +178,7 @@ class NormalizeFacets:
     def get_transformed_facets(self):
         """Alter the facets content with the count from the search facets. Also add
         a checked key to the facets content if the facet is checked in the query_params."""
-        for key, value in FACETS.items():
+        for key, value in settings_facets.items():
             self._transform_facets(key, value["content"])
 
         return self.FACETS
