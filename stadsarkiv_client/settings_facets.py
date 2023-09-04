@@ -1,8 +1,9 @@
 from stadsarkiv_client.core.logging import get_log
+import typing
 
 log = get_log()
 
-FACETS = {
+settings_facets: dict[str, typing.Any] = {
     "content_types": {
         "label": "Materialetype",
         "multiple": True,
