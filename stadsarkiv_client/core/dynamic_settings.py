@@ -28,7 +28,7 @@ def get_setting(key):
 settings_facets_local: dict = {}
 
 try:
-    from settings_facets import settings_facets as settings_facets_local
+    from settings_facets import settings_facets as settings_facets_local  # type: ignore
 
     # settings_facets = settings_facets_local
     log.info("Loaded local settings_facets.py file: settings_facets.py")
