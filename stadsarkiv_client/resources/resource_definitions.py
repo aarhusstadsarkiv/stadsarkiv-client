@@ -42,4 +42,7 @@ resource_definitions = {
     "latitude_longitude_normalized": {"type": "string"},
     "parish": {"type": "string"},
     "rotation": {"type": "string"},
+    # events
+    "ext_data": {"type": "key_value_dict"},
+    "event_type": {"type": "string_list"},
 }
