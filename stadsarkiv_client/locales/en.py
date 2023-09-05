@@ -204,6 +204,7 @@ en = {
     "label_record_desc_notes": "label_record_desc_notes",
     "label_record_description": "label_record_description",
     "label_record_domain": "label_record_domain",
+    "label_record_event_type": "label_record_event_type",
     "label_record_events": "label_record_events",
     "label_record_extent": "label_record_extent",
     "label_record_firstnames": "label_record_firstnames",

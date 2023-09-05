@@ -175,6 +175,7 @@ da = {
     "label_record_desc_notes": "Deskriptiv note",
     "label_record_description": "Beskrivelse",
     "label_record_domain": "label_record_domain",
+    "label_record_event_type": "Begivenhedstype",
     "label_record_events": "Begivenheder",
     "label_record_extent": "Omfang",
     "label_record_firstnames": "Fornavn(e)",
