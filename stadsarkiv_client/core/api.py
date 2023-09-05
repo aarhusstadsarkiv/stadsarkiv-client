@@ -366,7 +366,7 @@ async def proxies_entity_by_type(type: str, id: str) -> typing.Any:
             url = f"https://www.aarhusarkivet.dk/{type}/{id}?fmt=json"
 
         else:
-            url = f"https://openaws.appspot.com/entities/{id}"
+            # url = f"https://openaws.appspot.com/entities/{id}"
             url = f"https://www.aarhusarkivet.dk/{type}/{id}?fmt=json"
 
         # url = f"https://www.aarhusarkivet.dk/{type}/{id}?fmt=json"
