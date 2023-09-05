@@ -5,7 +5,9 @@ from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
-from stadsarkiv_client.resources import collections_alter, people_alter, locations_alter, creators_alter, events_alter
+
+# from stadsarkiv_client.resources import collections_alter, people_alter, locations_alter, creators_alter, events_alter
+from stadsarkiv_client.resources import resource_alter
 import json
 
 log = get_log()
@@ -17,7 +19,7 @@ async def _get_collections_view(request: Request):
     collection = await api.proxies_entity_by_type(resource_type, id=id)
     collection["id_real"] = id
     title = collection["display_label"]
-    collection = collections_alter.collections_alter(collection)
+    collection = resource_alter.collections_alter(collection)
 
     context_variables = {
         "title": title,
@@ -34,7 +36,7 @@ async def _get_people_view(request: Request):
     people = await api.proxies_entity_by_type(resource_type, id=id)
     people["id_real"] = id
     title = people["display_label"]
-    people = people_alter.people_alter(people)
+    people = resource_alter.people_alter(people)
     context_variables = {
         "title": title,
         "people": people,
@@ -51,7 +53,7 @@ async def _get_locations_view(request: Request):
     location = await api.proxies_entity_by_type(resource_type, id=id)
     title = location["display_label"]
     location["id_real"] = id
-    location = locations_alter.locations_alter(location)
+    location = resource_alter.locations_alter(location)
     context_variables = {
         "title": title,
         "location": location,
@@ -68,7 +70,7 @@ async def _get_events_view(request: Request):
     event = await api.proxies_entity_by_type(resource_type, id=id)
     title = event["display_label"]
     event["id_real"] = id
-    event = events_alter.events_alter(event)
+    event = resource_alter.events_alter(event)
 
     log.debug(event)
     context_variables = {
@@ -87,7 +89,7 @@ async def _get_creators_view(request: Request):
     creator = await api.proxies_entity_by_type(resource_type, id=id)
     title = creator["display_label"]
     creator["id_real"] = id
-    creator = creators_alter.creators_alter(creator)
+    creator = resource_alter.creators_alter(creator)
 
     context_variables = {
         "title": title,
