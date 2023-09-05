@@ -1,0 +1,35 @@
+{% import "macros/common_fields.html" as common_fields %}
+
+{% extends "base.html" %}
+
+{% block body_class %}events{% endblock %}
+
+{% block content %}
+
+{% include "includes/main_title.html" %}
+
+<p>
+    <a href="/search?events={{ event['id_real'] }}">Vis alle resultater i samlingen</a>
+</p>
+
+{% set keys = ["date_from", "event_type", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area"] %}
+{{ common_fields.parse_block_common('Stamdata', keys, event) }}
+
+{% set keys = [ "description"] %}
+{{ common_fields.parse_block_common('Beskrivelse', keys, event) }}
+
+{% set keys = ["sources_normalized"] %}
+{{ common_fields.parse_block_common('Kilder', keys, event) }}
+
+{% set keys = ["ext_data"] %}
+{{ common_fields.parse_block_common('Udvidet data', keys, event) }}
+
+{% if get_setting('debug') %}
+<div class="record-section">
+    <div class="record-main">
+    <h3 class="record-header">Metadata</h3>
+    <p><a href="/events/{{ event['id_real'] }}/json">JSON</a></p>
+    </div>
+</div>
+{% endif %}
+{% endblock content %}
