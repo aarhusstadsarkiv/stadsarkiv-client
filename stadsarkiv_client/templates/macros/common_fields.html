@@ -43,7 +43,7 @@
 </div>
 {% endmacro %}
 
-{% macro _parse_key_value_dict (value) %}
+{% macro parse_key_value_dict (value) %}
 {% for key, item in value.items() %}
 {{ parse_string(key, item) }}
 {% endfor %}
@@ -51,7 +51,7 @@
 
 {% macro parse_key_value_dicts(value) %}
 {% for item in value %}
-{{ _parse_key_value_dict(item)}}
+{{ parse_key_value_dict(item)}}
 {% if not loop.last %} <hr> {% endif %}
 {% endfor %}
 {% endmacro %}
@@ -159,6 +159,12 @@
 
 {% if settings.update({'skip_translate': True}) %} {% endif %}
 {{ parse_key_value_dicts(value ) }}
+{% if settings.update({'skip_translate': False}) %} {% endif %}
+
+{% elif type == "key_value_dict" %}
+
+{% if settings.update({'skip_translate': True}) %} {% endif %}
+{{ parse_key_value_dict(value ) }}
 {% if settings.update({'skip_translate': False}) %} {% endif %}
 
 {% elif type == "string_list" %}
