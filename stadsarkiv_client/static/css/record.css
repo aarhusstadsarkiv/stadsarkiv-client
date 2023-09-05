@@ -60,7 +60,7 @@ h3.record-header {
     font-weight: bold;
     padding: 0.2rem 0;
     font-size: 75%;
-    min-width: 13em;
+    min-width: 15em;
 }
 
 .record-content>.content {
