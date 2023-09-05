@@ -23,6 +23,24 @@ def collections_alter(collection: dict):
     return collection
 
 
+def organisations_alter(organisation: dict):
+    organisation = normalize_fields.set_sources_normalized(organisation)
+    # organisation = normalize_fields.set_outer_years(organisation)
+    organisation = normalize_fields.get_resource_and_types(organisation)
+
+    # These are either string_list or link_list.
+    string_list_or_link_list = [
+        "collectors",
+        "curators",
+    ]
+
+    for elem in string_list_or_link_list:
+        if elem in organisation:
+            organisation[elem] = normalize_fields.get_string_or_link_list(elem, organisation[elem])
+
+    return organisation
+
+
 def creators_alter(creator: dict):
     creator = normalize_fields.set_collectors_link_list(creator)
     creator = normalize_fields.set_creators_link_list(creator)

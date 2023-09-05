@@ -5,8 +5,6 @@ from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
-
-# from stadsarkiv_client.resources import collections_alter, people_alter, locations_alter, creators_alter, events_alter
 from stadsarkiv_client.resources import resource_alter
 import json
 
@@ -100,6 +98,24 @@ async def _get_creators_view(request: Request):
     return templates.TemplateResponse("resources/creators.html", context)
 
 
+async def _get_organisations_view(request: Request):
+    id = request.path_params["id"]
+    resource_type = request.path_params["resource_type"]
+
+    organisation = await api.proxies_entity_by_type(resource_type, id=id)
+    title = organisation["display_label"]
+    organisation["id_real"] = id
+    organisation = resource_alter.creators_alter(organisation)
+
+    context_variables = {
+        "title": title,
+        "organisation": organisation,
+    }
+
+    context = await get_context(request, context_variables)
+    return templates.TemplateResponse("resources/organisations.html", context)
+
+
 async def get_resources_view(request: Request):
     resource_type = request.path_params["resource_type"]
 
@@ -117,6 +133,9 @@ async def get_resources_view(request: Request):
 
     elif resource_type == "events":
         return await _get_events_view(request)
+
+    elif resource_type == "organisations":
+        return await _get_organisations_view(request)
 
     raise HTTPException(status_code=404, detail="Resource type not found")
 
