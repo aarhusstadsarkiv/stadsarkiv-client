@@ -1,3 +1,17 @@
+[tool.poetry]
+name = "stadsarkiv-client"
+version = "0.1.0"
+description = ""
+authors = ["Dennis Iversen <deiv@aarhus.dk>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.black]
 line-length = 140
 [tool.mypy]
