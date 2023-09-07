@@ -1,2 +1,2 @@
 #!/bin/sh
-python -m stadsarkiv_client server-dev
+python -m stadsarkiv_client server-dev $@

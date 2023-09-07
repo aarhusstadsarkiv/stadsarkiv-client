@@ -3,6 +3,7 @@ import subprocess
 import os
 import signal
 import secrets
+import uvicorn
 
 
 PID_FILE = "gunicorn_process.pid"
@@ -45,20 +46,7 @@ def server_dev(port: int, workers: int, host: str):
     if os.path.exists(PID_FILE):
         stop_server(PID_FILE)
 
-    cmd = [
-        "gunicorn",
-        "stadsarkiv_client.app:app",
-        f"--workers={workers}",
-        f"--bind={host}:{port}",
-        "--worker-class=uvicorn.workers.UvicornWorker",
-        "--log-level=info",
-        "--reload",
-    ]
-
-    gunicorn_process = subprocess.Popen(cmd)
-    save_pid_to_file(gunicorn_process.pid)
-    gunicorn_process.wait()  # Wait for the gunicorn process to complete if not in background
-    print(f"Started Gunicorn with PID: {gunicorn_process.pid}")  # Print the PID for reference
+    uvicorn.run("stadsarkiv_client.app:app", reload=True, port=port, workers=workers, host=host, log_level="debug")
 
 
 @cli.command(help="Stop the running Gunicorn server.")
