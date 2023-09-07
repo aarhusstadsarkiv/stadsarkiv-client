@@ -20,11 +20,11 @@ Install requirements:
 
 ## Run for development
 
-    python -m stadsarkiv_client
+    python -m stadsarkiv_client server-dev
 
-Or: 
+Or (shortcut): 
 
-    ./bin/run-module.sh
+    ./bin/server-dev.sh
 
 ## Install as requirement
 
@@ -43,23 +43,31 @@ You may also install a specific version:
 
 ## Run required module
 
-Usage: stadsarkiv-serve [OPTIONS]
+For development:
 
-    stadsarkiv-serve --help
+    server-dev
 
-    Options:
-    --reload BOOLEAN   Reload uvicorn on changes.
-    --port INTEGER     Server port.
-    --workers INTEGER  Number of workers.
-    --help             Show this message and exit.
+Options 
 
-Serve the default module on port 5555:
+    server-dev --help
 
-    stadsarkiv-serve
+Usage: server-dev [OPTIONS]
 
-Or use some options:
+  Start the running Gunicorn dev-server.
 
-    stadsarkiv-serve --port 5555 --reload true
+Options:
+  --port INTEGER     Server port.
+  --workers INTEGER  Number of workers.
+  --host TEXT        Server host.
+  --help             Show this message and exit.
+
+Start or restart (stop and start) for production:
+
+    server-prod
+
+Stop server:
+
+    server-stop
 
 ## Modifying the required module
 
