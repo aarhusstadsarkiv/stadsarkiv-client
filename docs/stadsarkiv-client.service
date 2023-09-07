@@ -1,0 +1,10 @@
+[Unit]
+After=network.target
+
+[Service]
+User=dennis
+Group=www-data
+ExecStart=/var/www/stadsarkiv-client/bin/server-prod.sh 
+
+[Install]
+WantedBy=default.target
