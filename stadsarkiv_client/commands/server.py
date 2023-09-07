@@ -14,7 +14,7 @@ def cli():
     pass
 
 
-@cli.command(help="Start the running Gunicorn server.")
+@cli.command(help="Start the production gunicorn server. Stop existing and start a new one.")
 @click.option("--port", default=5555, help="Server port.")
 @click.option("--workers", default=3, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
@@ -24,7 +24,7 @@ def server_prod(port: int, workers: int, host: str):
         stop_server(PID_FILE)
 
     cmd = [
-        "gunicorn",
+        "./venv/bin/gunicorn",
         "stadsarkiv_client.app:app",
         f"--workers={workers}",
         f"--bind={host}:{port}",
@@ -42,7 +42,6 @@ def server_prod(port: int, workers: int, host: str):
 @click.option("--workers", default=1, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
 def server_dev(port: int, workers: int, host: str):
-    # If PID file exists, try to kill the process
     if os.path.exists(PID_FILE):
         stop_server(PID_FILE)
 
@@ -51,8 +50,8 @@ def server_dev(port: int, workers: int, host: str):
 
 @cli.command(help="Stop the running Gunicorn server.")
 def server_stop():
-    pid_file = "gunicorn_process.pid"
-    stop_server(pid_file)
+    if os.path.exists(PID_FILE):
+        stop_server(PID_FILE)
 
 
 @cli.command(help="Generate a session secret.")
