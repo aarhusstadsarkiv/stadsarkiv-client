@@ -37,7 +37,7 @@ def server_prod(port: int, workers: int, host: str):
     print(f"Started Gunicorn in background with PID: {gunicorn_process.pid}")  # Print the PID for reference
 
 
-@cli.command(help="Start the running Gunicorn dev-server.")
+@cli.command(help="Start the running Uvicorn dev-server.")
 @click.option("--port", default=5555, help="Server port.")
 @click.option("--workers", default=1, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
