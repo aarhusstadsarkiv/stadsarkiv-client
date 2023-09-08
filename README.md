@@ -20,11 +20,27 @@ Install requirements:
 
 ## Run for development
 
-    python -m stadsarkiv_client server-dev
+    ./bin/server.sh server-dev
+
+    ./bin/server.sh --help
+
+    Usage: server-dev [OPTIONS]
+
+  Start the running uvicorn dev-server.
+
+    Options:
+    --port INTEGER     Server port.
+    --workers INTEGER  Number of workers.
+    --host TEXT        Server host.
+    --help             Show this message and exit.
 
 Or (shortcut): 
 
-    ./bin/server-dev.sh
+    ./bin/server.sh server-prod
+
+All commands:
+    
+    ./bin/server.sh --help
 
 ## Install as requirement
 
@@ -49,19 +65,9 @@ For development:
 
 Options 
 
-    server-dev --help
+    server-dev
 
-Usage: server-dev [OPTIONS]
-
-  Start the running Gunicorn dev-server.
-
-Options:
-  --port INTEGER     Server port.
-  --workers INTEGER  Number of workers.
-  --host TEXT        Server host.
-  --help             Show this message and exit.
-
-Start or restart (stop and start) for production:
+Start or restart (stop and start) for production (gunicorn):
 
     server-prod
 
@@ -75,6 +81,7 @@ You may override the default module using the following files and dirs:
 
     .env
     settings.py
+    settings_facets.py
     language.py
     hooks.py
     templates/
