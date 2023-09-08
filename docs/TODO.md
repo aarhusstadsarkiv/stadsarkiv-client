@@ -21,3 +21,10 @@ Kritiske og mindre kritiske. Men altid med fuld traceback.
 
 Således lettere at sende fejl til sentry.
 
+## footer
+
+Redesign footer
+Salling væk fra bunden af siden. 
+
+## robots.txt
+

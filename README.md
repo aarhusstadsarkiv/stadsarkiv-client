@@ -102,4 +102,4 @@ Run black, mypy and flake8:
 
 ## Run on server
 
-[See docs/README-SERVER.md](docs/README-SERVER.md)
+[See docs/server/README.md](docs/server/README.md)

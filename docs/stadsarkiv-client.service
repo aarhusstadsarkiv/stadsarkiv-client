@@ -1,10 +1,19 @@
 [Unit]
+Description=Stadsarkiv Client Service
 After=network.target
 
 [Service]
-User=dennis
-Group=www-data
-ExecStart=/var/www/stadsarkiv-client/bin/server-prod.sh 
+# gunicorn
+Type=forking
+
+# run as
+User=www-data
+WorkingDirectory=/var/www/stadsarkiv-client
+ExecStart=/var/www/stadsarkiv-client/venv/bin/python -m stadsarkiv_client server-prod
+
+# restart on failure
+Restart=on-failure
+RestartSec=5
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target
