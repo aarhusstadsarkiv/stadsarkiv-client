@@ -102,4 +102,4 @@ Run black, mypy and flake8:
 
 ## Run on server
 
-[See docs/server/README.md](docs/server/README.md)
+[See docs/server/README.md](https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/docs/server)
