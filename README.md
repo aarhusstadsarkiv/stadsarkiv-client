@@ -20,7 +20,11 @@ Install requirements:
 
 ## Run for development
 
+Run:
+
     ./bin/server.sh server-dev
+
+Help:
 
     ./bin/server.sh --help
 
@@ -33,10 +37,6 @@ Install requirements:
     --workers INTEGER  Number of workers.
     --host TEXT        Server host.
     --help             Show this message and exit.
-
-Or (shortcut): 
-
-    ./bin/server.sh server-prod
 
 All commands:
     
