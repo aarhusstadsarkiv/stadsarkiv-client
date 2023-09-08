@@ -1,3 +1,17 @@
+# docker
+
+Build:
+
+    docker-compose build 
+
+Run:
+    
+    docker-compose up
+
+Remove:
+
+    docker-compose down
+
 # systemd
 
 Create a systemd service file for the stadsarkiv-client:
