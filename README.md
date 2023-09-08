@@ -26,7 +26,7 @@ Install requirements:
 
     Usage: server-dev [OPTIONS]
 
-  Start the running uvicorn dev-server.
+    Start the running uvicorn dev-server.
 
     Options:
     --port INTEGER     Server port.
