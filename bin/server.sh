@@ -1,2 +1,2 @@
 #!/bin/bash
-venv/bin/python -m stadsarkiv_client $@
+./venv/bin/python -m stadsarkiv_client $@
