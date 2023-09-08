@@ -28,20 +28,26 @@ WantedBy=multi-user.target
 ```
 
 ## enable
-sudo systemctl enable stadsarkiv-client.service
+
+    sudo systemctl enable stadsarkiv-client.service
 
 ## disable
-sudo systemctl disable stadsarkiv-client.service
+
+    sudo systemctl disable stadsarkiv-client.service
 
 ## remove
-sudo rm /etc/systemd/system/stadsarkiv-client.service 
+
+    sudo rm /etc/systemd/system/stadsarkiv-client.service 
 
 ## reload systemd (after changes)
-sudo systemctl daemon-reload
+    
+    sudo systemctl daemon-reload
 
 ## start or stop a service
-sudo systemctl start stadsarkiv-client.service
-sudo systemctl stop stadsarkiv-client.service
+    
+    sudo systemctl start stadsarkiv-client.service
+    sudo systemctl stop stadsarkiv-client.service
 
 ## status of a service
-sudo systemctl status stadsarkiv-client.service
+    
+    sudo systemctl status stadsarkiv-client.service
