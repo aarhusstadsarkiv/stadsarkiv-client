@@ -37,6 +37,23 @@ def server_prod(port: int, workers: int, host: str):
     print(f"Started Gunicorn in background with PID: {gunicorn_process.pid}")  # Print the PID for reference
 
 
+@cli.command(help="Start the production gunicorn server. Should be used with docker.")
+@click.option("--port", default=5555, help="Server port.")
+@click.option("--workers", default=3, help="Number of workers.")
+@click.option("--host", default="0.0.0.0", help="Server host.")
+def server_docker(port: int, workers: int, host: str):
+    cmd = [
+        "gunicorn",
+        "stadsarkiv_client.app:app",
+        f"--workers={workers}",
+        f"--bind={host}:{port}",
+        "--worker-class=uvicorn.workers.UvicornWorker",
+        "--log-level=info",
+    ]
+
+    subprocess.call(cmd)
+
+
 @cli.command(help="Start the running Uvicorn dev-server.")
 @click.option("--port", default=5555, help="Server port.")
 @click.option("--workers", default=1, help="Number of workers.")

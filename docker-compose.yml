@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  gunicorn-server:
+    build: .
+    ports:
+      - "5555:5555"
+    volumes:
+      - .:/usr/src/app
+
