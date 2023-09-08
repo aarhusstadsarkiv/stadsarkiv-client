@@ -42,6 +42,14 @@ All commands:
     
     ./bin/server.sh --help
 
+Fix code: 
+
+## Fix code
+
+Run black, mypy and flake8:
+
+    ./bin/fix.sh
+
 ## Install as requirement
 
     virtualenv venv
@@ -96,12 +104,6 @@ All the above files and dirs are optional. You may see examples of all the above
 (These files are well documented)
 
 These files and dirs should be placed in the directory where you run the module from - otherwise they will be ignored.
-
-## Fix code
-
-Run black, mypy and flake8:
-
-    ./bin/fix.sh
 
 ## Run on server
 
