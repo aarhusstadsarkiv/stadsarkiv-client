@@ -75,6 +75,10 @@ Stop server:
 
     server-stop
 
+Generate a session secret:
+
+    server-secret
+
 ## Modifying the required module
 
 You may override the default module using the following files and dirs:
@@ -98,7 +102,6 @@ These files and dirs should be placed in the directory where you run the module 
 Run black, mypy and flake8:
 
     ./bin/fix.sh
-
 
 ## Run on server
 
