@@ -91,3 +91,8 @@ These files and dirs should be placed in the directory where you run the module 
 Run black, mypy and flake8:
 
     ./bin/fix.sh
+
+
+## Run on server
+
+[See docs/README-SERVER.md](docs/README-SERVER.md)
