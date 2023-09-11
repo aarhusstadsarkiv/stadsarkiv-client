@@ -22,11 +22,11 @@ Install requirements:
 
 Run:
 
-    ./bin/server.sh server-dev
+    ./bin/cli.sh server-dev
 
 Help:
 
-    ./bin/server.sh --help
+    ./bin/cli.sh --help
 
     Usage: server-dev [OPTIONS]
 
@@ -40,7 +40,7 @@ Help:
 
 All commands:
     
-    ./bin/server.sh --help
+    ./bin/cli.sh --help
 
 Fix code: 
 

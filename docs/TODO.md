@@ -2,7 +2,7 @@
 
 # Version
 
-Tilføj versions nummer til system. 
+OK Tilføj versions nummer til system. 
 
 # Opdatering af system
 
@@ -28,3 +28,4 @@ Salling væk fra bunden af siden.
 
 ## robots.txt
 
+OK
