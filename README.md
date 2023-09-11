@@ -86,8 +86,8 @@ Generate a session secret:
 Generate a `cli.sh` shortcut to above commands:
 
 ```bash
-    #!/bin/bash
-    ./venv/bin/python -m stadsarkiv_client $@
+#!/bin/bash
+./venv/bin/python -m stadsarkiv_client $@
 ```
 
 ## Modifying the required module
