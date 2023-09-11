@@ -1,9 +1,5 @@
 # TODO
 
-# Version
-
-OK Tilføj versions nummer til system. 
-
 # Opdatering af system
 
 Script til at opdatere alt. 
@@ -26,6 +22,6 @@ Således lettere at sende fejl til sentry.
 Redesign footer
 Salling væk fra bunden af siden. 
 
-## robots.txt
+# Facets
 
-OK
+Tjek teater arkiv. Dette er ikke et facet.
