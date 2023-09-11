@@ -29,8 +29,8 @@ git pull
 git checkout $tag
 
 # Activate virtual environment and install requirements
-source ./venv/bin/activate
-pip install -r requirements.txt
+
+./venv/bin/pip install -r requirements.txt
 
 # Start the service
 sudo systemctl start stadsarkiv-client.service
