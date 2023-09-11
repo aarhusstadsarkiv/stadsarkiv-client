@@ -69,23 +69,26 @@ You may also install a specific version:
 
 For development:
 
-    server-dev
-
-Options 
-
-    server-dev
+    python -m "stadsarkiv_client" server-dev
 
 Start or restart (stop and start) for production (gunicorn):
 
-    server-prod
+    python -m "stadsarkiv_client" server-prod
 
 Stop server:
 
-    server-stop
+    python -m "stadsarkiv_client" server-stop
 
 Generate a session secret:
 
-    server-secret
+    python -m "stadsarkiv_client" server-secret
+
+Generate a `cli.sh` shortcut to above commands:
+
+```bash
+    #!/bin/bash
+    ./venv/bin/python -m stadsarkiv_client $@
+```
 
 ## Modifying the required module
 
