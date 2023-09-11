@@ -2,6 +2,7 @@ import logging
 import os
 from stadsarkiv_client.core.dotenv_local import load
 import typing
+import stadsarkiv_client
 
 load()
 
@@ -18,7 +19,7 @@ if os.getenv("ENVIRONMENT") == "production":
 
 settings: dict[str, typing.Any] = {
     "debug": debug,
-    "version": "0.0.4",
+    "version": stadsarkiv_client.__version__,
     "language": "da",
     "environment": os.getenv("ENVIRONMENT"),
     "log_level": log_level,
