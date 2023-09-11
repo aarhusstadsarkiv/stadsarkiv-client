@@ -3,18 +3,18 @@
 # Exit on any error
 # set -e
 
+git fetch --tags
+
 # check if tag is provided 
 if [ -z "$1" ]; then
-    echo "No tag argument supplied"
-    exit 1
+    tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+else
+    tag=$1
 fi
 
-tag=$1
+echo "Upgrading to tag $tag"
 
-# Fetch latest changes without modifying the working tree
-git fetch
-
-# Check if tag exists in the fetched data
+# Check if tag exists. User supplied tag.
 if ! git rev-parse $tag >/dev/null 2>&1; then
     echo "Tag $tag does not exist in the repo"
     exit 1
