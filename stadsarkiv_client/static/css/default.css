@@ -186,3 +186,8 @@ summary {
 main {
     flex:1; 
 }
+
+.version {
+
+    color: white;
+}
