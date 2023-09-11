@@ -3,6 +3,7 @@
 # Exit on any error
 # set -e
 
+# get latest remote tags if any
 git fetch --tags
 
 # check if tag is provided 
@@ -10,6 +11,13 @@ if [ -z "$1" ]; then
     tag=$(git describe --tags `git rev-list --tags --max-count=1`)
 else
     tag=$1
+fi
+
+# current tag
+current_tag=$(git describe --tags --exact-match HEAD)
+if [ "$current_tag" = "$tag" ]; then
+    echo "Already on tag $tag"
+    exit 0
 fi
 
 echo "Upgrading to tag $tag"
@@ -29,7 +37,6 @@ git pull
 git checkout $tag
 
 # Activate virtual environment and install requirements
-
 ./venv/bin/pip install -r requirements.txt
 
 # Start the service
