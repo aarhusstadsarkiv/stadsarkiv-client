@@ -3,10 +3,16 @@ from setuptools import setup, find_packages  # type: ignore
 
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
+# get version from module stadsarkiv_client
+with open("stadsarkiv_client/__init__.py", "r") as fh:
+    for line in fh.readlines():
+        if line.startswith("__version__"):
+            VERSION = line.split("=")[1].strip().replace('"', "")
+            break
 
 setup(
     name="stadsarkiv-client",
-    version="0.0.1",
+    version=VERSION,
     description="A starlette client to a fastapi backend",
     url="https://github.com/aarhusstadsarkiv/stadsarkiv-client",
     author="Dennis Iversen",
@@ -17,8 +23,10 @@ setup(
     install_requires=REQUIREMENTS,
     entry_points={
         "console_scripts": [
-            "stadsarkiv-serve = stadsarkiv_client.commands.serve:run",
-            "stadsarkiv-secret = stadsarkiv_client.commands.generate_secret:run",
+            "server-prod = stadsarkiv_client.commands.server:server_prod",
+            "server-dev = stadsarkiv_client.commands.server:server_dev",
+            "server-stop = stadsarkiv_client.commands.server:server_stop",
+            "server-generate-secret = stadsarkiv_client.commands.server:server_secret",
         ],
     },
     classifiers=[

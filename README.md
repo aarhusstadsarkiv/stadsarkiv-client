@@ -24,11 +24,35 @@ Install requirements:
 
 ## Run for development
 
-    python -m stadsarkiv_client
+Run:
 
-Or: 
+    ./bin/cli.sh server-dev
 
-    ./bin/run-module.sh
+Help:
+
+    ./bin/cli.sh --help
+
+    Usage: server-dev [OPTIONS]
+
+    Start the running uvicorn dev-server.
+
+    Options:
+    --port INTEGER     Server port.
+    --workers INTEGER  Number of workers.
+    --host TEXT        Server host.
+    --help             Show this message and exit.
+
+All commands:
+    
+    ./bin/cli.sh --help
+
+Fix code: 
+
+## Fix code
+
+Run black, mypy and flake8:
+
+    ./bin/fix.sh
 
 ## Install as requirement
 
@@ -47,23 +71,28 @@ You may also install a specific version:
 
 ## Run required module
 
-Usage: stadsarkiv-serve [OPTIONS]
+For development:
 
-    stadsarkiv-serve --help
+    python -m "stadsarkiv_client" server-dev
 
-    Options:
-    --reload BOOLEAN   Reload uvicorn on changes.
-    --port INTEGER     Server port.
-    --workers INTEGER  Number of workers.
-    --help             Show this message and exit.
+Start or restart (stop and start) for production (gunicorn):
 
-Serve the default module on port 5555:
+    python -m "stadsarkiv_client" server-prod
 
-    stadsarkiv-serve
+Stop server:
 
-Or use some options:
+    python -m "stadsarkiv_client" server-stop
 
-    stadsarkiv-serve --port 5555 --reload true
+Generate a session secret:
+
+    python -m "stadsarkiv_client" server-secret
+
+Generate a `cli.sh` shortcut to above commands:
+
+```bash
+#!/bin/bash
+./venv/bin/python -m stadsarkiv_client $@
+```
 
 ## Modifying the required module
 
@@ -71,6 +100,7 @@ You may override the default module using the following files and dirs:
 
     .env
     settings.py
+    settings_facets.py
     language.py
     hooks.py
     templates/
@@ -82,8 +112,6 @@ All the above files and dirs are optional. You may see examples of all the above
 
 These files and dirs should be placed in the directory where you run the module from - otherwise they will be ignored.
 
-## Fix code
+## Run on server
 
-Run black, mypy and flake8:
-
-    ./bin/fix.sh
+[See docs/server/README.md](https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/docs/server)

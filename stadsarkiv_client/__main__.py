@@ -1,4 +1,4 @@
-from stadsarkiv_client.commands.serve import run
+from stadsarkiv_client.commands.cli import cli
 
 if __name__ == "__main__":
-    run()
+    cli()
