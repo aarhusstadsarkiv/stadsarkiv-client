@@ -16,7 +16,11 @@ Or (Windows)
 
 Install requirements:
 
+    # with pip
     pip install -r requirements.txt
+
+    # or with poetry
+    poetry install
 
 ## Run for development
 
