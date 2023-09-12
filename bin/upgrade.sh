@@ -1,32 +1,13 @@
 #!/bin/sh
 
-# Exit on any error
-# set -e
-
-# get latest remote tags if any
-git fetch --tags
-
-# check if tag is provided 
-if [ -z "$1" ]; then
-    tag=$(git describe --tags `git rev-list --tags --max-count=1`)
-else
-    tag=$1
-fi
-
-# current tag
-current_tag=$(git describe --tags --exact-match HEAD)
-if [ "$current_tag" = "$tag" ]; then
-    echo "Already on tag $tag"
-    exit 0
-fi
-
-echo "Upgrading to tag $tag"
-
-# Check if tag exists. User supplied tag.
-if ! git rev-parse $tag >/dev/null 2>&1; then
-    echo "Tag $tag does not exist in the repo"
+# if first argument is empty, exit
+if [ -z "$1" ]
+  then
+    echo "No tag supplied"
     exit 1
 fi
+
+tag=$1
 
 # Stop the service
 sudo systemctl stop stadsarkiv-client.service
