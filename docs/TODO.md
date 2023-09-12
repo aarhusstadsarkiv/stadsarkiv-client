@@ -33,3 +33,8 @@ Salling væk fra bunden af siden.
 ## log 404
 
 Bedre logging
+
+## Version
+
+læs fra pyproject.toml
+
