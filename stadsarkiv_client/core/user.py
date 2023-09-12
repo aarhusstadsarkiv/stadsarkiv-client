@@ -9,7 +9,6 @@ def set_user_jwt(request: Request, access_token: str, token_type: str):
     request.session["access_token"] = access_token
     request.session["token_type"] = token_type
     request.session["login_type"] = "jwt"
-    log.debug("user logged in")
 
 
 def logout(request: Request):

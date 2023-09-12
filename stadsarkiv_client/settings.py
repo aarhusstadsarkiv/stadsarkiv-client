@@ -23,7 +23,7 @@ settings: dict[str, typing.Any] = {
     "language": "da",
     "environment": os.getenv("ENVIRONMENT"),
     "log_level": log_level,
-    "log_handlers": ["stream"],  # [ "stream", "file"]
+    "log_handlers": ["stream", "file"],
     "cookie": {
         "name": "session",
         "lifetime": 3600,  # seconds

@@ -24,7 +24,6 @@ async def get_schemas(request: Request):
         context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("schemas/schemas.html", context)
     except Exception as e:
-        log.exception(e)
         raise HTTPException(status_code=404, detail=str(e))
 
 
@@ -32,7 +31,6 @@ async def get_schemas(request: Request):
 async def get_schema(request: Request):
     try:
         schema = await api.schema_get(request)
-        # schema_dict = schema.to_dict()
         schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
         context_values = {"title": translate("Schemas"), "schema": schema_json}
         context = await get_context(request, context_values=context_values)
@@ -40,7 +38,6 @@ async def get_schema(request: Request):
         return templates.TemplateResponse("schemas/schema.html", context)
 
     except Exception as e:
-        log.exception(e)
         raise HTTPException(status_code=404, detail=str(e))
 
 
@@ -53,7 +50,7 @@ async def post_schema(request: Request):
     except JSONDecodeError:
         flash.set_message(request, translate("Invalid JSON in data."), type="error")
     except OpenAwsException as e:
-        log.exception(e)
+        log.info("Schema create error", exc_info=True)
         flash.set_message(request, str(e), type="error")
 
     return RedirectResponse(url="/schemas", status_code=302)

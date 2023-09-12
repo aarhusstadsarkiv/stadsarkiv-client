@@ -32,7 +32,6 @@ async def get_entity_create(request: Request):
         return templates.TemplateResponse("entities/entities_create.html", context)
 
     except Exception as e:
-        # for sure this is a 404
         raise HTTPException(404, detail=str(e), headers=None)
 
 
@@ -45,8 +44,8 @@ async def post_entity_create(request: Request):
         flash.set_message(request, translate("Entity created"), type="success", remove=True)
         return JSONResponse({"message": translate("Entity created"), "error": False})
 
-    except Exception as e:
-        log.exception(e)
+    except Exception:
+        log.info("Entity create error", exc_info=True)
         return JSONResponse({"message": translate("Entity could not be created"), "error": True})
 
 
@@ -59,10 +58,10 @@ async def get_entities(request: Request):
         return templates.TemplateResponse("entities/entities.html", context)
 
     except Exception as e:
-        log.exception(e)
+        raise HTTPException(404, detail=str(e), headers=None)
 
 
-def get_schema_and_values(schema, entity):
+def _get_schema_and_values(schema, entity):
     schema_and_values = schema["data"]["properties"]
     data = entity["data"]
 
@@ -85,12 +84,11 @@ async def get_entity_view(request: Request):
         # schema
         schema = await api.schema_get_version(request, schema_name, schema_version)
 
-        schema_and_values = get_schema_and_values(schema, entity)
+        schema_and_values = _get_schema_and_values(schema, entity)
 
         context_values = {"title": translate("Entity"), "schema_and_values": schema_and_values}
         context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("entities/entity.html", context)
 
     except Exception as e:
-        log.exception(e)
         raise HTTPException(404, detail=str(e), headers=None)

@@ -50,7 +50,7 @@ async def post_logout(request: Request):
         user.logout(request)
         flash.set_message(request, translate("You have been logged out."), type="success")
     except Exception as e:
-        log.exception(e)
+        log.error("Logout error", exc_info=True)
         flash.set_message(request, str(e), type="error")
 
     return RedirectResponse(url="/auth/login", status_code=302)
@@ -73,7 +73,7 @@ async def post_register(request: Request):
 
         return RedirectResponse(url="/auth/login", status_code=302)
     except OpenAwsException as e:
-        log.exception(e)
+        log.info("Register error", exc_info=True)
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
@@ -93,7 +93,7 @@ async def get_verify(request: Request):
 
         return RedirectResponse(url="/", status_code=302)
     except OpenAwsException as e:
-        log.exception(e)
+        log.info("Verify error", exc_info=True)
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
@@ -130,7 +130,7 @@ async def post_forgot_password(request: Request):
             type="success",
         )
     except OpenAwsException as e:
-        log.exception(e)
+        log.info("Forgot password error", exc_info=True)
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
@@ -157,7 +157,7 @@ async def post_reset_password(request: Request):
         return RedirectResponse(url="/auth/login", status_code=302)
 
     except OpenAwsException as e:
-        log.exception(e)
+        log.info("Reset password error", exc_info=True)
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
@@ -177,7 +177,7 @@ async def send_verify_email(request: Request):
         )
 
     except OpenAwsException as e:
-        log.exception(e)
+        log.info("Send verify email error", exc_info=True)
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
