@@ -13,8 +13,6 @@ log = get_log()
 
 
 def is_authenticated(func=None, message=translate("You need to be logged in to view this page."), permissions=[]):
-    # This is a decorator factory, which means that it returns a decorator
-    # If the decorator is called without arguments, func will be None
     if func is None:
         return lambda func: is_authenticated(func, message=message, permissions=permissions)
 
@@ -22,11 +20,11 @@ def is_authenticated(func=None, message=translate("You need to be logged in to v
     async def wrapper(request, *args, **kwargs):
         is_logged_in = await api.is_logged_in(request)
         if not is_logged_in:
+            log.error(f"401 Unauthorized: {request.url}")
             flash.set_message(request, message, type="error")
             response = RedirectResponse(url="/auth/login", status_code=302, headers={"X-Message": message})
             return response
 
-        # If no permissions are required, just return the response
         if not permissions:
             response = await func(request, *args, **kwargs)
             return response
@@ -34,6 +32,9 @@ def is_authenticated(func=None, message=translate("You need to be logged in to v
         user_permissions_list = await api.me_permissions(request)
         for permission in permissions:
             if permission not in user_permissions_list:
+                users_me_get = await api.users_me_get(request)
+                log.error(f"403 Forbidden: {request.url}. User {users_me_get}. Missing permission: {permission}")
+
                 flash.set_message(
                     request,
                     translate("You do not have the required permissions to view the page."),
@@ -42,7 +43,6 @@ def is_authenticated(func=None, message=translate("You need to be logged in to v
                 response = RedirectResponse(url="/", status_code=302, headers={"X-Message": message})
                 return response
 
-        # If the user has all permissions, return the response
         response = await func(request, *args, **kwargs)
         return response
 
