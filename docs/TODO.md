@@ -14,12 +14,11 @@ Kan være svært at ramme små links.
 
 ## exc_info
 
-Tilføj exc_info=e OpenAwsException til alle ikke kritiske fejl. 
-Så er det lettere at skelne mellem niveauer af fejl. 
+~~Tilføj exc_info=e OpenAwsException til alle ikke kritiske fejl.~~
 
-Kritiske og mindre kritiske. Men altid med fuld traceback.
+~~Kritiske og mindre kritiske. Men altid med fuld traceback.~~
 
-Således lettere at sende fejl til sentry.
+~~Således lettere at sende fejl til sentry.~~
 
 ## footer
 
@@ -32,7 +31,7 @@ Salling væk fra bunden af siden.
 
 ## log 404
 
-Bedre logging
+~~Bedre logging~~
 
 ## Version
 
