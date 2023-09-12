@@ -29,3 +29,7 @@ Salling væk fra bunden af siden.
 ## robots.txt
 
 ~~Tilføj robots.txt~~
+
+## log 404
+
+Bedre logging
