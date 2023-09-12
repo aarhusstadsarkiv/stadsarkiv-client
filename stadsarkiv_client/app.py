@@ -7,6 +7,13 @@ import json
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.logging import get_log
 import sentry_sdk
+import logging
+from sentry_sdk.integrations.logging import LoggingIntegration
+
+# All of this is already happening by default!
+sentry_logging = LoggingIntegration(
+    level=logging.INFO, event_level=logging.WARNING  # Capture info and above as breadcrumbs  # Send warnings as events
+)
 
 
 log = get_log()
@@ -17,7 +24,7 @@ log.debug(json.dumps(settings, sort_keys=True, indent=4, ensure_ascii=False))
 sentry_dns = os.getenv("SENTRY_DNS")
 
 if sentry_dns:
-    log.info("Sentry DNS: " + str(sentry_dns))
+    log.debug("Sentry DNS: " + str(sentry_dns))
     sentry_sdk.init(
         dsn=sentry_dns,
         # Set traces_sample_rate to 1.0 to capture 100%
