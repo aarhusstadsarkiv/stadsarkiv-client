@@ -2,7 +2,7 @@
 name = "stadsarkiv-client"
 version = "0.1.0"
 description = ""
-authors = ["Dennis Iversen <deiv@aarhus.dk>"]
+authors = ["Aarhus City Archive <stadsarkiv@aarhus.dk>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
