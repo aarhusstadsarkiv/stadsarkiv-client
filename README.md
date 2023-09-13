@@ -87,12 +87,14 @@ Generate a session secret:
 
     python -m "stadsarkiv_client" server-secret
 
-Generate a `cli.sh` shortcut to above commands:
+Tip: Generate a `./bin/cli.sh` as shortcut to above commands:
 
 ```bash
 #!/bin/bash
 ./venv/bin/python -m stadsarkiv_client $@
 ```
+
+    chmod +x bin/cli.sh
 
 ## Modifying the required module
 
