@@ -17,12 +17,14 @@ log.setLevel(level)
 
 def enable_sentry(sentry_dns: str):
     # All of this is already happening by default!
+    sentry_level = settings["sentry_level"]
+    sentry_event_level = settings["sentry_event_level"]
     sentry_logging = LoggingIntegration(
-        level=level, event_level=level  # Capture info and above as breadcrumbs  # Send warnings as events
+        level=sentry_level, event_level=sentry_event_level  # Capture info and above as breadcrumbs  # Send warnings as events
     )
 
     # assert in order to remove type warning
-    assert (sentry_logging is not None)
+    assert sentry_logging is not None
 
     if sentry_dns:
         log.debug("Sentry DNS: " + str(sentry_dns))

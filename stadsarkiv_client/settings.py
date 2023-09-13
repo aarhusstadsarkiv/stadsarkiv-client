@@ -24,6 +24,8 @@ settings: dict[str, typing.Any] = {
     "environment": os.getenv("ENVIRONMENT"),
     "log_level": log_level,
     "log_handlers": ["stream", "file"],
+    "sentry_level": logging.INFO,
+    "sentry_event_level": logging.WARNING,
     "cookie": {
         "name": "session",
         "lifetime": 3600,  # seconds
