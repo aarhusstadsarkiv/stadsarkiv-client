@@ -18,7 +18,7 @@ log.setLevel(level)
 def enable_sentry(sentry_dns: str):
     # All of this is already happening by default!
     sentry_logging = LoggingIntegration(
-        level=logging.INFO, event_level=logging.WARNING  # Capture info and above as breadcrumbs  # Send warnings as events
+        level=level, event_level=level  # Capture info and above as breadcrumbs  # Send warnings as events
     )
 
     # assert in order to remove type warning
