@@ -96,6 +96,10 @@ Tip: Generate a `./bin/cli.sh` as shortcut to above commands:
 
     chmod +x bin/cli.sh
 
+See all built-in commands:
+
+    ./bin/cli.sh
+
 ## Modifying the required module
 
 You may override the default module using the following files and dirs:
