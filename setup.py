@@ -4,6 +4,7 @@ from setuptools import setup, find_packages  # type: ignore
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 # get version from module stadsarkiv_client
+VERSION = ""
 with open("stadsarkiv_client/__init__.py", "r") as fh:
     for line in fh.readlines():
         if line.startswith("__version__"):
