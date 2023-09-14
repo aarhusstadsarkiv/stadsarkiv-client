@@ -1,3 +1,6 @@
+/**
+ * a basic overlay
+ */
 .overlay-hidden {
     display: none;
     position: fixed;

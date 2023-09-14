@@ -17,7 +17,8 @@
 <link rel="stylesheet" href="{{ url_for('static', path='/css/dolphin.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/default.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/record.css') }}?v={{ get_setting('version') }}">
-<link rel="shortcut icon" href="/static/assets/favicon.ico" />
+<link rel="stylesheet" href="{{ url_for('static', path='/css/footer.css') }}?v={{ get_setting('version') }}">
+<link rel="shortcut icon" href="{{ url_for('static', path='/assets/favicon.ico') }}?v={{ get_setting('version') }}" />
 
 <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />

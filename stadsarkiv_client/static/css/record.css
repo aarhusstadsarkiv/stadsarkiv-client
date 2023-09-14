@@ -1,3 +1,8 @@
+/**
+ * record is included on all pages
+ * /record/1234 (most common)
+ * /search (some modifications)
+ */
 .record-section {
     display: flex;
     flex-direction: row;
