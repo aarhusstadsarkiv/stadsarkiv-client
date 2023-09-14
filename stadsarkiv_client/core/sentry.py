@@ -1,15 +1,9 @@
 from stadsarkiv_client.core.dynamic_settings import settings
 import sentry_sdk
 from sentry_sdk.integrations.logging import LoggingIntegration
-from stadsarkiv_client.core.logging import get_log
-
-
-log = get_log()
 
 
 def enable_sentry(sentry_dns: str):
-    log.info("Enabling sentry")
-
     # All of this is already happening by default!
     sentry_level = settings["sentry_level"]
     sentry_event_level = settings["sentry_event_level"]
