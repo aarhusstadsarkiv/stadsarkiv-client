@@ -9,7 +9,6 @@ import httpx
 import typing
 from stadsarkiv_client.core import query
 from urllib.parse import quote
-from stadsarkiv_client.core.decorators import disk_cache
 
 
 log = get_log()
@@ -346,7 +345,7 @@ async def proxies_records(request: Request, remove_keys=[], add_list_items=[]) -
             response.raise_for_status()
 
 
-@disk_cache(60 * 60, use_kwargs=["collection_id"])
+# @disk_cache(60 * 60, use_kwargs=["collection_id"])
 async def proxies_collection(collection_id: str) -> typing.Any:
     async with httpx.AsyncClient() as client:
         url = f"https://www.aarhusarkivet.dk/collections/{collection_id}?fmt=json"
@@ -389,7 +388,7 @@ async def proxies_resolve(query_str) -> typing.Any:
             response.raise_for_status()
 
 
-@disk_cache(60 * 60, use_args=[0])
+# @disk_cache(60 * 60, use_args=[0])
 async def proxies_records_from_list(query_params) -> typing.Any:
     query_str = query.get_str_from_list(query_params)
     query_str = quote(query_str)
