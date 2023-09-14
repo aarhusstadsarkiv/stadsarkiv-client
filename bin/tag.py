@@ -35,14 +35,12 @@ def change_init(version):
                 f.write(line)
 
 
-# change in README. Search for this string: git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@latest-version
-# to git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}
+# change in README. Search for this string: {
+
+
+# The search term does not begin
 def change_readme(version):
-    with open("README.md", "r") as f:
-        lines = f.readlines()
-    with open("README.md", "w") as f:
-        for line in lines:
-            if line.startswith("git+
+    pass
 
 
 change_pyproject_version(version)

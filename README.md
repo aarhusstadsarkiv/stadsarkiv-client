@@ -60,12 +60,13 @@ Run black, mypy and flake8:
 
     source venv/bin/activate
 
-Update version and install latest version:
+Uninstall old version:
 
     pip uninstall -y stadsarkiv-client
+
+Install latest version:
 <!-- LATEST-VERSION-START -->
     pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@latest-version
-<!-- LATEST-VERSION-START -->
 
 ## Run required module
 
