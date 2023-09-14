@@ -53,6 +53,12 @@ def change_readme(version):
                 f.write(line)
 
 
+# git add, commit and push
+# os.system("git add .")
+# os.system(f'git commit -m "bump version to {version}"')
+# os.system("git push")
+
+
 # check if something needs to be commited
 # if something needs to be commited, exit
 if os.system("git diff-index --quiet HEAD --") != 0:
@@ -62,6 +68,10 @@ if os.system("git diff-index --quiet HEAD --") != 0:
 change_readme(version)
 change_pyproject_version(version)
 change_init(version)
+
+os.system("git add README.md")
+os.system(f'git commit -m "bump version to {version}"')
+os.system("git push")
 
 # create tag
 os.system(f'git tag -a {version} -m "bump version to {version}"')
