@@ -44,7 +44,7 @@ def change_readme(version):
     with open("README.md", "w") as f:
         for line in lines:
             if write_ext_line:
-                f.write(f"\tgit+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}\n")
+                f.write(f"\tpip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}\n")
                 write_ext_line = False
             elif line.startswith("<!-- LATEST-VERSION-START -->"):
                 f.write(line)
