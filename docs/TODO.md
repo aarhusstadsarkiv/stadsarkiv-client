@@ -20,11 +20,6 @@ Kan være svært at ramme små links.
 
 ~~Således lettere at sende fejl til sentry.~~
 
-## footer
-
-Redesign footer
-Salling væk fra bunden af siden. 
-
 ## robots.txt
 
 ~~Tilføj robots.txt~~
@@ -35,5 +30,10 @@ Salling væk fra bunden af siden.
 
 ## Version
 
-læs fra pyproject.toml
+~~læs fra __version__~~
+Tilføj 
 
+## design
+
+FLyt nuværende design til aarhusarkivet.dk - v2
+Strip design
