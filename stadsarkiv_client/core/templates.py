@@ -24,9 +24,9 @@ def get_template_dirs() -> list:
     # local templates
     if os.path.exists("templates"):
         template_dirs.append("templates")
-        log.info("Loaded local templates: templates/")
+        log.debug("Loaded local templates: templates/")
     else:
-        log.info("Local templates NOT loaded: templates/")
+        log.debug("Local templates NOT loaded: templates/")
 
     # Full path to module templates
     current_dir = os.path.dirname(os.path.realpath(__file__))

@@ -9,9 +9,9 @@ log = get_log()
 try:
     from language import language as language_local  # type: ignore
 
-    log.info("Loaded local language file: language.py")
+    log.debug("Loaded local language file: language.py")
 except ImportError:
-    log.info("Local language file NOT loaded: language.py")
+    log.debug("Local language file NOT loaded: language.py")
     language_local = {}
 
 

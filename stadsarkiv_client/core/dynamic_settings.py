@@ -13,9 +13,9 @@ settings_local: dict = {}
 try:
     from settings import settings as settings_local  # type: ignore
 
-    log.info("Loaded local settings file: settings.py")
+    log.debug("Loaded local settings file: settings.py")
 except ImportError:
-    log.info("Local settings file NOT loaded: settings.py")
+    log.debug("Local settings file NOT loaded: settings.py")
     pass
 
 settings.update(settings_local)
@@ -30,10 +30,10 @@ settings_facets_local: dict = {}
 try:
     from settings_facets import settings_facets as settings_facets_local  # type: ignore
 
-    log.info("Loaded local settings_facets.py file: settings_facets.py")
+    log.debug("Loaded local settings_facets.py file: settings_facets.py")
 
 except ImportError:
-    log.info("Local settings_facets.py file NOT loaded: settings_facets.py")
+    log.debug("Local settings_facets.py file NOT loaded: settings_facets.py")
     pass
 
 if settings_facets_local:

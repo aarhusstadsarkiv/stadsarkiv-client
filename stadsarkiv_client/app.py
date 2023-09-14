@@ -17,7 +17,7 @@ log.debug(json.dumps(settings, sort_keys=True, indent=4, ensure_ascii=False))
 sentry_dns = os.getenv("SENTRY_DNS", "")
 if sentry_dns:
     enable_sentry(sentry_dns)
-    log.info("Sentry enabled")
+    log.debug("Logging to sentry enabled")
 
 app = Starlette(
     debug=settings["debug"],  # type: ignore

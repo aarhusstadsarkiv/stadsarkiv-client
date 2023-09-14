@@ -11,10 +11,10 @@ def load():
     dir_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
     env_dist = dir_path + "/.env-dist"
     load_dotenv(env_dist)
-    log.info("Loaded .env-dist file")
+    log.debug("Loaded .env-dist file")
 
     if os.path.exists(".env"):
         load_dotenv(override=True)
-        log.info("Local .env file loaded. Will override .env-dist settings")
+        log.debug("Local .env file loaded. Will override .env-dist settings")
     else:
-        log.info("Local .env file NOT loaded")
+        log.debug("Local .env file NOT loaded")

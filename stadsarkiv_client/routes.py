@@ -17,9 +17,9 @@ def get_static_dirs() -> list:
     if os.path.exists("static"):
         static_dir_local = "static"
         static_dir_list.append(static_dir_local)
-        log.info("Loaded local static files: static/")
+        log.debug("Loaded local static files: static/")
     else:
-        log.info("Local static files NOT loaded: static/")
+        log.debug("Local static files NOT loaded: static/")
 
     # Module static files. Default static files
     static_dir = os.path.dirname(os.path.abspath(__file__)) + "/static"
