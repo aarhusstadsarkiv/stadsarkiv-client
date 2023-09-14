@@ -69,7 +69,8 @@ change_readme(version)
 change_pyproject_version(version)
 change_init(version)
 
-os.system("git add README.md")
+# commit the changed files
+os.system("git add .")
 os.system(f'git commit -m "bump version to {version}"')
 os.system("git push")
 
