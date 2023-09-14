@@ -58,9 +58,16 @@ change_pyproject_version(version)
 change_init(version)
 
 # git add, commit and push
-os.system("git add .")
-os.system(f'git commit -m "bump version to {version}"')
-os.system("git push")
+# os.system("git add .")
+# os.system(f'git commit -m "bump version to {version}"')
+# os.system("git push")
+
+# check if something needs to be commited
+# if something needs to be commited, exit
+if os.system("git diff-index --quiet HEAD --") != 0:
+    print("There are uncommited changes")
+    sys.exit(1)
+
 
 # create tag
 os.system(f'git tag -a {version} -m "bump version to {version}"')
