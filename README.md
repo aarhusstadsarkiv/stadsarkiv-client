@@ -63,11 +63,9 @@ Run black, mypy and flake8:
 Update version and install latest version:
 
     pip uninstall -y stadsarkiv-client
-    pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@main
-
-You may also install a specific version:
-
-    pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@version
+<!-- LATEST-VERSION-START -->
+    pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@latest-version
+<!-- LATEST-VERSION-START -->
 
 ## Run required module
 
