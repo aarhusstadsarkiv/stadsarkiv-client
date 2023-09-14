@@ -1,12 +1,9 @@
-# TODO
+# v1.1.14
 
-# Version
+## design
 
-~~Tilføj versions nummer til system.~~ 
-
-# Opdatering af system
-
-~~Script til at opdatere alt.~~ 
+FLyt nuværende design til aarhusarkivet.dk - v2
+Strip design
 
 # Bedre menu på mindre devices. 
 
@@ -31,9 +28,12 @@ Kan være svært at ramme små links.
 ## Version
 
 ~~læs fra __version__~~
-Tilføj 
+~~Tilføj "show_version" til settings~~
 
-## design
+# Version
 
-FLyt nuværende design til aarhusarkivet.dk - v2
-Strip design
+~~Tilføj versions nummer til system.~~ 
+
+# Opdatering af system
+
+~~Script til at opdatere alt.~~ 
