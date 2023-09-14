@@ -65,8 +65,8 @@ Uninstall old version:
     pip uninstall -y stadsarkiv-client
 
 Install latest version:
-
-<!-- LATEST-VERSION-START -->    pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@latest-version
+<!-- LATEST-VERSION-START -->
+	git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.16
 
 ## Run required module
 

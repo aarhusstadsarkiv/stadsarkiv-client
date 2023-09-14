@@ -35,14 +35,25 @@ def change_init(version):
                 f.write(line)
 
 
-# change in README. Search for this string: {
-
-
-# The search term does not begin
+# change in README. Search for this string below <!-- LATEST-VERSION-START -->
+# and change the line to \tpip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}
 def change_readme(version):
-    pass
+    write_ext_line = False
+    with open("README.md", "r") as f:
+        lines = f.readlines()
+    with open("README.md", "w") as f:
+        for line in lines:
+            if write_ext_line:
+                f.write(f"\tgit+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}\n")
+                write_ext_line = False
+            elif line.startswith("<!-- LATEST-VERSION-START -->"):
+                f.write(line)
+                write_ext_line = True
+            else:
+                f.write(line)
 
 
+change_readme(version)
 change_pyproject_version(version)
 change_init(version)
 
