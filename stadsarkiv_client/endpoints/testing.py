@@ -1,3 +1,8 @@
+"""
+Just a test endpoint in order to test anything
+Only enabled in development mode
+"""
+
 from starlette.requests import Request
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api

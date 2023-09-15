@@ -1,3 +1,13 @@
+"""
+Proxy for resources endpoints
+- locations
+- people
+- collections
+(etc)
+
+All that is not records
+"""
+
 from starlette.requests import Request
 from starlette.responses import PlainTextResponse
 from starlette.exceptions import HTTPException

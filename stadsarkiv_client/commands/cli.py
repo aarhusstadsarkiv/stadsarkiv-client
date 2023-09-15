@@ -1,3 +1,8 @@
+"""
+File containing CLI commands for the Stadsarkiv Client.
+"""
+
+
 import click
 import subprocess
 import os

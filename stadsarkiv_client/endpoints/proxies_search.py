@@ -1,3 +1,7 @@
+"""
+Proxy for search records endpoints
+"""
+
 from starlette.requests import Request
 from starlette.responses import PlainTextResponse
 from stadsarkiv_client.core.templates import templates

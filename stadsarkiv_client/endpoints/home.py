@@ -1,3 +1,7 @@
+"""
+Default home endpoint
+"""
+
 from starlette.requests import Request
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context

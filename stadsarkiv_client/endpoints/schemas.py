@@ -1,3 +1,7 @@
+"""
+Endpoints for schemas.
+"""
+
 from starlette.requests import Request
 from starlette.exceptions import HTTPException
 from starlette.responses import RedirectResponse

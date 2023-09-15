@@ -1,3 +1,7 @@
+"""
+Auth endpoints.
+"""
+
 from starlette.requests import Request
 from starlette.responses import RedirectResponse, JSONResponse
 from stadsarkiv_client.core.templates import templates
