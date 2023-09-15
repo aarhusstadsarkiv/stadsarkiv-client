@@ -1,6 +1,5 @@
 # stadsarkiv-client
 
-
 ## Install for development
 
     git clone https://github.com/aarhusstadsarkiv/stadsarkiv-client.git
