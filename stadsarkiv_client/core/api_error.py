@@ -74,12 +74,12 @@ async def validate_passwords(request: Request):
         )
 
 
-def _extract_validation_error(error_dict: dict):
+def _extract_validation_error(error_dict: dict) -> str:
     try:
         error_detail = error_dict["detail"]
         if isinstance(error_detail, list) and len(error_detail) > 0:
             first_error = error_detail[0]
-            error_type = first_error.get("type")
+            error_type = first_error["type"]
             return error_type
     except (KeyError, IndexError):
         pass
@@ -87,19 +87,19 @@ def _extract_validation_error(error_dict: dict):
     return "value_error.unknown_error"
 
 
-def _extract_model_error(error_dict: dict):
+def _extract_model_error(error_dict: dict) -> str:
     try:
         if isinstance(error_dict.get("detail"), dict):
-            error_code = error_dict["detail"].get("code")
+            error_code = error_dict["detail"]["code"]
         else:
-            error_code = error_dict.get("detail")
+            error_code = error_dict["detail"]
     except KeyError:
         error_code = "UNKNOWN_MODEL_ERROR"
 
     return error_code
 
 
-def _get_error_string(error: str):
+def _get_error_string(error: str) -> str:
     # register errors
     if error == "REGISTER_INVALID_PASSWORD":
         return translate("Password should be at least 8 characters long")
