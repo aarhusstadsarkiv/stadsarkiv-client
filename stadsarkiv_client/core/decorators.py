@@ -63,7 +63,9 @@ if not os.path.exists(CACHE_DIR):
 
 
 def disk_cache(ttl: int, use_args: list = [], use_kwargs: list = []):
-    """Cache the result of a function to disk."""
+    """
+    Cache the result of a function to disk.
+    """
 
     def decorator(func):
         @functools.wraps(func)

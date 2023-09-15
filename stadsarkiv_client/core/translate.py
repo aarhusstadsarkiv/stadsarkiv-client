@@ -1,9 +1,9 @@
 """
 Set's up some basic translation for the application.
-Accept's a local language file (./language.py) that may override the default
+It is possible to create a local language file (./language.py) that may override the built-in
 translation.
 
-Expose a translate function that is used in the jinja2 template engine and in python code.
+Exposes a translate function that is used in the jinja2 template engine and in python code.
 """
 
 from stadsarkiv_client.core.dynamic_settings import settings

@@ -1,8 +1,7 @@
 """
-Set up logging for the application.
+Set up a single logger for the application.
 Contains a single function (get_log) that returns the setup logger.
 """
-
 
 from typing import Any
 import logging

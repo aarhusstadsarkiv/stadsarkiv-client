@@ -3,7 +3,6 @@ Starlette Exception handlers for the application.
 There is a default handler for 403, 404 and 500 errors.
 """
 
-
 from starlette.exceptions import HTTPException
 from starlette.requests import Request
 from stadsarkiv_client.core.templates import templates
