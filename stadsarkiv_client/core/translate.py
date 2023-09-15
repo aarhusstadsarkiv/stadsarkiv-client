@@ -1,3 +1,11 @@
+"""
+Set's up some basic translation for the application.
+Accept's a local language file (./language.py) that may override the default
+translation.
+
+Expose a translate function that is used in the jinja2 template engine and in python code.
+"""
+
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.locales.en import en
 from stadsarkiv_client.locales.da import da
@@ -39,6 +47,10 @@ def _add_key_language_file(lang, key) -> None:
 
 
 def _save_file_dict(lang) -> None:
+    """
+    Don't update and save language files in production
+    Else save language files with new key
+    """
     if settings["environment"] == "production":
         return
 

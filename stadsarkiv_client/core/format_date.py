@@ -1,3 +1,7 @@
+"""
+Format a date string to a Danish format
+"""
+
 from datetime import datetime
 from babel.dates import format_datetime
 import locale

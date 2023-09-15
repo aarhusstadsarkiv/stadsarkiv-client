@@ -1,3 +1,9 @@
+"""
+Contains a single function (get_context)
+that returns a dict with basic context values for the templates.
+Hooks: You able to hook into the get_context function and add your own context values.
+"""
+
 from typing import Any
 from starlette.requests import Request
 from stadsarkiv_client.core.flash import get_messages
@@ -11,11 +17,28 @@ log = get_log()
 pm = get_plugin_manager()
 
 
+async def get_context(request: Request, context_values: dict = {}) -> dict:
+    logged_in = await api.is_logged_in(request)
+    context = {
+        "flash_messages": get_messages(request),
+        "path": request.url.path,
+        "request": request,
+        "title": _get_title(request),
+        "main_menu": await _get_main_menu(request),
+        "logged_in": logged_in,
+    }
+
+    context.update(context_values)
+
+    pm.hook.alter_context(context=context)  # type: ignore
+
+    return context
+
+
 async def _get_main_menu(request: Request):
     logged_in = await api.is_logged_in(request)
     permissions_list = await api.me_permissions(request)
 
-    main_menu: Any = []  # type: ignore
     if "main_menu" in dynamic_settings.settings:
         main_menu = dynamic_settings.settings["main_menu"]  # type ignore
 
@@ -35,7 +58,7 @@ async def _get_main_menu(request: Request):
     return main_menu
 
 
-def get_title(request: Request) -> str:
+def _get_title(request: Request) -> str:
     pages: Any = []
     title = "No title"
     if "pages" in dynamic_settings.settings:
@@ -45,21 +68,3 @@ def get_title(request: Request) -> str:
         if page["url"] == request.url.path:
             title = page["title"]
     return title
-
-
-async def get_context(request: Request, context_values: dict = {}) -> dict:
-    logged_in = await api.is_logged_in(request)
-    context = {
-        "path": request.url.path,
-        "request": request,
-        "title": get_title(request),
-        "flash_messages": get_messages(request),
-        "main_menu": await _get_main_menu(request),
-        "logged_in": logged_in,
-    }
-
-    context.update(context_values)
-
-    pm.hook.alter_context(context=context)  # type: ignore
-
-    return context

@@ -1,3 +1,8 @@
+"""
+load_dotenv wrapper
+Load the module .env-dist file and override with local .env file if it exists
+"""
+
 from dotenv import load_dotenv
 import sys
 import os

@@ -1,3 +1,7 @@
+"""
+Some query utils that can be used to get query params from request and return it as a list of tuples or a string.
+"""
+
 from starlette.requests import Request
 from stadsarkiv_client.core.logging import get_log
 from urllib.parse import quote_plus

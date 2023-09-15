@@ -13,6 +13,11 @@ log = get_log()
 
 
 def is_authenticated(func=None, message=translate("You need to be logged in to view this page."), permissions=[]):
+    """
+    Decorator to check if the user is logged in. If not, redirect to login page.
+    If permissions is set, check if the user has the required permissions.
+    """
+
     if func is None:
         return lambda func: is_authenticated(func, message=message, permissions=permissions)
 

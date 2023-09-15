@@ -1,3 +1,7 @@
+"""
+MultiStaticFiles is a class that allows us to load multiple static folders.
+"""
+
 import typing
 from starlette.staticfiles import PathLike, StaticFiles
 

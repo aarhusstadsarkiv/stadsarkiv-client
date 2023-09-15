@@ -1,3 +1,7 @@
+"""
+Set and get flash messages to be displayed to the user.
+"""
+
 import typing
 from stadsarkiv_client.core.dynamic_settings import settings
 

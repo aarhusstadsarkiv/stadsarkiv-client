@@ -1,3 +1,16 @@
+"""
+Set's up the template engine for the application.
+
+There is a couple of template helpers available:
+
+- translate: Translate a string to the current language.
+- get_setting: Get a setting from the settings file.
+- format_date: Format a date to the current locale.
+- to_json: Convert a variable to a JSON string.
+- paragraphs: Convert a string to HTML paragraphs.
+- key_exist_in_dict: Check if a key exists in a dictionary.
+"""
+
 import typing
 import os
 from jinja2 import FileSystemLoader
@@ -14,11 +27,11 @@ import re
 log = get_log()
 
 
-def app_context(request: Request) -> typing.Dict[str, typing.Any]:
+def _get_app_context(request: Request) -> typing.Dict[str, typing.Any]:
     return {"app": request.app}
 
 
-def get_template_dirs() -> list:
+def _get_template_dirs() -> list:
     template_dirs = []
 
     # local templates
@@ -34,18 +47,6 @@ def get_template_dirs() -> list:
     template_dirs.append(template_module_dirs)
 
     return template_dirs
-
-
-loader = FileSystemLoader(get_template_dirs())
-
-
-templates = Jinja2Templates(
-    directory="",
-    context_processors=[app_context],
-    loader=loader,
-    trim_blocks=True,
-    lstrip_blocks=True,
-)
 
 
 def to_json(variable):
@@ -66,6 +67,7 @@ def paragraphs(value):
 
 
 def key_exist_in_dict(keys: list, data: dict):
+    """Check if a key exists in a dictionary. And if the value is not empty."""
     for key in keys:
         if key in data:
             # Check if the value is empty
@@ -80,6 +82,15 @@ def key_exist_in_dict(keys: list, data: dict):
 
     return False
 
+
+loader = FileSystemLoader(_get_template_dirs())
+templates = Jinja2Templates(
+    directory="",
+    context_processors=[_get_app_context],
+    loader=loader,
+    trim_blocks=True,
+    lstrip_blocks=True,
+)
 
 templates.env.globals.update(translate=translate)
 templates.env.globals.update(get_setting=get_setting)

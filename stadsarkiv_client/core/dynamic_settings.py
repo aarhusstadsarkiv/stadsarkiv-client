@@ -1,3 +1,9 @@
+"""
+Override default settings with local settings.
+Override default settings_facets with local settings_facets.
+This is only run one time when the server starts.
+"""
+
 from stadsarkiv_client.settings import settings
 from stadsarkiv_client.settings_facets import settings_facets as settings_facets_default
 from stadsarkiv_client.core.logging import get_log

@@ -1,3 +1,7 @@
+"""
+Session middleware for Starlette
+"""
+
 import re
 from starsessions import CookieStore, SessionMiddleware, SessionAutoloadMiddleware
 from starlette.middleware import Middleware

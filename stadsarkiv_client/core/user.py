@@ -1,3 +1,8 @@
+"""
+Set JWT token in session.
+Logout user by removing session variables.
+"""
+
 from starlette.requests import Request
 from stadsarkiv_client.core.logging import get_log
 

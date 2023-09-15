@@ -1,3 +1,8 @@
+"""
+All api calls to the stadsarkiv api is defined here.
+"""
+
+
 from starlette.requests import Request
 from stadsarkiv_client.core.api_error import OpenAwsException, validate_passwords, raise_openaws_exception
 from stadsarkiv_client.core.logging import get_log

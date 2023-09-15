@@ -1,8 +1,22 @@
+"""
+A couple of helpers to raise exceptions and validate passwords.
+"""
+
 from starlette.requests import Request
 from stadsarkiv_client.core.translate import translate
 
 
 class OpenAwsException(Exception):
+    """
+    OpenAwsException is used to raise exceptions caught in API calls.
+
+    raise OpenAwsException(
+                422,
+                translate("You need to be logged in to view this page."),
+    )
+
+    """
+
     def __init__(self, status_code: int, message: str, text: str = ""):
         self.status_code = status_code
         self.message = message
@@ -11,6 +25,47 @@ class OpenAwsException(Exception):
 
     def __str__(self) -> str:
         return self.message
+
+
+def raise_openaws_exception(status_code, error):
+    """
+    Raise OpenAwsException based on status_code and error.
+    The error is extracted from the error dict from the API.
+    """
+
+    raise_message = translate("Unknown error. Please try again later.")
+
+    if status_code == 400:
+        error_code = _extract_model_error(error)
+        raise_message = _get_error_string(error_code)
+
+    if status_code == 422:
+        error_code = _extract_validation_error(error)
+        raise_message = _get_error_string(error_code)
+
+    raise OpenAwsException(status_code, raise_message)
+
+
+async def validate_passwords(request: Request):
+    """
+    Validate that the passwords match and are at least 8 characters long.
+    This is also validated on the API side.
+    """
+    form = await request.form()
+    password_1 = str(form.get("password"))
+    password_2 = str(form.get("password_2"))
+
+    if password_1 != password_2:
+        raise OpenAwsException(
+            400,
+            translate("Passwords do not match."),
+        )
+
+    if len(password_1) < 8:
+        raise OpenAwsException(
+            400,
+            translate("Password should be at least 8 characters long"),
+        )
 
 
 def _extract_validation_error(error_dict):
@@ -72,35 +127,3 @@ def _get_error_string(error):
         return translate("Unknown error. Please try again later.")
 
     return translate("Unknown error. Please try again later.")
-
-
-def raise_openaws_exception(status_code, error):
-    raise_message = translate("Unknown error. Please try again later.")
-
-    if status_code == 400:
-        error_code = _extract_model_error(error)
-        raise_message = _get_error_string(error_code)
-
-    if status_code == 422:
-        error_code = _extract_validation_error(error)
-        raise_message = _get_error_string(error_code)
-
-    raise OpenAwsException(status_code, raise_message)
-
-
-async def validate_passwords(request: Request):
-    form = await request.form()
-    password_1 = str(form.get("password"))
-    password_2 = str(form.get("password_2"))
-
-    if password_1 != password_2:
-        raise OpenAwsException(
-            400,
-            translate("Passwords do not match."),
-        )
-
-    if len(password_1) < 8:
-        raise OpenAwsException(
-            400,
-            translate("Password should be at least 8 characters long"),
-        )

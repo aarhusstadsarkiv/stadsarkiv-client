@@ -1,3 +1,7 @@
+"""
+Enables sentry logging for the stadsarkiv_client package.
+"""
+
 from stadsarkiv_client.core.dynamic_settings import settings
 import sentry_sdk
 from sentry_sdk.integrations.logging import LoggingIntegration

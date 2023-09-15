@@ -1,3 +1,9 @@
+"""
+Set up logging for the application.
+Contains a single function (get_log) that returns the setup logger.
+"""
+
+
 from typing import Any
 import logging
 from stadsarkiv_client.core.dynamic_settings import settings
