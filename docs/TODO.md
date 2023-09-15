@@ -1,13 +1,21 @@
 # v1.1.14
 
-## design
-
-FLyt nuværende design til aarhusarkivet.dk - v2
-Strip design
-
 # Bedre menu på mindre devices. 
 
 Kan være svært at ramme små links.
+
+# Dokumenation
+
+Lidt dokumentation på alle filer. 
+
+## Hook ind i _get_title
+
+    records/meta_data_record.py
+
+## design
+
+~~FLyt nuværende design til aarhusarkivet.dk - v2
+Strip design~~
 
 # Auto tag script
 
