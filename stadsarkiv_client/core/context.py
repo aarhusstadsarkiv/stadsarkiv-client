@@ -39,6 +39,7 @@ async def _get_main_menu(request: Request):
     logged_in = await api.is_logged_in(request)
     permissions_list = await api.me_permissions(request)
 
+    main_menu: Any = []
     if "main_menu" in dynamic_settings.settings:
         main_menu = dynamic_settings.settings["main_menu"]  # type ignore
 

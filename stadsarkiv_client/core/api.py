@@ -1,5 +1,5 @@
 """
-All api calls to the stadsarkiv api is defined here.
+All api calls to the webservice API is defined here.
 """
 
 

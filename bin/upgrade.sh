@@ -2,6 +2,7 @@
 
 # This script upgrades the module to a specific tag.
 # Usage: bin/upgrade.sh TAG
+
 # if first argument is empty, exit
 if [ -z "$1" ]
   then
@@ -15,7 +16,7 @@ tag=$1
 # Stop the service
 sudo systemctl stop stadsarkiv-client.service
 
-# Upgrade the repo
+# Upgrade the repo and checkout the tag
 git checkout main
 git pull
 git checkout $tag

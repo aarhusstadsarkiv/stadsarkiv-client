@@ -1,4 +1,4 @@
 #!/bin/sh
 
-# This script runs the tests in the module.
+# This script runs tests
 ./venv/bin/python -m unittest tests/*.py

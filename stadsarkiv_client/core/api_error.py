@@ -4,11 +4,16 @@ A couple of helpers to raise exceptions and validate passwords.
 
 from starlette.requests import Request
 from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core.logging import get_log
+
+
+log = get_log()
 
 
 class OpenAwsException(Exception):
     """
-    OpenAwsException is used to raise exceptions caught in API calls.
+    OpenAwsException is used to raise exceptions when the API returns
+    welformed errors.
 
     raise OpenAwsException(
                 422,
@@ -27,10 +32,9 @@ class OpenAwsException(Exception):
         return self.message
 
 
-def raise_openaws_exception(status_code, error):
+def raise_openaws_exception(status_code: int, error: dict):
     """
-    Raise OpenAwsException based on status_code and error.
-    The error is extracted from the error dict from the API.
+    Raise OpenAwsException based on status_code and error from the API error message.
     """
 
     raise_message = translate("Unknown error. Please try again later.")
@@ -49,8 +53,10 @@ def raise_openaws_exception(status_code, error):
 async def validate_passwords(request: Request):
     """
     Validate that the passwords match and are at least 8 characters long.
-    This is also validated on the API side.
+    This is also validated on the API side. But in some cases we want to
+    validate it on the client side as well.
     """
+
     form = await request.form()
     password_1 = str(form.get("password"))
     password_2 = str(form.get("password_2"))
@@ -68,7 +74,7 @@ async def validate_passwords(request: Request):
         )
 
 
-def _extract_validation_error(error_dict):
+def _extract_validation_error(error_dict: dict):
     try:
         error_detail = error_dict["detail"]
         if isinstance(error_detail, list) and len(error_detail) > 0:
@@ -81,7 +87,7 @@ def _extract_validation_error(error_dict):
     return "value_error.unknown_error"
 
 
-def _extract_model_error(error_dict):
+def _extract_model_error(error_dict: dict):
     try:
         if isinstance(error_dict.get("detail"), dict):
             error_code = error_dict["detail"].get("code")
@@ -93,7 +99,7 @@ def _extract_model_error(error_dict):
     return error_code
 
 
-def _get_error_string(error):
+def _get_error_string(error: str):
     # register errors
     if error == "REGISTER_INVALID_PASSWORD":
         return translate("Password should be at least 8 characters long")
