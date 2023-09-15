@@ -97,4 +97,4 @@ These files and dirs should be placed in the directory where you run the module 
 
 ## Run on server
 
-[See README.server.md](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/README.server.md)
+[See README.server.md](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/docs/README.server.md)
