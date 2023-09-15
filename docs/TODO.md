@@ -9,6 +9,12 @@ Strip design
 
 Kan være svært at ramme små links.
 
+# Auto tag script
+
+~~Tag current version using a script.
+Instead of manually updating version in setup.py,
+__init__.py and docs/README.md.~~
+
 ## exc_info
 
 ~~Tilføj exc_info=e OpenAwsException til alle ikke kritiske fejl.~~
