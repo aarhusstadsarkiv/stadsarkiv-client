@@ -6,13 +6,9 @@
 
     cd stadsarkiv-client
 
-    virtualenv venv # Python >= 3.10.6 should work   
+    virtualenv venv # Python >= 3.10.6 should work
 
     source venv/bin/activate
-
-Or (Windows)
-
-    source venv/Scripts/activate
 
 Install requirements:
 
@@ -22,33 +18,18 @@ Install requirements:
     # or with poetry
     poetry install
 
-## Run for development
+### Run for development
 
-Run:
+Run dev server:
 
     ./bin/cli.sh server-dev
 
-Help:
 
-    ./bin/cli.sh --help
+Show all commands:
 
-    Usage: server-dev [OPTIONS]
+    ./bin/cli.sh
 
-    Start the running uvicorn dev-server.
-
-    Options:
-    --port INTEGER     Server port.
-    --workers INTEGER  Number of workers.
-    --host TEXT        Server host.
-    --help             Show this message and exit.
-
-All commands:
-    
-    ./bin/cli.sh --help
-
-Fix code: 
-
-## Fix code
+### Fix code
 
 Run black, mypy and flake8:
 
@@ -56,50 +37,47 @@ Run black, mypy and flake8:
 
 ## Install as requirement
 
+Using virtualenv:
+
     virtualenv venv
 
     source venv/bin/activate
-
-Uninstall old version:
-
-    pip uninstall -y stadsarkiv-client
 
 Install latest version (or upgrade):
 <!-- LATEST-VERSION-START -->
 	pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.21
 
-## Run required module
+Uninstall:
+
+    pip uninstall -y stadsarkiv-client
+
+### Run required module
+
+Generate a `./bin/cli.sh` file as shortcut to all module commands:
+
+```bash
+#!/bin/sh
+./venv/bin/python -m stadsarkiv_client $@
+```
+    chmod +x bin/cli.sh
 
 For development:
 
-    python -m "stadsarkiv_client" server-dev
+    ./bin/cli.sh server-dev
 
 Start or restart (stop and start) for production (gunicorn):
 
-    python -m "stadsarkiv_client" server-prod
+    ./bin/cli.sh server-prod
 
 Stop server:
 
-    python -m "stadsarkiv_client" server-stop
+    ./bin/cli.sh server-stop
 
 Generate a session secret:
 
-    python -m "stadsarkiv_client" server-secret
+    ./bin/cli.sh server-secret
 
-Tip: Generate a `./bin/cli.sh` as shortcut to above commands:
-
-```bash
-#!/bin/bash
-./venv/bin/python -m stadsarkiv_client $@
-```
-
-    chmod +x bin/cli.sh
-
-See all built-in commands:
-
-    ./bin/cli.sh
-
-## Modifying the required module
+### Modifying the required module
 
 You may override the default module using the following files and dirs:
 
@@ -119,4 +97,4 @@ These files and dirs should be placed in the directory where you run the module 
 
 ## Run on server
 
-[See docs/server/README.md](https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/docs/server)
+[See README.server.md](https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/README.server.md)
