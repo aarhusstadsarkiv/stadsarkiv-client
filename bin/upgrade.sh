@@ -1,9 +1,12 @@
 #!/bin/sh
 
+# This script upgrades the module to a specific tag.
+# Usage: bin/upgrade.sh TAG
 # if first argument is empty, exit
 if [ -z "$1" ]
   then
     echo "No tag supplied"
+    echo "Usage: bin/upgrade.sh TAG"
     exit 1
 fi
 
