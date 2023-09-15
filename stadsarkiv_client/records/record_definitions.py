@@ -1,3 +1,8 @@
+"""
+This file contains the definitions of the record fields.
+The definitions are used to normalize the record data.
+"""
+
 record_definitions = {
     "last_updated": {"type": "date"},
     "date_normalized": {"type": "string"},

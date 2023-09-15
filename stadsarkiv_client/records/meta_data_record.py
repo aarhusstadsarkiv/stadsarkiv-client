@@ -1,3 +1,8 @@
+"""
+Get some usefull meta data for a record
+"""
+
+
 from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
 from stadsarkiv_client.core.translate import translate
@@ -24,6 +29,28 @@ ICONS = {
     "29": {"icon": "bar_chart", "label": "Statistisk og økonomisk materiale"},
     "99": {"icon": "description", "label": "Andet materiale"},
 }
+
+
+def get_record_meta_data(request: Request, record: dict) -> dict[str, typing.Any]:
+    """Get usefull meta data for a record"""
+    meta_data = {}
+
+    meta_data["allowed_by_ip"] = _is_allowed_by_ip(request)
+    meta_data["title"] = _get_record_title(record)
+    meta_data["meta_title"] = _get_meta_title(record)
+    meta_data["icon"] = _get_icon(record)
+
+    meta_data["copyright_id"] = record["copyright_status"].get("id")
+    meta_data["legal_id"] = record["other_legal_restrictions"].get("id")
+    meta_data["contractual_id"] = record["contractual_status"].get("id")
+    meta_data["availability_id"] = record["availability"].get("id")
+    meta_data["usability_id"] = record["usability"].get("id")
+
+    # This should be altered to record_represenation_type
+    meta_data = _set_representations(meta_data, record)
+
+    meta_data["is_downloadable"] = _is_downloadable(meta_data)
+    return meta_data
 
 
 def _is_allowed_by_ip(request: Request) -> bool:
@@ -108,24 +135,3 @@ def _get_meta_title(record_dict: dict):
             title = f"[{title}... | AarhusArkivet ]"
 
     return title
-
-
-def get_record_meta_data(request: Request, record: dict) -> dict[str, typing.Any]:
-    meta_data = {}
-
-    meta_data["allowed_by_ip"] = _is_allowed_by_ip(request)
-    meta_data["title"] = _get_record_title(record)
-    meta_data["meta_title"] = _get_meta_title(record)
-    meta_data["icon"] = _get_icon(record)
-
-    meta_data["copyright_id"] = record["copyright_status"].get("id")
-    meta_data["legal_id"] = record["other_legal_restrictions"].get("id")
-    meta_data["contractual_id"] = record["contractual_status"].get("id")
-    meta_data["availability_id"] = record["availability"].get("id")
-    meta_data["usability_id"] = record["usability"].get("id")
-
-    # This shuld be altered to record_represenation_type
-    meta_data = _set_representations(meta_data, record)
-
-    meta_data["is_downloadable"] = _is_downloadable(meta_data)
-    return meta_data

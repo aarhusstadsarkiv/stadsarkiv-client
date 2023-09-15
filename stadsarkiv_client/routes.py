@@ -1,3 +1,7 @@
+"""
+Define routes for the application.
+"""
+
 from starlette.routing import Route, Mount
 from .endpoints import auth, proxies_records, proxies_search, proxies_resources, testing, pages, schemas, entities
 import os
@@ -9,11 +13,14 @@ from typing import Any
 log = get_log()
 
 
-def get_static_dirs() -> list:
+def _get_static_dirs() -> list:
+    """
+    If static/ dir exists in current dir, add it to static_dir_list
+    This will be override the module static files
+    """
+
     static_dir_list = []
 
-    # If static/ dir exists in current dir, add it to static_dir_list
-    # This will be override the module static files
     if os.path.exists("static"):
         static_dir_local = "static"
         static_dir_list.append(static_dir_local)
@@ -27,8 +34,9 @@ def get_static_dirs() -> list:
     return static_dir_list
 
 
+# Add basic routes
 routes = [
-    Mount("/static", MultiStaticFiles(directories=get_static_dirs()), name="static"),
+    Mount("/static", MultiStaticFiles(directories=_get_static_dirs()), name="static"),
     Route("/auth/user-info", endpoint=auth.post_user_info, name="user_info", methods=["POST"]),
     Route("/auth/login", endpoint=auth.get_login, name="login"),
     Route(
@@ -74,6 +82,7 @@ routes = [
     Route("/{resource_type:str}/{id:str}/json", endpoint=proxies_resources.get_resources_view_json, name="collection_view_json"),
 ]
 
+# Add test route
 if settings["environment"] == "development":
     routes.append(Route("/test", endpoint=testing.test, name="test"))
 

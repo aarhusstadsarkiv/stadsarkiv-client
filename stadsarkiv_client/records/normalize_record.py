@@ -1,3 +1,7 @@
+"""
+Normalize record data from the API to a more sane data structure
+"""
+
 from stadsarkiv_client.core.logging import get_log
 import urllib.parse
 from stadsarkiv_client.records.record_definitions import record_definitions
@@ -6,8 +10,30 @@ from stadsarkiv_client.records.record_definitions import record_definitions
 log = get_log()
 
 
+def normalize_record_data(record: dict):
+    """
+    Normalize record data to a more sane data structure
+    """
+    record = _normalize_dict_data(record)
+    record = _normalize_collection_tags(record)
+    record = _normalize_series(record)
+    record = _normalize_content_types(record)
+    record = _normalize_subjects(record)
+    record = _normalize_labels(record)
+    record = _normalize_resources(record)
+
+    link_list = _get_list_of_type("link_list")
+    record = _normalize_link_lists(link_list, record)
+
+    link_dict = _get_list_of_type("link_dict")
+    record = _normalize_link_dicts(link_dict, record)
+
+    return record
+
+
 def _list_dict_id_label(original_data):
-    """Transform to a more sane data structure:
+    """
+    Transform to a more sane data structure:
     original_data = [{"id": [1, 2, 3], "label": ["a", "b", "c"]}]
     transformed_data = [{"id": 1, "label": "a"}, {"id": 2, "label": "b"}, {"id": 3, "label": "c"}]"""
     transformed_data = [
@@ -17,7 +43,9 @@ def _list_dict_id_label(original_data):
 
 
 def _normalize_series(record: dict):
-    """create a normalized series list with URL query for each series"""
+    """
+    create a normalized series list with URL queries for each series
+    """
 
     if "series" in record and "collection" in record:
         series_normalized = []
@@ -39,7 +67,8 @@ def _normalize_series(record: dict):
 
 
 def _normalize_content_types(record: dict):
-    """Transform content_types to a more sane data structure ( list of list of dicts)
+    """
+    Transform content_types to a more sane data structure ( list of list of dicts)
     original_data = [
             {'id': [61, 102], 'label': ['Billeder', 'Situations billeder']},
             {'id': [61, 68], 'label': ['Billeder', 'Maleri']}
@@ -66,7 +95,9 @@ def _normalize_content_types(record: dict):
 
 
 def _normalize_subjects(record: dict):
-    """Transform subjects to a more sane data structure: Same as content_types"""
+    """
+    Transform subjects to a more sane data structure: Same as content_types
+    """
     if "subjects" in record:
         subjects = record["subjects"]
         subjects_list = []
@@ -82,6 +113,9 @@ def _normalize_subjects(record: dict):
 
 
 def _get_collection_tag(collection_id: int, tag: str):
+    """
+    Get data for a collection tag
+    """
     tag_dict: dict = {}
     parts = tag.split("/")
     tag_dict["id"] = collection_id
@@ -95,7 +129,10 @@ def _get_collection_tag(collection_id: int, tag: str):
     return tag_dict
 
 
-def normalize_hierarchy(collection_id: int, tags_list: list):
+def _normalize_hierarchy(collection_id: int, tags_list: list):
+    """
+    Transform a list of tags to a list of lists of tags
+    """
     result = []
     current_level = 1
     current_list: list = []
@@ -124,8 +161,11 @@ def normalize_hierarchy(collection_id: int, tags_list: list):
 
 
 def _normalize_collection_tags(record: dict):
-    # For future testing
-    # log.debug(_normalize_hierarchy(1, ["a", "a/b", "c", "c/d", "c/d/e"]))
+    """
+    noramlize collection tags
+    """
+
+    log.debug(_normalize_hierarchy(1, ["a", "a/b", "c", "c/d", "c/d/e"]))
 
     collection_tags = []
 
@@ -135,7 +175,7 @@ def _normalize_collection_tags(record: dict):
         return record
 
     if "collection_tags" in record:
-        collection_tags = normalize_hierarchy(collection_id, record["collection_tags"])
+        collection_tags = _normalize_hierarchy(collection_id, record["collection_tags"])
         record["collection_tags"] = collection_tags
 
     return record
@@ -200,22 +240,3 @@ def _get_list_of_type(type: str):
             type_list.append(key)
 
     return type_list
-
-
-def normalize_record_data(record: dict):
-    """Normalize record data to a more sane data structure"""
-    record = _normalize_dict_data(record)
-    record = _normalize_collection_tags(record)
-    record = _normalize_series(record)
-    record = _normalize_content_types(record)
-    record = _normalize_subjects(record)
-    record = _normalize_labels(record)
-    record = _normalize_resources(record)
-
-    link_list = _get_list_of_type("link_list")
-    record = _normalize_link_lists(link_list, record)
-
-    link_dict = _get_list_of_type("link_dict")
-    record = _normalize_link_dicts(link_dict, record)
-
-    return record

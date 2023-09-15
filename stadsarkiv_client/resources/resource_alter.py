@@ -1,3 +1,9 @@
+"""
+File contains functions for altering resources,
+e.g. set sources_normalized, set outer years, etc.
+"""
+
+
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.resources import normalize_fields
 

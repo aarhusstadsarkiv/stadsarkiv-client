@@ -1,3 +1,9 @@
+"""
+Normalize ordering (Bestilling)
+
+"""
+
+
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.translate import translate
 

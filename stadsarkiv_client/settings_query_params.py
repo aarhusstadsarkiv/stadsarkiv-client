@@ -1,3 +1,8 @@
+"""
+This file contains the settings query parameters that can be used in the
+search query.
+"""
+
 settings_query_params = {
     "view": {
         "label": "Visning",

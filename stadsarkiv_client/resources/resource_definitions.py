@@ -1,3 +1,7 @@
+"""
+A mapping of resource key names to their definitions (type).
+"""
+
 resource_definitions = {
     # creators
     "date_from": {"type": "string"},

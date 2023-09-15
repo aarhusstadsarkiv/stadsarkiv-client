@@ -2,7 +2,9 @@ from stadsarkiv_client.core.translate import translate
 
 
 def normalize_contractual_status(record, creators=None):
-    """Add contractual_status_normalized to record"""
+    """
+    Add contractual_status_normalized to record
+    """
 
     contractual_id = record.get("contractual_id")
     text = translate("contractual_status_default")

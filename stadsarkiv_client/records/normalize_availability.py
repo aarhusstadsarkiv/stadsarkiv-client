@@ -2,7 +2,9 @@ from stadsarkiv_client.core.translate import translate
 
 
 def normalize_availability(record: dict):
-    """Add availability_normalized to record"""
+    """
+    Add availability_normalized to record
+    """
     legal_id = record["legal_id"]
     contractual_id = record["contractual_id"]
     availability_id = record["availability_id"]

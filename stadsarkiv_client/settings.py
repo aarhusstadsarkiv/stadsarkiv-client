@@ -1,3 +1,8 @@
+"""
+Default settings for stadsarkiv_client
+These settings can be overridden by creating a local settings file.
+"""
+
 import logging
 import os
 from stadsarkiv_client.core.dotenv_local import load

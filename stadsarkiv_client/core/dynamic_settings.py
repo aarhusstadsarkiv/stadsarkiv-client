@@ -1,7 +1,7 @@
 """
 Override default settings with local settings.
 Override default settings_facets with local settings_facets.
-This is only run one time when the server starts.
+This is only run one time. When the server is started.
 """
 
 from stadsarkiv_client.settings import settings

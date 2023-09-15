@@ -1,3 +1,7 @@
+"""
+Normalize legal restrictions
+"""
+
 from stadsarkiv_client.core.translate import translate
 
 

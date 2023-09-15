@@ -1,3 +1,8 @@
+"""
+Normalize a date in a strange way.
+Copy of the original code.
+"""
+
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.logging import get_log
 
@@ -11,7 +16,9 @@ def split_date_str(date):
 
 
 def normalize_abstract_dates(record, split=False):
-    """Add date_normalized to record"""
+    """
+    Add date_normalized to record
+    """
 
     if split:
         if "date_from" in record:

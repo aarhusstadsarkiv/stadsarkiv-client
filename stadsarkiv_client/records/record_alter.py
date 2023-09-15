@@ -1,3 +1,7 @@
+"""
+Alter the record
+"""
+
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
 from stadsarkiv_client.records.normalize_copyright_status import normalize_copyright_status
@@ -29,6 +33,9 @@ def record_alter(request: Request, record: dict):
 
 
 def get_record_and_types(record):
+    """
+    Get record with types
+    """
     record_altered = {}
     for key, value in record.items():
         record_item = {}

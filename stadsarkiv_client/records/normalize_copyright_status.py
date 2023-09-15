@@ -1,3 +1,7 @@
+"""
+Normalize copyright status.
+"""
+
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.translate import translate
 
@@ -7,18 +11,6 @@ log = get_log()
 
 creative_commons_license = translate("copyright_creative_commons_license")
 special_notice = translate("copyright_special_notice")
-
-
-def _get_special_notice_id(record: dict):
-    try:
-        id = record["content_types"][0][0].get("id")
-    except KeyError:
-        id = None
-
-    if id != 36:
-        return True
-
-    return False
 
 
 def normalize_copyright_status(record: dict):
@@ -73,3 +65,15 @@ def normalize_copyright_status(record: dict):
 
     record["copyright_status_normalized"] = lines
     return record
+
+
+def _get_special_notice_id(record: dict):
+    try:
+        id = record["content_types"][0][0].get("id")
+    except KeyError:
+        id = None
+
+    if id != 36:
+        return True
+
+    return False

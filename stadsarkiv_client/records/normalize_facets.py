@@ -1,3 +1,11 @@
+"""
+Normalize the tree of facets. (Right side of the search page)
+Generate query parts of links that can be used to remove a facet from the search.
+Add count to the facets.
+
+Also generate a list of checked facets (search filters that are enabled).
+"""
+
 from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
 from stadsarkiv_client.core.dynamic_settings import settings_facets
@@ -6,19 +14,6 @@ from urllib.parse import quote_plus
 
 
 log = get_log()
-
-
-def _str_to_date(date: str):
-    """convert date string to date string with correct format
-    e.g. 20221231 to 2022-12-31
-    """
-    if not date:
-        return None
-
-    if len(date) == 8:
-        return f"{date[:4]}-{date[4:6]}-{date[6:]}"
-
-    return date
 
 
 class NormalizeFacets:
@@ -59,6 +54,16 @@ class NormalizeFacets:
         return altered_search_facets
 
     def _transform_facets(self, top_level_key, facets_content, path=None):
+        """
+        Recursively transform the facets_content. Add a count key to the facet.
+        Add a checked key to the facet if the facet is checked in the query_params.
+        Add a path key to the facet.
+        Add a search_query key to the facet.
+        Add a remove_query key to the facet.
+        Add a checked_label key to the facet.
+        Add a entity_url key to the facet.
+
+        """
         if path is None:
             path = [self.facets[top_level_key]["label"]]
 
@@ -100,7 +105,9 @@ class NormalizeFacets:
                 facet["search_query"] = self.query_str + f"{top_level_key}={facet['id']}&"
 
     def _get_inner_dict(self, outer_key, inner_key):
-        """Get the inner dict from the facets_resolved dict."""
+        """
+        Get the inner dict from the facets_resolved dict.
+        """
         facets_resolved = self.facets_resolved
         if outer_key in facets_resolved:
             if inner_key in facets_resolved[outer_key]:
@@ -108,7 +115,9 @@ class NormalizeFacets:
         return None
 
     def _get_label(self, key, value):
-        """Get the label for a facet."""
+        """
+        Get the label for a facet.
+        """
         label_settings = settings_query_params[key]["label"]
         resolved = self._get_inner_dict(key, value)
 
@@ -125,14 +134,18 @@ class NormalizeFacets:
         return label_settings + " " + value
 
     def _get_entity_path(self, key):
-        """collection -> collections. All other entities correspond to the key."""
+        """
+        collection -> collections. All other entities correspond to the key.
+        """
         try:
             return settings_query_params[key]["entity_path"]
         except KeyError:
             return key
 
     def _get_enitity_url(self, key, value):
-        """Get the link for a facet."""
+        """
+        Get the link for a facet.
+        """
         resolved = self._get_inner_dict(key, value)
         definition = settings_query_params[key]
 
@@ -142,7 +155,8 @@ class NormalizeFacets:
         return None
 
     def get_checked_facets(self):
-        """get a list of facets that are checked (meaning that they are working filters).
+        """
+        Get a list of facets that are checked (meaning that they are working filters).
         Add a remove_query key to the facet, which is the query string without the facet.
         """
         facets_checked = self.facets_checked
@@ -176,9 +190,24 @@ class NormalizeFacets:
         return sorted_facets_checked
 
     def get_transformed_facets(self):
-        """Alter the facets content with the count from the search facets. Also add
-        a checked key to the facets content if the facet is checked in the query_params."""
+        """
+        Alter the facets content with the count from the search facets. Also add
+        a checked key to the facets content if the facet is checked in the query_params.
+        """
         for key, value in settings_facets.items():
             self._transform_facets(key, value["content"])
 
         return self.facets
+
+
+def _str_to_date(date: str):
+    """convert date string to date string with correct format
+    e.g. 20221231 to 2022-12-31
+    """
+    if not date:
+        return None
+
+    if len(date) == 8:
+        return f"{date[:4]}-{date[4:6]}-{date[6:]}"
+
+    return date

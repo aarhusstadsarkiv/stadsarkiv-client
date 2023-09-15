@@ -1,3 +1,7 @@
+"""
+Main application file for the stadsarkiv_client application.
+"""
+
 from starlette.applications import Starlette
 from stadsarkiv_client.routes import routes
 from stadsarkiv_client.core.middleware import session_middleware, session_autoload_middleware
