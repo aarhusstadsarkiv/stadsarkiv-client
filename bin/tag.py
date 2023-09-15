@@ -1,13 +1,28 @@
 #!/usr/bin/env python3
 
-# get first argument
+"""
+This script is used to bump the version of the package.
+It will change the version in the pyproject.toml file,
+the __init__.py file and the README.md file.
+
+It will exit if there are uncommited changes to prevent
+accidental commits.
+
+Usage:
+
+    ./bin/tag.py <version>
+
+"""
+
 import sys
 import os
 
+# get first argument as version
 try:
     version = sys.argv[1]
 except IndexError:
     print("No version provided")
+    print("Usage: ./bin/tag.py <version>")
     sys.exit(1)
 
 
@@ -38,25 +53,19 @@ def change_init(version):
 # change in README. Search for this string below <!-- LATEST-VERSION-START -->
 # and change the line to \tpip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}
 def change_readme(version):
-    write_ext_line = False
+    dynamic_next_line = False
     with open("README.md", "r") as f:
         lines = f.readlines()
     with open("README.md", "w") as f:
         for line in lines:
-            if write_ext_line:
+            if dynamic_next_line:
                 f.write(f"\tpip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}\n")
-                write_ext_line = False
+                dynamic_next_line = False
             elif line.startswith("<!-- LATEST-VERSION-START -->"):
                 f.write(line)
-                write_ext_line = True
+                dynamic_next_line = True
             else:
                 f.write(line)
-
-
-# git add, commit and push
-# os.system("git add .")
-# os.system(f'git commit -m "bump version to {version}"')
-# os.system("git push")
 
 
 # check if something needs to be commited
