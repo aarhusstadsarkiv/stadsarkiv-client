@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - main  # Change this to your branch name if needed
+    paths-ignore:
+      - '*.md'
+      - 'docs/*'
+      - 'example-config/*'
+      - '**/*.draft.md'
+      - 'example-schemas/*'
 
 jobs:
   test:
