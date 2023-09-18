@@ -134,6 +134,6 @@ def _get_record_meta_title(record_dict: dict):
     if _is_sejrs_sedler(record_dict):
         if record_dict.get("summary"):
             title = record_dict["summary"][:60]
-            title = f"[{title}... | AarhusArkivet ]"
+            title = hooks.get_record_meta_title(title)
 
     return title
