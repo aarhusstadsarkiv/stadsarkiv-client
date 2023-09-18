@@ -10,6 +10,16 @@ Tillad flere typer af facets. Tjek teaterarkivets factets.
 
 Kan være svært at ramme små links.
 
+## Tekst til PDF
+
+Tilføj: "Klik på billedet for at hente pdf-dokumentet."
+
+Ændring til records
+
+## Border 
+
+Tilføj til record representation
+
 ## Ændr logging_defs 
 
 ~~Ændr til logging_handlers.py~~
