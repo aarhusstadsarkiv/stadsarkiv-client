@@ -1,12 +1,20 @@
 # v1.1.14
 
+# TODO 
+
+Fjern pluggy. Simplificer. 
+
 # Bedre menu på mindre devices. 
 
 Kan være svært at ramme små links.
 
+# Ændr logging_defs 
+
+Ændr til logging_handlers.py
+
 # Dokumenation
 
-Lidt dokumentation på alle filer. 
+~~Lidt dokumentation på alle filer.~~ 
 
 ## Hook ind i _get_title
 
