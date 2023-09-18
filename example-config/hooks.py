@@ -11,22 +11,15 @@ class Hooks:
     def alter_search_query(self, query_params: list) -> list:
         """
         Alter the search query params. Before the search is executed.
+        This example removes all curators from the query params and adds Aarhus Teater as curator (4).
         """
-        # log.debug("alter_search_query")
-        # log.debug(query_params)
-        # iterate list of dicts and remove any "curector" that is not equal to: ("curator", "4")
 
-        # query_params = [(key, value) for key, value in query_params if key != "curator" or value != "4"]
-        # remove any "curator" element from list of tuples
-        query_params = [(key, value) for key, value in query_params if key != "curator"]
-
-        # add ("curator", "4") to list of tuples
+        # Remove all curators from the query params
+        query_params = [(key, value) for key, value in query_params if key != "curators"]
         query_params.append(("curators", "4"))
 
-        log.debug(query_params)
         return query_params
-        # pass
 
-    def get_record_title(self, title: str) -> str:
+    def get_record_meta_title(self, title: str) -> str:
         title = f"{title} | AarhusArkivet"
         return title
