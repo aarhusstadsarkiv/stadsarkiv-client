@@ -2,6 +2,9 @@
 
 # TODO 
 
+## Facets 
+
+Tillad flere typer af facets. Tjek teaterarkivets factets. 
 
 ## Bedre menu på mindre devices. 
 
@@ -9,7 +12,7 @@ Kan være svært at ramme små links.
 
 ## Ændr logging_defs 
 
-Ændr til logging_handlers.py
+~~Ændr til logging_handlers.py~~
 
 ## Pluggy
 
