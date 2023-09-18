@@ -14,8 +14,10 @@ from stadsarkiv_client.records.normalize_facets import NormalizeFacets
 from stadsarkiv_client.core import query
 from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
 from stadsarkiv_client.settings_query_params import settings_query_params
+from stadsarkiv_client.core.hooks import get_hooks
 
 
+hooks = get_hooks()
 log = get_log()
 
 

@@ -8,13 +8,11 @@ from typing import Any
 from starlette.requests import Request
 from stadsarkiv_client.core.flash import get_messages
 from stadsarkiv_client.core import dynamic_settings
-from stadsarkiv_client.hooks.manager import get_plugin_manager
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.logging import get_log
 
 
 log = get_log()
-pm = get_plugin_manager()
 
 
 async def get_context(request: Request, context_values: dict = {}) -> dict:
@@ -30,7 +28,7 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
 
     context.update(context_values)
 
-    pm.hook.alter_context(context=context)  # type: ignore
+    # pm.hook.alter_context(context=context)  # type: ignore
 
     return context
 

@@ -5,7 +5,9 @@ Some query utils that can be used to get query params from request and return it
 from starlette.requests import Request
 from stadsarkiv_client.core.logging import get_log
 from urllib.parse import quote_plus
+from stadsarkiv_client.core.hooks import get_hooks
 
+hooks = get_hooks()
 log = get_log()
 
 
@@ -16,6 +18,9 @@ def get_list(request: Request, remove_keys: list = [], add_list_items: list = []
     items = query_params.multi_items()
     items = [(key, value) for key, value in items if key not in remove_keys]
     items += add_list_items
+
+    items = hooks.alter_search_query(query_params=items)
+
     return items
 
 

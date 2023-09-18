@@ -5,9 +5,11 @@ Get some usefull meta data for a record
 from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
 from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core.hooks import get_hooks
 import typing
 
 
+hooks = get_hooks()
 log = get_log()
 
 
@@ -127,7 +129,8 @@ def _set_representations(meta_data: dict, record: dict):
 
 def _get_meta_title(record_dict: dict):
     title = _get_record_title(record_dict)
-    title = f"{title} | AarhusArkivet"
+    title = hooks.get_record_title(title)
+
     if _is_sejrs_sedler(record_dict):
         if record_dict.get("summary"):
             title = record_dict["summary"][:60]
