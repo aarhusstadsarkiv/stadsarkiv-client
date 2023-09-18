@@ -16,7 +16,7 @@ class Hooks:
         """
         return query_params
 
-    def get_record_title(self, title: str) -> str:
+    def get_record_meta_title(self, title: str) -> str:
         """
         Alter the html title tag for a record page.
         """

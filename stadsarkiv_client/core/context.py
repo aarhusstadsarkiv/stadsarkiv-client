@@ -1,7 +1,7 @@
 """
 Contains a single function (get_context)
 that returns a dict with basic context values for the templates.
-Hooks: You able to hook into the get_context function and add your own context values.
+Hooks: You are able to hook into the get_context function and add your own context values.
 """
 
 from typing import Any
@@ -10,8 +10,10 @@ from stadsarkiv_client.core.flash import get_messages
 from stadsarkiv_client.core import dynamic_settings
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core.hooks import get_hooks
 
 
+hooks = get_hooks()
 log = get_log()
 
 
@@ -27,8 +29,7 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
     }
 
     context.update(context_values)
-
-    # pm.hook.alter_context(context=context)  # type: ignore
+    hooks.alter_context(context=context)
 
     return context
 

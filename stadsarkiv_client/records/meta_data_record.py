@@ -38,7 +38,7 @@ def get_record_meta_data(request: Request, record: dict) -> dict[str, typing.Any
 
     meta_data["allowed_by_ip"] = _is_allowed_by_ip(request)
     meta_data["title"] = _get_record_title(record)
-    meta_data["meta_title"] = _get_meta_title(record)
+    meta_data["meta_title"] = _get_record_meta_title(record)
     meta_data["icon"] = _get_icon(record)
 
     meta_data["copyright_id"] = record["copyright_status"].get("id")
@@ -127,9 +127,9 @@ def _set_representations(meta_data: dict, record: dict):
     return meta_data
 
 
-def _get_meta_title(record_dict: dict):
+def _get_record_meta_title(record_dict: dict):
     title = _get_record_title(record_dict)
-    title = hooks.get_record_title(title)
+    title = hooks.get_record_meta_title(title)
 
     if _is_sejrs_sedler(record_dict):
         if record_dict.get("summary"):
