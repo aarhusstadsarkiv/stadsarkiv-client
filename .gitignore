@@ -164,3 +164,4 @@ generate_client/openaws-client
 cache
 gunicorn_process.pid
 settings.py
+hooks.py
