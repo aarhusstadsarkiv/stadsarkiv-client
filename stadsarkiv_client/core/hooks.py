@@ -4,6 +4,7 @@ from stadsarkiv_client.core.hooks_spec import Hooks
 log = get_log()
 hooks = Hooks()
 
+hooks_local = None
 try:
     from hooks import Hooks as HooksLocal  # type: ignore
 
@@ -11,7 +12,6 @@ try:
     log.debug("Loaded local hooks: hooks.py")
 except ImportError:
     log.debug("Local hooks NOT loaded: hooks.py")
-    hooks_local = None
 
 
 def get_hooks():
