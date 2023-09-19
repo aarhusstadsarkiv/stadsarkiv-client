@@ -109,7 +109,9 @@
     {{ parse_representation_block(record_altered) }}
 
     <div class="record-main">
+        {% if record_altered["title"] %}
         <div class="record-title">{{ record_altered["title"] }}</div>
+        {% endif %}
         {% for key in block_keys %}
         {% if key in record_and_types %}
         {{ common_fields.parse_block_section(record_and_types[key]) }}
