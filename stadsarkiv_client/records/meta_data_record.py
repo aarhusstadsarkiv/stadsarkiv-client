@@ -4,7 +4,6 @@ Get some usefull meta data for a record
 
 from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
-from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.hooks import get_hooks
 import typing
 
@@ -76,11 +75,37 @@ def _get_icon(record: dict):
     return icon
 
 
+# def _is_sejrs_sedler(record_dict: dict):
+#     if "collection" not in record_dict:
+#         return False
+
+#     if record_dict["collection"].get("id") == 1:
+#         return True
+
+#     return False
+
+
 def _is_sejrs_sedler(record_dict: dict):
-    if "collection" not in record_dict:
+    # try and get first list item in curators
+    try:
+        collection = record_dict["collection"][0]
+    except KeyError:
         return False
 
-    if record_dict["collection"].get("id") == 1:
+    if collection["id"] == 1:
+        return True
+
+    return False
+
+
+def _is_teater_arkiv(record_dict: dict):
+    # try and get first list item in curators
+    try:
+        curator = record_dict["curators"][0]
+    except KeyError:
+        return False
+
+    if curator["id"] == 4:
         return True
 
     return False
@@ -97,13 +122,19 @@ def _is_downloadable(metadata: dict) -> bool:
 
 
 def _get_record_title(record_dict: dict):
-    title = translate("No title")
+    title = ""
     record_title = record_dict.get("title")
     if not record_title:
         record_title = record_dict.get("heading")
 
     if record_title:
         title = record_title
+
+    if _is_teater_arkiv(record_dict):
+        if record_dict.get("summary"):
+            title = record_dict["summary"]
+
+    # title = hooks.get_record_title(title=title, record_dict=record_dict)
 
     return title
 
@@ -128,12 +159,10 @@ def _set_representations(meta_data: dict, record: dict):
 
 
 def _get_record_meta_title(record_dict: dict):
-    title = _get_record_title(record_dict)
-    title = hooks.get_record_meta_title(title)
+    meta_title = _get_record_title(record_dict)
 
     if _is_sejrs_sedler(record_dict):
         if record_dict.get("summary"):
-            title = record_dict["summary"][:60]
-            title = hooks.get_record_meta_title(title)
+            meta_title = f"[{record_dict['summary'][:60]} ... ]"
 
-    return title
+    return meta_title
