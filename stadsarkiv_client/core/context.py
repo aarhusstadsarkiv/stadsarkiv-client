@@ -60,7 +60,7 @@ async def _get_main_menu(request: Request):
 
 def _get_title(request: Request) -> str:
     pages: Any = []
-    title = "No title"
+    title = ""
     if "pages" in dynamic_settings.settings:
         pages = dynamic_settings.settings["pages"]
 
