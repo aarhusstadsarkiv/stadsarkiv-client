@@ -19,8 +19,6 @@ def get_list(request: Request, remove_keys: list = [], add_list_items: list = []
     items = [(key, value) for key, value in items if key not in remove_keys]
     items += add_list_items
 
-    items = hooks.alter_search_query(query_params=items)
-
     return items
 
 
