@@ -1,8 +1,8 @@
 from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.core.hooks_spec import Hooks
+from stadsarkiv_client.core.hooks_spec import HooksSpec
 
 log = get_log()
-hooks = Hooks()
+hooks = HooksSpec()
 
 hooks_local = None
 try:
