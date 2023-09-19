@@ -64,6 +64,7 @@ da = {
     "Record could not be read.": "Entiteten kunne ikke læses.",
     "Records could not be read.": "Entiteter kunne ikke læses.",
     "Register": "Opret",
+    "Register new user": "Opret bruger",
     "Register to get access to speciel functions": "Opret bruger for at få adgang til specielle funktioner",
     "Relavance": "Relevans",
     "Remember me": "Husk login på denne computer",

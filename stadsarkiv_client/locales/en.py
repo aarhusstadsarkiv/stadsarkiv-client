@@ -71,6 +71,7 @@ en = {
     "Record could not be read.": "Record could not be read.",
     "Records could not be read.": "Records could not be read.",
     "Register": "Register",
+    "Register new user": "Register new user",
     "Register to get access to speciel functions": "Register to get access to speciel functions",
     "Relavance": "Relavance",
     "Remember me": "Remember me",
