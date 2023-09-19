@@ -80,7 +80,6 @@ async def _get_events_view(request: Request):
     event["id_real"] = id
     event = resource_alter.events_alter(event)
 
-    log.debug(event)
     context_variables = {
         "title": title,
         "event": event,

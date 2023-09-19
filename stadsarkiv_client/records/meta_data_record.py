@@ -75,42 +75,6 @@ def _get_icon(record: dict):
     return icon
 
 
-# def _is_sejrs_sedler(record_dict: dict):
-#     if "collection" not in record_dict:
-#         return False
-
-#     if record_dict["collection"].get("id") == 1:
-#         return True
-
-#     return False
-
-
-def _is_sejrs_sedler(record_dict: dict):
-    # try and get first list item in curators
-    try:
-        collection = record_dict["collection"][0]
-    except KeyError:
-        return False
-
-    if collection["id"] == 1:
-        return True
-
-    return False
-
-
-def _is_teater_arkiv(record_dict: dict):
-    # try and get first list item in curators
-    try:
-        curator = record_dict["curators"][0]
-    except KeyError:
-        return False
-
-    if curator["id"] == 4:
-        return True
-
-    return False
-
-
 def _is_downloadable(metadata: dict) -> bool:
     return (
         metadata.get("representations", False)
@@ -130,12 +94,6 @@ def _get_record_title(record_dict: dict):
     if record_title:
         title = record_title
 
-    if _is_teater_arkiv(record_dict):
-        if record_dict.get("summary"):
-            title = record_dict["summary"]
-
-    # title = hooks.get_record_title(title=title, record_dict=record_dict)
-
     return title
 
 
@@ -152,17 +110,10 @@ def _set_representations(meta_data: dict, record: dict):
     if meta_data["availability_id"] == 4 or meta_data["allowed_by_ip"]:
         meta_data["is_representations_online"] = True
 
-    if _is_sejrs_sedler(record):
-        meta_data["record_type"] = "sejrs_sedler"
-
     return meta_data
 
 
 def _get_record_meta_title(record_dict: dict):
     meta_title = _get_record_title(record_dict)
-
-    if _is_sejrs_sedler(record_dict):
-        if record_dict.get("summary"):
-            meta_title = f"[{record_dict['summary'][:60]} ... ]"
 
     return meta_title

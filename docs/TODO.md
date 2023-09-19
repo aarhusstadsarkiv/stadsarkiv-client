@@ -18,7 +18,7 @@ Tilføj: "Klik på billedet for at hente pdf-dokumentet."
 
 ## Border 
 
-Tilføj til record representation
+~~Tilføj til record representation~~
 
 ## Ændr logging_defs 
 

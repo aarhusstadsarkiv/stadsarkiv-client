@@ -163,9 +163,9 @@ def _normalize_hierarchy(collection_id: int, tags_list: list):
 def _normalize_collection_tags(record: dict):
     """
     noramlize collection tags
-    """
 
-    log.debug(_normalize_hierarchy(1, ["a", "a/b", "c", "c/d", "c/d/e"]))
+    """
+    # log.debug(_normalize_hierarchy(1, ["a", "a/b", "c", "c/d", "c/d/e"]))
 
     collection_tags = []
 
