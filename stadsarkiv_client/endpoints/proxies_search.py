@@ -146,16 +146,22 @@ async def get_records_search(request: Request):
     # If not set they may be read from cookies
     # last resort is default values
     query_params = query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
-    query_str = query.get_str(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
-    search_result = await api.proxies_records(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
 
-    # resolve facets
+    # Alter query params before search
+    query_params = hooks.alter_query_params_before_search(query_params=query_params)
+    query_str = query.get_str_from_list(query_params)
+    search_result = await api.proxies_records(request, query_str)
+
+    # Resolve facets
     result_params = _get_resolve_records(search_result["result"])
     resolve_query_str = _get_resolve_query_str(query_params, result_params)
     facets_resolved = await api.proxies_resolve(query_str=resolve_query_str)
     search_result["facets_resolved"] = facets_resolved
     search_result = _normalize_search(search_result)
 
+    # Alter query params after search
+    query_params = hooks.alter_query_params_after_search(query_params=query_params)
+    query_str = query.get_str_from_list(query_params)
     normalized_facets = NormalizeFacets(
         request=request, records=search_result, query_params=query_params, facets_resolved=facets_resolved, query_str=query_str
     )
@@ -199,6 +205,9 @@ async def get_records_search(request: Request):
 
 async def get_records_search_json(request: Request):
     add_list_items = _get_default_query_params(request)
-    records = await api.proxies_records(request, add_list_items=add_list_items)
-    record_json = json.dumps(records, indent=4, ensure_ascii=False)
+    query_params = query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
+    query_params = hooks.alter_query_params_before_search(query_params=query_params)
+    query_str = query.get_str_from_list(query_params)
+    search_result = await api.proxies_records(request, query_str)
+    record_json = json.dumps(search_result, indent=4, ensure_ascii=False)
     return PlainTextResponse(record_json)
