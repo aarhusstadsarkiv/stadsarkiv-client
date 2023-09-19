@@ -22,9 +22,10 @@ log = get_log()
 
 
 def _get_resource_types() -> list:
+    """
+    Get all resource types settings
+    """
     resource_types = []
-
-    # Get all resource types
     for key, value in settings_query_params.items():
         if value.get("entity", False):
             resource_types.append(key)
@@ -56,6 +57,9 @@ def _get_search_pagination_data(request: Request, size: int, total: int):
 
 
 def _get_dates(request: Request):
+    """
+    Get dates from request. Used in date search form
+    """
     dates = {}
     dates_from = request.query_params.get("date_from", None)
     dates_to = request.query_params.get("date_to", None)
@@ -71,15 +75,20 @@ def _get_dates(request: Request):
 
 
 def _get_size_sort(request: Request):
-    """Get size and sort from request. If not request, get from cookies. Or default"""
+    """
+    Get size and sort from request. If not set in request, then get from cookies.
+    If not set in cookie use some default values
+    """
     size = request.query_params.get("size", request.cookies.get("size", "20"))
     sort = request.query_params.get("sort", request.cookies.get("sort", "date_from"))
     return size, sort
 
 
 def _get_default_query_params(request: Request):
-    """Get default query_params for records search as list of tuples"""
-
+    """
+    Get default query_params for records search as list of tuples:
+    size, sort, direction
+    """
     size, sort = _get_size_sort(request)
     add_list_items = [("size", size), ("sort", sort)]
 
@@ -97,7 +106,11 @@ def _get_default_query_params(request: Request):
 
 
 def _normalize_search(records: dict):
-    """Normalize search records"""
+    """
+    Normalize date
+    Get collection and content_type from facets_resolved
+    These are displayed in the search result
+    """
     facets_resolved = records["facets_resolved"]
 
     for record in records["result"]:
@@ -126,7 +139,10 @@ def _get_resolve_query_str(query_params: list, record_params: list):
 
 
 def _get_resolve_records(records: list):
-    """resolve collection and content_types from records"""
+    """
+    resolve collection and content_types from records. Return as list of tuples
+    These are used to resolve content_types and collections present in the search result
+    """
     resolve_records = []
     for record in records:
         if "collection_id" in record and record["collection_id"]:
@@ -134,6 +150,7 @@ def _get_resolve_records(records: list):
         if "content_types" in record:
             type = record["content_types"][-1]
             resolve_records.append(("content_types", type))
+
     return resolve_records
 
 
@@ -145,17 +162,26 @@ async def get_records_search(request: Request):
     # size, sort, direction are read from query params
     # If not set they may be read from cookies
     # last resort is default values
-    query_params = query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
+    query_params = query.get_list(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
 
     # Alter query params before search
     query_params = hooks.alter_query_params_before_search(query_params=query_params)
+
+    # Call api
     query_str = query.get_str_from_list(query_params)
     search_result = await api.proxies_records(request, query_str)
 
-    # Resolve facets
+    # Resolve search records for the result to be displayed
     result_params = _get_resolve_records(search_result["result"])
+
+    # Get query string to resolve both query params, e.g. 'people', 'places', 'location',
+    # and search results.
     resolve_query_str = _get_resolve_query_str(query_params, result_params)
+
+    # Call endpoint to resolve
     facets_resolved = await api.proxies_resolve(query_str=resolve_query_str)
+
+    # Attach resolved facets to search result
     search_result["facets_resolved"] = facets_resolved
     search_result = _normalize_search(search_result)
 
