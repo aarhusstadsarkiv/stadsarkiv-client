@@ -335,11 +335,8 @@ async def proxies_record_get(request: Request) -> typing.Any:
     return await proxies_record_get_by_id(record_id)
 
 
-async def proxies_records(request: Request, remove_keys=[], add_list_items=[]) -> typing.Any:
-    query_str = query.get_str(request, remove_keys=remove_keys, add_list_items=add_list_items)
+async def proxies_records(request: Request, query_str: str) -> typing.Any:
     query_str = quote(query_str)
-
-    log.debug(query_str)
 
     async with httpx.AsyncClient() as client:
         url = base_url + "/proxy/records?params=" + query_str
