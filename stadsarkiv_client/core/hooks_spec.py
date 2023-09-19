@@ -10,11 +10,11 @@ class HooksSpec:
         """
         pass
 
-    def alter_search_query(self, query_params: list) -> list:
+    def alter_record(self, record_dict: dict) -> None:
         """
-        Alter the search query params. Before the search is executed.
+        Alter the record just recieved from the api.
         """
-        return query_params
+        pass
 
     def alter_query_params_before_search(self, query_params: list) -> list:
         """
