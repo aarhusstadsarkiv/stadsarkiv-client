@@ -61,7 +61,7 @@ async def post_logout(request: Request):
 
 
 async def get_register(request: Request):
-    context_values = {"title": translate("Register")}
+    context_values = {"title": translate("Register new user")}
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse("auth/register.html", context)
 
