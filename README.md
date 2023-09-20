@@ -18,6 +18,11 @@ Install requirements:
     # or with poetry
     poetry install
 
+    # You may also need to install danish language packs
+    sudo apt-get install language-pack-da
+    sudo locale-gen da_DK.UTF-8
+
+
 ### Run for development
 
 Run dev server:
