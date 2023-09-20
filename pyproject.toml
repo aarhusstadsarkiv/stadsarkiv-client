@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "stadsarkiv-client"
-version = "v1.1.24"
+version = "v1.1.25"
 description = "A generic starlette client for our Fastapi-webservice"
 authors = ["Aarhus City Archive <stadsarkiv@aarhus.dk>"]
 readme = "README.md"
