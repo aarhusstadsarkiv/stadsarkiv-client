@@ -27,14 +27,14 @@ class Hooks(HooksSpec):
 
     def after_search(self, query_params: list) -> list:
         """
-        Alter the search query params. Before the search is executed.
+        Alter the search query params. After the search is executed.
         """
         query_params = [(key, value) for key, value in query_params if key != "curators"]
         return query_params
 
     def after_record(self, record: dict) -> dict:
         """
-        Alter the record dictionary.
+        Alter the record dictionary after the api call
         """
         if is_collection(record, 1):
 

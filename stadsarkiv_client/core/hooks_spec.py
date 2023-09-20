@@ -12,7 +12,7 @@ class HooksSpec:
 
     def after_record(self, record: dict) -> dict:
         """
-        Alter the record just recieved from the api.
+        Alter the record dictionary after the api call
         """
         return record
 
