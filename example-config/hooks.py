@@ -7,13 +7,13 @@ log = get_log()
 
 
 class Hooks(HooksSpec):
-    def alter_context(self, context: dict) -> None:
+    def before_template(self, context: dict) -> dict:
         """
         Alter the context dictionary. Before the context is returned to the template.
         """
-        pass
+        return context
 
-    def alter_query_params_before_search(self, query_params: list) -> list:
+    def before_search(self, query_params: list) -> list:
         """
         Alter the search query params. Before the search is executed.
         This example removes all curators from the query params and adds Aarhus Teater as curator (4).
@@ -25,40 +25,27 @@ class Hooks(HooksSpec):
 
         return query_params
 
-    def alter_query_params_after_search(self, query_params: list) -> list:
+    def after_search(self, query_params: list) -> list:
         """
         Alter the search query params. Before the search is executed.
         """
         query_params = [(key, value) for key, value in query_params if key != "curators"]
         return query_params
 
-    def alter_record(self, record_dict: dict) -> None:
+    def after_record(self, record: dict) -> dict:
         """
-        Alter the record dictionary. Before the record is returned to the template.
+        Alter the record dictionary.
         """
-        if is_collection(record_dict, 1):
+        if is_collection(record, 1):
 
-            meta_title = f"[{record_dict['summary'][:60]} ... ]"
-            record_dict["meta_title"] = meta_title
-            record_dict["record_type"] = "sejrs_sedler"
+            meta_title = f"[{record['summary'][:60]} ... ]"
+            record["meta_title"] = meta_title
+            record["record_type"] = "sejrs_sedler"
 
-        if is_curator(record_dict, 4):
-            if record_dict.get("summary"):
-                title = record_dict["summary"]
-                record_dict["title"] = f"[{title}]"
-                record_dict["meta_title"] = f"[{title}"
+        if is_curator(record, 4):
+            if record.get("summary"):
+                title = record["summary"]
+                record["title"] = f"[{title}]"
+                record["meta_title"] = f"[{title}"
 
-    def get_record_title(self, title: str, record_dict: dict) -> str:
-        """
-        Alter the record title. Before the title is returned to the template.
-        """
-        return title
-
-    # def get_record_meta_title(self, meta_title: str, record_dict: dict) -> str:
-
-    #     if is_collection(record_dict, 1):
-    #         if record_dict.get("summary"):
-    #             meta_title = f"[{record_dict['summary'][:60]} ... ]"
-
-    #     meta_title = f"{meta_title} | AarhusArkivet"
-    #     return meta_title
+        return record

@@ -111,7 +111,7 @@ async def get_record_view(request: Request):
     metadata = get_record_meta_data(request, record)
     record = {**record, **metadata}
 
-    hooks.alter_record(record)
+    record = hooks.after_record(record)
 
     record_altered = record_alter.record_alter(request, record)
     record_and_types = record_alter.get_record_and_types(record_altered)
@@ -139,7 +139,7 @@ async def get_record_view_json(request: Request):
         metadata = get_record_meta_data(request, record)
         record_altered = {**record, **metadata}
 
-        hooks.alter_record(record_altered)
+        record = hooks.after_record(record_altered)
 
         record_altered = record_alter.record_alter(request, record_altered)
         record_and_types = record_alter.get_record_and_types(record_altered)

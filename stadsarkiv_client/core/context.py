@@ -29,7 +29,7 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
     }
 
     context.update(context_values)
-    hooks.alter_context(context=context)
+    context = hooks.before_template(context=context)
 
     return context
 
