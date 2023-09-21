@@ -53,6 +53,17 @@ def to_json(variable):
     return json.dumps(variable, indent=4, ensure_ascii=False)
 
 
+def pre(value):
+    """
+    Output variable as JSON inside <pre> tags.
+
+    Usage:
+        {{ pre(top_level_value)|safe }}
+
+    """
+    return f"<pre>{to_json(value)}</pre>"
+
+
 def paragraphs(value):
     """Normalize newlines, then wrap content split by newlines in <p></p>."""
     # Normalize newlines
@@ -96,5 +107,6 @@ templates.env.globals.update(translate=translate)
 templates.env.globals.update(get_setting=get_setting)
 templates.env.globals.update(format_date=format_date)
 templates.env.globals.update(to_json=to_json)
+templates.env.globals.update(pre=pre)
 templates.env.globals.update(paragraphs=paragraphs)
 templates.env.globals.update(key_exist_in_dict=key_exist_in_dict)
