@@ -63,12 +63,7 @@ async def auth_register_post(request: Request):
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json={"email": email, "password": password}, headers=headers)
 
-        if response.is_success:
-            json_response = response.json()
-            access_token = json_response["access_token"]
-            token_type = json_response["token_type"]
-            user.set_user_jwt(request, access_token, token_type)
-        else:
+        if not response.is_success:
             json_response = response.json()
             raise_openaws_exception(response.status_code, json_response)
 
