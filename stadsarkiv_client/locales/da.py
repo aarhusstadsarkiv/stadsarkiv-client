@@ -7,6 +7,7 @@ da = {
     "An email has been sent to you with instructions on how to reset your password.": "En mail er blevet sendt til dig med instruktioner om hvordan du nulstiller dit password.",
     "Are you sure": "Er du sikker på at du vil logge ud?",
     "Change your password": "Ændr dit password",
+    "Click in order to listen to the audio.": "Klik for at lytte til lydfilen.",
     "Click on the image to open the PDF document.": "Klik på billedet for at hente pdf-dokumentet.",
     "Create Schema": "Opret skema",
     "Create entity": "Opret entitet",

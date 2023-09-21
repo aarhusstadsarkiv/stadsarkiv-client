@@ -8,6 +8,8 @@ en = {
     "An email has been sent to you with instructions on how to reset your password.": "An email has been sent to you with instructions on how to reset your password.",
     "Are you sure": "Are you sure",
     "Change your password": "Change your password",
+    "Click in order to listen to the audio": "Click in order to listen to the audio",
+    "Click in order to listen to the audio.": "Click in order to listen to the audio.",
     "Click on the image to open the PDF document.": "Click on the image to open the PDF document.",
     "Create Schema": "Create Schema",
     "Create entity": "Create entity",
