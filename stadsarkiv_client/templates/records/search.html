@@ -51,38 +51,70 @@
 </ul>
 {% endmacro %}
 
+{% macro parse_resource_links(top_level_value) %}
+{% set content = top_level_value['content'] %}
+{% set resource_type = top_level_value["resource_type"] %}
+<ul>
+    {% for facet in content %}
+    <li>
+        <details data-id="{{facet['id'] }}">
+            <summary class="facets-clickable">
+                {{ facet['label'] }}
+            </summary>
+            <ul>
+                {% for link in facet['children'] %}
+                <li>
+                    <a href="/{{ resource_type }}/{{link['id']}}">{{ link['label'] }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </details>
+    </li>
+    {% endfor %}
+</ul>
+{% endmacro %}
+
 {% macro parse_top_level_facets(facets, facets_class, date_form_class ) %}
 <div class="{{ facets_class }}">
     <ul>
-        
+
         {% for top_level_key, top_level_value in facets.items() %}
         {% set type = top_level_value.get('type', 'default') %}
-        
-            {% if type == 'default' %}
-                <li>
-                    <details data-id="{{ top_level_key }}">
-                        <summary class="facets-clickable">
-                            {{ top_level_value['label'] }}
-                        </summary>
-                        {{ parse_facets(top_level_key, top_level_value['content']) }}
-                    </details>
-                </li>
-            {% endif %}
 
-            {% if type == 'resource_links' %}
-            <pre>{{ to_json(top_level_value['content']) }}</pre>
-            {% endif %}
-            
-            {% if type == 'date_form' %}
-            <li>
-                <details>
-                    <summary data-id="date_search" class="facets-clickable">
-                        {{ translate('Search date') }}
-                    </summary>
-                    {{ parse_date_form(date_form_class) }}
-                </details>
-            </li>
-            {% endif %}
+        {% if type == 'default' %}
+        <li>
+            <details data-id="{{ top_level_key }}">
+                <summary class="facets-clickable">
+                    {{ top_level_value['label'] }}
+                </summary>
+                {{ parse_facets(top_level_key, top_level_value['content']) }}
+            </details>
+        </li>
+        {% endif %}
+
+        {% if type == 'resource_links' %}
+        <li>
+            <details data-id="{{ top_level_key }}">
+                <summary class="facets-clickable">
+                    {{ top_level_value['label'] }}
+                </summary>
+                <ul>
+                    {{ parse_resource_links(top_level_value) }}
+                </ul>
+            </details>
+        </li>
+        {% endif %}
+
+        {% if type == 'date_form' %}
+        <li>
+            <details>
+                <summary data-id="date_search" class="facets-clickable">
+                    {{ translate('Search date') }}
+                </summary>
+                {{ parse_date_form(date_form_class) }}
+            </details>
+        </li>
+        {% endif %}
         {% endfor %}
 
     </ul>
@@ -217,7 +249,8 @@
         {% endif %}
         {% if current_page < total_pages %} <a href="{{ search_base_url }}?{{ query_str }}start={{ start + size }}">{{
             translate('Next')}}</a>
-            <a href="{{ search_base_url }}?{{ query_str }}start={{ (total_pages - 1) * size }}">{{ translate('Last page') }}</a>
+            <a href="{{ search_base_url }}?{{ query_str }}start={{ (total_pages - 1) * size }}">{{ translate('Last
+                page') }}</a>
             {% else %}
             <span class="disabled">{{ translate('Next') }}</span>
             <span class="disabled">{{ translate('Last page') }}</span>
@@ -261,10 +294,7 @@
                 {% if result.content_type %}
                 {{ parse_string('content_type', result.content_type) }}
                 {% endif %}
-                
-                
             </div>
-            
         </a>
     </div>
     {% endfor %}
