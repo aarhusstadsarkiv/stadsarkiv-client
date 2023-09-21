@@ -1,6 +1,6 @@
 # v1.1.24
 
-# TODO 
+# TODO
 
 ## Facets 
 
@@ -10,11 +10,15 @@ Tillad flere typer af facets. Tjek teaterarkivets factets.
 
 Kan være svært at ramme små links.
 
+# Fejl
+
+~~Fix post register.~~
+
 ## Tekst til PDF
 
-Tilføj: "Klik på billedet for at hente pdf-dokumentet."
+~~Tilføj: "Klik på billedet for at hente pdf-dokumentet."
 
-Ændring til records
+Ændring til records~~
 
 ## Border 
 
