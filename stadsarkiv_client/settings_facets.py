@@ -13,6 +13,7 @@ settings_facets: dict[str, typing.Any] = {
         "label": "Materialetype",
         "multiple": True,
         "hierarchical": True,
+        "type": "default",
         "content": [
             {"id": "99", "label": "Andet materiale"},
             {
@@ -767,5 +768,10 @@ settings_facets: dict[str, typing.Any] = {
                 "label": "Alle rettigheder forbeholdes",
             },
         ],
+    },
+    "dates": {
+        "label": "Datering",
+        "type": "date_form",
+        "content": [],
     },
 }
