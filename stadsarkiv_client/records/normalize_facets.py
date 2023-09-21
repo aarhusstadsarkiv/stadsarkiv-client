@@ -195,7 +195,8 @@ class NormalizeFacets:
         a checked key to the facets content if the facet is checked in the query_params.
         """
         for key, value in settings_facets.items():
-            self._transform_facets(key, value["content"])
+            if value["type"] == "default":
+                self._transform_facets(key, value["content"])
 
         return self.facets
 
