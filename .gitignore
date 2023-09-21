@@ -165,3 +165,4 @@ cache
 gunicorn_process.pid
 settings.py
 hooks.py
+settings_facets.py
