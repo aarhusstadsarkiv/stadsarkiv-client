@@ -10,6 +10,12 @@ Tillad flere typer af facets. Tjek teaterarkivets factets.
 
 Kan være svært at ramme små links.
 
+## Tearter arkiv
+
+~~Hent relations fra API
+
+Se: https://github.com/aarhusstadsarkiv/teaterarkivet/blob/master/source/client.py#L243 ~~
+
 # Fejl
 
 ~~Fix post register.~~
