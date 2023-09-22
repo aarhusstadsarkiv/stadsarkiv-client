@@ -1,6 +1,8 @@
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.records.record_utils import is_curator, is_collection
+from stadsarkiv_client.core import api
+from stadsarkiv_client.core.relations import format_relations
 
 
 log = get_log()
@@ -13,24 +15,26 @@ class Hooks(HooksSpec):
         """
         return context
 
-    def before_search(self, query_params: list) -> list:
-        """
-        Alter the search query params. Before the search is executed.
-        This example removes all curators from the query params and adds Aarhus Teater as curator (4).
-        """
+    # def before_search(self, query_params: list) -> list:
+    #     """
+    #     Alter the search query params. Before the search is executed.
+    #     This example removes all curators from the query params and adds Aarhus Teater as curator (4).
+    #     """
 
-        # Remove all curators from the query params and add curator (4)
-        query_params = [(key, value) for key, value in query_params if key != "curators"]
-        query_params.append(("curators", "4"))
+    #     # Remove all curators from the query params and add curator (4)
+    #     query_params = [(key, value) for key, value in query_params if key != "curators"]
+    #     query_params.append(("curators", "4"))
 
-        return query_params
+    #     return query_params
 
-    def after_search(self, query_params: list) -> list:
-        """
-        Alter the search query params. After the search is executed.
-        """
-        query_params = [(key, value) for key, value in query_params if key != "curators"]
-        return query_params
+    # def after_search(self, query_params: list) -> list:
+    #     """
+    #     Alter the search query params. After the search is executed.
+    #     This example removes all curators from the query params.
+    #     This is done to avoid that the curator added in the before_search method is added to filters and search cookie.
+    #     """
+    #     query_params = [(key, value) for key, value in query_params if key != "curators"]
+    #     return query_params
 
     def after_record(self, record: dict) -> dict:
         """
@@ -49,3 +53,17 @@ class Hooks(HooksSpec):
                 record["meta_title"] = f"[{title}"
 
         return record
+
+    async def after_proxies_entity_by_type(self, type: str, json: dict) -> dict:
+        """
+        Alter the entity json is returned from the proxies api.
+        """
+
+        id = json["id"]
+
+        relations = await api.proxies_get_releations(id)
+        relations_formatted = format_relations(type, relations)
+
+        json["relations"] = relations_formatted
+
+        return json
