@@ -3,6 +3,7 @@ Format relations obtained from the proxies api.
 """
 
 from stadsarkiv_client.core.logging import get_log
+import re
 
 
 log = get_log()
@@ -27,26 +28,30 @@ def format_relations(type: str, relations: list):
         else:
             offstage.append(rel)
 
-    if type in ["people"]:
-        onstage_sorted = _sort_by_value(onstage, "rel_date_from", "2020-12-12")
-        offstage_sorted = _sort_by_value(offstage, "rel_date_from", "2020-12-12")
-    else:
-        onstage_sorted = _sort_by_value(onstage, "rel_label")
-        offstage_sorted = _sort_by_value(offstage, "rel_label")
-
     return [
-        {"label": "Sceneroller", "data": onstage_sorted},
-        {"label": "Produktionshold", "data": offstage_sorted},
+        {"label": "Sceneroller", "data": onstage},
+        {"label": "Produktionshold", "data": offstage},
     ]
 
 
-# def sort_data(input_data):
-#     sorted_data = []
-#     for section in input_data:
-#         sorted_section = dict(section)  # Create a copy of the section dictionary
-#         sorted_section["data"] = sorted(section["data"], key=lambda x: x["rel_label"])
-#         sorted_data.append(sorted_section)
-#     return sorted_data
+def sort_data(data: list, key: str):
+    def get_sort_key(item: dict):
+        if key == "rel_label":
+            return item.get("rel_label", "")
+        elif key == "display_label":
+            # Extract year from display_label, if present
+            match = re.search(r"(\d{4})", item.get("display_label", ""))
+            year = int(match.group(1)) if match else float("inf")  # Set to infinity if no year present
+            return (year, item.get("display_label", ""))
+        return ("",)  # Default return value
+
+    sorted_data = []
+    for section in data:
+        if "data" in section:
+            section["data"] = sorted(section["data"], key=get_sort_key)
+        sorted_data.append(section)
+
+    return sorted_data
 
 
 def _sort_by_value(list_of_dicts: list, key_name: str, default=None):
