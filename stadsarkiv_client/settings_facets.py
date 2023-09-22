@@ -11,8 +11,6 @@ log = get_log()
 settings_facets: dict[str, typing.Any] = {
     "content_types": {
         "label": "Materialetype",
-        "multiple": True,
-        "hierarchical": True,
         "type": "default",
         "content": [
             {"id": "99", "label": "Andet materiale"},
@@ -404,8 +402,7 @@ settings_facets: dict[str, typing.Any] = {
     },
     "subjects": {
         "label": "Emnekategori",
-        "multiple": True,
-        "hierarchical": True,
+        "type": "default",
         "content": [
             {
                 "id": "17",
@@ -729,8 +726,7 @@ settings_facets: dict[str, typing.Any] = {
     },
     "availability": {
         "label": "Tilgængelighed",
-        "multiple": False,
-        "hierarchical": False,
+        "type": "default",
         "content": [
             {
                 "id": "2",
@@ -748,8 +744,7 @@ settings_facets: dict[str, typing.Any] = {
     },
     "usability": {
         "label": "Brug af materialer",
-        "multiple": False,
-        "hierarchical": False,
+        "type": "default",
         "content": [
             {
                 "id": "1",
