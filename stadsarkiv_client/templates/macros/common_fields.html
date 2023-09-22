@@ -194,3 +194,32 @@
 </div> 
 {% endif %}
 {% endmacro %}
+
+{% macro parse_relation_section(type, title, data) %}
+{% if settings.update({'skip_translate': True}) %} {% endif %}
+<div class="record-section">
+    <div class="record-main">
+        <h3 class="record-header">{{ title }}</h3>
+        {% for item in data %}
+        {% set label = item['rel_label'] %}
+        {% set value = item['display_label'] %}
+        {% set href = "/" + type + "/" + item['id'] %}
+        {% set link = "<a href='%s'>%s</a>" | format(href, value) %}
+
+
+        {{ parse_string(label, link|safe) }}
+        {% endfor %}
+    </div>
+</div>
+{% if settings.update({'skip_translate': False}) %} {% endif %}
+{% endmacro %}
+
+{% macro parse_relations(type, resource) %}
+
+{% if resource.relations %}
+    {% set relations = resource.relations %}
+    {% for section in relations %}
+        {{ parse_relation_section(type, section['label'],section["data"]) }}
+    {% endfor %}
+{% endif %}
+{% endmacro %}

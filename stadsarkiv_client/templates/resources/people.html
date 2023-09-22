@@ -18,6 +18,8 @@
 {% set keys = ["sources_normalized"] %}
 {{ common_fields.parse_block_common('Kilder', keys, people) }}
 
+{{ common_fields.parse_relations('events', people) }}
+
 {% if get_setting('debug') %}
 <div class="record-section">
     <div class="record-main">

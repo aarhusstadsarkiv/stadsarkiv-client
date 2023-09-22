@@ -24,6 +24,8 @@
 {% set keys = ["ext_data"] %}
 {{ common_fields.parse_block_common('Udvidet data', keys, event) }}
 
+{{ common_fields.parse_relations('people', event) }}
+
 {% if get_setting('debug') %}
 <div class="record-section">
     <div class="record-main">
