@@ -2,6 +2,10 @@
 Default hooks specification.
 """
 
+from stadsarkiv_client.core.logging import get_log
+
+log = get_log()
+
 
 class HooksSpec:
     def before_template(self, context: dict) -> dict:
@@ -27,3 +31,9 @@ class HooksSpec:
         Alter the search query params. After the search is executed.
         """
         return query_params
+
+    async def after_proxies_entity_by_type(self, type: str, json: dict) -> dict:
+        """
+        Alter the json returned from the proxies api.
+        """
+        return json
