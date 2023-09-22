@@ -35,6 +35,11 @@ def format_relations(type: str, relations: list):
 
 
 def sort_data(data: list, key: str):
+    """
+    Sorting is a mess. Sometimes "rel_date_from" is present when sorting by a date
+    and sometime is is not. Best way to sort is to extract the year from the display_label.
+    """
+
     def get_sort_key(item: dict):
         if key == "rel_label":
             return item.get("rel_label", "")
