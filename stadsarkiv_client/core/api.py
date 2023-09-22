@@ -7,6 +7,7 @@ from stadsarkiv_client.core.api_error import OpenAwsException, validate_password
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import user
 from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core.hooks import get_hooks
 import json
 from stadsarkiv_client.core.dynamic_settings import settings
 import httpx
@@ -16,6 +17,7 @@ from urllib.parse import quote
 
 
 log = get_log()
+hooks = get_hooks()
 
 base_url = str(settings["api_base_url"])
 
@@ -357,20 +359,32 @@ async def proxies_collection(collection_id: str) -> typing.Any:
 
 async def proxies_entity_by_type(type: str, id: str) -> typing.Any:
     async with httpx.AsyncClient() as client:
-        # url = f"https://www.aarhusarkivet.dk/{type}/{id}?fmt=json"
         if type == "collections":
-            # url = f"https://openaws.appspot.com/collections/{id}"
-            url = f"https://www.aarhusarkivet.dk/{type}/{id}?fmt=json"
-
+            json = await proxies_collection(id)
+            return json
         else:
-            # url = f"https://openaws.appspot.com/entities/{id}"
-            url = f"https://www.aarhusarkivet.dk/{type}/{id}?fmt=json"
+            url = f"https://openaws.appspot.com/entities/{id}"
+            # url = f"https://www.aarhusarkivet.dk/{type}/{id}?fmt=json"
 
-        # url = f"https://www.aarhusarkivet.dk/{type}/{id}?fmt=json"
         response = await client.get(url)
 
         if response.is_success:
-            return response.json()
+            json = response.json()["result"]
+            json = await hooks.after_proxies_entity_by_type(type, json)
+            return json
+
+        else:
+            response.raise_for_status()
+
+
+async def proxies_get_releations(id: str) -> typing.Any:
+    async with httpx.AsyncClient() as client:
+        url = f"https://openaws.appspot.com/relations?f_id={id}"
+        log.debug(url)
+        response = await client.get(url)
+
+        if response.is_success:
+            return response.json()["result"]
         else:
             response.raise_for_status()
 
