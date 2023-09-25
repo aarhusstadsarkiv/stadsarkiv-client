@@ -64,6 +64,10 @@ function isValidDate(dateString) {
  */
 function onSearchDateEvent(dateFormClass) {
     const searchDateElem = document.querySelector(dateFormClass);
+    if (!searchDateElem) {
+        return;
+    }
+
     searchDateElem.addEventListener('submit', function (event) {
         event.preventDefault();
         

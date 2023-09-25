@@ -23,7 +23,7 @@
 }
 
 .main-menu>a {
-    color: white;
+    color: var(--default-white);
     font-size: 1.2em;
     font-weight: 600;
     padding: 8px;
@@ -36,7 +36,6 @@
 
 .main-menu>a:hover {
     background: #ffffff22;
-
 }
 
 .main-menu>a.active {
@@ -65,7 +64,7 @@
 @media (max-width: 768px) {
     #menu-hamburger {
         display: block;
-        color: white;
+        color: var(--default-white);
         z-index: 110;
     }
 
@@ -75,7 +74,7 @@
         position: absolute;
         top: 60px;
         right: 0px;
-        background-color: var(--navigation-background-color);
+        background-color: var(--navigation-background);
         border: 1px solid var(--background);
         padding: 10px;
         font-size: 0.8em;
@@ -120,7 +119,7 @@
 .navigation {
     display: flex;
     justify-content: space-between;
-    background-color: var(--navigation-background-color);
+    background-color: var(--navigation-background);
 }
 
 .container {
@@ -192,6 +191,5 @@ main {
 }
 
 .version {
-
-    color: white;
+    color: var(--default-white);
 }

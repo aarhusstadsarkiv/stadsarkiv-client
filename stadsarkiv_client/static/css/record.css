@@ -21,7 +21,7 @@
 }
 
 .record-representation img {
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 5px 5px 10px var(--representation-box-shadow);
     
 }
 
@@ -30,7 +30,7 @@
 }
 
 h3.record-header {
-    border-bottom: 1px solid #cacaca;
+    border-bottom: 1px solid var(--record-header-border);
     padding-bottom: 0.2rem;
     width: 100%;
 }
@@ -94,15 +94,15 @@ h3.record-header {
     white-space: pre-line;
     font-family: courier;
     padding: 1.5em;
-    background-color: rgb(250, 250, 196);
+    background-color: var(--background-sejrs-sedler);
     border-radius: 5px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 5px 5px 10px var(--representation-box-shadow);
 }
 
 .record-title {
     font-style: italic;
     margin-bottom: 1.5rem;
-    color: #2b2b2b;
+    color: var(--record-title);
 }
 
 .record-pagination {
@@ -144,13 +144,13 @@ h3.record-header {
     font-size: 1.2em;
     text-align: center;
     text-decoration: none;
-    color: #333;
+    color: var(--record-prev-next);
     transition: background-color 0.3s ease;
 }
 
 .record-prev-next a:hover, a.active  {
-    background-color: #e0e0e0;
-    border-color: #c0c0c0;
+    background-color: var(--record-prev-next-active-background);
+    border-color: var(--record-prev-next-border-active);
 }
 
 .record-prev-next span.disabled {

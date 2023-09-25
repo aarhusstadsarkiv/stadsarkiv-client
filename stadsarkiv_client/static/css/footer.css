@@ -5,14 +5,14 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    background-color: var(--navigation-background-color);
+    background-color: var(--navigation-background);
     padding: 20px 8%;
     flex-wrap: wrap;
     max-width: 100%;
 }
 
 .footer-content {
-    color: white;
+    color: var(--default-white);
     flex: 1;
     box-sizing: border-box;
     text-align: center;
@@ -36,7 +36,7 @@ footer {
 }
 
 footer a {
-    color: white;
+    color: var(--default-white);
     text-decoration: underline;
     margin: 0 5px;
     text-align: left;
@@ -81,7 +81,7 @@ footer li.heading {
     font-weight: bold;
     text-transform: uppercase;
     margin-bottom: 10px;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid var(--default-white);
 }
 
 footer img {
