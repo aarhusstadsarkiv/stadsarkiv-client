@@ -24,6 +24,7 @@ if os.getenv("ENVIRONMENT") == "production":
 
 settings: dict[str, typing.Any] = {
     "debug": debug,
+    "robots_allow": False,
     "version": stadsarkiv_client.__version__,
     "show_version": True,
     "language": "da",
