@@ -2,6 +2,8 @@
 
 # TODO
 
+I settings: Tillad at angive hvilke default facets der skal indgå. 
+
 ## Facets 
 
 Tillad flere typer af facets. Tjek teaterarkivets factets. 
