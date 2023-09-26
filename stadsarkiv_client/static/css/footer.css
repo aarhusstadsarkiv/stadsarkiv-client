@@ -12,7 +12,7 @@ footer {
 }
 
 .footer-content {
-    color: var(--default-white);
+    color: var(--footer-text);
     flex: 1;
     box-sizing: border-box;
     text-align: center;
@@ -36,7 +36,7 @@ footer {
 }
 
 footer a {
-    color: var(--default-white);
+    color: var(--footer-text);
     text-decoration: underline;
     margin: 0 5px;
     text-align: left;
@@ -81,7 +81,7 @@ footer li.heading {
     font-weight: bold;
     text-transform: uppercase;
     margin-bottom: 10px;
-    border-bottom: 1px solid var(--default-white);
+    border-bottom: 1px solid var(--footer-heading);
 }
 
 footer img {

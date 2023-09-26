@@ -36,13 +36,13 @@
     top: 50%;
     transform: translateY(-50%);
     padding: 16px;
-    color: var(--default-white);
+    color: var(--slideshow-text);
     font-weight: bold;
     font-size: 18px;
     transition: 0.6s;
     border-radius: 0 3px 3px 0;
     user-select: none;
-    background-color: var(--transparent-black);
+    background-color: var(--slideshow-background);
     display: none;
 }
 
@@ -53,15 +53,15 @@
 
 .prev:hover,
 .next:hover {
-    background-color: var(--transparent-blacker);
+    background-color: var(--slideshow-background-alt);
 }
 
 .slide-counter {
     position: absolute;
     top: 0;
     right: 0;
-    color: var(--default-white);
-    background-color: var(--transparent-black);
+    color: var(--slideshow-text);
+    background-color: var(--slideshow-background);
     padding: 5px 10px;
     border-radius: 3px;
     display: none;

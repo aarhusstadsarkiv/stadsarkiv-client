@@ -21,7 +21,7 @@
 }
 
 .record-representation img {
-    box-shadow: 5px 5px 10px var(--representation-box-shadow);
+    box-shadow: 5px 5px 10px var(--record-representation-box-shadow);
     
 }
 
@@ -94,9 +94,9 @@ h3.record-header {
     white-space: pre-line;
     font-family: courier;
     padding: 1.5em;
-    background-color: var(--background-sejrs-sedler);
+    background-color: var(--record-background-sejrs-sedler);
     border-radius: 5px;
-    box-shadow: 5px 5px 10px var(--representation-box-shadow);
+    box-shadow: 5px 5px 10px var(--record-representation-box-shadow);
 }
 
 .record-title {
@@ -150,13 +150,13 @@ h3.record-header {
 
 .record-prev-next a:hover, a.active  {
     background-color: var(--record-prev-next-active-background);
-    border-color: var(--record-prev-next-border-active);
+    border-color: var(--record-prev-next-active-border);
 }
 
 .record-prev-next span.disabled {
-    color: var(--text-muted);
+    color: var(--record-prev-next-disabled);
     cursor: not-allowed;
-    background-color: var(--selection);
+    background-color: var(--record-prev-next-disabled-background);
 }
 
 .record-prev-next a,

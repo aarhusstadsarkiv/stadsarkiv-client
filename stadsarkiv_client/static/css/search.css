@@ -11,14 +11,13 @@
 
 .search-result {
     box-sizing: border-box;
-    background-color: var(--background-body);
+    background-color: var(--search-result-background);
     padding: 10px 0;
-    border-top: 1px solid var(--search-border);
-
+    border-top: 1px solid var(--search-result-border);
 }
 
 .search-result:hover {
-    background-color: var(--search-background-hover);
+    background-color: var(--search-result-background-hover);
 }
 
 .facets ul {
@@ -37,15 +36,6 @@
 
 .remove {
     color: var(--flash-error-color);
-}
-
-.record-content {
-    padding-top: 0.2em;
-    margin-bottom: 0.2em
-}
-
-.record-content>label {
-    width: 6em;
 }
 
 .pagination-total {
@@ -80,8 +70,8 @@
 
 .pagination-pages .disabled {
     padding: 5px 10px;
-    background-color: var(--pagination-background-disabled);
-    color: var(--pagination-disabled);
+    background-color: var(--search-pagination-background-disabled);
+    color: var(--search-pagination-disabled);
     border-radius: 5px;
 }
 
@@ -125,12 +115,13 @@ details>summary.inactive {
     display: inline-block;
 }
 
-.search-option, .search-button {
+.search-option,
+.search-button {
     margin-right: 10px;
 }
 
 .search-link {
-    color: var(--default-black);
+    color: var(--search-link-text);
     text-decoration: none;
 }
 
@@ -172,7 +163,15 @@ details>summary.inactive {
 /**
  * Override of the general record.css
  */
+.record-content {
+    padding-top: 0.2em;
+    margin-bottom: 0.2em
+}
+
 .record-content>.label {
     width: 6em;
     min-width: 6em;
 }
+
+
+
