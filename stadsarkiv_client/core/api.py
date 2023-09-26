@@ -357,7 +357,7 @@ async def proxies_collection(collection_id: str) -> typing.Any:
             response.raise_for_status()
 
 
-async def proxies_entity_by_type(type: str, id: str) -> typing.Any:
+async def proxies_get_resource(type: str, id: str) -> typing.Any:
     async with httpx.AsyncClient() as client:
         if type == "collections":
             json = await proxies_collection(id)
@@ -370,7 +370,7 @@ async def proxies_entity_by_type(type: str, id: str) -> typing.Any:
 
         if response.is_success:
             json = response.json()["result"]
-            json = await hooks.after_proxies_entity_by_type(type, json)
+            json = await hooks.after_get_resource(type, json)
             return json
 
         else:

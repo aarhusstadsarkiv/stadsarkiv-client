@@ -58,7 +58,7 @@ class Hooks(HooksSpec):
 
         return record
 
-    async def after_proxies_entity_by_type(self, type: str, json: dict) -> dict:
+    async def after_get_resource(self, type: str, json: dict) -> dict:
         """
         Alter the entity json is returned from the proxies api.
         """

@@ -20,6 +20,6 @@ async def test(request: Request):
 
     return templates.TemplateResponse("testing/test.html", context)
 
-    results = await api.proxies_entity_by_type("people", "121365")
+    results = await api.proxies_get_resource("people", "121365")
     json_str = json.dumps(results, indent=4, ensure_ascii=False)
     return PlainTextResponse(json_str)
