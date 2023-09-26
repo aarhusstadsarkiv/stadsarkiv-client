@@ -1,18 +1,5 @@
 # TODO
 
-#### Solar System Exploration, 1950s – 1960s
-
-- [ ] Mercury
-- [x] Venus
-- [x] Earth (Orbit/Moon)
-- [x] Mars
-- [ ] Jupiter
-- [ ] Saturn
-- [ ] Uranus
-- [ ] Neptune
-- [ ] Comet Haley
-
-
 Bedre menu på mindre devices. 
 Kan være svært at ramme små links.
 
@@ -37,7 +24,7 @@ Kan være svært at ramme små links.
 ~~Hent relations fra API~~
 Se: (https://github.com/aarhusstadsarkiv/teaterarkivet/blob/master/source/client.py#L243)
 
-### Fejl
+#### Fejl
 
 ~~Fix post register.~~
 
