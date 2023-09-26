@@ -4,8 +4,22 @@
 {% include "includes/main_title.html" %}
 
 <h3>Settings</h3>
+<p>
+    <input id="test" type="text" value="" oninput="oninput()">
+</p>
 <pre>
     {{ settings }}
 </pre>
+
+<script>
+    function oninput() {
+        console.log("Hello! I am an alert box!");
+    }
+
+    let test = document.getElementById("test");
+
+    // output all attributes of the element
+    console.log(test.attributes);
+</script>
 
 {% endblock content %}
