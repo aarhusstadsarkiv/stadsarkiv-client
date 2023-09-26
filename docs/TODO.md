@@ -1,5 +1,13 @@
 # TODO
 
+## Tilføj en hovedtitel til <title> tag, fx "Log ind | Aarhusarkivet"
+
+Skal sættes i hooks.
+
+## Sejrs sedler
+
+Fjern summary (I hooks)
+
 ## Bedre menu på mindre devices. 
 
 Kan være svært at ramme små links.
