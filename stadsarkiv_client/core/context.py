@@ -29,8 +29,11 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
     }
 
     context.update(context_values)
-    context = hooks.before_template(context=context)
 
+    if "meta_title" not in context:
+        context["meta_title"] = context["title"]
+
+    context = hooks.before_template(context=context)
     return context
 
 
