@@ -1,6 +1,6 @@
 # TODO
 
-### Solar System Exploration, 1950s – 1960s
+#### Solar System Exploration, 1950s – 1960s
 
 - [ ] Mercury
 - [x] Venus
@@ -37,7 +37,7 @@ Kan være svært at ramme små links.
 ~~Hent relations fra API~~
 Se: (https://github.com/aarhusstadsarkiv/teaterarkivet/blob/master/source/client.py#L243)
 
-# Fejl
+### Fejl
 
 ~~Fix post register.~~
 
@@ -71,7 +71,7 @@ Se: (https://github.com/aarhusstadsarkiv/teaterarkivet/blob/master/source/client
 ~~FLyt nuværende design til aarhusarkivet.dk - v2
 Strip design~~
 
-# Auto tag script
+#### Auto tag script
 
 ~~Tag current version using a script.
 Instead of manually updating version in setup.py,
@@ -98,10 +98,10 @@ __init__.py and docs/README.md.~~
 ~~læs fra __version__~~
 ~~Tilføj "show_version" til settings~~
 
-# Version
+#### Version
 
 ~~Tilføj versions nummer til system.~~ 
 
-# Opdatering af system
+#### Opdatering af system
 
 ~~Script til at opdatere alt.~~ 
