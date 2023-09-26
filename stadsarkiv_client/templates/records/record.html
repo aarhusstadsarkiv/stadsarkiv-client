@@ -62,7 +62,7 @@
 {% endif %}
 
 {% if record["record_type"] == 'sejrs_sedler' %}
-<div class="record-sejrs-sedler">{{ record['summary']|trim }}</div>
+<div class="record-sejrs-sedler">{{ record['representation_text']|trim }}</div>
 {% endif %}
 {% endmacro %}
 
