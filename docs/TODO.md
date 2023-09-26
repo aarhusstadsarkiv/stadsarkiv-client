@@ -1,16 +1,16 @@
-# v1.1.24
-
 # TODO
-
-I settings: Tillad at angive hvilke default facets der skal indgå. 
-
-## Facets 
-
-Tillad flere typer af facets. Tjek teaterarkivets factets. 
 
 ## Bedre menu på mindre devices. 
 
 Kan være svært at ramme små links.
+
+## Settings. Angiv default facets.
+
+~~I settings: Tillad at angive hvilke default facets der skal indgå.~~ 
+
+## Facets 
+
+~~Tillad flere typer af facets. Tjek teaterarkivets factets.~~
 
 ## Tearter arkiv
 
