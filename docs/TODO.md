@@ -1,62 +1,72 @@
 # TODO
 
-## Tilføj en hovedtitel til <title> tag, fx "Log ind | Aarhusarkivet"
+### Solar System Exploration, 1950s – 1960s
 
-Skal sættes i hooks.
+- [ ] Mercury
+- [x] Venus
+- [x] Earth (Orbit/Moon)
+- [x] Mars
+- [ ] Jupiter
+- [ ] Saturn
+- [ ] Uranus
+- [ ] Neptune
+- [ ] Comet Haley
 
-## Sejrs sedler
 
-Fjern summary (I hooks)
-
-## Bedre menu på mindre devices. 
-
+Bedre menu på mindre devices. 
 Kan være svært at ramme små links.
 
-## Settings. Angiv default facets.
+#### Tilføj en hovedtitel til `<title>` tag
+
+~~fx "Log ind | Aarhusarkivet"~~
+
+~~Skal sættes i hooks.~~
+
+~~Sejrs sedler Fjern summary (I hooks)~~
+
+#### Settings. Angiv default facets.
 
 ~~I settings: Tillad at angive hvilke default facets der skal indgå.~~ 
 
-## Facets 
+#### Facets 
 
 ~~Tillad flere typer af facets. Tjek teaterarkivets factets.~~
 
-## Tearter arkiv
+#### Tearter arkiv
 
-~~Hent relations fra API
-
-Se: https://github.com/aarhusstadsarkiv/teaterarkivet/blob/master/source/client.py#L243 ~~
+~~Hent relations fra API~~
+Se: (https://github.com/aarhusstadsarkiv/teaterarkivet/blob/master/source/client.py#L243)
 
 # Fejl
 
 ~~Fix post register.~~
 
-## Tekst til PDF
+#### Tekst til PDF
 
 ~~Tilføj: "Klik på billedet for at hente pdf-dokumentet."
-
 Ændring til records~~
 
-## Border 
+#### Border 
 
 ~~Tilføj til record representation~~
 
-## Ændr logging_defs 
+#### Ændr logging_defs 
 
 ~~Ændr til logging_handlers.py~~
 
-## Pluggy
+#### Pluggy
 
 ~~Fjern pluggy. Simplificer.~~ 
 
-## Dokumenation
+#### Dokumenation
 
 ~~Lidt dokumentation på alle filer.~~ 
 
-## Hook ind i _get_title
+#### Hook ind i _get_title
 
 ~~records/meta_data_record.py~~
 
-## design
+#### design
 
 ~~FLyt nuværende design til aarhusarkivet.dk - v2
 Strip design~~
@@ -67,7 +77,7 @@ Strip design~~
 Instead of manually updating version in setup.py,
 __init__.py and docs/README.md.~~
 
-## exc_info
+#### exc_info
 
 ~~Tilføj exc_info=e OpenAwsException til alle ikke kritiske fejl.~~
 
@@ -75,15 +85,15 @@ __init__.py and docs/README.md.~~
 
 ~~Således lettere at sende fejl til sentry.~~
 
-## robots.txt
+#### robots.txt
 
 ~~Tilføj robots.txt~~
 
-## log 404
+#### log 404
 
 ~~Bedre logging~~
 
-## Version
+#### Version
 
 ~~læs fra __version__~~
 ~~Tilføj "show_version" til settings~~
