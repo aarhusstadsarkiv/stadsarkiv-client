@@ -60,14 +60,21 @@
         <details data-id="{{facet['id'] }}">
             <summary class="facets-clickable">
                 {{ facet['label'] }}
+                
             </summary>
             <ul>
                 {% for link in facet['children'] %}
                 <li>
-                    <a href="/{{ resource_type }}/{{link['id']}}">{{ link['label'] }}</a>
+                    <details data-id="{{ link['id']}}">
+                        <summary class="inactive">
+                            <a href="/{{ resource_type }}/{{link['id']}}">{{ link['label'] }}</a>
+                        </summary>
+                    </details>
+                    
                 </li>
                 {% endfor %}
             </ul>
+            
         </details>
     </li>
     {% endfor %}
