@@ -65,14 +65,16 @@ def _is_allowed_by_ip(request: Request) -> bool:
 
 
 def _get_icon(record: dict):
-    """Get icon for the record based on content type"""
+    """
+    Get icon for the record based on content type
+    content-types is in this format: [{'id': [10], 'label': ['Forskrifter og vedtægter']}]
+    """
     try:
-        content_type_id = record["content_types"][0][0]["id"]
-        icon = ICONS[str(content_type_id)]
-    except KeyError:
-        icon = ICONS["99"]
-
-    return icon
+        content_type = record["content_types"][0]
+        content_type_id = str(content_type["id"][0])
+        return ICONS[content_type_id]
+    except (KeyError, IndexError, TypeError):
+        return ICONS["99"]
 
 
 def _is_downloadable(metadata: dict) -> bool:
