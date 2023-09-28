@@ -32,11 +32,12 @@ def get_str(request: Request, remove_keys: list = [], add_list_items: list = [])
     return query_str
 
 
-def get_str_from_list(items: list) -> str:
+def get_str_from_list(items: list, remove_keys: list = []) -> str:
     """Get list of tuples and return it as a quote plus encoded string."""
     query_str = ""
     for key, value in items:
-        query_str += f"{key}={quote_plus(value)}&"
+        if key not in remove_keys:
+            query_str += f"{key}={quote_plus(value)}&"
 
     return query_str
 

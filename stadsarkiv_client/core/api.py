@@ -340,7 +340,8 @@ async def proxies_records(request: Request, query_str: str) -> typing.Any:
         response = await client.get(url)
 
         if response.is_success:
-            return response.json()
+            records = response.json()
+            return records
         else:
             response.raise_for_status()
 
