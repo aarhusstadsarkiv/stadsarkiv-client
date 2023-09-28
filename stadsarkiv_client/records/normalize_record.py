@@ -63,6 +63,12 @@ def _normalize_series(record: dict):
             series_normalized.append(entry)
 
         record["series"] = [series_normalized]
+
+    if "collection" not in record:
+        # Remove series from record if it does not have a collection
+        # This should not happen, but it does. Should be fixed in the API
+        if "series" in record:
+            del record["series"]
     return record
 
 
