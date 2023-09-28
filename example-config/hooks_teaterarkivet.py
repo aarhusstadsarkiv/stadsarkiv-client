@@ -43,7 +43,6 @@ class Hooks(HooksSpec):
         Alter the record dictionary after the api call
         """
         if is_collection(record, 1):
-
             meta_title = f"[{record['summary'][:60]} ... ]"
             record["meta_title"] = meta_title
             record["record_type"] = "sejrs_sedler"

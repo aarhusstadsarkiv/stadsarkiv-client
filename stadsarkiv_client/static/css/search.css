@@ -96,9 +96,9 @@ button {
 summary {
     margin: 0 auto;
     margin-bottom: .1rem;
-    box-shadow: 0 .1rem 1rem -.5rem rgba(0, 0, 0, .4);
+    box-shadow: 0 .1rem 1rem -.5rem rgba(0, 0, 0, 0.1);
     border-radius: 0.2px;
-    padding: 0.5rem;
+    padding: 0.05rem;
     
 }
 
