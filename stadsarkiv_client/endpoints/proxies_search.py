@@ -90,6 +90,11 @@ def _get_default_query_params(request: Request):
     if direction:
         add_list_items.append(("direction", direction))
 
+    # add start
+    start = request.query_params.get("start", None)
+    if start:
+        add_list_items.append(("start", start))
+
     return add_list_items
 
 
@@ -123,24 +128,33 @@ async def get_records_search(request: Request):
     # size, sort, direction are read from query params
     # If not set they may be read from cookies
     # last resort is default values
-    query_params_before_search = query.get_list(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
+    query_params_before_search = query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
 
     # Alter query params before search
+    # You may want to remove all collections and add single one before search results are obtained
     query_params_before_search = hooks.before_search(query_params=query_params_before_search)
 
     # Call api
-    query_str = query.get_str_from_list(query_params_before_search)
-    search_result = await api.proxies_records(request, query_str)
+    query_str_search = query.get_str_from_list(query_params_before_search)
+    search_result = await api.proxies_records(request, query_str_search)
 
+    # Add resolved facets to search result
     search_result = await set_resolved_search(search_result, query_params_before_search)
     facets_resolved = search_result["facets_resolved"]
     search_result = _normalize_search(search_result)
 
     # Alter query params after search
+    # You may want to remove all collections.
     query_params_after_search = hooks.after_search(query_params=query_params_before_search)
-    query_str = query.get_str_from_list(query_params_after_search)
+
+    # Remove pagination params from query params. In order to get a query string that can be used in e.g. facet links
+    query_str_display = query.get_str_from_list(query_params_after_search, remove_keys=["start", "size", "sort", "direction"])
     normalized_facets = NormalizeFacets(
-        request=request, records=search_result, query_params=query_params_after_search, facets_resolved=facets_resolved, query_str=query_str
+        request=request,
+        records=search_result,
+        query_params=query_params_after_search,
+        facets_resolved=facets_resolved,
+        query_str=query_str_display,
     )
 
     facets = normalized_facets.get_transformed_facets()
@@ -152,7 +166,8 @@ async def get_records_search(request: Request):
         "title": translate("Search"),
         "search_result": search_result,
         "query_params": query_params_after_search,
-        "query_str": query_str,
+        "query_str_search": query_str_search,
+        "query_str_display": query_str_display,
         "sort": sort,
         "size": size,
         "facets": facets,
@@ -171,7 +186,6 @@ async def get_records_search(request: Request):
         "query_params": query_params_before_search,
         "total": pagination_data["total"],
         "q": q,
-        "query_str": query_str,
     }
 
     response.set_cookie(key="search", value=json.dumps(search_cookie_value), httponly=True)
@@ -183,9 +197,12 @@ async def get_records_search(request: Request):
 
 async def get_records_search_json(request: Request):
     add_list_items = _get_default_query_params(request)
-    query_params = query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
+    query_params = query.get_list(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
+
     query_params = hooks.before_search(query_params=query_params)
     query_str = query.get_str_from_list(query_params)
     search_result = await api.proxies_records(request, query_str)
+
+    # log.debug(search_result)
     record_json = json.dumps(search_result, indent=4, ensure_ascii=False)
     return PlainTextResponse(record_json)

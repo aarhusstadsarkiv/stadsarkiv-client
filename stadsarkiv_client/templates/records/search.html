@@ -247,16 +247,16 @@
 <div class="pagination">
     <div class="pagination-pages">
         {% if current_page > 1 %}
-        <a href="{{ search_base_url }}?{{ query_str }}start=0">{{ translate('First page') }}</a>
-        <a href="{{ search_base_url }}?{{ query_str }}start={{ start - size }}">{{ translate('Previous')
+        <a href="{{ search_base_url }}?{{ query_str_display }}start=0">{{ translate('First page') }}</a>
+        <a href="{{ search_base_url }}?{{ query_str_display }}start={{ start - size }}">{{ translate('Previous')
             }}</a>
         {% else %}
         <span class="disabled">{{ translate('First page') }}</span>
         <span class="disabled">{{ translate('Previous') }}</span>
         {% endif %}
-        {% if current_page < total_pages %} <a href="{{ search_base_url }}?{{ query_str }}start={{ start + size }}">{{
+        {% if current_page < total_pages %} <a href="{{ search_base_url }}?{{ query_str_display }}start={{ start + size }}">{{
             translate('Next')}}</a>
-            <a href="{{ search_base_url }}?{{ query_str }}start={{ (total_pages - 1) * size }}">{{ translate('Last
+            <a href="{{ search_base_url }}?{{ query_str_display }}start={{ (total_pages - 1) * size }}">{{ translate('Last
                 page') }}</a>
             {% else %}
             <span class="disabled">{{ translate('Next') }}</span>
@@ -361,7 +361,7 @@
     {% endif %}
     {% if get_setting('debug') %}
     <p>
-        <a href="/search/json?{{ query_str }}">JSON</a>
+        <a href="/search/json?{{ query_str_search }}">JSON</a>
     </p>
     {% endif %}
 </div>

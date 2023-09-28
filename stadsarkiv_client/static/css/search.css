@@ -99,7 +99,7 @@ summary {
     box-shadow: 0 .1rem 1rem -.5rem rgba(0, 0, 0, 0.1);
     border-radius: 0.2px;
     padding: 0.05rem;
-    
+
 }
 
 details>summary.inactive {
@@ -182,6 +182,3 @@ details>summary.inactive {
     width: 6em;
     min-width: 6em;
 }
-
-
-
