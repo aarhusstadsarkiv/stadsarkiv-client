@@ -144,17 +144,6 @@ function searchEvents() {
             }
         })
 
-        window.addEventListener('resize', function (event) {
-            // Check if tree threshold has been reached
-            const maxWidth = 992;
-            const width = window.innerWidth;
-            if (width > maxWidth) {
-                expandTree();
-            } else {
-                collapseTree();
-            }
-        })
-
         // 'beforeunload' will not work when e.g. searching for /search to /search?date_from=20200101
         // Instead we check all links
         window.addEventListener('click', function (event) {
