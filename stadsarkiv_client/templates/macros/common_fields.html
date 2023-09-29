@@ -114,8 +114,18 @@
 {% endmacro %}
 
 {% macro parse_icon(icon, label) %}
+
 <div class="record-icon">
     <span class="material-symbols-outlined">{{ icon }}</span>
+</div>
+<div class="record-icon-label">
+    {{ label }}
+</div>    
+{% endmacro %}
+
+{% macro parse_icon(icon, label) %}
+<div class="record-icon">
+    <span>{{ get_icon(icon)|safe }}</span>
 </div>
 <div class="record-icon-label">
     {{ label }}
