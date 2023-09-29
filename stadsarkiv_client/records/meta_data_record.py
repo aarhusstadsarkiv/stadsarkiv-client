@@ -17,7 +17,7 @@ IP_ALLOW = ["193.33.148.24"]
 
 ICONS = {
     "61": {"icon": "image", "label": "Billeder"},
-    "95": {"icon": "laptop", "label": "Elektronisk materiale"},
+    "95": {"icon": "laptop_windows", "label": "Elektronisk materiale"},
     "10": {"icon": "gavel", "label": "Forskrifter og vedtægter"},
     "1": {"icon": "folder_open", "label": "Kommunale sager og planer"},
     "75": {"icon": "map", "label": "Kortmateriale"},
