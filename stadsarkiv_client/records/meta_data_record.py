@@ -17,15 +17,15 @@ IP_ALLOW = ["193.33.148.24"]
 
 ICONS = {
     "61": {"icon": "image", "label": "Billeder"},
-    "95": {"icon": "laptop_mac", "label": "Elektronisk materiale"},
+    "95": {"icon": "laptop", "label": "Elektronisk materiale"},
     "10": {"icon": "gavel", "label": "Forskrifter og vedtægter"},
     "1": {"icon": "folder_open", "label": "Kommunale sager og planer"},
     "75": {"icon": "map", "label": "Kortmateriale"},
     "49": {"icon": "description", "label": "Manuskripter"},
     "87": {"icon": "movie", "label": "Medieproduktioner"},
     "81": {"icon": "audio_file", "label": "Musik og lydoptagelser"},
-    "36": {"icon": "menu_book", "label": "Publikationer"},
-    "18": {"icon": "local_library", "label": "Registre og protokoller"},
+    "36": {"icon": "article", "label": "Publikationer"},
+    "18": {"icon": "menu_book", "label": "Registre og protokoller"},
     "29": {"icon": "bar_chart", "label": "Statistisk og økonomisk materiale"},
     "99": {"icon": "description", "label": "Andet materiale"},
 }
