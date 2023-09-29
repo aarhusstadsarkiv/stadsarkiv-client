@@ -39,6 +39,14 @@ h3.record-header {
     text-align: center;
 }
 
+.record-icon svg {
+    width: 200px;
+    height: 200px;
+    /* stroke: red; */
+    stroke-width: 1;
+    /* fill: yellow; */ 
+}
+
 .record-icon>span {
     padding-top: 0px;
     font-size: 12em;
