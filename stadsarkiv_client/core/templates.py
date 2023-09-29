@@ -27,11 +27,7 @@ import re
 log = get_log()
 
 
-def _get_app_context(request: Request) -> typing.Dict[str, typing.Any]:
-    return {"app": request.app}
-
-
-def _get_template_dirs() -> list:
+def get_template_dirs() -> list:
     template_dirs = []
 
     # local templates
@@ -49,11 +45,15 @@ def _get_template_dirs() -> list:
     return template_dirs
 
 
-def to_json(variable):
+def _get_app_context(request: Request) -> typing.Dict[str, typing.Any]:
+    return {"app": request.app}
+
+
+def _to_json(variable):
     return json.dumps(variable, indent=4, ensure_ascii=False)
 
 
-def pre(value):
+def _pre(value):
     """
     Output variable as JSON inside <pre> tags.
 
@@ -61,10 +61,10 @@ def pre(value):
         {{ pre(top_level_value)|safe }}
 
     """
-    return f"<pre>{to_json(value)}</pre>"
+    return f"<pre>{_to_json(value)}</pre>"
 
 
-def paragraphs(value):
+def _paragraphs(value):
     """Normalize newlines, then wrap content split by newlines in <p></p>."""
     # Normalize newlines
     normalized = re.sub(r"(\r\n|\r|\n)+", "\n", value).strip()
@@ -77,7 +77,7 @@ def paragraphs(value):
     return string
 
 
-def key_exist_in_dict(keys: list, data: dict):
+def _key_exist_in_dict(keys: list, data: dict):
     """Check if a key exists in a dictionary. And if the value is not empty."""
     for key in keys:
         if key in data:
@@ -94,7 +94,7 @@ def key_exist_in_dict(keys: list, data: dict):
     return False
 
 
-loader = FileSystemLoader(_get_template_dirs())
+loader = FileSystemLoader(get_template_dirs())
 templates = Jinja2Templates(
     directory="",
     context_processors=[_get_app_context],
@@ -103,10 +103,34 @@ templates = Jinja2Templates(
     lstrip_blocks=True,
 )
 
+
+template_dirs = get_template_dirs()
+
+
+ICONS = {}
+for template_dir in template_dirs:
+    icons_dir = template_dir + "/icons"
+    if os.path.exists(icons_dir):
+        for icon in os.listdir(icons_dir):
+            icon_as_str = icons_dir + "/" + icon
+            if os.path.isfile(icon_as_str):
+                icon_name = icon.split(".")[0]
+
+                with open(icon_as_str, "r") as f:
+                    icon_as_str = f.read()
+
+                ICONS[icon_name] = icon_as_str
+
+
+def get_icon(icon: str):
+    return ICONS.get(icon)
+
+
 templates.env.globals.update(translate=translate)
 templates.env.globals.update(get_setting=get_setting)
 templates.env.globals.update(format_date=format_date)
-templates.env.globals.update(to_json=to_json)
-templates.env.globals.update(pre=pre)
-templates.env.globals.update(paragraphs=paragraphs)
-templates.env.globals.update(key_exist_in_dict=key_exist_in_dict)
+templates.env.globals.update(to_json=_to_json)
+templates.env.globals.update(pre=_pre)
+templates.env.globals.update(paragraphs=_paragraphs)
+templates.env.globals.update(get_icon=get_icon)
+templates.env.globals.update(key_exist_in_dict=_key_exist_in_dict)
