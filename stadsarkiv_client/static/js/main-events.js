@@ -28,6 +28,8 @@ window.addEventListener('resize', function (event) {
         closedMenu.style.display = "block";
     } else {
         menu.style.display = "none";
+        openMenu.style.display = "none";
+        closedMenu.style.display = "block";
     }
 });
 
