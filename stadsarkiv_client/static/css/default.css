@@ -49,8 +49,11 @@
     margin-top: 14px;
 }
 
-#menu-hamburger>span {
-    font-size: 1.2em;
+#menu-hamburger svg {
+    color: white;
+    fill: white;
+    height: 40px;
+    width: 40px;
 }
 
 .main-menu.active {

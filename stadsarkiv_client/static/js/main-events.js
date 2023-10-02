@@ -1,13 +1,19 @@
-document.getElementById('menu-hamburger').addEventListener('click', function (event) {
+const hamburgerMenu = document.getElementById('menu-hamburger');
+const openMenu = hamburgerMenu.querySelector('.open')
+const closedMenu = hamburgerMenu.querySelector('.closed')
+const menu = document.querySelector('.main-menu');
+
+hamburgerMenu.addEventListener('click', function (event) {
     event.preventDefault();
-    const menu = document.querySelector('.main-menu');
-    const menuText = document.querySelector('#menu-hamburger > .material-symbols-outlined');
-    if (menu.style.display === "none" || menu.style.display === "") {
+
+    if (menu.style.display === "none") {
         menu.style.display = "block";
-        menuText.textContent = "menu_open";
+        openMenu.style.display = "block";
+        closedMenu.style.display = "none";
     } else {
         menu.style.display = "none";
-        menuText.textContent = "menu";
+        openMenu.style.display = "none";
+        closedMenu.style.display = "block";
     }
 });
 
@@ -15,11 +21,11 @@ document.getElementById('menu-hamburger').addEventListener('click', function (ev
  * Add resize event listener to window
  */
 window.addEventListener('resize', function (event) {
-    const menuText = document.querySelector('#menu-hamburger > .material-symbols-outlined');
-    const menu = document.querySelector('.main-menu');
+
     if (window.innerWidth > 768) {
         menu.style.display = "flex";
-        menuText.textContent = "menu";
+        openMenu.style.display = "none";
+        closedMenu.style.display = "block";
     } else {
         menu.style.display = "none";
     }
