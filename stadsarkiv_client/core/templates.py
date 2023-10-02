@@ -115,6 +115,8 @@ for template_dir in template_dirs:
             icon_as_str = icons_dir + "/" + icon
             if os.path.isfile(icon_as_str):
                 icon_name = icon.split(".")[0]
+                if icon_name in ICONS:
+                    continue
 
                 with open(icon_as_str, "r") as f:
                     icon_as_str = f.read()
