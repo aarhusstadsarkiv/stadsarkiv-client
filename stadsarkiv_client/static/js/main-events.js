@@ -6,7 +6,7 @@ const menu = document.querySelector('.main-menu');
 hamburgerMenu.addEventListener('click', function (event) {
     event.preventDefault();
 
-    if (menu.style.display === "none") {
+    if (menu.style.display === "none" || menu.style.display === "") {
         menu.style.display = "block";
         openMenu.style.display = "block";
         closedMenu.style.display = "none";
