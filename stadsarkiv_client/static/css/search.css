@@ -162,9 +162,6 @@ details>summary.inactive {
     color: var(--links);
 }
 
-/*
- First summary is the title
- */
 .search-summary:first-of-type {
     font-weight: 600;
     margin-bottom: 0.2em;
