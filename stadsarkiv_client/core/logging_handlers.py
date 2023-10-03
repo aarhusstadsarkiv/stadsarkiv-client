@@ -36,10 +36,12 @@ def get_stream_handler(level: Any):
 
 def get_init_logger():
     """Init logger to use before settings are loaded"""
+
     log = logging.getLogger("env")
-    level = logging.INFO
-    log.setLevel(level)
-    ch = get_stream_handler(level)
-    log.addHandler(ch)
+    if not len(log.handlers):
+        level = logging.DEBUG
+        log.setLevel(level)
+        ch = get_stream_handler(level)
+        log.addHandler(ch)
 
     return log
