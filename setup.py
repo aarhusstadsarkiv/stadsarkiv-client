@@ -24,10 +24,10 @@ setup(
     install_requires=REQUIREMENTS,
     entry_points={
         "console_scripts": [
-            "server-prod = stadsarkiv_client.commands.server:server_prod",
-            "server-dev = stadsarkiv_client.commands.server:server_dev",
-            "server-stop = stadsarkiv_client.commands.server:server_stop",
-            "server-generate-secret = stadsarkiv_client.commands.server:server_secret",
+            "server-prod = stadsarkiv_client.commands.cli:server_prod",
+            "server-dev = stadsarkiv_client.commands.cli:server_dev",
+            "server-stop = stadsarkiv_client.commands.cli:server_stop",
+            "server-generate-secret = stadsarkiv_client.commands.cli:server_secret",
         ],
     },
     classifiers=[
