@@ -1,17 +1,22 @@
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
+from stadsarkiv_client.core.args import get_config_dir
+import importlib
 
 log = get_log()
 hooks = HooksSpec()
 
 hooks_local = None
 try:
-    from hooks import Hooks as HooksLocal  # type: ignore
+
+    module_name = get_config_dir() + ".hooks"
+    submodule = importlib.import_module(module_name)
+    HooksLocal = getattr(submodule, "Hooks")
 
     hooks_local = HooksLocal()
-    log.debug("Loaded local hooks: hooks.py")
+    log.debug(f"Loaded local hooks: {get_config_dir()}/hooks.py")
 except ImportError:
-    log.debug("Local hooks NOT loaded: hooks.py")
+    log.debug(f"Local hooks NOT loaded: {get_config_dir()}/hooks.py")
 
 
 def get_hooks():

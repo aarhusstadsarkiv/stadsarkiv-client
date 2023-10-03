@@ -11,23 +11,22 @@ This is only run one time. When the server is started.
 
 from stadsarkiv_client.settings import settings
 from stadsarkiv_client.settings_facets import settings_facets as settings_facets_default
+from stadsarkiv_client.core.args import get_config_dir
 from stadsarkiv_client.core.logging import get_log
+import importlib
 
 log = get_log()
-
-log.debug("Loading dynamic settings")
-
-
 settings_local: dict = {}
 
 
 try:
-    from settings import settings as settings_local  # type: ignore
-
-    log.debug("Loaded local settings file: settings.py")
+    module_name = get_config_dir() + ".settings"
+    submodule = importlib.import_module(module_name)
+    local_settings = getattr(submodule, "settings")
+    log.debug(f"Loaded local settings file: {get_config_dir()}/settings.py")
 except ImportError:
-    log.debug("Local settings file NOT loaded: settings.py")
-    pass
+    log.debug(f"Local settings file NOT loaded: {get_config_dir()}/settings.py")
+
 
 settings.update(settings_local)
 
@@ -39,12 +38,13 @@ def get_setting(key):
 settings_facets_local: dict = {}
 
 try:
-    from settings_facets import settings_facets as settings_facets_local  # type: ignore
-
-    log.debug("Loaded local settings_facets.py file: settings_facets.py")
+    module_name = get_config_dir() + ".settings_facets"
+    submodule = importlib.import_module(module_name)
+    settings_facets_local = getattr(submodule, "settings_facets")
+    log.debug(f"Loaded local facets file: {get_config_dir()}/settings_facets.py")
 
 except ImportError:
-    log.debug("Local settings_facets.py file NOT loaded: settings_facets.py")
+    log.debug(f"Local facets file NOT loaded: {get_config_dir()}/settings_facets.py")
     pass
 
 

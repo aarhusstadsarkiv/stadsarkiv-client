@@ -7,6 +7,7 @@ from .endpoints import auth, proxies_records, proxies_search, proxies_resources,
 import os
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.multi_static import MultiStaticFiles
+from stadsarkiv_client.core.args import get_config_dir
 from stadsarkiv_client.core.logging import get_log
 from typing import Any
 
@@ -20,13 +21,12 @@ def _get_static_dirs() -> list:
     """
 
     static_dir_list = []
-
-    if os.path.exists("static"):
-        static_dir_local = "static"
-        static_dir_list.append(static_dir_local)
-        log.debug("Loaded local static files: static/")
+    local_config_dir = get_config_dir() + "/static"
+    if os.path.exists(local_config_dir):
+        static_dir_list.append(local_config_dir)
+        log.debug(f"Loaded local static files: {local_config_dir}")
     else:
-        log.debug("Local static files NOT loaded: static/")
+        log.debug(f"Local static files NOT loaded: {local_config_dir}")
 
     # Module static files. Default static files
     static_dir = os.path.dirname(os.path.abspath(__file__)) + "/static"

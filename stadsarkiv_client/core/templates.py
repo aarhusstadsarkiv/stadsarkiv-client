@@ -1,14 +1,7 @@
 """
-Set's up the template engine for the application.
+Set up the template engine for the application.
+Set up a couple of jinja2 functions.
 
-There is a couple of template helpers available:
-
-- translate: Translate a string to the current language.
-- get_setting: Get a setting from the settings file.
-- format_date: Format a date to the current locale.
-- to_json: Convert a variable to a JSON string.
-- paragraphs: Convert a string to HTML paragraphs.
-- key_exist_in_dict: Check if a key exists in a dictionary.
 """
 
 import typing
@@ -20,29 +13,28 @@ from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.dynamic_settings import get_setting
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.format_date import format_date
+from stadsarkiv_client.core.args import get_config_dir
 import json
 import re
 
 
 log = get_log()
 
+"""
+Get a list of template directories.
+"""
+template_dirs = []
+local_templates_dir = get_config_dir() + "/templates"
+if os.path.exists(local_templates_dir):
+    template_dirs.append(local_templates_dir)
+    log.debug(f"Loaded local templates: {local_templates_dir}")
+else:
+    log.debug(f"Local templates NOT loaded: {local_templates_dir}")
 
-def get_template_dirs() -> list:
-    template_dirs = []
-
-    # local templates
-    if os.path.exists("templates"):
-        template_dirs.append("templates")
-        log.debug("Loaded local templates: templates/")
-    else:
-        log.debug("Local templates NOT loaded: templates/")
-
-    # Full path to module templates
-    current_dir = os.path.dirname(os.path.realpath(__file__))
-    template_module_dirs = current_dir + "/../templates"
-    template_dirs.append(template_module_dirs)
-
-    return template_dirs
+# Full path to module templates
+current_dir = os.path.dirname(os.path.realpath(__file__))
+template_module_dirs = current_dir + "/../templates"
+template_dirs.append(template_module_dirs)
 
 
 def _get_app_context(request: Request) -> typing.Dict[str, typing.Any]:
@@ -94,7 +86,7 @@ def _key_exist_in_dict(keys: list, data: dict):
     return False
 
 
-loader = FileSystemLoader(get_template_dirs())
+loader = FileSystemLoader(template_dirs)
 templates = Jinja2Templates(
     directory="",
     context_processors=[_get_app_context],
@@ -102,9 +94,6 @@ templates = Jinja2Templates(
     trim_blocks=True,
     lstrip_blocks=True,
 )
-
-
-template_dirs = get_template_dirs()
 
 
 ICONS = {}

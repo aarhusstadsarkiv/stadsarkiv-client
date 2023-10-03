@@ -9,17 +9,21 @@ Exposes a translate function that is used in the jinja2 template engine and in p
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.locales.en import en
 from stadsarkiv_client.locales.da import da
+from stadsarkiv_client.core.args import get_config_dir
 import json
+import importlib
 from stadsarkiv_client.core.logging import get_log
+
 
 log = get_log()
 
 try:
-    from language import language as language_local  # type: ignore
-
-    log.debug("Loaded local language file: language.py")
+    module_name = get_config_dir() + ".language"
+    submodule = importlib.import_module(module_name)
+    language_local = getattr(submodule, "language")  # type: ignore
+    log.debug(f"Loaded local language file: {get_config_dir()}/language.py")
 except ImportError:
-    log.debug("Local language file NOT loaded: language.py")
+    log.debug(f"Local language file NOT loaded: {get_config_dir()}/language.py")
     language_local = {}
 
 
