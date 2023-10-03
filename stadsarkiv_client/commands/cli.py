@@ -23,10 +23,13 @@ def cli():
 @click.option("--port", default=5555, help="Server port.")
 @click.option("--workers", default=3, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
-def server_prod(port: int, workers: int, host: str):
+@click.option("--config-dir", default="local", help="Specify a local config directory.", required=False)
+def server_prod(port: int, workers: int, host: str, config_dir: str):
     # If PID file exists, try to kill the process
     if os.path.exists(PID_FILE):
         _stop_server(PID_FILE)
+
+    os.environ["CONFIG_DIR"] = config_dir
 
     cmd = [
         "./venv/bin/gunicorn",
@@ -42,11 +45,14 @@ def server_prod(port: int, workers: int, host: str):
     print(f"Started Gunicorn in background with PID: {gunicorn_process.pid}")  # Print the PID for reference
 
 
-@cli.command(help="Start the production docker gunicorn server.")
+@cli.command(help="Start the production docker gunicorn server when using docker.")
 @click.option("--port", default=5555, help="Server port.")
 @click.option("--workers", default=3, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
-def server_docker(port: int, workers: int, host: str):
+@click.option("--config-dir", default="local", help="Specify a local config directory.", required=False)
+def server_docker(port: int, workers: int, host: str, config_dir: str):
+    # os.environ["CONFIG_DIR"] = config_dir
+
     cmd = [
         "gunicorn",
         "stadsarkiv_client.app:app",
@@ -63,7 +69,10 @@ def server_docker(port: int, workers: int, host: str):
 @click.option("--port", default=5555, help="Server port.")
 @click.option("--workers", default=1, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
-def server_dev(port: int, workers: int, host: str):
+@click.option("--config-dir", default="local", help="Specify a local config directory.", required=False)
+def server_dev(port: int, workers: int, host: str, config_dir: str):
+    os.environ["CONFIG_DIR"] = config_dir
+
     if os.path.exists(PID_FILE):
         _stop_server(PID_FILE)
 
