@@ -79,8 +79,6 @@ change_readme("<!-- LATEST-VERSION-PIP -->", f"\tpip install git+https://github.
 change_pyproject_version(version)
 change_init(version)
 
-exit(0)
-
 # commit the changed files
 os.system("git add .")
 os.system(f'git commit -m "bump version to {version}"')
