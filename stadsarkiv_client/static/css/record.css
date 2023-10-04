@@ -65,6 +65,7 @@ h3.record-header {
     margin-bottom: 1rem;
     flex-wrap: nowrap;
     align-items: flex-start;
+    gap: 10px;
 }
 
 
@@ -81,6 +82,7 @@ h3.record-header {
 @media (max-width: 576px) {
     .record-content {
         flex-direction: column;
+        gap: unset;
     }
     .record-content>.label {
         width: 100%;
