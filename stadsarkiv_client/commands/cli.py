@@ -74,7 +74,7 @@ def server_docker(port: int, workers: int, host: str, config_dir: str):
 @click.option("--workers", default=1, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
 @click.option("--config-dir", default="local", help="Specify a local config directory.", required=False)
-@click.option("--reload", default=True, help="Specify a local config directory.", required=False)
+@click.option("--reload", default=True, help="Reload on changes", required=False)
 def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True):
     os.environ["CONFIG_DIR"] = config_dir
 
