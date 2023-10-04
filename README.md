@@ -65,7 +65,7 @@ Run server:
 
 Install latest version (or upgrade):
 <!-- LATEST-VERSION-START -->
-	pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.38
+	pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.39
 
 Uninstall:
 
