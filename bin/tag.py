@@ -75,10 +75,11 @@ if os.system("git diff-index --quiet HEAD --") != 0:
     sys.exit(1)
 
 change_readme("<!-- LATEST-VERSION-PIPX -->", f"\tpipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}\n")
-
 change_readme("<!-- LATEST-VERSION-PIP -->", f"\tpip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}\n")
 change_pyproject_version(version)
 change_init(version)
+
+exit(0)
 
 # commit the changed files
 os.system("git add .")
