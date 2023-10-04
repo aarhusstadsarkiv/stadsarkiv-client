@@ -50,7 +50,7 @@ Using virtualenv:
 
 Install latest version (or upgrade):
 <!-- LATEST-VERSION-START -->
-	pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.35
+	pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.36
 
 Uninstall:
 
