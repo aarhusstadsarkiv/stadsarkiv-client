@@ -1,5 +1,8 @@
 """
-This file reads command line arguments that may be used in the application.
+This file exposes get_local_config_dir() to the rest of the application.
+config-dir can be set on the command line with --config-dir
+It is then added to the environment. This function will return the value of CONFIG_DIR
+or "local" if it is not set.
 """
 
 import os
@@ -13,10 +16,9 @@ def get_local_config_dir(*sub_dirs: str) -> str:
     """
     Get a config dir from command line arguments.
     If it is not set, return "local".
-    If set check if it exists. If not just log a warning.
     """
     # Get env CONFIG_DIR from os
     local_config_dir = os.environ.get("CONFIG_DIR", "local")
 
-    # Use *sub_dirs to unpack the list of subdirectories
+    # Unpack the list of directories or files
     return os.path.join(local_config_dir, *sub_dirs)

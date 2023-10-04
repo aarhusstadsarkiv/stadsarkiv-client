@@ -30,7 +30,7 @@ settings: dict[str, typing.Any] = {
     "language": "da",
     "environment": os.getenv("ENVIRONMENT"),
     "log_level": log_level,
-    "log_handlers": ["stream", "file"],
+    "log_handlers": ["stream", "rotating_file"],
     "sentry_level": logging.INFO,
     "sentry_event_level": logging.WARNING,
     "cookie": {

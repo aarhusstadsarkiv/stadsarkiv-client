@@ -6,6 +6,7 @@ from typing import Any
 import logging
 import os
 from pathlib import Path
+from logging.handlers import RotatingFileHandler
 import warnings
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
@@ -32,6 +33,13 @@ def get_stream_handler(level: Any):
     ch.setLevel(level)
     ch.setFormatter(formatter)
     return ch
+
+
+def get_rotating_file_handler(level: Any):
+    handler = RotatingFileHandler("logs/main.log", maxBytes=10 * 1024 * 1024, backupCount=10)
+    handler.setLevel(level)
+    handler.setFormatter(formatter)
+    return handler
 
 
 def get_init_logger():
