@@ -32,13 +32,12 @@ def server_prod(port: int, workers: int, host: str, config_dir: str):
     os.environ["CONFIG_DIR"] = config_dir
 
     if os.name == "nt":
-        gunicorn_name = "gunicorn.exe"
-    else:
-        gunicorn_name = "./venv/bin/gunicorn"
+        print("Gunicorn does not work on Windows. Use server-dev instead.")
+        exit(1)
 
     cmd = [
         # Notice that this can not just be "gunicorn" as it is a new subprocess being started
-        gunicorn_name,
+        "./venv/bin/gunicorn",
         "stadsarkiv_client.app:app",
         f"--workers={workers}",
         f"--bind={host}:{port}",
