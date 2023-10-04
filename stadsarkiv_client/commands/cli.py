@@ -9,6 +9,7 @@ import os
 import signal
 import secrets
 import uvicorn
+import platform
 
 
 PID_FILE = "gunicorn_process.pid"
@@ -19,7 +20,7 @@ def cli():
     pass
 
 
-@cli.command(help="Start the production gunicorn server. Stop existing and start a new one.")
+@cli.command(help="Start the production gunicorn server. If running exit and restart.")
 @click.option("--port", default=5555, help="Server port.")
 @click.option("--workers", default=3, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
@@ -68,18 +69,19 @@ def server_docker(port: int, workers: int, host: str, config_dir: str):
     subprocess.call(cmd)
 
 
-@cli.command(help="Start the running Uvicorn dev-server.")
+@cli.command(help="Start the running Uvicorn dev-server. Notice: By default it watches for changes in current dir.")
 @click.option("--port", default=5555, help="Server port.")
 @click.option("--workers", default=1, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
 @click.option("--config-dir", default="local", help="Specify a local config directory.", required=False)
-def server_dev(port: int, workers: int, host: str, config_dir: str):
+@click.option("--reload", default=True, help="Specify a local config directory.", required=False)
+def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True):
     os.environ["CONFIG_DIR"] = config_dir
 
     if os.path.exists(PID_FILE):
         _stop_server(PID_FILE)
 
-    uvicorn.run("stadsarkiv_client.app:app", reload=True, port=port, workers=workers, host=host, log_level="debug")
+    uvicorn.run("stadsarkiv_client.app:app", reload=reload, port=port, workers=workers, host=host, log_level="debug")
 
 
 @cli.command(help="Stop the running Gunicorn server.")
@@ -103,9 +105,16 @@ def _stop_server(pid_file: str):
     if os.path.exists(pid_file):
         with open(pid_file, "r") as file:
             old_pid = int(file.read())
-            try:
-                os.kill(old_pid, signal.SIGTERM)
-                print(f"Killed old Gunicorn process with PID: {old_pid}")
-            except ProcessLookupError:
-                print(f"No process with PID {old_pid} found.")
+
+            if os.name == "nt":
+                try:
+                    os.kill(old_pid, signal.CTRL_BREAK_EVENT)  # type: ignore
+                except ProcessLookupError:
+                    print(f"No process with PID {old_pid} found.")
+            else:
+                try:
+                    os.kill(old_pid, signal.SIGTERM)
+                except ProcessLookupError:
+                    print(f"No process with PID {old_pid} found.")
+
             os.remove(pid_file)
