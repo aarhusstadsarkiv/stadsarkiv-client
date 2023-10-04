@@ -13,7 +13,7 @@ class Hooks(HooksSpec):
         """
         Alter the context dictionary. Before the context is returned to the template.
         """
-        context["meta_title"] = context["meta_title"] + " | AarhusArkivet"
+        context["meta_title"] = context["meta_title"] + " | Aarhus Teaters Arkiv"
 
         return context
 
@@ -39,15 +39,6 @@ class Hooks(HooksSpec):
         return query_params
 
     def after_record(self, record: dict) -> dict:
-        """
-        Alter the record dictionary after the api call
-        """
-        if is_collection(record, 1):
-            meta_title = f"[{record['summary'][:60]} ... ]"
-            record["meta_title"] = meta_title
-            record["record_type"] = "sejrs_sedler"
-            record["representation_text"] = record["summary"]
-            del record["summary"]
 
         if is_curator(record, 4):
             if record.get("summary"):
