@@ -110,7 +110,7 @@ You may override the default module using the following files and dirs:
     static/
 
 All the above files and dirs are optional. You may see examples of all the above files in the 
-[example-config directory](https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/example-config)
+[example-config directory](https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/example-config-simple)
 (These files are well documented)
 
 These files and dirs should be placed in the directory where you run the module from - otherwise they will be ignored.
