@@ -9,7 +9,6 @@ import os
 import signal
 import secrets
 import uvicorn
-import platform
 
 
 PID_FILE = "gunicorn_process.pid"

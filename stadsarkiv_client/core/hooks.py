@@ -8,7 +8,6 @@ hooks = HooksSpec()
 
 hooks_local = None
 try:
-
     module_name = get_local_config_dir() + ".hooks"
     submodule = importlib.import_module(module_name)
     HooksLocal = getattr(submodule, "Hooks")

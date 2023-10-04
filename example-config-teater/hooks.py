@@ -39,7 +39,6 @@ class Hooks(HooksSpec):
         return query_params
 
     def after_record(self, record: dict) -> dict:
-
         if is_curator(record, 4):
             if record.get("summary"):
                 title = record["summary"]
