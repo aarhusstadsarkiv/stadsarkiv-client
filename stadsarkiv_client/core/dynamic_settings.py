@@ -22,7 +22,7 @@ settings_local: dict = {}
 try:
     module_name = get_local_config_dir() + ".settings"
     submodule = importlib.import_module(module_name)
-    local_settings = getattr(submodule, "settings")
+    settings_local = getattr(submodule, "settings")
     log.debug(f"Loaded local settings file: {get_local_config_dir('settings.py')}")
 except ImportError:
     log.debug(f"Local settings file NOT loaded: {get_local_config_dir('settings.py')}")
