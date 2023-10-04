@@ -56,7 +56,6 @@ def server_prod(port: int, workers: int, host: str, config_dir: str):
 @click.option("--host", default="0.0.0.0", help="Server host.")
 @click.option("--config-dir", default="local", help="Specify a local config directory.", required=False)
 def server_docker(port: int, workers: int, host: str, config_dir: str):
-
     cmd = [
         "gunicorn",
         "stadsarkiv_client.app:app",
