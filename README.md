@@ -51,7 +51,7 @@ Install main branch:
 
 Install a tag: 
 <!-- LATEST-VERSION-PIPX -->
-    pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client.git@v1.1.38
+	pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.39
 
 Run server:
 
