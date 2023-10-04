@@ -47,11 +47,11 @@ Run black, mypy and flake8:
 
 Install main branch: 
     
-    pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client.git --include-deps  --force
+    pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client.git
 
 Install a tag: 
-
-    pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client.git@v1.1.38 --include-deps --force
+<!-- LATEST-VERSION-PIPX -->
+    pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client.git@v1.1.38
 
 Run server:
 
@@ -64,7 +64,7 @@ Run server:
     source venv/bin/activate
 
 Install latest version (or upgrade):
-<!-- LATEST-VERSION-START -->
+<!-- LATEST-VERSION-PIP -->
 	pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.39
 
 Uninstall:
