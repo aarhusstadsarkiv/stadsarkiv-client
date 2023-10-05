@@ -4,7 +4,6 @@ e.g. linkify strings, set outer years, etc.
 """
 
 from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.resources.resource_definitions import resource_definitions
 import re
 from urllib.parse import unquote
@@ -71,7 +70,7 @@ def set_latitude_longitude(data: dict):
     return data
 
 
-def set_creators_link_list(data: dict):
+def set_creators_link_list(data: dict, label: str):
     """
     Set creator_link field on dict.
     """
@@ -80,7 +79,7 @@ def set_creators_link_list(data: dict):
         value = [
             {
                 "search_query": f"creators={data['id_real']}",
-                "label": translate("See all records this creator has created"),
+                "label": label,
             }
         ]
         data["creators_link"] = value
@@ -88,7 +87,7 @@ def set_creators_link_list(data: dict):
     return data
 
 
-def set_collectors_link_list(data: dict):
+def set_collectors_link_list(data: dict, label: str):
     """
     Set collectors_link field on dict."""
 
@@ -96,7 +95,7 @@ def set_collectors_link_list(data: dict):
         value = [
             {
                 "search_query": f"collectors={data['id_real']}",
-                "label": translate("See all records this organization has collected"),
+                "label": label,
             }
         ]
         data["collectors_link"] = value
