@@ -1,21 +1,10 @@
 {% import "macros/common_fields.html" as common_fields %}
 
-{% macro parse_node(node) %}
-{% set label = node.label|trim %}
-{% set series = node.path|urlencode%}
-{% if not label %}
-{% set label = "Ingen titel" %}
-{% endif %}
-<a href="/search?organisation={{ organisation['id_real'] }}&series={{ series }}">{{ label }}</a>
-{% endmacro %}
-
 {% extends "base.html" %}
 
 {% block body_class %}organisations{% endblock %}
 
 {% block head %}
-
-<link rel="stylesheet" href="{{ url_for('static', path='/css/slideshow.css') }}?v={{ get_setting('version') }}">
 {% endblock head %}
 
 {% block content %}
