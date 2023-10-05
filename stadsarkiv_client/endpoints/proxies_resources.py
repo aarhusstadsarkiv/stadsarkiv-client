@@ -114,7 +114,7 @@ async def _get_organisations_view(request: Request):
     organisation = await api.proxies_get_resource(resource_type, id=id)
     title = organisation["display_label"]
     organisation["id_real"] = id
-    organisation = resource_alter.creators_alter(organisation)
+    organisation = resource_alter.organisations_alter(organisation)
 
     context_variables = {
         "title": title,
@@ -123,6 +123,24 @@ async def _get_organisations_view(request: Request):
 
     context = await get_context(request, context_variables)
     return templates.TemplateResponse("resources/organisations.html", context)
+
+
+async def _get_collectors_view(request: Request):
+    id = request.path_params["id"]
+    resource_type = request.path_params["resource_type"]
+
+    collector = await api.proxies_get_resource(resource_type, id=id)
+    title = collector["display_label"]
+    collector["id_real"] = id
+    collector = resource_alter.collectors_alter(collector)
+
+    context_variables = {
+        "title": title,
+        "collector": collector,
+    }
+
+    context = await get_context(request, context_variables)
+    return templates.TemplateResponse("resources/collectors.html", context)
 
 
 async def get_resources_view(request: Request):
@@ -145,6 +163,9 @@ async def get_resources_view(request: Request):
 
     elif resource_type == "organisations":
         return await _get_organisations_view(request)
+
+    elif resource_type == "collectors":
+        return await _get_collectors_view(request)
 
     raise HTTPException(status_code=404, detail="Resource type not found")
 
