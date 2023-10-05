@@ -381,7 +381,6 @@ async def proxies_get_resource(type: str, id: str) -> typing.Any:
 async def proxies_get_releations(id: str) -> typing.Any:
     async with httpx.AsyncClient() as client:
         url = f"https://openaws.appspot.com/relations?f_id={id}"
-        log.debug(url)
         response = await client.get(url)
 
         if response.is_success:
