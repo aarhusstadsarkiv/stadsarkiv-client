@@ -51,7 +51,7 @@ Install main branch:
 
 Install a tag: 
 <!-- LATEST-VERSION-PIPX -->
-	pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.42
+	pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.43
 
 Run server:
 
@@ -65,7 +65,7 @@ Run server:
 
 Install latest version (or upgrade):
 <!-- LATEST-VERSION-PIP -->
-	pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.42
+	pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.43
 
 Uninstall:
 
