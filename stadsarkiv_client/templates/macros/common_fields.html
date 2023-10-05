@@ -206,7 +206,6 @@
         {% set href = "/" + type + "/" + item['id'] %}
         {% set link = "<a href='%s'>%s</a>" | format(href, value) %}
 
-
         {{ parse_string(label, link|safe) }}
         {% endfor %}
     </div>
