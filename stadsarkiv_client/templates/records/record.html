@@ -31,9 +31,9 @@
 
 {% macro parse_representations_media(record) %}
 {% if record["record_type"] == 'image' %}
-    <img class="record-image" src="{{record['portrait']}}" alt="{{ section }}" />
-    <div id="overlay" class="overlay-hidden">
-        <img id="overlay-image" src="{{record['representations']['large_image']}}" alt="Large Image">
+    <img class="record-image" src="{{record['portrait']}}" alt="{{ translate('Image') }}" />
+    <div class="overlay overlay-hidden">
+        <img id="overlay-image" src="{{record['representations']['large_image']}}" alt="{{ translate('Large Image') }}">
     </div>
 {% endif %}
 
@@ -128,6 +128,11 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
+<script type="module">
+    import {  } from "/static/js/record.js";
+    import { activateOverlay } from "/static/js/overlay.js";
+    activateOverlay('.record-representation');
+</script>
 {% endblock head %}
 
 {% block content %}
@@ -179,9 +184,5 @@
 </div>
 
 {% endif %}
-
-<script type="module">
-    import {  } from "/static/js/record.js";
-</script>
 
 {% endblock content %}
