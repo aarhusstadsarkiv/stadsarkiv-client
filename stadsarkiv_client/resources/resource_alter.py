@@ -5,6 +5,7 @@ e.g. set sources_normalized, set outer years, etc.
 
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.resources import normalize_fields
+from stadsarkiv_client.core.translate import translate
 
 
 log = get_log()
@@ -46,9 +47,30 @@ def organisations_alter(organisation: dict):
     return organisation
 
 
+def collectors_alter(collector: dict):
+    collector = normalize_fields.set_collectors_link_list(collector, translate("See all records this person has collected"))
+    collector = normalize_fields.set_creators_link_list(collector, translate("See all records this person has created"))
+    collector = normalize_fields.set_sources_normalized(collector)
+    # organisation = normalize_fields.set_outer_years(organisation)
+    collector = normalize_fields.get_resource_and_types(collector)
+
+    # These are either string_list or link_list.
+    string_list_or_link_list = [
+        "collectors",
+        "curators",
+    ]
+
+    for elem in string_list_or_link_list:
+        if elem in collector:
+            collector[elem] = normalize_fields.get_string_or_link_list(elem, collector[elem])
+
+    return collector
+
+
 def creators_alter(creator: dict):
-    creator = normalize_fields.set_collectors_link_list(creator)
-    creator = normalize_fields.set_creators_link_list(creator)
+    # FIX: Translation
+    creator = normalize_fields.set_collectors_link_list(creator, translate("See all records this person has collected"))
+    creator = normalize_fields.set_creators_link_list(creator, translate("See all records this person has collected"))
     creator = normalize_fields.set_sources_normalized(creator)
     creator = normalize_fields.get_resource_and_types(creator)
     return creator

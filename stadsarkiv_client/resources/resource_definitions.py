@@ -49,4 +49,6 @@ resource_definitions = {
     # events
     "ext_data": {"type": "key_value_dict"},
     "event_type": {"type": "string_list"},
+    # collectors
+    "portrait": {"type": "image"},
 }
