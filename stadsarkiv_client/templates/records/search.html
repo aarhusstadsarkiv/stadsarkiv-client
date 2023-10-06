@@ -33,7 +33,7 @@
     {% for facet in facets_content %}
     <li>
         {% if 'children' in facet and facet["count"] %}
-        <details data-id="{{ facet['id'] }}">
+        <details data-id="{{top_level_key }}-{{ facet['id'] }}">
             <summary class="facets-clickable">
                 {{ parse_facet_link(top_level_key, facet) }}
             </summary>
@@ -90,7 +90,7 @@
 
         {% if type == 'default' %}
         <li>
-            <details data-id="{{ top_level_key }}">
+            <details data-id="{{ top_level_key }}-0">
                 <summary class="facets-clickable">
                     {{ top_level_value['label'] }}
                 </summary>
