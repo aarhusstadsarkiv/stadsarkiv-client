@@ -183,6 +183,7 @@ async def get_records_search(request: Request):
 
     search_cookie_value = {
         # Use site specific query params set before search
+        "query_str_display": query_str_display,
         "query_params": query_params_before_search,
         "total": pagination_data["total"],
         "q": q,
