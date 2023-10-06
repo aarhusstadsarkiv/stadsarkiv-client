@@ -35,7 +35,7 @@
     <a href="/search?creators={{ creator['id_real'] }}">Vis alle resultater i samlingen</a>
 </p>
 
-{% set keys = ["collectors_link", "creators_link", "firstnames", "lastnames", "gender", "occupation", "date_from", "date_to", "industry"] %}
+{% set keys = ["collectors_link", "creators_link", "firstnames", "lastnames", "gender", "occupation", "date_created", "date_decommissioned", "industry"] %}
 {{ common_fields.parse_block_common('Stamdata', keys, creator) }}
 
 {% set keys = [ "description"] %}

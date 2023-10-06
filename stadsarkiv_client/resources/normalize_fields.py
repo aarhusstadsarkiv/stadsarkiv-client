@@ -5,6 +5,7 @@ e.g. linkify strings, set outer years, etc.
 
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.resources.resource_definitions import resource_definitions
+from stadsarkiv_client.core.translate import translate
 import re
 from urllib.parse import unquote
 
@@ -56,6 +57,16 @@ def set_outer_years(data: dict):
     return data
 
 
+def set_created_decommissioned(data: dict):
+    """
+    copy date_from to date_created and date_to to date_decommissioned
+    """
+    data["date_created"] = data["date_from"]
+    data["date_decommissioned"] = data["date_to"]
+
+    return data
+
+
 def set_latitude_longitude(data: dict):
     """
     Set 'latitude_longitude_normalized' field on dict
@@ -70,10 +81,16 @@ def set_latitude_longitude(data: dict):
     return data
 
 
-def set_creators_link_list(data: dict, label: str):
+def set_creators_link_list(data: dict, schema):
     """
     Set creator_link field on dict.
     """
+
+    label = translate("See all records this creator has created")
+    if schema == "person":
+        label = translate("See all records this creator has created")
+    if schema == "organisation":
+        label = translate("See all records this organization has created")
 
     if "is_creator" in data and data["is_creator"]:
         value = [
@@ -87,9 +104,15 @@ def set_creators_link_list(data: dict, label: str):
     return data
 
 
-def set_collectors_link_list(data: dict, label: str):
+def set_collectors_link_list(data: dict, schema):
     """
     Set collectors_link field on dict."""
+
+    label = translate("See all records this collector has collected")
+    if schema == "person":
+        label = translate("See all records this creator has collected")
+    if schema == "organisation":
+        label = translate("See all records this organization has collected")
 
     if "is_creator" in data and data["is_creative_creator"]:
         value = [

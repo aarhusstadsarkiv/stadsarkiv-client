@@ -2,14 +2,21 @@
 
 {% import "macros/common_fields.html" as common_fields %}
 
-{% macro parse_portrait_image(key, value) %}
+{% macro parse_portrait_image(data) %}
 {# used for displaying a single image #}
-{% set image = value['value'][0] %}
-<div class="record-representation">    
+
+
+<div class="record-representation">
+{% if data["portrait"] %}
+{% set image = data["portrait"]['value'][0] %}  
     <img class="record-image" src="{{ image }}" alt="{{ translate('Image') }}" />
     <div class="overlay overlay-hidden">
         <img src="{{ image }}" alt="{{ translate('Large Image') }}">
     </div>
+{% else%}
+    {{ common_fields.parse_icon('inventory_2', 'Arkiv')}}
+
+{% endif %}
 </div>
 
 {% endmacro %}
@@ -17,11 +24,7 @@
 {% macro parse_block_first(title, block_keys, data) %}
 {% if key_exist_in_dict(block_keys, data) %}
 <div class="record-section">
-
-    {% if data['portrait'] %}
-    {{ parse_portrait_image("Portrait", data['portrait']) }}
-    {% endif %}
-
+    {{ parse_portrait_image(data) }}
     <div class="record-main">
         <h3 class="record-header">{{ title }}</h3>
         {% for key in block_keys %}
@@ -39,7 +42,6 @@
 {% block body_class %}collectors{% endblock %}
 
 {% block head %}
-
 <link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
 <script type="module">
     import { activateOverlay } from "/static/js/overlay.js";
@@ -51,12 +53,8 @@
 
 {% include "includes/main_title.html" %}
 
-<p>
-    <a href="/search?collector={{ collector['id_real'] }}">Vis alle resultater i samlingen</a>
-</p>
-
 {#  "date_from", "date_to" In this case it is birthdate and deathdate - not used #}
-{% set keys = ["portrait", "collectors_link", "creators_link", "firstnames", "lastnames", "gender", "place_of_birth", "place_of_death", "occupation", "industry"] %}
+{% set keys = ["portrait", "collectors_link", "creators_link", "date_created", "date_decommissioned", "firstnames", "lastnames", "gender", "place_of_birth", "place_of_death", "occupation", "industry"] %}
 {{ parse_block_first('Stamdata', keys, collector) }}
 
 {% set keys = ["summary", "description", "content_and_scope"] %}

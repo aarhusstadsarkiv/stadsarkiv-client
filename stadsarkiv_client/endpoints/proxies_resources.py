@@ -94,6 +94,7 @@ async def _get_creators_view(request: Request):
     resource_type = request.path_params["resource_type"]
 
     creator = await api.proxies_get_resource(resource_type, id=id)
+
     title = creator["display_label"]
     creator["id_real"] = id
     creator = resource_alter.creators_alter(creator)

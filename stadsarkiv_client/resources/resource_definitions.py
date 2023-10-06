@@ -51,4 +51,6 @@ resource_definitions = {
     "event_type": {"type": "string_list"},
     # collectors
     "portrait": {"type": "image"},
+    "date_created": {"type": "string"},
+    "date_decommissioned": {"type": "string"},
 }
