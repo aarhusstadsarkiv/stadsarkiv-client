@@ -42,7 +42,6 @@ Run black, mypy and flake8:
 
 ## Install as requirement
 
-
 ### Using pipx
 
 Install main branch: 
@@ -53,9 +52,15 @@ Install a tag:
 <!-- LATEST-VERSION-PIPX -->
 	pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.47
 
-Run server:
+Run dev server:
 
-    server-dev --config-dir example-config
+Default:
+
+    stadsarkiv-client server-dev
+
+With some config dir: 
+
+    stadsarkiv-client server-dev -c example-config
 
 ### Using virtualenv:
 
