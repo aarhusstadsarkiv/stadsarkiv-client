@@ -58,7 +58,7 @@ Default:
 
     stadsarkiv-client server-dev
 
-With some config dir: 
+With some config dir `example-config`: 
 
     stadsarkiv-client server-dev -c example-config
 
