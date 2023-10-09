@@ -28,6 +28,7 @@ setup(
             "server-dev = stadsarkiv_client.commands.cli:server_dev",
             "server-stop = stadsarkiv_client.commands.cli:server_stop",
             "server-generate-secret = stadsarkiv_client.commands.cli:server_secret",
+            "stadsarkiv-client = stadsarkiv_client.commands.cli:cli",
         ],
     },
     classifiers=[
