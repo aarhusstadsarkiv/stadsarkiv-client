@@ -54,7 +54,6 @@ def collectors_alter(collector: dict):
     collector = normalize_fields.set_collectors_link_list(collector, schema)
     collector = normalize_fields.set_creators_link_list(collector, schema)
     collector = normalize_fields.set_sources_normalized(collector)
-    # collector = normalize_fields.set_outer_years(collector)
     collector = normalize_fields.get_resource_and_types(collector)
 
     # These are either string_list or link_list.
