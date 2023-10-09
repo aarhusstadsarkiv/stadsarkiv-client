@@ -218,7 +218,9 @@
 {% if resource.relations %}
     {% set relations = resource.relations %}
     {% for section in relations %}
+        {% if section['data'] %}
         {{ parse_relation_section(type, section['label'],section["data"]) }}
+        {% endif %}
     {% endfor %}
 {% endif %}
 {% endmacro %}
