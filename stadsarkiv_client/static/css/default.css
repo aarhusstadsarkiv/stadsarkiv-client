@@ -155,6 +155,7 @@
 .container-left {
     min-width: 350px;
     margin-left: 20px;
+    max-width: 350px;
 }
 
 .container-main-center {
