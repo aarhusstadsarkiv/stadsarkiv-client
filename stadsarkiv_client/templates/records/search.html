@@ -223,7 +223,7 @@
 </div>
 {% endmacro %}
 
-{% macro pagination_total(pagination_data) %}
+{% macro parse_pagination_total(pagination_data) %}
 {% set total = pagination_data["total"] %}
 <div class="pagination-total">
     {% if total == 0 %}
@@ -244,6 +244,7 @@
 {% set total_pages = pagination_data["total_pages"] %}
 {% set current_page = pagination_data["current_page"] %}
 
+{% if pagination_data["total"] > pagination_data["size"] * pagination_data["current_page"] %}
 <div class="pagination">
     <div class="pagination-pages">
         {% if current_page > 1 %}
@@ -263,6 +264,7 @@
             {% endif %}
     </div>
 </div>
+{% endif %}
 {% endmacro %}
 
 {% macro parse_search_result(search_result) %}
@@ -352,12 +354,10 @@
     <div class="container-main-facets">
         {{ parse_top_level_facets(facets, 'facets', 'search-date-main') }}
     </div>
-    {{ pagination_total(pagination_data) }}
+    {{ parse_pagination_total(pagination_data) }}
     {{ parse_pagination(pagination_data) }}
     {{ parse_search_result(search_result) }}
-    {% if pagination_data["total"] > pagination_data["size"] * pagination_data["current_page"] %}
     {{ parse_pagination(pagination_data) }}
-    {% endif %}
     {% if get_setting('debug') %}
     <p>
         <a href="/search/json?{{ query_str_search }}">JSON</a>
