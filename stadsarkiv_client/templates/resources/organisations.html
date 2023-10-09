@@ -12,11 +12,11 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?organisation={{ organisation['id_real'] }}">Vis alle resultater i samlingen</a>
+    <a href="/search?organisations={{ organisation['id_real'] }}">Vis alle resultater i samlingen</a>
 </p>
 
-{% set keys = ['collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}
-{{ common_fields.parse_block_common("Stamdata", keys) }}
+{% set keys = ['collectors_link', 'creators_link', 'collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}
+{{ common_fields.parse_block_common("Stamdata", keys, organisation) }}
 
 {% set keys = ["summary", "description", "content_and_scope"] %}
 {{ common_fields.parse_block_common('Abstrakt', keys, organisation) }}
@@ -33,8 +33,8 @@
 {% if get_setting('debug') %}
 <div class="record-section">
     <div class="record-main">
-    <h3 class="record-header">Metadata</h3>
-    <p><a href="/organisations/{{ organisation['id_real'] }}/json">JSON</a></p>
+        <h3 class="record-header">Metadata</h3>
+        <p><a href="/organisations/{{ organisation['id_real'] }}/json">JSON</a></p>
     </div>
 </div>
 {% endif %}
