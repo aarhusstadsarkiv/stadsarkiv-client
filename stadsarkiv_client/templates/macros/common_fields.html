@@ -4,7 +4,7 @@
 {% macro parse_record_label (label) %}
 <div class="label">
     {% if settings.skip_translate %}
-    {{ label }}
+    {{ translate(label, translation_add_key = false) }}
     {% else %}
     {% set label = "label_record_" + label %}
     {{ translate(label) }}

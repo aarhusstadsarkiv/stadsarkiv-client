@@ -69,25 +69,25 @@ def _save_file_dict(lang) -> None:
             f.write(file_contents_da)
 
 
-def translate(key: str) -> str:
+def translate(key: str, translation_add_key=True) -> str:
     translation = ""
 
     # Add key to language files if not exists
-    if key not in da:
+    if key not in da and translation_add_key:
         _add_key_language_file("da", key)
 
-    if key not in en:
+    if key not in en and translation_add_key:
         _add_key_language_file("en", key)
 
     # If local language file exists, use that. Else use default language
     if settings["language"] == "da":
         translation = _get_translation_override(key)
         if not translation:
-            translation = da[key]
+            translation = da.get(key, key)
 
     if settings["language"] == "en":
         translation = _get_translation_override(key)
         if not translation:
-            translation = en[key]
+            translation = en.get(key, key)
 
     return translation
