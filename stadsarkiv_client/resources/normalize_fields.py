@@ -61,8 +61,11 @@ def set_created_decommissioned(data: dict):
     """
     copy date_from to date_created and date_to to date_decommissioned
     """
-    data["date_created"] = data["date_from"]
-    data["date_decommissioned"] = data["date_to"]
+    if "date_from" in data:
+        data["date_created"] = data["date_from"]
+
+    if "date_to" in data:
+        data["date_decommissioned"] = data["date_to"]
 
     return data
 
