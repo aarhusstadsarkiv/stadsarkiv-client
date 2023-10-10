@@ -238,3 +238,36 @@
 </div>
 {% endif %}
 {% endmacro %}
+
+{% macro _parse_portrait_image(data, icon) %}
+
+{% if data["portrait"] %}
+{% set image = data["portrait"]['value'][0] %}
+<div class="record-representation">
+    <img class="record-image" src="{{ image }}" alt="{{ translate('Image') }}" />
+    <div class="overlay overlay-hidden">
+        <img src="{{ image }}" alt="{{ translate('Large Image') }}">
+    </div>
+</div>
+{% elif icon %}
+<div class="record-representation">
+    {{ parse_icon(icon)}}
+</div>
+{% endif %}
+{% endmacro %}
+
+{% macro parse_image_block(title, block_keys, data, icon) %}
+{% if key_exist_in_dict(block_keys, data) %}
+<div class="record-section">
+    {{ _parse_portrait_image(data, icon) }}
+    <div class="record-main">
+        <h3 class="record-header">{{ title }}</h3>
+        {% for key in block_keys %}
+        {% if key in data %}
+        {{ parse_block_section(data[key]) }}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div> 
+{% endif %}
+{% endmacro %}
