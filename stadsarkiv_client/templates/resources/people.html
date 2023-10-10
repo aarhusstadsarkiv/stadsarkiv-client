@@ -4,6 +4,14 @@
 
 {% block body_class %}people{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
+<script type="module">
+    import { activateOverlay } from "/static/js/overlay.js";
+    activateOverlay('.record-representation');
+</script>
+{% endblock head %}
+
 {% block content %}
 
 {% include "includes/main_title.html" %}
@@ -13,19 +21,20 @@
 </p>
 
 {% set keys = ["firstnames", "lastnames", "gender", "date_of_birth", "place_of_birth", "date_of_death", "place_of_death", "occupation"] %}
-{{ common_fields.parse_block_common('Stamdata', keys, people) }}
+{{ common_fields.parse_image_block('Stamdata', keys, people) }}
+
+{% set keys = ["description"] %}
+{{ common_fields.parse_block_common('Beskrivelse', keys, people) }}
 
 {% set keys = ["sources_normalized"] %}
 {{ common_fields.parse_block_common('Kilder', keys, people) }}
 
+{% set keys = ["ext_data"] %}
+{{ common_fields.parse_block_common('Udvidet data', keys, people) }}
+
 {{ common_fields.parse_relations('events', people) }}
 
-{% if get_setting('debug') %}
-<div class="record-section">
-    <div class="record-main">
-    <h3 class="record-header">Metadata</h3>
-    <p><a href="/people/{{ people['id_real'] }}/json">JSON</a></p>
-    </div>
-</div>
-{% endif %}
+{% set meta_links = [{"url": "/people/" + people['id_real'] + "/json", "label": "JSON" }] %}
+{{ common_fields.parse_meta_section(meta_links) }}
+
 {% endblock content %}
