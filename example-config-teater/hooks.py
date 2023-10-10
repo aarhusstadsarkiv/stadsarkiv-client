@@ -60,6 +60,22 @@ class Hooks(HooksSpec):
 
         id = json["id"]
 
+        """
+        'ext_data': {
+            'season': '1970-1971',
+            'playwright': 'Micheal MacLiammoir',
+            'original_id': '3701',
+            'stagename': 'Store Scene',
+            'production': 'Gæstespil fra Det danske Teater'
+            }
+        """
+        if "ext_data" in json:
+            ext_data = json["ext_data"]
+            for key in ext_data:
+                json["ext_data_" + key] = ext_data[key]
+
+        log.debug(f"after_get_resource: {type} {id} {json}")
+
         relations = await api.proxies_get_releations(id)
         relations_formatted = format_relations(type, relations)
         if type == "people":
