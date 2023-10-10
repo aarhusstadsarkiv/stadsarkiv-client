@@ -4,6 +4,14 @@
 
 {% block body_class %}events{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
+<script type="module">
+    import { activateOverlay } from "/static/js/overlay.js";
+    activateOverlay('.record-representation');
+</script>
+{% endblock head %}
+
 {% block content %}
 
 {% include "includes/main_title.html" %}
@@ -15,7 +23,8 @@
 {% set keys = [
     "id", "ext_data_season", "ext_data_stagename", "date_from_premier", "ext_data_playwright", "ext_data_original_id", 
     "ext_data_production", "event_type", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area"] %}
-{{ common_fields.parse_block_common('Stamdata', keys, event) }}
+
+{{ common_fields.parse_image_block('Stamdata', keys, event) }}
 
 {% set keys = [ "ext_data_arkiv_id", "ext_data_number_of_performances"] %}
 {{ common_fields.parse_block_common('Beskrivelse', keys, event) }}

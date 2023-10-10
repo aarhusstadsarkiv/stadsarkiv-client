@@ -28,8 +28,8 @@ class Hooks(HooksSpec):
         query_params.append(("curators", "4"))
 
         # Remove all collections from the query params and add collection (7)
-        query_params = [(key, value) for key, value in query_params if key != "collection"]
-        query_params.append(("collection", "7"))
+        # query_params = [(key, value) for key, value in query_params if key != "collection"]
+        # query_params.append(("collection", "7"))
 
         return query_params
 
@@ -40,7 +40,7 @@ class Hooks(HooksSpec):
         This is done to avoid that the curator added in the before_search method is added to filters and search cookie.
         """
         query_params = [(key, value) for key, value in query_params if key != "curators"]
-        query_params = [(key, value) for key, value in query_params if key != "collection"]
+        # query_params = [(key, value) for key, value in query_params if key != "collection"]
 
         return query_params
 
