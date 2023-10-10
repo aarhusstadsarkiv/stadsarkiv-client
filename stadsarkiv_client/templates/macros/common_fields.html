@@ -6,7 +6,7 @@
     {% if settings.skip_translate %}
     {{ translate(label, translation_add_key = false) }}
     {% else %}
-    {% set label = "label_record_" + label %}
+    {% set label = "label_" + label %}
     {{ translate(label) }}
     {% endif %}
 </div>
@@ -222,5 +222,19 @@
         {{ parse_relation_section(type, section['label'],section["data"]) }}
         {% endif %}
     {% endfor %}
+{% endif %}
+{% endmacro %}
+
+{% macro parse_meta_section(links) %}
+
+{% if get_setting('debug') %}
+<div class="record-section">
+    <div class="record-main">
+        <h3 class="record-header">Metadata</h3>
+        {% for link in links %}
+        <p><a href="{{ link['url'] }}">{{ link['label'] }}</a></p>
+        {% endfor %}
+    </div>
+</div>
 {% endif %}
 {% endmacro %}
