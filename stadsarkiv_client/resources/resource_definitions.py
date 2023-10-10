@@ -47,8 +47,14 @@ resource_definitions = {
     "parish": {"type": "string"},
     "rotation": {"type": "string"},
     # events
-    "ext_data": {"type": "key_value_dict"},
     "event_type": {"type": "string_list"},
+    "ext_data": {"type": "key_value_dict"},
+    # specific for teaterarkivet
+    "ext_data_season": {"type": "string"},
+    "ext_data_playwright": {"type": "string"},
+    "ext_data_original_id": {"type": "string"},
+    "ext_data_stagename": {"type": "string"},
+    "ext_data_production": {"type": "string"},
     # collectors
     "portrait": {"type": "image"},
     "date_created": {"type": "string"},
