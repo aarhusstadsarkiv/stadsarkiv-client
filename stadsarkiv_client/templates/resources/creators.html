@@ -1,26 +1,3 @@
-{#
-    "addr_nr": "3",
-    "alt_names": [
-      "Vor Frue Kirke"
-    ],
-    "description": "Frue Kirkeplads 3 / Vestergade 21",
-    "display_label": "Frue Kirkeplads 3",
-    "domain": "creators",
-    "id": "000024421",
-    "latitude": 56.15806561,
-    "local_area": "City",
-    "longitude": 10.20479614,
-    "name": "Frue Kirkeplads",
-    "parish": "Vor Frue",
-    "rotation": 84.0,
-    "schema": "address",
-    "sources": [
-      "http://aarhuswiki.dk/wiki/Vor_Frue_Kirke"
-    ],
-    "version_nr": 1,
-    "zipcode": "8000"
-#}
-
 {% import "macros/common_fields.html" as common_fields %}
 
 {% extends "base.html" %}
@@ -44,12 +21,7 @@
 {% set keys = ["sources_normalized"] %}
 {{ common_fields.parse_block_common('Kilder', keys, creator) }}
 
-{% if get_setting('debug') %}
-<div class="record-section">
-    <div class="record-main">
-    <h3 class="record-header">Metadata</h3>
-    <p><a href="/creators/{{ creator['id_real'] }}/json">JSON</a></p>
-    </div>
-</div>
-{% endif %}
+{% set meta_links = [{"url": "/creators/" + creator['id_real'] + "/json", "label": "JSON" }] %}
+{{ common_fields.parse_meta_section(meta_links) }}
+
 {% endblock content %}
