@@ -69,12 +69,14 @@ class Hooks(HooksSpec):
             'production': 'Gæstespil fra Det danske Teater'
             }
         """
+
         if "ext_data" in json:
             ext_data = json["ext_data"]
             for key in ext_data:
                 json["ext_data_" + key] = ext_data[key]
 
-        log.debug(f"after_get_resource: {type} {id} {json}")
+        if type == "events" and "date_from" in json:
+            json["date_from_premier"] = json["date_from"]
 
         relations = await api.proxies_get_releations(id)
         relations_formatted = format_relations(type, relations)
