@@ -26,12 +26,7 @@
 
 {{ common_fields.parse_relations('people', event) }}
 
-{% if get_setting('debug') %}
-<div class="record-section">
-    <div class="record-main">
-    <h3 class="record-header">Metadata</h3>
-    <p><a href="/events/{{ event['id_real'] }}/json">JSON</a></p>
-    </div>
-</div>
-{% endif %}
+{% set meta_links = [{"url": "/events/" + event['id_real'] + "/json", "label": "JSON" }] %}
+{{ common_fields.parse_meta_section(meta_links) }}
+
 {% endblock content %}
