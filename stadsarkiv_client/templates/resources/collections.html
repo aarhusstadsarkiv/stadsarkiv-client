@@ -55,7 +55,7 @@
     </div>
     {% else %}
     <div class="record-representation">
-        {{ common_fields.parse_icon('inventory_2', 'Samling') }}
+        {{ common_fields.parse_icon('collection', 'Samling') }}
     </div>
     {% endif %}
     <div class="record-main">
@@ -127,12 +127,7 @@
 </div>
 {% endif %}
 
-{% if get_setting('debug') %}
-<div class="record-section">
-    <div class="record-main">
-    <h3 class="record-header">Metadata</h3>
-    <p><a href="/collections/{{ collection['id_real'] }}/json">JSON</a></p>
-    </div>
-</div>
-{% endif %}
+{% set meta_links = [{"url": "/collections/" + collection['id_real'] + "/json", "label": "JSON" }] %}
+{{ common_fields.parse_meta_section(meta_links) }}
+
 {% endblock content %}
