@@ -206,7 +206,7 @@
     {% if settings.skip_translate %}
     <strong>{{ label }} </strong>
     {% else %}
-    {% set label = "label_record_" + label %}
+    {% set label = "label_" + label %}
     <strong>{{ translate(label) }} </strong>
     {% endif %}
 </div>
