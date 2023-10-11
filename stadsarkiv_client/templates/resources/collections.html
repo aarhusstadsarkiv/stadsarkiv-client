@@ -1,4 +1,4 @@
-{% import "macros/common_fields.html" as common_fields %}
+{% import "macros/common_macros.html" as common_macros %}
 
 {% macro parse_node(node) %}
 {% set label = node.label|trim %}
@@ -55,13 +55,13 @@
     </div>
     {% else %}
     <div class="record-representation">
-        {{ common_fields.parse_icon('collection', 'Samling') }}
+        {{ common_macros.parse_icon('collection', 'Samling') }}
     </div>
     {% endif %}
     <div class="record-main">
         {% for key in block_keys %}
         {% if key in collection %}
-        {{ common_fields.parse_block_section(collection[key]) }}
+        {{ common_macros.parse_block_section(collection[key]) }}
         {% endif %}
         {% endfor %}
     </div>
@@ -90,16 +90,16 @@
 {{ parse_block_first(keys) }}
 
 {% set keys = ["summary", "description", "content_and_scope"] %}
-{{ common_fields.parse_block_common('Abstrakt', keys, collection) }}
+{{ common_macros.parse_block_common('Abstrakt', keys, collection) }}
 
 {% set keys = ["access", "legal_status", "level_of_digitisation", 'citation', 'associated_material'] %}
-{{ common_fields.parse_block_common('Tilgængelighed og brug', keys, collection) }}
+{{ common_macros.parse_block_common('Tilgængelighed og brug', keys, collection) }}
 
 {% set keys = ["custodial_history", "accumulation_range", "level_of_kassation", "accrual_status"] %}
-{{ common_fields.parse_block_common('Afleveringshistorik', keys, collection) }}
+{{ common_macros.parse_block_common('Afleveringshistorik', keys, collection) }}
 
 {% set keys = ["sources_normalized"] %}
-{{ common_fields.parse_block_common('Literatur og kilder', keys, collection) }}
+{{ common_macros.parse_block_common('Literatur og kilder', keys, collection) }}
 
 {% set keys = ["series"] %}
 {% if key_exist_in_dict(keys, collection) %}
@@ -128,6 +128,6 @@
 {% endif %}
 
 {% set meta_links = [{"url": "/collections/" + collection['id_real'] + "/json", "label": "JSON" }] %}
-{{ common_fields.parse_meta_block(meta_links) }}
+{{ common_macros.parse_meta_block(meta_links) }}
 
 {% endblock content %}

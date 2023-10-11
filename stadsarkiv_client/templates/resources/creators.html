@@ -1,4 +1,4 @@
-{% import "macros/common_fields.html" as common_fields %}
+{% import "macros/common_macros.html" as common_macros %}
 
 {% extends "base.html" %}
 
@@ -13,15 +13,15 @@
 </p>
 
 {% set keys = ["collectors_link", "creators_link", "firstnames", "lastnames", "gender", "occupation", "date_created", "date_decommissioned", "industry"] %}
-{{ common_fields.parse_block_common('Stamdata', keys, creator) }}
+{{ common_macros.parse_block_common('Stamdata', keys, creator) }}
 
 {% set keys = [ "description"] %}
-{{ common_fields.parse_block_common('Beskrivelse', keys, creator) }}
+{{ common_macros.parse_block_common('Beskrivelse', keys, creator) }}
 
 {% set keys = ["sources_normalized"] %}
-{{ common_fields.parse_block_common('Kilder', keys, creator) }}
+{{ common_macros.parse_block_common('Kilder', keys, creator) }}
 
 {% set meta_links = [{"url": "/creators/" + creator['id_real'] + "/json", "label": "JSON" }] %}
-{{ common_fields.parse_meta_block(meta_links) }}
+{{ common_macros.parse_meta_block(meta_links) }}
 
 {% endblock content %}

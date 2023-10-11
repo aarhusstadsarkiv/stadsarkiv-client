@@ -1,6 +1,6 @@
 
 
-{% import "macros/common_fields.html" as common_fields %}
+{% import "macros/common_macros.html" as common_macros %}
 
 {% extends "base.html" %}
 
@@ -20,21 +20,21 @@
 
 {#  "date_from", "date_to" In this case it is birthdate and deathdate - not used #}
 {% set keys = ["portrait", "collectors_link", "creators_link", "date_created", "date_decommissioned", "firstnames", "lastnames", "gender", "place_of_birth", "place_of_death", "occupation", "industry"] %}
-{{ common_fields.parse_image_block('Stamdata', keys, collector, 'collection') }}
+{{ common_macros.parse_image_block('Stamdata', keys, collector, 'collection') }}
 
 {% set keys = ["summary", "description", "content_and_scope"] %}
-{{ common_fields.parse_block_common('Abstrakt', keys, collector) }}
+{{ common_macros.parse_block_common('Abstrakt', keys, collector) }}
 
 {% set keys = ["access", "legal_status", "level_of_digitisation", 'citation', 'associated_material'] %}
-{{ common_fields.parse_block_common('Tilgængelighed og brug', keys, collector) }}
+{{ common_macros.parse_block_common('Tilgængelighed og brug', keys, collector) }}
 
 {% set keys = ["custodial_history", "accumulation_range", "level_of_kassation", "accrual_status"] %}
-{{ common_fields.parse_block_common('Afleveringshistorik', keys, collector) }}
+{{ common_macros.parse_block_common('Afleveringshistorik', keys, collector) }}
 
 {% set keys = ["sources_normalized"] %}
-{{ common_fields.parse_block_common('Literatur og kilder', keys, collector) }}
+{{ common_macros.parse_block_common('Literatur og kilder', keys, collector) }}
 
 {% set meta_links = [{"url": "/collectors/" + collector['id_real'] + "/json", "label": "JSON" }] %}
-{{ common_fields.parse_meta_block(meta_links) }}
+{{ common_macros.parse_meta_block(meta_links) }}
 
 {% endblock content %}

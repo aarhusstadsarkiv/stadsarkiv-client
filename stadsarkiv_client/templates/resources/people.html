@@ -1,4 +1,4 @@
-{% import "macros/common_fields.html" as common_fields %}
+{% import "macros/common_macros.html" as common_macros %}
 
 {% extends "base.html" %}
 
@@ -21,20 +21,20 @@
 </p>
 
 {% set keys = ["firstnames", "lastnames", "gender", "date_of_birth", "place_of_birth", "date_of_death", "place_of_death", "occupation"] %}
-{{ common_fields.parse_image_block('Stamdata', keys, people) }}
+{{ common_macros.parse_image_block('Stamdata', keys, people) }}
 
 {% set keys = ["description"] %}
-{{ common_fields.parse_block_common('Beskrivelse', keys, people) }}
+{{ common_macros.parse_block_common('Beskrivelse', keys, people) }}
 
 {% set keys = ["sources_normalized"] %}
-{{ common_fields.parse_block_common('Kilder', keys, people) }}
+{{ common_macros.parse_block_common('Kilder', keys, people) }}
 
 {% set keys = ["ext_data"] %}
-{{ common_fields.parse_block_common('Udvidet data', keys, people) }}
+{{ common_macros.parse_block_common('Udvidet data', keys, people) }}
 
-{{ common_fields.parse_relations('events', people) }}
+{{ common_macros.parse_relations('events', people) }}
 
 {% set meta_links = [{"url": "/people/" + people['id_real'] + "/json", "label": "JSON" }] %}
-{{ common_fields.parse_meta_block(meta_links) }}
+{{ common_macros.parse_meta_block(meta_links) }}
 
 {% endblock content %}

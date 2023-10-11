@@ -1,4 +1,4 @@
-{% import "macros/common_fields.html" as common_fields %}
+{% import "macros/common_macros.html" as common_macros %}
 
 {% extends "base.html" %}
 
@@ -16,21 +16,21 @@
 </p>
 
 {% set keys = ['collectors_link', 'creators_link', 'collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}
-{{ common_fields.parse_block_common("Stamdata", keys, organisation) }}
+{{ common_macros.parse_block_common("Stamdata", keys, organisation) }}
 
 {% set keys = ["summary", "description", "content_and_scope"] %}
-{{ common_fields.parse_block_common('Abstrakt', keys, organisation) }}
+{{ common_macros.parse_block_common('Abstrakt', keys, organisation) }}
 
 {% set keys = ["access", "legal_status", "level_of_digitisation", 'citation', 'associated_material'] %}
-{{ common_fields.parse_block_common('Tilgængelighed og brug', keys, organisation) }}
+{{ common_macros.parse_block_common('Tilgængelighed og brug', keys, organisation) }}
 
 {% set keys = ["custodial_history", "accumulation_range", "level_of_kassation", "accrual_status"] %}
-{{ common_fields.parse_block_common('Afleveringshistorik', keys, organisation) }}
+{{ common_macros.parse_block_common('Afleveringshistorik', keys, organisation) }}
 
 {% set keys = ["sources_normalized"] %}
-{{ common_fields.parse_block_common('Literatur og kilder', keys, organisation) }}
+{{ common_macros.parse_block_common('Literatur og kilder', keys, organisation) }}
 
 {% set meta_links = [{"url": "/organisations/" + organisation['id_real'] + "/json", "label": "JSON" }] %}
-{{ common_fields.parse_meta_block(meta_links) }}
+{{ common_macros.parse_meta_block(meta_links) }}
 
 {% endblock content %}
