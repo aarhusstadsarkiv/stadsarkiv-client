@@ -28,61 +28,61 @@
 {% endif %}
 {% endmacro %}
 
-{% macro _parse_representations_media(record) %}
-{% if record["record_type"] == 'image' %}
-    <img class="record-image" src="{{record['portrait']}}" alt="{{ translate('Image') }}" />
+{% macro _parse_representations_media(meta_data) %}
+{% if meta_data["record_type"] == 'image' %}
+    <img class="record-image" src="{{meta_data['portrait']}}" alt="{{ translate('Image') }}" />
     <div class="overlay overlay-hidden">
-        <img id="overlay-image" src="{{record['representations']['large_image']}}" alt="{{ translate('Large Image') }}">
+        <img id="overlay-image" src="{{meta_data['representations']['large_image']}}" alt="{{ translate('Large Image') }}">
     </div>
 {% endif %}
 
-{% if record["record_type"] == 'video' %}
-<video controls="" poster="{{ record.representations.get('record_image') }}" preload="metadata">
-    <source src="{{ record.representations.get('record_file') }}?{{ azure_allow_media_search }}" type="video/mp4" />
+{% if meta_data["record_type"] == 'video' %}
+<video controls="" poster="{{ meta_data.representations.get('record_image') }}" preload="metadata">
+    <source src="{{ meta_data.representations.get('record_file') }}?{{ azure_allow_media_search }}" type="video/mp4" />
     <p>This browser doesn't support video tag.</p>
 </video>
 {% endif %}
 
-{% if record["record_type"] == 'audio' %}
+{% if meta_data["record_type"] == 'audio' %}
 <figcaption>{{ translate('Click in order to listen to the audio.') }}</figcaption><br />
 <audio controls="" preload="metadata">
-    <source src="{{ record.representations.get('record_file') }}?{{ azure_allow_media_search }}" type="audio/mpeg" />
+    <source src="{{ meta_data.representations.get('record_file') }}?{{ azure_allow_media_search }}" type="audio/mpeg" />
     <p>This browser doesn't support the audio tag.</p>
 </audio>
 {% endif %}
 
-{% if record["record_type"] == 'web_document' %}
-<a href="{{record.representations.get('web_document_url')}}">
-    <img src="{{record.portrait}}" alt="{{ section }}" />
+{% if meta_data["record_type"] == 'web_document' %}
+<a href="{{meta_data.representations.get('web_document_url')}}">
+    <img src="{{meta_data.portrait}}" alt="{{ section }}" />
 </a>
 <p>
     {{ translate('Click on the image to open the PDF document.') }}
 </p>
 {% endif %}
 
-{% if record["record_type"] == 'sejrs_sedler' %}
-<div class="record-sejrs-sedler">{{ record['representation_text']|trim }}</div>
+{% if meta_data["record_type"] == 'sejrs_sedler' %}
+<div class="record-sejrs-sedler">{{ meta_data['representation_text']|trim }}</div>
 {% endif %}
 {% endmacro %}
 
-{% macro _parse_representations_block(record) %}
+{% macro _parse_representations_block(meta_data) %}
 <div class="record-representation">
-{% if record["is_representations_online"] %}
-{{ _parse_representations_media(record)}}
-{% elif record["availability_id"] == 3 %}
+{% if meta_data["is_representations_online"] %}
+{{ _parse_representations_media(meta_data)}}
+{% elif meta_data["availability_id"] == 3 %}
 {{ common_macros.parse_icon('lock', translate('The material is available in the reading room.'))}}
-{% elif record["availability_id"] == 2 %}
+{% elif meta_data["availability_id"] == 2 %}
 {{ common_macros.parse_icon('lock', translate('The material can be order home to the reading room.'))}}
 {% endif %}
 </div>
 {% endmacro %}
 
-{% macro _parse_representation_block(record) %}
-{% if record["has_representations"] %}
-{{ _parse_representations_block(record) }}
+{% macro _parse_representation_block(meta_data) %}
+{% if meta_data["has_representations"] %}
+{{ _parse_representations_block(meta_data) }}
 {% else %}
 <div class="record-representation">
-    {{ common_macros.parse_icon(record["icon"]["icon"], record["icon"]["label"]) }}
+    {{ common_macros.parse_icon(meta_data["icon"]["icon"], meta_data["icon"]["label"]) }}
 </div>
 {% endif %}
 {% endmacro %}
