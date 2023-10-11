@@ -29,24 +29,25 @@ class Hooks(HooksSpec):
         """
         return query_params
 
-    def after_record(self, record: dict) -> dict:
+    def after_get_record(self, record: dict, meta_data: dict) -> tuple:
         """
-        Alter the record dictionary after the api call
+        Alter the record and meta_data dictionaries after the api call
         """
         if is_collection(record, 1):
             meta_title = f"[{record['summary'][:60]} ... ]"
-            record["meta_title"] = meta_title
-            record["record_type"] = "sejrs_sedler"
-            record["representation_text"] = record["summary"]
+            meta_data["meta_title"] = meta_title
+            meta_data["record_type"] = "sejrs_sedler"
+
+            meta_data["representation_text"] = record["summary"]
             del record["summary"]
 
         if is_curator(record, 4):
             if record.get("summary"):
                 title = record["summary"]
-                record["title"] = f"[{title}]"
-                record["meta_title"] = f"[{title}]"
+                meta_data["title"] = f"[{title}]"
+                meta_data["meta_title"] = f"[{title}]"
 
-        return record
+        return record, meta_data
 
     async def after_get_resource(self, type: str, json: dict) -> dict:
         """

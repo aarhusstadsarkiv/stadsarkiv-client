@@ -14,11 +14,11 @@ class HooksSpec:
         """
         return context
 
-    def after_record(self, record: dict) -> dict:
+    def after_get_record(self, record: dict, meta_data: dict) -> tuple:
         """
-        Alter the record dictionary after the api call
+        Alter the record and meta_data dictionaries after the api call
         """
-        return record
+        return record, meta_data
 
     def before_search(self, query_params: list) -> list:
         """

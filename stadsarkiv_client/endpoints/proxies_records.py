@@ -109,9 +109,9 @@ async def get_record_view(request: Request):
     permissions = await api.me_permissions(request)
 
     record = await api.proxies_record_get_by_id(record_id)
-    record = hooks.after_record(record)
-
     meta_data = get_record_meta_data(request, record)
+
+    record, meta_data = hooks.after_get_record(record, meta_data)
 
     record_altered = record_alter.record_alter(request, record, meta_data)
     record_and_types = record_alter.get_record_and_types(record_altered)
@@ -135,9 +135,9 @@ async def get_record_view_json(request: Request):
         type = request.path_params["type"]
 
         record = await api.proxies_record_get_by_id(record_id)
-        record = hooks.after_record(record)
-
         meta_data = get_record_meta_data(request, record)
+
+        record, meta_data = hooks.after_get_record(record, meta_data)
 
         record_altered = record_alter.record_alter(request, record, meta_data)
         record_and_types = record_alter.get_record_and_types(record_altered)
