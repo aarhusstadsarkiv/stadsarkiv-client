@@ -1,8 +1,6 @@
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.records.record_utils import is_curator, is_collection
-from stadsarkiv_client.core import api
-from stadsarkiv_client.core.relations import format_relations, sort_data
 
 
 log = get_log()
@@ -46,7 +44,7 @@ class Hooks(HooksSpec):
             if record.get("summary"):
                 title = record["summary"]
                 record["title"] = f"[{title}]"
-                record["meta_title"] = f"[{title}"
+                record["meta_title"] = f"[{title}]"
 
         return record
 
