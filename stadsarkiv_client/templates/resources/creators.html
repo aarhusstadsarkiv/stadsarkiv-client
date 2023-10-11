@@ -22,6 +22,6 @@
 {{ common_fields.parse_block_common('Kilder', keys, creator) }}
 
 {% set meta_links = [{"url": "/creators/" + creator['id_real'] + "/json", "label": "JSON" }] %}
-{{ common_fields.parse_meta_section(meta_links) }}
+{{ common_fields.parse_meta_block(meta_links) }}
 
 {% endblock content %}

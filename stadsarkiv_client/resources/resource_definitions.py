@@ -57,6 +57,7 @@ resource_definitions = {
     "ext_data_production": {"type": "string"},
     "ext_data_arkiv_id": {"type": "string"},
     "ext_data_number_of_performances": {"type": "string"},
+    "ext_data_translater": {"type": "string"},
     "date_from_premier": {"type": "string"},
     # collectors
     "portrait": {"type": "image"},

@@ -26,7 +26,7 @@
 
 {{ common_fields.parse_image_block('Stamdata', keys, event) }}
 
-{% set keys = [ "ext_data_arkiv_id", "ext_data_number_of_performances"] %}
+{% set keys = ["ext_data_translater", "ext_data_arkiv_id", "ext_data_number_of_performances"] %}
 {{ common_fields.parse_block_common('Beskrivelse', keys, event) }}
 
 {% set keys = ["sources_normalized"] %}
@@ -35,6 +35,6 @@
 {{ common_fields.parse_relations('people', event) }}
 
 {% set meta_links = [{"url": "/events/" + event['id_real'] + "/json", "label": "JSON" }] %}
-{{ common_fields.parse_meta_section(meta_links) }}
+{{ common_fields.parse_meta_block(meta_links) }}
 
 {% endblock content %}

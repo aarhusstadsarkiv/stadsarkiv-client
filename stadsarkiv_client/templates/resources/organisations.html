@@ -31,6 +31,6 @@
 {{ common_fields.parse_block_common('Literatur og kilder', keys, organisation) }}
 
 {% set meta_links = [{"url": "/organisations/" + organisation['id_real'] + "/json", "label": "JSON" }] %}
-{{ common_fields.parse_meta_section(meta_links) }}
+{{ common_fields.parse_meta_block(meta_links) }}
 
 {% endblock content %}
