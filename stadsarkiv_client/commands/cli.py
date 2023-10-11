@@ -25,9 +25,7 @@ def cli():
 @click.option("--host", default="0.0.0.0", help="Server host.")
 @click.option("--config-dir", default="local", help="Specify a local config directory.", required=False)
 def server_prod(port: int, workers: int, host: str, config_dir: str):
-    # If PID file exists, try to kill the process
-    if os.path.exists(PID_FILE):
-        _stop_server(PID_FILE)
+    _stop_server(PID_FILE)
 
     os.environ["CONFIG_DIR"] = config_dir
 
@@ -50,12 +48,18 @@ def server_prod(port: int, workers: int, host: str, config_dir: str):
     print(f"Started Gunicorn in background with PID: {gunicorn_process.pid}")  # Print the PID for reference
 
 
+"""
+Docker command for starting the production gunicorn server.
+Notice: No config-dir option. If needed it should be set in the docker-compose.tml.
+Default is 'local'.
+"""
+
+
 @cli.command(help="Start the production docker gunicorn server when using docker.")
 @click.option("--port", default=5555, help="Server port.")
 @click.option("--workers", default=3, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
-@click.option("--config-dir", default="local", help="Specify a local config directory.", required=False)
-def server_docker(port: int, workers: int, host: str, config_dir: str):
+def server_docker(port: int, workers: int, host: str):
     cmd = [
         "gunicorn",
         "stadsarkiv_client.app:app",
@@ -76,17 +80,14 @@ def server_docker(port: int, workers: int, host: str, config_dir: str):
 @click.option("--reload", default=True, help="Reload on changes", required=False)
 def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True):
     os.environ["CONFIG_DIR"] = config_dir
-
-    if os.path.exists(PID_FILE):
-        _stop_server(PID_FILE)
+    _stop_server(PID_FILE)
 
     uvicorn.run("stadsarkiv_client.app:app", reload=reload, port=port, workers=workers, host=host, log_level="debug")
 
 
 @cli.command(help="Stop the running Gunicorn server.")
 def server_stop():
-    if os.path.exists(PID_FILE):
-        _stop_server(PID_FILE)
+    _stop_server(PID_FILE)
 
 
 @cli.command(help="Generate a session secret.")
