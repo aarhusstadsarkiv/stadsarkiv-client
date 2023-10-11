@@ -214,6 +214,7 @@ en = {
     "label_ext_data_production": "label_ext_data_production",
     "label_ext_data_season": "label_ext_data_season",
     "label_ext_data_stagename": "label_ext_data_stagename",
+    "label_ext_data_translater": "label_ext_data_translater",
     "label_extent": "label_extent",
     "label_firstnames": "label_firstnames",
     "label_formidlingsegnet": "label_formidlingsegnet",

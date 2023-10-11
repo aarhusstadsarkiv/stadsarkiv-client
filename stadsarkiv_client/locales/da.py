@@ -195,6 +195,7 @@ da = {
     "label_ext_data_production": "Produktion",
     "label_ext_data_season": "Sæson",
     "label_ext_data_stagename": "Scene",
+    "label_ext_data_translater": "Oversætter",
     "label_extent": "Omfang",
     "label_firstnames": "Fornavn(e)",
     "label_gender": "Køn",
