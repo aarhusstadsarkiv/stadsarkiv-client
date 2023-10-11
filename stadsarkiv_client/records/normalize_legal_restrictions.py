@@ -5,11 +5,11 @@ Normalize legal restrictions
 from stadsarkiv_client.core.translate import translate
 
 
-def normalize_legal_restrictions(record: dict):
+def normalize_legal_restrictions(record: dict, meta_data: dict):
     """Add legal_restrictions_normalized to record"""
 
     text = ""
-    legal_id = record["legal_id"]
+    legal_id = meta_data["legal_id"]
     if legal_id == 1:
         text = translate("legal_restrictions_id_1")
     elif legal_id == 2:

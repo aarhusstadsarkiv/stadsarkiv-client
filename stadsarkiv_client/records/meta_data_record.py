@@ -5,7 +5,6 @@ Get some usefull meta data for a record
 from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
 from stadsarkiv_client.core.hooks import get_hooks
-import typing
 
 
 hooks = get_hooks()
@@ -31,10 +30,13 @@ ICONS = {
 }
 
 
-def get_record_meta_data(request: Request, record: dict) -> dict[str, typing.Any]:
-    """Get usefull meta data for a record"""
+def get_record_meta_data(request: Request, record: dict) -> dict:
+    """
+    Get usefull meta data for a record
+    """
     meta_data = {}
 
+    meta_data["id"] = record["id"]
     meta_data["allowed_by_ip"] = _is_allowed_by_ip(request)
     meta_data["title"] = _get_record_title(record)
     meta_data["meta_title"] = _get_record_meta_title(record)
@@ -77,13 +79,13 @@ def _get_icon(record: dict):
         return ICONS["99"]
 
 
-def _is_downloadable(metadata: dict) -> bool:
+def _is_downloadable(meta_data: dict) -> bool:
     return (
-        metadata.get("representations", False)
-        and metadata["legal_id"] == 1
-        and metadata["contractual_id"] > 3
-        and metadata["usability_id"] in [1, 2, 3]
-        and metadata["record_type"] != "video"
+        meta_data.get("representations", False)
+        and meta_data["legal_id"] == 1
+        and meta_data["contractual_id"] > 3
+        and meta_data["usability_id"] in [1, 2, 3]
+        and meta_data["record_type"] != "video"
     )
 
 
@@ -102,7 +104,9 @@ def _get_record_title(record_dict: dict):
 def _set_representations(meta_data: dict, record: dict):
     meta_data["record_type"] = "unknown"
     if "representations" in record:
-        meta_data["record_type"] = record["representations"].get("record_type", "unknown")
+        meta_data["record_type"] = record["representations"].get("record_type")
+        meta_data["representations"] = record["representations"]
+        meta_data["portrait"] = record["portrait"]
 
     meta_data["has_representations"] = False
     if meta_data["legal_id"] == 1 and meta_data["contractual_id"] > 2:

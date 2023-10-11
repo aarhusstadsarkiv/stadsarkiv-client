@@ -1,13 +1,13 @@
 from stadsarkiv_client.core.translate import translate
 
 
-def normalize_availability(record: dict):
+def normalize_availability(record: dict, meta_data: dict):
     """
     Add availability_normalized to record
     """
-    legal_id = record["legal_id"]
-    contractual_id = record["contractual_id"]
-    availability_id = record["availability_id"]
+    legal_id = meta_data["legal_id"]
+    contractual_id = meta_data["contractual_id"]
+    availability_id = meta_data["availability_id"]
 
     output_text = translate("availability_common")
 

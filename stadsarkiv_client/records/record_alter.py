@@ -18,16 +18,16 @@ from starlette.requests import Request
 log = get_log()
 
 
-def record_alter(request: Request, record: dict):
+def record_alter(request: Request, record: dict, meta_data: dict):
     record = record.copy()
 
     record = normalize_record_data(record)
     record = normalize_abstract_dates(record)
-    record = normalize_copyright_status(record)
-    record = normalize_contractual_status(record)
-    record = normalize_legal_restrictions(record)
-    record = normalize_availability(record)
-    record = normalize_ordering(record)
+    record = normalize_copyright_status(record, meta_data)
+    record = normalize_contractual_status(record, meta_data)
+    record = normalize_legal_restrictions(record, meta_data)
+    record = normalize_availability(record, meta_data)
+    record = normalize_ordering(record, meta_data)
 
     return record
 
@@ -45,9 +45,8 @@ def get_record_and_types(record):
         try:
             definition = record_definitions[key]
             record_item["type"] = definition["type"]
+            record_altered[key] = record_item
         except KeyError:
-            record_item["type"] = "unknown"
-
-        record_altered[key] = record_item
+            pass
 
     return record_altered

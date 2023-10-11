@@ -9,11 +9,12 @@ from stadsarkiv_client.core.translate import translate
 log = get_log()
 
 
-def normalize_ordering(record: dict):
+def normalize_ordering(record: dict, meta_data: dict):
     """Add ordering to record"""
-    availability_id = record.get("availability_id", None)
-    legal_id = record.get("legal_id", None)
-    contractual_id = record.get("contractual_id", 0)
+    availability_id = meta_data.get("availability_id", None)
+    legal_id = meta_data.get("legal_id", None)
+    contractual_id = meta_data.get("contractual_id", 0)
+
     curators: list = record.get("curators", [])
 
     result = []

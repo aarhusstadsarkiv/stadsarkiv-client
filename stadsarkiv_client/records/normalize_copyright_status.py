@@ -13,9 +13,9 @@ creative_commons_license = translate("copyright_creative_commons_license")
 special_notice = translate("copyright_special_notice")
 
 
-def normalize_copyright_status(record: dict):
+def normalize_copyright_status(record: dict, meta_data: dict):
     """Add copyright_status_normalized to record"""
-    copyright_id = record["copyright_id"]
+    copyright_id = meta_data["copyright_id"]
 
     lines = []
     label = record["copyright_status"].get("label")

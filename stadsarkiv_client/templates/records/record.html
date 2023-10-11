@@ -32,7 +32,6 @@
 {% if record["record_type"] == 'image' %}
     <img class="record-image" src="{{record['portrait']}}" alt="{{ translate('Image') }}" />
     <div class="overlay overlay-hidden">
-        
         <img id="overlay-image" src="{{record['representations']['large_image']}}" alt="{{ translate('Large Image') }}">
     </div>
 {% endif %}
@@ -88,14 +87,14 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_block_first(block_keys, record_and_types) %}
+{% macro parse_block_first(block_keys, meta_data, record_and_types) %}
 {% if key_exist_in_dict(block_keys, record_and_types) %}
 <div class="record-section">
-    {{ _parse_representation_block(record_altered) }}
+    {{ _parse_representation_block(meta_data) }}
 
     <div class="record-main">
-        {% if record_altered["title"] %}
-        <div class="record-title">{{ record_altered["title"] }}</div>
+        {% if meta_data["title"] %}
+        <div class="record-title">{{ meta_data["title"] }}</div>
         {% endif %}
         {% for key in block_keys %}
         {% if key in record_and_types %}
@@ -103,7 +102,7 @@
         {% endif %}
         {% endfor %}
     </div>
-</div> 
+</div>
 {% endif %}
 {% endmacro %}
 
@@ -125,7 +124,7 @@
 {{ parse_record_pagination(record_pagination) }}
 
 {% set keys = ["collectors", "content_types", "creators", "date_normalized", "curators", "id"] %}
-{{ parse_block_first(keys, record_and_types) }}
+{{ parse_block_first(keys, meta_data, record_and_types) }}
 {% set keys = ["heading", "summary", "desc_notes", "collection", "series", "collection_tags", "subjects" ] %}
 {{ common_macros.parse_block_common('Beskrivelse', keys, record_and_types) }}
 {% set keys = ["copyright_status_normalized"] %}
@@ -154,9 +153,9 @@
 {{ common_macros.parse_block_common('Download', keys, record_and_types) }}
 
 {% set meta_links = [
-    {"url": "/records/" + record_altered['id'] + "/json/record", "label": "JSON" },
-    {"url": "/records/" + record_altered['id'] + "/json/record_altered", "label": "JSON (Omdannet)" },
-    {"url": "/records/" + record_altered['id'] + "/json/record_and_types", "label": "JSON (Typer)"}
+    {"url": "/records/" + meta_data['id'] + "/json/record", "label": "JSON fra API efter hooks" },
+    {"url": "/records/" + meta_data['id'] + "/json/meta_data", "label": "JSON med meta_data" },
+    {"url": "/records/" + meta_data['id'] + "/json/record_and_types", "label": "JSON med typer"}
 ] 
 %}
 

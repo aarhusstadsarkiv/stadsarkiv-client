@@ -107,21 +107,20 @@ async def get_record_view(request: Request):
     record_pagination = await _get_record_prev_next(request)
     record_id = request.path_params["record_id"]
     permissions = await api.me_permissions(request)
+
     record = await api.proxies_record_get_by_id(record_id)
-
-    metadata = get_record_meta_data(request, record)
-    record = {**record, **metadata}
-
     record = hooks.after_record(record)
 
-    record_altered = record_alter.record_alter(request, record)
+    meta_data = get_record_meta_data(request, record)
+
+    record_altered = record_alter.record_alter(request, record, meta_data)
     record_and_types = record_alter.get_record_and_types(record_altered)
 
     context_variables = {
         "is_employee": "employee" in permissions,
-        "title": record_altered["title"],
-        "meta_title": record_altered["meta_title"],
-        "record_altered": record_altered,
+        "title": meta_data["title"],
+        "meta_title": meta_data["meta_title"],
+        "meta_data": meta_data,
         "record_and_types": record_and_types,
         "record_pagination": record_pagination,
     }
@@ -136,22 +135,20 @@ async def get_record_view_json(request: Request):
         type = request.path_params["type"]
 
         record = await api.proxies_record_get_by_id(record_id)
+        record = hooks.after_record(record)
 
-        metadata = get_record_meta_data(request, record)
-        record_altered = {**record, **metadata}
+        meta_data = get_record_meta_data(request, record)
 
-        record = hooks.after_record(record_altered)
-
-        record_altered = record_alter.record_alter(request, record_altered)
+        record_altered = record_alter.record_alter(request, record, meta_data)
         record_and_types = record_alter.get_record_and_types(record_altered)
 
         if type == "record":
             record_json = json.dumps(record, indent=4, ensure_ascii=False)
             return PlainTextResponse(record_json)
 
-        elif type == "record_altered":
-            record_altered_json = json.dumps(record_altered, indent=4, ensure_ascii=False)
-            return PlainTextResponse(record_altered_json)
+        elif type == "meta_data":
+            meta_data_json = json.dumps(meta_data, indent=4, ensure_ascii=False)
+            return PlainTextResponse(meta_data_json)
 
         elif type == "record_and_types":
             record_and_types_json = json.dumps(record_and_types, indent=4, ensure_ascii=False)
