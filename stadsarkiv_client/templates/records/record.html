@@ -1,4 +1,3 @@
-{% set search_base_url = get_setting('search_base_url') %}
 {% set azure_allow_media_search = "sp=r&st=2023-02-03T12:19:05Z&se=2030-04-01T19:19:05Z&spr=https&sv=2021-06-08&sr=c&sig=QK9mOWt0oZ%2FtiY5biruFo0eGPirtjHYEQ061tPuZYHU%3D" %}
 
 {% import "macros/common_fields.html" as common_fields %}
@@ -29,10 +28,11 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_representations_media(record) %}
+{% macro _parse_representations_media(record) %}
 {% if record["record_type"] == 'image' %}
     <img class="record-image" src="{{record['portrait']}}" alt="{{ translate('Image') }}" />
     <div class="overlay overlay-hidden">
+        
         <img id="overlay-image" src="{{record['representations']['large_image']}}" alt="{{ translate('Large Image') }}">
     </div>
 {% endif %}
@@ -66,21 +66,21 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_representations_block(record) %}
+{% macro _parse_representations_block(record) %}
+<div class="record-representation">
 {% if record["is_representations_online"] %}
-{{ parse_representations_media(record)}}
+{{ _parse_representations_media(record)}}
 {% elif record["availability_id"] == 3 %}
 {{ common_fields.parse_icon('lock', translate('The material is available in the reading room.'))}}
 {% elif record["availability_id"] == 2 %}
 {{ common_fields.parse_icon('lock', translate('The material can be order home to the reading room.'))}}
 {% endif %}
+</div>
 {% endmacro %}
 
-{% macro parse_representation_block(record) %}
+{% macro _parse_representation_block(record) %}
 {% if record["has_representations"] %}
-<div class="record-representation">
-{{ parse_representations_block(record) }}
-</div>
+{{ _parse_representations_block(record) }}
 {% else %}
 <div class="record-representation">
     {{ common_fields.parse_icon(record["icon"]["icon"], record["icon"]["label"]) }}
@@ -88,25 +88,10 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_block_common(title, block_keys) %}
+{% macro parse_block_first(block_keys, record_and_types) %}
 {% if key_exist_in_dict(block_keys, record_and_types) %}
 <div class="record-section">
-    <div class="record-main">
-        <h3 class="record-header">{{ title }}</h3>
-        {% for key in block_keys %}
-        {% if key in record_and_types %}
-        {{ common_fields.parse_block_section(record_and_types[key]) }}
-        {% endif %}
-        {% endfor %}
-    </div>
-</div> 
-{% endif %}
-{% endmacro %}
-
-{% macro parse_block_first(block_keys) %}
-{% if key_exist_in_dict(block_keys, record_and_types) %}
-<div class="record-section">
-    {{ parse_representation_block(record_altered) }}
+    {{ _parse_representation_block(record_altered) }}
 
     <div class="record-main">
         {% if record_altered["title"] %}
@@ -138,51 +123,43 @@
 {% block content %}
 
 {{ parse_record_pagination(record_pagination) }}
+
 {% set keys = ["collectors", "content_types", "creators", "date_normalized", "curators", "id"] %}
-{{ parse_block_first(keys) }}
+{{ parse_block_first(keys, record_and_types) }}
 {% set keys = ["heading", "summary", "desc_notes", "collection", "series", "collection_tags", "subjects" ] %}
-{{ parse_block_common('Beskrivelse', keys) }}
+{{ common_fields.parse_block_common('Beskrivelse', keys, record_and_types) }}
 {% set keys = ["copyright_status_normalized"] %}
-{{ parse_block_common('Ophavsret', keys) }}
+{{ common_fields.parse_block_common('Ophavsret', keys, record_and_types) }}
 {% set keys = ["desc_data"] %}
-{{ parse_block_common('Beskrivelsesdata', keys) }}
+{{ common_fields.parse_block_common('Beskrivelsesdata', keys, record_and_types) }}
 {% set keys = ["locations", "organisations", "events", "people", "objects"] %}
-{{ parse_block_common('Relationer', keys) }}
+{{ common_fields.parse_block_common('Relationer', keys, record_and_types) }}
 {% set keys = ["rights_notes"] %}
-{{ parse_block_common('Rettighedsnoter', keys) }}
+{{ common_fields.parse_block_common('Rettighedsnoter', keys, record_and_types) }}
 {% set keys = ["contractual_status_normalized", "other_legal_restrictions_normalized"] %}
-{{ parse_block_common('Anden juridisk beskyttelse', keys) }}
+{{ common_fields.parse_block_common('Anden juridisk beskyttelse', keys, record_and_types) }}
 {% set keys = ["availability_normalized"] %}
-{{ parse_block_common('Tilgængelighed', keys) }}
+{{ common_fields.parse_block_common('Tilgængelighed', keys, record_and_types) }}
 {% set keys = ["ordering_normalized"] %}
-{{ parse_block_common('Bestilling', keys) }}
+{{ common_fields.parse_block_common('Bestilling', keys, record_and_types) }}
 {% set keys = ["admin_notes", "admin_data", "registration_id", "created_by", "created", "last_updated_by", "last_updated"] %}
 
 {% if is_employee %}
-{{ parse_block_common('Administration', keys) }}
+{{ common_fields.parse_block_common('Administration', keys, record_and_types) }}
 {% set keys = ["resources"] %}
-{{ parse_block_common('Resourcer', keys) }}
+{{ common_fields.parse_block_common('Resourcer', keys, record_and_types) }}
 {% endif %}
 
 {% set keys = ["representations"] %}
-{{ parse_block_common('Download', keys) }}
+{{ common_fields.parse_block_common('Download', keys, record_and_types) }}
 
-{% if get_setting('debug') %}
-<div class="record-section">
-    <div class="record-main">
-    <h3 class="record-header">Metadata</h3>
-    <p>
-        <a href="{{ request.url.path }}/json/record">JSON (Fra API)</a>
-    </p>
-    <p>
-        <a href="{{ request.url.path }}/json/record_altered">JSON (Omdannet)</a>
-    </p>
-    <p>
-        <a href="{{ request.url.path }}/json/record_and_types">JSON (Typer)</a>
-    </p>
-    </div>
-</div>
+{% set meta_links = [
+    {"url": "/records/" + record_altered['id'] + "/json/record", "label": "JSON" },
+    {"url": "/records/" + record_altered['id'] + "/json/record_altered", "label": "JSON (Omdannet)" },
+    {"url": "/records/" + record_altered['id'] + "/json/record_and_types", "label": "JSON (Typer)"}
+] 
+%}
 
-{% endif %}
+{{ common_fields.parse_meta_block(meta_links) }}
 
 {% endblock content %}
