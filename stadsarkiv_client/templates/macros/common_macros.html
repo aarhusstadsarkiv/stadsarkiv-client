@@ -127,8 +127,12 @@
 <div class="record-content">
     {{ parse_record_label('label_representations')}}
     <div class="content">
+        {% if value['record_image'] %}
         <a href="{{ value['record_image'] }}"> {{ translate('Download medium size')}}</a><br />
+        {% endif %}
+        {% if value['large_image'] %}
         <a href="{{ value['large_image'] }}"> {{ translate('Download large size')}}</a>
+        {% endif %}
     </div>
 </div>
 {% endif %}

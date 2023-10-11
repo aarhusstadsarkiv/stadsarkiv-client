@@ -8,7 +8,6 @@ record_definitions = {
     "date_normalized": {"type": "string"},
     "collectors": {"type": "link_list"},
     "locations": {"type": "link_list"},
-    "potrait": {"type": "link"},
     "series": {"type": "link_list_hierarchy"},
     "desc_data": {"type": "key_value_dicts"},
     "availability": {"type": "label_dict"},
