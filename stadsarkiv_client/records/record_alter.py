@@ -21,7 +21,7 @@ log = get_log()
 def record_alter(request: Request, record: dict, meta_data: dict):
     record = record.copy()
 
-    record = normalize_record_data(record)
+    record = normalize_record_data(record, meta_data)
     record = normalize_abstract_dates(record)
     record = normalize_copyright_status(record, meta_data)
     record = normalize_contractual_status(record, meta_data)

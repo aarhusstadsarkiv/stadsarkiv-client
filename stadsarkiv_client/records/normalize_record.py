@@ -10,7 +10,7 @@ from stadsarkiv_client.records.record_definitions import record_definitions
 log = get_log()
 
 
-def normalize_record_data(record: dict):
+def normalize_record_data(record: dict, meta_data: dict):
     """
     Normalize record data to a more sane data structure
     """
@@ -28,15 +28,18 @@ def normalize_record_data(record: dict):
     link_dict = _get_list_of_type("link_dict")
     record = _normalize_link_dicts(link_dict, record)
 
-    record = normalize_representations(record)
+    record = normalize_representations(record, meta_data)
 
     return record
 
 
-def normalize_representations(record: dict):
+def normalize_representations(record: dict, meta_data: dict):
     if "representations" in record:
         # if "record_type" is not "web_document" or "image" then remove it.
         if record["representations"]["record_type"] not in ["web_document", "image"]:
+            del record["representations"]
+
+        if not meta_data["is_downloadable"]:
             del record["representations"]
 
     return record
