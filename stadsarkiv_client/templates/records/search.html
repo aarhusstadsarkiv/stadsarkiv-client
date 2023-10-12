@@ -244,6 +244,7 @@
 {% set total_pages = pagination_data["total_pages"] %}
 {% set current_page = pagination_data["current_page"] %}
 
+{% if pagination_data["total"] > 0 %}
 
 <div class="pagination">
     <div class="pagination-pages">
@@ -264,6 +265,8 @@
             {% endif %}
     </div>
 </div>
+
+{% endif %}
 
 {% endmacro %}
 
