@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
+{% block body_class %}page-auth-register{% endblock %}
+
 {% block content %}
+
 {% include "includes/main_title.html" %}
 
 <form method="post" action="{{ url_for('post_register')}}">

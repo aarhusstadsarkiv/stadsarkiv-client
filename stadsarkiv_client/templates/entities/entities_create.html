@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block body_class %}page-entities-create{% endblock %}
+
 {% block head %}
 <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
 {% endblock head %}
@@ -60,7 +62,7 @@
             console.log(post_json)
 
             try {
-                
+
                 let url = `/entities/post-entity/${schema_type}`;
                 const res = await Requests.asyncPostJson(getApiUrl(url), post_json);
                 if (res.error) {
