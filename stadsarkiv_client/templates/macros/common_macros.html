@@ -125,7 +125,7 @@
 {% macro parse_representations(key, value) %}
 {% if value["record_type"] == "image" %}
 <div class="record-content record_content_{{ key }}">
-    {{ parse_record_label('label_representations')}}
+    {{ parse_record_label('download')}}
     <div class="content">
         {% if value['record_image'] %}
         <a href="{{ value['record_image'] }}"> {{ translate('Download medium size')}}</a><br />
