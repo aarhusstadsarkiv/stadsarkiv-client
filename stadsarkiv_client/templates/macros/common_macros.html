@@ -13,7 +13,7 @@
 {% endmacro %}
 
 {% macro parse_string (key, value) %}
-<div class="record-content">
+<div class="record-content record_content_{{ key }}">
     {{ parse_record_label(key)}}
     <div class="content">
         <p>
@@ -24,7 +24,7 @@
 {% endmacro %}
 
 {% macro parse_paragraphs (key, value) %}
-<div class="record-content">
+<div class="record-content record_content_{{ key }}">
     {{ parse_record_label(key)}}
     <div class="content">
         {{ paragraphs(value|trim)|safe }}
@@ -33,7 +33,7 @@
 {% endmacro %}
 
 {% macro parse_date (key, value) %}
-<div class="record-content">
+<div class="record-content record_content_{{ key }}">
     {{ parse_record_label(key)}}
     <div class="content">
         <p>
@@ -57,7 +57,7 @@
 {% endmacro %}
 
 {% macro parse_link_dict(key, value) %}
-<div class="record-content">
+<div class="record-content record_content_{{ key }}">
     {{ parse_record_label(key) }}
     <div class="content">
         <p>
@@ -68,7 +68,7 @@
 {% endmacro %}
 
 {% macro parse_link_list (key, value) %}
-<div class="record-content">
+<div class="record-content record_content_{{ key }}">
     {{ parse_record_label(key) }}
     <div class="content">
             {% for link in value %}
@@ -82,7 +82,7 @@
 {% endmacro %}
 
 {% macro parse_string_list (key, value) %}
-<div class="record-content">
+<div class="record-content record_content_{{ key }}">
     {{ parse_record_label(key) }}
     <div class="content">
         {% for item in value %}
@@ -102,9 +102,9 @@
 </p>
 {% endmacro %}
 
-{% macro parse_link_list_hierarchy (label, value) %}
-<div class="record-content">
-    {{ parse_record_label(label)}}
+{% macro parse_link_list_hierarchy (key, value) %}
+<div class="record-content record_content_{{ key }}">
+    {{ parse_record_label(key)}}
     <div class="content">
         {% for item in value %}
         {{ _parse_list_in_hierarchy(item) }}
@@ -122,9 +122,9 @@
 </div>    
 {% endmacro %}
 
-{% macro parse_representations(label, value) %}
+{% macro parse_representations(key, value) %}
 {% if value["record_type"] == "image" %}
-<div class="record-content">
+<div class="record-content record_content_{{ key }}">
     {{ parse_record_label('label_representations')}}
     <div class="content">
         {% if value['record_image'] %}
@@ -137,7 +137,7 @@
 </div>
 {% endif %}
 {% if value["record_type"] == "web_document" %}
-<div class="record-content">
+<div class="record-content record_content_{{ key }}">
     {{ parse_record_label('label_representations')}}
     <div class="content">
         <a href="{{ value['web_document_url'] }}"> {{ translate('Download PDF')}}</a><br />
