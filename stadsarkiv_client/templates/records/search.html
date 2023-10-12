@@ -244,7 +244,7 @@
 {% set total_pages = pagination_data["total_pages"] %}
 {% set current_page = pagination_data["current_page"] %}
 
-{% if pagination_data["total"] > pagination_data["size"] * pagination_data["current_page"] %}
+
 <div class="pagination">
     <div class="pagination-pages">
         {% if current_page > 1 %}
@@ -264,7 +264,7 @@
             {% endif %}
     </div>
 </div>
-{% endif %}
+
 {% endmacro %}
 
 {% macro parse_search_result(search_result) %}
