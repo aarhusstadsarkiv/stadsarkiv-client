@@ -28,6 +28,17 @@ def normalize_record_data(record: dict):
     link_dict = _get_list_of_type("link_dict")
     record = _normalize_link_dicts(link_dict, record)
 
+    record = normalize_representations(record)
+
+    return record
+
+
+def normalize_representations(record: dict):
+    if "representations" in record:
+        # if "record_type" is not "web_document" or "image" then remove it.
+        if record["representations"]["record_type"] not in ["web_document", "image"]:
+            del record["representations"]
+
     return record
 
 
