@@ -14,7 +14,6 @@
 <script type="module">
 
     import { Requests } from "/static/js/requests.js";
-    import { getApiUrl } from "/static/js/config.js";
     import { Flash } from "/static/js/flash.js";
 
     var schema = {{ schema | safe }};
@@ -33,7 +32,7 @@
     document.getElementById('submit').addEventListener('click', async function () {
 
         try {
-            let user_info = await Requests.asyncPostJson(getApiUrl('/auth/user-info'));
+            let user_info = await Requests.asyncPostJson('/auth/user-info');
             if (!user_info.is_logged_in) {
                 Flash.setMessage("{{ translate('You must be logged in to create an entity') }}", 'error', true)
                 return;
@@ -64,7 +63,7 @@
             try {
 
                 let url = `/entities/post-entity/${schema_type}`;
-                const res = await Requests.asyncPostJson(getApiUrl(url), post_json);
+                const res = await Requests.asyncPostJson(url, post_json);
                 if (res.error) {
                     Flash.setMessage(res.message, 'error', true)
                 }
