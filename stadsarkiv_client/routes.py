@@ -72,6 +72,7 @@ routes = [
         name="post_entity_create",
         methods=["POST"],
     ),
+    Route("/entities/delete/{uuid:str}/soft", endpoint=entities.entities_delete_soft, name="entity_delete_soft", methods=["POST", "GET"]),
     Route("/entities/view/{uuid:str}", endpoint=entities.get_entity_view, name="entity_view"),
     # proxies
     Route("/search", endpoint=proxies_search.get_records_search, name="records_search"),

@@ -6,6 +6,15 @@
 {% include "includes/main_title.html" %}
 
 <table>
+    {% for schema in schemas %}
+    <tr>
+        <td><a href="/entities/{{ schema.type }}">{{ schema.type }} </a></td>
+    </tr>
+    </tr>
+    {% endfor %}
+</table>
+
+<table>
     <tr>
         <th>UUID</th>
         <th>Schema</th>
@@ -13,12 +22,30 @@
     {% for entity in entities %}
     <tr>
         <td>
-            <a href="/entities/view/{{entity.uuid}}">{{ entity.uuid }}</a>
+            Vis: <a href="/entities/view/{{entity.uuid}}">{{ entity.uuid }}</a>
         </td>
         <td>
             {{entity.schema_name }}
         </td>
     </tr>
+    <tr>
+        <td>
+            Ret: <a href="/entities/edit/{{entity.uuid}}">{{ entity.uuid }}</a>
+        </td>
+        <td>
+            {{entity.schema_name }}
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            Slet: <a href="/entities/delete/{{entity.uuid}}/soft">{{ entity.uuid }}</a>
+        </td>
+        <td>
+            {{entity.schema_name }}
+        </td>
+    </tr>
+
     {% endfor %}
 </table>
 

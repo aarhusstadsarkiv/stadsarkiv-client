@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block body_class %}page-entities-delete-soft{% endblock %}
+
+{% block content %}
+{% include "includes/main_title.html" %}
+
+<p>
+    Er du sikker på at du vil slette denne entitet?
+</p>
+<div id="entity-delete-form">
+    <form id="entity-delete" action="#">
+        <input name ="uuid" value="{{ uuid }}" type="hidden">
+        <input id="entities-delete-soft" type="button" value="Slet">
+    </form>
+</div>
+<script type="module">
+
+    import { Requests } from "/static/js/requests.js";
+    import { Flash } from "/static/js/flash.js";
+
+    const submit = document.getElementById('entities-delete-soft');
+
+    submit.addEventListener('click', async function (e) {
+        e.preventDefault();
+        try {
+
+            const form = document.getElementById('entity-delete');
+            const data = new FormData(form);
+            const url = window.location.pathname; // POST to current URL
+            const res = await Requests.asyncPostJson(url, data);
+            if (res.error) {
+                Flash.setMessage(res.message, 'error', true)
+            }
+            else {
+                // Rediect to current page
+                Flash.setMessage(res.message, 'success', true)
+            }
+    
+        } catch (e) {
+            console.log(e)
+        } finally {
+    
+        }
+    })
+
+
+</script>
+
+
+
+{% endblock content %}

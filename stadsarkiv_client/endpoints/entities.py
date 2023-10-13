@@ -12,13 +12,14 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.decorators import is_authenticated
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core import api
+import asyncio
 import json
 
 
 log = get_log()
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
 async def get_entity_create(request: Request):
     try:
         schema = await api.schema_get(request)
@@ -39,10 +40,8 @@ async def get_entity_create(request: Request):
         raise HTTPException(404, detail=str(e), headers=None)
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
 async def post_entity_create(request: Request):
-    # {"data":{"make":"Toyota","year":2008,"model":"test","safety":-1},"schema_name":"car_1"}
-
     try:
         await api.entity_post(request)
         flash.set_message(request, translate("Entity created"), type="success", remove=True)
@@ -53,11 +52,33 @@ async def post_entity_create(request: Request):
         return JSONResponse({"message": translate("Entity could not be created"), "error": True})
 
 
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
+async def entities_delete_soft(request: Request):
+    if request.method == "POST":
+        try:
+            await api.entity_delete_soft(request)
+            return JSONResponse({"message": "Resource er slettet", "error": False})
+
+        except Exception:
+            log.info("Entity delete error", exc_info=True)
+            return JSONResponse({"message": "Resource kunne ikke slettes. Måske den allerede er slettet.", "error": True})
+
+    try:
+        uuid = request.path_params["uuid"]
+        context_values = {"title": translate("Slet en resource"), "uuid": uuid}
+        context = await get_context(request, context_values=context_values)
+        return templates.TemplateResponse("entities/entities_delete_soft.html", context)
+
+    except Exception as e:
+        raise HTTPException(404, detail=str(e), headers=None)
+
+
 @is_authenticated(message=translate("You need to be logged in to view this page."))
 async def get_entities(request: Request):
     try:
-        entities: list = await api.entities_get(request)
-        context_values = {"title": translate("Entities"), "entities": entities}
+        entities, schemas = await asyncio.gather(api.entities_get(request), api.schemas(request))
+
+        context_values = {"title": translate("Create a resource"), "schemas": schemas, "entities": entities}
         context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("entities/entities.html", context)
 

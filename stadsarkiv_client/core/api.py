@@ -200,7 +200,7 @@ async def me_permissions(request: Request) -> list[str]:
         return []
 
 
-async def schemas(request: Request):
+async def schemas(request: Request) -> typing.Any:
     async with httpx.AsyncClient() as client:
         url = base_url + "/schemas/?offset=0&limit=100000"
         headers = {"Accept": "application/json"}
@@ -274,6 +274,20 @@ async def entity_post(request: Request) -> typing.Any:
             headers=headers,
             json=json_data,
         )
+
+        if response.is_success:
+            return response.json()
+        else:
+            response.raise_for_status()
+
+
+async def entity_delete_soft(request: Request) -> typing.Any:
+    entity_id = request.path_params["uuid"]
+
+    async with httpx.AsyncClient() as client:
+        url = base_url + "/entities/" + entity_id + "/soft"
+        headers = _get_jwt_headers(request, {"Accept": "application/json"})
+        response = await client.delete(url, headers=headers)
 
         if response.is_success:
             return response.json()
