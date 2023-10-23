@@ -78,7 +78,8 @@ def _normalize_series(record: dict):
             series_normalized.append(serie)
 
         record["series"] = [series_normalized]
-
+    else:
+        del record["series"]  # some series exist where there is no collection. Remove these as they are not searchable
     return record
 
 
