@@ -146,13 +146,13 @@ function searchEvents() {
 
         // 'beforeunload' will not work when e.g. searching for /search to /search?date_from=20200101
         // Instead we check all links
-        window.addEventListener('click', function (event) {
-
-            if (event.target.tagName === 'A') {
+        const searchLinks = document.querySelectorAll('.search-link, a');
+        searchLinks.forEach(searchLink => {
+            searchLink.addEventListener('click', function (event) {
                 event.preventDefault();
                 saveTree();
-                window.location.href = event.target.href;
-            }
+                window.location.href = searchLink.href;
+            })
         })
 
         // Also add event listener to search form with id 'search-date'
