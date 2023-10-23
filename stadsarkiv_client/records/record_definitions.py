@@ -36,7 +36,7 @@ record_definitions = {
     "original_id": {"type": "string"},
     "date_to": {"type": "string"},
     "representations": {"type": "representations"},  # special type
-    "collection_tags": {"type": "link_list_hierarchy"},
+    "collection_tags": {"type": "link_list"},
     "created": {"type": "date"},
     "summary": {"type": "string"},
     "usability": {"type": "label_dict"},

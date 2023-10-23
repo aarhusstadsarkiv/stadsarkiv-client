@@ -20,38 +20,12 @@ class NormalizeFacets:
     def __init__(self, request: Request, records, query_params=[], facets_resolved={}, query_str=""):
         self.request = request
         self.records = records
-        self.facets_search = self._get_facets_search(records["facets"])
+        self.facets_search = records["active_facets"]  # self._get_facets_search(records["active_facets"])
         self.query_params = query_params
         self.query_str = query_str
         self.facets_resolved = facets_resolved
         self.facets_checked: list = []
         self.facets = settings_facets
-
-    def _get_facets_search(self, data):
-        """Transform search facets from this format:
-
-        {
-            'availability': {'buckets': [{'value': '2', 'count': 1}]}
-        }
-
-        to this format:
-
-        {
-            "availability": {
-                "2": {
-                    "value": "2",
-                    "count": 1
-                }
-            }
-        }
-        """
-
-        altered_search_facets = {}
-        for key, value in data.items():
-            transformed_buckets = {bucket["value"]: bucket for bucket in value["buckets"]}
-            altered_search_facets[key] = transformed_buckets
-
-        return altered_search_facets
 
     def _transform_facets(self, top_level_key, facets_content, path=None):
         """

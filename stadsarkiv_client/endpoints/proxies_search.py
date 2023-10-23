@@ -14,7 +14,6 @@ from stadsarkiv_client.records.normalize_facets import NormalizeFacets
 from stadsarkiv_client.core import query
 from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
 from stadsarkiv_client.core.hooks import get_hooks
-from stadsarkiv_client.records.resolve_search import set_resolved_search
 
 
 hooks = get_hooks()
@@ -137,10 +136,8 @@ async def get_records_search(request: Request):
     # Call api
     query_str_search = query.get_str_from_list(query_params_before_search)
     search_result = await api.proxies_records(request, query_str_search)
-
-    # Add resolved facets to search result
-    search_result = await set_resolved_search(search_result, query_params_before_search)
     facets_resolved = search_result["facets_resolved"]
+
     search_result = _normalize_search(search_result)
 
     # Alter query params after search
@@ -149,6 +146,7 @@ async def get_records_search(request: Request):
 
     # Remove pagination params from query params. In order to get a query string that can be used in e.g. facet links
     query_str_display = query.get_str_from_list(query_params_after_search, remove_keys=["start", "size", "sort", "direction"])
+
     normalized_facets = NormalizeFacets(
         request=request,
         records=search_result,
