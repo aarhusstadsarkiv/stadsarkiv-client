@@ -93,6 +93,7 @@ da = {
     "See all records this organization has created": "Se hvilke arkiver, denne organisation har skabt",
     "Selected": "Valgt",
     "Send verification email": "Send link for at verificere din email",
+    "Show all results in the collection": "Vis alle resultater i samlingen",
     "Something went wrong. Please try again.": "Der opstod en fejl prøv igen senere.",
     "Submit": "Send",
     "System can not deliver an email about resetting password. Try again later.": "Systemet kan ikke sende en email om at nulstille password. Prøv igen senere.",

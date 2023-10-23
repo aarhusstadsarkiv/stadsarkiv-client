@@ -105,6 +105,7 @@ en = {
     "See all records this person has created": "See all records this person has created",
     "Selected": "Selected",
     "Send verification email": "Send verification email",
+    "Show all results in the collection": "Show all results in the collection",
     "Something went wrong. Please try again.": "Something went wrong. Please try again.",
     "Submit": "Submit",
     "System can not deliver an email about resetting password. Try again later.": "System can not deliver an email about resetting password. Try again later.",

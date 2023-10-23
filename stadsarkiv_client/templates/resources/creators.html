@@ -9,7 +9,7 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?creators={{ creator['id_real'] }}">Vis alle resultater i samlingen</a>
+    <a href="/search?creators={{ creator['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
 {% set keys = ["collectors_link", "creators_link", "firstnames", "lastnames", "gender", "occupation", "date_created", "date_decommissioned", "industry"] %}

@@ -12,7 +12,7 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?organisations={{ organisation['id_real'] }}">Vis alle resultater i samlingen</a>
+    <a href="/search?organisations={{ organisation['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
 {% set keys = ['collectors_link', 'creators_link', 'collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}

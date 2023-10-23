@@ -17,7 +17,7 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?people={{ people['id_real'] }}">Vis alle resultater i samlingen</a>
+    <a href="/search?people={{ people['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
 {% set keys = ["firstnames", "lastnames", "gender", "date_of_birth", "place_of_birth", "date_of_death", "place_of_death", "occupation"] %}

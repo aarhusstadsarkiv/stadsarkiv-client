@@ -9,7 +9,7 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?events={{ event['id_real'] }}">Vis alle resultater i samlingen</a>
+    <a href="/search?events={{ event['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
 {% set keys = ["date_from", "event_type", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area"] %}
