@@ -31,10 +31,44 @@ async def get_entity_create(request: Request):
         schema["type"] = schema["name"]
         schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
 
-        context_values = {"title": translate("Entities"), "schema": schema_json}
+        context_values = {"title": translate("Entities"), "schema_json": schema_json}
         context = await get_context(request, context_values=context_values)
 
         return templates.TemplateResponse("entities/entities_create.html", context)
+
+    except Exception as e:
+        raise HTTPException(403, detail=str(e), headers=None)
+
+
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
+async def get_entity_update(request: Request):
+    try:
+        entity = await api.entity_get(request)
+
+        schema_name = entity["schema_name"]
+        schema_version = schema_name.split("_")[1]
+        schema_name = schema_name.split("_")[0]
+
+        schema = await api.schema_get_version(request, schema_name, schema_version)
+
+        """ Type needs to be altered to name before being used with the json editor
+        type is e.g. car
+        name is e.g. car_2 """
+
+        schema["type"] = schema["name"]
+        schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
+
+        entity_data = entity["data"]
+        entity_json = json.dumps(entity_data, indent=4, ensure_ascii=False)
+
+        # schema_name = await api.schema_get
+        # return JSONResponse(entity)
+        # schema = await api.schema_get(request)
+
+        context_values = {"title": translate("Entities"), "schema_json": schema_json, "entity_json": entity_json, "entity": entity}
+        context = await get_context(request, context_values=context_values)
+
+        return templates.TemplateResponse("entities/entities_update.html", context)
 
     except Exception as e:
         raise HTTPException(404, detail=str(e), headers=None)
