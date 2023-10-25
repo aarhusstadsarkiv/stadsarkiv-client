@@ -3,23 +3,14 @@
 {% block body_class %}page-entities-create{% endblock %}
 
 {% block head %}
+
 <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', path='/css/jsoneditor.css') }}?v={{ get_setting('version') }}">
 {% endblock head %}
 
 {% block content %}
 {% include "includes/main_title.html" %}
 
-<style>
-
-    /**
-     * All input 100% in width
-     */
-    select, input {
-        width: 100%;
-    }
-
-
-</style>
 
 <div id='editor_holder' class='small'></div>
 <button id='submit'>{{ translate("Create entity") }}</button>
