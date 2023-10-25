@@ -87,6 +87,18 @@ async def post_entity_create(request: Request):
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
+async def patch_entity(request: Request):
+    try:
+        await api.entity_patch(request)
+        flash.set_message(request, translate("Entity updated"), type="success", remove=True)
+        return JSONResponse({"message": translate("Entity updated"), "error": False})
+
+    except Exception:
+        log.info("Entity update error", exc_info=True)
+        return JSONResponse({"message": translate("Entity could not be updated"), "error": True})
+
+
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
 async def entities_delete_soft(request: Request):
     if request.method == "POST":
         try:
