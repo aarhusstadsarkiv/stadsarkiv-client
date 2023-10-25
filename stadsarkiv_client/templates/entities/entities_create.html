@@ -16,7 +16,7 @@
     import { Requests } from "/static/js/requests.js";
     import { Flash } from "/static/js/flash.js";
 
-    var schema = {{ schema | safe }};
+    var schema = {{ schema_json | safe }};
     const schema_type = schema.type;
 
     // Initialize the editor with a JSON schema
