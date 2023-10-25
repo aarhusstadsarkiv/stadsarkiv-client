@@ -75,7 +75,7 @@ async def post_entity_create(request: Request):
     try:
         await api.entity_post(request)
         flash.set_message(request, "Entitet oprettet", type="success", remove=True)
-        return JSONResponse({"message": translate("Entitet oprettet"), "error": False})
+        return JSONResponse({"message": "Entitet oprettet", "error": False})
 
     except Exception:
         log.info("Entity create error", exc_info=True)
@@ -153,7 +153,7 @@ async def get_entity_view(request: Request):
 
         schema_and_values = _get_schema_and_values(schema, entity)
 
-        context_values = {"title": translate("Entity"), "schema_and_values": schema_and_values}
+        context_values = {"title": "Entitet", "schema_and_values": schema_and_values}
         context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("entities/entity.html", context)
 
