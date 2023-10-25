@@ -1,0 +1,7 @@
+
+    /**
+     * All input 100% in width
+     */
+     select, input {
+        width: 100%;
+    }
