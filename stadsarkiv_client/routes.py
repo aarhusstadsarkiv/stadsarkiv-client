@@ -66,11 +66,17 @@ routes = [
     Route("/schemas/post-schema", endpoint=schemas.post_schema, name="post_schema", methods=["POST"]),
     Route("/entities", endpoint=entities.get_entities, name="entities"),
     Route("/entities/create/{schema_type:str}", endpoint=entities.get_entity_create, name="entity_create"),
-    Route("/entities/edit/{uuid:str}", endpoint=entities.get_entity_update, name="entity_create"),
     Route(
         "/entities/post-entity/{schema_type:str}",
         endpoint=entities.post_entity_create,
         name="post_entity_create",
+        methods=["POST"],
+    ),
+    Route("/entities/edit/{uuid:str}", endpoint=entities.get_entity_update, name="entity_edit"),
+    Route(
+        "/entities/patch-entity/{uuid:str}",
+        endpoint=entities.patch_entity,
+        name="patch_entity",
         methods=["POST"],
     ),
     Route("/entities/delete/{uuid:str}/soft", endpoint=entities.entities_delete_soft, name="entity_delete_soft", methods=["POST", "GET"]),
