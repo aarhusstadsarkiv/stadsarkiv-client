@@ -225,7 +225,7 @@ async def schema_get(request: Request) -> typing.Any:
             response.raise_for_status()
 
 
-async def schema_get_version(request: Request, schema_name: str, schema_version: int):
+async def schema_get_version(request: Request, schema_name: str, schema_version: int) -> typing.Any:
     async with httpx.AsyncClient() as client:
         url = base_url + "/schemas/" + schema_name + "?version=" + str(schema_version)
 
@@ -269,6 +269,26 @@ async def entity_post(request: Request) -> typing.Any:
 
     async with httpx.AsyncClient() as client:
         response = await client.post(
+            url=url,
+            follow_redirects=True,
+            headers=headers,
+            json=json_data,
+        )
+
+        if response.is_success:
+            return response.json()
+        else:
+            response.raise_for_status()
+
+
+async def entity_patch(request: Request) -> typing.Any:
+    uuid = request.path_params["uuid"]
+    json_data = await request.json()
+    headers = _get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
+    url = base_url + "/entities/" + uuid
+
+    async with httpx.AsyncClient() as client:
+        response = await client.patch(
             url=url,
             follow_redirects=True,
             headers=headers,

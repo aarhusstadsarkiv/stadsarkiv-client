@@ -3,6 +3,7 @@
 {% block body_class %}page-entities-create{% endblock %}
 
 {% block head %}
+
 <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
 <link rel="stylesheet" href="{{ url_for('static', path='/css/jsoneditor.css') }}?v={{ get_setting('version') }}">
 {% endblock head %}
@@ -10,14 +11,16 @@
 {% block content %}
 {% include "includes/main_title.html" %}
 
-<div id='editor_holder' class='small'></div>
-<button id='submit'>{{ translate("Create entity") }}</button>
 
+<div id='editor_holder' class='small'></div>
+<button id='submit'>{{ translate("Update entity") }}</button>
 <script type="module">
+
 
     import { Requests } from "/static/js/requests.js";
     import { Flash } from "/static/js/flash.js";
     import { getTranslation } from "/static/js/jsoneditor_utils.js";
+    import { getPathPart } from '/static/js/common_utils.js'
 
     const translation = await getTranslation("da")
 
@@ -35,14 +38,20 @@
 
     JSONEditor.defaults.languages.da = translation
     JSONEditor.defaults.language = "da";
+    
 
     var editor = new JSONEditor(document.getElementById('editor_holder'), options);
+    
+    editor.on('ready', async function () {
+        editor.setValue({{ entity_json | safe }});
+    });
+    
     document.getElementById('submit').addEventListener('click', async function () {
 
         try {
             const user_info = await Requests.asyncPostJson('/auth/user-info');
             if (!user_info.is_logged_in) {
-                Flash.setMessage("{{ 'Du skal være logget ind for at oprette en entitet' }}", 'error', true)
+                Flash.setMessage("{{ 'Du skal være logget ind for at opdateres en entitet' }}", 'error', true)
                 return;
             }
         } catch (e) {
@@ -61,21 +70,24 @@
 
         } else {
             const schema_data = editor.getValue();
+            const uuid = getPathPart(2)
             const post_json = JSON.stringify({
                 data: schema_data,
                 schema_name: schema_type,
+                status: 2, // MAYBE TODO: Make this configurable
+                uuid: uuid
             })
 
             try {
 
-                const url = `/entities/patch-entity/${schema_type}`;
+                
+                const url = `/entities/patch-entity/${uuid}`;
                 const res = await Requests.asyncPostJson(url, post_json);
                 if (res.error) {
                     Flash.setMessage(res.message, 'error', true)
                 }
                 else {
-                    // Rediect to current page
-                    window.location = "/entities"
+                    window.location = "/entities";
                 }
 
             } catch (e) {
