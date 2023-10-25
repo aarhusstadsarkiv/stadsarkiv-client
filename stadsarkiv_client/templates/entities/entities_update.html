@@ -13,13 +13,14 @@
 
 
 <div id='editor_holder' class='small'></div>
-<button id='submit'>{{ translate("Create entity") }}</button>
+<button id='submit'>{{ translate("Update entity") }}</button>
 <script type="module">
 
 
     import { Requests } from "/static/js/requests.js";
     import { Flash } from "/static/js/flash.js";
     import { getTranslation } from "/static/js/jsoneditor_utils.js";
+    import { getPathPart } from '/static/js/common_utils.js'
 
     const translation = await getTranslation("da")
 
@@ -48,7 +49,7 @@
     document.getElementById('submit').addEventListener('click', async function () {
 
         try {
-            let user_info = await Requests.asyncPostJson('/auth/user-info');
+            const user_info = await Requests.asyncPostJson('/auth/user-info');
             if (!user_info.is_logged_in) {
                 Flash.setMessage("{{ translate('You must be logged in to create an entity') }}", 'error', true)
                 return;
@@ -63,29 +64,30 @@
             // `property` is the schema keyword that triggered the validation error (e.g. "minLength")
             // `path` is a dot separated path into the JSON object (e.g. "root.path.to.field")
             errors.forEach(error => {
-                let message = "Client validation. Path: " + error.path + " - " + error.message;
+                const message = "Client validation. Path: " + error.path + " - " + error.message;
                 Flash.setMessage(message, 'error')
             })
 
         } else {
-            let schema_data = editor.getValue();
-            let post_json = JSON.stringify({
+            const schema_data = editor.getValue();
+            const uuid = getPathPart(2)
+            const post_json = JSON.stringify({
                 data: schema_data,
                 schema_name: schema_type,
+                status: 2, // MAYBE TODO: Make this configurable
+                uuid: uuid
             })
-
-            console.log(post_json)
 
             try {
 
-                let url = `/entities/post-entity/${schema_type}`;
+                
+                const url = `/entities/patch-entity/${uuid}`;
                 const res = await Requests.asyncPostJson(url, post_json);
                 if (res.error) {
                     Flash.setMessage(res.message, 'error', true)
                 }
                 else {
-                    // Rediect to current page
-                    window.location = window.location.href;
+                    window.location = "/entities";
                 }
 
             } catch (e) {
