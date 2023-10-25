@@ -225,7 +225,7 @@ async def schema_get(request: Request) -> typing.Any:
             response.raise_for_status()
 
 
-async def schema_get_version(request: Request, schema_name: str, schema_version: int):
+async def schema_get_version(request: Request, schema_name: str, schema_version: int) -> typing.Any:
     async with httpx.AsyncClient() as client:
         url = base_url + "/schemas/" + schema_name + "?version=" + str(schema_version)
 
