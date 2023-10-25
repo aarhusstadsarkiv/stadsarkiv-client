@@ -51,7 +51,7 @@
         try {
             const user_info = await Requests.asyncPostJson('/auth/user-info');
             if (!user_info.is_logged_in) {
-                Flash.setMessage("{{ translate('You must be logged in to create an entity') }}", 'error', true)
+                Flash.setMessage("{{ 'Du skal være logget ind for at opdateres en entitet' }}", 'error', true)
                 return;
             }
         } catch (e) {
