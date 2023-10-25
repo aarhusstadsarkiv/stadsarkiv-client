@@ -65,7 +65,8 @@ routes = [
     Route("/schemas", endpoint=schemas.get_schemas, name="schemas"),
     Route("/schemas/post-schema", endpoint=schemas.post_schema, name="post_schema", methods=["POST"]),
     Route("/entities", endpoint=entities.get_entities, name="entities"),
-    Route("/entities/{schema_type:str}", endpoint=entities.get_entity_create, name="entity_create"),
+    Route("/entities/create/{schema_type:str}", endpoint=entities.get_entity_create, name="entity_create"),
+    Route("/entities/edit/{uuid:str}", endpoint=entities.get_entity_update, name="entity_create"),
     Route(
         "/entities/post-entity/{schema_type:str}",
         endpoint=entities.post_entity_create,
