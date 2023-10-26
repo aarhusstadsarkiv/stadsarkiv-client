@@ -28,20 +28,20 @@ class TestAuth(unittest.TestCase):
 
     def test_login_post_correct(self):
         client = TestClient(app)
-        response = client.post("/auth/post-login-jwt", data={"username": test_user, "password": test_password})
+        response = client.post("/auth/login", data={"username": test_user, "password": test_password})
         self.assertEqual(response.status_code, 200)
 
     def test_login_post_incorrect(self):
         client = TestClient(app)
         client.follow_redirects = False
-        response = client.post("/auth/post-login-jwt", data={"username": "bad.mail@test.com", "password": "bad_password"})
+        response = client.post("/auth/login", data={"username": "bad.mail@test.com", "password": "bad_password"})
         # not logged in. Redirect to login
         self.assertEqual(response.status_code, 302)
 
     def test_post_logout(self):
         client = TestClient(app)
         client.follow_redirects = False
-        response = client.post("/auth/post-logout")
+        response = client.post("/auth/logout")
         # not logged in. Redirect to login
         self.assertEqual(response.status_code, 302)
 
@@ -54,7 +54,7 @@ class TestAuth(unittest.TestCase):
 
     def test_me(self):
         client = TestClient(app)
-        response = client.post("/auth/post-login-jwt", data={"username": test_user, "password": test_password})
+        response = client.post("/auth/login", data={"username": test_user, "password": test_password})
         self.assertEqual(response.status_code, 200)
 
         response = client.get("/auth/me")
