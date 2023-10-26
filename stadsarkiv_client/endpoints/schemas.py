@@ -22,8 +22,6 @@ log = get_log()
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def schemas(request: Request):
-    if "schema_type" in request.path_params:
-        return await _get_schema(request)
 
     if request.method == "GET":
         return await _get_schemas(request)
@@ -42,7 +40,7 @@ async def _get_schemas(request: Request):
         raise HTTPException(status_code=404, detail=str(e))
 
 
-async def _get_schema(request: Request):
+async def schemas_single(request: Request):
     try:
         schema = await api.schema_get(request)
         schema_json = json.dumps(schema, indent=4, ensure_ascii=False)

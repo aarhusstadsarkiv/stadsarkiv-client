@@ -81,8 +81,8 @@
             try {
 
 
-                const url = `/entities/patch-entity/${uuid}`;
-                const res = await Requests.asyncPostJson(url, post_json);
+                const url = `/entities/${uuid}`;
+                const res = await Requests.asyncPostJson(url, post_json, 'PATCH');
                 if (res.error) {
                     Flash.setMessage(res.message, 'error', true)
                 }

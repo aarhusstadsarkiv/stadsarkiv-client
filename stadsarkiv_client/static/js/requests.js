@@ -3,7 +3,8 @@ class Requests {
     /**
      * Post formdata async. Accepts JSON as response
      */
-    static async asyncPost(url, formData) {
+    static async asyncPost(url, formData, method) {
+        if (!method) method = 'post'
         const rawResponse = await fetch(url, {
             method: 'post',
             headers: {
@@ -19,9 +20,10 @@ class Requests {
         return rawResponse;
     }
 
-    static async asyncPostJson(url, formData) {
+    static async asyncPostJson(url, formData, method) {
+        if (!method) method = 'post'
         const rawResponse = await fetch(url, {
-            method: 'post',
+            method: method,
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

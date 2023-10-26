@@ -71,19 +71,7 @@ async def get_entity_update(request: Request):
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
-async def post_entity_create(request: Request):
-    try:
-        await api.entity_post(request)
-        flash.set_message(request, "Entitet oprettet", type="success", remove=True)
-        return JSONResponse({"message": "Entitet oprettet", "error": False})
-
-    except Exception:
-        log.info("Entity create error", exc_info=True)
-        return JSONResponse({"message": "Entitet kunne ikke oprettes", "error": True})
-
-
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
-async def patch_entity(request: Request):
+async def entities_patch(request: Request):
     try:
         await api.entity_patch(request)
         flash.set_message(request, "Entitet opdateret", type="success", remove=True)
@@ -116,13 +104,34 @@ async def entities_delete_soft(request: Request):
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))
-async def get_entities(request: Request):
+async def entities(request: Request):
+    if request.method == "GET":
+        return await _get_entities(request)
+
+    elif request.method == "POST":
+        return await _post_entities(request)
+
+
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
+async def _post_entities(request: Request):
+    try:
+        await api.entity_post(request)
+        flash.set_message(request, "Entitet oprettet", type="success", remove=True)
+        return JSONResponse({"message": "Entitet oprettet", "error": False})
+
+    except Exception:
+        log.info("Entity create error", exc_info=True)
+        return JSONResponse({"message": "Entitet kunne ikke oprettes", "error": True})
+
+
+@is_authenticated(message=translate("You need to be logged in to view this page."))
+async def _get_entities(request: Request):
     try:
         entities, schemas = await asyncio.gather(api.entities_get(request), api.schemas(request))
 
         context_values = {"title": "Opret entiteter", "schemas": schemas, "entities": entities}
         context = await get_context(request, context_values=context_values)
-        return templates.TemplateResponse("entities/entities.html", context)
+        return templates.TemplateResponse("entities/entities_list.html", context)
 
     except Exception as e:
         raise HTTPException(404, detail=str(e), headers=None)
@@ -139,7 +148,7 @@ def _get_schema_and_values(schema, entity):
     return schema_and_values
 
 
-async def get_entity_view(request: Request):
+async def entities_single(request: Request):
     try:
         # content
         entity: dict = await api.entity_get(request)
@@ -155,7 +164,7 @@ async def get_entity_view(request: Request):
 
         context_values = {"title": "Entitet", "schema_and_values": schema_and_values}
         context = await get_context(request, context_values=context_values)
-        return templates.TemplateResponse("entities/entity.html", context)
+        return templates.TemplateResponse("entities/entities_single.html", context)
 
     except Exception as e:
         raise HTTPException(404, detail=str(e), headers=None)

@@ -22,7 +22,7 @@
     {% for entity in entities %}
     <tr>
         <td>
-            Vis: <a href="/entities/view/{{entity.uuid}}">{{ entity.uuid }}</a>
+            Vis: <a href="/entities/{{entity.uuid}}">{{ entity.uuid }}</a>
         </td>
         <td>
             {{entity.schema_name }}
@@ -30,7 +30,7 @@
     </tr>
     <tr>
         <td>
-            Ret: <a href="/entities/edit/{{entity.uuid}}">{{ entity.uuid }}</a>
+            Ret: <a href="/entities/update/{{entity.uuid}}">{{ entity.uuid }}</a>
         </td>
         <td>
             {{entity.schema_name }}

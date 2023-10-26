@@ -42,29 +42,22 @@ routes = [
     Route("/auth/register", endpoint=auth.register, name="register", methods=["GET", "POST"]),
     Route("/auth/forgot-password", endpoint=auth.forgot_password, name="forgot_password", methods=["GET", "POST"]),
     Route("/auth/reset-password/{token:str}", endpoint=auth.reset_password, name="reset_password", methods=["GET", "POST"]),
-    Route("/auth/me", endpoint=auth.get_me_jwt, name="profile"),
+    Route("/auth/me", endpoint=auth.me, name="profile"),
     Route("/auth/verify/{token:str}", endpoint=auth.verify, name="verify"),  # verify by token sent by email
     Route("/auth/send-verify-email", endpoint=auth.send_verify_email, name="send_verify_email"),  # send verify email again
     Route("/auth/user-info", endpoint=auth.auth_user_info, name="user_info", methods=["POST"]),
-    Route("/schemas/{schema_type:str}", endpoint=schemas.schemas, name="schemas"),
+
+    Route("/schemas/{schema_type:str}", endpoint=schemas.schemas_single, name="schemas"),
     Route("/schemas", endpoint=schemas.schemas, name="schemas", methods=["GET", "POST"]),
-    Route("/entities", endpoint=entities.get_entities, name="entities"),
+
+    Route("/entities", endpoint=entities.entities, name="entities", methods=["GET", "POST"]),
+    Route("/entities/{uuid:str}", endpoint=entities.entities_single, name="entities_single", methods=["GET"]),
+    Route("/entities/{uuid:str}", endpoint=entities.entities_patch, name="entities_single_patch", methods=["PATCH"]),
+
     Route("/entities/create/{schema_type:str}", endpoint=entities.get_entity_create, name="entity_create"),
-    Route(
-        "/entities/post-entity/{schema_type:str}",
-        endpoint=entities.post_entity_create,
-        name="post_entity_create",
-        methods=["POST"],
-    ),
-    Route("/entities/edit/{uuid:str}", endpoint=entities.get_entity_update, name="entity_edit"),
-    Route(
-        "/entities/patch-entity/{uuid:str}",
-        endpoint=entities.patch_entity,
-        name="patch_entity",
-        methods=["POST"],
-    ),
+    Route("/entities/update/{uuid:str}", endpoint=entities.get_entity_update, name="entity_update"),
     Route("/entities/delete/{uuid:str}/soft", endpoint=entities.entities_delete_soft, name="entity_delete_soft", methods=["POST", "GET"]),
-    Route("/entities/view/{uuid:str}", endpoint=entities.get_entity_view, name="entity_view"),
+
     # proxies
     Route("/search", endpoint=proxies_search.get_records_search, name="records_search"),
     Route("/search/json", endpoint=proxies_search.get_records_search_json, name="records_search_json"),

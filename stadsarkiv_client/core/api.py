@@ -259,11 +259,11 @@ async def schema_create(request: Request) -> typing.Any:
 
 
 async def entity_post(request: Request) -> typing.Any:
-    schema_type = request.path_params["schema_type"]
+    # schema_type = request.path_params["schema_type"]
     json_dict = await request.json()
-    json_dict = json_dict["data"]
+    json_data = json_dict["data"]
 
-    json_data = {"data": json_dict, "schema_name": schema_type}
+    json_data = {"data": json_data, "schema_name": json_dict["schema_name"]}
     headers = _get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
     url = base_url + "/entities/"
 
