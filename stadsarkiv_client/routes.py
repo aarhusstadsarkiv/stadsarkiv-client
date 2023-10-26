@@ -37,33 +37,17 @@ def _get_static_dirs() -> list:
 # Add basic routes
 routes = [
     Mount("/static", MultiStaticFiles(directories=_get_static_dirs()), name="static"),
-    Route("/auth/user-info", endpoint=auth.post_user_info, name="user_info", methods=["POST"]),
-    Route("/auth/login", endpoint=auth.get_login, name="login"),
-    Route(
-        "/auth/post-login-jwt",
-        endpoint=auth.post_login_jwt,
-        name="post_login_jwt",
-        methods=["POST"],
-    ),
-    Route("/auth/logout", endpoint=auth.get_logout, name="logout"),
-    Route("/auth/post-logout", endpoint=auth.post_logout, name="post_logout", methods=["POST"]),
-    Route("/auth/register", endpoint=auth.get_register, name="register"),
-    Route("/auth/post-register", endpoint=auth.post_register, name="post_register", methods=["POST"]),
-    Route("/auth/verify/{token:str}", endpoint=auth.get_verify, name="verify"),
-    Route("/auth/forgot-password", endpoint=auth.get_forgot_password, name="forgot_password"),
-    Route(
-        "/auth/post-forgot-password",
-        endpoint=auth.post_forgot_password,
-        name="post_forgot_password",
-        methods=["POST"],
-    ),
-    Route("/auth/reset-password/{token:str}", endpoint=auth.get_reset_password, name="reset_password"),
-    Route("/auth/post-reset-password/{token:str}", endpoint=auth.post_reset_password, name="post_reset_password", methods=["POST"]),
-    Route("/auth/send-verify-email", endpoint=auth.send_verify_email, name="send_verify_email"),
+    Route("/auth/login", endpoint=auth.login, name="login", methods=["GET", "POST"]),
+    Route("/auth/logout", endpoint=auth.logout, name="logout", methods=["GET", "POST"]),
+    Route("/auth/register", endpoint=auth.register, name="register", methods=["GET", "POST"]),
+    Route("/auth/forgot-password", endpoint=auth.forgot_password, name="forgot_password", methods=["GET", "POST"]),
+    Route("/auth/reset-password/{token:str}", endpoint=auth.reset_password, name="reset_password", methods=["GET", "POST"]),
     Route("/auth/me", endpoint=auth.get_me_jwt, name="profile"),
-    Route("/schema/{schema_type:str}", endpoint=schemas.get_schema, name="schemas"),
-    Route("/schemas", endpoint=schemas.get_schemas, name="schemas"),
-    Route("/schemas/post-schema", endpoint=schemas.post_schema, name="post_schema", methods=["POST"]),
+    Route("/auth/verify/{token:str}", endpoint=auth.verify, name="verify"),  # verify by token sent by email
+    Route("/auth/send-verify-email", endpoint=auth.send_verify_email, name="send_verify_email"),  # send verify email again
+    Route("/auth/user-info", endpoint=auth.auth_user_info, name="user_info", methods=["POST"]),
+    Route("/schemas/{schema_type:str}", endpoint=schemas.schemas, name="schemas"),
+    Route("/schemas", endpoint=schemas.schemas, name="schemas", methods=["GET", "POST"]),
     Route("/entities", endpoint=entities.get_entities, name="entities"),
     Route("/entities/create/{schema_type:str}", endpoint=entities.get_entity_create, name="entity_create"),
     Route(

@@ -7,7 +7,7 @@
 
 {% include "includes/main_title.html" %}
 
-<form method="post" action="/schemas/post-schema">
+<form method="post" action="/schemas">
     <input type="text" name="type" placeholder="Type" aria-label="Type">
     <textarea name="data" placeholder="Data"></textarea>
     <button type="submit" class="contrast">{{ translate('Create Schema') }}</button>
@@ -16,7 +16,7 @@
 <table>
 {% for schema in schemas %}
 <tr>
-    <td><a href="/schema/{{ schema.type }}"> {{ translate('View schema') }}: {{ schema.type }} </a></td>
+    <td><a href="/schemas/{{ schema.type }}"> {{ translate('View schema') }}: {{ schema.type }} </a></td>
     <td><a href="/entities/{{ schema.type }}"> {{ translate('Create entity') }}: {{ schema.type }} </a></td>
 </tr>
 </tr>

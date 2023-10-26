@@ -6,7 +6,7 @@
 
 {% include "includes/main_title.html" %}
 
-<form method="post" action="{{ url_for('post_login_jwt')}}">
+<form method="post" action="{{ url_for('login')}}">
     <input type="text" name="username" placeholder="{{ translate('Email') }}" aria-label="Login" autocomplete="email"
         required>
     <input type="password" name="password" placeholder="{{ translate('Password') }}" aria-label="Password"
