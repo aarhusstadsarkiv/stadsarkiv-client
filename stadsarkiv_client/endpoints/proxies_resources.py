@@ -144,7 +144,7 @@ async def _get_collectors_view(request: Request):
     return templates.TemplateResponse("resources/collectors.html", context)
 
 
-async def get_resources_view(request: Request):
+async def get(request: Request):
     resource_type = request.path_params["resource_type"]
 
     if resource_type == "collections":
@@ -171,7 +171,7 @@ async def get_resources_view(request: Request):
     raise HTTPException(status_code=404, detail="Resource type not found")
 
 
-async def get_resources_view_json(request: Request):
+async def get_json(request: Request):
     id = request.path_params["id"]
     resource_type = request.path_params["resource_type"]
     collection = await api.proxies_get_resource(resource_type, id)

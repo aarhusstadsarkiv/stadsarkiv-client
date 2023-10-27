@@ -45,7 +45,7 @@ async def get_single(request: Request):
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
-async def schemas_post(request: Request):
+async def post(request: Request):
     try:
         await api.schema_create(request)
         flash.set_message(request, translate("Schema created."), type="success")

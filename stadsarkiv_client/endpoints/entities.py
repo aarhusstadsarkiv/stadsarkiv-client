@@ -71,7 +71,7 @@ async def get_entity_update(request: Request):
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
-async def entities_patch_single(request: Request):
+async def patch(request: Request):
     try:
         await api.entity_patch(request)
         flash.set_message(request, "Entitet opdateret", type="success", remove=True)
@@ -104,7 +104,7 @@ async def entities_delete_soft(request: Request):
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
-async def entities_post(request: Request):
+async def post(request: Request):
     try:
         await api.entity_post(request)
         flash.set_message(request, "Entitet oprettet", type="success", remove=True)
@@ -116,7 +116,7 @@ async def entities_post(request: Request):
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))
-async def entities_get(request: Request):
+async def get_list(request: Request):
     try:
         entities, schemas = await asyncio.gather(api.entities_get(request), api.schemas(request))
 
@@ -139,7 +139,7 @@ def _get_schema_and_values(schema, entity):
     return schema_and_values
 
 
-async def entities_get_single(request: Request):
+async def get_single(request: Request):
     try:
         # content
         entity: dict = await api.entity_get(request)

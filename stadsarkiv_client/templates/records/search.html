@@ -130,7 +130,7 @@
 
 {% macro parse_search_form() %}
 <div>
-    <form id="search" method="get" action="{{ url_for('records_search')}}">
+    <form id="search" method="get" action="{{ url_for('proxies_search_get')}}">
         {% for key, value in query_params if key not in ['start', 'q'] %}
         <input type="hidden" name="{{ key }}" value="{{ value }}">
         {% endfor %}
@@ -143,7 +143,7 @@
 
 {% macro parse_size_form() %}
 <div class="search-option">
-    <form class="size" id="size" method="get" action="{{ url_for('records_search')}}">
+    <form class="size" id="size" method="get" action="{{ url_for('proxies_search_get')}}">
         {% for key, value in query_params if key not in ['start', 'size'] %}
         <input type="hidden" name="{{ key }}" value="{{ value }}">
         {% endfor %}
@@ -158,7 +158,7 @@
 
 {% macro parse_sort_form() %}
 <div class="search-option">
-    <form class="sort" id="sort" method="get" action="{{ url_for('records_search')}}">
+    <form class="sort" id="sort" method="get" action="{{ url_for('proxies_search_get')}}">
         {% for key, value in query_params if key not in ['sort', 'direction'] %}
         <input type="hidden" name="{{ key }}" value="{{ value }}">
         {% endfor %}

@@ -119,7 +119,7 @@ def _normalize_search(records: dict):
     return records
 
 
-async def get_records_search(request: Request):
+async def get(request: Request):
     q = query.get_search(request)
     size, sort = _get_size_sort(request)
     add_list_items = _get_default_query_params(request)
@@ -194,7 +194,7 @@ async def get_records_search(request: Request):
     return response
 
 
-async def get_records_search_json(request: Request):
+async def get_json(request: Request):
     add_list_items = _get_default_query_params(request)
     query_params = query.get_list(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
 

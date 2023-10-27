@@ -27,7 +27,7 @@ settings: dict[str, typing.Any] = {
         {"name": "auth_me_get", "title": "Profil"},
         {"name": "schemas_get_list", "title": "Schemas"},
         {"name": "entities_get_list", "title": "Entities"},
-        {"name": "records_search_get", "title": "Søg"},
+        {"name": "proxies_search_get", "title": "Søg"},
     ],
     #
     # Custom pages

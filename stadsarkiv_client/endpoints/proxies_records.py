@@ -103,7 +103,7 @@ async def _get_record_prev_next(request: Request):
     return search_query_params
 
 
-async def get_record_view(request: Request):
+async def get(request: Request):
     record_pagination = await _get_record_prev_next(request)
     record_id = request.path_params["record_id"]
     permissions = await api.me_permissions(request)
@@ -129,7 +129,7 @@ async def get_record_view(request: Request):
     return templates.TemplateResponse("records/record.html", context)
 
 
-async def get_record_view_json(request: Request):
+async def get_json(request: Request):
     try:
         record_id = request.path_params["record_id"]
         type = request.path_params["type"]
