@@ -1,5 +1,6 @@
 {
   "type": "object",
+  "title": "Car",
   "properties": {
     "make": {
       "type": "string",
@@ -14,7 +15,11 @@
       ]
     },
     "model": {
-      "type": "string"
+      "type": "string",
+      "_meta": {
+        "type": "list",
+        "allow": "admin"
+      }
     },
     "year": {
       "type": "integer",
