@@ -20,7 +20,7 @@ log = get_log()
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
-async def get_entity_create(request: Request):
+async def create(request: Request):
     try:
         schema = await api.schema_get(request)
 
@@ -41,7 +41,7 @@ async def get_entity_create(request: Request):
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
-async def get_entity_update(request: Request):
+async def update(request: Request):
     try:
         entity = await api.entity_get(request)
 
@@ -83,7 +83,7 @@ async def patch(request: Request):
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
-async def entities_delete_soft(request: Request):
+async def delete_soft(request: Request):
     if request.method == "POST":
         try:
             await api.entity_delete_soft(request)
