@@ -1,0 +1,123 @@
+{
+    "domain": "locations",
+    "description": "En specifik adresse - inklusiv husnummer",
+    "title": "Adresse",
+    "order": [
+        "display_label",
+        "name",
+        "addr_nr",
+        "alt_names",
+        "description",
+        "date_from",
+        "date_to",
+        "zipcode",
+        "local_area",
+        "parish",
+        "latitude",
+        "longitude",
+        "rotation",
+        "sources",
+        "portrait",
+        "ext_data"
+    ],
+    "remap": [],
+    "make_display": [
+        {
+            "date_template": "(%d0-%d1)",
+            "namePart": [
+                "name",
+                "addr_nr"
+            ],
+            "datePart": [
+                "date_from",
+                "date_to"
+            ],
+            "include_in_autocomplete": true,
+            "name_template": "%n0 %n1"
+        }
+    ],
+    "req_field": [
+        "name",
+        "addr_nr"
+    ],
+    "properties": {
+        "description": {
+            "type": "unicode_text",
+            "title": "Beskrivelse"
+        },
+        "parish": {
+            "locked": true,
+            "type": "unicode",
+            "title": "Sogn"
+        },
+        "date_from": {
+            "pattern": "^([0-9]{4})(-([0-9]{2}))?(-([0-9]{2}))?$",
+            "type": "unicode",
+            "title": "Oprettelsesdato"
+        },
+        "ext_data": {
+            "type": "dict",
+            "title": "Udvidet data"
+        },
+        "alt_names": {
+            "array_type": "unicode",
+            "type": "array",
+            "description": "Alternative navne",
+            "title": "Alternative navne"
+        },
+        "longitude": {
+            "locked": true,
+            "type": "float",
+            "title": "Breddegrad"
+        },
+        "zipcode": {
+            "pattern": "^[1-9][0-9]{3}$",
+            "type": "unicode",
+            "title": "Postnummer"
+        },
+        "sources": {
+            "array_type": "unicode",
+            "type": "array",
+            "description": "URL-links eller enkeltlinje referencer",
+            "title": "Kilder"
+        },
+        "display_label": {
+            "type": "unicode",
+            "description": "Den streng, som entiteten repræsenteres med",
+            "title": "Displaynavn"
+        },
+        "local_area": {
+            "type": "unicode",
+            "title": "Lokal område"
+        },
+        "date_to": {
+            "pattern": "^([0-9]{4})(-([0-9]{2}))?(-([0-9]{2}))?$",
+            "type": "unicode",
+            "title": "Nedlæggelsesdato"
+        },
+        "latitude": {
+            "locked": true,
+            "type": "float",
+            "title": "Længdegrad"
+        },
+        "portrait": {
+            "array_type": "unicode",
+            "type": "array",
+            "title": "Portræt"
+        },
+        "rotation": {
+            "locked": true,
+            "type": "float",
+            "title": "Rotation"
+        },
+        "addr_nr": {
+            "pattern": "^[0-9].*?",
+            "type": "unicode",
+            "title": "Husnummer"
+        },
+        "name": {
+            "type": "unicode",
+            "title": "Vejnavn"
+        }
+    }
+}

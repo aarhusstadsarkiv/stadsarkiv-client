@@ -1,0 +1,140 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "domain": "locations",
+    "title": "Address",
+    "type": "object",
+    "properties": {
+        "display_label": {
+            "title": "Display label",
+            "type": "string",
+            "_meta": {
+                "type": "string"
+            },
+            "minLength": 1,
+            "propertyOrder": 1
+        },
+        "name": {
+            "title": "Vejnavn",
+            "type": "string",
+            "_meta": {
+                "type": "string"
+            },
+            "minLength": 1,
+            "propertyOrder": 2
+        },
+        "parish": {
+            "type": "string",
+            "_meta": {
+                "type": "string"
+            }
+        },
+        "zipcode": {
+            "type": "string",
+            "pattern": "^[0-9]{4}$",
+            "_meta": {
+                "type": "string"
+            }
+        },
+        "coordinates": {
+            "type": "object",
+            "required": [
+                "longitude",
+                "latitude"
+            ],
+            "properties": {
+                "longitude": {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180,
+                    "default": null
+                },
+                "latitude": {
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90,
+                    "default": null
+                }
+            }
+        },
+        "rotation": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 360,
+            "_meta": {
+                "type": "string"
+            }
+        },
+        "alt_names": {
+            "title": "Alternative navne",
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "_meta": {
+                "type": "string_list",
+                "link": "locations"
+            }
+        },
+        "local_area": {
+            "type": "string",
+            "_meta": {
+                "type": "string"
+            }
+        },
+        "portrait": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "format": "uri"
+            },
+            "_meta": {
+                "type": "image_list"
+            }
+        },
+        "addr_nr": {
+            "title": "Husnummer",
+            "type": "string",
+            "_meta": {
+                "type": "string"
+            }
+        },
+        "id": {
+            "type": "string",
+            "_meta": {
+                "type": "string"
+            }
+        },
+        "schema": {
+            "type": "string",
+            "_meta": {
+                "type": "string"
+            }
+        }
+    },
+    "definitions": {
+        "address": {
+            "type": "object",
+            "properties": {
+                "street": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "required": [
+        "name",
+        "parish",
+        "zipcode",
+        "alt_names",
+        "display_label",
+        "local_area",
+        "portrait",
+        "rotation",
+        "addr_nr",
+        "id",
+        "schema"
+    ]
+}
