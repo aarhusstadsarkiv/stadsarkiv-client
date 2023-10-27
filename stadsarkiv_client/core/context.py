@@ -46,17 +46,17 @@ async def _get_main_menu(request: Request):
         main_menu = dynamic_settings.settings["main_menu"]  # type ignore
 
     if logged_in:
-        main_menu = [item for item in main_menu if item["name"] != "login"]
-        main_menu = [item for item in main_menu if item["name"] != "register"]
-        main_menu = [item for item in main_menu if item["name"] != "forgot_password"]
+        main_menu = [item for item in main_menu if item["name"] != "auth_login_get"]
+        main_menu = [item for item in main_menu if item["name"] != "auth_register_get"]
+        main_menu = [item for item in main_menu if item["name"] != "auth_forgot_password_get"]
 
     if not logged_in:
-        main_menu = [item for item in main_menu if item["name"] != "logout"]
-        main_menu = [item for item in main_menu if item["name"] != "profile"]
+        main_menu = [item for item in main_menu if item["name"] != "auth_logout_get"]
+        main_menu = [item for item in main_menu if item["name"] != "auth_me_get"]
 
     if "admin" not in permissions_list:
-        main_menu = [item for item in main_menu if item["name"] != "schemas"]
-        main_menu = [item for item in main_menu if item["name"] != "entities"]
+        main_menu = [item for item in main_menu if item["name"] != "schemas_get_list"]
+        main_menu = [item for item in main_menu if item["name"] != "entities_get_list"]
 
     return main_menu
 

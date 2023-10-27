@@ -1,6 +1,7 @@
 da = {
     "100 per page": "100 per side",
     "20 per page": "20 per side",
+    "403 Forbidden Error": "403 Forbidden Error",
     "404 Not Found": "404 Siden blev ikke fundet",
     "50 per page": "50 per side",
     "A verify link has been sent to your email. You may verify your account now by clicking the link.": "Et verifikations-link er blevet sendt til din e-mail. Du kan nu verificere din konto ved at klikke på linket.",

@@ -68,7 +68,7 @@
 
             try {
 
-                const url = `/entities`;
+                const url = `{{ url_for('entities_post')}}`;
                 const res = await Requests.asyncPostJson(url, post_json);
                 if (res.error) {
                     Flash.setMessage(res.message, 'error', true)

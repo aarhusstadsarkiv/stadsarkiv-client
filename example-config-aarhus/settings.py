@@ -20,14 +20,14 @@ settings: dict[str, typing.Any] = {
     # You may also add other "menus", e.g. "footer_items" or something similar.
     #
     "main_menu": [
-        {"name": "login", "title": "Log ind"},
-        {"name": "forgot_password", "title": "Glemt password"},
-        {"name": "logout", "title": "Log ud"},
-        {"name": "register", "title": "Ny bruger"},
-        {"name": "profile", "title": "Profil"},
-        {"name": "schemas", "title": "Schemas"},
-        {"name": "entities", "title": "Entities"},
-        {"name": "records_search", "title": "Søg"},
+        {"name": "auth_login_get", "title": "Log ind"},
+        {"name": "auth_forgot_password_get", "title": "Glemt password"},
+        {"name": "auth_logout_get", "title": "Log ud"},
+        {"name": "auth_register_get", "title": "Ny bruger"},
+        {"name": "auth_me_get", "title": "Profil"},
+        {"name": "schemas_get_list", "title": "Schemas"},
+        {"name": "entities_get_list", "title": "Entities"},
+        {"name": "records_search_get", "title": "Søg"},
     ],
     #
     # Custom pages

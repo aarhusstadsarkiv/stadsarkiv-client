@@ -71,7 +71,7 @@ async def get_entity_update(request: Request):
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
-async def entities_patch(request: Request):
+async def entities_patch_single(request: Request):
     try:
         await api.entity_patch(request)
         flash.set_message(request, "Entitet opdateret", type="success", remove=True)
@@ -103,17 +103,8 @@ async def entities_delete_soft(request: Request):
         raise HTTPException(404, detail=str(e), headers=None)
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."))
-async def entities(request: Request):
-    if request.method == "GET":
-        return await _get_entities(request)
-
-    elif request.method == "POST":
-        return await _post_entities(request)
-
-
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
-async def _post_entities(request: Request):
+async def entities_post(request: Request):
     try:
         await api.entity_post(request)
         flash.set_message(request, "Entitet oprettet", type="success", remove=True)
@@ -125,7 +116,7 @@ async def _post_entities(request: Request):
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))
-async def _get_entities(request: Request):
+async def entities_get(request: Request):
     try:
         entities, schemas = await asyncio.gather(api.entities_get(request), api.schemas(request))
 
@@ -148,7 +139,7 @@ def _get_schema_and_values(schema, entity):
     return schema_and_values
 
 
-async def entities_single(request: Request):
+async def entities_get_single(request: Request):
     try:
         # content
         entity: dict = await api.entity_get(request)

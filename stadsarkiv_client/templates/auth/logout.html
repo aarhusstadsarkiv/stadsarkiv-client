@@ -6,7 +6,7 @@
 
 {% include "includes/main_title.html" %}
 
-<form method="post" action="{{ url_for('logout')}}">
+<form method="post" action="{{ url_for('auth_logout_post')}}">
     <button type="submit" class="contrast">{{ translate('Logout') }}</button>
 </form>
 

@@ -21,16 +21,7 @@ log = get_log()
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
-async def schemas(request: Request):
-
-    if request.method == "GET":
-        return await _get_schemas(request)
-
-    elif request.method == "POST":
-        return await _post_schema(request)
-
-
-async def _get_schemas(request: Request):
+async def get_list(request: Request):
     try:
         schemas = await api.schemas(request)
         context_values = {"title": translate("Schemas"), "schemas": schemas}
@@ -40,7 +31,7 @@ async def _get_schemas(request: Request):
         raise HTTPException(status_code=404, detail=str(e))
 
 
-async def schemas_single(request: Request):
+async def get_single(request: Request):
     try:
         schema = await api.schema_get(request)
         schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
@@ -53,7 +44,8 @@ async def schemas_single(request: Request):
         raise HTTPException(status_code=404, detail=str(e))
 
 
-async def _post_schema(request: Request):
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
+async def schemas_post(request: Request):
     try:
         await api.schema_create(request)
         flash.set_message(request, translate("Schema created."), type="success")

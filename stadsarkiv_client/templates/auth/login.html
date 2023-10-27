@@ -6,13 +6,13 @@
 
 {% include "includes/main_title.html" %}
 
-<form method="post" action="{{ url_for('login')}}">
+<form method="post" action="{{ url_for('auth_login_post')}}">
     <input type="text" name="username" placeholder="{{ translate('Email') }}" aria-label="Login" autocomplete="email"
         required>
     <input type="password" name="password" placeholder="{{ translate('Password') }}" aria-label="Password"
         autocomplete="current-password" required>
     <button type="submit" class="contrast">{{ translate('Login') }}</button>
-    <a href="{{ url_for('forgot_password') }}">{{ translate('Forgot your password') }}</a>
+    <a href="{{ url_for('auth_forgot_password_get') }}">{{ translate('Forgot your password') }}</a>
 </form>
 
 {% endblock content %}

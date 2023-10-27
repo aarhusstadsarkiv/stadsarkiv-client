@@ -2,6 +2,7 @@ en = {
     "1 per page": "1 per page",
     "100 per page": "100 per page",
     "20 per page": "20 per page",
+    "403 Forbidden Error": "403 Forbidden Error",
     "404 Not Found": "404 Not Found",
     "50 per page": "50 per page",
     "A verify link has been sent to your email. You may verify your account now by clicking the link.": "A verify link has been sent to your email. You may verify your account now by clicking the link.",

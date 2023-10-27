@@ -37,29 +37,32 @@ def _get_static_dirs() -> list:
 # Add basic routes
 routes = [
     Mount("/static", MultiStaticFiles(directories=_get_static_dirs()), name="static"),
-    Route("/auth/login", endpoint=auth.login, name="login", methods=["GET", "POST"]),
-    Route("/auth/logout", endpoint=auth.logout, name="logout", methods=["GET", "POST"]),
-    Route("/auth/register", endpoint=auth.register, name="register", methods=["GET", "POST"]),
-    Route("/auth/forgot-password", endpoint=auth.forgot_password, name="forgot_password", methods=["GET", "POST"]),
-    Route("/auth/reset-password/{token:str}", endpoint=auth.reset_password, name="reset_password", methods=["GET", "POST"]),
-    Route("/auth/me", endpoint=auth.me, name="profile"),
-    Route("/auth/verify/{token:str}", endpoint=auth.verify, name="verify"),  # verify by token sent by email
-    Route("/auth/send-verify-email", endpoint=auth.send_verify_email, name="send_verify_email"),  # send verify email again
-    Route("/auth/user-info", endpoint=auth.auth_user_info, name="user_info", methods=["POST"]),
-
-    Route("/schemas/{schema_type:str}", endpoint=schemas.schemas_single, name="schemas"),
-    Route("/schemas", endpoint=schemas.schemas, name="schemas", methods=["GET", "POST"]),
-
-    Route("/entities", endpoint=entities.entities, name="entities", methods=["GET", "POST"]),
-    Route("/entities/{uuid:str}", endpoint=entities.entities_single, name="entities_single", methods=["GET"]),
-    Route("/entities/{uuid:str}", endpoint=entities.entities_patch, name="entities_single_patch", methods=["PATCH"]),
-
+    Route("/auth/login", endpoint=auth.login_get, name="auth_login_get", methods=["GET"]),
+    Route("/auth/login", endpoint=auth.login_post, name="auth_login_post", methods=["POST"]),
+    Route("/auth/logout", endpoint=auth.logout_get, name="auth_logout_get", methods=["GET"]),
+    Route("/auth/logout", endpoint=auth.logout_post, name="auth_logout_post", methods=["POST"]),
+    Route("/auth/register", endpoint=auth.register_get, name="auth_register_get", methods=["GET"]),
+    Route("/auth/register", endpoint=auth.register_post, name="auth_register_post", methods=["POST"]),
+    Route("/auth/forgot-password", endpoint=auth.forgot_password_get, name="auth_forgot_password_get", methods=["GET"]),
+    Route("/auth/forgot-password", endpoint=auth.forgot_password_post, name="auth_forgot_password_post", methods=["POST"]),
+    Route("/auth/reset-password/{token:str}", endpoint=auth.reset_password_get, name="auth_reset_password_get", methods=["GET"]),
+    Route("/auth/reset-password/{token:str}", endpoint=auth.reset_password_post, name="auth_reset_password_post", methods=["POST"]),
+    Route("/auth/me", endpoint=auth.me, name="auth_me_get", methods=["GET"]),
+    Route("/auth/verify/{token:str}", endpoint=auth.verify, name="auth_verify"),  # verify by token sent by email
+    Route("/auth/send-verify-email", endpoint=auth.send_verify_email, name="auth_send_verify_email"),  # send verify email again
+    Route("/auth/user-info", endpoint=auth.me_post, name="auth_user_info", methods=["POST"]),
+    Route("/schemas/{schema_type:str}", endpoint=schemas.get_single, name="schemas_get_single", methods=["GET"]),
+    Route("/schemas", endpoint=schemas.get_list, name="schemas_get_list", methods=["GET"]),
+    Route("/schemas", endpoint=schemas.schemas_post, name="schemas_post", methods=["POST"]),
+    Route("/entities", endpoint=entities.entities_get, name="entities_get_list", methods=["GET"]),
+    Route("/entities", endpoint=entities.entities_post, name="entities_post", methods=["POST"]),
+    Route("/entities/{uuid:str}", endpoint=entities.entities_get_single, name="entities_get_single", methods=["GET"]),
+    Route("/entities/{uuid:str}", endpoint=entities.entities_patch_single, name="entities_patch_single", methods=["PATCH"]),
     Route("/entities/create/{schema_type:str}", endpoint=entities.get_entity_create, name="entity_create"),
     Route("/entities/update/{uuid:str}", endpoint=entities.get_entity_update, name="entity_update"),
     Route("/entities/delete/{uuid:str}/soft", endpoint=entities.entities_delete_soft, name="entity_delete_soft", methods=["POST", "GET"]),
-
     # proxies
-    Route("/search", endpoint=proxies_search.get_records_search, name="records_search"),
+    Route("/search", endpoint=proxies_search.get_records_search, name="records_search_get"),
     Route("/search/json", endpoint=proxies_search.get_records_search_json, name="records_search_json"),
     Route("/records/{record_id:str}", endpoint=proxies_records.get_record_view, name="record_view"),
     Route("/records/{record_id:str}/json/{type:str}", endpoint=proxies_records.get_record_view_json, name="record_view_json"),
