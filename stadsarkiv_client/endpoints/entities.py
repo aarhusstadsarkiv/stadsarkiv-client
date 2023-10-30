@@ -127,15 +127,23 @@ async def get_list(request: Request):
         raise HTTPException(500, detail=str(e), headers=None)
 
 
-def _get_schema_and_values(schema, entity):
+def _get_types_and_values(schema, entity):
+    """
+    This function adds the values from the entity to the schema
+    """
     schema_and_values = schema["data"]["properties"]
-    data = entity["data"]
+    data_and_values = {}
 
-    for key, _value in schema_and_values.items():
-        if key in data:
-            schema_and_values[key]["value"] = data[key]
+    for key, value in schema_and_values.items():
+        try:
+            type = value["_meta"]["type"]
+            entity_value = entity["data"][key]
+            data_and_values[key] = {"type": type, "name": key, "value": entity_value}
 
-    return schema_and_values
+        except KeyError:
+            pass
+
+    return data_and_values
 
 
 async def get_single(request: Request):
@@ -149,8 +157,8 @@ async def get_single(request: Request):
     # schema
     schema = await api.schema_get_version(schema_name, schema_version)
 
-    schema_and_values = _get_schema_and_values(schema, entity)
+    types_and_values = _get_types_and_values(schema, entity)
 
-    context_values = {"title": "Entitet", "schema_and_values": schema_and_values}
+    context_values = {"title": "Entitet", "types_and_values": types_and_values, "entity": entity, "schema": schema}
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse("entities/entities_single.html", context)
