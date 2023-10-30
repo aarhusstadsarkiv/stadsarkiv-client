@@ -11,7 +11,7 @@
 {% include "includes/main_title.html" %}
 
 <div id='editor_holder' class='small'></div>
-<button id='submit'>{{ "Create entity" }}</button>
+<button id='submit'>{{ "Opret entitet" }}</button>
 
 <script type="module">
 
@@ -21,7 +21,7 @@
 
     const translation = await getTranslation("da")
 
-    var schema = {{ schema_json | safe }};
+    const schema = {{ schema_json | safe }};
     const schema_type = schema.type;
 
     // Initialize the editor with a JSON schema
@@ -36,7 +36,7 @@
     JSONEditor.defaults.languages.da = translation
     JSONEditor.defaults.language = "da";
 
-    var editor = new JSONEditor(document.getElementById('editor_holder'), options);
+    const editor = new JSONEditor(document.getElementById('editor_holder'), options);
     document.getElementById('submit').addEventListener('click', async function () {
 
         try {
@@ -51,6 +51,7 @@
 
         const errors = editor.validate();
         if (errors.length) {
+            console.log(errors)
             // errors is an array of objects, each with a `path`, `property`, and `message` parameter
             // `property` is the schema keyword that triggered the validation error (e.g. "minLength")
             // `path` is a dot separated path into the JSON object (e.g. "root.path.to.field")

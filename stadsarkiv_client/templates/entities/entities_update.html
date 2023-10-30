@@ -24,7 +24,7 @@
 
     const translation = await getTranslation("da")
 
-    var schema = {{ schema_json | safe }};
+    const schema = {{ schema_json | safe }};
     const schema_type = schema.type;
 
     // Initialize the editor with a JSON schema
@@ -40,7 +40,7 @@
     JSONEditor.defaults.language = "da";
 
 
-    var editor = new JSONEditor(document.getElementById('editor_holder'), options);
+    const editor = new JSONEditor(document.getElementById('editor_holder'), options);
 
     editor.on('ready', async function () {
         editor.setValue({{ entity_json | safe }});
