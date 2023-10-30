@@ -8,6 +8,7 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import user
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.hooks import get_hooks
+from stadsarkiv_client.core.decorators import disk_cache
 import json
 from stadsarkiv_client.core.dynamic_settings import settings
 import httpx
@@ -20,6 +21,7 @@ log = get_log()
 hooks = get_hooks()
 
 base_url = str(settings["api_base_url"])
+ONE_YEAR = 60 * 60 * 24 * 365
 
 
 def _get_jwt_headers(request: Request, headers: dict = {}) -> dict:
@@ -225,7 +227,8 @@ async def schema_get(request: Request) -> typing.Any:
             response.raise_for_status()
 
 
-async def schema_get_version(request: Request, schema_name: str, schema_version: int) -> typing.Any:
+@disk_cache(ONE_YEAR, use_args=[0, 1])
+async def schema_get_version(schema_name: str, schema_version: int) -> typing.Any:
     async with httpx.AsyncClient() as client:
         url = base_url + "/schemas/" + schema_name + "?version=" + str(schema_version)
 
