@@ -37,37 +37,34 @@ async def create(request: Request):
         return templates.TemplateResponse("entities/entities_create.html", context)
 
     except Exception as e:
-        raise HTTPException(403, detail=str(e), headers=None)
+        log.exception(e)
+        raise HTTPException(500, detail=str(e), headers=None)
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
 async def update(request: Request):
-    try:
-        entity = await api.entity_get(request)
+    entity = await api.entity_get(request)
 
-        schema_name = entity["schema_name"]
-        schema_version = schema_name.split("_")[1]
-        schema_name = schema_name.split("_")[0]
+    schema_name = entity["schema_name"]
+    schema_version = schema_name.split("_")[1]
+    schema_name = schema_name.split("_")[0]
 
-        schema = await api.schema_get_version(request, schema_name, schema_version)
+    schema = await api.schema_get_version(schema_name, schema_version)
 
-        """ Type needs to be altered to name before being used with the json editor
+    """ Type needs to be altered to name before being used with the json editor
         type is e.g. car
         name is e.g. car_2 """
 
-        schema["type"] = schema["name"]
-        schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
+    schema["type"] = schema["name"]
+    schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
 
-        entity_data = entity["data"]
-        entity_json = json.dumps(entity_data, indent=4, ensure_ascii=False)
+    entity_data = entity["data"]
+    entity_json = json.dumps(entity_data, indent=4, ensure_ascii=False)
 
-        context_values = {"title": "Opdater entitet", "schema_json": schema_json, "entity_json": entity_json, "entity": entity}
-        context = await get_context(request, context_values=context_values)
+    context_values = {"title": "Opdater entitet", "schema_json": schema_json, "entity_json": entity_json, "entity": entity}
+    context = await get_context(request, context_values=context_values)
 
-        return templates.TemplateResponse("entities/entities_update.html", context)
-
-    except Exception as e:
-        raise HTTPException(404, detail=str(e), headers=None)
+    return templates.TemplateResponse("entities/entities_update.html", context)
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
@@ -100,7 +97,8 @@ async def delete_soft(request: Request):
         return templates.TemplateResponse("entities/entities_delete_soft.html", context)
 
     except Exception as e:
-        raise HTTPException(404, detail=str(e), headers=None)
+        log.exception(e)
+        raise HTTPException(500, detail=str(e), headers=None)
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
@@ -125,7 +123,8 @@ async def get_list(request: Request):
         return templates.TemplateResponse("entities/entities_list.html", context)
 
     except Exception as e:
-        raise HTTPException(404, detail=str(e), headers=None)
+        log.exception(e)
+        raise HTTPException(500, detail=str(e), headers=None)
 
 
 def _get_schema_and_values(schema, entity):
@@ -140,22 +139,18 @@ def _get_schema_and_values(schema, entity):
 
 
 async def get_single(request: Request):
-    try:
-        # content
-        entity: dict = await api.entity_get(request)
+    # content
+    entity: dict = await api.entity_get(request)
 
-        # schema is e.g. person_1
-        schema_name: str = entity["schema_name"].split("_")[0]
-        schema_version = entity["schema_name"].split("_")[1]
+    # schema is e.g. person_1
+    schema_name: str = entity["schema_name"].split("_")[0]
+    schema_version = entity["schema_name"].split("_")[1]
 
-        # schema
-        schema = await api.schema_get_version(request, schema_name, schema_version)
+    # schema
+    schema = await api.schema_get_version(schema_name, schema_version)
 
-        schema_and_values = _get_schema_and_values(schema, entity)
+    schema_and_values = _get_schema_and_values(schema, entity)
 
-        context_values = {"title": "Entitet", "schema_and_values": schema_and_values}
-        context = await get_context(request, context_values=context_values)
-        return templates.TemplateResponse("entities/entities_single.html", context)
-
-    except Exception as e:
-        raise HTTPException(404, detail=str(e), headers=None)
+    context_values = {"title": "Entitet", "schema_and_values": schema_and_values}
+    context = await get_context(request, context_values=context_values)
+    return templates.TemplateResponse("entities/entities_single.html", context)
