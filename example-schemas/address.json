@@ -10,7 +10,6 @@
             "_meta": {
                 "type": "string"
             },
-            "minLength": 1,
             "propertyOrder": 1
         },
         "name": {
@@ -22,47 +21,14 @@
             "minLength": 1,
             "propertyOrder": 2
         },
-        "parish": {
+        "addr_nr": {
+            "title": "Husnummer",
             "type": "string",
             "_meta": {
                 "type": "string"
-            }
-        },
-        "zipcode": {
-            "type": "string",
-            "pattern": "^[0-9]{4}$",
-            "_meta": {
-                "type": "string"
-            }
-        },
-        "coordinates": {
-            "type": "object",
-            "required": [
-                "longitude",
-                "latitude"
-            ],
-            "properties": {
-                "longitude": {
-                    "type": "number",
-                    "minimum": -180,
-                    "maximum": 180,
-                    "default": null
-                },
-                "latitude": {
-                    "type": "number",
-                    "minimum": -90,
-                    "maximum": 90,
-                    "default": null
-                }
-            }
-        },
-        "rotation": {
-            "type": "number",
-            "minimum": 0,
-            "maximum": 360,
-            "_meta": {
-                "type": "string"
-            }
+            },
+            "minLength": 1,
+            "propertyOrder": 3
         },
         "alt_names": {
             "title": "Alternative navne",
@@ -73,15 +39,72 @@
             "_meta": {
                 "type": "string_list",
                 "link": "locations"
-            }
+            },
+            "propertyOrder": 4
+        },
+        "description": {
+            "title": "Beskrivelse (adskil hvert afsnit med en tom linje)",
+            "type": "string",
+            "_meta": {
+                "type": "paragraphs"
+            },
+            "format": "textarea",
+            "propertyOrder": 5
+        },
+        "parish": {
+            "type": "string",
+            "title": "Sogn",
+            "_meta": {
+                "type": "string"
+            },
+            "propertyOrder": 6
+        },
+        "zipcode": {
+            "title": "Postnummer",
+            "type": "string",
+            "pattern": "^[0-9]{4}$|^$",
+            "_meta": {
+                "type": "string"
+            },
+            "propertyOrder": 7
+        },
+        "coordinates": {
+            "title": "Koordinater",
+            "type": "object",
+            "properties": {
+                "longitude": {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180
+                },
+                "latitude": {
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90
+                }
+            },
+            "propertyOrder": 8
+        },
+        "rotation": {
+            "title": "Rotation",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 360,
+            "_meta": {
+                "type": "string"
+            },
+            "propertyOrder": 9
         },
         "local_area": {
+            "title": "Lokalområde",
             "type": "string",
             "_meta": {
                 "type": "string"
-            }
+            },
+            "propertyOrder": 10
         },
         "portrait": {
+            "title": "Portræt",
             "type": "array",
             "items": {
                 "type": "string",
@@ -89,52 +112,56 @@
             },
             "_meta": {
                 "type": "image_list"
-            }
+            },
+            "propertyOrder": 11
         },
-        "addr_nr": {
-            "title": "Husnummer",
-            "type": "string",
-            "_meta": {
-                "type": "string"
-            }
-        },
-        "id": {
-            "type": "string",
-            "_meta": {
-                "type": "string"
-            }
-        },
-        "schema": {
-            "type": "string",
-            "_meta": {
-                "type": "string"
-            }
-        }
-    },
-    "definitions": {
-        "address": {
-            "type": "object",
-            "properties": {
-                "street": {
-                    "type": "string"
+        "sources": {
+            "type": "array",
+            "title": "Kilder",
+            "items": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "title": "URL",
+                  "format": "uri",
+                  "pattern": "^https://.*"
                 },
-                "city": {
-                    "type": "string"
+                "title": {
+                  "type": "string",
+                  "title": "Title"
                 }
+              },
+              "required": ["url"]
             }
+        },
+        "sources_links": {
+            "title": "Kilder (som links)",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "format": "uri"
+            },
+            "_meta": {
+                "type": "link_list"
+            },
+            "propertyOrder": 12
+        },
+        "sources_texts": {
+            "title": "Kilder (som tekst)",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "format": "uri"
+            },
+            "_meta": {
+                "type": "string_list"
+            },
+            "propertyOrder": 13
         }
     },
     "required": [
         "name",
-        "parish",
-        "zipcode",
-        "alt_names",
-        "display_label",
-        "local_area",
-        "portrait",
-        "rotation",
-        "addr_nr",
-        "id",
-        "schema"
+        "addr_nr"
     ]
 }
