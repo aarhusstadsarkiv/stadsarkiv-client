@@ -71,23 +71,24 @@
         "coordinates": {
             "title": "Koordinater",
             "type": "object",
-            "properties": {
-                "longitude": {
-                    "type": "number",
-                    "minimum": -180,
-                    "maximum": 180
-                },
+            "properties": {    
                 "latitude": {
-                    "type": "number",
-                    "minimum": -90,
-                    "maximum": 90
+                    "title": "Breddegrad",
+                    "type": "string",
+                    "pattern": "^(\\d+(\\.\\d+)?|)$"
+                },
+                "longitude": {
+                    "title": "Længdegrad",
+                    "type": "string",
+                    "pattern": "^(\\d+(\\.\\d+)?|)$"
                 }
             },
             "propertyOrder": 8
         },
         "rotation": {
             "title": "Rotation",
-            "type": "number",
+            "type": "string",
+            "pattern": "^(\\d+(\\.\\d+)?|)$",
             "minimum": 0,
             "maximum": 360,
             "_meta": {
@@ -119,20 +120,22 @@
             "type": "array",
             "title": "Kilder",
             "items": {
-              "type": "object",
-              "properties": {
-                "url": {
-                  "type": "string",
-                  "title": "URL",
-                  "format": "uri",
-                  "pattern": "^https://.*"
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "title": "URL",
+                        "format": "uri",
+                        "pattern": "^https://.*"
+                    },
+                    "title": {
+                        "type": "string",
+                        "title": "Title"
+                    }
                 },
-                "title": {
-                  "type": "string",
-                  "title": "Title"
-                }
-              },
-              "required": ["url"]
+                "required": [
+                    "url"
+                ]
             }
         },
         "sources_links": {
