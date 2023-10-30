@@ -71,6 +71,9 @@
         "coordinates": {
             "title": "Koordinater",
             "type": "object",
+            "_meta": {
+                "type": "coordinates"
+            },
             "properties": {    
                 "latitude": {
                     "title": "Breddegrad",
@@ -116,34 +119,13 @@
             },
             "propertyOrder": 11
         },
-        "sources": {
-            "type": "array",
-            "title": "Kilder",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "url": {
-                        "type": "string",
-                        "title": "URL",
-                        "format": "uri",
-                        "pattern": "^https://.*"
-                    },
-                    "title": {
-                        "type": "string",
-                        "title": "Title"
-                    }
-                },
-                "required": [
-                    "url"
-                ]
-            }
-        },
         "sources_links": {
             "title": "Kilder (som links)",
             "type": "array",
             "items": {
                 "type": "string",
-                "format": "uri"
+                "format": "uri",
+                "pattern": "^https://.*"
             },
             "_meta": {
                 "type": "link_list"
@@ -154,8 +136,7 @@
             "title": "Kilder (som tekst)",
             "type": "array",
             "items": {
-                "type": "string",
-                "format": "uri"
+                "type": "string"
             },
             "_meta": {
                 "type": "string_list"
