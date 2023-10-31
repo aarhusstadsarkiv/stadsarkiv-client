@@ -14,16 +14,13 @@ async function getTranslation(lang) {
 function parseErrors(schema, errors) {
     errors.forEach(error => {
 
-        // Get field title from json schema
-        console.log(error)
-        
-        // Remove root. from error.path
+        // Remove root. from error.path e.g root.name.first
         const field = error.path.split('.').slice(1).join('.')
         
         // Split field into parts
         const fieldParts = field.split('.')
 
-        // Go into schema.data.properties and find the correct field
+        // Iterate schema.data.properties and find the final fieldSchema
         let fieldSchema = schema.data
 
         fieldParts.forEach(field_part => {
