@@ -12,19 +12,29 @@ async function getTranslation(lang) {
 }
 
 function parseErrors(schema, errors) {
-    errors.forEach(error => {
+
+    // reverse errors
+    errors = errors.reverse()
+    for (let i = 0; i < errors.length; i++) {
+
+        const error = errors[i]
 
         // Remove root. from error.path e.g root.name.first
         const field = error.path.split('.').slice(1).join('.')
         
+        // Remove any '.' and a number from end of field e.g name.0 -> name
+        let fieldCleaned = field
+        if (field.match(/\.\d+$/)) {
+            fieldCleaned = field.replace(/\.\d+$/, '')
+        }            
+        
         // Split field into parts
-        const fieldParts = field.split('.')
+        const fieldParts = fieldCleaned.split('.')
 
         // Iterate schema.data.properties and find the final fieldSchema
         let fieldSchema = schema.data
-
-        fieldParts.forEach(field_part => {
-            fieldSchema = fieldSchema.properties[field_part]
+        fieldParts.forEach(fieldPart => {
+            fieldSchema = fieldSchema.properties[fieldPart]
         });
 
         const fieldTitle = fieldSchema.title || error.path
@@ -34,7 +44,8 @@ function parseErrors(schema, errors) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
         Flash.setMessage(message, 'error')
-    });
+        
+    };
 }
 
 export {getTranslation, parseErrors}
