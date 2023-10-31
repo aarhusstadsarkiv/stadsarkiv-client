@@ -19,7 +19,7 @@
 
     import { Requests } from "/static/js/requests.js";
     import { Flash } from "/static/js/flash.js";
-    import { getTranslation } from "/static/js/jsoneditor_utils.js";
+    import { getTranslation, parseErrors } from "/static/js/jsoneditor_utils.js";
     import { getPathPart } from '/static/js/common_utils.js'
 
     const translation = await getTranslation("da")
@@ -27,13 +27,16 @@
     const schema = {{ schema_json | safe }};
     const schema_type = schema.type;
 
+    console.log(schema)
+
     // Initialize the editor with a JSON schema
     const options = {
         theme: 'barebones',
         disable_properties: true,
         disable_collapse: true,
         disable_edit_json: true,
-        schema: schema.data
+        schema: schema.data,
+        prompt_before_delete: false,
     }
 
     JSONEditor.defaults.languages.da = translation
@@ -58,16 +61,10 @@
             console.log(e)
         }
 
+
         const errors = editor.validate();
         if (errors.length) {
-            // errors is an array of objects, each with a `path`, `property`, and `message` parameter
-            // `property` is the schema keyword that triggered the validation error (e.g. "minLength")
-            // `path` is a dot separated path into the JSON object (e.g. "root.path.to.field")
-            errors.forEach(error => {
-                const message = "Client validation. Path: " + error.path + " - " + error.message;
-                Flash.setMessage(message, 'error')
-            })
-
+            parseErrors(schema, errors)
         } else {
             const schema_data = editor.getValue();
             const uuid = getPathPart(2)
