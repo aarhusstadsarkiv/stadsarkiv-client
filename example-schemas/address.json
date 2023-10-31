@@ -146,7 +146,8 @@
             "items": {
                 "type": "string",
                 "format": "uri",
-                "pattern": "^https://.*"
+                "pattern": "^https://.*",
+                "default": ""
             },
             "_meta": {
                 "type": "link_list"
