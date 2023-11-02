@@ -21,16 +21,15 @@
 
 {% include "includes/main_title.html" %}
 
-{% set key = "portrait" %}
-{{ slideshow_macros.parse_slideshow_block("Billede liste", key, types_and_values ) }}
+<a href="{{ url_for('entities_get_list') }}" class="back-link">Tilbage til liste</a>
+<a href="{{ url_for('entities_delete_soft', uuid=entity.uuid) }}" class="edit-link">Slet</a>
+<a href="{{ url_for('entities_update', uuid=entity.uuid) }}" class="edit-link">Rediger</a>
 
-{# get all keys from types and values #}
+{% set key = "image_list" %}
+{{ slideshow_macros.parse_slideshow_block("Billede liste", key, types_and_values ) }}
 
 {% set keys = types_and_values.keys() %}
 {{ common_macros.parse_block_common('Stamdata', keys, types_and_values) }}
-
-
-
 
 {{ pre(types_and_values)|safe }}
 
