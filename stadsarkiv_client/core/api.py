@@ -216,7 +216,10 @@ async def schemas(request: Request) -> typing.Any:
 
 async def schema_get(request: Request) -> typing.Any:
     schema_type = request.path_params["schema_type"]
+    return await schema_get_by_name(schema_type)
 
+
+async def schema_get_by_name(schema_type) -> typing.Any:
     async with httpx.AsyncClient() as client:
         url = base_url + "/schemas/" + schema_type
         headers = {"Accept": "application/json"}
@@ -228,7 +231,7 @@ async def schema_get(request: Request) -> typing.Any:
 
 
 @disk_cache(ttl=ONE_YEAR, use_args=[0, 1])
-async def schema_get_version(schema_name: str, schema_version: int) -> typing.Any:
+async def schema_get_by_version(schema_name: str, schema_version: int) -> typing.Any:
     async with httpx.AsyncClient() as client:
         url = base_url + "/schemas/" + schema_name + "?version=" + str(schema_version)
 
