@@ -11,6 +11,7 @@
 {% block content %}
 {% include "includes/main_title.html" %}
 
+
 <div class="entity-editor">
     <div id='editor_holder' class='small'></div>
     <button id='submit'>{{ "Opdater entitet" }}</button>
@@ -22,12 +23,15 @@
     import { showErrorMessages, getEditor } from "/static/js/jsoneditor_utils.js";
     import { getPathPart } from '/static/js/common_utils.js'
 
-    const schema = {{ schema_json | safe }};
-    const schemaType = schema.type;
+    const schema = {{ to_json(schema) | safe }};
+    const schemaLatest = {{ to_json(schema_latest) | safe }};
+
+    window.schema = schema // For debugging
+    const schemaType = schema.name;
     const editor = await getEditor(schema);
 
     editor.on('ready', async function () {
-        editor.setValue({{ entity_json | safe }});
+        editor.setValue({{ to_json(entity_data) | safe }});
     });
 
     document.getElementById('submit').addEventListener('click', async function () {

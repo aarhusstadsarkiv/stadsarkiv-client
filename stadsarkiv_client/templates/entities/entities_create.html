@@ -20,8 +20,8 @@
     import { showErrorMessages, getEditor } from "/static/js/jsoneditor_utils.js";
     import { getPathPart } from '/static/js/common_utils.js'
 
-    const schema = {{ schema_json | safe }};
-    const schemaType = schema.type;
+    const schema = {{ to_json(schema) | safe }};
+    const schemaName = schema.name;
     const editor = await getEditor(schema);
 
     document.getElementById('submit').addEventListener('click', async function () {
@@ -45,7 +45,7 @@
 
             const postJson = JSON.stringify({
                 data: schemaData,
-                schema_name: schemaType,
+                schema_name: schemaName,
             })
 
             try {
