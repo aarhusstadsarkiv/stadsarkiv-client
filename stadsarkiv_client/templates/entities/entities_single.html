@@ -1,13 +1,16 @@
 
 
 {% import "macros/common_macros.html" as common_macros %}
+{% import "macros/slideshow_macros.html" as slideshow_macros %}
 
 {% extends "base.html" %}
 
 {% block body_class %}page-entity-single{% endblock %}
 
+
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/slideshow.css') }}?v={{ get_setting('version') }}">
 <script type="module">
     import { activateOverlay } from "/static/js/overlay.js";
     activateOverlay('.record-representation');
@@ -18,15 +21,24 @@
 
 {% include "includes/main_title.html" %}
 
+{% set key = "portrait" %}
+{{ slideshow_macros.parse_slideshow_block("Billede liste", key, types_and_values ) }}
+
+{# get all keys from types and values #}
+
+{% set keys = types_and_values.keys() %}
+{{ common_macros.parse_block_common('Stamdata', keys, types_and_values) }}
+
+
+
+
 {{ pre(types_and_values)|safe }}
 
 {{ pre(entity)|safe }}
 
-{#  "date_from", "date_to" In this case it is birthdate and deathdate - not used #}
-{% set keys = ["display_label", "name", "parish", "addr_nr", "zipcode", "rotation", "alt_names", "local_area", "description", "coordinates", "sources_links", "sources_texts"] %}
-{{ common_macros.parse_image_block('Stamdata', keys, types_and_values) }}
-
 {% endblock content %}
+
+
 
 
 
