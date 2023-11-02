@@ -17,32 +17,18 @@
 
     import { Requests } from "/static/js/requests.js";
     import { Flash } from "/static/js/flash.js";
-    import { getTranslation, parseErrors } from "/static/js/jsoneditor_utils.js";
+    import { showErrorMessages, getEditor } from "/static/js/jsoneditor_utils.js";
     import { getPathPart } from '/static/js/common_utils.js'
 
-    const translation = await getTranslation("da")
-
     const schema = {{ schema_json | safe }};
-    const schema_type = schema.type;
+    const schemaType = schema.type;
+    const editor = await getEditor(schema);
 
-    // Initialize the editor with a JSON schema
-    const options = {
-        theme: 'barebones',
-        disable_properties: true,
-        disable_collapse: true,
-        disable_edit_json: true,
-        schema: schema.data
-    }
-
-    JSONEditor.defaults.languages.da = translation
-    JSONEditor.defaults.language = "da";
-
-    const editor = new JSONEditor(document.getElementById('editor_holder'), options);
     document.getElementById('submit').addEventListener('click', async function () {
 
         try {
-            const user_info = await Requests.asyncPostJson('/auth/user-info');
-            if (!user_info.is_logged_in) {
+            const userInfo = await Requests.asyncPostJson('/auth/user-info');
+            if (!userInfo.is_logged_in) {
                 Flash.setMessage("{{ 'Du skal være logget ind for at oprette en entitet' }}", 'error', true)
                 return;
             }
@@ -51,26 +37,26 @@
         }
 
         const errors = editor.validate();
+        let schemaData = editor.getValue();
+        
         if (errors.length) {
-            parseErrors(schema, errors);
-
+            showErrorMessages(schema, errors)
         } else {
-            const schema_data = editor.getValue();
-            const post_json = JSON.stringify({
-                data: schema_data,
-                schema_name: schema_type,
+
+            const postJson = JSON.stringify({
+                data: schemaData,
+                schema_name: schemaType,
             })
 
             try {
 
                 const url = `{{ url_for('entities_post')}}`;
-                const res = await Requests.asyncPostJson(url, post_json);
+                const res = await Requests.asyncPostJson(url, postJson);
                 if (res.error) {
                     Flash.setMessage(res.message, 'error', true)
                 }
                 else {
-                    // Rediect to current page
-                    window.location = "/entities"
+                    window.location = `{{ url_for('entities_get_list') }}`;
                 }
 
             } catch (e) {

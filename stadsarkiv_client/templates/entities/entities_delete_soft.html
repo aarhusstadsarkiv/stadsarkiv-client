@@ -33,8 +33,7 @@
                 Flash.setMessage(res.message, 'error', true)
             }
             else {
-                // Rediect to current page
-                Flash.setMessage(res.message, 'success', true)
+                window.location = `{{ url_for('entities_get_list') }}`;
             }
     
         } catch (e) {
