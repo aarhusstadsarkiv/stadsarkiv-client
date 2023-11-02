@@ -1,0 +1,45 @@
+{% import "macros/common_macros.html" as common_macros %}
+
+{% macro parse_slideshow(images) %}
+<div class="slideshow-container">
+    {% for image in images %}
+    <div class="slide">
+        <img src="{{ image }}" alt="Slide {{ loop.index }}">
+    </div>
+    {% endfor %}
+
+    {# add prev next if more than one image #}
+    {% if images|length > 1 %}
+    <a href="#" class="prev">&#10094;</a>
+    <a href="#" class="next">&#10095;</a>
+    <div class="slide-counter">
+        <span class="current-slide"></span> / <span class="total-slides"></span>
+    </div>
+    {% endif %}
+    
+</div>
+<script type="module">
+    import { } from "/static/js/slideshow.js";
+</script>
+{% endmacro %}
+
+{% macro parse_slideshow_block(title, key, types_and_values) %}
+{# 
+    generate a slideshow from a title, key, and the types_and_values 
+    key should always be 'image_list' across all schemas
+#}
+
+{% if types_and_values[key] %}
+    {% set images = types_and_values[key]['value'] %}
+    {% if images %}
+    <div class="record-section">
+        <div class="record-main">
+            <h3 class="record-header">{{ title }}</h3>
+            <div class="record-representation">
+                {{ parse_slideshow(images) }}
+            </div>
+        </div>
+    </div> 
+    {% endif %}
+{% endif %}
+{% endmacro %}
