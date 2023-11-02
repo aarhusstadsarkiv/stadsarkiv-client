@@ -46,7 +46,7 @@
 </script>
 {% endmacro %}
 
-{% macro parse_block_first(block_keys) %}
+{% macro parse_block_first(block_keys, collection) %}
 {% if key_exist_in_dict(block_keys, collection) %}
 <div class="record-section">
     {% if collection['highlights'] %}
@@ -87,7 +87,7 @@
 </p>
 
 {% set keys = ['collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}
-{{ parse_block_first(keys) }}
+{{ parse_block_first(keys, collection) }}
 
 {% set keys = ["summary", "description", "content_and_scope"] %}
 {{ common_macros.parse_block_common('Abstrakt', keys, collection) }}
