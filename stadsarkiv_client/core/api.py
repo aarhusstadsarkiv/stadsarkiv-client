@@ -304,11 +304,11 @@ async def entity_patch(request: Request) -> typing.Any:
             response.raise_for_status()
 
 
-async def entity_delete_soft(request: Request) -> typing.Any:
+async def entity_delete(request: Request, type: str) -> typing.Any:
     entity_id = request.path_params["uuid"]
 
     async with httpx.AsyncClient() as client:
-        url = base_url + "/entities/" + entity_id + "/soft"
+        url = base_url + "/entities/" + entity_id + "/" + type
         headers = _get_jwt_headers(request, {"Accept": "application/json"})
         response = await client.delete(url, headers=headers)
 
