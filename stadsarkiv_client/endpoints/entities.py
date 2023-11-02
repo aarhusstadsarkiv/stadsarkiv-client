@@ -13,7 +13,6 @@ from stadsarkiv_client.core.decorators import is_authenticated
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core import api
 import asyncio
-import json
 
 
 log = get_log()
@@ -23,17 +22,8 @@ log = get_log()
 async def create(request: Request):
     try:
         schema = await api.schema_get(request)
-
-        """ Type needs to be altered to name before being used with the json editor
-        type is e.g. car
-        name is e.g. car_2 """
-
-        schema["type"] = schema["name"]
-        schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
-
-        context_values = {"title": "Opret entitet", "schema_json": schema_json}
+        context_values = {"title": "Opret entitet", "schema": schema}
         context = await get_context(request, context_values=context_values)
-
         return templates.TemplateResponse("entities/entities_create.html", context)
 
     except Exception as e:
@@ -41,27 +31,22 @@ async def create(request: Request):
         raise HTTPException(500, detail=str(e), headers=None)
 
 
+def _get_schema_name_version(entity: dict):
+    schema_name = entity["schema_name"]
+    schema_version = schema_name.split("_")[1]
+    schema_name = schema_name.split("_")[0]
+    return schema_name, schema_version
+
+
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
 async def update(request: Request):
     entity = await api.entity_get(request)
 
-    schema_name = entity["schema_name"]
-    schema_version = schema_name.split("_")[1]
-    schema_name = schema_name.split("_")[0]
+    schema_name, schema_version = _get_schema_name_version(entity)
+    schema = await api.schema_get_by_version(schema_name, schema_version)
+    schema_latest = await api.schema_get_by_name(schema_name)
 
-    schema = await api.schema_get_version(schema_name, schema_version)
-
-    """ Type needs to be altered to name before being used with the json editor
-        type is e.g. car
-        name is e.g. car_2 """
-
-    schema["type"] = schema["name"]
-    schema_json = json.dumps(schema, indent=4, ensure_ascii=False)
-
-    entity_data = entity["data"]
-    entity_json = json.dumps(entity_data, indent=4, ensure_ascii=False)
-
-    context_values = {"title": "Opdater entitet", "schema_json": schema_json, "entity_json": entity_json, "entity": entity}
+    context_values = {"title": "Opdater entitet", "schema": schema, "schema_latest": schema_latest, "entity_data": entity["data"]}
     context = await get_context(request, context_values=context_values)
 
     return templates.TemplateResponse("entities/entities_update.html", context)
@@ -163,10 +148,15 @@ async def get_single(request: Request):
     schema_version = entity["schema_name"].split("_")[1]
 
     # schema
-    schema = await api.schema_get_version(schema_name, schema_version)
+    schema = await api.schema_get_by_version(schema_name, schema_version)
 
     types_and_values = _get_types_and_values(schema, entity)
 
-    context_values = {"title": "Entitet", "types_and_values": types_and_values, "entity": entity, "schema": schema}
+    context_values = {
+        "title": types_and_values["display_label"]["value"],
+        "types_and_values": types_and_values,
+        "entity": entity,
+        "schema": schema,
+    }
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse("entities/entities_single.html", context)
