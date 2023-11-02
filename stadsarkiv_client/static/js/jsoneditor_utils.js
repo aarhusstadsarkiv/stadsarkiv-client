@@ -11,23 +11,23 @@ async function getTranslation(lang) {
     return translation
 }
 
-function parseErrors(schema, errors) {
+function showErrorMessages(schema, errors) {
 
-    // reverse errors
-    errors = errors.reverse()
+    let messages = []
+
     for (let i = 0; i < errors.length; i++) {
 
         const error = errors[i]
 
         // Remove root. from error.path e.g root.name.first
         const field = error.path.split('.').slice(1).join('.')
-        
+
         // Remove any '.' and a number from end of field e.g name.0 -> name
         let fieldCleaned = field
         if (field.match(/\.\d+$/)) {
             fieldCleaned = field.replace(/\.\d+$/, '')
-        }            
-        
+        }
+
         // Split field into parts
         const fieldParts = fieldCleaned.split('.')
 
@@ -39,13 +39,50 @@ function parseErrors(schema, errors) {
 
         const fieldTitle = fieldSchema.title || error.path
         const message = "Validerings fejl i feltet " + fieldTitle + ": " + error.message;
+        messages.push(message)
 
-        const element = document.querySelector(`[data-schemapath="root.${field}"]`)
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
-        Flash.setMessage(message, 'error')
-        
     };
+
+    if (messages.length > 0) {
+        const header = document.querySelector('.je-object__title')
+
+        // Remove old error messages
+        const oldErrorMessages = document.querySelectorAll('.error-message')
+        oldErrorMessages.forEach(element => {
+            element.remove()
+        });
+
+        // Add new error messages
+        messages.forEach(element => {
+            const error_message = document.createElement('div')
+            error_message.classList.add('error-message')
+            error_message.innerHTML = element
+            header.after(error_message)
+        });
+
+        const element = document.querySelector('#editor_holder')
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
 }
 
-export {getTranslation, parseErrors}
+async function getEditor(schema) {
+
+    const translation = await getTranslation("da")
+
+    // Initialize the editor with a JSON schema
+    const options = {
+        theme: 'barebones',
+        disable_properties: true,
+        disable_collapse: true,
+        disable_edit_json: true,
+        schema: schema.data,
+    }
+
+    JSONEditor.defaults.languages.da = translation
+    JSONEditor.defaults.language = "da";
+
+    const editor = new JSONEditor(document.getElementById('editor_holder'), options);
+    return editor
+}
+
+export { getTranslation, showErrorMessages, getEditor }
