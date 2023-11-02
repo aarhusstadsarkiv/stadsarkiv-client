@@ -122,6 +122,23 @@
 </div>    
 {% endmacro %}
 
+{% macro parse_coordinates(key, value) %}
+<!-- "coordinates": {
+    "latitude": null,
+    "longitude": null
+}, -->
+{% if value["latitude"] and value["longitude"] %}
+<div class="record-content record_content_{{ key }}">
+    {{ parse_record_label(key)}}
+    <div class="content">
+        <p>
+            {{ value["latitude"] }}, {{ value["longitude"] }}
+        </p>
+    </div>
+</div>
+{% endif %}
+{% endmacro %}
+
 {% macro parse_representations(key, value) %}
 {% if value["record_type"] == "image" %}
 <div class="record-content record_content_{{ key }}">
@@ -170,6 +187,9 @@
 {% if settings.update({'skip_translate': True}) %} {% endif %}
 {{ parse_key_value_dict(value ) }}
 {% if settings.update({'skip_translate': False}) %} {% endif %}
+
+{% elif type == "coordinates" %}
+{{ parse_coordinates(key, value ) }}
 
 {% elif type == "string_list" %}
 {{ parse_string_list(key, value ) }}
