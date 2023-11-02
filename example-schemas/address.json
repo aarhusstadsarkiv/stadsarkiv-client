@@ -96,22 +96,34 @@
             "properties": {
                 "longitude": {
                     "title": "Længdegrad",
-                    "type": ["null", "number"],
+                    "type": [
+                        "null",
+                        "number"
+                    ],
                     "minimum": -180,
                     "maximum": 180
                 },
                 "latitude": {
                     "title": "Breddegrad",
-                    "type": ["null", "number"],
+                    "type": [
+                        "null",
+                        "number"
+                    ],
                     "minimum": -90,
                     "maximum": 90
                 }
+            },
+            "_meta": {
+                "type": "coordinates"
             },
             "propertyOrder": 10
         },
         "rotation": {
             "title": "Rotation",
-            "type": ["null", "number"],
+            "type": [
+                "null",
+                "number"
+            ],
             "_meta": {
                 "type": "string"
             },
@@ -125,7 +137,6 @@
             },
             "propertyOrder": 12
         },
-
         "image": {
             "title": "Billede",
             "type": "string",
@@ -137,7 +148,6 @@
             },
             "propertyOrder": 13
         },
-
         "image_list": {
             "title": "Billeder (kan benyttes til slideshows)",
             "type": "array",
