@@ -83,7 +83,8 @@ async def patch(request: Request):
 async def delete_soft(request: Request):
     if request.method == "POST":
         try:
-            await api.entity_delete_soft(request)
+            await api.entity_delete(request, "soft")
+            flash.set_message(request, "Entitet er slettet 'soft'", type="success", remove=True)
             return JSONResponse({"message": "Entitet er slettet (soft)", "error": False})
 
         except Exception:
@@ -118,6 +119,8 @@ async def get_list(request: Request):
     try:
         entities, schemas = await asyncio.gather(api.entities_get(request), api.schemas(request))
 
+        # sort entities by timestamp string like: 2023-11-02T12:39:32.049975+00:00
+        entities = sorted(entities, key=lambda k: k["timestamp"], reverse=True)
         context_values = {"title": "Opret entiteter", "schemas": schemas, "entities": entities}
         context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("entities/entities_list.html", context)
@@ -138,6 +141,11 @@ def _get_types_and_values(schema, entity):
         try:
             type = value["_meta"]["type"]
             entity_value = entity["data"][key]
+
+            # # check if entity_value is empty
+            # if not entity_value:
+            #     continue
+
             data_and_values[key] = {"type": type, "name": key, "value": entity_value}
 
         except KeyError:
