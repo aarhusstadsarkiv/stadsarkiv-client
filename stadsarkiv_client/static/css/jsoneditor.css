@@ -7,7 +7,6 @@
     }
 
 
-    label.required:after {
-        content: " *";
-        color: red;
+    .error-message {
+        color: var(--flash-error-color);
     }
