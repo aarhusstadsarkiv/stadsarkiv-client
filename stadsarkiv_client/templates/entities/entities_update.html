@@ -4,42 +4,92 @@
 
 {% block head %}
 
-<script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
+<script src="/static/js/jsoneditor.min.js"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>-->
 <link rel="stylesheet" href="{{ url_for('static', path='/css/jsoneditor.css') }}?v={{ get_setting('version') }}">
 {% endblock head %}
 
 {% block content %}
 {% include "includes/main_title.html" %}
 
+<div class="schema-update"></div>
 
 <div class="entity-editor">
     <div id='editor_holder' class='small'></div>
     <button id='submit'>{{ "Opdater entitet" }}</button>
 </div>
+
 <script type="module">
 
+    // import { html, render } from '/static/js/lit-core.min.js';
+    import { html, render } from 'https://cdn.jsdelivr.net/gh/lit/dist@3/core/lit-core.min.js';
     import { Requests } from "/static/js/requests.js";
     import { Flash } from "/static/js/flash.js";
     import { showErrorMessages, getEditor } from "/static/js/jsoneditor_utils.js";
-    import { getPathPart } from '/static/js/common_utils.js'
 
-    const schema = {{ to_json(schema) | safe }};
-    const schemaLatest = {{ to_json(schema_latest) | safe }};
+    const context = {{ to_json(_context) | safe }};
+    const schema = context.schema;
+    const schemaLatest = context.schema_latest;
+    const entity = context.entity;
+    const is_lastest_schema = context.is_lastest_schema;
+    const uuid = context.uuid
 
-    window.schema = schema // For debugging
-    const schemaType = schema.name;
-    const editor = await getEditor(schema);
+    /**
+     * Handle the update button click
+     */
+    const handleUpdateClick = async () => {
+        editor.destroy();
+        editor = await getEditor(schemaLatest);
+        editorLoad();
+        schemaName = schemaLatest.name;
+        currentSchema = schemaLatest;
+        Flash.setMessage(`Editor benytter ny version ${schemaLatest.version}`, 'success', true)
+    };
 
-    editor.on('ready', async function () {
-        editor.setValue({{ to_json(entity_data) | safe }});
-    });
+    /**
+     * Render the update template
+     */
+    const updateTemplate = (context) => html`
+        ${context.is_lastest_schema
+            ? html`<p>${context.schema.type}. Version: ${context.schema.version}</p>`
+            : html`
+            <p>En opdatering er tilgængelig. ${context.schema_latest.version}</p>
+            <button id="load-latest-schema" @click="${handleUpdateClick}">Load seneste schema</button>
+            `
+        }`;
 
+    render(updateTemplate(context), document.querySelector('.schema-update'));
+
+
+    let currentSchema = schema;
+    let schemaName = schema.name;
+    let editor = await getEditor(schema);
+
+    /**
+     * Load the entity data into the editor
+     */
+    function editorLoad() {
+        editor.on('ready', async function () {
+            for (const [key, value] of Object.entries(entity)) {
+                const editorProperty = editor.getEditor(`root.${key}`);
+                if (editorProperty) {
+                    editorProperty.setValue(value);
+                }
+            }
+        });
+    }
+
+    editorLoad();
+
+    /**
+     * Submit the entity data to the server
+     */
     document.getElementById('submit').addEventListener('click', async function () {
 
         try {
             const userInfo = await Requests.asyncPostJson('/auth/user-info');
             if (!userInfo.is_logged_in) {
-                Flash.setMessage("{{ 'Du skal være logget ind for at opdateres en entitet' }}", 'error', true)
+                Flash.setMessage("{{ 'Du skal være logget ind for at opdatere en entitet' }}", 'error', true)
                 return;
             }
         } catch (e) {
@@ -48,13 +98,12 @@
 
         const errors = editor.validate();
         if (errors.length) {
-            showErrorMessages(schema, errors)
+            showErrorMessages(currentSchema, errors)
         } else {
             const schemaData = editor.getValue();
-            const uuid = getPathPart(2)
             const postJson = JSON.stringify({
                 data: schemaData,
-                schema_name: schemaType,
+                schema_name: schemaName,
                 status: 2, // MAYBE TODO: Make this configurable
                 uuid: uuid
             })
@@ -72,8 +121,6 @@
 
             } catch (e) {
                 console.log(e)
-            } finally {
-
             }
         }
     });
