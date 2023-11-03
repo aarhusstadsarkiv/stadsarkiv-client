@@ -1,5 +1,3 @@
-import { Flash } from "/static/js/flash.js";
-
 async function getTranslation(lang) {
 
     const url = '/static/json/jsoneditor_' + lang + '.json';
