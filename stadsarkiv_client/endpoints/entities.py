@@ -40,6 +40,7 @@ def _get_schema_name_version(entity: dict):
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
 async def update(request: Request):
+    uuid = request.path_params["uuid"]
     entity = await api.entity_get(request)
 
     schema_name, schema_version = _get_schema_name_version(entity)
@@ -56,6 +57,7 @@ async def update(request: Request):
         "schema_latest": schema_latest,
         "entity": entity["data"],
         "is_lastest_schema": is_lastest_schema,
+        "uuid": uuid,
     }
 
     context = await get_context(request, context_values=context_values)
