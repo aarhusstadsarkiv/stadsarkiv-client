@@ -46,7 +46,18 @@ async def update(request: Request):
     schema = await api.schema_get_by_version(schema_name, schema_version)
     schema_latest = await api.schema_get_by_name(schema_name)
 
-    context_values = {"title": "Opdater entitet", "schema": schema, "schema_latest": schema_latest, "entity_data": entity["data"]}
+    is_lastest_schema = False
+    if schema["name"] == schema_latest["name"] and schema["version"] == schema_latest["version"]:
+        is_lastest_schema = True
+
+    context_values = {
+        "title": "Opdater entitet",
+        "schema": schema,
+        "schema_latest": schema_latest,
+        "entity": entity["data"],
+        "is_lastest_schema": is_lastest_schema,
+    }
+
     context = await get_context(request, context_values=context_values)
 
     return templates.TemplateResponse("entities/entities_update.html", context)
