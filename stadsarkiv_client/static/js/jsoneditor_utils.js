@@ -75,6 +75,8 @@ async function getEditor(schema) {
         disable_properties: true,
         disable_collapse: true,
         disable_edit_json: true,
+        show_opt_in: false,
+        use_default_values: true,
         schema: schema.data,
     }
 
