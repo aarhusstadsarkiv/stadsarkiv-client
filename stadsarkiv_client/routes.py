@@ -60,7 +60,7 @@ routes = [
     Route("/entities/{uuid:str}", endpoint=entities.patch, name="entities_patch", methods=["PATCH"]),
     Route("/entities/create/{schema_type:str}", endpoint=entities.create, name="entities_create"),
     Route("/entities/update/{uuid:str}", endpoint=entities.update, name="entities_update"),
-    Route("/entities/delete/{uuid:str}/soft", endpoint=entities.delete_soft, name="entities_delete_soft", methods=["POST", "GET"]),
+    Route("/entities/delete/{uuid:str}/{delete_type:str}", endpoint=entities.delete, name="entities_delete", methods=["DELETE", "GET"]),
     Route("/search", endpoint=proxies_search.get, name="proxies_search_get"),
     Route("/search/json", endpoint=proxies_search.get_json, name="proxies_search_get_json"),
     Route("/records/{record_id:str}", endpoint=proxies_records.get, name="proxies_records_get"),
