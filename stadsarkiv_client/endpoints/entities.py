@@ -78,10 +78,10 @@ async def patch(request: Request):
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
-async def delete_soft(request: Request):
-    if request.method == "POST":
+async def delete(request: Request):
+    if request.method == "DELETE":
         try:
-            await api.entity_delete(request, "soft")
+            await api.entity_delete(request, "hard")
             flash.set_message(request, "Entitet er slettet 'soft'", type="success", remove=True)
             return JSONResponse({"message": "Entitet er slettet (soft)", "error": False})
 
@@ -119,6 +119,13 @@ async def get_list(request: Request):
 
         # sort entities by timestamp string like: 2023-11-02T12:39:32.049975+00:00
         entities = sorted(entities, key=lambda k: k["timestamp"], reverse=True)
+
+        # remove from entities if property 'is_soft_deleted' is True
+        entities = [entity for entity in entities if not entity["is_soft_deleted"]]
+
+        # remove from entities if property 'is_hard_deleted' is True
+        entities = [entity for entity in entities if not entity["is_hard_deleted"]]
+
         context_values = {"title": "Opret entiteter", "schemas": schemas, "entities": entities}
         context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("entities/entities_list.html", context)
