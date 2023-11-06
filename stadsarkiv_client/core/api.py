@@ -422,13 +422,13 @@ async def proxies_get_resource(type: str, id: str) -> typing.Any:
             response.raise_for_status()
 
 
-async def proxies_get_releations(id: str) -> typing.Any:
+async def proxies_get_relations(type: str, id: str) -> typing.Any:
     async with get_async_client() as client:
-        url = f"https://openaws.appspot.com/relations?f_id={id}"
+        url = base_url + f"/proxy/{type}/{id}/relations"
         response = await client.get(url)
 
         if response.is_success:
-            return response.json()["result"]
+            return response.json()
         else:
             response.raise_for_status()
 

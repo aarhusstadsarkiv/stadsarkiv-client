@@ -81,7 +81,7 @@ class Hooks(HooksSpec):
         if type == "events" and "date_from" in json:
             json["date_from_premier"] = json["date_from"]
 
-        relations = await api.proxies_get_releations(id)
+        relations = await api.proxies_get_relations(type, id)
         relations_formatted = format_relations(type, relations)
         if type == "people":
             relations_formatted = sort_data(relations_formatted, "display_label")
