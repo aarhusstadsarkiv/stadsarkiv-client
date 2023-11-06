@@ -8,6 +8,7 @@ settings_facets: dict[str, typing.Any] = {
         "label": "Forestillinger",
         "type": "resource_links",
         "resource_type": "events",
+        "allow_facet_removal": True,  # default is to ignore a facet in settings_facets as a filter
         "content": [
             {
                 "label": "Sæson 1900-01",

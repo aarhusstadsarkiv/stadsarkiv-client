@@ -20,7 +20,7 @@ class NormalizeFacets:
     def __init__(self, request: Request, records, query_params=[], facets_resolved={}, query_str=""):
         self.request = request
         self.records = records
-        self.facets_search = records["active_facets"]  # self._get_facets_search(records["active_facets"])
+        self.facets_search = records["active_facets"]
         self.query_params = query_params
         self.query_str = query_str
         self.facets_resolved = facets_resolved
@@ -135,8 +135,16 @@ class NormalizeFacets:
         """
         facets_checked = self.facets_checked
 
-        # Ignore menu facets. Then have been set in the _transform_facets method.
+        # Ignore menu facets. They have been set in the _transform_facets method.
         ignore_keys = [key for key in settings_facets.keys()]
+
+        # But check if settings_facets[key]["allow_facet_removal"] is True
+        # if true then it it should be removed from the ignore_keys list
+        for key in settings_facets.keys():
+            if settings_facets[key].get("allow_facet_removal") is True:
+                ignore_keys.remove(key)
+
+        # Ignore the size, start, sort and direction query params
         ignore_keys.extend(["size", "start", "sort", "direction"])
         for query_name, query_value in self.query_params:
             if query_name not in settings_query_params or query_name in ignore_keys:
