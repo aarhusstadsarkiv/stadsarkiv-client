@@ -390,31 +390,13 @@ async def proxies_records(request: Request, query_str: str) -> typing.Any:
             response.raise_for_status()
 
 
-# @disk_cache(60 * 60, use_kwargs=["collection_id"])
-async def proxies_collection(collection_id: str) -> typing.Any:
-    async with get_async_client() as client:
-        url = f"https://www.aarhusarkivet.dk/collections/{collection_id}?fmt=json"
-        response = await client.get(url)
-
-        if response.is_success:
-            return response.json()
-        else:
-            response.raise_for_status()
-
-
 async def proxies_get_resource(type: str, id: str) -> typing.Any:
     async with get_async_client() as client:
-        if type == "collections":
-            json = await proxies_collection(id)
-            return json
-        else:
-            url = f"https://openaws.appspot.com/entities/{id}"
-            # url = f"https://www.aarhusarkivet.dk/{type}/{id}?fmt=json"
-
+        url = base_url + f"/proxy/{type}/{id}"
         response = await client.get(url)
 
         if response.is_success:
-            json = response.json()["result"]
+            json = response.json()
             json = await hooks.after_get_resource(type, json)
             return json
 
