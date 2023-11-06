@@ -1,3 +1,5 @@
+{% import "macros/admin_macros.html" as admin_macros %}
+
 {% extends "base.html" %}
 
 {% block body_class %}page-entities-view-all{% endblock %}
@@ -8,7 +10,7 @@
 <table>
     {% for schema in schemas %}
     <tr>
-        <td><a href="/entities/create/{{ schema.type }}">{{ schema.type }} </a></td>
+        <td>{{ admin_macros.render_action_link("/entities/create/" + schema.type, schema.type) }}</td>
     </tr>
     </tr>
     {% endfor %}
@@ -18,31 +20,19 @@
     <tr>
         <th>UUID</th>
         <th>Schema</th>
+        <th>Handling</th>
     </tr>
     {% for entity in entities %}
     <tr>
         <td>
-            Vis: <a href="/entities/{{entity.uuid}}">{{ entity.uuid }}</a>
+            {{ admin_macros.render_entity_view_link(entity) }}
         </td>
         <td>
             {{entity.schema_name }}
         </td>
-    </tr>
-    <tr>
         <td>
-            Ret: <a href="/entities/update/{{entity.uuid}}">{{ entity.uuid }}</a>
-        </td>
-        <td>
-            {{entity.schema_name }}
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-            Slet: <a href="/entities/delete/{{entity.uuid}}/soft">{{ entity.uuid }}</a>
-        </td>
-        <td>
-            {{entity.schema_name }}
+            {{ admin_macros.render_entity_update_link(entity) }} |
+            {{ admin_macros.render_entity_delete_link(entity) }}
         </td>
     </tr>
 

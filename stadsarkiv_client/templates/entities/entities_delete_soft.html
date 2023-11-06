@@ -1,9 +1,15 @@
+{% import "macros/admin_macros.html" as admin_macros %}
+
 {% extends "base.html" %}
 
 {% block body_class %}page-entities-delete-soft{% endblock %}
 
 {% block content %}
 {% include "includes/main_title.html" %}
+
+<p>
+    {{ admin_macros.render_action_link('/entities', "Tilbage til oversigt") }}
+</p>
 
 <p>
     Er du sikker på at du vil slette denne entitet?
@@ -28,7 +34,7 @@
             const form = document.getElementById('entity-delete');
             const data = new FormData(form);
             const url = window.location.pathname; // POST to current URL
-            const res = await Requests.asyncPostJson(url, data);
+            const res = await Requests.asyncPostJson(url, data, "DELETE");
             if (res.error) {
                 Flash.setMessage(res.message, 'error', true)
             }

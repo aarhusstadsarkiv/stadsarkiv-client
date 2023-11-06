@@ -1,0 +1,21 @@
+
+
+{% macro render_entity_view_link(entity) %}
+<a class="action-link" href="/entities/{{entity.uuid}}">{{ entity.data.display_label }}</a>
+{% endmacro %}
+
+{% macro render_entity_delete_link(entity) %}
+<a class="action-link" href="/entities/delete/{{entity.uuid}}/soft">Slet</a>
+{% endmacro %}
+
+{% macro render_entity_update_link(entity) %}
+<a class="action-link" href="/entities/update/{{entity.uuid}}">Rediger</a>
+{% endmacro %}
+
+{% macro render_action_link (link, label) %}
+<a class="action-link" href="{{ link }}">{{ label }}</a>
+{% endmacro %}
+
+
+
+

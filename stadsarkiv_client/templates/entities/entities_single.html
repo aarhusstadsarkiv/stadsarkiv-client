@@ -1,5 +1,4 @@
-
-
+{% import "macros/admin_macros.html" as admin_macros %}
 {% import "macros/common_macros.html" as common_macros %}
 {% import "macros/slideshow_macros.html" as slideshow_macros %}
 
@@ -21,9 +20,10 @@
 
 {% include "includes/main_title.html" %}
 
-<a href="{{ url_for('entities_get_list') }}" class="back-link">Tilbage til liste</a>
-<a href="{{ url_for('entities_delete_soft', uuid=entity.uuid) }}" class="edit-link">Slet</a>
-<a href="{{ url_for('entities_update', uuid=entity.uuid) }}" class="edit-link">Rediger</a>
+{{ admin_macros.render_action_link('/entities', "Til oversigt") }} | 
+{{ admin_macros.render_entity_update_link(entity) }} |
+{{ admin_macros.render_entity_delete_link(entity) }} 
+
 
 {% set key = "image_list" %}
 {{ slideshow_macros.parse_slideshow_block("Billede liste", key, types_and_values ) }}

@@ -1,3 +1,5 @@
+{% import "macros/admin_macros.html" as admin_macros %}
+
 {% extends "base.html" %}
 
 {% block body_class %}page-entities-create{% endblock %}
@@ -9,6 +11,10 @@
 
 {% block content %}
 {% include "includes/main_title.html" %}
+
+<p>
+    {{ admin_macros.render_action_link('/entities', "Tilbage til oversigt") }}
+</p>
 
 <div id='editor_holder' class='small'></div>
 <button id='submit'>{{ "Opret entitet" }}</button>
