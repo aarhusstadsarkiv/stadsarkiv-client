@@ -21,22 +21,22 @@ hooks = get_hooks()
 log = get_log()
 
 
-async def _alter_query_size(search_cookie: dict) -> dict:
-    """
-    Get the last search query
-    """
+def _get_altered_cookie(request: Request):
+    try:
+        search_cookie = get_search_cookie(request)
 
-    # Use search cookie and request param 'search' to calculate pagination data for record view
-    query_params = search_cookie["query_params"]
-    query_params = [item for item in query_params if item[0] != "size"]
-    query_params.append(("size", "1"))
+        # change query size to 1 in order to just get single record
+        query_params = search_cookie["query_params"]
+        query_params = [tuple(item) for item in query_params if item[0] != "size"]
+        query_params.append(("size", "1"))
+        search_cookie["query_params"] = query_params
+        return search_cookie
 
-    search_cookie["query_params"] = query_params
+    except Exception:
+        return None
 
-    return search_cookie
 
-
-async def _get_record_prev_next(request: Request):
+async def _get_record_pagination(request: Request):
     # 'search' as a get param indicates that we came from a search.
     # It is used as the current page number in the pagination
     # If not present then the prev and next buttons should not be shown
@@ -44,11 +44,11 @@ async def _get_record_prev_next(request: Request):
     if not current_page:
         return None
 
-    try:
-        search_cookie = get_search_cookie(request)
-        search_cookie = await _alter_query_size(search_cookie)
-    except Exception:
+    search_cookie = _get_altered_cookie(request)
+    if not search_cookie:
         return None
+
+    query_params = search_cookie["query_params"]
 
     has_next = current_page < search_cookie["total"]
     has_prev = current_page > 1
@@ -56,10 +56,9 @@ async def _get_record_prev_next(request: Request):
     next_page = current_page + 1 if has_next else None
     prev_page = current_page - 1 if has_prev else None
 
-    search_cookie["next_page"] = next_page
-    search_cookie["prev_page"] = prev_page
-
-    query_params = search_cookie["query_params"].copy()
+    record_pagination = {}
+    record_pagination["next_page"] = next_page
+    record_pagination["prev_page"] = prev_page
 
     async def get_next_record():
         if next_page:
@@ -84,15 +83,15 @@ async def _get_record_prev_next(request: Request):
     # Gather both API calls concurrently
     next_record, prev_record = await asyncio.gather(get_next_record(), get_prev_record())
 
-    search_cookie["next_record"] = next_record
-    search_cookie["prev_record"] = prev_record
-    search_cookie["current_page"] = current_page
+    record_pagination["next_record"] = next_record
+    record_pagination["prev_record"] = prev_record
+    record_pagination["current_page"] = current_page
 
-    return search_cookie
+    return record_pagination
 
 
 async def get(request: Request):
-    record_pagination = await _get_record_prev_next(request)
+    record_pagination = await _get_record_pagination(request)
     record_id = request.path_params["record_id"]
     permissions = await api.me_permissions(request)
 
