@@ -78,6 +78,17 @@ async function getEditor(schema) {
         schema: schema.data,
     }
 
+    /*
+            theme: 'barebones',
+        disable_properties: true,
+        disable_collapse: true,
+        disable_edit_json: true,
+        show_opt_in: true,
+        // use_default_values: true,
+        remove_empty_properties: false,
+        schema: schema.data,
+        */
+
     JSONEditor.defaults.languages.da = translation
     JSONEditor.defaults.language = "da";
 
