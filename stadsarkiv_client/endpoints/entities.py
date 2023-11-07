@@ -80,10 +80,11 @@ async def patch(request: Request):
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
 async def delete(request: Request):
     if request.method == "DELETE":
+        delete_type = request.path_params["delete_type"]
         try:
             await api.entity_delete(request, "hard")
-            flash.set_message(request, "Entitet er slettet 'soft'", type="success", remove=True)
-            return JSONResponse({"message": "Entitet er slettet (soft)", "error": False})
+            flash.set_message(request, f"Entitet er slettet '{delete_type}'", type="success", remove=True)
+            return JSONResponse({"message": f"Entitet er slettet '{delete_type}", "error": False})
 
         except Exception:
             log.info("Entity delete error", exc_info=True)
