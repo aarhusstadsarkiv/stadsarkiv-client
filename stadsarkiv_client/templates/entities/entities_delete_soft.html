@@ -17,7 +17,8 @@
 <div id="entity-delete-form">
     <form id="entity-delete" action="#">
         <input name ="uuid" value="{{ uuid }}" type="hidden">
-        <input id="entities-delete-soft" type="button" value="Slet">
+        <input name="soft" id="entities-delete-soft" type="button" value="Slet">
+        <input type="hidden" name="delete_type" value="soft">
     </form>
 </div>
 <script type="module">
