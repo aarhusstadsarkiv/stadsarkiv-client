@@ -21,11 +21,22 @@ log = get_log()
 
 
 async def _get_last_search_cookie(request: Request):
+    """
+
+    Get the last search query
+
+        The search cookie contains the following data:
+        "query_str_display" is a query string that can be used to display the last search query
+        "query_params" is a list of tuples that can be used to make a new search query,
+        "total": total number of results found
+        "q" is the search query (e.g. "Some text search query")
+    """
+
     search_query = request.query_params.get("search", None)
     if not search_query:
         return None
 
-    """Use search cooke and request param 'search' to calculate pagination data for record view"""
+    # Use search cookiee and request param 'search' to calculate pagination data for record view
     search_cookie = request.cookies.get("search", None)
 
     if not search_cookie:
@@ -98,7 +109,6 @@ async def _get_record_prev_next(request: Request):
     search_query_params["next_record"] = next_record
     search_query_params["prev_record"] = prev_record
     search_query_params["current_page"] = current_page
-    search_query_params["query_str_display"] = search_query_params["query_str_display"]
 
     return search_query_params
 
