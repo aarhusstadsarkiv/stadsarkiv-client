@@ -10,6 +10,7 @@ from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core import api
+from stadsarkiv_client.core.cookie import get_search_cookie
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 import asyncio
@@ -20,68 +21,45 @@ hooks = get_hooks()
 log = get_log()
 
 
-async def _get_last_search_cookie(request: Request):
+async def _alter_query_size(search_cookie: dict) -> dict:
     """
-
     Get the last search query
-
-        The search cookie contains the following data:
-        "query_str_display" is a query string that can be used to display the last search query
-        "query_params" is a list of tuples that can be used to make a new search query,
-        "total": total number of results found
-        "q" is the search query (e.g. "Some text search query")
     """
 
-    search_query = request.query_params.get("search", None)
-    if not search_query:
-        return None
+    # Use search cookie and request param 'search' to calculate pagination data for record view
+    query_params = search_cookie["query_params"]
+    query_params = [item for item in query_params if item[0] != "size"]
+    query_params.append(("size", "1"))
 
-    # Use search cookiee and request param 'search' to calculate pagination data for record view
-    search_cookie = request.cookies.get("search", None)
-
-    if not search_cookie:
-        return None
-
-    try:
-        search_cookie = json.loads(search_cookie)
-        assert isinstance(search_cookie, dict)
-
-        query_params = search_cookie["query_params"]
-
-        # Use for record pagination. Size must be 1.
-        # Other query params can be used
-        query_params = [item for item in query_params if item[0] != "size"]
-        query_params.append(("size", "1"))
-
-        # convert list of lists to list of tuples
-        query_params = [tuple(item) for item in query_params]
-        search_cookie["query_params"] = query_params
-
-    except Exception:
-        return None
+    search_cookie["query_params"] = query_params
 
     return search_cookie
 
 
 async def _get_record_prev_next(request: Request):
-    search_query_params = await _get_last_search_cookie(request)
-    if not search_query_params:
-        return None
-
+    # 'search' as a get param indicates that we came from a search.
+    # It is used as the current page number in the pagination
+    # If not present then the prev and next buttons should not be shown
     current_page = int(request.query_params.get("search", 0))
     if not current_page:
         return None
 
-    has_next = current_page < search_query_params["total"]
+    try:
+        search_cookie = get_search_cookie(request)
+        search_cookie = await _alter_query_size(search_cookie)
+    except Exception:
+        return None
+
+    has_next = current_page < search_cookie["total"]
     has_prev = current_page > 1
 
     next_page = current_page + 1 if has_next else None
     prev_page = current_page - 1 if has_prev else None
 
-    search_query_params["next_page"] = next_page
-    search_query_params["prev_page"] = prev_page
+    search_cookie["next_page"] = next_page
+    search_cookie["prev_page"] = prev_page
 
-    query_params = search_query_params["query_params"].copy()
+    query_params = search_cookie["query_params"].copy()
 
     async def get_next_record():
         if next_page:
@@ -106,11 +84,11 @@ async def _get_record_prev_next(request: Request):
     # Gather both API calls concurrently
     next_record, prev_record = await asyncio.gather(get_next_record(), get_prev_record())
 
-    search_query_params["next_record"] = next_record
-    search_query_params["prev_record"] = prev_record
-    search_query_params["current_page"] = current_page
+    search_cookie["next_record"] = next_record
+    search_cookie["prev_record"] = prev_record
+    search_cookie["current_page"] = current_page
 
-    return search_query_params
+    return search_cookie
 
 
 async def get(request: Request):
