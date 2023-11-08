@@ -81,6 +81,20 @@
 </div>
 {% endmacro %}
 
+{% macro parse_url_list (key, value) %}
+<div class="record-content record_content_{{ key }}">
+    {{ parse_record_label(key) }}
+    <div class="content">
+            {% for link in value %}
+            <p>
+                <a href="{{ link['url'] }}">{{ link["label"] }}</a>
+            </p>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endmacro %}
+
 {% macro parse_string_list (key, value) %}
 <div class="record-content record_content_{{ key }}">
     {{ parse_record_label(key) }}
@@ -123,10 +137,12 @@
 {% endmacro %}
 
 {% macro parse_coordinates(key, value) %}
-<!-- "coordinates": {
+{# 
+"coordinates": {
     "latitude": null,
     "longitude": null
-}, -->
+},
+#}
 {% if value["latitude"] and value["longitude"] %}
 <div class="record-content record_content_{{ key }}">
     {{ parse_record_label(key)}}
@@ -188,13 +204,17 @@
 {{ parse_key_value_dict(value ) }}
 {% if settings.update({'skip_translate': False}) %} {% endif %}
 
-{% elif type == "coordinates" %}
+{% elif type == "latitude_longitude_normalized" %}
 {{ parse_coordinates(key, value ) }}
 
 {% elif type == "string_list" %}
 {{ parse_string_list(key, value ) }}
 {% elif type == "link_list" %}
 {{ parse_link_list(key, value ) }}
+
+{% elif type == "url_list" %}
+{{ parse_url_list(key, value ) }}
+
 {% elif type == "link_dict" %}
 {{ parse_link_dict(key, value ) }}
 {% elif type == "link_list_hierarchy" %}
