@@ -34,49 +34,55 @@
     import { showErrorMessages, getEditor } from "/static/js/jsoneditor_utils.js";
 
     const context = {{ to_json(_context) | safe }};
-    const schema = context.schema;
-    const schemaLatest = context.schema_latest;
-    const entity = context.entity;
-    const is_lastest_schema = context.is_lastest_schema;
-    const uuid = context.uuid
+
+    // Current schema, version and editor
+    let currentSchema = context.schema;
+    let schemaName = context.schema.name;
+    let editor = await getEditor(context.schema);
 
     /**
      * Handle the update button click
      */
     const handleUpdateClick = async () => {
+
+        // Create new editor
         editor.destroy();
-        editor = await getEditor(schemaLatest);
+        editor = await getEditor(context.schema_latest);
         editorLoad();
-        schemaName = schemaLatest.name;
-        currentSchema = schemaLatest;
-        Flash.setMessage(`Editor benytter ny version ${schemaLatest.version}`, 'success', true)
+
+        // Set new schema
+        schemaName = context.schema_latest.name;
+        currentSchema = context.schema_latest;
+        context.is_lastest_schema = true;
+        Flash.setMessage(`Editor benytter nu version ${context.schema_latest.version}`, 'success', true)
+
+        // Render template
+        renderUpdateTemplate()
+        
     };
 
-    /**
-     * Render the update template
-     */
-    const updateTemplate = (context) => html`
+    const updateTemplate = () => html`
+        <p>${currentSchema.type}. Version: ${currentSchema.version}</p>
         ${context.is_lastest_schema
-            ? html`<p>${context.schema.type}. Version: ${context.schema.version}</p>`
+            ? html`<p>Schema er seneste version</p>`
             : html`
             <p>En opdatering er tilgængelig. ${context.schema_latest.version}</p>
             <button id="load-latest-schema" @click="${handleUpdateClick}">Load seneste schema</button>
             `
         }`;
+    
+    function renderUpdateTemplate() {
+        render(updateTemplate(), document.querySelector('.schema-update'));
+    }
 
-    render(updateTemplate(context), document.querySelector('.schema-update'));
-
-
-    let currentSchema = schema;
-    let schemaName = schema.name;
-    let editor = await getEditor(schema);
+    renderUpdateTemplate(context)
 
     /**
      * Load the entity data into the editor
      */
     function editorLoad() {
         editor.on('ready', async function () {
-            for (const [key, value] of Object.entries(entity)) {
+            for (const [key, value] of Object.entries(context.entity)) {
                 const editorProperty = editor.getEditor(`root.${key}`);
                 if (editorProperty) {
                     editorProperty.setValue(value);
@@ -107,17 +113,17 @@
             console.log(errors)
             showErrorMessages(currentSchema, errors)
         } else {
-            const schemaData = editor.getValue();
+            const data = editor.getValue();
             const postJson = JSON.stringify({
-                data: schemaData,
+                data: data,
                 schema_name: schemaName,
                 status: 2, // MAYBE TODO: Make this configurable
-                uuid: uuid
+                uuid: context.uuid
             })
 
             try {
 
-                const url = `/entities/${uuid}`;
+                const url = `/entities/${context.uuid}`;
                 const res = await Requests.asyncPostJson(url, postJson, 'PATCH');
                 if (res.error) {
                     Flash.setMessage(res.message, 'error', true)

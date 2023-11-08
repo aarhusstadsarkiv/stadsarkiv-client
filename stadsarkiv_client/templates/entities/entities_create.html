@@ -43,14 +43,12 @@
         }
 
         const errors = editor.validate();
-        let schemaData = editor.getValue();
-        
         if (errors.length) {
             showErrorMessages(schema, errors)
         } else {
-
+            const data = editor.getValue();
             const postJson = JSON.stringify({
-                data: schemaData,
+                data: data,
                 schema_name: schemaName,
             })
 
