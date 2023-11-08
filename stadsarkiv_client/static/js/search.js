@@ -151,7 +151,14 @@ function searchEvents() {
             searchLink.addEventListener('click', function (event) {
                 event.preventDefault();
                 saveTree();
-                window.location.href = searchLink.href;
+
+                // Check if _blank is set
+                const target = searchLink.getAttribute('target');
+                if (target == '_blank') {
+                    window.open(searchLink.href, '_blank');
+                } else {
+                    window.location.href = searchLink.href;
+                }
             })
         })
 
