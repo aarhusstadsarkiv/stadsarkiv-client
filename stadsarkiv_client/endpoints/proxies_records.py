@@ -57,6 +57,7 @@ async def _get_record_pagination(request: Request):
     prev_page = current_page - 1 if has_prev else None
 
     record_pagination = {}
+    record_pagination["total"] = search_cookie["total"]
     record_pagination["next_page"] = next_page
     record_pagination["prev_page"] = prev_page
 
