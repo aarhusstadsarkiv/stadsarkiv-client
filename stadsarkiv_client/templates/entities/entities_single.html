@@ -6,7 +6,6 @@
 
 {% block body_class %}page-entity-single{% endblock %}
 
-
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/slideshow.css') }}?v={{ get_setting('version') }}">
@@ -23,7 +22,6 @@
 {{ admin_macros.render_action_link('/entities', "Til oversigt") }} | 
 {{ admin_macros.render_entity_update_link(entity) }} |
 {{ admin_macros.render_entity_delete_link(entity) }} 
-
 
 {% set key = ["image_list", "portrait"] %}
 {{ slideshow_macros.parse_slideshow_block("Billede liste", key, types_and_values ) }}
