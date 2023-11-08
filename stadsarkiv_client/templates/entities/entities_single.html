@@ -25,7 +25,7 @@
 {{ admin_macros.render_entity_delete_link(entity) }} 
 
 
-{% set key = "image_list" %}
+{% set key = ["image_list", "portrait"] %}
 {{ slideshow_macros.parse_slideshow_block("Billede liste", key, types_and_values ) }}
 
 {% set keys = types_and_values.keys() %}

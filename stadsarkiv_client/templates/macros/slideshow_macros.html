@@ -23,23 +23,26 @@
 </script>
 {% endmacro %}
 
-{% macro parse_slideshow_block(title, key, types_and_values) %}
+{% macro parse_slideshow_block(title, keys, types_and_values) %}
 {# 
     generate a slideshow from a title, key, and the types_and_values 
     key should always be 'image_list' across all schemas
 #}
 
-{% if types_and_values[key] %}
-    {% set images = types_and_values[key]['value'] %}
-    {% if images %}
-    <div class="record-section">
-        <div class="record-main">
-            <h3 class="record-header">{{ title }}</h3>
-            <div class="record-representation">
-                {{ parse_slideshow(images) }}
+{% for key in keys %}
+
+    {% if types_and_values[key] %}
+        {% set images = types_and_values[key]['value'] %}
+        {% if images %}
+        <div class="record-section">
+            <div class="record-main">
+                <h3 class="record-header">{{ title }}</h3>
+                <div class="record-representation">
+                    {{ parse_slideshow(images) }}
+                </div>
             </div>
-        </div>
-    </div> 
+        </div> 
+        {% endif %}
     {% endif %}
-{% endif %}
+{% endfor %}
 {% endmacro %}
