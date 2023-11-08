@@ -27,7 +27,7 @@
 {{ slideshow_macros.parse_slideshow_block("Billede liste", key, types_and_values ) }}
 
 {% set keys = types_and_values.keys() %}
-{{ common_macros.parse_block_common('Stamdata', keys, types_and_values) }}
+{{ common_macros.parse_block_common('Data', keys, types_and_values) }}
 
 {% set urls = [
     {'label': 'JSON. Entity', 'url': url_for('entities_get_single_json', uuid=entity.uuid, type='entity') | string},

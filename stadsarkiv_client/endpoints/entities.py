@@ -150,9 +150,9 @@ def _get_types_and_values(schema, entity):
             type = value["_meta"]["type"]
             entity_value = entity["data"][key]
 
-            # # check if entity_value is empty
-            # if not entity_value:
-            #     continue
+            # check if entity_value is empty
+            if not entity_value:
+                entity_value = ""
 
             data_and_values[key] = {"type": type, "name": key, "value": entity_value}
 
