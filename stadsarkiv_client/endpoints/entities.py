@@ -56,7 +56,7 @@ async def update(request: Request):
         "title": "Opdater entitet",
         "schema": schema,
         "schema_latest": schema_latest,
-        "entity": entity["data"],
+        "entity": entity,
         "is_lastest_schema": is_lastest_schema,
         "uuid": uuid,
     }
@@ -92,8 +92,9 @@ async def delete(request: Request):
             return JSONResponse({"message": "Entitet kunne ikke slettes. Måske den allerede er slettet.", "error": True})
 
     try:
+        entity = await api.entity_get(request)
         uuid = request.path_params["uuid"]
-        context_values = {"title": "Slet entitet", "uuid": uuid}
+        context_values = {"title": "Slet entitet", "uuid": uuid, "entity": entity}
         context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("entities/entities_delete_soft.html", context)
 
