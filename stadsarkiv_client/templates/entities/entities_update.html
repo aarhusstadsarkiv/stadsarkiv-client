@@ -15,7 +15,9 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    {{ admin_macros.render_action_link('/entities', "Tilbage til oversigt") }}
+    {{ admin_macros.render_action_link('/entities', "Til oversigt") }} | 
+    {{ admin_macros.render_entity_view_link(entity) }} |
+    {{ admin_macros.render_entity_delete_link(entity) }}
 </p>
 
 <div class="schema-update"></div>
@@ -82,7 +84,7 @@
      */
     function editorLoad() {
         editor.on('ready', async function () {
-            for (const [key, value] of Object.entries(context.entity)) {
+            for (const [key, value] of Object.entries(context.entity.data)) {
                 const editorProperty = editor.getEditor(`root.${key}`);
                 if (editorProperty) {
                     editorProperty.setValue(value);

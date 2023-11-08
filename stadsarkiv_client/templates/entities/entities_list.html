@@ -18,19 +18,20 @@
 
 <table>
     <tr>
-        <th>UUID</th>
+        <th>Titel</th>
         <th>Schema</th>
         <th>Handling</th>
     </tr>
     {% for entity in entities %}
     <tr>
         <td>
-            {{ admin_macros.render_entity_view_link(entity) }}
+            {{ entity.data.display_label }}
         </td>
         <td>
             {{entity.schema_name }}
         </td>
         <td>
+            {{ admin_macros.render_entity_view_link(entity) }} |
             {{ admin_macros.render_entity_update_link(entity) }} |
             {{ admin_macros.render_entity_delete_link(entity) }}
         </td>
