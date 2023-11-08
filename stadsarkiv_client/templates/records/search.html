@@ -1,4 +1,7 @@
 {% extends "search.html" %}
+
+{% import "macros/common_macros.html" as common_macros %}
+
 {% set settings = {'skip_translate': False} %}
 {% set truncate_summary = 300 %}
 {% set search_base_url = get_setting('search_base_url') %}
@@ -364,9 +367,13 @@
     {{ parse_search_result(search_result) }}
     {{ parse_pagination(pagination_data) }}
     {% if get_setting('debug') %}
-    <p>
-        <a href="/search/json?{{ query_str_search }}">JSON</a>
-    </p>
+
+    {% set meta_links = [
+        {'label': 'JSON', 'url': url_for('proxies_search_get_json') ~ "?" ~ query_str_search | string}
+    ] %}
+    
+    {{ common_macros.parse_meta_block(meta_links) }}
+
     {% endif %}
 </div>
 
