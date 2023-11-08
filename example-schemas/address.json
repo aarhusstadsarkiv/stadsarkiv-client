@@ -114,7 +114,7 @@
                 }
             },
             "_meta": {
-                "type": "coordinates"
+                "type": "latitude_longitude_normalized"
             },
             "propertyOrder": 10
         },
@@ -148,7 +148,7 @@
             },
             "propertyOrder": 13
         },
-        "image_list": {
+        "portrait": {
             "title": "Billeder (kan benyttes til slideshows)",
             "type": "array",
             "items": {
@@ -166,13 +166,25 @@
             "title": "Kilder (som links)",
             "type": "array",
             "items": {
-                "type": "string",
-                "format": "uri",
-                "pattern": "^https://.*",
-                "default": ""
+                "type": "object",
+                "properties": {
+                    "label": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "pattern": "^https://.*"
+                    }
+                },
+                "required": [
+                    "label",
+                    "url"
+                ]
             },
             "_meta": {
-                "type": "link_list"
+                "type": "url_list"
             },
             "propertyOrder": 14
         },
