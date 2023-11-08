@@ -57,6 +57,7 @@ routes = [
     Route("/entities", endpoint=entities.get_list, name="entities_get_list", methods=["GET"]),
     Route("/entities", endpoint=entities.post, name="entities_post", methods=["POST"]),
     Route("/entities/{uuid:str}", endpoint=entities.get_single, name="entities_get_single", methods=["GET"]),
+    Route("/entities/{uuid:str}/json/{type:str}", endpoint=entities.get_single_json, name="entities_get_single_json", methods=["GET"]),
     Route("/entities/{uuid:str}", endpoint=entities.patch, name="entities_patch", methods=["PATCH"]),
     Route("/entities/create/{schema_type:str}", endpoint=entities.create, name="entities_create"),
     Route("/entities/update/{uuid:str}", endpoint=entities.update, name="entities_update"),
