@@ -31,9 +31,17 @@
 {% set keys = types_and_values.keys() %}
 {{ common_macros.parse_block_common('Stamdata', keys, types_and_values) }}
 
-{{ pre(types_and_values)|safe }}
+<p>
+    <a href="{{ url_for('entities_get_single_json', uuid=entity.uuid, type='entity') }}" target="_blank">JSON Entitet</a>
+</p>
 
-{{ pre(entity)|safe }}
+<p>
+    <a href="{{ url_for('entities_get_single_json', uuid=entity.uuid, type='types_and_values') }}" target="_blank">JSON. Entitetens værdier og typer</a>
+</p>
+
+<p>
+    <a href="{{ url_for('entities_get_single_json', uuid=entity.uuid, type='schema') }}" target="_blank">JSON. Entitetens skema</a>
+</p>
 
 {% endblock content %}
 
