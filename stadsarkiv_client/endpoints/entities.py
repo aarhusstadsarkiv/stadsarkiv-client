@@ -4,7 +4,7 @@ Entities endpoints
 
 from starlette.requests import Request
 from starlette.exceptions import HTTPException
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, PlainTextResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.translate import translate
@@ -12,6 +12,7 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.decorators import is_authenticated
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core import api
+import json
 import asyncio
 
 
@@ -161,16 +162,10 @@ def _get_types_and_values(schema, entity):
 
 
 async def get_single(request: Request):
-    # content
     entity: dict = await api.entity_get(request)
+    schema_name, schema_version = _get_schema_name_version(entity)
 
-    # schema is e.g. person_1
-    schema_name: str = entity["schema_name"].split("_")[0]
-    schema_version = entity["schema_name"].split("_")[1]
-
-    # schema
     schema = await api.schema_get_by_version(schema_name, schema_version)
-
     types_and_values = _get_types_and_values(schema, entity)
 
     context_values = {
@@ -181,3 +176,23 @@ async def get_single(request: Request):
     }
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse("entities/entities_single.html", context)
+
+
+async def get_single_json(request: Request):
+    type = request.path_params["type"]
+    entity: dict = await api.entity_get(request)
+    schema_name, schema_version = _get_schema_name_version(entity)
+
+    schema = await api.schema_get_by_version(schema_name, schema_version)
+    types_and_values = _get_types_and_values(schema, entity)
+
+    if type == "types_and_values":
+        json_encoded = json.dumps(types_and_values, indent=4, ensure_ascii=False)
+    elif type == "entity":
+        json_encoded = json.dumps(entity, indent=4, ensure_ascii=False)
+    elif type == "schema":
+        json_encoded = json.dumps(schema, indent=4, ensure_ascii=False)
+    else:
+        raise HTTPException(404, detail="Not found", headers=None)
+
+    return PlainTextResponse(json_encoded)
