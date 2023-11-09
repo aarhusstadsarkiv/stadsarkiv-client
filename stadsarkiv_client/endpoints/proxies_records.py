@@ -101,7 +101,7 @@ async def get(request: Request):
 
     record = await api.proxies_record_get_by_id(request, record_id)
     meta_data = get_record_meta_data(request, record)
-    record, meta_data = hooks.after_get_record(record, meta_data)
+    record, meta_data = await hooks.after_get_record(record, meta_data)
 
     record_altered = record_alter.record_alter(request, record, meta_data)
     record_and_types = record_alter.get_record_and_types(record_altered)
@@ -131,7 +131,7 @@ async def get_json(request: Request):
 
         record = await api.proxies_record_get_by_id(request, record_id)
         meta_data = get_record_meta_data(request, record)
-        record, meta_data = hooks.after_get_record(record, meta_data)
+        record, meta_data = await hooks.after_get_record(record, meta_data)
 
         record_altered = record_alter.record_alter(request, record, meta_data)
         record_and_types = record_alter.get_record_and_types(record_altered)
