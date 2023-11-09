@@ -37,7 +37,6 @@ async def _get_resource(request: Request):
 
 
 async def _get_collections_view(request: Request):
-
     resource = await _get_resource(request)
     title = resource["display_label"]
     resource = resource_alter.collections_alter(resource)
