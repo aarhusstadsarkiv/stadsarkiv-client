@@ -16,22 +16,35 @@ from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
 from stadsarkiv_client.resources import resource_alter
+from stadsarkiv_client.core.hooks import get_hooks
 import json
 
+
 log = get_log()
+hooks = get_hooks()
+
+
+async def _get_resource(request: Request):
+    """
+    Get resource from api and alter it with hooks
+    """
+    id = request.path_params["id"]
+    resource_type = request.path_params["resource_type"]
+    resource = await api.proxies_get_resource(request, resource_type, id=id)
+    resource = await hooks.after_get_resource(resource_type, resource)
+    resource["id_real"] = id
+    return resource
 
 
 async def _get_collections_view(request: Request):
-    id = request.path_params["id"]
-    resource_type = request.path_params["resource_type"]
-    collection = await api.proxies_get_resource(request, resource_type, id=id)
-    collection["id_real"] = id
-    title = collection["display_label"]
-    collection = resource_alter.collections_alter(collection)
+
+    resource = await _get_resource(request)
+    title = resource["display_label"]
+    resource = resource_alter.collections_alter(resource)
 
     context_variables = {
         "title": title,
-        "collection": collection,
+        "collection": resource,
     }
 
     context = await get_context(request, context_variables)
@@ -39,12 +52,10 @@ async def _get_collections_view(request: Request):
 
 
 async def _get_people_view(request: Request):
-    id = request.path_params["id"]
-    resource_type = request.path_params["resource_type"]
-    people = await api.proxies_get_resource(request, resource_type, id=id)
-    people["id_real"] = id
-    title = people["display_label"]
-    people = resource_alter.people_alter(people)
+    resource = await _get_resource(request)
+    title = resource["display_label"]
+    people = resource_alter.people_alter(resource)
+
     context_variables = {
         "title": title,
         "people": people,
@@ -55,13 +66,10 @@ async def _get_people_view(request: Request):
 
 
 async def _get_locations_view(request: Request):
-    id = request.path_params["id"]
-    resource_type = request.path_params["resource_type"]
+    resource = await _get_resource(request)
+    title = resource["display_label"]
+    location = resource_alter.locations_alter(resource)
 
-    location = await api.proxies_get_resource(request, resource_type, id=id)
-    title = location["display_label"]
-    location["id_real"] = id
-    location = resource_alter.locations_alter(location)
     context_variables = {
         "title": title,
         "location": location,
@@ -72,13 +80,9 @@ async def _get_locations_view(request: Request):
 
 
 async def _get_events_view(request: Request):
-    id = request.path_params["id"]
-    resource_type = request.path_params["resource_type"]
-
-    event = await api.proxies_get_resource(request, resource_type, id=id)
-    title = event["display_label"]
-    event["id_real"] = id
-    event = resource_alter.events_alter(event)
+    resource = await _get_resource(request)
+    title = resource["display_label"]
+    event = resource_alter.events_alter(resource)
 
     context_variables = {
         "title": title,
@@ -90,14 +94,9 @@ async def _get_events_view(request: Request):
 
 
 async def _get_creators_view(request: Request):
-    id = request.path_params["id"]
-    resource_type = request.path_params["resource_type"]
-
-    creator = await api.proxies_get_resource(request, resource_type, id=id)
-
-    title = creator["display_label"]
-    creator["id_real"] = id
-    creator = resource_alter.creators_alter(creator)
+    resource = await _get_resource(request)
+    title = resource["display_label"]
+    creator = resource_alter.creators_alter(resource)
 
     context_variables = {
         "title": title,
@@ -109,13 +108,9 @@ async def _get_creators_view(request: Request):
 
 
 async def _get_organisations_view(request: Request):
-    id = request.path_params["id"]
-    resource_type = request.path_params["resource_type"]
-
-    organisation = await api.proxies_get_resource(request, resource_type, id=id)
-    title = organisation["display_label"]
-    organisation["id_real"] = id
-    organisation = resource_alter.organisations_alter(organisation)
+    resource = await _get_resource(request)
+    title = resource["display_label"]
+    organisation = resource_alter.organisations_alter(resource)
 
     context_variables = {
         "title": title,
@@ -127,13 +122,9 @@ async def _get_organisations_view(request: Request):
 
 
 async def _get_collectors_view(request: Request):
-    id = request.path_params["id"]
-    resource_type = request.path_params["resource_type"]
-
-    collector = await api.proxies_get_resource(request, resource_type, id=id)
-    title = collector["display_label"]
-    collector["id_real"] = id
-    collector = resource_alter.collectors_alter(collector)
+    resource = await _get_resource(request)
+    title = resource["display_label"]
+    collector = resource_alter.collectors_alter(resource)
 
     context_variables = {
         "title": title,

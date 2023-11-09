@@ -7,7 +7,6 @@ from stadsarkiv_client.core.api_error import OpenAwsException, validate_password
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import user
 from stadsarkiv_client.core.translate import translate
-from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core.decorators import disk_cache
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import query
@@ -20,7 +19,7 @@ from uuid import uuid1
 
 
 log = get_log()
-hooks = get_hooks()
+
 
 base_url = str(settings["api_base_url"])
 ONE_YEAR = 60 * 60 * 24 * 365
@@ -441,7 +440,6 @@ async def proxies_get_resource(request, type: str, id: str) -> typing.Any:
         if response.is_success:
             _set_time_used(request, response, "proxies_get_resource")
             json = response.json()
-            json = await hooks.after_get_resource(type, json)
             return json
 
         else:
