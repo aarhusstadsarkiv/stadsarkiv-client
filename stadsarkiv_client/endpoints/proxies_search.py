@@ -132,7 +132,7 @@ async def get(request: Request):
 
     # Alter query params before search
     # You may want to remove all collections and add single one before search results are obtained
-    query_params_before_search = hooks.before_search(query_params=query_params_before_search)
+    query_params_before_search = hooks.before_api_search(query_params=query_params_before_search)
 
     # Call api
     query_str_search = query.get_str_from_list(query_params_before_search)
@@ -143,7 +143,7 @@ async def get(request: Request):
 
     # Alter query params after search
     # You may want to remove all collections.
-    query_params_after_search = hooks.after_search(query_params=query_params_before_search)
+    query_params_after_search = hooks.after_api_search(query_params=query_params_before_search)
 
     # Remove pagination params from query params. In order to get a query string that can be used in e.g. facet links
     query_str_display = query.get_str_from_list(query_params_after_search, remove_keys=["start", "size", "sort", "direction"])
@@ -200,7 +200,7 @@ async def get_json(request: Request):
     query_params = query.get_list(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
 
     hooks = get_hooks(request)
-    query_params = hooks.before_search(query_params=query_params)
+    query_params = hooks.before_api_search(query_params=query_params)
     query_str = query.get_str_from_list(query_params)
     search_result = await api.proxies_records(request, query_str)
 

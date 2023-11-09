@@ -12,7 +12,7 @@ class HooksSpec:
     def __init__(self, request: Request):
         self.request = request
 
-    def before_template(self, context: dict) -> dict:
+    def before_get_context(self, context: dict) -> dict:
         """
         Alter the context dictionary. Before the context is returned to the template.
         """
@@ -24,13 +24,13 @@ class HooksSpec:
         """
         return record, meta_data
 
-    def before_search(self, query_params: list) -> list:
+    def before_api_search(self, query_params: list) -> list:
         """
         Alter the search query params. Before the search is executed.
         """
         return query_params
 
-    def after_search(self, query_params: list) -> list:
+    def after_api_search(self, query_params: list) -> list:
         """
         Alter the search query params. After the search is executed.
         """
