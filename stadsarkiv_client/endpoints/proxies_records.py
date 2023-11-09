@@ -15,6 +15,7 @@ from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 import asyncio
 import json
+from time import time
 
 
 hooks = get_hooks()
@@ -66,7 +67,7 @@ async def _get_record_pagination(request: Request):
             next_query_params = query_params.copy()
             search_params = [("start", str(next_page - 1))]
             next_query_params.extend(search_params)
-            records = await api.proxies_records_from_list(next_query_params)
+            records = await api.proxies_records_from_list(request, next_query_params)
             return records["result"][0]["id"]
         else:
             return None
@@ -76,7 +77,7 @@ async def _get_record_pagination(request: Request):
             prev_query_params = query_params.copy()
             search_params = [("start", str(prev_page - 1))]
             prev_query_params.extend(search_params)
-            records = await api.proxies_records_from_list(prev_query_params)
+            records = await api.proxies_records_from_list(request, prev_query_params)
             return records["result"][0]["id"]
         else:
             return None
@@ -92,11 +93,12 @@ async def _get_record_pagination(request: Request):
 
 
 async def get(request: Request):
+    time_begin = time()
     record_pagination = await _get_record_pagination(request)
     record_id = request.path_params["record_id"]
     permissions = await api.me_permissions(request)
 
-    record = await api.proxies_record_get_by_id(record_id)
+    record = await api.proxies_record_get_by_id(request, record_id)
     meta_data = get_record_meta_data(request, record)
 
     record, meta_data = hooks.after_get_record(record, meta_data)
@@ -114,6 +116,9 @@ async def get(request: Request):
     }
 
     context = await get_context(request, context_variables)
+
+    total_response_time = api.get_time_used(request, time_begin)
+    log.debug(total_response_time)
     return templates.TemplateResponse("records/record.html", context)
 
 
@@ -122,7 +127,7 @@ async def get_json(request: Request):
         record_id = request.path_params["record_id"]
         type = request.path_params["type"]
 
-        record = await api.proxies_record_get_by_id(record_id)
+        record = await api.proxies_record_get_by_id(request, record_id)
         meta_data = get_record_meta_data(request, record)
 
         record, meta_data = hooks.after_get_record(record, meta_data)

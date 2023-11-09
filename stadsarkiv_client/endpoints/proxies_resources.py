@@ -24,7 +24,7 @@ log = get_log()
 async def _get_collections_view(request: Request):
     id = request.path_params["id"]
     resource_type = request.path_params["resource_type"]
-    collection = await api.proxies_get_resource(resource_type, id=id)
+    collection = await api.proxies_get_resource(request, resource_type, id=id)
     collection["id_real"] = id
     title = collection["display_label"]
     collection = resource_alter.collections_alter(collection)
@@ -41,7 +41,7 @@ async def _get_collections_view(request: Request):
 async def _get_people_view(request: Request):
     id = request.path_params["id"]
     resource_type = request.path_params["resource_type"]
-    people = await api.proxies_get_resource(resource_type, id=id)
+    people = await api.proxies_get_resource(request, resource_type, id=id)
     people["id_real"] = id
     title = people["display_label"]
     people = resource_alter.people_alter(people)
@@ -58,7 +58,7 @@ async def _get_locations_view(request: Request):
     id = request.path_params["id"]
     resource_type = request.path_params["resource_type"]
 
-    location = await api.proxies_get_resource(resource_type, id=id)
+    location = await api.proxies_get_resource(request, resource_type, id=id)
     title = location["display_label"]
     location["id_real"] = id
     location = resource_alter.locations_alter(location)
@@ -75,7 +75,7 @@ async def _get_events_view(request: Request):
     id = request.path_params["id"]
     resource_type = request.path_params["resource_type"]
 
-    event = await api.proxies_get_resource(resource_type, id=id)
+    event = await api.proxies_get_resource(request, resource_type, id=id)
     title = event["display_label"]
     event["id_real"] = id
     event = resource_alter.events_alter(event)
@@ -93,7 +93,7 @@ async def _get_creators_view(request: Request):
     id = request.path_params["id"]
     resource_type = request.path_params["resource_type"]
 
-    creator = await api.proxies_get_resource(resource_type, id=id)
+    creator = await api.proxies_get_resource(request, resource_type, id=id)
 
     title = creator["display_label"]
     creator["id_real"] = id
@@ -112,7 +112,7 @@ async def _get_organisations_view(request: Request):
     id = request.path_params["id"]
     resource_type = request.path_params["resource_type"]
 
-    organisation = await api.proxies_get_resource(resource_type, id=id)
+    organisation = await api.proxies_get_resource(request, resource_type, id=id)
     title = organisation["display_label"]
     organisation["id_real"] = id
     organisation = resource_alter.organisations_alter(organisation)
@@ -130,7 +130,7 @@ async def _get_collectors_view(request: Request):
     id = request.path_params["id"]
     resource_type = request.path_params["resource_type"]
 
-    collector = await api.proxies_get_resource(resource_type, id=id)
+    collector = await api.proxies_get_resource(request, resource_type, id=id)
     title = collector["display_label"]
     collector["id_real"] = id
     collector = resource_alter.collectors_alter(collector)
@@ -174,6 +174,6 @@ async def get(request: Request):
 async def get_json(request: Request):
     id = request.path_params["id"]
     resource_type = request.path_params["resource_type"]
-    collection = await api.proxies_get_resource(resource_type, id)
+    collection = await api.proxies_get_resource(request, resource_type, id)
     collection_json = json.dumps(collection, indent=4, ensure_ascii=False)
     return PlainTextResponse(collection_json)

@@ -9,12 +9,14 @@ from stadsarkiv_client.core import user
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core.decorators import disk_cache
-import json
 from stadsarkiv_client.core.dynamic_settings import settings
-import httpx
-import typing
 from stadsarkiv_client.core import query
 from urllib.parse import quote
+from time import time
+import json
+import httpx
+import typing
+from uuid import uuid1
 
 
 log = get_log()
@@ -24,8 +26,37 @@ base_url = str(settings["api_base_url"])
 ONE_YEAR = 60 * 60 * 24 * 365
 
 
-def get_async_client() -> httpx.AsyncClient:
-    return httpx.AsyncClient(timeout=5)
+def _get_async_client() -> httpx.AsyncClient:
+    return httpx.AsyncClient(timeout=7)
+
+
+def _set_time_used(request: Request, response: httpx.Response, name: str) -> None:
+    """
+    set response time as a state on the request in order to
+    be able to show the time spend on each httpx request (api call).
+    """
+    if not hasattr(request.state, "httpx_time_used"):
+        request.state.httpx_time_used = {}
+
+    key = name + "_" + str(uuid1())
+    request.state.httpx_time_used[key] = response.elapsed.total_seconds()
+
+
+def get_time_used(request: Request, time_begin: float) -> typing.Any:
+    time_end = time()
+    if not hasattr(request.state, "httpx_time_used"):
+        return 0
+
+    total_api_time = 0
+    for _, value in request.state.httpx_time_used.items():
+        total_api_time += value
+
+    time_tabel = request.state.httpx_time_used
+    time_tabel["total"] = time_end - time_begin
+    time_tabel["api"] = total_api_time
+    time_tabel["other"] = time_end - time_begin - total_api_time
+
+    return time_tabel
 
 
 def _get_jwt_headers(request: Request, headers: dict = {}) -> dict:
@@ -44,12 +75,13 @@ async def auth_jwt_login_post(request: Request):
 
     login_dict = {"username": username, "password": password}
 
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         url = base_url + "/auth/jwt/login"
         headers = {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"}
         response = await client.post(url, data=login_dict, headers=headers)
 
         if response.is_success:
+            _set_time_used(request, response, "auth_jwt_login_post")
             json_response = response.json()
             access_token = json_response["access_token"]
             token_type = json_response["token_type"]
@@ -66,12 +98,13 @@ async def auth_register_post(request: Request):
     email = str(form.get("email"))
     password = str(form.get("password"))
 
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         url = base_url + "/auth/register"
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json={"email": email, "password": password}, headers=headers)
 
         if not response.is_success:
+            _set_time_used(request, response, "auth_register_post")
             json_response = response.json()
             raise_openaws_exception(response.status_code, json_response)
 
@@ -79,12 +112,13 @@ async def auth_register_post(request: Request):
 async def auth_verify_post(request: Request):
     token = request.path_params["token"]
 
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         url = base_url + "/auth/verify"
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json={"token": token}, headers=headers)
 
         if not response.is_success:
+            _set_time_used(request, response, "auth_verify_post")
             json_response = response.json()
             raise_openaws_exception(response.status_code, json_response)
 
@@ -100,7 +134,7 @@ async def users_me_get(request: Request) -> dict:
 
     url = base_url + "/users/me"
 
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         response = await client.get(
             url=url,
             follow_redirects=True,
@@ -108,6 +142,7 @@ async def users_me_get(request: Request) -> dict:
         )
 
         if response.is_success:
+            _set_time_used(request, response, "users_me_get")
             request.state.me = response.json()
             return response.json()
         else:
@@ -121,12 +156,13 @@ async def auth_forgot_password(request: Request) -> None:
     form = await request.form()
     email = str(form.get("email"))
 
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         url = base_url + "/auth/forgot-password"
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json={"email": email}, headers=headers)
 
         if not response.is_success:
+            _set_time_used(request, response, "auth_forgot_password")
             json_response = response.json()
             raise_openaws_exception(response.status_code, json_response)
 
@@ -138,12 +174,13 @@ async def auth_reset_password_post(request: Request) -> None:
     password = str(form.get("password"))
     token = request.path_params["token"]
 
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         url = base_url + "/auth/reset-password"
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json={"password": password, "token": token}, headers=headers)
 
         if not response.is_success:
+            _set_time_used(request, response, "auth_reset_password_post")
             json_response = response.json()
             raise_openaws_exception(response.status_code, json_response)
 
@@ -154,12 +191,13 @@ async def auth_request_verify_post(request: Request):
     me = await users_me_get(request)
     email = me["email"]
 
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         url = base_url + "/auth/request-verify-token"
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json={"email": email}, headers=headers)
 
         if not response.is_success:
+            _set_time_used(request, response, "auth_request_verify_post")
             json_response = response.json()
             raise_openaws_exception(response.status_code, json_response)
 
@@ -207,12 +245,13 @@ async def me_permissions(request: Request) -> list[str]:
 
 
 async def schemas(request: Request) -> typing.Any:
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         url = base_url + "/schemas/?offset=0&limit=100000"
         headers = {"Accept": "application/json"}
         response = await client.get(url, headers=headers)
 
         if response.is_success:
+            _set_time_used(request, response, "schemas")
             return response.json()
         else:
             response.raise_for_status()
@@ -220,29 +259,31 @@ async def schemas(request: Request) -> typing.Any:
 
 async def schema_get(request: Request) -> typing.Any:
     schema_type = request.path_params["schema_type"]
-    return await schema_get_by_name(schema_type)
+    return await schema_get_by_name(request, schema_type)
 
 
-async def schema_get_by_name(schema_type) -> typing.Any:
-    async with get_async_client() as client:
+async def schema_get_by_name(request: Request, schema_type: str) -> typing.Any:
+    async with _get_async_client() as client:
         url = base_url + "/schemas/" + schema_type
         headers = {"Accept": "application/json"}
         response: httpx.Response = await client.get(url, headers=headers)
         if response.is_success:
+            _set_time_used(request, response, "schema_get_by_name")
             return response.json()
         else:
             response.raise_for_status()
 
 
-@disk_cache(ttl=ONE_YEAR, use_args=[0, 1])
-async def schema_get_by_version(schema_name: str, schema_version: int) -> typing.Any:
-    async with get_async_client() as client:
+@disk_cache(ttl=ONE_YEAR, use_args=[1, 2])
+async def schema_get_by_version(request: Request, schema_name: str, schema_version: int) -> typing.Any:
+    async with _get_async_client() as client:
         url = base_url + "/schemas/" + schema_name + "?version=" + str(schema_version)
 
         headers = {"Accept": "application/json"}
         response = await client.get(url, headers=headers)
 
         if response.is_success:
+            _set_time_used(request, response, "schema_get_by_version")
             return response.json()
         else:
             response.raise_for_status()
@@ -257,12 +298,13 @@ async def schema_create(request: Request) -> typing.Any:
     data_dict["type"] = schema_type
     data_dict["data"] = json.loads(data)
 
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         url = base_url + "/schemas/"
         headers = _get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
         response = await client.post(url, json=data_dict, headers=headers)
 
         if response.is_success:
+            _set_time_used(request, response, "schema_create")
             return response.json()
         else:
             response.raise_for_status()
@@ -277,7 +319,7 @@ async def entity_post(request: Request) -> typing.Any:
     headers = _get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
     url = base_url + "/entities/"
 
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         response = await client.post(
             url=url,
             follow_redirects=True,
@@ -286,6 +328,7 @@ async def entity_post(request: Request) -> typing.Any:
         )
 
         if response.is_success:
+            _set_time_used(request, response, "entity_post")
             return response.json()
         else:
             response.raise_for_status()
@@ -297,7 +340,7 @@ async def entity_patch(request: Request) -> typing.Any:
     headers = _get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
     url = base_url + "/entities/" + uuid
 
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         response = await client.patch(
             url=url,
             follow_redirects=True,
@@ -306,6 +349,7 @@ async def entity_patch(request: Request) -> typing.Any:
         )
 
         if response.is_success:
+            _set_time_used(request, response, "entity_patch")
             return response.json()
         else:
             response.raise_for_status()
@@ -314,12 +358,13 @@ async def entity_patch(request: Request) -> typing.Any:
 async def entity_delete(request: Request, type: str) -> typing.Any:
     entity_id = request.path_params["uuid"]
 
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         url = base_url + "/entities/" + entity_id + "/" + type
         headers = _get_jwt_headers(request, {"Accept": "application/json"})
         response = await client.delete(url, headers=headers)
 
         if response.is_success:
+            _set_time_used(request, response, "entity_delete")
             return response.json()
         else:
             response.raise_for_status()
@@ -330,7 +375,7 @@ async def entities_get(request: Request) -> typing.Any:
     headers["Accept"] = "application/json"
     url = base_url + "/entities/" + "?offset=0&limit=100000"
 
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         response = await client.get(
             url=url,
             follow_redirects=True,
@@ -338,6 +383,7 @@ async def entities_get(request: Request) -> typing.Any:
         )
 
         if response.is_success:
+            _set_time_used(request, response, "entities_get")
             return response.json()
         else:
             response.raise_for_status()
@@ -346,56 +392,54 @@ async def entities_get(request: Request) -> typing.Any:
 async def entity_get(request: Request) -> typing.Any:
     entity_id = request.path_params["uuid"]
 
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         url = base_url + "/entities/" + entity_id
         headers = {"Accept": "application/json"}
         response = await client.get(url, headers=headers)
 
         if response.is_success:
+            _set_time_used(request, response, "entity_get")
             return response.json()
         else:
             response.raise_for_status()
 
 
-async def proxies_record_get_by_id(record_id: str) -> typing.Any:
+async def proxies_record_get_by_id(request: Request, record_id: str) -> typing.Any:
     # e.g. 000478348
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         url = base_url + "/proxy/records/" + record_id
         headers = {"Accept": "application/json"}
         response = await client.get(url, headers=headers)
 
         if response.is_success:
+            _set_time_used(request, response, "proxies_record_get_by_id")
             return response.json()
         else:
             response.raise_for_status()
 
 
-async def proxies_record_get(request: Request) -> typing.Any:
-    # e.g. 000478348
-    record_id = request.path_params["record_id"]
-    return await proxies_record_get_by_id(record_id)
-
-
 async def proxies_records(request: Request, query_str: str) -> typing.Any:
     query_str = quote(query_str)
 
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         url = base_url + "/proxy/records?params=" + query_str
         response = await client.get(url)
 
         if response.is_success:
+            _set_time_used(request, response, "proxies_records")
             records = response.json()
             return records
         else:
             response.raise_for_status()
 
 
-async def proxies_get_resource(type: str, id: str) -> typing.Any:
-    async with get_async_client() as client:
+async def proxies_get_resource(request, type: str, id: str) -> typing.Any:
+    async with _get_async_client() as client:
         url = base_url + f"/proxy/{type}/{id}"
         response = await client.get(url)
 
         if response.is_success:
+            _set_time_used(request, response, "proxies_get_resource")
             json = response.json()
             json = await hooks.after_get_resource(type, json)
             return json
@@ -405,7 +449,7 @@ async def proxies_get_resource(type: str, id: str) -> typing.Any:
 
 
 async def proxies_get_relations(type: str, id: str) -> typing.Any:
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         url = base_url + f"/proxy/{type}/{id}/relations"
         response = await client.get(url)
 
@@ -415,27 +459,16 @@ async def proxies_get_relations(type: str, id: str) -> typing.Any:
             response.raise_for_status()
 
 
-async def proxies_resolve(query_str) -> typing.Any:
-    """resolve query params"""
-    async with get_async_client() as client:
-        url = f"https://openaws.appspot.com/resolve_params?{query_str}"
-        response = await client.get(url)
-        if response.is_success:
-            return response.json()["resolved_params"]
-        else:
-            response.raise_for_status()
-
-
-# @disk_cache(60 * 60, use_args=[0])
-async def proxies_records_from_list(query_params) -> typing.Any:
+async def proxies_records_from_list(request, query_params) -> typing.Any:
     query_str = query.get_str_from_list(query_params)
     query_str = quote(query_str)
 
-    async with get_async_client() as client:
+    async with _get_async_client() as client:
         url = base_url + "/proxy/records?params=" + query_str
         response = await client.get(url)
 
         if response.is_success:
+            _set_time_used(request, response, "proxies_get_resource")
             return response.json()
         else:
             response.raise_for_status()
