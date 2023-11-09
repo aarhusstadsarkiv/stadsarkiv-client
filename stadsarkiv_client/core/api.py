@@ -273,7 +273,7 @@ async def schema_get_by_name(request: Request, schema_type: str) -> typing.Any:
             response.raise_for_status()
 
 
-@disk_cache(ttl=ONE_YEAR, use_args=[1, 2])
+# @disk_cache(ttl=ONE_YEAR, use_args=[1, 2])
 async def schema_get_by_version(request: Request, schema_name: str, schema_version: int) -> typing.Any:
     async with _get_async_client() as client:
         url = base_url + "/schemas/" + schema_name + "?version=" + str(schema_version)
@@ -446,12 +446,13 @@ async def proxies_get_resource(request, type: str, id: str) -> typing.Any:
             response.raise_for_status()
 
 
-async def proxies_get_relations(type: str, id: str) -> typing.Any:
+async def proxies_get_relations(request: Request, type: str, id: str) -> typing.Any:
     async with _get_async_client() as client:
         url = base_url + f"/proxy/{type}/{id}/relations"
         response = await client.get(url)
 
         if response.is_success:
+            _set_time_used(request, response, "proxies_get_resource")
             return response.json()
         else:
             response.raise_for_status()

@@ -7,6 +7,9 @@ log = get_log()
 
 
 class Hooks(HooksSpec):
+    def __init__(self, request):
+        super().__init__(request)
+
     def before_template(self, context: dict) -> dict:
         """
         Alter the context dictionary. Before the context is returned to the template.

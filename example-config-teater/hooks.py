@@ -9,6 +9,9 @@ log = get_log()
 
 
 class Hooks(HooksSpec):
+    def __init__(self, request):
+        super().__init__(request)
+
     def before_template(self, context: dict) -> dict:
         """
         Alter the context dictionary. Before the context is returned to the template.
@@ -81,7 +84,7 @@ class Hooks(HooksSpec):
         if type == "events" and "date_from" in json:
             json["date_from_premier"] = json["date_from"]
 
-        relations = await api.proxies_get_relations(type, id)
+        relations = await api.proxies_get_relations(self.request, type, id)
         relations_formatted = format_relations(type, relations)
         if type == "people":
             relations_formatted = sort_data(relations_formatted, "display_label")
