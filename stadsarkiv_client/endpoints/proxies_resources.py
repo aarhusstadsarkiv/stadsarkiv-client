@@ -32,6 +32,10 @@ async def _get_resource(request: Request):
     resource_type = request.path_params["resource_type"]
     resource = await api.proxies_get_resource(request, resource_type, id=id)
     resource = await hooks.after_get_resource(resource_type, resource)
+
+    # remove leading zeros from id string
+    # these ruins the search results
+    id = id.lstrip("0")
     resource["id_real"] = id
     return resource
 
