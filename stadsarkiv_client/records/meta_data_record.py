@@ -4,10 +4,8 @@ Get some usefull meta data for a record
 
 from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
-from stadsarkiv_client.core.hooks import get_hooks
 
 
-hooks = get_hooks()
 log = get_log()
 
 

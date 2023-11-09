@@ -16,7 +16,6 @@ from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstrac
 from stadsarkiv_client.core.hooks import get_hooks
 
 
-hooks = get_hooks()
 log = get_log()
 
 
@@ -120,6 +119,8 @@ def _normalize_search(records: dict):
 
 
 async def get(request: Request):
+    hooks = get_hooks(request)
+
     q = query.get_search(request)
     size, sort = _get_size_sort(request)
     add_list_items = _get_default_query_params(request)
@@ -198,6 +199,7 @@ async def get_json(request: Request):
     add_list_items = _get_default_query_params(request)
     query_params = query.get_list(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
 
+    hooks = get_hooks(request)
     query_params = hooks.before_search(query_params=query_params)
     query_str = query.get_str_from_list(query_params)
     search_result = await api.proxies_records(request, query_str)

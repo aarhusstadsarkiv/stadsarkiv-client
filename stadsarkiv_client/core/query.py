@@ -5,9 +5,8 @@ Some query utils that can be used to get query params from request and return it
 from starlette.requests import Request
 from stadsarkiv_client.core.logging import get_log
 from urllib.parse import quote_plus
-from stadsarkiv_client.core.hooks import get_hooks
 
-hooks = get_hooks()
+
 log = get_log()
 
 

@@ -13,11 +13,11 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks import get_hooks
 
 
-hooks = get_hooks()
 log = get_log()
 
 
 async def get_context(request: Request, context_values: dict = {}) -> dict:
+    hooks = get_hooks(request)
     logged_in = await api.is_logged_in(request)
     context = {
         "flash_messages": get_messages(request),

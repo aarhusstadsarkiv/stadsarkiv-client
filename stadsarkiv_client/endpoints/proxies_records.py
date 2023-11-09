@@ -18,7 +18,6 @@ import json
 from time import time
 
 
-hooks = get_hooks()
 log = get_log()
 
 
@@ -93,14 +92,15 @@ async def _get_record_pagination(request: Request):
 
 
 async def get(request: Request):
+    hooks = get_hooks(request)
     time_begin = time()
+
     record_pagination = await _get_record_pagination(request)
     record_id = request.path_params["record_id"]
     permissions = await api.me_permissions(request)
 
     record = await api.proxies_record_get_by_id(request, record_id)
     meta_data = get_record_meta_data(request, record)
-
     record, meta_data = hooks.after_get_record(record, meta_data)
 
     record_altered = record_alter.record_alter(request, record, meta_data)
@@ -124,12 +124,13 @@ async def get(request: Request):
 
 async def get_json(request: Request):
     try:
+        hooks = get_hooks(request)
+
         record_id = request.path_params["record_id"]
         type = request.path_params["type"]
 
         record = await api.proxies_record_get_by_id(request, record_id)
         meta_data = get_record_meta_data(request, record)
-
         record, meta_data = hooks.after_get_record(record, meta_data)
 
         record_altered = record_alter.record_alter(request, record, meta_data)

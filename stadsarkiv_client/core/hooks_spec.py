@@ -2,12 +2,16 @@
 Default hooks specification.
 """
 
+from starlette.requests import Request
 from stadsarkiv_client.core.logging import get_log
 
 log = get_log()
 
 
 class HooksSpec:
+    def __init__(self, request: Request):
+        self.request = request
+
     def before_template(self, context: dict) -> dict:
         """
         Alter the context dictionary. Before the context is returned to the template.

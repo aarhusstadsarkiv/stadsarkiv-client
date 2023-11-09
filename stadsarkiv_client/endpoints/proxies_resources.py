@@ -21,13 +21,13 @@ import json
 
 
 log = get_log()
-hooks = get_hooks()
 
 
 async def _get_resource(request: Request):
     """
     Get resource from api and alter it with hooks
     """
+    hooks = get_hooks(request)
     id = request.path_params["id"]
     resource_type = request.path_params["resource_type"]
     resource = await api.proxies_get_resource(request, resource_type, id=id)
