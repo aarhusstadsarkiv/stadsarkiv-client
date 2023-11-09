@@ -13,6 +13,7 @@ from stadsarkiv_client.core import user
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
+from time import time
 
 log = get_log()
 
@@ -108,10 +109,18 @@ async def verify(request: Request):
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))
 async def me(request: Request):
+    time_begin = time()
     try:
+        time_begin = time()
+
         me = await api.users_me_get(request)
+
         context_values = {"title": translate("Profile"), "me": me}
         context = await get_context(request, context_values=context_values)
+
+        total_response_time = api.get_time_used(request, time_begin=time_begin, time_end=time())
+        log.debug(total_response_time)
+
         return templates.TemplateResponse("auth/me.html", context)
     except Exception as e:
         log.exception(e)

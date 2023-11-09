@@ -92,10 +92,11 @@ async def _get_record_pagination(request: Request):
 
 
 async def get(request: Request):
-    hooks = get_hooks(request)
     time_begin = time()
+    hooks = get_hooks(request)
 
     record_pagination = await _get_record_pagination(request)
+
     record_id = request.path_params["record_id"]
     permissions = await api.me_permissions(request)
 
@@ -117,8 +118,8 @@ async def get(request: Request):
 
     context = await get_context(request, context_variables)
 
-    total_response_time = api.get_time_used(request, time_begin)
-    log.debug(total_response_time)
+    total_response_time = api.get_time_used(request, time_begin=time_begin, time_end=time())
+    log.debug(json.dumps(total_response_time, indent=4, ensure_ascii=False))
     return templates.TemplateResponse("records/record.html", context)
 
 
