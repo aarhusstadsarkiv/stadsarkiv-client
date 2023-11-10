@@ -51,7 +51,6 @@ def normalize_dates(record):
     else:
         date_string = translate("No Date")
 
-    log.debug(date_string)
     record["date_normalized"] = date_string
     return record
 
