@@ -33,12 +33,12 @@ class LastMiddleware(BaseHTTPMiddleware):
         response = await call_next(request)
 
         path = request.url.path
-        paths = ["/records/", "/search", "/auth/me"]
-        for p in paths:
-            if path.startswith(p):
-                total_response_time = api.get_time_used(request)
-                log.debug(json.dumps(total_response_time, indent=4, ensure_ascii=False))
-                api.REQUEST_TIME_USED = {}
+        if path.startswith("/static"):
+            return response
+
+        total_response_time = api.get_time_used(request)
+        log.debug(json.dumps(total_response_time, indent=4, ensure_ascii=False))
+        api.REQUEST_TIME_USED = {}
         return response
 
 

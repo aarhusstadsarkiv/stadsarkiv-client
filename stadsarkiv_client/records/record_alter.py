@@ -3,7 +3,7 @@ Alter the record
 """
 
 from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
+from stadsarkiv_client.records import normalize_dates
 from stadsarkiv_client.records.normalize_copyright_status import normalize_copyright_status
 from stadsarkiv_client.records.normalize_contractual_status import normalize_contractual_status
 from stadsarkiv_client.records.normalize_legal_restrictions import normalize_legal_restrictions
@@ -22,7 +22,7 @@ def record_alter(request: Request, record: dict, meta_data: dict):
     record = record.copy()
 
     record = normalize_record_data(record, meta_data)
-    record = normalize_abstract_dates(record)
+    record = normalize_dates.normalize_dates(record)
     record = normalize_copyright_status(record, meta_data)
     record = normalize_contractual_status(record, meta_data)
     record = normalize_legal_restrictions(record, meta_data)

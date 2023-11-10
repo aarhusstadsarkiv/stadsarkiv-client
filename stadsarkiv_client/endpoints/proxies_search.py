@@ -12,7 +12,7 @@ from stadsarkiv_client.core import api
 import json
 from stadsarkiv_client.records.normalize_facets import NormalizeFacets
 from stadsarkiv_client.core import query
-from stadsarkiv_client.records.normalize_abstract_dates import normalize_abstract_dates
+from stadsarkiv_client.records import normalize_dates
 from stadsarkiv_client.core.hooks import get_hooks
 
 
@@ -105,7 +105,8 @@ def _normalize_search(records: dict):
     facets_resolved = records["facets_resolved"]
 
     for record in records["result"]:
-        record = normalize_abstract_dates(record, split=True)
+        record = normalize_dates.split_date_strings(record)
+        record = normalize_dates.normalize_dates(record)
 
         # Add collection as string
         if "collection_id" in record and record["collection_id"]:

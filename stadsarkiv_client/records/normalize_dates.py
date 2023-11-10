@@ -10,21 +10,26 @@ from stadsarkiv_client.core.logging import get_log
 log = get_log()
 
 
-def split_date_str(date):
+def _split_date_str(date):
     # Alter a string date like 19570101 into 1957-01-01
     return f"{date[0:4]}-{date[4:6]}-{date[6:8]}"
 
 
-def normalize_abstract_dates(record, split=False):
+def split_date_strings(record):
+    """
+    Split date strings in record
+    """
+    if "date_from" in record:
+        record["date_from"] = _split_date_str(record["date_from"])
+    if "date_to" in record:
+        record["date_to"] = _split_date_str(record["date_to"])
+    return record
+
+
+def normalize_dates(record):
     """
     Add date_normalized to record
     """
-
-    if split:
-        if "date_from" in record:
-            record["date_from"] = split_date_str(record["date_from"])
-        if "date_to" in record:
-            record["date_to"] = split_date_str(record["date_to"])
 
     date_string = ""
     if record.get("date_from"):
@@ -46,6 +51,7 @@ def normalize_abstract_dates(record, split=False):
     else:
         date_string = translate("No Date")
 
+    log.debug(date_string)
     record["date_normalized"] = date_string
     return record
 
