@@ -66,24 +66,15 @@ def get_time_used(request: Request) -> typing.Any:
     for _, value in REQUEST_TIME_USED.items():
         total_api_time += max(value)
 
-    time_tabel = {
-        "time_begin": time_begin,
-        "time_end": time_end,
+    time_table = {
+        "api_calls": REQUEST_TIME_USED,
+        "api_calls_total": total_api_time,
         "total_time_request": total_time_request,
-        "total_api_time": total_api_time,
         "total_time_not_api": total_time_request - total_api_time,
+        "api_calls_percentage": total_api_time / total_time_request if total_api_time > 0 else 0,
     }
-    # time_tabel["api_calls"] = REQUEST_TIME_USED
-    # time_tabel["api_calls_total"] = total_api_time
-    # time_tabel["total_time_request"] = total_time_request
-    # time_tabel["total_time_not_api"] = total_time_request - total_api_time
 
-    # get percentage of api calls
-    if total_api_time > 0:
-        percentage = total_api_time / total_time_request
-        time_tabel["api_calls_percentage"] = percentage
-
-    return time_tabel
+    return time_table
 
 
 def _get_jwt_headers(request: Request, headers: dict = {}) -> dict:
