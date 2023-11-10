@@ -12,7 +12,7 @@ from starlette.requests import Request
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.dynamic_settings import get_setting
 from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.core.format_date import format_date
+from stadsarkiv_client.core.date_format import date_format
 from stadsarkiv_client.core.args import get_local_config_dir
 import json
 import re
@@ -119,7 +119,7 @@ def get_icon(icon: str):
 
 templates.env.globals.update(translate=translate)
 templates.env.globals.update(get_setting=get_setting)
-templates.env.globals.update(format_date=format_date)
+templates.env.globals.update(format_date=date_format)
 templates.env.globals.update(to_json=_to_json)
 templates.env.globals.update(pre=_pre)
 templates.env.globals.update(paragraphs=_paragraphs)
