@@ -204,6 +204,5 @@ async def get_json(request: Request):
     query_str = query.get_str_from_list(query_params)
     search_result = await api.proxies_records(request, query_str)
 
-    # log.debug(search_result)
     record_json = json.dumps(search_result, indent=4, ensure_ascii=False)
     return PlainTextResponse(record_json)

@@ -15,7 +15,6 @@ from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 import asyncio
 import json
-from time import time
 
 
 log = get_log()
@@ -92,7 +91,6 @@ async def _get_record_pagination(request: Request):
 
 
 async def get(request: Request):
-    time_begin = time()
     hooks = get_hooks(request)
 
     record_pagination = await _get_record_pagination(request)
@@ -117,9 +115,6 @@ async def get(request: Request):
     }
 
     context = await get_context(request, context_variables)
-
-    total_response_time = api.get_time_used(request, time_begin=time_begin, time_end=time())
-    log.debug(json.dumps(total_response_time, indent=4, ensure_ascii=False))
     return templates.TemplateResponse("records/record.html", context)
 
 

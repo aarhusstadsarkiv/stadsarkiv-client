@@ -4,14 +4,13 @@ Main application file for the stadsarkiv_client application.
 
 from starlette.applications import Starlette
 from stadsarkiv_client.routes import routes
-from stadsarkiv_client.core.middleware import session_middleware, session_autoload_middleware
+from stadsarkiv_client.core.middleware import session_middleware, session_autoload_middleware, first_middleware, last_middleware
 from stadsarkiv_client.core.exception_handlers import exception_handlers
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.sentry import enable_sentry
 import os
 import json
-
 
 log = get_log()
 
@@ -23,9 +22,10 @@ if sentry_dns:
     enable_sentry(sentry_dns)
     log.debug("Logging to sentry enabled")
 
+
 app = Starlette(
     debug=settings["debug"],  # type: ignore
-    middleware=[session_middleware, session_autoload_middleware],
+    middleware=[first_middleware, session_middleware, session_autoload_middleware, last_middleware],
     routes=routes,
     exception_handlers=exception_handlers,  # type: ignore
 )
