@@ -88,43 +88,39 @@ def set_creators_link_list(data: dict, schema):
     """
     Set creator_link field on dict.
     """
+    is_creator = data.get("is_creator", False)
+    is_creative_creator = data.get("is_creative_creator", False)
 
-    label = translate("See all records this creator has created")
-    if schema == "person":
-        label = translate("See all records this creator has created")
-    if schema == "organisation":
-        label = translate("See all records this organization has created")
+    if is_creator and is_creative_creator:
+        label_key = "creator" if schema == "person" else "organization"
+        label = translate(f"See all records this {label_key} has created")
 
-    if "is_creator" in data and data["is_creator"]:
-        value = [
+        data["creators_link"] = [
             {
                 "search_query": f"creators={data['id_real']}",
                 "label": label,
             }
         ]
-        data["creators_link"] = value
 
     return data
 
 
 def set_collectors_link_list(data: dict, schema):
     """
-    Set collectors_link field on dict."""
+    Set collectors_link field on dict.
+    """
+    is_creator = data.get("is_creator", False)
 
-    label = translate("See all records this collector has collected")
-    if schema == "person":
-        label = translate("See all records this creator has collected")
-    if schema == "organisation":
-        label = translate("See all records this organization has collected")
+    if is_creator:
+        label_key = "creator" if schema == "person" else "organization"
+        label = translate(f"See all records this {label_key} has collected")
 
-    if "is_creator" in data and data["is_creative_creator"]:
-        value = [
+        data["collectors_link"] = [
             {
                 "search_query": f"collectors={data['id_real']}",
                 "label": label,
             }
         ]
-        data["collectors_link"] = value
 
     return data
 
