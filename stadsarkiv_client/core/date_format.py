@@ -23,5 +23,4 @@ def date_format_day(date_string: str) -> str:
     date_format = "%Y-%m-%d"
     date = datetime.strptime(date_string, date_format)
     formatted_date = format_date(date, format="d. MMMM y", locale="da_DK")
-    print(formatted_date)
     return formatted_date
