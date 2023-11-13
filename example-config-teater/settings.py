@@ -41,5 +41,5 @@ settings: dict[str, typing.Any] = {
     "pages": [
         {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
     ],
-    "facets_enabled": ["events", "content_types"],
+    "facets_enabled": ["events"],
 }
