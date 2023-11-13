@@ -5,6 +5,11 @@
 {% block body_class %}page-resources-organisations{% endblock %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
+<script type="module">
+    import { activateOverlay } from "/static/js/overlay.js";
+    activateOverlay('.record-representation');
+</script>
 {% endblock head %}
 
 {% block content %}
@@ -15,8 +20,8 @@
     <a href="/search?organisations={{ organisation['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
-{% set keys = ['collectors_link', 'creators_link', 'collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}
-{{ common_macros.parse_block_common("Stamdata", keys, organisation) }}
+{% set keys = ['portrait', 'date_from', 'alt_names', 'industry', 'collectors_link', 'creators_link', 'collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}
+{{ common_macros.parse_image_block("Stamdata", keys, organisation, 'collection') }}
 
 {% set keys = ["summary", "description", "content_and_scope"] %}
 {{ common_macros.parse_block_common('Abstrakt', keys, organisation) }}
