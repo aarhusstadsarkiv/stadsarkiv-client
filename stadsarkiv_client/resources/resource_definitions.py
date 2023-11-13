@@ -63,4 +63,5 @@ resource_definitions = {
     "portrait": {"type": "image"},
     "date_created": {"type": "string"},
     "date_decommissioned": {"type": "string"},
+    "alt_names": {"type": "string_list"},
 }
