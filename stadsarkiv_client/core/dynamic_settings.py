@@ -50,13 +50,3 @@ except ImportError:
 settings_facets = settings_facets_default
 if settings_facets_local:
     settings_facets.update(settings_facets_local)
-
-facets_enabled = settings["facets_enabled"]
-
-# delete key and values from settings_facets if key is not in facets_enabled
-for key in list(settings_facets.keys()):
-    if key not in facets_enabled:
-        del settings_facets[key]
-
-# sort settings_facets by facets_enabled
-settings_facets = {key: settings_facets[key] for key in facets_enabled}

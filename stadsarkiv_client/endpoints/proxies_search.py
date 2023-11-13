@@ -8,6 +8,7 @@ from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import api
 import json
 from stadsarkiv_client.records.normalize_facets import NormalizeFacets
@@ -158,6 +159,14 @@ async def get(request: Request):
     )
 
     facets = normalized_facets.get_transformed_facets()
+    facets_enabled = settings["facets_enabled"]
+
+    # only use facets that are enabled in settings left menu
+    facets = {key: value for key, value in facets.items() if key in facets_enabled}
+
+    # sort by facets_enabled order
+    facets = {key: facets[key] for key in facets_enabled}
+
     facets_filters = normalized_facets.get_checked_facets()
     pagination_data = _get_search_pagination_data(request, search_result["size"], search_result["total"])
 
