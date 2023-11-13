@@ -119,7 +119,7 @@ def get_icon(icon: str):
 
 templates.env.globals.update(translate=translate)
 templates.env.globals.update(get_setting=get_setting)
-templates.env.globals.update(format_date=date_format)
+templates.env.globals.update(date_format=date_format)
 templates.env.globals.update(to_json=_to_json)
 templates.env.globals.update(pre=_pre)
 templates.env.globals.update(paragraphs=_paragraphs)
