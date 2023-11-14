@@ -115,7 +115,7 @@ async def post(request: Request):
         return JSONResponse({"message": "Entitet kunne ikke oprettes", "error": True})
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."))
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
 async def get_list(request: Request):
     try:
         entities, schemas = await asyncio.gather(api.entities_get(request), api.schemas(request))

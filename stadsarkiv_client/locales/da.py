@@ -108,7 +108,7 @@ da = {
     "View": "Vis",
     "View schema": "Vis skema",
     "You are already logged in.": "Du er allerede logget ind.",
-    "You do not have the required permissions to view the page.": "Du har ikke rettighederne til at se siden. Prøv at logge ind.",
+    "You do not have the required permissions to view the page.": "Du har ikke rettighederne til at se siden. Du må logge ind igen.",
     "You have been logged in.": "Du er nu logget ind.",
     "You have been logged out.": "Du er nu logget ud.",
     "You have been registered. Check your email to confirm your account.": "Du er blevet registreret. Tjek din email for at bekræfte din konto.",

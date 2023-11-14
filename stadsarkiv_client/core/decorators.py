@@ -6,6 +6,7 @@ from stadsarkiv_client.core import flash
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core import user
 from starlette.responses import RedirectResponse
 from functools import wraps
 
@@ -52,6 +53,9 @@ def is_authenticated(func=None, message=translate("You need to be logged in to v
                 users_me_get = await api.users_me_get(request)
                 log.error(f"403 Forbidden: {request.url}. User {users_me_get}. Missing permission: {permission}")
 
+                user.logout(request)
+
+                flash.clear(request)
                 flash.set_message(
                     request,
                     translate("You do not have the required permissions to view the page."),
