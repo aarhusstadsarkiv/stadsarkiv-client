@@ -36,11 +36,13 @@ def normalize_record_data(record: dict, meta_data: dict):
 
 def normalize_representations(record: dict, meta_data: dict):
     if "representations" in record:
-        # if "record_type" is not "web_document" or "image" then remove it.
-        if record["representations"]["record_type"] not in ["web_document", "image"]:
-            del record["representations"]
+        # Check if the record type is not "web_document" or "image"
+        is_invalid_type = record["representations"]["record_type"] not in ["web_document", "image"]
 
-        if not meta_data["is_downloadable"]:
+        # Check if the meta_data indicates it's not downloadable
+        is_not_downloadable = not meta_data["is_downloadable"]
+
+        if is_invalid_type or is_not_downloadable:
             del record["representations"]
 
     return record
