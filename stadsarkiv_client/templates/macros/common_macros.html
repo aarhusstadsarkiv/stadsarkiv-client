@@ -107,6 +107,21 @@
 </div>
 {% endmacro %}
 
+{% macro parse_ordering (key, value, record_and_types) %}
+<div class="record-content record_content_{{ key }}">
+    {{ parse_record_label(key) }}
+    <div class="content">
+        {% for item in value %}
+        <p>{{ item }}</p>
+        {% endfor %}
+        <div class="order-material">
+            <a data-id="{{ record_and_types.id.value }}" href="/order/{{ record_and_types.id.value }}">Bestil online</a>
+        </div>
+    </div>
+    
+</div>
+{% endmacro %}
+
 {% macro _parse_list_in_hierarchy (value) %}
 <p>
 {% for item in value %}
@@ -179,7 +194,7 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_block_section(field) %}
+{% macro parse_block_section(field, record_and_types) %}
 
 {% set type = field["type"] %}
 {% set value = field["value"] %}
@@ -207,6 +222,9 @@
 {% elif type == "latitude_longitude_normalized" %}
 {{ parse_coordinates(key, value ) }}
 
+{% elif type == "ordering_normalized" %}
+{{ parse_ordering(key, value, record_and_types ) }}
+
 {% elif type == "string_list" %}
 {{ parse_string_list(key, value ) }}
 {% elif type == "link_list" %}
@@ -224,14 +242,14 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_block_common(title, block_keys, data) %}
-{% if key_exist_in_dict(block_keys, data) %}
+{% macro parse_block_common(title, block_keys, record_and_types) %}
+{% if key_exist_in_dict(block_keys, record_and_types) %}
 <div class="record-section">
     <div class="record-main">
         <h3 class="record-header">{{ title }}</h3>
         {% for key in block_keys %}
-        {% if key in data %}
-        {{ parse_block_section(data[key]) }}
+        {% if key in record_and_types %}
+        {{ parse_block_section(record_and_types[key], record_and_types) }}
         {% endif %}
         {% endfor %}
     </div>
@@ -300,15 +318,15 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_image_block(title, block_keys, data, icon) %}
-{% if key_exist_in_dict(block_keys, data) %}
+{% macro parse_image_block(title, block_keys, record_and_types, icon) %}
+{% if key_exist_in_dict(block_keys, record_and_types) %}
 <div class="record-section">
-    {{ _parse_portrait_image(data, icon) }}
+    {{ _parse_portrait_image(record_and_types, icon) }}
     <div class="record-main">
         <h3 class="record-header">{{ title }}</h3>
         {% for key in block_keys %}
-        {% if key in data %}
-        {{ parse_block_section(data[key]) }}
+        {% if key in record_and_types %}
+        {{ parse_block_section(record_and_types[key], record_and_types) }}
         {% endif %}
         {% endfor %}
     </div>
