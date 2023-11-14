@@ -125,24 +125,32 @@
 
 {% set keys = ["collectors", "content_types", "creators", "date_normalized", "curators", "id"] %}
 {{ parse_block_first(keys, meta_data, record_and_types) }}
+
 {% set keys = ["heading", "summary", "desc_notes", "collection", "series", "collection_tags", "subjects" ] %}
 {{ common_macros.parse_block_common('Beskrivelse', keys, record_and_types) }}
+
 {% set keys = ["copyright_status_normalized"] %}
 {{ common_macros.parse_block_common('Ophavsret', keys, record_and_types) }}
+
 {% set keys = ["desc_data"] %}
 {{ common_macros.parse_block_common('Beskrivelsesdata', keys, record_and_types) }}
+
 {% set keys = ["locations", "organisations", "events", "people", "objects"] %}
 {{ common_macros.parse_block_common('Relationer', keys, record_and_types) }}
+
 {% set keys = ["rights_notes"] %}
 {{ common_macros.parse_block_common('Rettighedsnoter', keys, record_and_types) }}
+
 {% set keys = ["contractual_status_normalized", "other_legal_restrictions_normalized"] %}
 {{ common_macros.parse_block_common('Anden juridisk beskyttelse', keys, record_and_types) }}
+
 {% set keys = ["availability_normalized"] %}
 {{ common_macros.parse_block_common('Tilgængelighed', keys, record_and_types) }}
+
 {% set keys = ["ordering_normalized"] %}
 {{ common_macros.parse_block_common('Bestilling', keys, record_and_types) }}
-{% set keys = ["admin_notes", "admin_data", "registration_id", "created_by", "created", "last_updated_by", "last_updated"] %}
 
+{% set keys = ["admin_notes", "admin_data", "registration_id", "created_by", "created", "last_updated_by", "last_updated"] %}
 {% if is_employee %}
 {{ common_macros.parse_block_common('Administration', keys, record_and_types) }}
 {% set keys = ["resources"] %}
@@ -151,13 +159,6 @@
 
 {% set keys = ["representations"] %}
 {{ common_macros.parse_block_common('Download', keys, record_and_types) }}
-
-{% set meta_links = [
-    {"url": "/records/" + meta_data['id'] + "/json/record", "label": "JSON fra API efter hooks" },
-    {"url": "/records/" + meta_data['id'] + "/json/meta_data", "label": "JSON som indeholder meta data" },
-    {"url": "/records/" + meta_data['id'] + "/json/record_and_types", "label": "JSON med typer tilføjet."}
-] 
-%}
 
 {% set meta_links = [
     {'label': 'JSON. Record fra API efter hooks', 'url': url_for('proxies_records_get_json', record_id=meta_data.id, type='record') | string},
