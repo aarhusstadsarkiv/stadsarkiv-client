@@ -12,6 +12,16 @@ from functools import wraps
 log = get_log()
 
 
+def _get_redirect_url(request):
+    """
+    Create a redirect url with the current url as the next parameter.
+    The currect url is the url the user is trying to access - where the user needs to be authenticated.
+    """
+    current_url = request.url.path
+    redirect_url = f"/auth/login?next={current_url}"
+    return redirect_url
+
+
 def is_authenticated(func=None, message=translate("You need to be logged in to view this page."), permissions=[]):
     """
     Decorator to check if the user is logged in. If not, redirect to login page.
@@ -27,7 +37,9 @@ def is_authenticated(func=None, message=translate("You need to be logged in to v
         if not is_logged_in:
             log.error(f"401 Unauthorized: {request.url}")
             flash.set_message(request, message, type="error")
-            response = RedirectResponse(url="/auth/login", status_code=302, headers={"X-Message": message})
+
+            redirect_url = _get_redirect_url(request)
+            response = RedirectResponse(url=redirect_url, status_code=302, headers={"X-Message": message})
             return response
 
         if not permissions:
@@ -45,7 +57,9 @@ def is_authenticated(func=None, message=translate("You need to be logged in to v
                     translate("You do not have the required permissions to view the page."),
                     type="error",
                 )
-                response = RedirectResponse(url="/", status_code=302, headers={"X-Message": message})
+
+                redirect_url = _get_redirect_url(request)
+                response = RedirectResponse(url=redirect_url, status_code=302, headers={"X-Message": message})
                 return response
 
         response = await func(request, *args, **kwargs)

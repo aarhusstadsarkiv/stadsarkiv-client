@@ -39,7 +39,7 @@ class TestAuth(unittest.TestCase):
     def test_login_incorrect_post(self):
         client = TestClient(app)
         response = client.post("/auth/login", data=incorrect_login, follow_redirects=True)  # type: ignore
-        self.assertEqual(response.url, "http://testserver/auth/login")
+        self.assertEqual(response.url, "http://testserver/auth/login?next=/")
 
     def test_logout_post(self):
         client = TestClient(app)
@@ -49,8 +49,7 @@ class TestAuth(unittest.TestCase):
     def test_logout_get(self):
         client = TestClient(app)
         response = client.get("/auth/logout", follow_redirects=True)
-        self.assertEqual(response.url, "http://testserver/auth/login")
-        # self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "http://testserver/auth/login?next=/auth/logout")
 
     def test_me_loggedin_get(self):
         client = TestClient(app)
@@ -61,4 +60,4 @@ class TestAuth(unittest.TestCase):
     def test_me_not_logged_in_get(self):
         client = TestClient(app)
         response = client.get("/auth/me", follow_redirects=True)
-        self.assertEqual(response.url, "http://testserver/auth/login")
+        self.assertEqual(response.url, "http://testserver/auth/login?next=/auth/me")

@@ -18,7 +18,8 @@ log = get_log()
 
 
 async def login_get(request: Request):
-    context_values = {"title": translate("Login")}
+    next_url = request.query_params.get("next", "/")
+    context_values = {"title": translate("Login"), "post_url": "/auth/login?next=" + next_url}
     context = await get_context(request, context_values=context_values)
 
     if await api.is_logged_in(request):
@@ -29,14 +30,16 @@ async def login_get(request: Request):
 
 
 async def login_post(request: Request):
+    next_url = request.query_params.get("next", "/")
     try:
         await api.auth_jwt_login_post(request)
         flash.set_message(request, translate("You have been logged in."), type="success", remove=True)
-        return RedirectResponse(url="/", status_code=302)
+
+        return RedirectResponse(url=next_url, status_code=302)
 
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
-        return RedirectResponse(url="/auth/login", status_code=302)
+        return RedirectResponse(url="/auth/login?next=" + next_url, status_code=302)
     except Exception as e:
         log.exception(e)
         flash.set_message(request, str(e), type="error", use_settings=True)
