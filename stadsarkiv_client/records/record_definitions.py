@@ -44,7 +44,7 @@ record_definitions = {
     "people": {"type": "link_list"},
     "objects": {"type": "link_list"},
     "events": {"type": "link_list"},
-    "ordering_normalized": {"type": "string_list"},
+    "ordering_normalized": {"type": "ordering_normalized"},  # special type
     "creators": {"type": "link_list"},
     "desc_notes": {"type": "string"},
     "heading": {"type": "string"},
