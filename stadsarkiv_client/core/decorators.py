@@ -54,7 +54,6 @@ def is_authenticated(func=None, message=translate("You need to be logged in to v
                 log.error(f"403 Forbidden: {request.url}. User {users_me_get}. Missing permission: {permission}")
 
                 user.logout(request)
-
                 flash.clear(request)
                 flash.set_message(
                     request,
