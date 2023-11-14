@@ -77,6 +77,7 @@ en = {
     "Remove facet": "Remove facet",
     "Repeat Password": "Repeat Password",
     "Reset password": "Reset password",
+    "Reset search": "Reset search",
     "Reset your password": "Reset your password",
     "Schema": "Schema",
     "Schema could not be created": "Schema kunne ikke oprettes",

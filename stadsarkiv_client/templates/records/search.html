@@ -19,6 +19,13 @@
     </li>
     {% endfor %}
 </ul>
+
+{% if facets_filters %}
+    <p>
+        <a class="remove" href="{{ search_base_url }}?">{{ translate('Reset search') }}</a>
+    </p>
+{% endif %}
+
 {% endmacro %}
 
 {% macro parse_facet_link(top_level_key, facet) %}

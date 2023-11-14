@@ -67,6 +67,7 @@ da = {
     "Remove facet": "Fjern",
     "Repeat Password": "Gentag password",
     "Reset password": "Nulstil password",
+    "Reset search": "Nulstil søgning",
     "Reset your password": "Nulstil dit password",
     "Schema": "Skema",
     "Schema could not be created": "Skema kunne ikke oprettes",
