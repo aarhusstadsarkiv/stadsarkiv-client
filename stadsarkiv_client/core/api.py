@@ -24,11 +24,11 @@ ONE_YEAR = 60 * 60 * 24 * 365
 REQUEST_TIME_USED = {}
 
 
-async def log_request(request):
+async def _log_request(request):
     request.start_time = time()
 
 
-async def log_response(response):
+async def _log_response(response):
     request = response.request
 
     # Calculate the elapsed time from request initiation to response reception
@@ -38,7 +38,7 @@ async def log_response(response):
 
 
 def _get_async_client() -> httpx.AsyncClient:
-    return httpx.AsyncClient(event_hooks={"request": [log_request], "response": [log_response]}, timeout=7)
+    return httpx.AsyncClient(event_hooks={"request": [_log_request], "response": [_log_response]}, timeout=7)
 
 
 def _set_time_used(name: str, elapsed: float) -> None:
