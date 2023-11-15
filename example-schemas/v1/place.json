@@ -1,0 +1,115 @@
+{
+    "domain": "locations",
+    "description": "En stedsangivelse, som ikke er en adresse",
+    "parent_schema": "core",
+    "sub_display_template": [
+        [
+            "#",
+            "Sted"
+        ],
+        [
+            "local_area",
+            "%s"
+        ]
+    ],
+    "title": "Stedsangivelse",
+    "version_nr": 1,
+    "properties": {
+        "named_date": {
+            "pattern": "^([0-9]{4})(-([0-9]{2}))?(-([0-9]{2}))?$",
+            "type": "unicode",
+            "title": "Navngivet \u00e5r"
+        },
+        "description": {
+            "type": "unicode_text",
+            "title": "Beskrivelse"
+        },
+        "parish": {
+            "type": "unicode",
+            "locked": true,
+            "title": "Sogn"
+        },
+        "date_from": {
+            "pattern": "^([0-9]{4})(-([0-9]{2}))?(-([0-9]{2}))?$",
+            "type": "unicode",
+            "title": "Oprettelsesdato"
+        },
+        "ext_data": {
+            "type": "dict",
+            "title": "Udvidet data"
+        },
+        "alt_names": {
+            "array_type": "unicode",
+            "type": "array",
+            "description": "Alternative navne",
+            "title": "Alternative navne"
+        },
+        "sources": {
+            "array_type": "unicode",
+            "type": "array",
+            "description": "URL-links eller enkeltlinje referencer",
+            "title": "Kilder"
+        },
+        "display_label": {
+            "type": "unicode",
+            "description": "Den streng, som entiteten repr\u00e6senteres med",
+            "title": "Displaynavn"
+        },
+        "local_area": {
+            "type": "unicode",
+            "locked": true,
+            "title": "Lokal omr\u00e5de"
+        },
+        "date_to": {
+            "pattern": "^([0-9]{4})(-([0-9]{2}))?(-([0-9]{2}))?$",
+            "type": "unicode",
+            "title": "Nedl\u00e6ggelsesdato"
+        },
+        "portrait": {
+            "array_type": "unicode",
+            "type": "array",
+            "title": "Portr\u00e6t"
+        },
+        "name": {
+            "type": "unicode",
+            "title": "Navn"
+        }
+    },
+    "remap": [
+        [
+            "alt_name",
+            "alt_names"
+        ]
+    ],
+    "make_display": [
+        {
+            "date_template": "(%d0-%d1)",
+            "namePart": [
+                "name"
+            ],
+            "datePart": [
+                "date_from",
+                "date_to"
+            ],
+            "include_in_autocomplete": true,
+            "name_template": "%n0"
+        }
+    ],
+    "req_field": [
+        "name"
+    ],
+    "order": [
+        "display_label",
+        "name",
+        "alt_names",
+        "description",
+        "date_from",
+        "date_to",
+        "named_date",
+        "local_area",
+        "parish",
+        "sources",
+        "portrait",
+        "ext_data"
+    ]
+}

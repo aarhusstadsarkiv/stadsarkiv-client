@@ -1,0 +1,104 @@
+{
+    "domain": "events",
+    "description": "En begivenhed",
+    "parent_schema": "core",
+    "sub_display_template": [
+        [
+            "#",
+            "Begivenhed"
+        ],
+        [
+            "event_type",
+            "%s"
+        ]
+    ],
+    "title": "Begivenhed",
+    "version_nr": 1,
+    "properties": {
+        "description": {
+            "type": "unicode_text",
+            "title": "Beskrivelse"
+        },
+        "date_from": {
+            "pattern": "^([0-9]{4})(-([0-9]{2}))?(-([0-9]{2}))?$",
+            "type": "unicode",
+            "title": "Startdato"
+        },
+        "ext_data": {
+            "type": "dict",
+            "title": "Udvidet data"
+        },
+        "alt_names": {
+            "array_type": "unicode",
+            "type": "array",
+            "description": "Alternative navne",
+            "title": "Alternative navne"
+        },
+        "name": {
+            "type": "unicode",
+            "title": "Navn"
+        },
+        "sources": {
+            "array_type": "unicode",
+            "type": "array",
+            "description": "URL-links eller enkeltlinje referencer",
+            "title": "Kilder"
+        },
+        "display_label": {
+            "type": "unicode",
+            "description": "Den streng, som entiteten repr\u00e6senteres med",
+            "title": "Displaynavn"
+        },
+        "date_to": {
+            "pattern": "^([0-9]{4})(-([0-9]{2}))?(-([0-9]{2}))?$",
+            "type": "unicode",
+            "title": "Slutdato"
+        },
+        "portrait": {
+            "array_type": "unicode",
+            "type": "array",
+            "title": "Portr\u00e6t"
+        },
+        "event_type": {
+            "array_type": "unicode",
+            "type": "array",
+            "description": "Begivenhedstype",
+            "title": "Begivenhedstype"
+        }
+    },
+    "remap": [
+        [
+            "alt_name",
+            "alt_names"
+        ]
+    ],
+    "make_display": [
+        {
+            "date_template": "(%d0-%d1)",
+            "namePart": [
+                "name"
+            ],
+            "datePart": [
+                "date_from",
+                "date_to"
+            ],
+            "include_in_autocomplete": true,
+            "name_template": "%n0"
+        }
+    ],
+    "req_field": [
+        "name"
+    ],
+    "order": [
+        "display_label",
+        "name",
+        "alt_names",
+        "description",
+        "date_from",
+        "date_to",
+        "event_type",
+        "sources",
+        "portrait",
+        "ext_data"
+    ]
+}

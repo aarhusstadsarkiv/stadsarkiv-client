@@ -1,0 +1,165 @@
+{
+    "domain": "people",
+    "description": "En person-entitet",
+    "title": "Person",
+    "sub_display_template": [
+        [
+            "#",
+            "Person"
+        ],
+        [
+            "birthname",
+            "f. %s"
+        ],
+        [
+            "occupation",
+            "%s"
+        ]
+    ],
+    "parent_schema": "core",
+    "version_nr": 1,
+    "order": [
+        "display_label",
+        "firstnames",
+        "birthname",
+        "lastnames",
+        "alt_names",
+        "description",
+        "gender",
+        "occupation",
+        "date_from",
+        "date_to",
+        "place_of_birth",
+        "place_of_death",
+        "portrait",
+        "sources",
+        "ext_data",
+        "is_creator",
+        "is_creative_creator"
+    ],
+    "remap": [
+        [
+            "alt_name",
+            "alt_names"
+        ],
+        [
+            "date_of_birth",
+            "date_from"
+        ],
+        [
+            "date_of_death",
+            "date_to"
+        ]
+    ],
+    "make_display": [
+        {
+            "date_template": "(%d0-%d1)",
+            "namePart": [
+                "firstnames",
+                "lastnames"
+            ],
+            "datePart": [
+                "date_from",
+                "date_to"
+            ],
+            "include_in_autocomplete": true,
+            "name_template": "%n0 %n1"
+        }
+    ],
+    "req_field": [
+        "firstnames"
+    ],
+    "properties": {
+        "is_creator": {
+            "type": "boolean",
+            "title": "Er arkivskaber"
+        },
+        "lastnames": {
+            "array_type": "unicode",
+            "type": "array",
+            "description": "Alle nuv\u00e6rende mellem og efternavne i korrekt r\u00e6kkef\u00f8lge",
+            "title": "Mellem- og efternavne"
+        },
+        "description": {
+            "type": "unicode_text",
+            "title": "Beskrivelse"
+        },
+        "gender": {
+            "enum": [
+                "mand",
+                "kvinde",
+                "ukendt"
+            ],
+            "type": "unicode",
+            "title": "K\u00f8n"
+        },
+        "date_from": {
+            "pattern": "^([0-9]{4})(-([0-9]{2}))?(-([0-9]{2}))?$",
+            "type": "unicode",
+            "title": "F\u00f8dselsdato (\u00e5\u00e5\u00e5\u00e5-mm-dd)"
+        },
+        "date_to": {
+            "pattern": "^([0-9]{4})(-([0-9]{2}))?(-([0-9]{2}))?$",
+            "type": "unicode",
+            "title": "D\u00f8dsdato (\u00e5\u00e5\u00e5\u00e5-mm-dd)"
+        },
+        "ext_data": {
+            "type": "dict",
+            "title": "Udvidet data"
+        },
+        "alt_names": {
+            "array_type": "unicode",
+            "type": "array",
+            "description": "Alternative navne",
+            "title": "Alternative navne"
+        },
+        "birthname": {
+            "type": "unicode",
+            "description": "Det eller de efternavne som vedkommende havde f\u00f8r giftem\u00e5l.",
+            "title": "Pigenavn (f\u00f8dt)"
+        },
+        "sources": {
+            "array_type": "unicode",
+            "type": "array",
+            "description": "URL-links eller enkeltlinje referencer",
+            "title": "Kilder"
+        },
+        "firstnames": {
+            "array_type": "unicode",
+            "type": "array",
+            "description": "Alle fornavne i korrekt r\u00e6kkef\u00f8lge",
+            "title": "Fornavne"
+        },
+        "place_of_birth": {
+            "type": "unicode",
+            "title": "F\u00f8dselssted"
+        },
+        "portrait": {
+            "array_type": "unicode",
+            "type": "array",
+            "title": "Portr\u00e6t"
+        },
+        "display_label": {
+            "type": "unicode",
+            "description": "Den streng, som entiteten repr\u00e6senteres med",
+            "title": "Displaynavn"
+        },
+        "place_of_death": {
+            "type": "unicode",
+            "title": "D\u00f8dssted"
+        },
+        "occupation": {
+            "array_type": "unicode",
+            "type": "array",
+            "title": "Erhverv"
+        },
+        "is_creative_creator": {
+            "type": "boolean",
+            "title": "Er kreativskaber"
+        },
+        "name": {
+            "type": "unicode",
+            "title": "Navn"
+        }
+    }
+}
