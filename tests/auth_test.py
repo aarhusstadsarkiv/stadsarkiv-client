@@ -16,16 +16,6 @@ log.info(f"test_password: {test_password}")
 
 
 class TestAuth(unittest.TestCase):
-    def test_home_get(self):
-        client = TestClient(app)
-        response = client.get("/")
-        self.assertEqual(response.status_code, 200)
-
-    def test_not_found_get(self):
-        client = TestClient(app)
-        response = client.get("/not_found")
-        self.assertEqual(response.status_code, 404)
-
     def test_login_get(self):
         client = TestClient(app)
         response = client.get("/auth/login")
@@ -61,3 +51,25 @@ class TestAuth(unittest.TestCase):
         client = TestClient(app)
         response = client.get("/auth/me", follow_redirects=True)
         self.assertEqual(response.url, "http://testserver/auth/login?next=/auth/me")
+
+    def test_register_get(self):
+        client = TestClient(app)
+        response = client.get("/auth/register")
+        self.assertEqual(response.status_code, 200)
+
+    def test_register_post(self):
+        client = TestClient(app)
+
+        """
+        User exists. At some point we should test with a user that does not exist.
+        Before that is possible we should be allowed to delete a user from the database.
+        """
+
+        data = {"email": correct_login["username"], "password": correct_login["password"], "password_2": correct_login["password"]}
+        response = client.post("/auth/register", data=data, follow_redirects=True)  # type: ignore
+        self.assertEqual(response.url, "http://testserver/auth/register")
+
+    def test_verify_get(self):
+        client = TestClient(app)
+        response = client.get("/auth/verify/fake-token")
+        self.assertEqual(response.url, "http://testserver/")

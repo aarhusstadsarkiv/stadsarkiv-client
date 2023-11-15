@@ -15,6 +15,16 @@ test_password = os.getenv("TEST_PASSWORD", "")
 
 
 class TestAuth(unittest.TestCase):
+    def test_not_found_get(self):
+        client = TestClient(app)
+        response = client.get("/not_found")
+        self.assertEqual(response.status_code, 404)
+
+    def test_home_get(self):
+        client = TestClient(app)
+        response = client.get("/")
+        self.assertEqual(response.status_code, 200)
+
     def test_collections(self):
         client = TestClient(app)
         response = client.get("/collections/1")

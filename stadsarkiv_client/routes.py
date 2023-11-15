@@ -47,8 +47,8 @@ routes = [
     Route("/auth/forgot-password", endpoint=auth.forgot_password_post, name="auth_forgot_password_post", methods=["POST"]),
     Route("/auth/reset-password/{token:str}", endpoint=auth.reset_password_get, name="auth_reset_password_get", methods=["GET"]),
     Route("/auth/reset-password/{token:str}", endpoint=auth.reset_password_post, name="auth_reset_password_post", methods=["POST"]),
-    Route("/auth/me", endpoint=auth.me, name="auth_me_get", methods=["GET"]),
-    Route("/auth/verify/{token:str}", endpoint=auth.verify, name="auth_verify"),  # verify by token sent by email
+    Route("/auth/me", endpoint=auth.me_get, name="auth_me_get", methods=["GET"]),
+    Route("/auth/verify/{token:str}", endpoint=auth.verify_get, name="auth_verify"),  # verify by token sent by email
     Route("/auth/send-verify-email", endpoint=auth.send_verify_email, name="auth_send_verify_email"),  # send verify email again
     Route("/auth/user-info", endpoint=auth.me_post, name="auth_user_info", methods=["POST"]),
     Route("/schemas/{schema_type:str}", endpoint=schemas.get_single, name="schemas_get_single", methods=["GET"]),
