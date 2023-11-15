@@ -5,21 +5,13 @@
 
 <h3>Settings</h3>
 <p>
-    <input id="test" type="text" value="" oninput="oninput()">
+    <form method="post" action="/test" name="test">
+        <input name="input_test" id="test" type="text" value="test">
+        <input name="submit_test" type="submit" value="Submit">
+    </form>
 </p>
-<pre>
-    {{ settings }}
-</pre>
 
 <script>
-    function oninput() {
-        console.log("Hello! I am an alert box!");
-    }
-
-    let test = document.getElementById("test");
-
-    // output all attributes of the element
-    console.log(test.attributes);
 </script>
 
 {% endblock content %}

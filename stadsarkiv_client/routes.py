@@ -48,7 +48,7 @@ routes = [
     Route("/auth/reset-password/{token:str}", endpoint=auth.reset_password_get, name="auth_reset_password_get", methods=["GET"]),
     Route("/auth/reset-password/{token:str}", endpoint=auth.reset_password_post, name="auth_reset_password_post", methods=["POST"]),
     Route("/auth/me", endpoint=auth.me_get, name="auth_me_get", methods=["GET"]),
-    Route("/auth/verify/{token:str}", endpoint=auth.verify_get, name="auth_verify"),  # verify by token sent by email
+    Route("/auth/verify/{token:str}", endpoint=auth.verify_get, name="auth_verify"),  # request token sent by email
     Route("/auth/send-verify-email", endpoint=auth.send_verify_email, name="auth_send_verify_email"),  # send verify email again
     Route("/auth/user-info", endpoint=auth.me_post, name="auth_user_info", methods=["POST"]),
     Route("/schemas/{schema_type:str}", endpoint=schemas.get_single, name="schemas_get_single", methods=["GET"]),
@@ -72,7 +72,8 @@ routes = [
 
 # Add test route
 if settings["environment"] == "development":
-    routes.append(Route("/test", endpoint=testing.test, name="test"))
+    routes.append(Route("/test", endpoint=testing.test, name="test_get", methods=["GET"]))
+    routes.append(Route("/test", endpoint=testing.test_post, name="test_post", methods=["POST"]))
 
 
 # Add routes for custom pages
