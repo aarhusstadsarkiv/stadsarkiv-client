@@ -32,8 +32,9 @@
 
 {% set schema = location.schema %}
 
+{% set options = {'icon': schema, 'icon_label': 'Lokation'} %}
 {% set keys = ["name", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area"] %}
-{{ common_macros.parse_image_block('Stamdata', keys, location, schema) }}
+{{ common_macros.parse_image_block('', keys, location, options) }}
 
 {% set keys = [ "description"] %}
 {{ common_macros.parse_block_common('Beskrivelse', keys, location) }}

@@ -300,7 +300,7 @@
 {% endif %}
 {% endmacro %}
 
-{% macro _parse_portrait_image(data, icon) %}
+{% macro _parse_portrait_image(data, options) %}
 
 {% if data["portrait"] %}
 {% set image = data["portrait"]['value'][0] %}
@@ -310,19 +310,21 @@
         <img src="{{ image }}" alt="{{ translate('Large Image') }}">
     </div>
 </div>
-{% elif icon %}
+{% elif options["icon"] %}
 <div class="record-representation">
-    {{ parse_icon(icon)}}
+    {{ parse_icon(options["icon"], options["icon_label"])}}
 </div>
 {% endif %}
 {% endmacro %}
 
-{% macro parse_image_block(title, block_keys, record_and_types, icon) %}
+{% macro parse_image_block(title, block_keys, record_and_types, options) %}
 {% if key_exist_in_dict(block_keys, record_and_types) %}
 <div class="record-section">
-    {{ _parse_portrait_image(record_and_types, icon) }}
+    {{ _parse_portrait_image(record_and_types, options) }}
     <div class="record-main">
+        {% if title %}
         <h3 class="record-header">{{ title }}</h3>
+        {% endif %}
         {% for key in block_keys %}
         {% if key in record_and_types %}
         {{ parse_block_section(record_and_types[key], record_and_types) }}

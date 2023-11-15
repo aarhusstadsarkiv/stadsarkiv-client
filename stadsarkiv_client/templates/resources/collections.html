@@ -44,6 +44,8 @@
     <a href="/search?collection={{ collection['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
+{# normal images are in 'portrait', but in a collection they are in 'hightlights' #}
+
 {% set keys = ['collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}
 {% set options = {'icon': 'collection', 'icon_label': 'Samling'} %}
 {{ slideshow_macros.parse_slideshow_block_first(keys, collection, 'highlights', options) }}
