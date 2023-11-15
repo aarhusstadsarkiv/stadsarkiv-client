@@ -56,6 +56,9 @@ async def logout_post(request: Request):
     try:
         user.logout(request)
         flash.set_message(request, translate("You have been logged out."), type="success")
+
+    except OpenAwsException as e:
+        flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.error("Logout error", exc_info=True)
         flash.set_message(request, str(e), type="error")
@@ -80,7 +83,6 @@ async def register_post(request: Request):
 
         return RedirectResponse(url="/auth/login", status_code=302)
     except OpenAwsException as e:
-        log.info("Register error", exc_info=True)
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
@@ -89,7 +91,7 @@ async def register_post(request: Request):
     return RedirectResponse(url="/auth/register", status_code=302)
 
 
-async def verify(request: Request):
+async def verify_get(request: Request):
     try:
         await api.auth_verify_post(request)
         flash.set_message(
@@ -100,7 +102,6 @@ async def verify(request: Request):
 
         return RedirectResponse(url="/", status_code=302)
     except OpenAwsException as e:
-        log.info("Verify error", exc_info=True)
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
@@ -110,13 +111,15 @@ async def verify(request: Request):
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))
-async def me(request: Request):
+async def me_get(request: Request):
     try:
         me = await api.users_me_get(request)
         context_values = {"title": translate("Profile"), "me": me}
         context = await get_context(request, context_values=context_values)
 
         return templates.TemplateResponse("auth/me.html", context)
+    except OpenAwsException as e:
+        flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
         flash.set_message(request, str(e), type="error")
@@ -138,7 +141,6 @@ async def forgot_password_post(request: Request):
             type="success",
         )
     except OpenAwsException as e:
-        log.info("Forgot password error", exc_info=True)
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
@@ -165,7 +167,6 @@ async def reset_password_post(request: Request):
         return RedirectResponse(url="/auth/login", status_code=302)
 
     except OpenAwsException as e:
-        log.info("Reset password error", exc_info=True)
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
@@ -185,7 +186,6 @@ async def send_verify_email(request: Request):
         )
 
     except OpenAwsException as e:
-        log.info("Send verify email error", exc_info=True)
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
