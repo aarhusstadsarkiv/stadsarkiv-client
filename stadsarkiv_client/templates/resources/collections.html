@@ -1,6 +1,7 @@
 {% import "macros/common_macros.html" as common_macros %}
+{% import "macros/slideshow_macros.html" as slideshow_macros %}
 
-{% macro parse_node(node) %}
+{% macro _parse_node(node) %}
 {% set label = node.label|trim %}
 {% set series = node.path|urlencode%}
 {% if not label %}
@@ -15,58 +16,15 @@
         <li>
             {% if node.children %}
                 <details>
-                    <summary>{{ parse_node(node) }}</summary>
+                    <summary>{{ _parse_node(node) }}</summary>
                     {{ parse_tree(node.children) }}
                 </details>
             {% else %}
-                {{ parse_node(node) }}
+                {{ _parse_node(node) }}
             {% endif %}
         </li>
     {% endfor %}
     </ul>
-{% endmacro %}
-
-{% macro parse_slideshow(images) %}
-<div class="slideshow-container">
-    {% for image in images %}
-    <div class="slide">
-        <img src="{{ image }}" alt="Slide {{ loop.index }}">
-    </div>
-    {% endfor %}
-
-    <a href="#" class="prev">&#10094;</a>
-    <a href="#" class="next">&#10095;</a>
-
-    <div class="slide-counter">
-        <span class="current-slide"></span> / <span class="total-slides"></span>
-    </div>
-</div>
-<script type="module">
-    import { } from "/static/js/slideshow.js";
-</script>
-{% endmacro %}
-
-{% macro parse_block_first(block_keys, collection) %}
-{% if key_exist_in_dict(block_keys, collection) %}
-<div class="record-section">
-    {% if collection['highlights'] %}
-    <div class="record-representation">
-        {{ parse_slideshow(collection['highlights'])}}
-    </div>
-    {% else %}
-    <div class="record-representation">
-        {{ common_macros.parse_icon('collection', 'Samling') }}
-    </div>
-    {% endif %}
-    <div class="record-main">
-        {% for key in block_keys %}
-        {% if key in collection %}
-        {{ common_macros.parse_block_section(collection[key]) }}
-        {% endif %}
-        {% endfor %}
-    </div>
-</div> 
-{% endif %}
 {% endmacro %}
 
 {% extends "base.html" %}
@@ -87,7 +45,7 @@
 </p>
 
 {% set keys = ['collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}
-{{ parse_block_first(keys, collection) }}
+{{ slideshow_macros.parse_slideshow_block_first(keys, collection, 'highlights') }}
 
 {% set keys = ["summary", "description", "content_and_scope"] %}
 {{ common_macros.parse_block_common('Abstrakt', keys, collection) }}

@@ -332,3 +332,26 @@
 </div> 
 {% endif %}
 {% endmacro %}
+
+{% macro parse_slideshow(images) %}
+<div class="slideshow-container">
+    {% for image in images %}
+    <div class="slide">
+        <img src="{{ image }}" alt="Slide {{ loop.index }}">
+    </div>
+    {% endfor %}
+
+    {# add prev next if more than one image #}
+    {% if images|length > 1 %}
+    <a href="#" class="prev">&#10094;</a>
+    <a href="#" class="next">&#10095;</a>
+    <div class="slide-counter">
+        <span class="current-slide"></span> / <span class="total-slides"></span>
+    </div>
+    {% endif %}
+    
+</div>
+<script type="module">
+    import { } from "/static/js/slideshow.js";
+</script>
+{% endmacro %}

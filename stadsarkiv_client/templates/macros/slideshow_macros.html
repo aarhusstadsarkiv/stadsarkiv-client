@@ -1,36 +1,15 @@
 {% import "macros/common_macros.html" as common_macros %}
 
-{% macro parse_slideshow(images) %}
-<div class="slideshow-container">
-    {% for image in images %}
-    <div class="slide">
-        <img src="{{ image }}" alt="Slide {{ loop.index }}">
-    </div>
-    {% endfor %}
-
-    {# add prev next if more than one image #}
-    {% if images|length > 1 %}
-    <a href="#" class="prev">&#10094;</a>
-    <a href="#" class="next">&#10095;</a>
-    <div class="slide-counter">
-        <span class="current-slide"></span> / <span class="total-slides"></span>
-    </div>
-    {% endif %}
-    
-</div>
-<script type="module">
-    import { } from "/static/js/slideshow.js";
-</script>
-{% endmacro %}
-
 {% macro parse_slideshow_block(title, keys, types_and_values) %}
+
 {# 
-    generate a slideshow from a title, key, and the types_and_values 
+    Used with entities that have a list of images.
+    Generate a slideshow from a title, potential keys, and types_and_values 
     key should always be 'image_list' across all schemas
+    but the value can be different.
 #}
 
 {% for key in keys %}
-
     {% if types_and_values[key] %}
         {% set images = types_and_values[key]['value'] %}
         {% if images %}
@@ -38,11 +17,35 @@
             <div class="record-main">
                 <h3 class="record-header">{{ title }}</h3>
                 <div class="record-representation">
-                    {{ parse_slideshow(images) }}
+                    {{ common_macros.parse_slideshow(images) }}
                 </div>
             </div>
         </div> 
         {% endif %}
     {% endif %}
 {% endfor %}
+{% endmacro %}
+
+{% macro parse_slideshow_block_first(block_keys, collection, images_key) %}
+{% if key_exist_in_dict(block_keys, collection) %}
+<div class="record-section">
+    {% if collection['highlights'] %}
+    <div class="record-representation">
+        {% set images = collection[images_key] %}
+        {{ common_macros.parse_slideshow(images)}}
+    </div>
+    {% else %}
+    <div class="record-representation">
+        {{ common_macros.parse_icon('collection', 'Samling') }}
+    </div>
+    {% endif %}
+    <div class="record-main">
+        {% for key in block_keys %}
+        {% if key in collection %}
+        {{ common_macros.parse_block_section(collection[key]) }}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div> 
+{% endif %}
 {% endmacro %}

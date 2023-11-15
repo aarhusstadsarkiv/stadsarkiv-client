@@ -4,6 +4,14 @@
 
 {% block body_class %}page-resources-locations{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
+<script type="module">
+    import { activateOverlay } from "/static/js/overlay.js";
+    activateOverlay('.record-representation');
+</script>
+{% endblock head %}
+
 {% block content %}
 
 {% include "includes/main_title.html" %}
@@ -12,8 +20,20 @@
     <a href="/search?locations={{ location['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
+{# 
+    schema place: 
+    
+    http://localhost:5555/locations/107862    
+    
+    schema address: 
+    
+    http://localhost:5555/locations/54897
+#} 
+
+{% set schema = location.schema %}
+
 {% set keys = ["name", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area"] %}
-{{ common_macros.parse_block_common('Stamdata', keys, location) }}
+{{ common_macros.parse_image_block('Stamdata', keys, location, schema) }}
 
 {% set keys = [ "description"] %}
 {{ common_macros.parse_block_common('Beskrivelse', keys, location) }}
