@@ -26,7 +26,7 @@
 {% endfor %}
 {% endmacro %}
 
-{% macro parse_slideshow_block_first(block_keys, collection, images_key) %}
+{% macro parse_slideshow_block_first(block_keys, collection, images_key, options) %}
 {% if key_exist_in_dict(block_keys, collection) %}
 <div class="record-section">
     {% if collection['highlights'] %}
@@ -36,7 +36,7 @@
     </div>
     {% else %}
     <div class="record-representation">
-        {{ common_macros.parse_icon('collection', 'Samling') }}
+        {{ common_macros.parse_icon(options.icon, options.icon_label) }}
     </div>
     {% endif %}
     <div class="record-main">

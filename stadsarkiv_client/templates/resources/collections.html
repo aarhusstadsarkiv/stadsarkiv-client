@@ -45,7 +45,8 @@
 </p>
 
 {% set keys = ['collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}
-{{ slideshow_macros.parse_slideshow_block_first(keys, collection, 'highlights') }}
+{% set options = {'icon': 'collection', 'icon_label': 'Samling'} %}
+{{ slideshow_macros.parse_slideshow_block_first(keys, collection, 'highlights', options) }}
 
 {% set keys = ["summary", "description", "content_and_scope"] %}
 {{ common_macros.parse_block_common('Abstrakt', keys, collection) }}
