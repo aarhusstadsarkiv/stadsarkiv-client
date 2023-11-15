@@ -20,8 +20,9 @@
     <a href="/search?people={{ people['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
+{% set options = {'icon': 'person', 'icon_label': 'Person'} %}
 {% set keys = ["firstnames", "lastnames", "gender", "date_of_birth", "place_of_birth", "date_of_death", "place_of_death", "occupation"] %}
-{{ common_macros.parse_image_block('Stamdata', keys, people) }}
+{{ common_macros.parse_image_block('', keys, people, options) }}
 
 {% set keys = ["description"] %}
 {{ common_macros.parse_block_common('Beskrivelse', keys, people) }}

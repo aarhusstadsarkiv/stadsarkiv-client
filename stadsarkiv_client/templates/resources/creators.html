@@ -4,16 +4,37 @@
 
 {% block body_class %}page-resources-creators{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
+<script type="module">
+    import { activateOverlay } from "/static/js/overlay.js";
+    activateOverlay('.record-representation');
+</script>
+{% endblock head %}
+
 {% block content %}
+
+{% set schema = creator.schema %} 
 
 {% include "includes/main_title.html" %}
 
-<p>
-    <a href="/search?creators={{ creator['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
-</p>
-
-{% set keys = ["collectors_link", "creators_link", "firstnames", "lastnames", "gender", "occupation", "date_created", "date_decommissioned", "industry"] %}
-{{ common_macros.parse_block_common('Stamdata', keys, creator) }}
+{% set options = {'icon': schema, 'icon_label': 'Skaber'} %}
+{% set keys = [
+    "collectors_link", 
+    "creators_link", 
+    "firstnames", 
+    "lastnames", 
+    "gender", 
+    "occupation", 
+    "date_created", 
+    "date_decommissioned", 
+    "industry", 
+    "date_of_birth", 
+    "place_of_birth", 
+    "date_of_death", 
+    "place_of_death", 
+    "occupation"] %}
+{{ common_macros.parse_image_block('', keys, creator, options) }}
 
 {% set keys = [ "description"] %}
 {{ common_macros.parse_block_common('Beskrivelse', keys, creator) }}

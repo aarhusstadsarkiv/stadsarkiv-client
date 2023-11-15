@@ -20,8 +20,9 @@
     <a href="/search?organisations={{ organisation['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
+{% set options = {'icon': 'organisation', 'icon_label': 'Organisation'} %}
 {% set keys = ['portrait', 'date_from', 'alt_names', 'industry', 'collectors_link', 'creators_link', 'collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}
-{{ common_macros.parse_image_block("Stamdata", keys, organisation, 'collection') }}
+{{ common_macros.parse_image_block("Stamdata", keys, organisation, options) }}
 
 {% set keys = ["summary", "description", "content_and_scope"] %}
 {{ common_macros.parse_block_common('Abstrakt', keys, organisation) }}
