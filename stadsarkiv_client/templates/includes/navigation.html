@@ -2,7 +2,11 @@
 
 <div class="main-menu">
     {% for menu_item in main_menu %}
+        {% if menu_item.name == 'proxies_search_get' and query_str_display != '' %}
+        <a href="{{ url_for(menu_item.name) }}?{{ query_str_display }}">{{ menu_item.title }}</a>
+        {% else %}
         <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
+        {% endif %}
     {% endfor %}
     
 </div>
