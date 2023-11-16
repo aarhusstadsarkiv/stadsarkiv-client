@@ -30,3 +30,12 @@ def get_search_cookie(request: Request) -> dict:
 
     except Exception:
         return {}
+
+
+def get_query_str_display(request: Request) -> str:
+    """Get query string from search cookie and return it as a string.
+    E.g. 'content_types=96&content_types=97&'"""
+
+    search_cookie = get_search_cookie(request)
+    query_str_display = search_cookie.get("query_str_display", "")
+    return query_str_display
