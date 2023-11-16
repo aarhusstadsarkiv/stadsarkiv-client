@@ -101,18 +101,19 @@ def _get_record_title(record_dict: dict):
 
 def _set_representations(meta_data: dict, record: dict):
     """
-    This indicates if the record has representations, meaning images, audio, video, etc.
+    This indicates if the record has representations, which images, audio, video, pdf
     """
-    meta_data["record_type"] = "unknown"
+
+    meta_data["record_type"] = None
     if "representations" in record:
         meta_data["record_type"] = record["representations"].get("record_type")
         meta_data["representations"] = record["representations"]
 
         # Sometimes there is not a "large_image". Set "record_image" as "large_image" in that case
         if "large_image" not in meta_data["representations"]:
-            meta_data["representations"]["large_image"] = meta_data["representations"]["record_image"]
+            meta_data["representations"]["large_image"] = meta_data["representations"].get("record_image")
 
-        meta_data["portrait"] = record["portrait"]
+        meta_data["portrait"] = record.get("portrait")
 
     meta_data["has_representations"] = False
     if meta_data["legal_id"] == 1 and meta_data["contractual_id"] > 2:
