@@ -30,6 +30,7 @@ def collections_alter(collection: dict):
 
 def organisations_alter(organisation: dict):
     schema = "organisation"
+    organisation = normalize_fields.set_created_decommissioned(organisation)
     organisation = normalize_fields.set_collectors_link_list(organisation, schema)
     organisation = normalize_fields.set_creators_link_list(organisation, schema)
     organisation = normalize_fields.set_sources_normalized(organisation)
