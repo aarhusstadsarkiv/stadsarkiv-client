@@ -11,6 +11,7 @@ from stadsarkiv_client.core import dynamic_settings
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks import get_hooks
+from stadsarkiv_client.core import cookie
 
 
 log = get_log()
@@ -19,12 +20,18 @@ log = get_log()
 async def get_context(request: Request, context_values: dict = {}) -> dict:
     hooks = get_hooks(request)
     logged_in = await api.is_logged_in(request)
+
+    # query_str_display is used to display the last search query
+    # it is already present in the context_values if the client is requesting the search page
+    if "query_str_display" not in context_values:
+        context_values["query_str_display"] = cookie.get_query_str_display(request)
+
     context = {
         "flash_messages": get_messages(request),
         "path": request.url.path,
         "request": request,
         "title": _get_title(request),
-        "main_menu": await _get_main_menu(request),
+        "main_menu": await _get_main_menu(request, context_values["query_str_display"]),
         "logged_in": logged_in,
     }
 
@@ -33,6 +40,7 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
     if "meta_title" not in context:
         context["meta_title"] = context["title"]
 
+    # log.debug(f"query_str_display: {context['query_str_display']}")
     # Add context that applies to a single request to _context
     _context = context_values.copy()
     context["_context"] = _context
@@ -41,7 +49,7 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
     return context
 
 
-async def _get_main_menu(request: Request):
+async def _get_main_menu(request: Request, query_str_display: str = ""):
     logged_in = await api.is_logged_in(request)
     permissions_list = await api.me_permissions(request)
 
