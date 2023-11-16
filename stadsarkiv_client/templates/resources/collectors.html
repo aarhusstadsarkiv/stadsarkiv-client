@@ -16,7 +16,7 @@
 
 {% block content %}
 
-{% set schema = collector.schema %} 
+{% set schema = resource.schema %} 
 
 {% include "includes/main_title.html" %}
 
@@ -24,21 +24,21 @@
 
 {% set options = {'icon': schema, 'icon_label': 'Samler'} %}
 {% set keys = ["portrait", "collectors_link", "creators_link", "date_created", "date_decommissioned", "firstnames", "lastnames", "gender", "place_of_birth", "place_of_death", "occupation", "industry"] %}
-{{ common_macros.parse_image_block('', keys, collector, options) }}
+{{ common_macros.parse_image_block('', keys, resource, options) }}
 
 {% set keys = ["summary", "description", "content_and_scope"] %}
-{{ common_macros.parse_block_common('Abstrakt', keys, collector) }}
+{{ common_macros.parse_block_common('Abstrakt', keys, resource) }}
 
 {% set keys = ["access", "legal_status", "level_of_digitisation", 'citation', 'associated_material'] %}
-{{ common_macros.parse_block_common('Tilgængelighed og brug', keys, collector) }}
+{{ common_macros.parse_block_common('Tilgængelighed og brug', keys, resource) }}
 
 {% set keys = ["custodial_history", "accumulation_range", "level_of_kassation", "accrual_status"] %}
-{{ common_macros.parse_block_common('Afleveringshistorik', keys, collector) }}
+{{ common_macros.parse_block_common('Afleveringshistorik', keys, resource) }}
 
 {% set keys = ["sources_normalized"] %}
-{{ common_macros.parse_block_common('Literatur og kilder', keys, collector) }}
+{{ common_macros.parse_block_common('Literatur og kilder', keys, resource) }}
 
-{% set meta_links = [{"url": "/collectors/" + collector['id_real'] + "/json", "label": "JSON" }] %}
+{% set meta_links = [{"url": "/collectors/" + resource['id_real'] + "/json", "label": "JSON" }] %}
 {{ common_macros.parse_meta_block(meta_links) }}
 
 {% endblock content %}

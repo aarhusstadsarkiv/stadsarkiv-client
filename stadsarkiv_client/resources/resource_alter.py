@@ -10,6 +10,29 @@ from stadsarkiv_client.resources import normalize_fields
 log = get_log()
 
 
+def resource_alter(resource: dict):
+    schema = resource["schema"]
+
+    if schema == "collection":
+        resource = collections_alter(resource)
+    elif schema == "organisation":
+        resource = organisations_alter(resource)
+    elif schema == "collector":
+        resource = collectors_alter(resource)
+    elif schema == "creator":
+        resource = creators_alter(resource)
+    elif schema == "event":
+        resource = events_alter(resource)
+    elif schema == "address" or schema == "place":
+        resource = locations_alter(resource)
+    elif schema == "person":
+        resource = person_alter(resource)
+    else:
+        raise Exception(f"Unknown schema: {schema}")
+
+    return resource
+
+
 def collections_alter(collection: dict):
     collection = normalize_fields.set_sources_normalized(collection)
     collection = normalize_fields.set_outer_years(collection)
@@ -97,7 +120,7 @@ def locations_alter(location: dict):
     return location
 
 
-def people_alter(people: dict):
+def person_alter(people: dict):
     people = normalize_fields.set_sources_normalized(people)
     people = normalize_fields.get_resource_and_types(people)
     return people

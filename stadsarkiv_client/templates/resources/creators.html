@@ -14,7 +14,7 @@
 
 {% block content %}
 
-{% set schema = creator.schema %} 
+{% set schema = resource.schema %} 
 
 {% include "includes/main_title.html" %}
 
@@ -34,15 +34,15 @@
     "date_of_death", 
     "place_of_death", 
     "occupation"] %}
-{{ common_macros.parse_image_block('', keys, creator, options) }}
+{{ common_macros.parse_image_block('', keys, resource, options) }}
 
 {% set keys = [ "description"] %}
-{{ common_macros.parse_block_common('Beskrivelse', keys, creator) }}
+{{ common_macros.parse_block_common('Beskrivelse', keys, resource) }}
 
 {% set keys = ["sources_normalized"] %}
-{{ common_macros.parse_block_common('Kilder', keys, creator) }}
+{{ common_macros.parse_block_common('Kilder', keys, resource) }}
 
-{% set meta_links = [{"url": "/creators/" + creator['id_real'] + "/json", "label": "JSON" }] %}
+{% set meta_links = [{"url": "/creators/" + resource['id_real'] + "/json", "label": "JSON" }] %}
 {{ common_macros.parse_meta_block(meta_links) }}
 
 {% endblock content %}

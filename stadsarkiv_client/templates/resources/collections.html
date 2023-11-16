@@ -7,7 +7,7 @@
 {% if not label %}
 {% set label = "Ingen titel" %}
 {% endif %}
-<a href="/search?collection={{ collection['id_real'] }}&series={{ series }}">{{ label }}</a>
+<a href="/search?collection={{ resource['id_real'] }}&series={{ series }}">{{ label }}</a>
 {% endmacro %}
 
 {% macro parse_tree(nodes) %}
@@ -41,53 +41,53 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?collection={{ collection['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
+    <a href="/search?collection={{ resource['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
 {# normal images are in 'portrait', but in a collection they are in 'hightlights' #}
 {% set keys = ['collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}
 {% set options = {'icon': 'collection', 'icon_label': 'Samling'} %}
-{{ slideshow_macros.parse_slideshow_block_first(keys, collection, 'highlights', options) }}
+{{ slideshow_macros.parse_slideshow_block_first(keys, resource, 'highlights', options) }}
 
 {% set keys = ["summary", "description", "content_and_scope"] %}
-{{ common_macros.parse_block_common('Abstrakt', keys, collection) }}
+{{ common_macros.parse_block_common('Abstrakt', keys, resource) }}
 
 {% set keys = ["access", "legal_status", "level_of_digitisation", 'citation', 'associated_material'] %}
-{{ common_macros.parse_block_common('Tilgængelighed og brug', keys, collection) }}
+{{ common_macros.parse_block_common('Tilgængelighed og brug', keys, resource) }}
 
 {% set keys = ["custodial_history", "accumulation_range", "level_of_kassation", "accrual_status"] %}
-{{ common_macros.parse_block_common('Afleveringshistorik', keys, collection) }}
+{{ common_macros.parse_block_common('Afleveringshistorik', keys, resource) }}
 
 {% set keys = ["sources_normalized"] %}
-{{ common_macros.parse_block_common('Literatur og kilder', keys, collection) }}
+{{ common_macros.parse_block_common('Literatur og kilder', keys, resource) }}
 
 {% set keys = ["series"] %}
-{% if key_exist_in_dict(keys, collection) %}
+{% if key_exist_in_dict(keys, resource) %}
 <div class="record-section">
     <div class="record-main">
     <h3 class="record-header">Arkivserier</h3>
     <p>
         Browse i samlingens serier. Klik på en given serie for at se, hvilke materialer, der er placeret her
     </p>
-    {{ parse_tree (collection['series']) }}
+    {{ parse_tree (resource['series']) }}
     </div>
 </div>
 {% endif %}
 
 {% set keys = ["collection_tags"] %}
-{% if key_exist_in_dict(keys, collection) %}
+{% if key_exist_in_dict(keys, resource) %}
 <div class="record-section">
     <div class="record-main">
     <h3 class="record-header">Samlingstags</h3>
     <p>
         Browse i samlingens tags. Klik på et tag for at se, hvilke materialer, der er opmærket med dette.
     </p>
-    {{ parse_tree (collection['collection_tags']) }}
+    {{ parse_tree (resource['collection_tags']) }}
     </div>
 </div>
 {% endif %}
 
-{% set meta_links = [{"url": "/collections/" + collection['id_real'] + "/json", "label": "JSON" }] %}
+{% set meta_links = [{"url": "/collections/" + resource['id_real'] + "/json", "label": "JSON" }] %}
 {{ common_macros.parse_meta_block(meta_links) }}
 
 {% endblock content %}

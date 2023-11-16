@@ -18,7 +18,7 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?locations={{ location['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
+    <a href="/search?locations={{ resource['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
 {# 
@@ -31,19 +31,19 @@
     http://localhost:5555/locations/54897
 #} 
 
-{% set schema = location.schema %}
+{% set schema = resource.schema %}
 
 {% set options = {'icon': schema, 'icon_label': 'Lokation'} %}
 {% set keys = ["name", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area"] %}
-{{ common_macros.parse_image_block('', keys, location, options) }}
+{{ common_macros.parse_image_block('', keys, resource, options) }}
 
 {% set keys = [ "description"] %}
-{{ common_macros.parse_block_common('Beskrivelse', keys, location) }}
+{{ common_macros.parse_block_common('Beskrivelse', keys, resource) }}
 
 {% set keys = ["sources_normalized"] %}
-{{ common_macros.parse_block_common('Kilder', keys, location) }}
+{{ common_macros.parse_block_common('Kilder', keys, resource) }}
 
-{% set meta_links = [{"url": "/locations/" + location['id_real'] + "/json", "label": "JSON" }] %}
+{% set meta_links = [{"url": "/locations/" + resource['id_real'] + "/json", "label": "JSON" }] %}
 {{ common_macros.parse_meta_block(meta_links) }}
 
 {% endblock content %}

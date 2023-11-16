@@ -30,6 +30,7 @@ async def _get_resource(request: Request):
     hooks = get_hooks(request)
     id = request.path_params["id"]
     resource_type = request.path_params["resource_type"]
+
     resource = await api.proxies_get_resource(request, resource_type, id=id)
     resource = await hooks.after_get_resource(resource_type, resource)
 
@@ -43,11 +44,11 @@ async def _get_resource(request: Request):
 async def _get_collections_view(request: Request):
     resource = await _get_resource(request)
     title = resource["display_label"]
-    resource = resource_alter.collections_alter(resource)
+    resource = resource_alter.resource_alter(resource)
 
     context_variables = {
         "title": title,
-        "collection": resource,
+        "resource": resource,
     }
 
     context = await get_context(request, context_variables)
@@ -57,11 +58,11 @@ async def _get_collections_view(request: Request):
 async def _get_people_view(request: Request):
     resource = await _get_resource(request)
     title = resource["display_label"]
-    people = resource_alter.people_alter(resource)
+    resource = resource_alter.resource_alter(resource)
 
     context_variables = {
         "title": title,
-        "people": people,
+        "resource": resource,
     }
 
     context = await get_context(request, context_variables)
@@ -71,11 +72,11 @@ async def _get_people_view(request: Request):
 async def _get_locations_view(request: Request):
     resource = await _get_resource(request)
     title = resource["display_label"]
-    location = resource_alter.locations_alter(resource)
+    resource = resource_alter.resource_alter(resource)
 
     context_variables = {
         "title": title,
-        "location": location,
+        "resource": resource,
     }
 
     context = await get_context(request, context_variables)
@@ -85,11 +86,11 @@ async def _get_locations_view(request: Request):
 async def _get_events_view(request: Request):
     resource = await _get_resource(request)
     title = resource["display_label"]
-    event = resource_alter.events_alter(resource)
+    resource = resource_alter.resource_alter(resource)
 
     context_variables = {
         "title": title,
-        "event": event,
+        "resource": resource,
     }
 
     context = await get_context(request, context_variables)
@@ -99,11 +100,11 @@ async def _get_events_view(request: Request):
 async def _get_creators_view(request: Request):
     resource = await _get_resource(request)
     title = resource["display_label"]
-    creator = resource_alter.creators_alter(resource)
+    resource = resource_alter.resource_alter(resource)
 
     context_variables = {
         "title": title,
-        "creator": creator,
+        "resource": resource,
     }
 
     context = await get_context(request, context_variables)
@@ -113,11 +114,11 @@ async def _get_creators_view(request: Request):
 async def _get_organisations_view(request: Request):
     resource = await _get_resource(request)
     title = resource["display_label"]
-    organisation = resource_alter.organisations_alter(resource)
+    resource = resource_alter.resource_alter(resource)
 
     context_variables = {
         "title": title,
-        "organisation": organisation,
+        "resource": resource,
     }
 
     context = await get_context(request, context_variables)
@@ -127,11 +128,11 @@ async def _get_organisations_view(request: Request):
 async def _get_collectors_view(request: Request):
     resource = await _get_resource(request)
     title = resource["display_label"]
-    collector = resource_alter.collectors_alter(resource)
+    resource = resource_alter.resource_alter(resource)
 
     context_variables = {
         "title": title,
-        "collector": collector,
+        "resource": resource,
     }
 
     context = await get_context(request, context_variables)
@@ -167,7 +168,10 @@ async def get(request: Request):
 
 async def get_json(request: Request):
     id = request.path_params["id"]
-    resource_type = request.path_params["resource_type"]
-    collection = await api.proxies_get_resource(request, resource_type, id)
-    collection_json = json.dumps(collection, indent=4, ensure_ascii=False)
-    return PlainTextResponse(collection_json)
+    type = request.path_params["type"]
+
+    if type == "api":
+        resource_type = request.path_params["resource_type"]
+        collection = await api.proxies_get_resource(request, resource_type, id)
+        collection_json = json.dumps(collection, indent=4, ensure_ascii=False)
+        return PlainTextResponse(collection_json)

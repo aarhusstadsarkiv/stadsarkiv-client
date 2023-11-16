@@ -67,7 +67,7 @@ routes = [
     Route("/records/{record_id:str}", endpoint=proxies_records.get, name="proxies_records_get"),
     Route("/records/{record_id:str}/json/{type:str}", endpoint=proxies_records.get_json, name="proxies_records_get_json"),
     Route("/{resource_type:str}/{id:str}", endpoint=proxies_resources.get, name="proxies_resources_get"),
-    Route("/{resource_type:str}/{id:str}/json", endpoint=proxies_resources.get_json, name="proxies_resources_get_json"),
+    Route("/{resource_type:str}/{id:str}/json/{type:str}", endpoint=proxies_resources.get_json, name="proxies_resources_get_json"),
 ]
 
 # Add test route
