@@ -26,7 +26,10 @@
 
 {{ common_macros.parse_relations('people', resource) }}
 
-{% set meta_links = [{"url": "/events/" + resource['id_real'] + "/json", "label": "JSON" }] %}
+{% set meta_links = [
+    {"url": "/events/" + resource['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
+    {"url": "/events/" + resource['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
+] %}
 {{ common_macros.parse_meta_block(meta_links) }}
 
 {% endblock content %}

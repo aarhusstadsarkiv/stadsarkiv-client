@@ -38,7 +38,10 @@
 {% set keys = ["sources_normalized"] %}
 {{ common_macros.parse_block_common('Literatur og kilder', keys, resource) }}
 
-{% set meta_links = [{"url": "/collectors/" + resource['id_real'] + "/json", "label": "JSON" }] %}
+{% set meta_links = [
+    {"url": "/collectors/" + resource['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
+    {"url": "/collectors/" + resource['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
+] %}
 {{ common_macros.parse_meta_block(meta_links) }}
 
 {% endblock content %}

@@ -93,3 +93,12 @@ async def get_json(request: Request):
         collection = await api.proxies_get_resource(request, resource_type, id)
         collection_json = json.dumps(collection, indent=4, ensure_ascii=False)
         return PlainTextResponse(collection_json)
+
+    elif type == "resource_and_types":
+        resource_type = request.path_params["resource_type"]
+        collection = await api.proxies_get_resource(request, resource_type, id)
+        collection_json = json.dumps(collection, indent=4, ensure_ascii=False)
+        return PlainTextResponse(collection_json)
+
+    else:
+        return HTTPException(status_code=404, detail="Type not found")
