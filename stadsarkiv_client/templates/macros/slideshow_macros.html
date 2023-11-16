@@ -26,12 +26,12 @@
 {% endfor %}
 {% endmacro %}
 
-{% macro parse_slideshow_block_first(block_keys, collection, images_key, options) %}
-{% if key_exist_in_dict(block_keys, collection) %}
+{% macro parse_slideshow_block_first(block_keys, resource, images_key, options) %}
+{% if key_exist_in_dict(block_keys, resource) %}
 <div class="record-section">
-    {% if collection['highlights'] %}
+    {% if resource[images_key] %}
     <div class="record-representation">
-        {% set images = collection[images_key] %}
+        {% set images = resource[images_key] %}
         {{ common_macros.parse_slideshow(images)}}
     </div>
     {% else %}
@@ -41,8 +41,8 @@
     {% endif %}
     <div class="record-main">
         {% for key in block_keys %}
-        {% if key in collection %}
-        {{ common_macros.parse_block_section(collection[key]) }}
+        {% if key in resource %}
+        {{ common_macros.parse_block_section(resource[key]) }}
         {% endif %}
         {% endfor %}
     </div>

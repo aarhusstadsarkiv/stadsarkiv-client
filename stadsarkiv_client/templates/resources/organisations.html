@@ -1,4 +1,5 @@
 {% import "macros/common_macros.html" as common_macros %}
+{% import "macros/slideshow_macros.html" as slideshow_macros %}
 
 {% extends "base.html" %}
 
@@ -17,12 +18,14 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?organisations={{ organisation['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
+    <a href="/search?organisations={{ organisation['id_real'] }}">{{ translate('Show all results in the collection')
+        }}</a>
 </p>
 
 {% set options = {'icon': 'organisation', 'icon_label': 'Organisation'} %}
-{% set keys = ['portrait', 'date_from', 'alt_names', 'industry', 'collectors_link', 'creators_link', 'collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}
-{{ common_macros.parse_image_block("Stamdata", keys, organisation, options) }}
+{% set keys = ['portrait', 'alt_names', 'date_created','date_decommissioned', 'industry', 'collectors_link',
+'creators_link', 'collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}
+{{ common_macros.parse_image_block("", keys, organisation, options) }}
 
 {% set keys = ["summary", "description", "content_and_scope"] %}
 {{ common_macros.parse_block_common('Abstrakt', keys, organisation) }}
