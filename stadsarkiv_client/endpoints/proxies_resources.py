@@ -46,10 +46,7 @@ async def _get_resource_context(request):
     title = resource["display_label"]
     resource = resource_alter.resource_alter(resource)
 
-    context_variables = {
-        "title": title,
-        "resource": resource,
-    }
+    context_variables = {"title": title, "resource": resource, "meta": resource["meta"]}
 
     context = await get_context(request, context_variables)
     return context

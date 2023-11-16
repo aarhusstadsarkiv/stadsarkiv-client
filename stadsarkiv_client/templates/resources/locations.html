@@ -18,7 +18,7 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?locations={{ resource['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
+    <a href="/search?locations={{ meta['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
 {# 
@@ -31,7 +31,7 @@
     http://localhost:5555/locations/54897
 #} 
 
-{% set schema = resource.schema %}
+{% set schema = meta.schema %}
 
 {% set options = {'icon': schema, 'icon_label': 'Lokation'} %}
 {% set keys = ["name", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area"] %}
@@ -44,8 +44,8 @@
 {{ common_macros.parse_block_common('Kilder', keys, resource) }}
 
 {% set meta_links = [
-    {"url": "/locations/" + resource['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
-    {"url": "/locations/" + resource['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
+    {"url": "/locations/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
+    {"url": "/locations/" + meta['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
 ] %}
 {{ common_macros.parse_meta_block(meta_links) }}
 

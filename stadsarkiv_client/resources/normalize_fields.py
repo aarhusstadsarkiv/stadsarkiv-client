@@ -129,7 +129,8 @@ def get_resource_and_types(resource):
     """
     Get resource with types
     """
-    record_altered = {}
+    resource_altered = {}
+    resource_altered["meta"] = {}
     for key, value in resource.items():
         resource_item = {}
         resource_item["value"] = value
@@ -138,12 +139,13 @@ def get_resource_and_types(resource):
         try:
             definition = resource_definitions[key]
             resource_item["type"] = definition["type"]
-            record_altered[key] = resource_item
+            resource_altered[key] = resource_item
         except KeyError:
-            # Don't alter if not defined
-            record_altered[key] = value
+            if key in ["id_real", "schema"]:
+                # Don't alter if not defined
+                resource_altered["meta"][key] = value
 
-    return record_altered
+    return resource_altered
 
 
 def _get_sources_normalized(sources: list):

@@ -43,8 +43,8 @@
 {{ common_macros.parse_block_common('Kilder', keys, resource) }}
 
 {% set meta_links = [
-    {"url": "/creators/" + resource['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
-    {"url": "/creators/" + resource['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
+    {"url": "/creators/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
+    {"url": "/creators/" + meta['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
 ] %}
 {{ common_macros.parse_meta_block(meta_links) }}
 

@@ -7,7 +7,7 @@
 {% if not label %}
 {% set label = "Ingen titel" %}
 {% endif %}
-<a href="/search?collection={{ resource['id_real'] }}&series={{ series }}">{{ label }}</a>
+<a href="/search?collection={{ meta['id_real'] }}&series={{ series }}">{{ label }}</a>
 {% endmacro %}
 
 {% macro parse_tree(nodes) %}
@@ -41,7 +41,7 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?collection={{ resource['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
+    <a href="/search?collection={{ meta['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
 {# normal images are in 'portrait', but in a collection they are in 'hightlights' #}
@@ -88,8 +88,8 @@
 {% endif %}
 
 {% set meta_links = [
-    {"url": "/collections/" + resource['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
-    {"url": "/collections/" + resource['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
+    {"url": "/collections/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
+    {"url": "/collections/" + meta['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
 ] %}
 {{ common_macros.parse_meta_block(meta_links) }}
 

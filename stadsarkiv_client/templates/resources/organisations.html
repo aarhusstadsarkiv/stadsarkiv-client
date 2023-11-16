@@ -18,7 +18,7 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?organisations={{ resource['id_real'] }}">{{ translate('Show all results in the collection')
+    <a href="/search?organisations={{ meta['id_real'] }}">{{ translate('Show all results in the collection')
         }}</a>
 </p>
 
@@ -40,8 +40,8 @@
 {{ common_macros.parse_block_common('Literatur og kilder', keys, resource) }}
 
 {% set meta_links = [
-    {"url": "/organisations/" + resource['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
-    {"url": "/organisations/" + resource['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
+    {"url": "/organisations/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
+    {"url": "/organisations/" + meta['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
 ] %}
 {{ common_macros.parse_meta_block(meta_links) }}
 
