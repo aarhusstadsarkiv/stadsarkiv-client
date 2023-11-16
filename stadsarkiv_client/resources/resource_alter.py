@@ -11,6 +11,9 @@ log = get_log()
 
 
 def resource_alter(resource: dict):
+    """
+    Get altered resource based on resource.schema
+    """
     schema = resource["schema"]
 
     if schema == "collection":

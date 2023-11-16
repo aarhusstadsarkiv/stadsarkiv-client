@@ -41,7 +41,7 @@ async def _get_resource(request: Request):
     return resource
 
 
-async def _get_collections_view(request: Request):
+async def _get_resource_context(request):
     resource = await _get_resource(request)
     title = resource["display_label"]
     resource = resource_alter.resource_alter(resource)
@@ -52,116 +52,34 @@ async def _get_collections_view(request: Request):
     }
 
     context = await get_context(request, context_variables)
-    return templates.TemplateResponse("resources/collections.html", context)
-
-
-async def _get_people_view(request: Request):
-    resource = await _get_resource(request)
-    title = resource["display_label"]
-    resource = resource_alter.resource_alter(resource)
-
-    context_variables = {
-        "title": title,
-        "resource": resource,
-    }
-
-    context = await get_context(request, context_variables)
-    return templates.TemplateResponse("resources/people.html", context)
-
-
-async def _get_locations_view(request: Request):
-    resource = await _get_resource(request)
-    title = resource["display_label"]
-    resource = resource_alter.resource_alter(resource)
-
-    context_variables = {
-        "title": title,
-        "resource": resource,
-    }
-
-    context = await get_context(request, context_variables)
-    return templates.TemplateResponse("resources/locations.html", context)
-
-
-async def _get_events_view(request: Request):
-    resource = await _get_resource(request)
-    title = resource["display_label"]
-    resource = resource_alter.resource_alter(resource)
-
-    context_variables = {
-        "title": title,
-        "resource": resource,
-    }
-
-    context = await get_context(request, context_variables)
-    return templates.TemplateResponse("resources/events.html", context)
-
-
-async def _get_creators_view(request: Request):
-    resource = await _get_resource(request)
-    title = resource["display_label"]
-    resource = resource_alter.resource_alter(resource)
-
-    context_variables = {
-        "title": title,
-        "resource": resource,
-    }
-
-    context = await get_context(request, context_variables)
-    return templates.TemplateResponse("resources/creators.html", context)
-
-
-async def _get_organisations_view(request: Request):
-    resource = await _get_resource(request)
-    title = resource["display_label"]
-    resource = resource_alter.resource_alter(resource)
-
-    context_variables = {
-        "title": title,
-        "resource": resource,
-    }
-
-    context = await get_context(request, context_variables)
-    return templates.TemplateResponse("resources/organisations.html", context)
-
-
-async def _get_collectors_view(request: Request):
-    resource = await _get_resource(request)
-    title = resource["display_label"]
-    resource = resource_alter.resource_alter(resource)
-
-    context_variables = {
-        "title": title,
-        "resource": resource,
-    }
-
-    context = await get_context(request, context_variables)
-    return templates.TemplateResponse("resources/collectors.html", context)
+    return context
 
 
 async def get(request: Request):
     resource_type = request.path_params["resource_type"]
 
+    context = await _get_resource_context(request)
+
     if resource_type == "collections":
-        return await _get_collections_view(request)
+        return templates.TemplateResponse("resources/collections.html", context)
 
     elif resource_type == "people":
-        return await _get_people_view(request)
+        return templates.TemplateResponse("resources/people.html", context)
 
     elif resource_type == "locations":
-        return await _get_locations_view(request)
+        return templates.TemplateResponse("resources/locations.html", context)
 
     elif resource_type == "creators":
-        return await _get_creators_view(request)
+        return templates.TemplateResponse("resources/creators.html", context)
 
     elif resource_type == "events":
-        return await _get_events_view(request)
+        return templates.TemplateResponse("resources/events.html", context)
 
     elif resource_type == "organisations":
-        return await _get_organisations_view(request)
+        return templates.TemplateResponse("resources/organisations.html", context)
 
     elif resource_type == "collectors":
-        return await _get_collectors_view(request)
+        return templates.TemplateResponse("resources/collectors.html", context)
 
     raise HTTPException(status_code=404, detail="Resource type not found")
 
