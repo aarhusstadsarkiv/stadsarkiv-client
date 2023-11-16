@@ -10,7 +10,7 @@ from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core import api
-from stadsarkiv_client.core.cookie import get_search_cookie
+from stadsarkiv_client.core import cookie
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 import asyncio
@@ -22,7 +22,7 @@ log = get_log()
 
 def _get_altered_cookie(request: Request):
     try:
-        search_cookie = get_search_cookie(request)
+        search_cookie = cookie.get_search_cookie(request)
 
         # change query size to 1 in order to just get single record
         query_params = search_cookie["query_params"]
