@@ -60,7 +60,12 @@ class TestAuth(unittest.TestCase):
         response = client.get("/collectors/100701")
         self.assertEqual(response.status_code, 200)
 
-    def test_records(self):
+    def test_record(self):
         client = TestClient(app)
         response = client.get("/records/000316141")
+        self.assertEqual(response.status_code, 200)
+
+    def test_record_audio(self):
+        client = TestClient(app)
+        response = client.get("/records/000466994")
         self.assertEqual(response.status_code, 200)
