@@ -31,7 +31,7 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
         "path": request.url.path,
         "request": request,
         "title": _get_title(request),
-        "main_menu": await _get_main_menu(request, context_values["query_str_display"]),
+        "main_menu": await _get_main_menu(request),
         "logged_in": logged_in,
     }
 
@@ -40,7 +40,6 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
     if "meta_title" not in context:
         context["meta_title"] = context["title"]
 
-    # log.debug(f"query_str_display: {context['query_str_display']}")
     # Add context that applies to a single request to _context
     _context = context_values.copy()
     context["_context"] = _context
@@ -49,7 +48,7 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
     return context
 
 
-async def _get_main_menu(request: Request, query_str_display: str = ""):
+async def _get_main_menu(request: Request):
     logged_in = await api.is_logged_in(request)
     permissions_list = await api.me_permissions(request)
 
