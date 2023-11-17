@@ -1,3 +1,12 @@
+# Rettelser: 
+
+Sejrs samling har en masse 'records' som har Emnekategori > Natur > Åer og bække
+Måske er der en mening med det, men jeg forstår den ikke. 
+
+http://localhost:5555/search?subjects=12&
+
+
+
 # Template-struktur
 
   - index
