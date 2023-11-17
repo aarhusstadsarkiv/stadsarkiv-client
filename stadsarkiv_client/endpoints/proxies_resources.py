@@ -45,9 +45,9 @@ async def _get_resource_context(request):
     resource = await _get_resource(request)
     title = resource["display_label"]
     resource = resource_alter.resource_alter(resource)
+    resource["meta"]["title"] = title
 
     context_variables = {"title": title, "resource": resource, "meta": resource["meta"]}
-
     context = await get_context(request, context_variables)
     return context
 
@@ -83,19 +83,16 @@ async def get(request: Request):
 
 async def get_json(request: Request):
     id = request.path_params["id"]
-    type = request.path_params["type"]
+    json_type = request.path_params["type"]
+    resource_type = request.path_params["resource_type"]
 
-    if type == "api":
-        resource_type = request.path_params["resource_type"]
-        resource = await api.proxies_get_resource(request, resource_type, id)
-        resource_json = json.dumps(resource, indent=4, ensure_ascii=False)
+    if json_type == "api":
+        resource_api = await api.proxies_get_resource(request, resource_type, id)
+        resource_json = json.dumps(resource_api, indent=4, ensure_ascii=False)
         return PlainTextResponse(resource_json)
-
-    elif type == "resource_and_types":
-        resource_type = request.path_params["resource_type"]
-        resource = await api.proxies_get_resource(request, resource_type, id)
-        resource = resource_alter.resource_alter(resource)
-        resource_json = json.dumps(resource, indent=4, ensure_ascii=False)
+    elif json_type == "resource_and_types":
+        context = await _get_resource_context(request)
+        resource_json = json.dumps(context["resource"], indent=4, ensure_ascii=False)
         return PlainTextResponse(resource_json)
 
     else:

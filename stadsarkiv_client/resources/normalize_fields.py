@@ -141,8 +141,8 @@ def get_resource_and_types(resource):
             resource_item["type"] = definition["type"]
             resource_altered[key] = resource_item
         except KeyError:
+            # create meta dict
             if key in ["id_real", "schema"]:
-                # Don't alter if not defined
                 resource_altered["meta"][key] = value
 
     return resource_altered

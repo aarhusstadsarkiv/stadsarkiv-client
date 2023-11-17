@@ -15,6 +15,8 @@
 
 {% block content %}
 
+{% set schema = meta.schema %} 
+
 {% include "includes/main_title.html" %}
 
 <p>
@@ -22,7 +24,7 @@
         }}</a>
 </p>
 
-{% set options = {'icon': 'organisation', 'icon_label': 'Organisation'} %}
+{% set options = {'icon': schema, 'icon_label': 'Organisation'} %}
 {% set keys = ['portrait', 'alt_names', 'date_created','date_decommissioned', 'industry', 'collectors_link',
 'creators_link', 'collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}
 {{ common_macros.parse_image_block("", keys, resource, options) }}

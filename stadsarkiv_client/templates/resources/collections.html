@@ -38,6 +38,8 @@
 
 {% block content %}
 
+{% set schema = meta.schema %} 
+
 {% include "includes/main_title.html" %}
 
 <p>
@@ -46,7 +48,7 @@
 
 {# normal images are in 'portrait', but in a collection they are in 'hightlights' #}
 {% set keys = ['collectors', 'curators', 'outer_years', 'bulk_years', 'extent'] %}
-{% set options = {'icon': 'collection', 'icon_label': 'Samling'} %}
+{% set options = {'icon': schema, 'icon_label': 'Samling'} %}
 {{ slideshow_macros.parse_slideshow_block_first(keys, resource, 'highlights', options) }}
 
 {% set keys = ["summary", "description", "content_and_scope"] %}
