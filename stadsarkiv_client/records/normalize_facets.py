@@ -164,6 +164,9 @@ class NormalizeFacets:
             facet_checked["entity_url"] = self._get_enitity_url(query_name, query_value)
             facets_checked.append(facet_checked)
 
+        # remove duplicates
+        facets_checked = [dict(t) for t in {tuple(d.items()) for d in facets_checked}]
+
         # Sort the search filters based on the query_params order
         query_order = {(name, value): index for index, (name, value) in enumerate(self.query_params)}
 
