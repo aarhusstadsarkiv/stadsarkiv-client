@@ -410,7 +410,9 @@
 
     const autoCompleteElement = document.querySelector('#q');
     const suggestionsElem = document.querySelector('.search-suggestions');
-    const autoComplete = new AutoComplete(autoCompleteElement, suggestionsElem, renderfunction)
+    window.addEventListener("pageshow", function(event) {
+        const autoComplete = new AutoComplete(autoCompleteElement, suggestionsElem, renderfunction)
+    });
 </script>
 
 {% endblock content %}
