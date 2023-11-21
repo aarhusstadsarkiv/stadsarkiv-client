@@ -168,6 +168,32 @@ details>summary.inactive {
 }
 
 /**
+ * Search suggestions
+ */
+
+.search-suggestions {
+    position: absolute;
+    background-color: whitesmoke;
+    overflow-y: auto;
+    display: none;
+    flex-direction: column;
+    padding: 5px;
+    width: 300px;
+}
+
+
+.search-suggestion-item,
+.search-suggestion-info {
+    flex: 2;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.search-suggestion-focused {
+    background-color: white;
+}
+
+/**
  * Override of the general record.css
  */
 .record-content {
