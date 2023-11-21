@@ -8,6 +8,8 @@ class AutoComplete {
         this.element.addEventListener('keydown', this.onKeyDown.bind(this));
         this.lastInputValue = '';
         window.addEventListener('resize', this.resize.bind(this));
+        this.resize();
+
     }
 
     resize() {
@@ -33,15 +35,21 @@ class AutoComplete {
         this.lastInputValue = inputValue;
 
         this.debounceTimer = setTimeout(() => {
-            // this.suggestionsElem.style.display = 'none';
-            // this.suggestionsElem.innerHTML = '';
             fetch(`/static/json/auto-suggest.json?q=${inputValue}`)
                 .then(response => response.json())
                 .then( data => {
+
+                    // Just ontil we get some real data
+                    // We need to randomize the data and remove some items
+                    // to simulate a real search
+
+                    // Sort the data randomly
                     data.sort(() => Math.random() - 0.5);
                     
                     // Remove between 1 and 10 items (random)
                     const random = Math.floor(Math.random() * 10) + 1;
+                    
+                    // Remove the random items
                     data.splice(0, random);
                     
                     this.updateSuggestions(data)
@@ -77,7 +85,6 @@ class AutoComplete {
             }
 
         } else {
-            // this.suggestionsElem.innerHTML = ''
             return;
         }
 
