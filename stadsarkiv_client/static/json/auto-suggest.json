@@ -1,0 +1,72 @@
+[
+    {
+        "display": "Aarhus",
+        "domain": "locations",
+        "id": "109990",
+        "is_alt": false,
+        "sub_display": "Sted"
+    },
+    {
+        "display": "Aarhus \u00c5",
+        "domain": "locations",
+        "id": "107870",
+        "is_alt": false,
+        "sub_display": "Sted"
+    },
+    {
+        "display": "Aarhus K",
+        "domain": "locations",
+        "id": "155916",
+        "is_alt": false,
+        "sub_display": "Sted"
+    },
+    {
+        "display": "Aarhus \u00d8",
+        "domain": "locations",
+        "id": "121081",
+        "is_alt": false,
+        "sub_display": "Sted"
+    },
+    {
+        "display": "Aarhus Mark",
+        "domain": "locations",
+        "id": "109073",
+        "is_alt": false,
+        "sub_display": "Sted"
+    },
+    {
+        "display": "Aarhus Havn",
+        "domain": "locations",
+        "id": "918",
+        "is_alt": false,
+        "sub_display": "Sted"
+    },
+    {
+        "display": "Aarhus Bugt",
+        "domain": "locations",
+        "id": "108166",
+        "is_alt": false,
+        "sub_display": "Sted"
+    },
+    {
+        "display": "Aarhus M\u00f8lle",
+        "domain": "locations",
+        "id": "113562",
+        "is_alt": false,
+        "sub_display": "Sted"
+    },
+    {
+        "display": "\u00c5rhus R\u00e5dhus",
+        "domain": "organisations",
+        "id": "108325",
+        "is_alt": true,
+        "sub_display": "Aarhus R\u00e5dhus"
+    },
+    {
+        "display": "Aarhus Vand ",
+        "domain": "organisations",
+        "id": "110158",
+        "is_alt": true,
+        "sub_display": "Aarhus Vandv\u00e6rk"
+    }
+]
