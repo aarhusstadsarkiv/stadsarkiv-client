@@ -390,7 +390,7 @@
     searchEvents();
 
     // Render function for autocomplete
-    const renderfunction = (data) => {
+    const renderFunction = (data) => {
 
         // If no results, return info
         if (data.length == 0) return `<div class="search-suggestion-info">Ingen forslag. Tryk på søgeknappen for at fritekstsøge i stedet.</div>`;
@@ -400,7 +400,7 @@
         const suggestions = data.map(item => `
             <div class="search-suggestion-item" data-url="/search?{{ query_str_display }}${item.domain}=${item.id}">
                 <div>
-                    <a href="/${item.domain}/${item.id}">${item.display}</a>
+                    <a href="/search?{{ query_str_display }}${item.domain}=${item.id}">${item.display}</a>
                 </div>
                 <div>${item.sub_display}</div>
             </div>`).join('');
@@ -408,10 +408,20 @@
         return `${suggestionHelp} ${suggestions}`;
     };
 
-    const autoCompleteElement = document.querySelector('#q');
+    const autocompleteElem = document.querySelector('#q');
     const suggestionsElem = document.querySelector('.search-suggestions');
+
+    const options = {
+        'autocompleteElem': autocompleteElem,
+        'suggestionsElem': suggestionsElem,
+        'renderFunction': renderFunction,
+        'endpoint': `/static/json/auto-suggest.json?q=`,
+        'minInputLength': 2,
+        'suggestionFocusClass': 'search-suggestion-focus',
+    }
+
     window.addEventListener("pageshow", function(event) {
-        const autoComplete = new AutoComplete(autoCompleteElement, suggestionsElem, renderfunction)
+        const autoComplete = new AutoComplete(options)
     });
 </script>
 
