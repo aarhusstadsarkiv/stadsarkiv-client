@@ -12,6 +12,7 @@ class AutoComplete {
         this.lastInputValue = options.lastInputValue || '';
         this.minInputLength = options.minInputLength || 2;
         this.suggestionFocusClass = options.suggestionFocusClass || 'search-suggestion-focused';
+        this.suggestionItemClass = options.suggestionItemClass || 'search-suggestion-item';
 
         // Debounce timeout ID
         this.timeoutID = null;
@@ -50,18 +51,20 @@ class AutoComplete {
                 .then(response => response.json())
                 .then( data => {
 
+                    // FOR TESTING:
+                    // 
                     // Just ontil we get some real data
                     // We need to randomize the data and remove some items
                     // to simulate a real search
 
                     // Sort the data randomly
-                    data.sort(() => Math.random() - 0.5);
+                    // data.sort(() => Math.random() - 0.5);
                     
-                    // Remove between 1 and 10 items (random)
-                    const random = Math.floor(Math.random() * 10) + 1;
+                    // // Remove between 1 and 10 items (random)
+                    // const random = Math.floor(Math.random() * 10) + 1;
                     
-                    // Remove the random items
-                    data.splice(0, random);
+                    // // Remove the random items
+                    // data.splice(0, random);
                     
                     this.updateSuggestions(data)
                 });
@@ -73,7 +76,7 @@ class AutoComplete {
      */
     onKeyDown(event) {
 
-        const items = this.suggestionsElem.querySelectorAll('.search-suggestion-item');
+        const items = this.suggestionsElem.querySelectorAll(`.${this.suggestionItemClass}`);
         if (items.length === 0) return;
 
         let currentIndex = -1;
@@ -113,10 +116,13 @@ class AutoComplete {
         const inputRect = this.autocompleteElem.getBoundingClientRect();
 
         // set display to flex
-        this.suggestionsElem.style.display = 'flex';
+        this.suggestionsElem.style.display = 'block';
         this.suggestionsElem.style.top = `${inputRect.bottom - 80}px`;
         this.suggestionsElem.style.left = `${inputRect.left}px`;
         this.suggestionsElem.innerHTML = this.renderFunction(data);
+
+        // const items = this.suggestionsElem.querySelectorAll(`.${this.suggestionItemClass}`);
+        // items.forEach(item => item.setAttribute('tabindex', '0'));
     }
 }
 

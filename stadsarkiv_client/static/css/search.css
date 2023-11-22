@@ -174,11 +174,11 @@ details>summary.inactive {
 .search-suggestions {
     position: absolute;
     background-color: whitesmoke;
-    overflow-y: auto;
     display: none;
-    flex-direction: column;
     padding: 5px;
     width: 300px;
+    max-height: calc(100vh - 150px); 
+    overflow-y: auto;
 }
 
 
