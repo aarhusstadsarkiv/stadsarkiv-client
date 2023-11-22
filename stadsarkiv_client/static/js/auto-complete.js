@@ -1,41 +1,52 @@
 class AutoComplete {
-    constructor(element, suggestionsElem, renderFunction) {
-        this.element = element;
-        this.suggestionsElem = suggestionsElem;
-        this.renderFunction = renderFunction;
-        this.debounceTimer = null;
-        this.element.addEventListener('input', this.onInput.bind(this));
-        this.element.addEventListener('keydown', this.onKeyDown.bind(this));
-        this.lastInputValue = '';
-        window.addEventListener('resize', this.resize.bind(this));
-        this.resize();
+    constructor(options) {
+        
+        // Required parameters
+        this.autocompleteElem = options.autocompleteElem;
+        this.suggestionsElem = options.suggestionsElem;
+        this.renderFunction = options.renderFunction;
+        this.endpoint = options.endpoint;
+        
+        // Optional parameters
+        this.debounceTimer = options.debounceTimer || 500;
+        this.lastInputValue = options.lastInputValue || '';
+        this.minInputLength = options.minInputLength || 2;
+        this.suggestionFocusClass = options.suggestionFocusClass || 'search-suggestion-focused';
 
+        // Debounce timeout ID
+        this.timeoutID = null;
+
+        // Bind methods
+        this.autocompleteElem.addEventListener('input', this.onInput.bind(this));
+        this.autocompleteElem.addEventListener('keydown', this.onKeyDown.bind(this));
+        
+        window.addEventListener('resize', this.resize.bind(this));
     }
 
     resize() {
-        // Hide suggestions on resize
+        // Hide suggestions on resize and empty the suggestions
         this.suggestionsElem.style.display = 'none';
         this.suggestionsElem.innerHTML = '';
     }
 
     onInput(event) {
 
-        clearTimeout(this.debounceTimer);
-        const inputLength = this.element.value.length;
+        clearTimeout(this.timeoutID);
+        const inputLength = this.autocompleteElem.value.length;
         const inputValue = event.target.value;
         
-        if (inputLength < 2 ) {
+        if (inputLength < this.minInputLength ) {
             this.suggestionsElem.style.display = 'none';
             this.suggestionsElem.innerHTML = '';
             return;
         }
 
-        // Do not fetch if the input value is the same as the last input value
+        // Do not fetch if the input value if it is the same as the last input value
         if (inputValue === this.lastInputValue) return;
         this.lastInputValue = inputValue;
 
-        this.debounceTimer = setTimeout(() => {
-            fetch(`/static/json/auto-suggest.json?q=${inputValue}`)
+        this.timeoutID = setTimeout(() => {
+            fetch(`${this.endpoint}${inputValue}`)
                 .then(response => response.json())
                 .then( data => {
 
@@ -54,7 +65,7 @@ class AutoComplete {
                     
                     this.updateSuggestions(data)
                 });
-        }, 500);
+        }, this.debounceTimer);
     }
 
     /**
@@ -67,9 +78,9 @@ class AutoComplete {
 
         let currentIndex = -1;
         items.forEach((item, index) => {
-            if (item.classList.contains('search-suggestion-focused')) {
+            if (item.classList.contains(this.suggestionFocusClass)) {
                 currentIndex = index;
-                item.classList.remove('search-suggestion-focused');
+                item.classList.remove(this.suggestionFocusClass);
             }
         });
 
@@ -89,17 +100,17 @@ class AutoComplete {
         }
 
         const newItem = items[currentIndex];
-        newItem.classList.add('search-suggestion-focused');
+        newItem.classList.add(this.suggestionFocusClass);
 
         // Focus on the input again
-        this.element.focus();
+        this.autocompleteElem.focus();
         event.preventDefault();
     }
 
 
     updateSuggestions(data) {
 
-        const inputRect = this.element.getBoundingClientRect();
+        const inputRect = this.autocompleteElem.getBoundingClientRect();
 
         // set display to flex
         this.suggestionsElem.style.display = 'flex';

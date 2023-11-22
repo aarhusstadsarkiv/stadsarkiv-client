@@ -1,72 +1,72 @@
 [
     {
-        "display": "Aarhus",
+        "display": "Abelvej",
         "domain": "locations",
-        "id": "109990",
+        "id": "3",
         "is_alt": false,
         "sub_display": "Sted"
     },
     {
-        "display": "Aarhus \u00c5",
+        "display": "Abelshoved",
         "domain": "locations",
-        "id": "107870",
+        "id": "107499",
         "is_alt": false,
         "sub_display": "Sted"
     },
     {
-        "display": "Aarhus K",
-        "domain": "locations",
-        "id": "155916",
+        "display": "Marie Abel",
+        "domain": "people",
+        "id": "108847",
         "is_alt": false,
-        "sub_display": "Sted"
+        "sub_display": "Person"
     },
     {
-        "display": "Aarhus \u00d8",
+        "display": "Abelvej 1",
         "domain": "locations",
-        "id": "121081",
+        "id": "2933",
         "is_alt": false,
-        "sub_display": "Sted"
+        "sub_display": "Sted, Tilst-Brabrand Nord"
     },
     {
-        "display": "Aarhus Mark",
-        "domain": "locations",
-        "id": "109073",
+        "display": "Abelone Raae Schibye",
+        "domain": "people",
+        "id": "109393",
         "is_alt": false,
-        "sub_display": "Sted"
+        "sub_display": "Person, f. Munk"
     },
     {
-        "display": "Aarhus Havn",
-        "domain": "locations",
-        "id": "918",
-        "is_alt": false,
-        "sub_display": "Sted"
-    },
-    {
-        "display": "Aarhus Bugt",
-        "domain": "locations",
-        "id": "108166",
-        "is_alt": false,
-        "sub_display": "Sted"
-    },
-    {
-        "display": "Aarhus M\u00f8lle",
-        "domain": "locations",
-        "id": "113562",
-        "is_alt": false,
-        "sub_display": "Sted"
-    },
-    {
-        "display": "\u00c5rhus R\u00e5dhus",
+        "display": "Leonard Abel (1878-1984)",
         "domain": "organisations",
-        "id": "108325",
-        "is_alt": true,
-        "sub_display": "Aarhus R\u00e5dhus"
+        "id": "122536",
+        "is_alt": false,
+        "sub_display": "Organisation"
     },
     {
-        "display": "Aarhus Vand ",
+        "display": "Jacob Abel Ingerslev (1759-1821)",
+        "domain": "people",
+        "id": "109587",
+        "is_alt": false,
+        "sub_display": "Person"
+    },
+    {
+        "display": "Kjeld Abell (1901-1961)",
+        "domain": "people",
+        "id": "119908",
+        "is_alt": false,
+        "sub_display": "Person, Forfatter"
+    },
+    {
+        "display": "Abels Blomsterhandel",
         "domain": "organisations",
-        "id": "110158",
+        "id": "122536",
         "is_alt": true,
-        "sub_display": "Aarhus Vandv\u00e6rk"
+        "sub_display": "Leonard Abel (1878-1984)"
+    },
+    {
+        "display": "Leonard Abel Blomsterhandler",
+        "domain": "organisations",
+        "id": "122536",
+        "is_alt": true,
+        "sub_display": "Leonard Abel (1878-1984)"
     }
 ]
