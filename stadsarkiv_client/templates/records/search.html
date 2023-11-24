@@ -415,13 +415,14 @@
         'autocompleteElem': autocompleteElem,
         'suggestionsElem': suggestionsElem,
         'renderFunction': renderFunction,
-        'endpoint': `/static/json/auto-suggest.json?q=`,
+        'endpoint': `/auto_complete?q=`,
         'minInputLength': 2,
         'suggestionFocusClass': 'search-suggestion-focus',
     }
 
     window.addEventListener("pageshow", function(event) {
         const autoComplete = new AutoComplete(options)
+        
     });
 </script>
 
