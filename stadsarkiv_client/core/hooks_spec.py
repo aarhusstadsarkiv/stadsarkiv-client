@@ -1,5 +1,6 @@
 """
 Default hooks specification.
+query_params is a list of tuples. Example: [("collection", 1), ("series", 2)]
 """
 
 from starlette.requests import Request
@@ -12,13 +13,13 @@ class HooksSpec:
     def __init__(self, request: Request):
         self.request = request
 
-    async def before_auto_complete(self, query_params: dict) -> dict:
+    async def before_auto_complete(self, query_params: list) -> list:
         """
         Alter the query params before the autocomplete is executed.
         """
         return query_params
 
-    async def after_auto_complete(self, query_params: dict) -> dict:
+    async def after_auto_complete(self, query_params: list) -> list:
         """
         Alter the query params after the autocomplete is executed.
         """
