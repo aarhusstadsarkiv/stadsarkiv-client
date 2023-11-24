@@ -120,6 +120,23 @@ def _normalize_search(records: dict):
     return records
 
 
+def _check_series(query_params: list) -> list:
+    """
+    Check if a collection is set in query params.
+    If not then remove series from query params
+    """
+    collection = None
+    for key, value in query_params:
+        if key == "collection":
+            collection = True
+
+    for key, value in query_params:
+        if key == "series" and not collection:
+            query_params.remove((key, value))
+
+    return query_params
+
+
 async def get(request: Request):
     hooks = get_hooks(request)
 
@@ -131,6 +148,7 @@ async def get(request: Request):
     # If not set they may be read from cookies
     # last resort is default values
     query_params_before_search = query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
+    query_params_before_search = _check_series(query_params_before_search)
 
     # Alter query params before search
     # You may want to remove all collections and add single one before search results are obtained
