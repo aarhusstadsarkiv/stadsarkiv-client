@@ -20,7 +20,7 @@ class HooksSpec:
 
     async def after_auto_complete(self, query_params: dict) -> dict:
         """
-        Alter the query params before the autocomplete is executed.
+        Alter the query params after the autocomplete is executed.
         """
         return query_params
 
