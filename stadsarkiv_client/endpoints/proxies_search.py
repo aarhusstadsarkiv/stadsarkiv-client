@@ -253,6 +253,7 @@ async def auto_complete(request: Request):
     # This is done to avoid showing all results
     # This is just for demo
     import random
+
     result = random.sample(result, random.randint(0, 10))
 
     return JSONResponse(result)
