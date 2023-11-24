@@ -3,7 +3,7 @@ Proxy for search records endpoints
 """
 
 from starlette.requests import Request
-from starlette.responses import PlainTextResponse
+from starlette.responses import PlainTextResponse, JSONResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.translate import translate
@@ -234,3 +234,20 @@ async def get_json(request: Request):
 
     record_json = json.dumps(search_result, indent=4, ensure_ascii=False)
     return PlainTextResponse(record_json)
+
+
+async def auto_complete(request: Request):
+    """
+    Auto complete for search
+    """
+    result = await api.proxies_auto_complete(request)
+
+    # randomly choose between 0 and 10 results
+    # This is done to avoid showing all results
+    # This is just for demo
+
+    import random
+
+    result = random.sample(result, random.randint(0, 10))
+
+    return JSONResponse(result)

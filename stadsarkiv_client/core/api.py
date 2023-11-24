@@ -463,3 +463,35 @@ async def proxies_records_from_list(request, query_params) -> typing.Any:
             return response.json()
         else:
             response.raise_for_status()
+
+
+async def _get_server_url(request):
+    scheme = request.url.scheme
+    host = request.url.hostname
+    port = request.url.port
+
+    # Construct base URL
+    server_url = f"{scheme}://{host}"
+    if port:
+        server_url += f":{port}"
+
+    return server_url
+
+
+async def proxies_auto_complete(request: Request) -> typing.Any:
+    """
+    Fetch auto complete data from the api
+    Test data is used for now
+    """
+
+    # query_str = quote(request.query_params["q"])
+
+    server_url = await _get_server_url(request)
+    test_json_url = server_url + "/static/json/auto-suggest.json"
+
+    async with _get_async_client() as client:
+        response = await client.get(test_json_url)
+        if response.is_success:
+            return response.json()
+        else:
+            response.raise_for_status()

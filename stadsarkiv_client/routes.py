@@ -3,7 +3,7 @@ Define routes for the application.
 """
 
 from starlette.routing import Route, Mount
-from .endpoints import auth, proxies_records, proxies_search, proxies_resources, testing, pages, schemas, entities
+from stadsarkiv_client.endpoints import auth, proxies_records, proxies_search, proxies_resources, testing, pages, schemas, entities
 import os
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.multi_static import MultiStaticFiles
@@ -63,6 +63,7 @@ routes = [
     Route("/entities/update/{uuid:str}", endpoint=entities.update, name="entities_update"),
     Route("/entities/delete/{uuid:str}/{delete_type:str}", endpoint=entities.delete, name="entities_delete", methods=["DELETE", "GET"]),
     Route("/search", endpoint=proxies_search.get, name="proxies_search_get"),
+    Route("/auto_complete", endpoint=proxies_search.auto_complete, name="proxies_records_auto_complete"),
     Route("/search/json", endpoint=proxies_search.get_json, name="proxies_search_get_json"),
     Route("/records/{record_id:str}", endpoint=proxies_records.get, name="proxies_records_get"),
     Route("/records/{record_id:str}/json/{type:str}", endpoint=proxies_records.get_json, name="proxies_records_get_json"),
