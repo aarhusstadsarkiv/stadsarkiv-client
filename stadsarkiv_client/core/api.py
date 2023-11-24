@@ -478,7 +478,7 @@ async def _get_server_url(request):
     return server_url
 
 
-async def proxies_auto_complete(request: Request) -> typing.Any:
+async def proxies_auto_complete(request: Request, query_str: str) -> typing.Any:
     """
     Fetch auto complete data from the api
     Test data is used for now
@@ -487,7 +487,7 @@ async def proxies_auto_complete(request: Request) -> typing.Any:
     # query_str = quote(request.query_params["q"])
 
     server_url = await _get_server_url(request)
-    test_json_url = server_url + "/static/json/auto-suggest.json"
+    test_json_url = server_url + "/static/json/auto-suggest.json?" + query_str
 
     async with _get_async_client() as client:
         response = await client.get(test_json_url)
