@@ -1,12 +1,12 @@
 class AutoComplete {
     constructor(options) {
-        
+
         // Required parameters
         this.autocompleteElem = options.autocompleteElem;
         this.suggestionsElem = options.suggestionsElem;
         this.renderFunction = options.renderFunction;
         this.endpoint = options.endpoint;
-        
+
         // Optional parameters
         this.debounceTimer = options.debounceTimer || 500;
         this.lastInputValue = options.lastInputValue || '';
@@ -20,7 +20,7 @@ class AutoComplete {
         // Bind methods
         this.autocompleteElem.addEventListener('input', this.onInput.bind(this));
         this.autocompleteElem.addEventListener('keydown', this.onKeyDown.bind(this));
-        
+
         window.addEventListener('resize', this.resize.bind(this));
     }
 
@@ -35,8 +35,8 @@ class AutoComplete {
         clearTimeout(this.timeoutID);
         const inputLength = this.autocompleteElem.value.length;
         const inputValue = event.target.value;
-        
-        if (inputLength < this.minInputLength ) {
+
+        if (inputLength < this.minInputLength) {
             this.suggestionsElem.style.display = 'none';
             this.suggestionsElem.innerHTML = '';
             return;
@@ -49,7 +49,7 @@ class AutoComplete {
         this.timeoutID = setTimeout(() => {
             fetch(`${this.endpoint}${inputValue}`)
                 .then(response => response.json())
-                .then( data => {
+                .then(data => {
 
                     // FOR TESTING:
                     // 
@@ -59,25 +59,24 @@ class AutoComplete {
 
                     // Sort the data randomly
                     // data.sort(() => Math.random() - 0.5);
-                    
+
                     // // Remove between 1 and 10 items (random)
                     // const random = Math.floor(Math.random() * 10) + 1;
-                    
+
                     // // Remove the random items
                     // data.splice(0, random);
-                    
+
                     this.updateSuggestions(data)
                 });
         }, this.debounceTimer);
     }
 
     /**
-     * Check if ArrowDown or ArrowUp or Enter is pressed
+     * Check different keys and do different things
      */
     onKeyDown(event) {
-
         const items = this.suggestionsElem.querySelectorAll(`.${this.suggestionItemClass}`);
-        if (items.length === 0) return;
+        if (items.length === 0 && event.key !== 'Escape') return;
 
         let currentIndex = -1;
         items.forEach((item, index) => {
@@ -87,42 +86,43 @@ class AutoComplete {
             }
         });
 
-        if (event.key === 'ArrowDown') {
-            currentIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
-        } else if (event.key === 'ArrowUp') {
-            currentIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
-        } else if (event.key === 'Enter' && currentIndex !== -1) {
-            const focusedItem = items[currentIndex];
-            const url = focusedItem.getAttribute('data-url');
-            if (url) {
-                window.location.href = url;
-            }
-
-        } else {
-            return;
+        switch (event.key) {
+            case 'ArrowDown':
+                currentIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+                break;
+            case 'ArrowUp':
+                currentIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+                break;
+            case 'Enter':
+                if (currentIndex !== -1) {
+                    const focusedItem = items[currentIndex];
+                    const url = focusedItem.getAttribute('data-url');
+                    if (url) window.location.href = url;
+                }
+                return;
+            case 'Escape':
+                this.suggestionsElem.style.display = 'none';
+                this.suggestionsElem.innerHTML = '';
+                this.autocompleteElem.focus();
+                return;
+            default:
+                return;
         }
 
         const newItem = items[currentIndex];
         newItem.classList.add(this.suggestionFocusClass);
-
-        // Focus on the input again
+        newItem.scrollIntoView({ block: 'nearest', inline: 'start' });
         this.autocompleteElem.focus();
         event.preventDefault();
     }
 
-
     updateSuggestions(data) {
 
         const inputRect = this.autocompleteElem.getBoundingClientRect();
-
-        // set display to flex
         this.suggestionsElem.style.display = 'block';
         this.suggestionsElem.style.top = `${inputRect.bottom - 80}px`;
         this.suggestionsElem.style.left = `${inputRect.left}px`;
         this.suggestionsElem.innerHTML = this.renderFunction(data);
-
-        // const items = this.suggestionsElem.querySelectorAll(`.${this.suggestionItemClass}`);
-        // items.forEach(item => item.setAttribute('tabindex', '0'));
     }
 }
 
