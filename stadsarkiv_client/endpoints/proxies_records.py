@@ -36,7 +36,7 @@ def _get_altered_cookie(request: Request):
 
 
 async def _get_record_pagination(request: Request):
-    # 'search' as a get param indicates that we came from a search.
+    # 'search' as a 'get' param indicates that we came from a search.
     # It is used as the current page number in the pagination
     # If not present then the prev and next buttons should not be shown
     current_page = int(request.query_params.get("search", 0))
