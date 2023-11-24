@@ -21,10 +21,14 @@ class AutoComplete {
         this.autocompleteElem.addEventListener('input', this.onInput.bind(this));
         this.autocompleteElem.addEventListener('keydown', this.onKeyDown.bind(this));
         
-        window.addEventListener('resize', this.resize.bind(this));
+        // Hide suggestions on resize
+        this.hideSuggestions();
+        
+        // Hide suggestions on resize
+        window.addEventListener('resize', this.hideSuggestions.bind(this));
     }
 
-    resize() {
+    hideSuggestions() {
         // Hide suggestions on resize and empty the suggestions
         this.suggestionsElem.style.display = 'none';
         this.suggestionsElem.innerHTML = '';
@@ -36,9 +40,8 @@ class AutoComplete {
         const inputLength = this.autocompleteElem.value.length;
         const inputValue = event.target.value;
         
-        if (inputLength < this.minInputLength ) {
-            this.suggestionsElem.style.display = 'none';
-            this.suggestionsElem.innerHTML = '';
+        if (inputLength < this.minInputLength) {
+            this.hideSuggestions();
             return;
         }
 
@@ -75,14 +78,13 @@ class AutoComplete {
      * Check keys pressed in the input field
      */
     onKeyDown(event) {
+
         const items = this.suggestionsElem.querySelectorAll(`.${this.suggestionItemClass}`);
         if (items.length === 0 && event.key !== 'Escape') return;
     
         if (event.key === 'Escape') {
-            // Hide suggestions and focus on input
-            this.suggestionsElem.style.display = 'none';
-            this.autocompleteElem.focus();
             event.preventDefault();
+            this.hideSuggestions();
             return;
         }
     
@@ -116,11 +118,8 @@ class AutoComplete {
     
         // Focus on the input again
         this.autocompleteElem.focus();
-        event.preventDefault();
     }
     
-
-
     updateSuggestions(data) {
 
         const inputRect = this.autocompleteElem.getBoundingClientRect();
@@ -130,9 +129,6 @@ class AutoComplete {
         this.suggestionsElem.style.top = `${inputRect.bottom - 80}px`;
         this.suggestionsElem.style.left = `${inputRect.left}px`;
         this.suggestionsElem.innerHTML = this.renderFunction(data);
-
-        // const items = this.suggestionsElem.querySelectorAll(`.${this.suggestionItemClass}`);
-        // items.forEach(item => item.setAttribute('tabindex', '0'));
     }
 }
 
