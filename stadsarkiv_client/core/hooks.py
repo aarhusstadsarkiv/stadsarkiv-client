@@ -16,7 +16,7 @@ except ImportError:
     log.debug(f"Local hooks NOT loaded: {get_local_config_dir('hooks.py')}")
 
 
-def get_hooks(request: Request):
+def get_hooks(request: Request) -> HooksSpec:
     """
     Get local hooks if they exist, otherwise get the default hooks
     """
