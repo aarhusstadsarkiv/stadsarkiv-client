@@ -47,11 +47,21 @@ class NoCacheMiddleware(BaseHTTPMiddleware):
         response = await call_next(request)
 
         path = request.url.path
-        ignore_paths = ["/static", "/records", "/search"]
+        ignore_paths = ["/records", "/search"]
         for ignore_path in ignore_paths:
             if path.startswith(ignore_path):
+                # Default cache. No cache directives are sent, so the browser
+                # will cache the response as it sees fit.
                 return response
 
+        # cache static files for 1 year. There should be versioning on the static files
+        # so they will be reloaded when version is changed
+        if path.startswith("/static"):
+            response.headers["Cache-Control"] = "public, max-age=31536000"
+            return response
+
+        # Ensure no cache. Do not store any part of the response in the cache
+        # Will force the browser to always request a new version of the page
         response.headers["Cache-Control"] = "no-store"
         return response
 
