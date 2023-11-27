@@ -1,0 +1,40 @@
+{% import "macros/common_macros.html" as common_macros %}
+
+{% extends "base.html" %}
+
+{% block body_class %}page-records-view{% endblock %}
+
+{% block content %}
+
+<h3>Bestil materiale</h3>
+
+{% set keys = ["collectors", "content_types", "creators", "date_normalized", "curators", "id"] %}
+{{ common_macros.parse_block_common('Stemdata', keys, record_and_types) }}
+
+{% set keys = ["heading", "summary", "desc_notes", "collection", "series", "collection_tags", "subjects" ] %}
+{{ common_macros.parse_block_common('Beskrivelse', keys, record_and_types) }}
+
+{% set keys = ["copyright_status_normalized"] %}
+{{ common_macros.parse_block_common('Ophavsret', keys, record_and_types) }}
+
+{% set keys = ["desc_data"] %}
+{{ common_macros.parse_block_common('Beskrivelsesdata', keys, record_and_types) }}
+
+{% set keys = ["locations", "organisations", "events", "people", "objects"] %}
+{{ common_macros.parse_block_common('Relationer', keys, record_and_types) }}
+
+{% set keys = ["rights_notes"] %}
+{{ common_macros.parse_block_common('Rettighedsnoter', keys, record_and_types) }}
+
+{% set keys = ["contractual_status_normalized", "other_legal_restrictions_normalized"] %}
+{{ common_macros.parse_block_common('Anden juridisk beskyttelse', keys, record_and_types) }}
+
+{% set keys = ["availability_normalized"] %}
+{{ common_macros.parse_block_common('Tilgængelighed', keys, record_and_types) }}
+
+
+{% set keys = ["representations"] %}
+{{ common_macros.parse_block_common('Download', keys, record_and_types) }}
+
+
+{% endblock content %}
