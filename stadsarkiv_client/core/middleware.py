@@ -45,6 +45,13 @@ class LastMiddleware(BaseHTTPMiddleware):
 class NoCacheMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         response = await call_next(request)
+
+        path = request.url.path
+        ignore_paths = ["/static", "/records", "/search"]
+        for ignore_path in ignore_paths:
+            if path.startswith(ignore_path):
+                return response
+
         response.headers["Cache-Control"] = "no-store"
         return response
 
