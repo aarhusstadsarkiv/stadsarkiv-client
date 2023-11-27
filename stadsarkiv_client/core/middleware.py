@@ -42,6 +42,13 @@ class LastMiddleware(BaseHTTPMiddleware):
         return response
 
 
+class NoCacheMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        response.headers["Cache-Control"] = "no-store"
+        return response
+
+
 secret_key = str(os.getenv("SECRET_KEY"))
 session_store: CookieStore = CookieStore(secret_key=secret_key)
 lifetime = settings["cookie"]["lifetime"]  # type: ignore
@@ -54,3 +61,4 @@ session_middleware: Middleware = Middleware(SessionMiddleware, store=session_sto
 session_autoload_middleware: Middleware = Middleware(SessionAutoloadMiddleware, paths=["/"])
 first_middleware = Middleware(FirstMiddleware)
 last_middleware = Middleware(LastMiddleware)
+no_cache_middleware = Middleware(NoCacheMiddleware)
