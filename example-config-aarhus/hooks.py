@@ -10,7 +10,7 @@ class Hooks(HooksSpec):
     def __init__(self, request):
         super().__init__(request)
 
-    async def before_get_context(self, context: dict) -> dict:
+    async def before_context(self, context: dict) -> dict:
         """
         Alter the context dictionary. Before the context is returned to the template.
         """
@@ -18,7 +18,7 @@ class Hooks(HooksSpec):
 
         return context
 
-    async def before_api_search(self, query_params: list) -> list:
+    async def before_get_search(self, query_params: list) -> list:
         """
         Alter the search query params. Before the search is executed.
         This example removes all curators from the query params and adds Aarhus Teater as curator (4).
@@ -26,7 +26,7 @@ class Hooks(HooksSpec):
 
         return query_params
 
-    async def after_api_search(self, query_params: list) -> list:
+    async def after_get_search(self, query_params: list) -> list:
         """
         Alter the search query params. After the search is executed.
         """

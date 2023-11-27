@@ -13,21 +13,21 @@ class HooksSpec:
     def __init__(self, request: Request):
         self.request = request
 
-    async def before_auto_complete(self, query_params: list) -> list:
+    async def before_get_auto_complete(self, query_params: list) -> list:
         """
         Alter the query params before the autocomplete is executed.
         """
         return query_params
 
-    async def after_auto_complete(self, query_params: list) -> list:
+    async def after_get_auto_complete(self, query_params: list) -> list:
         """
         Alter the query params after the autocomplete is executed.
         """
         return query_params
 
-    async def before_get_context(self, context: dict) -> dict:
+    async def before_context(self, context: dict) -> dict:
         """
-        Alter the context dictionary. Before the context is returned to the template.
+        Alter the context dictionary. Before the context is returned, e.g. to the template.
         """
         return context
 
@@ -37,13 +37,13 @@ class HooksSpec:
         """
         return record, meta_data
 
-    async def before_api_search(self, query_params: list) -> list:
+    async def before_get_search(self, query_params: list) -> list:
         """
         Alter the search query params. Before the search is executed.
         """
         return query_params
 
-    async def after_api_search(self, query_params: list) -> list:
+    async def after_get_search(self, query_params: list) -> list:
         """
         Alter the search query params. After the search is executed.
         """

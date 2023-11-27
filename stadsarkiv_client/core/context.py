@@ -44,7 +44,7 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
     _context = context_values.copy()
     context["_context"] = _context
 
-    context = await hooks.before_get_context(context=context)
+    context = await hooks.before_context(context=context)
     return context
 
 
