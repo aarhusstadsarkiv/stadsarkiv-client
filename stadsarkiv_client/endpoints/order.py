@@ -39,15 +39,15 @@ async def order_get(request: Request):
     record_altered = record_alter.record_alter(request, record, meta_data)
     record_and_types = record_alter.get_record_and_types(record_altered)
 
-    data = {
-        "record_id": record_id,
-        "message": "test",
-        "meta_data": meta_data,
+    context_variables = {
         "is_employee": "employee" in permissions,
+        "title": "Bestil: " + meta_data["title"],
+        "meta_title": "Bestil: " + meta_data["meta_title"],
+        "meta_data": meta_data,
         "record_and_types": record_and_types,
     }
 
-    context = await get_context(request, context_values=data)
+    context = await get_context(request, context_values=context_variables)
 
     return templates.TemplateResponse("order/order.html", context)
 

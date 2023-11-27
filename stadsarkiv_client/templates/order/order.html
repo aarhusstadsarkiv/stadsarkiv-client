@@ -6,35 +6,28 @@
 
 {% block content %}
 
-<h3>Bestil materiale</h3>
+<h3>{{ title }}</h3>
+
+<form method="post" action="/order">
+    <input type="hidden" name="record_id" value="{{ meta_data.id }}">
+    <button id="submit" type="submit">Bestil</button>
+</form>
 
 {% set keys = ["collectors", "content_types", "creators", "date_normalized", "curators", "id"] %}
-{{ common_macros.parse_block_common('Stemdata', keys, record_and_types) }}
-
-{% set keys = ["heading", "summary", "desc_notes", "collection", "series", "collection_tags", "subjects" ] %}
-{{ common_macros.parse_block_common('Beskrivelse', keys, record_and_types) }}
-
-{% set keys = ["copyright_status_normalized"] %}
-{{ common_macros.parse_block_common('Ophavsret', keys, record_and_types) }}
-
-{% set keys = ["desc_data"] %}
-{{ common_macros.parse_block_common('Beskrivelsesdata', keys, record_and_types) }}
-
-{% set keys = ["locations", "organisations", "events", "people", "objects"] %}
-{{ common_macros.parse_block_common('Relationer', keys, record_and_types) }}
-
-{% set keys = ["rights_notes"] %}
-{{ common_macros.parse_block_common('Rettighedsnoter', keys, record_and_types) }}
-
-{% set keys = ["contractual_status_normalized", "other_legal_restrictions_normalized"] %}
-{{ common_macros.parse_block_common('Anden juridisk beskyttelse', keys, record_and_types) }}
-
-{% set keys = ["availability_normalized"] %}
-{{ common_macros.parse_block_common('Tilgængelighed', keys, record_and_types) }}
+{{ common_macros.parse_block_common('Stamdata', keys, record_and_types) }}
 
 
-{% set keys = ["representations"] %}
-{{ common_macros.parse_block_common('Download', keys, record_and_types) }}
+<script type="module">
+    import { Requests } from "/static/js/requests.js";
 
+    const submit = document.getElementById("submit");
+    submit.addEventListener('click', async function(e) {
+        e.preventDefault()
+        console.log('clicked')
+        
+
+        // Preform request
+    })
+</script>
 
 {% endblock content %}
