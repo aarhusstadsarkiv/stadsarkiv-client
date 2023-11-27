@@ -17,7 +17,7 @@ def _get_local_hooks():
     return HooksLocal
 
 
-# Output the type hooks that are loaded on startup
+# debug text to display the type hooks that are loaded on startup. 'local' or 'default'
 try:
     _get_local_hooks()
     log.debug(f"Loaded local hooks: {get_local_config_dir('hooks.py')}")
