@@ -7,16 +7,19 @@ import importlib
 log = get_log()
 
 
-def get_local_hooks():
+def _get_local_hooks():
+    """
+    Get local hooks if they exist
+    """
     module_name = get_local_config_dir() + ".hooks"
     submodule = importlib.import_module(module_name)
     HooksLocal = getattr(submodule, "Hooks")
     return HooksLocal
 
 
-# Output the hooks that are loaded on startup
+# Output the type hooks that are loaded on startup
 try:
-    get_local_hooks()
+    _get_local_hooks()
     log.debug(f"Loaded local hooks: {get_local_config_dir('hooks.py')}")
 except ImportError:
     log.debug(f"Local hooks NOT loaded: {get_local_config_dir('hooks.py')}")
@@ -27,7 +30,7 @@ def get_hooks(request: Request) -> HooksSpec:
     Get local hooks if they exist, otherwise get the default hooks
     """
     try:
-        HooksLocal = get_local_hooks()
+        HooksLocal = _get_local_hooks()
         hooks_local = HooksLocal(request)
         return hooks_local
     except ImportError:
