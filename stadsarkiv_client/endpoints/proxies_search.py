@@ -185,7 +185,7 @@ async def get(request: Request):
     # sort by facets_enabled order
     facets = {key: facets[key] for key in facets_enabled}
 
-    facets_filters = normalized_facets.get_checked_facets()
+    facets_filters = normalized_facets.get_filters()
     pagination_data = _get_search_pagination_data(request, search_result["size"], search_result["total"])
 
     context_values = {
