@@ -3,6 +3,7 @@ Some query utils that can be used to get query params from request and return it
 """
 
 from starlette.requests import Request
+from stadsarkiv_client.settings_query_params import settings_query_params
 from stadsarkiv_client.core.logging import get_log
 from urllib.parse import quote_plus
 
@@ -47,3 +48,9 @@ def get_search(request: Request) -> str:
     query_params = request.query_params
     q = query_params.get("q", "")
     return q
+
+
+def is_negatable(query_param):
+    """Check if param is negatable. Return True if param is negatable, else False."""
+    setting = settings_query_params[query_param].get("negatable")
+    return setting
