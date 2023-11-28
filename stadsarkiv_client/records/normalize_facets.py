@@ -64,9 +64,6 @@ class NormalizeFacets:
                 facet_checked["checked_label"] = " > ".join(current_path)
                 facet_checked["query_name"] = top_level_key
                 facet_checked["query_value"] = facet["id"]
-                facet_checked["reverse_query"] = self.query_str.replace(
-                    f"{top_level_key}={facet['id']}&", f"-{top_level_key}={facet['id']}&"
-                )
                 facet_checked["remove_query"] = self.query_str.replace(f"{top_level_key}={facet['id']}&", "")
                 facet_checked["checked"] = True
                 facet_checked["search_query"] = self.query_str
@@ -190,10 +187,5 @@ def _str_to_date(date: str):
     """convert date string to date string with correct format
     e.g. 20221231 to 2022-12-31
     """
-    if not date:
-        return None
 
-    if len(date) == 8:
-        return f"{date[:4]}-{date[4:6]}-{date[6:]}"
-
-    return date
+    return f"{date[:4]}-{date[4:6]}-{date[6:]}"
