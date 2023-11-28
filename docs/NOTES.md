@@ -5,6 +5,9 @@ Måske er der en mening med det, men jeg forstår den ikke.
 
 http://localhost:5555/search?subjects=12&
 
+En besynderlig seddel: 
+
+https://www.aarhusarkivet.dk/records/000097232?search=14
 
 
 # Template-struktur
