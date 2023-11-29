@@ -70,7 +70,7 @@ function onSearchDateEvent(dateFormClass) {
 
     searchDateElem.addEventListener('submit', function (event) {
         event.preventDefault();
-        
+
         const fromYear = document.querySelector(`${dateFormClass} .from-year`).value;
         const fromMonth = document.querySelector(`${dateFormClass} .from-month`).value || '01';
         const fromDay = document.querySelector(`${dateFormClass} .from-day`).value || '01';
@@ -170,6 +170,36 @@ function searchEvents() {
             searchElem.submit();
         })
 
+        const selectSize = document.querySelector('.select-size');
+        selectSize.addEventListener('change', function () {
+            saveTree();
+            document.getElementById('size').submit();
+        });
+
+        const selectSort = document.querySelector('.select-sort');
+        selectSort.addEventListener('change', function () {
+
+            const selectedValue = selectSort.value;
+            if (selectedValue == 'date_to') {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'direction';
+                input.value = 'desc';
+                document.getElementById('sort').appendChild(input);
+            }
+
+            if (selectedValue == 'date_from') {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'direction';
+                input.value = 'asc';
+                document.getElementById('sort').appendChild(input);
+            }
+
+            saveTree();
+            document.getElementById('sort').submit();
+        });
+
     } catch (error) {
         // unset local storage if it fails. 
         // The tree may be updated and the saved state may be invalid
@@ -177,36 +207,5 @@ function searchEvents() {
         console.log(error);
     }
 }
-
-
-const selectSize = document.querySelector('.select-size');
-selectSize.addEventListener('change', function () {
-    saveTree();
-    document.getElementById('size').submit();
-});
-
-const selectSort = document.querySelector('.select-sort');
-selectSort.addEventListener('change', function () {
-
-    const selectedValue = selectSort.value;
-    if (selectedValue == 'date_to') {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'direction';
-        input.value = 'desc';
-        document.getElementById('sort').appendChild(input);
-    }
-
-    if (selectedValue == 'date_from') {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'direction';
-        input.value = 'asc';
-        document.getElementById('sort').appendChild(input);
-    }
-
-    saveTree();
-    document.getElementById('sort').submit();
-});
 
 export { searchEvents }
