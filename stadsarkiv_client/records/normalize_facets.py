@@ -71,7 +71,7 @@ class NormalizeFacets:
                 # Generate a search filter
                 filter = {}
                 filter["negated"] = search in self._query_params_negated
-                filter["checked_label"] = " > ".join(tree_path_labels_current)
+                filter["label"] = " > ".join(tree_path_labels_current)
                 filter["query_name"] = facet_name
                 filter["query_value"] = facet["id"]
                 filter["remove_link"] = remove_link
@@ -123,12 +123,16 @@ class NormalizeFacets:
         """
         Get the link for a facet.
         """
-        resolved = self._get_facets_resolved_label(key, value)
         definition = settings_query_params[key]
 
-        if resolved and not definition.get("label_only", False):
+        if definition.get("label_only"):
+            return None
+
+        resolved = self._get_facets_resolved_label(key, value)
+        if resolved:
             entity_path = self._get_entity_path(key)
             return f"/{entity_path}/{value}"
+
         return None
 
     def _get_ignore_keys(self):
@@ -136,7 +140,6 @@ class NormalizeFacets:
         Get a list of keys that should be ignored when generating filters
         """
         ignore_keys = [key for key in settings_facets.keys()]
-
         # But check if settings_facets[key]["allow_facet_removal"] is True
         # If true then it it should be removed from the ignore_keys list
         for key in settings_facets.keys():
@@ -166,6 +169,7 @@ class NormalizeFacets:
         """
         Get all active search filters.
         """
+
         filters = self._filters
         ignore_keys = self._get_ignore_keys()
         for query_name, query_value in self._query_params_cleaned:
@@ -187,7 +191,7 @@ class NormalizeFacets:
             filter["query_value"] = query_value
             filter["remove_link"] = remove_link
             filter["invert_link"] = invert_link
-            filter["checked_label"] = checked_label
+            filter["label"] = checked_label
             filter["entity_url"] = self._get_enitity_url(query_name, query_value)
             filters.append(filter)
 

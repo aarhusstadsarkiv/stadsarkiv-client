@@ -12,9 +12,9 @@
     <li>
         <a class="remove" href="{{ search_base_url }}?{{ facet['remove_link'] }}">{{ translate('Remove facet') }}</a>
         {% if facet["entity_url"] %}
-        <span><a href="{{ facet['entity_url'] }}">{{ facet['checked_label'] }}</a></span>
+        <span><a href="{{ facet['entity_url'] }}">{{ facet['label'] }}</a></span>
         {% else %}
-        <span>{{ facet['checked_label'] }}</span>
+        <span>{{ facet['label'] }}</span>
         {% endif %}
     </li>
     {% endfor %}
