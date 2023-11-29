@@ -13,6 +13,8 @@ log = get_log()
 def resource_alter(resource: dict):
     schema = resource["schema"]
 
+    relations = resource.get("relations")
+
     resource = normalize_fields.set_created_decommissioned(resource)
     resource = normalize_fields.set_collectors_link_list(resource, schema)
     resource = normalize_fields.set_creators_link_list(resource, schema)
@@ -31,4 +33,5 @@ def resource_alter(resource: dict):
         if elem in resource:
             resource[elem] = normalize_fields.get_string_or_link_list(elem, resource[elem])
 
+    resource["relations"] = relations
     return resource
