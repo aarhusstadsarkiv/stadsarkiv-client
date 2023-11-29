@@ -17,24 +17,25 @@
 {% include "includes/main_title.html" %}
 
 <p>
-    <a href="/search?events={{ event['id_real'] }}">Vis alle resultater i samlingen</a>
+    <a href="/search?events={{ meta['id_real'] }}">Vis alle resultater i samlingen</a>
 </p>
 
 {% set keys = [
     "id", "ext_data_season", "ext_data_stagename", "date_from_premier", "ext_data_playwright", "ext_data_original_id", 
     "ext_data_production", "event_type", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area"] %}
 
-{{ common_macros.parse_image_block('Stamdata', keys, event) }}
+{% set options = {'icon': schema, 'icon_label': 'Lokation'} %}
+{{ common_macros.parse_image_block('Stamdata', keys, resource, options) }}
 
 {% set keys = ["ext_data_translater", "ext_data_arkiv_id", "ext_data_number_of_performances"] %}
-{{ common_macros.parse_block_common('Beskrivelse', keys, event) }}
+{{ common_macros.parse_block_common('Beskrivelse', keys, resource) }}
 
 {% set keys = ["sources_normalized"] %}
-{{ common_macros.parse_block_common('Kilder', keys, event) }}
+{{ common_macros.parse_block_common('Kilder', keys, resource) }}
 
-{{ common_macros.parse_relations('people', event) }}
+{{ common_macros.parse_relations('people', resource) }}
 
-{% set meta_links = [{"url": "/events/" + event['id_real'] + "/json", "label": "JSON" }] %}
+{% set meta_links = [{"url": "/events/" + meta['id_real'] + "/json", "label": "JSON" }] %}
 {{ common_macros.parse_meta_block(meta_links) }}
 
 {% endblock content %}
