@@ -1,16 +1,15 @@
 """
-Normalize the tree of facets. (Right side of the search page)
-Generate query parts of links that can be used to remove a facet from the search.
-Add count to the facets.
-
-Also generate a list of checked facets (search filters that are enabled).
+Normalize facets and get search filters.
+Facets is the tree structure that is displayed on the left side of the search page.
+Filters is the list of search filters that are displayed on the top of the search page.
 """
 
 from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
 from stadsarkiv_client.core.dynamic_settings import settings_facets
 from stadsarkiv_client.settings_query_params import settings_query_params
-from stadsarkiv_client.core import query
+
+# from stadsarkiv_client.core import query
 from urllib.parse import quote_plus
 
 
@@ -18,29 +17,32 @@ log = get_log()
 
 
 class NormalizeFacets:
-    def __init__(self, request: Request, records, query_params=[], facets_resolved={}, query_str=""):
-        self.request = request
-        self.records = records
-        self.active_facets = records["active_facets"]
-        self.query_params = query_params
-        self.query_str = query_str
-        self.facets_resolved = facets_resolved
-        self.facets_checked: list = []
-        self.facets = settings_facets
+    def __init__(self, request: Request, records, query_params=[], query_str=""):
+        self._request = request
+        self._records = records
+        self._active_facets = records["active_facets"]
+        self._query_params = query_params
+        self._query_str = query_str
+        self._facets_resolved = records["facets_resolved"]
+        self._filters: list = []
+        self._facets = settings_facets
 
         # query params without the "-" (negated) prefix
-        self.query_params_cleaned = [(name.lstrip("-"), value) for name, value in self.query_params]
+        self._query_params_cleaned = [(name.lstrip("-"), value) for name, value in self._query_params]
 
         # All query params that are negated
-        self.query_params_negated = [(name.lstrip("-"), value) for name, value in self.query_params if name.startswith("-")]
+        self._query_params_negated = [(name.lstrip("-"), value) for name, value in self._query_params if name.startswith("-")]
 
     def _transform_facets(self, facet_name, children, tree_path_labels=None):
         """
-        Alter facets tree that are display on the left side of the search page.
+        Recursively transform the facets in order to:
+        - add the count from the search facets
+        - if facet is set in the query_params then set "checked" to True else False
+        - if checked then generate a search "filter"
         """
 
         if tree_path_labels is None:
-            tree_path_labels = [self.facets[facet_name]["label"]]
+            tree_path_labels = [self._facets[facet_name]["label"]]
 
         for facet in children:
             tree_path_labels_current = tree_path_labels + [facet["label"]]
@@ -49,37 +51,43 @@ class NormalizeFacets:
                 self._transform_facets(facet_name, facet["children"], tree_path_labels_current)
 
             try:
-                facet_count = self.active_facets[facet_name][facet["id"]]["count"]
+                facet_count = self._active_facets[facet_name][facet["id"]]["count"]
             except KeyError:
                 facet_count = 0
 
             facet["count"] = facet_count
 
             search = (facet_name, facet["id"])
-            if search in self.query_params_cleaned:
-                # Indicate on the facet that it is checked
+            if search in self._query_params_cleaned:
+                # If the facet is checked then set checked to True
                 facet["checked"] = True
 
-                facet_checked = {}
-                facet_checked["is_negated"] = search in self.query_params_negated
-                facet_checked["checked_label"] = " > ".join(tree_path_labels_current)
-                facet_checked["query_name"] = facet_name
-                facet_checked["query_value"] = facet["id"]
-                facet_checked = self._set_facet_urls(facet_checked)
-                facet_checked["count"] = facet_count
-                self.facets_checked.append(facet_checked)
+                remove_link = self._get_remove_link(facet_name, facet["id"])
+                invert_link = self._get_invert_link(facet_name, facet["id"])
+
+                facet["remove_link"] = remove_link
+                facet["invert_link"] = invert_link
+
+                # Generate a search filter
+                filter = {}
+                filter["negated"] = search in self._query_params_negated
+                filter["checked_label"] = " > ".join(tree_path_labels_current)
+                filter["query_name"] = facet_name
+                filter["query_value"] = facet["id"]
+                filter["remove_link"] = remove_link
+                filter["invert_link"] = invert_link
+                self._filters.append(filter)
 
             else:
-                facet["count"] = facet_count
                 facet["checked"] = False
-                facet["search_query"] = self.query_str + f"{facet_name}={facet['id']}&"
+                facet["add_link"] = self._query_str + f"{facet_name}={facet['id']}&"
 
     def _get_facets_resolved_label(self, key, value):
         """
         Get the inner dict from the facets_resolved dict.
         """
         try:
-            resolved = self.facets_resolved[key][value]["display_label"]
+            resolved = self._facets_resolved[key][value]["display_label"]
             return resolved
         except KeyError:
             return None
@@ -123,24 +131,44 @@ class NormalizeFacets:
             return f"/{entity_path}/{value}"
         return None
 
-    def get_filters(self):
+    def _get_ignore_keys(self):
         """
-        Get filters that are set in the query params.
+        Get a list of keys that should be ignored when generating filters
         """
-        facets_checked = self.facets_checked
-
-        # Ignore menu facets. They have been set in the _transform_facets method.
         ignore_keys = [key for key in settings_facets.keys()]
 
         # But check if settings_facets[key]["allow_facet_removal"] is True
-        # if true then it it should be removed from the ignore_keys list
+        # If true then it it should be removed from the ignore_keys list
         for key in settings_facets.keys():
             if settings_facets[key].get("allow_facet_removal") is True:
                 ignore_keys.remove(key)
 
         # Ignore the size, start, sort and direction query params
         ignore_keys.extend(["size", "start", "sort", "direction"])
-        for query_name, query_value in self.query_params_cleaned:
+        return ignore_keys
+
+    def _sort_order_filters(self, filters):
+        """
+        Sort the search filters based on the query_params order
+        """
+        # remove duplicates
+        filters = [dict(t) for t in {tuple(facet.items()) for facet in filters}]
+
+        # Sort the search filters based on the query_params order
+        query_order = {(name, value): index for index, (name, value) in enumerate(self._query_params)}
+
+        # Sort the search filters based on the query_order
+        sorted_facets_checked = sorted(filters, key=lambda x: query_order.get((x["query_name"], x["query_value"]), float("inf")))
+
+        return sorted_facets_checked
+
+    def get_filters(self):
+        """
+        Get all active search filters.
+        """
+        filters = self._filters
+        ignore_keys = self._get_ignore_keys()
+        for query_name, query_value in self._query_params_cleaned:
             if query_name not in settings_query_params or query_name in ignore_keys:
                 continue
 
@@ -149,25 +177,21 @@ class NormalizeFacets:
 
             checked_label = self._get_filter_label(query_name, query_value)
 
-            facet_checked = {}
-            facet_checked["is_negated"] = query_name in self.query_params_negated
-            facet_checked["query_name"] = query_name
-            facet_checked["query_value"] = query_value
-            facet_checked = self._set_facet_urls(facet_checked)
-            facet_checked["checked_label"] = checked_label
-            facet_checked["entity_url"] = self._get_enitity_url(query_name, query_value)
-            facets_checked.append(facet_checked)
+            filter = {}
 
-        # remove duplicates
-        facets_checked = [dict(t) for t in {tuple(facet.items()) for facet in facets_checked}]
+            remove_link = self._get_remove_link(query_name, query_value)
+            invert_link = self._get_invert_link(query_name, query_value)
 
-        # Sort the search filters based on the query_params order
-        query_order = {(name, value): index for index, (name, value) in enumerate(self.query_params)}
+            filter["negated"] = query_name in self._query_params_negated
+            filter["query_name"] = query_name
+            filter["query_value"] = query_value
+            filter["remove_link"] = remove_link
+            filter["invert_link"] = invert_link
+            filter["checked_label"] = checked_label
+            filter["entity_url"] = self._get_enitity_url(query_name, query_value)
+            filters.append(filter)
 
-        # Sort the search filters based on the query_order
-        sorted_facets_checked = sorted(facets_checked, key=lambda x: query_order.get((x["query_name"], x["query_value"]), float("inf")))
-
-        return sorted_facets_checked
+        return self._sort_order_filters(filters)
 
     def get_transformed_facets(self):
         """
@@ -178,32 +202,33 @@ class NormalizeFacets:
             if value["type"] == "default":
                 self._transform_facets(key, value["content"])
 
-        return self.facets
+        return self._facets
 
-    def _set_facet_urls(self, facet_checked):
+    def _get_invert_link(self, query_name, query_value):
         """
-        Set the remove query for a facet.
+        Get the invert link for a facet.
         """
-        is_negated = facet_checked["is_negated"]
-        query_name = facet_checked["query_name"]
-        query_value = facet_checked["query_value"]
+        query_negated = f"-{query_name}={quote_plus(query_value)}&"
+        query_not_negated = f"{query_name}={quote_plus(query_value)}&"
 
+        # create negated query
+        if query_negated in self._query_str:
+            return self._query_str.replace(query_negated, query_not_negated)
+        else:
+            return self._query_str.replace(query_not_negated, query_negated)
+
+    def _get_remove_link(self, query_name, query_value):
+        """
+        Get the remove link for a facet.
+        """
         query_negated = f"-{query_name}={quote_plus(query_value)}&"
         query_not_negated = f"{query_name}={quote_plus(query_value)}&"
 
         # create remove query
-        if is_negated:
-            facet_checked["remove_query"] = self.query_str.replace(query_negated, "")
+        if query_negated in self._query_str:
+            return self._query_str.replace(query_negated, "")
         else:
-            facet_checked["remove_query"] = self.query_str.replace(query_not_negated, "")
-
-        # create negated query
-        if is_negated:
-            facet_checked["negated_query"] = self.query_str.replace(query_negated, query_not_negated)
-        else:
-            facet_checked["negated_query"] = self.query_str.replace(query_not_negated, query_negated)
-
-        return facet_checked
+            return self._query_str.replace(query_not_negated, "")
 
 
 def _str_to_date(date: str):

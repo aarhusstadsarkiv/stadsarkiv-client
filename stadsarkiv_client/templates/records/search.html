@@ -10,7 +10,7 @@
 <ul>
     {% for facet in facets_filters %}
     <li>
-        <a class="remove" href="{{ search_base_url }}?{{ facet['remove_query'] }}">{{ translate('Remove facet') }}</a>
+        <a class="remove" href="{{ search_base_url }}?{{ facet['remove_link'] }}">{{ translate('Remove facet') }}</a>
         {% if facet["entity_url"] %}
         <span><a href="{{ facet['entity_url'] }}">{{ facet['checked_label'] }}</a></span>
         {% else %}
@@ -30,11 +30,11 @@
 
 {% macro parse_facet_link(top_level_key, facet) %}
 {% if facet["checked"] %}
-{{ facet['label'] }} ({{ facet["count"] }}) <span class="disabled">({{ translate('Selected') }})</span>
+{{ facet['label'] }} ({{ facet["count"] }}) <span class="disabled"> ({{ translate('Selected') }})</span>
 {% elif facet["count"] == 0 %}
 {{ facet['label'] }} ({{ facet["count"] }}) <span class="disabled"></span>
 {% else %}
-<a href="{{ search_base_url }}?{{ facet['search_query'] }}">{{ facet['label'] }} ({{ facet["count"] }})</a>
+<a href="{{ search_base_url }}?{{ facet['add_link'] }}">{{ facet['label'] }} ({{ facet["count"] }})</a>
 {% endif %}
 {% endmacro %}
 

@@ -157,7 +157,6 @@ async def get(request: Request):
     # Call api
     query_str_search = query.get_str_from_list(query_params_before_search)
     search_result = await api.proxies_records(request, query_str_search)
-    facets_resolved = search_result["facets_resolved"]
 
     search_result = _normalize_search(search_result)
 
@@ -172,7 +171,6 @@ async def get(request: Request):
         request=request,
         records=search_result,
         query_params=query_params_after_search,
-        facets_resolved=facets_resolved,
         query_str=query_str_display,
     )
 
