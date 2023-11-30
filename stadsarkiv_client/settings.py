@@ -43,10 +43,10 @@ settings: dict[str, typing.Any] = {
     "custom_error": "Der skete en system fejl. Prøv igen lidt senere!",
     "api_base_url": "https://dev.openaws.dk/v1",
     "main_menu": [
-        {"name": "auth_login_get", "title": "Log ind"},
+        {"name": "auth_login_get", "title": "Log ind", "classes": "desktop-only"},
         {"name": "auth_forgot_password_get", "title": "Glemt password"},
         {"name": "auth_logout_get", "title": "Log ud"},
-        {"name": "auth_register_get", "title": "Ny bruger"},
+        {"name": "auth_register_get", "title": "Ny bruger", "classes": "desktop-only"},
         {"name": "auth_me_get", "title": "Profil"},
         {"name": "schemas_get_list", "title": "Schemas"},
         {"name": "entities_get_list", "title": "Entities"},
