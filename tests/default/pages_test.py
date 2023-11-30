@@ -14,7 +14,7 @@ test_user = os.getenv("TEST_USER", "")
 test_password = os.getenv("TEST_PASSWORD", "")
 
 
-class TestAuth(unittest.TestCase):
+class TestPages(unittest.TestCase):
     def test_not_found_get(self):
         client = TestClient(app)
         response = client.get("/not_found")
