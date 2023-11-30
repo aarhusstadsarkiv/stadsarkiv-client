@@ -69,3 +69,8 @@ class TestAuth(unittest.TestCase):
         client = TestClient(app)
         response = client.get("/records/000466994")
         self.assertEqual(response.status_code, 200)
+
+    def test_event_teater(self):
+        client = TestClient(app)
+        response = client.get("/events/112281")
+        self.assertEqual(response.status_code, 200)
