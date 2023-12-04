@@ -75,8 +75,7 @@ def _normalize_series(record: dict):
             label = last_label + serie["label"]
             last_label = label + "/"
 
-            serie["search_query"] = "collection=" + str(record["collection"]["id"]) + "&series=" + urllib.parse.quote(label)
-
+            serie["search_query"] = f"collection={str(record['collection']['id'])}&series={urllib.parse.quote(label)}"
             series_normalized.append(serie)
 
         record["series"] = [series_normalized]
@@ -94,7 +93,7 @@ def _normalize_content_types(record: dict):
         content_types_list = record["content_types"]
         for content_type in content_types_list:
             for item in content_type:
-                item["search_query"] = "content_types=" + str(item["id"])
+                item["search_query"] = f"content_types={str(item['id'])}"
 
         record["content_types"] = content_types_list
     return record
@@ -108,7 +107,7 @@ def _normalize_subjects(record: dict):
         subjects = record["subjects"]
         for subject in subjects:
             for item in subject:
-                item["search_query"] = "subjects=" + str(item["id"])
+                item["search_query"] = f"subjects={str(item['id'])}"
 
     return record
 
@@ -130,7 +129,7 @@ def _normalize_collection_tags(record: dict):
 
         for tag in collection_tags:
             query_str = str(urllib.parse.quote(tag["path"]))
-            tag["search_query"] = "collection=" + str(collection_id) + "&collection_tags=" + query_str
+            tag["search_query"] = f"collection={str(collection_id)}&collection_tags={query_str}"
 
         record["collection_tags"] = collection_tags
 
@@ -176,7 +175,7 @@ def _normalize_link_lists(keys, record: dict):
     for key in keys:
         if key in record:
             for item in record[key]:
-                item["search_query"] = key + "=" + str(item["id"])
+                item["search_query"] = f"{key}={str(item['id'])}"
     return record
 
 
@@ -185,7 +184,7 @@ def _normalize_link_dicts(keys, record: dict):
     for key in keys:
         if key in record:
             item = record[key]
-            item["search_query"] = key + "=" + str(item["id"])
+            item["search_query"] = f"{key}={str(item['id'])}"
     return record
 
 
