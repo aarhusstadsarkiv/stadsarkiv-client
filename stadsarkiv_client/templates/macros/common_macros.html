@@ -61,7 +61,7 @@
     {{ parse_record_label(key) }}
     <div class="content">
         <p>
-            <a href="{{ search_base_url }}?{{ value['search_query'] }}">{{ value["label"] }}</a>
+            <a href="{{ value['search_query'] }}">{{ value["label"] }}</a>
         </p>
     </div>
 </div>
@@ -73,7 +73,7 @@
     <div class="content">
             {% for link in value %}
             <p>
-                <a href="{{ search_base_url }}?{{ link['search_query'] }}">{{ link["label"] }}</a>
+                <a href="{{ link['search_query'] }}">{{ link["label"] }}</a>
             </p>
             {% endfor %}
         </ul>
@@ -124,7 +124,7 @@
 {% macro _parse_list_in_hierarchy (value) %}
 <p>
 {% for item in value %}
-<a href="{{ search_base_url }}?{{ item['search_query'] }}">{{ item['label'] }}</a>
+<a href="{{ item['search_query'] }}">{{ item['label'] }}</a>
     {% if not loop.last %} {{ '>' }} {% endif %}
 {% endfor %}
 </p>

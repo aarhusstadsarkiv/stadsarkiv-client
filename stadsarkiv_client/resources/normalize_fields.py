@@ -8,6 +8,10 @@ from stadsarkiv_client.resources.resource_definitions import resource_definition
 from stadsarkiv_client.core.translate import translate
 import re
 from urllib.parse import unquote
+from stadsarkiv_client.core.dynamic_settings import settings
+
+
+_search_base_url = settings["search_base_url"]
 
 
 log = get_log()
@@ -97,7 +101,7 @@ def set_creators_link_list(data: dict, schema):
 
         data["creators_link"] = [
             {
-                "search_query": f"creators={data['id_real']}",
+                "search_query": f"{_search_base_url}?creators={data['id_real']}",
                 "label": label,
             }
         ]
@@ -117,7 +121,7 @@ def set_collectors_link_list(data: dict, schema):
 
         data["collectors_link"] = [
             {
-                "search_query": f"collectors={data['id_real']}",
+                "search_query": f"{_search_base_url}?collectors={data['id_real']}",
                 "label": label,
             }
         ]
@@ -175,7 +179,7 @@ def _get_link_list(name: str, values: list):
     links = []
     for elem in values:
         id_label = elem.split(";")
-        links.append({"search_query": f"{name}={id_label[0]}", "label": f"{id_label[1]}"})
+        links.append({"search_query": f"{_search_base_url}?{name}={id_label[0]}", "label": f"{id_label[1]}"})
 
     return links
 
