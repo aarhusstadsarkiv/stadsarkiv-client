@@ -8,6 +8,21 @@ from stadsarkiv_client.core.relations import format_relations, sort_data
 log = get_log()
 
 
+def _alter_people(context: dict) -> dict:
+    """
+    Alter people so that search_query from e.g 'search_query': 'people=107465' to /people/107465
+    """
+    try:
+        people = context["record_and_types"]["people"]["value"]
+
+        for person in people:
+            person["search_query"] = "/people/" + str(person["id"])
+    except KeyError:
+        pass
+
+    return context
+
+
 class Hooks(HooksSpec):
     def __init__(self, request):
         super().__init__(request)
@@ -17,6 +32,7 @@ class Hooks(HooksSpec):
         Alter the context dictionary. Before the context is returned to the template.
         """
         context["meta_title"] = context["meta_title"] + " | Aarhus Teaters Arkiv"
+        context = _alter_people(context)
 
         return context
 
