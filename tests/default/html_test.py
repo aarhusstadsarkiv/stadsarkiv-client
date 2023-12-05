@@ -25,6 +25,6 @@ class TestPages(unittest.TestCase):
         h3Arkiv = soup.find("h3", string="Arkivserier")
         self.assertIsNotNone(h3Arkiv)
 
-        # check the response html and test if it contains a "h3" with the text "Arkivserier"
+        # check the response html and test if it contains a "h3" with the text "Samlingstags"
         h3Tags = soup.find("h3", string="Samlingstags")
         self.assertIsNotNone(h3Tags)
