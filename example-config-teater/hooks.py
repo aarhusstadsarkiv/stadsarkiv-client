@@ -23,6 +23,21 @@ def _alter_people(context: dict) -> dict:
     return context
 
 
+def _alter_events(context: dict) -> dict:
+    """
+    Alter events so that search_query from e.g 'search_query': 'events=107465' to /events/107465
+    """
+    try:
+        events = context["record_and_types"]["events"]["value"]
+
+        for event in events:
+            event["search_query"] = "/events/" + str(event["id"])
+    except KeyError:
+        pass
+
+    return context
+
+
 class Hooks(HooksSpec):
     def __init__(self, request):
         super().__init__(request)
@@ -33,6 +48,7 @@ class Hooks(HooksSpec):
         """
         context["meta_title"] = context["meta_title"] + " | Aarhus Teaters Arkiv"
         context = _alter_people(context)
+        context = _alter_events(context)
 
         return context
 
