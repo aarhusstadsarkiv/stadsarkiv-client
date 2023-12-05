@@ -31,6 +31,8 @@ jobs:
 
       - name: Run default tests
         run: python -m unittest tests/default/*.py
+        env:
+          CONFIG_DIR: example-config-aarhus
 
       - name: Run client tests
         run: python -m unittest tests/client/*.py
