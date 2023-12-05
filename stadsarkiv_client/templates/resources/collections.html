@@ -1,7 +1,7 @@
 {% import "macros/common_macros.html" as common_macros %}
 {% import "macros/slideshow_macros.html" as slideshow_macros %}
 
-{% macro _parse_node(node) %}
+{% macro _parse_series_node(node) %}
 {% set label = node.label|trim %}
 {% set series = node.path|urlencode%}
 {% if not label %}
@@ -10,21 +10,78 @@
 <a href="/search?collection={{ meta['id_real'] }}&series={{ series }}">{{ label }}</a>
 {% endmacro %}
 
-{% macro parse_tree(nodes) %}
+{% macro parse_series_tree(nodes) %}
     <ul>
     {% for node in nodes %}
         <li>
             {% if node.children %}
                 <details>
-                    <summary>{{ _parse_node(node) }}</summary>
-                    {{ parse_tree(node.children) }}
+                    <summary>{{ _parse_series_node(node) }}</summary>
+                    {{ parse_series_tree(node.children) }}
                 </details>
             {% else %}
-                {{ _parse_node(node) }}
+                {{ _parse_series_node(node) }}
             {% endif %}
         </li>
     {% endfor %}
     </ul>
+{% endmacro %}
+
+{% macro _parse_collection_tags_node(node) %}
+{% set label = node.label|trim %}
+{% set series = node.path|urlencode%}
+{% if not label %}
+{% set label = "Ingen titel" %}
+{% endif %}
+<a href="/search?collection={{ meta['id_real'] }}&collection_tags={{ series }}">{{ label }}</a>
+{% endmacro %}
+
+{% macro parse_collection_tags_tree(nodes) %}
+    <ul>
+    {% for node in nodes %}
+        <li>
+            {% if node.children %}
+                <details>
+                    <summary>{{ _parse_collection_tags_node(node) }}</summary>
+                    {{ parse_collection_tags_tree(node.children) }}
+                </details>
+            {% else %}
+                {{ _parse_collection_tags_node(node) }}
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% endmacro %}
+
+{% macro parse_series(meta, resource) %}
+    {% set keys = ["series"] %}
+    {% if key_exist_in_dict(keys, resource) %}
+    
+    <div class="record-section">
+        <div class="record-main">
+        <h3 class="record-header">Arkivserier</h3>
+        <p>
+            Browse i samlingens serier. Klik på en given serie for at se, hvilke materialer, der er placeret her
+        </p>
+        {{ parse_series_tree (resource['series']["value"]) }}
+        </div>
+    </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro parse_collection_tags(meta, resource) %}
+{% set keys = ["collection_tags"] %}
+{% if key_exist_in_dict(keys, resource) %}
+<div class="record-section">
+    <div class="record-main">
+    <h3 class="record-header">Samlingstags</h3>
+    <p>
+        Browse i samlingens tags. Klik på et tag for at se, hvilke materialer, der er opmærket med dette.
+    </p>
+    {{ parse_collection_tags_tree (resource['collection_tags']["value"]) }}
+    </div>
+</div>
+{% endif %}
 {% endmacro %}
 
 {% extends "base.html" %}
@@ -63,31 +120,9 @@
 {% set keys = ["sources_normalized"] %}
 {{ common_macros.parse_block_common('Literatur og kilder', keys, resource) }}
 
-{% set keys = ["series"] %}
-{% if key_exist_in_dict(keys, resource) %}
-<div class="record-section">
-    <div class="record-main">
-    <h3 class="record-header">Arkivserier</h3>
-    <p>
-        Browse i samlingens serier. Klik på en given serie for at se, hvilke materialer, der er placeret her
-    </p>
-    {{ parse_tree (resource['series']) }}
-    </div>
-</div>
-{% endif %}
+{{ parse_series(meta, resource) }}
 
-{% set keys = ["collection_tags"] %}
-{% if key_exist_in_dict(keys, resource) %}
-<div class="record-section">
-    <div class="record-main">
-    <h3 class="record-header">Samlingstags</h3>
-    <p>
-        Browse i samlingens tags. Klik på et tag for at se, hvilke materialer, der er opmærket med dette.
-    </p>
-    {{ parse_tree (resource['collection_tags']) }}
-    </div>
-</div>
-{% endif %}
+{{ parse_collection_tags(meta, resource) }} 
 
 {% set meta_links = [
     {"url": "/collections/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },

@@ -31,7 +31,7 @@
 <div class="record-section">
     {% if resource[images_key] %}
     <div class="record-representation">
-        {% set images = resource[images_key] %}
+        {% set images = resource[images_key]["value"] %}
         {{ common_macros.parse_slideshow(images)}}
     </div>
     {% else %}

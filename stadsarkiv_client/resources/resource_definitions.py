@@ -64,4 +64,8 @@ resource_definitions = {
     "date_created": {"type": "string"},
     "date_decommissioned": {"type": "string"},
     "alt_names": {"type": "string_list"},
+    # slideshow
+    "highlights": {"type": "slideshow"},
+    "series": {"type": "tree"},
+    "collection_tags": {"type": "tree"},
 }
