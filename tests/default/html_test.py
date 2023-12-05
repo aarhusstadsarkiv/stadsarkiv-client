@@ -15,9 +15,9 @@ class TestPages(unittest.TestCase):
     def test_collections(self):
         client = TestClient(app)
         response = client.get("/collections/2")
+        soup = BeautifulSoup(response.content, "html.parser")
 
         # check the response html and test if it contains a "div" with the class "slideshow-container"
-        soup = BeautifulSoup(response.content, "html.parser")
         slideshow_container = soup.find("div", {"class": "slideshow-container"})
         self.assertIsNotNone(slideshow_container)
 
@@ -28,3 +28,13 @@ class TestPages(unittest.TestCase):
         # check the response html and test if it contains a "h3" with the text "Samlingstags"
         h3Tags = soup.find("h3", string="Samlingstags")
         self.assertIsNotNone(h3Tags)
+
+    def test_sejrs_sedler(self):
+        client = TestClient(app)
+        response = client.get("/records/000110411")
+
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        # check if there is div with the class "record-sejrs-sedler"
+        record_sejrs_sedler = soup.find("div", {"class": "record-sejrs-sedler"})
+        self.assertIsNotNone(record_sejrs_sedler)
