@@ -2,36 +2,44 @@
 
 {% block content %}
 <style>
-    .container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        background-color: grey;
-        padding: 10px;
-        align-items: start; /* Align items to the top of each row */
+    figure.zoom {
+      background-position: 50% 50%;
+      position: relative;
+      width: 500px;
+      overflow: hidden;
+      cursor: zoom-in;
     }
-
-    .image-container {
-        background-color: yellowgreen;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    figure.zoom img:hover {
+      opacity: 0;
     }
-
-    .image {
-        width: 100%; /* Adjust to fill the container */
-        height: auto;
-        display: block;
-        margin: auto;
+    figure.zoom img {
+      transition: opacity 0.5s;
+      display: block;
+      width: 100%;
     }
-</style>
+    </style>
+    
+    {% set image = '//res.cloudinary.com/active-bridge/image/upload/slide1.jpg'%}
+    
+    <body>
+      <figure class="zoom" style="background-image: url('{{image}}');">
+      <img src="{{ image }}">
+    </figure>
+    
+          <script>
 
-<div class="container">
-    {% for image in random_images %}
-    <div class="image-container">
-        <img class="image" src="{{ image }}" alt="Image">
-    </div>
-    {% endfor %}
-</div>
+            function zoom(e) {
+                var zoomer = e.currentTarget;
+                e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX;
+                e.offsetY ? offsetY = e.offsetY : offsetX = e.touches[0].pageX;
+                x = offsetX / zoomer.offsetWidth * 100;
+                y = offsetY / zoomer.offsetHeight * 100;
+                zoomer.style.backgroundPosition = x + '% ' + y + '%';
+              }
+    let elem = document.querySelector('.zoom');
+    elem.addEventListener('mousemove', zoom);
+
+    //# sourceURL=pen.js
+        </script>
 
 {% endblock content %}
