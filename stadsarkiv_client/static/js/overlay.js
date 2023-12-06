@@ -17,12 +17,10 @@ function activateOverlay(selector) {
 
     const overlaySelector = `${selector} > .overlay`;
     const overlay = document.querySelector(overlaySelector);
-
-    // '.record-representation'
-    const recordImageSelector = `${selector} > img`;
-    const recordImage = document.querySelector(recordImageSelector);
-    if (recordImage) {
-        recordImage.addEventListener('click', function () {
+    const imageSelector = `${selector} > img`;
+    const image = document.querySelector(imageSelector);
+    if (image) {
+        image.addEventListener('click', function () {
 
             overlay.style.display = 'block';
 
