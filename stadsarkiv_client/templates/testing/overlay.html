@@ -2,46 +2,94 @@
 
 {% block content %}
 <style>
-    figure.zoom {
-        background-position: 50% 50%;
-        position: relative;
-        width: 500px;
-        overflow: hidden;
-        cursor: zoom-in;
+    /**
+ * a basic overlay
+ */
+    .overlay {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: var(--overlay-background);
+        z-index: 1000;
+        gap: 20px;
     }
 
-    figure.zoom img:hover {
-        opacity: 0;
+    #overlay-image-container {
+        height: 90vh;
+        margin: 100px;
     }
 
-    figure.zoom img {
-        transition: opacity 0.5s;
+    .overlay img {
+        height: 100%;
+        object-fit: contain;
+        /* Optional: this ensures the image is fully visible and maintains aspect ratio */
+    }
+
+    #magnifier {
+        border: 1px solid #000;
+        width: 200px;
+        height: 200px;
         display: block;
-        width: 100%;
+        /* Change to block to make it visible */
+        z-index: 1010;
+        overflow: hidden;
     }
 </style>
 
-{% set image = '//res.cloudinary.com/active-bridge/image/upload/slide1.jpg'%}
+{% set image = 'https://storage.googleapis.com/openaws-access/000186239_l.jpg'%}
 
 <body>
-    <figure class="zoom" style="background-image: url('{{image}}');">
-        <img src="{{ image }}">
-    </figure>
-
-    <script>
-
-        function zoom(e) {
-            var zoomer = e.currentTarget;
-            e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX;
-            e.offsetY ? offsetY = e.offsetY : offsetX = e.touches[0].pageX;
-            x = offsetX / zoomer.offsetWidth * 100;
-            y = offsetY / zoomer.offsetHeight * 100;
-            zoomer.style.backgroundPosition = x + '% ' + y + '%';
-        }
-        let elem = document.querySelector('.zoom');
-        elem.addEventListener('mousemove', zoom);
-
-    </script>
+    <div class="overlay">
+        <div id="overlay-image-container">
+            <img id="overlay-image" src="{{ image }}" alt="{{ translate('Large Image') }}">
+        </div>
+        <div id="magnifier"></div>
+    </div>
 </body>
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var parentContainer = document.getElementById('overlay-image-container'); // The parent container
+        var img = document.getElementById('overlay-image');
+        var magnifier = document.getElementById('magnifier');
+
+        parentContainer.addEventListener('mousemove', function (e) {
+            var zoomer = img;
+
+            // Get the position of the image and parent container relative to the viewport
+            var imgRect = img.getBoundingClientRect();
+            var parentRect = parentContainer.getBoundingClientRect();
+
+            // Calculate the offset within the parent container
+            var offsetX = e.clientX - parentRect.left;
+            var offsetY = e.clientY - parentRect.top;
+
+            // Adjust the offset to be relative to the image
+            offsetX = Math.max(imgRect.left - parentRect.left, Math.min(offsetX, imgRect.right - parentRect.left));
+            offsetY = Math.max(imgRect.top - parentRect.top, Math.min(offsetY, imgRect.bottom - parentRect.top));
+
+            // Convert offset to percentage relative to the image
+            var x = offsetX / zoomer.offsetWidth * 100;
+            var y = offsetY / zoomer.offsetHeight * 100;
+
+            // Apply styles to the magnifier
+            magnifier.style.display = 'block';
+            magnifier.style.backgroundImage = 'url(' + img.src + ')';
+            magnifier.style.backgroundRepeat = 'no-repeat';
+            magnifier.style.backgroundSize = (img.width * 2) + 'px ' + (img.height * 2) + 'px';
+            magnifier.style.backgroundPosition = x + '% ' + y + '%';
+        });
+
+        parentContainer.addEventListener('mouseleave', function () {
+            // Hide the magnifier when the mouse leaves the parent container
+            // magnifier.style.display = 'none';
+        });
+    });
+</script>
 
 {% endblock content %}
