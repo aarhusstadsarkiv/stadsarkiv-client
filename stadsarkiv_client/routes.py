@@ -3,7 +3,7 @@ Define routes for the application.
 """
 
 from starlette.routing import Route, Mount
-from stadsarkiv_client.endpoints import auth, order, proxies_records, proxies_search, proxies_resources, testing, pages, schemas, entities
+from stadsarkiv_client.endpoints import auth, order, proxies_records, proxies_search, proxies_resources, test, pages, schemas, entities
 import os
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.multi_static import MultiStaticFiles
@@ -68,14 +68,19 @@ routes = [
     Route("/records/{record_id:str}", endpoint=proxies_records.get, name="proxies_records_get"),
     Route("/records/{record_id:str}/json/{type:str}", endpoint=proxies_records.get_json, name="proxies_records_get_json"),
     Route("/order/{record_id:str}", endpoint=order.order_get, name="proxies_records_get_json"),
-    Route("/{resource_type:str}/{id:str}", endpoint=proxies_resources.get, name="proxies_resources_get"),
-    Route("/{resource_type:str}/{id:str}/json/{type:str}", endpoint=proxies_resources.get_json, name="proxies_resources_get_json"),
 ]
 
 # Add test route
 if settings["environment"] == "development":
-    routes.append(Route("/test", endpoint=testing.test, name="test_get", methods=["GET"]))
-    routes.append(Route("/test", endpoint=testing.test_post, name="test_post", methods=["POST"]))
+    routes.append(Route("/test/{page:str}", endpoint=test.test_page, name="test_get", methods=["GET"]))
+    routes.append(Route("/test", endpoint=test.test_default, name="test_get", methods=["GET"]))
+    routes.append(Route("/test", endpoint=test.test_post, name="test_post", methods=["POST"]))
+
+# Last as these are not very specific
+routes.append(Route("/{resource_type:str}/{id:str}", endpoint=proxies_resources.get, name="proxies_resources_get"))
+routes.append(
+    Route("/{resource_type:str}/{id:str}/json/{type:str}", endpoint=proxies_resources.get_json, name="proxies_resources_get_json")
+)
 
 
 # Add routes for custom pages
