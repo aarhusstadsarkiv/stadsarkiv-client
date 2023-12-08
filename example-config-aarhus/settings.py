@@ -20,14 +20,14 @@ settings: dict[str, typing.Any] = {
     # You may also add other "menus", e.g. "footer_items" or something similar.
     #
     "main_menu": [
-        {"name": "auth_login_get", "title": "Log ind"},
-        {"name": "auth_forgot_password_get", "title": "Glemt password"},
-        {"name": "auth_logout_get", "title": "Log ud"},
-        {"name": "auth_register_get", "title": "Ny bruger"},
-        {"name": "auth_me_get", "title": "Profil"},
-        {"name": "schemas_get_list", "title": "Schemas"},
-        {"name": "entities_get_list", "title": "Entities"},
-        {"name": "proxies_search_get", "title": "Søg"},
+        {"name": "auth_login_get", "title": "Log ind", "type": "dropdown"},
+        {"name": "auth_forgot_password_get", "title": "Glemt password", "type": "dropdown"},
+        {"name": "auth_logout_get", "title": "Log ud", "type": "dropdown"},
+        {"name": "auth_register_get", "title": "Ny bruger", "type": "dropwdown"},
+        {"name": "auth_me_get", "title": "Profil", "type": "dropdown"},
+        {"name": "schemas_get_list", "title": "Schemas", "type": "dropdown"},
+        {"name": "entities_get_list", "title": "Entities", "type": "dropdown"},
+        {"name": "proxies_search_get", "title": "Søg", "type": "top"},
     ],
     #
     # Custom pages
