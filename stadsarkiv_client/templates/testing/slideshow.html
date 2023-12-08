@@ -1,0 +1,187 @@
+<style>
+    :root {
+
+        --slideshow-container-background: #efefef;
+        --slideshow-background: rgba(0, 0, 0, 0.5);
+        --slideshow-background-alt: rgba(0, 0, 0, 0.8);
+        --slideshow-text: white;
+    }
+
+    /**
+ * a basic slideshow
+ */
+    .slideshow-container {
+        width: 100%;
+        margin: 0 auto;
+        height: 0;
+        padding-bottom: 400px;
+        position: relative;
+        background-color: var(--slideshow-container-background);
+    }
+
+    .slideshow-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .slide {
+        display: none;
+    }
+
+    .slide:first-child {
+        display: block;
+    }
+
+    .prev,
+    .next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 16px;
+        color: var(--slideshow-text);
+        font-weight: bold;
+        font-size: 18px;
+        transition: 0.6s;
+        border-radius: 0 3px 3px 0;
+        user-select: none;
+        background-color: var(--slideshow-background);
+        display: none;
+    }
+
+    .next {
+        right: 0;
+        border-radius: 3px 0 0 3px;
+    }
+
+    .prev:hover,
+    .next:hover {
+        background-color: var(--slideshow-background-alt);
+    }
+
+    .slide-counter {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: var(--slideshow-text);
+        background-color: var(--slideshow-background);
+        padding: 5px 10px;
+        border-radius: 3px;
+        display: none;
+    }
+</style>
+
+
+<div class="slideshow-container">
+    <div class="slide" style="display: none;">
+        <img src="https://www.aarhusarkivet.dk/static/img/1798.jpg" alt="Slide 1">
+    </div>
+    <div class="slide" style="display: block;">
+        <img src="https://www.aarhusarkivet.dk/static/img/1813.jpg" alt="Slide 2">
+    </div>
+    <div class="slide" style="display: none;">
+        <img src="https://www.aarhusarkivet.dk/static/img/1816.jpg" alt="Slide 3">
+    </div>
+    <div class="slide" style="display: none;">
+        <img src="https://www.aarhusarkivet.dk/static/img/1818.jpg" alt="Slide 4">
+    </div>
+    <div class="slide" style="display: none;">
+        <img src="https://www.aarhusarkivet.dk/static/img/1836.jpg" alt="Slide 5">
+    </div>
+
+    <a href="#" class="prev" style="display: block;">❮</a>
+    <a href="#" class="next" style="display: block;">❯</a>
+    <div class="slide-counter" style="display: block;">
+        <span class="current-slide">2</span> / <span class="total-slides">5</span>
+    </div>
+
+</div>
+
+
+<script type="module">
+    // import { } from "/static/js/slideshow.js";
+
+    // Display .prev .next .slide-counter
+    document.querySelector(".prev").style.display = "block";
+    document.querySelector(".next").style.display = "block";
+    document.querySelector(".slide-counter").style.display = "block";
+
+    let currentSlideIndex = 0;
+
+    showSlide(currentSlideIndex);
+
+    function moveSlide(n) {
+        showSlide(currentSlideIndex += n);
+    }
+
+    function showSlide(n) {
+        let slides = document.getElementsByClassName("slide");
+        let currentSlideElem = document.querySelector(".current-slide");
+        let totalSlidesElem = document.querySelector(".total-slides");
+
+        // wrap to the start
+        if (n >= slides.length) {
+            currentSlideIndex = 0;
+        }
+
+        // wrap to the end
+        if (n < 0) {
+            currentSlideIndex = slides.length - 1;
+        }
+
+        // Hide all slides
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+
+        // Display the current slide
+        slides[currentSlideIndex].style.display = "block";
+
+        // Update the slide counter
+        // +1 since we want to display from 1..n instead of 0..n-1
+        currentSlideElem.textContent = currentSlideIndex + 1;
+        totalSlidesElem.textContent = slides.length;
+    }
+
+    // Add auto slide show
+    const SECONDS = 15;
+    let autoSlideShow = setInterval(function () {
+        moveSlide(1);
+    }, 1000 * SECONDS);
+
+    // Click events
+    const prev = document.querySelector(".prev");
+    const next = document.querySelector(".next");
+
+    prev.addEventListener("click", function (event) {
+        clearInterval(autoSlideShow);
+        event.preventDefault();
+        moveSlide(-1);
+    });
+
+    next.addEventListener("click", function (event) {
+        clearInterval(autoSlideShow);
+        event.preventDefault();
+        moveSlide(1);
+    });
+
+    // Keyboard events
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "ArrowLeft") {
+            clearInterval(autoSlideShow);
+            event.preventDefault();
+            moveSlide(-1);
+        } else if (event.key === "ArrowRight") {
+            clearInterval(autoSlideShow);
+            event.preventDefault();
+            moveSlide(1);
+        }
+    });
+
+
+
+</script>
