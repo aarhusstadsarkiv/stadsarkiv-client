@@ -175,7 +175,6 @@ en = {
     "label_collection_tags": "label_collection_tags",
     "label_collection_tags_normalized": "label_collection_tags_normalized",
     "label_collectors": "Collectors",
-    "label_collectors_label": "label_collectors_label",
     "label_collectors_link": "label_collectors_link",
     "label_content_and_scope": "label_content_and_scope",
     "label_content_type": "label_content_type",

@@ -153,7 +153,6 @@ da = {
     "label_collection_tags": "Samlingstags",
     "label_collection_tags_normalized": "Samlingstags",
     "label_collectors": "Arkivskaber",
-    "label_collectors_label": "Skaber",
     "label_collectors_link": "Arkivskaber",
     "label_content_and_scope": "Opbygning",
     "label_content_type": "Type",
