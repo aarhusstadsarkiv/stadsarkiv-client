@@ -17,20 +17,13 @@ hamburgerMenu.addEventListener('click', function (event) {
     }
 });
 
-/**
- * Add resize event listener to window
- */
-window.addEventListener('resize', function (event) {
-
-    if (window.innerWidth > 768) {
-        menu.style.display = "flex";
-        openMenu.style.display = "none";
-        closedMenu.style.display = "block";
-    } else {
+document.addEventListener('click', function (event) {
+    if (!hamburgerMenu.contains(event.target) && !menu.contains(event.target)) {
         menu.style.display = "none";
         openMenu.style.display = "none";
         closedMenu.style.display = "block";
     }
 });
+
 
 export { }

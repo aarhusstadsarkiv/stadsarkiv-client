@@ -2,6 +2,12 @@
  * general styles which are used in the whole application
  */
 
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--navigation-background);
+}
+
 .logo {
     margin-left: 10px;
     align-self: flex-start;
@@ -13,40 +19,9 @@
     max-height: 40px;
 }
 
-.main-menu {
+.navigation-right-group {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    margin-top: 6px;
-    margin-bottom: 12px;
-    align-self: flex-end;
-}
-
-.main-menu>a {
-    color: var(--main-menu);
-    font-size: 1.2em;
-    font-weight: 600;
-    padding: 8px;
-    margin-right: 8px;
-    text-decoration: none;
-    border-radius: 6px;
-    transition: background-color 0.2s ease-in-out;
-    text-transform: uppercase;
-}
-
-.main-menu>a:hover {
-    background: var(--main-menu-hover);
-}
-
-.menu-admin {
-    margin-top: 10px;
-}
-
-#menu-hamburger {
-    display: none;
-    font-size: 2em;
-    cursor: pointer;
-    margin-top: 14px;
 }
 
 #menu-hamburger svg {
@@ -56,36 +31,68 @@
     width: 40px;
 }
 
+#menu-hamburger {
+    display: block;
+    color: var(--main-menu);
+    z-index: 110;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 2em;
+    padding-right: 10px;
+}
+
+#menu-hamburger:hover {
+    color: var(--main-menu-hover);
+}
+
+/**
+ * The main menu is hidden by default
+ * When the hamburger menu is clicked, the main menu is shown
+ */
+.main-menu {
+    display: none;
+    position: absolute;
+    top: 66px;
+    right: 0px;
+    background-color: var(--navigation-background);
+    border: 1px solid var(--background);
+    padding: 10px;
+    font-size: 1.0em;
+    min-width: 175px;
+}
+
+.main-menu>a,
+.main-menu-static>a {
+    display: block;
+    color: var(--main-menu);
+    font-size: 1.2em;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 6px;
+    padding: 8px;
+    transition: background-color 0.2s ease-in-out;
+    text-transform: uppercase;
+    margin-right: 8px;
+}
+
+.main-menu>a {
+    font-size: 1.0em;
+}
+
+.navigation-right-group a:hover  {
+    background: var(--main-menu-hover);
+}
+
 .main-menu.active {
     display: block;
 }
 
-@media (max-width: 768px) {
-    #menu-hamburger {
-        display: block;
-        color: var(--main-menu);
-        z-index: 110;
-    }
-
-    .main-menu {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 60px;
-        right: 0px;
-        background-color: var(--navigation-background);
-        border: 1px solid var(--background);
-        padding: 10px;
-        font-size: 0.8em;
-        min-width: 175px;
-    }
-
-    .main-menu>a {
-        margin-right: 0;
-        margin-bottom: 8px;
-        display: block;
-    }
+.main-menu-static {
+    display: flex;
+    flex-direction: row;
 }
+
+
 
 .flash-messages {
     bottom: 0px;
@@ -113,12 +120,6 @@
 .flash-notice {
     background-color: var(--flash-notice-color);
     color: var(--flash-color);
-}
-
-.navigation {
-    display: flex;
-    justify-content: space-between;
-    background-color: var(--navigation-background);
 }
 
 .container {

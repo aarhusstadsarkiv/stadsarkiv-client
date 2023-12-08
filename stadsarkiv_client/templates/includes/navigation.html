@@ -1,20 +1,40 @@
 {% import "macros/common_macros.html" as common_macros %}
 
-<div class="main-menu">
-    {% for menu_item in main_menu %}
-        {% if menu_item.name == 'proxies_search_get' and query_str_display != '' %}
-        <a href="{{ url_for(menu_item.name) }}?{{ query_str_display }}">{{ menu_item.title }}</a>
-        {% else %}
-        <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
-        {% endif %}
-    {% endfor %}
+
+
+<div class="navigation-right-group">
+
+    <div class="main-menu-static">
+        {% for menu_item in main_menu %}
+            {% if menu_item.name == 'proxies_search_get' and query_str_display != '' %}
+            <a href="{{ url_for(menu_item.name) }}?{{ query_str_display }}">{{ menu_item.title }}</a>
+            {% else %}
+                {% if menu_item.type == 'top' %}
+                <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
     
+    <div class="main-menu">
+        {% for menu_item in main_menu %}
+            {% if menu_item.name == 'proxies_search_get' and query_str_display != '' %}
+            {% else %}
+                {% if menu_item.type == 'dropdown' %}
+                <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+    
+    <div class="menu-dropdown">
+        <span id ="menu-hamburger" href="#" class="icon">
+            <span class="closed">
+                {{ get_icon('menu')|safe }}
+            </span>
+            <span class="open" style="display:none">
+                {{ get_icon('menu_open')|safe }}
+            </span>
+        </span>
+    </div>
 </div>
-<a id ="menu-hamburger" href="#" class="icon">
-    <span class="closed">
-        {{ get_icon('menu')|safe }}
-    </span>
-    <span class="open" style="display:none">
-        {{ get_icon('menu_open')|safe }}
-    </span>
-</a>
