@@ -72,7 +72,7 @@ routes = [
 
 # Add test route
 if settings["environment"] == "development":
-    routes.append(Route("/test/{page:str}", endpoint=test.test_page, name="test_get", methods=["GET"]))
+    routes.append(Route("/test/{page:str}", endpoint=test.test_page, name="test_get", methods=["GET", "POST"]))
     routes.append(Route("/test", endpoint=test.test_default, name="test_get", methods=["GET"]))
     routes.append(Route("/test", endpoint=test.test_post, name="test_post", methods=["POST"]))
 
