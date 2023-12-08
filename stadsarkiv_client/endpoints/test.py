@@ -4,7 +4,7 @@ Only enabled in development mode
 """
 
 from starlette.requests import Request
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, RedirectResponse
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.templates import templates
@@ -43,8 +43,5 @@ async def test_page(request: Request):
 
 
 async def test_post(request: Request):
-    # get POST data
-    # data = await request.form()
-    form = await request.form()
-    data = {k: v for k, v in form.items() if k != "upload-file"}  # the form data except the file
-    return JSONResponse({"data": data})
+    context = await get_context(request)
+    return templates.TemplateResponse("testing/thanks.html", context)
