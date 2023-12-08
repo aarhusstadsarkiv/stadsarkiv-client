@@ -200,6 +200,13 @@ function searchEvents() {
             document.getElementById('sort').submit();
         });
 
+        window.addEventListener('pageshow', function (event) {
+            console.log("event")
+            const q = document.querySelector('#q');
+        });
+
+
+
     } catch (error) {
         // unset local storage if it fails. 
         // The tree may be updated and the saved state may be invalid
@@ -207,5 +214,7 @@ function searchEvents() {
         console.log(error);
     }
 }
+
+
 
 export { searchEvents }
