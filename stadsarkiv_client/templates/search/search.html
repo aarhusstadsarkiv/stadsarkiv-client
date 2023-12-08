@@ -202,15 +202,6 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_search_title(result) %}
-{% if result.label %}
-<div class="search-summary">{{ result.label|truncate(truncate_summary) }}</div>
-{% endif %}
-{% if result.summary %}
-<div class="search-summary">{{ result.summary|truncate(truncate_summary) }}</div>
-{% endif %}
-{% endmacro %}
-
 {% macro parse_record_label (label) %}
 <div class="label">
     {% if settings.skip_translate %}
@@ -219,17 +210,6 @@
     {% set label = "label_" + label %}
     <strong>{{ translate(label) }} </strong>
     {% endif %}
-</div>
-{% endmacro %}
-
-{% macro parse_string (key, value) %}
-<div class="record-content">
-    {{ parse_record_label(key)}}
-    <div class="content">
-        <p>
-            {{ value }}
-        </p>
-    </div>
 </div>
 {% endmacro %}
 
@@ -303,17 +283,17 @@
             <div class="search-details">
                 {{ parse_search_title(result) }}
                 {% if result.collectors_label %}
-                {{ parse_string('collectors_label', result.collectors_label) }}
+                {{ common_macros.parse_string('collectors', result.collectors_label) }}
                 {% endif %}
                 {% if result.collection %}
-                {{ parse_string('collection', result.collection) }}
+                {{ common_macros.parse_string('collection', result.collection) }}
                 {% endif %}
                 {% if serie %}
-                {{ parse_string('series', serie) }}
+                {{ common_macros.parse_string('series', serie) }}
                 {% endif %}
-                {{ parse_string('date_normalized', result.date_normalized) }}
+                {{ common_macros.parse_string('date_normalized', result.date_normalized) }}
                 {% if result.content_type %}
-                {{ parse_string('content_type', result.content_type) }}
+                {{ common_macros.parse_string('content_type', result.content_type) }}
                 {% endif %}
             </div>
         </a>

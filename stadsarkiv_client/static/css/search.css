@@ -202,6 +202,6 @@ details>summary.inactive {
 }
 
 .record-content>.label {
-    width: 6em;
-    min-width: 6em;
+    width: 8em;
+    min-width: 8em;
 }
