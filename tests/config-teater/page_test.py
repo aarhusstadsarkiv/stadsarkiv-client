@@ -1,5 +1,5 @@
 """
-Test of some modified resources on "teater" client. 
+Test of some modified resources on "teater" client.
 """
 
 from stadsarkiv_client.app import app

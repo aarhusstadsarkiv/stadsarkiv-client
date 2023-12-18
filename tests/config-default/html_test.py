@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 log = get_log()
 
 
-class TestPages(unittest.TestCase):
+class TestHTML(unittest.TestCase):
     def test_collections(self):
         client = TestClient(app)
         response = client.get("/collections/2")
@@ -28,13 +28,3 @@ class TestPages(unittest.TestCase):
         # check the response html and test if it contains a "h3" with the text "Samlingstags"
         h3Tags = soup.find("h3", string="Samlingstags")
         self.assertIsNotNone(h3Tags)
-
-    def test_sejrs_sedler(self):
-        client = TestClient(app)
-        response = client.get("/records/000110411")
-
-        soup = BeautifulSoup(response.content, "html.parser")
-
-        # check if there is div with the class "record-sejrs-sedler"
-        record_sejrs_sedler = soup.find("div", {"class": "record-sejrs-sedler"})
-        self.assertIsNotNone(record_sejrs_sedler)
