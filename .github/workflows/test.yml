@@ -29,15 +29,20 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
 
-      - name: Run default tests
+      - name: Run default client tests
         run: python -m unittest tests/config-default/*.py
         env:
           CONFIG_DIR: example-config-aarhus
 
-      - name: Run client tests
+      - name: Run teater client tests
         run: python -m unittest tests/config-teater/*.py
         env:
           CONFIG_DIR: example-config-teater
+
+      - name: Run teater client tests
+        run: python -m unittest tests/config-aarhus/*.py
+        env:
+          CONFIG_DIR: example-config-aarhus
         
       - name: Run mypy
         run: mypy --config-file pyproject.toml .
