@@ -12,7 +12,6 @@ log = get_log()
 
 
 class TestHTML(unittest.TestCase):
-
     def test_sejrs_sedler(self):
         client = TestClient(app)
         response = client.get("/records/000110411")
