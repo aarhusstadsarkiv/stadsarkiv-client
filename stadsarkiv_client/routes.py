@@ -3,7 +3,18 @@ Define routes for the application.
 """
 
 from starlette.routing import Route, Mount
-from stadsarkiv_client.endpoints import auth, order, proxies_records, proxies_search, proxies_resources, test, pages, schemas, entities
+from stadsarkiv_client.endpoints import (
+    auth,
+    order,
+    proxies_records,
+    proxies_search,
+    proxies_resources,
+    test,
+    pages,
+    schemas,
+    entities,
+    error,
+)
 import os
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.multi_static import MultiStaticFiles
@@ -68,6 +79,7 @@ routes = [
     Route("/records/{record_id:str}", endpoint=proxies_records.get, name="proxies_records_get"),
     Route("/records/{record_id:str}/json/{type:str}", endpoint=proxies_records.get_json, name="proxies_records_get_json"),
     Route("/order/{record_id:str}", endpoint=order.order_get, name="proxies_records_get_json"),
+    Route("/error/log", endpoint=error.log_post, name="error_log_post", methods=["POST"]),
 ]
 
 # Add test route
