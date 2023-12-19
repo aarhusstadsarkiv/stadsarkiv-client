@@ -1,5 +1,6 @@
 import { Events } from '/static/js/events.js';
 import { Flash } from '/static/js/flash.js';
+import { asyncLogError } from '/static/js/error.js';
 
 // Function to save the state of the tree to local storage
 function saveTree() {
@@ -205,13 +206,12 @@ function searchEvents() {
             const q = document.querySelector('#q');
         });
 
-
-
     } catch (error) {
         // unset local storage if it fails. 
         // The tree may be updated and the saved state may be invalid
         localStorage.removeItem('treeState');
-        console.log(error);
+        asyncLogError(error);
+        
     }
 }
 
