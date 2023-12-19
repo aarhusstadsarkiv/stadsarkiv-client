@@ -1,51 +1,43 @@
 /**
- * Simple overlay for record image
- */
-
-let overlayHistoryModified = false;
-
-
-/**
- * ActivateOverlay takes a selector as argument.
+ * activateOverlay takes a selector as argument.
  * This selector needs a 
- * .overlay child element containing a image
- * img element. 
- * 
- * 
+ * .overlay child element containing an image
+ * img element.  
  */
 function activateOverlay(selector) {
+    // Track the currently opened overlay
+    let currentOverlay = null;
 
-    const overlaySelector = `${selector} > .overlay`;
-    const overlay = document.querySelector(overlaySelector);
-    const imageSelector = `${selector} > img`;
-    const image = document.querySelector(imageSelector);
-    if (image) {
-        image.addEventListener('click', function () {
-
-            overlay.style.display = 'block';
-
-            // Only modify history if it hasn't been modified before by the overlay
-            // Add to history so that the user can use the back button to close the overlay
-            if (!overlayHistoryModified) {
+    // Find all elements matching the selector
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(element => {
+        const overlay = element.querySelector('.overlay');
+        const image = element.querySelector('img');
+        if (image && overlay) {
+            image.addEventListener('click', function () {
+                overlay.style.display = 'block';
+                currentOverlay = overlay;
+                // Add to history so that the user can use the back button to close the overlay
                 history.pushState({ overlayOpened: true }, null, null);
-                overlayHistoryModified = true;
-            }
-        });
-    }
+            });
+        }
 
-    if (overlay) {
-        overlay.addEventListener('click', function () {
-            this.style.display = 'none';
-            overlayHistoryModified = false; // Reset the flag
-        });
-    }
+        if (overlay) {
+            overlay.addEventListener('click', function () {
+                if (overlay.style.display === 'block') {
+                    // This will execute the popstate event listener
+                    history.back();
+                }
+            });
+        }
+    });
 
     window.addEventListener('popstate', function (event) {
-
-        // If the overlay is displayed, hide it
-        if (overlay.style.display === 'block') {
-            overlay.style.display = 'none';
-            overlayHistoryModified = false; // Reset the flag
+        console.log("popstate");
+        // If an overlay is displayed, hide it
+        if (currentOverlay && currentOverlay.style.display === 'block') {
+            currentOverlay.style.display = 'none';
+            currentOverlay = null; // Reset the current overlay
         }
     });
 }
