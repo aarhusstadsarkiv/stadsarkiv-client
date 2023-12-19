@@ -1,9 +1,7 @@
 /**
- * function that serializes a js error
+ * function that serializes the error
  */
 function serializeError(error, customMessage) {
-
-    // Split the stack into an array of lines
 
     // Default custom message is 'JS error'
     if (!customMessage) {
@@ -18,11 +16,8 @@ function serializeError(error, customMessage) {
 }
 
 /**
- * 
  * Send the error to the server
- * path /log-js-errord
  */
-
 function asyncLogError(error, customMessage) {
     const errorData = serializeError(error, customMessage);
 
