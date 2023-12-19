@@ -20,6 +20,9 @@ class Requests {
         return rawResponse;
     }
 
+    /**
+     * Post JSON async. Accepts JSON as response
+     */
     static async asyncPostJson(url, formData, method) {
         if (!method) method = 'post'
         const rawResponse = await fetch(url, {
@@ -29,43 +32,6 @@ class Requests {
                 'Content-Type': 'application/json'
             },
             body: formData
-        }).then(function (response) {
-            return response.json()
-        }).then(function (response) {
-            return response;
-        });
-
-        return rawResponse;
-    }
-
-    /**
-     * Async request. Accept JSON as response
-     */
-    static async asyncRequest(url, formData, method) {
-        const rawResponse = await fetch(url, {
-            method: method,
-            headers: {
-                'Accept': 'application/json',
-            },
-            body: formData
-        }).then(function (response) {
-            return response.json()
-        }).then(function (response) {
-            return response;
-        });
-
-        return rawResponse;
-    }
-
-    /**
-     * Async GET request. Accept JSON as response 
-     */
-    static async asyncGet(url) {
-        const rawResponse = await fetch(url, {
-            method: 'get',
-            headers: {
-                'Accept': 'application/json',
-            },
         }).then(function (response) {
             return response.json()
         }).then(function (response) {
