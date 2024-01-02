@@ -3,17 +3,10 @@ from setuptools import setup, find_packages  # type: ignore
 
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
-# get version from module stadsarkiv_client
-VERSION = ""
-with open("stadsarkiv_client/__init__.py", "r") as fh:
-    for line in fh.readlines():
-        if line.startswith("__version__"):
-            VERSION = line.split("=")[1].strip().replace('"', "")
-            break
 
 setup(
     name="stadsarkiv-client",
-    version=VERSION,
+    version='1.1.77',
     description="A starlette client to a fastapi backend",
     url="https://github.com/aarhusstadsarkiv/stadsarkiv-client",
     author="Dennis Iversen",
