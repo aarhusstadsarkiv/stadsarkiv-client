@@ -50,7 +50,7 @@ Install main branch:
 
 Install a tag: 
 <!-- LATEST-VERSION-PIPX -->
-	pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.77
+	pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.78
 
 Run dev server:
 
@@ -70,7 +70,7 @@ With some config dir `example-config`:
 
 Install latest version (or upgrade):
 <!-- LATEST-VERSION-PIP -->
-	pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.77
+	pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.78
 
 Uninstall:
 
