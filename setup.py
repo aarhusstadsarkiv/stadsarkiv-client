@@ -6,7 +6,7 @@ REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 setup(
     name="stadsarkiv-client",
-    version='1.1.77',
+    version="1.1.77",
     description="A starlette client to a fastapi backend",
     url="https://github.com/aarhusstadsarkiv/stadsarkiv-client",
     author="Dennis Iversen",
