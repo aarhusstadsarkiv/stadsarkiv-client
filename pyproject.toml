@@ -1,17 +1,19 @@
-[project]
-name = "stadarkiv-client"
-version = "1.1.78"
 [tool.black]
 line-length = 140
+
 [tool.mypy]
-exclude = ['venv', '.venv', 'generate_openaws_client', 'tests', 'example-config']
-# pyproject.toml and setup.py are checked for versions when using bumptag
+exclude = [ "venv", ".venv", "generate_openaws_client", "tests", "example-config",]
+
 [tool.bumptag]
-version_files = ["stadsarkiv_client/__init__.py"]
-[tool.bumptag.replace_patterns]
-pip.file = "README.md"
-pip.search = "<!-- LATEST-VERSION-PIP -->"
-pip.replace = "\tpip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}\n"
-pipx.file = "README.md"
-pipx.search = "<!-- LATEST-VERSION-PIPX -->"
-pipx.replace = "\tpipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}\n"
+version_file = "stadsarkiv_client/__init__.py"
+pyproject = [ "project", "tool.poetry",]
+
+[tool.bumptag.replace_patterns.pip]
+file = "README.md"
+search = "<!-- LATEST-VERSION-PIP -->"
+replace = "\tpip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}\n"
+
+[tool.bumptag.replace_patterns.pipx]
+file = "README.md"
+search = "<!-- LATEST-VERSION-PIPX -->"
+replace = "\tpipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}\n"
