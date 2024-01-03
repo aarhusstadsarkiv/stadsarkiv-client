@@ -65,3 +65,7 @@ WantedBy=multi-user.target
 ## status of a service
     
     sudo systemctl status stadsarkiv-client.service
+
+## Upgrade
+
+    sudo ./bin/upgrade.sh GIT-TAG

@@ -50,7 +50,7 @@ Install main branch:
 
 Install a tag: 
 <!-- LATEST-VERSION-PIPX -->
-	pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.78
+	pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.81
 
 Run dev server:
 
@@ -60,7 +60,7 @@ Default:
 
 With some config dir `example-config`: 
 
-    stadsarkiv-client server-dev -c example-config
+    stadsarkiv-client server-dev -c example-config-aarhus
 
 ### Using virtualenv:
 
@@ -70,7 +70,7 @@ With some config dir `example-config`:
 
 Install latest version (or upgrade):
 <!-- LATEST-VERSION-PIP -->
-	pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.78
+	pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.81
 
 Uninstall:
 
@@ -123,4 +123,10 @@ These files and dirs should be placed in the directory where you run the module 
 ## Run on server
 
 [See README.server.md](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/docs/README.server.md)
+
+## Tag a release
+
+    pipx install git+https://github.com/diversen/bump-py-version@v0.0.8
+
+    bump-py-version new-version
 
