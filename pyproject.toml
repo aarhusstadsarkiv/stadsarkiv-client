@@ -4,16 +4,16 @@ line-length = 140
 [tool.mypy]
 exclude = [ "venv", ".venv", "generate_openaws_client", "tests", "example-config",]
 
-[tool.bumptag]
+[tool.bump_version]
 version_file = "stadsarkiv_client/__init__.py"
 pyproject = [ "project", "tool.poetry",]
 
-[tool.bumptag.replace_patterns.pip]
+[tool.bump_version.replace_patterns.pip]
 file = "README.md"
 search = "<!-- LATEST-VERSION-PIP -->"
 replace = "\tpip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}\n"
 
-[tool.bumptag.replace_patterns.pipx]
+[tool.bump_version.replace_patterns.pipx]
 file = "README.md"
 search = "<!-- LATEST-VERSION-PIPX -->"
 replace = "\tpipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}\n"
