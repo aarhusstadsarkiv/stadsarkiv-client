@@ -6,7 +6,6 @@ exclude = [ "venv", ".venv", "generate_openaws_client", "tests", "example-config
 
 [tool.bump_version]
 version_file = "stadsarkiv_client/__init__.py"
-pyproject = [ "project", "tool.poetry",]
 
 [tool.bump_version.replace_patterns.pip]
 file = "README.md"
