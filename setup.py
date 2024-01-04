@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages  # type: ignore
-
+from stadsarkiv_client import __version__
 
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 
 setup(
     name="stadsarkiv-client",
-    version='1.1.78',
+    version=__version__,
     description="A starlette client to a fastapi backend",
     url="https://github.com/aarhusstadsarkiv/stadsarkiv-client",
     author="Dennis Iversen",
