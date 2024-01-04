@@ -3,6 +3,18 @@
  * overrides a few things from the general record.css
  */
 
+:root {
+
+    --search-result-background: white;
+    --search-result-border: #e6e6e6;
+    --search-result-background-hover: #fafafa;
+    --search-link-text: black;
+
+    --search-pagination-background-disabled: #cccccc;
+    --search-pagination-disabled: #666666;
+}
+
+
 .search-results {
     display: flex;
     flex-direction: column;
@@ -177,7 +189,7 @@ details>summary.inactive {
     display: none;
     padding: 5px;
     width: 300px;
-    max-height: calc(100vh - 150px); 
+    max-height: calc(100vh - 150px);
     overflow-y: auto;
 }
 

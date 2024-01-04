@@ -1,6 +1,12 @@
 /**
  * footer styling in 4 sections
  */
+
+:root {
+    --footer-text: white;
+    --footer-heading: white;
+}
+
 footer {
     display: flex;
     justify-content: space-between;
@@ -121,7 +127,7 @@ footer img {
 
     #item-3 {
         order: 2;
-    }   
+    }
 
     #item-4 {
         order: 4;

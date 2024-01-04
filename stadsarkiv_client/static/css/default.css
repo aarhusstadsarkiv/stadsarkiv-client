@@ -1,6 +1,20 @@
 /**
  * general styles which are used in the whole application
  */
+:root {
+
+    --navigation-background: cornflowerblue;
+    --navigation-background-hover: #ffffff22;
+
+    --flash-color: white;
+    --flash-success-color: forestgreen;
+    --flash-notice-color: #1b1f23;
+    --flash-error-color: crimson;
+
+    --main-menu: white;
+    --main-menu-hover: #ffffff22;
+
+}
 
 .navigation {
     display: flex;
@@ -79,7 +93,7 @@
     font-size: 1.0em;
 }
 
-.navigation-right-group a:hover  {
+.navigation-right-group a:hover {
     background: var(--main-menu-hover);
 }
 

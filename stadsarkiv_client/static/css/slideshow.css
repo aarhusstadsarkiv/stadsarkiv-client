@@ -1,6 +1,14 @@
 /**
  * a basic slideshow
  */
+
+:root {
+
+    --slideshow-background: rgba(0, 0, 0, 0.5);
+    --slideshow-background-alt: rgba(0, 0, 0, 0.8);
+    --slideshow-text: white;
+}
+
 .slideshow-container {
     width: 100%;
     margin: 0 auto;
@@ -30,6 +38,7 @@
 .slide:first-child {
     display: block;
 }
+
 .prev,
 .next {
     position: absolute;
