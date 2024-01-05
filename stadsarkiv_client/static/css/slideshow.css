@@ -3,10 +3,10 @@
  */
 
 :root {
-
     --slideshow-background: rgba(0, 0, 0, 0.5);
     --slideshow-background-alt: rgba(0, 0, 0, 0.8);
     --slideshow-text: white;
+
 }
 
 .slideshow-container {
@@ -63,6 +63,7 @@
 .prev:hover,
 .next:hover {
     background-color: var(--slideshow-background-alt);
+    text-decoration: none;
 }
 
 .slide-counter {
