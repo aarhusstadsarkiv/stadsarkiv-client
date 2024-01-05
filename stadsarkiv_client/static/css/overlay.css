@@ -1,6 +1,11 @@
 /**
  * a basic overlay
  */
+
+:root {
+    --overlay-background: white;
+}
+
 .overlay-hidden {
     display: none;
     position: fixed;

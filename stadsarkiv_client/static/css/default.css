@@ -1,6 +1,20 @@
 /**
- * general styles which are used in the whole application
+ * default variables
  */
+:root {
+
+    --navigation-background: cornflowerblue;
+    --navigation-background-hover: #ffffff22;
+
+    --flash-color: white;
+    --flash-success-color: forestgreen;
+    --flash-notice-color: #1b1f23;
+    --flash-error-color: crimson;
+
+    --main-menu: white;
+    --main-menu-hover: #ffffff22;
+
+}
 
 .navigation {
     display: flex;
@@ -79,7 +93,7 @@
     font-size: 1.0em;
 }
 
-.navigation-right-group a:hover  {
+.navigation-right-group a:hover {
     background: var(--main-menu-hover);
 }
 
@@ -92,7 +106,23 @@
     flex-direction: row;
 }
 
+.sub-menu {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
 
+.sub-menu a {
+    padding: 4px;
+    background-color: var(--background);
+    border-radius: 5px;
+    text-decoration: none;
+    color: var(--text-bright);
+}
+
+.sub-menu a:hover {
+    background-color: var(--button-base);
+}
 
 .flash-messages {
     bottom: 0px;
@@ -141,7 +171,6 @@
 * {
     scroll-margin-top: 66px;
 }
-
 
 .container-fluid {
     margin: 0 auto;
