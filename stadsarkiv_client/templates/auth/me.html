@@ -1,20 +1,18 @@
 {% extends "base.html" %}
 
+{% import "macros/basic_macros.html" as basic_macros %}
+
 {% block body_class %}page-auth-me{% endblock %}
 
 {% block content %}
 
 {% include "auth/menu.html" %}
 
-{% include "includes/main_title.html" %}
-
+{{ basic_macros.page_title(title) }}
 
 <table>
     <thead>
-        <tr>
-            <th>Key</th>
-            <th>Value</th>
-        </tr>
+
     </thead>
     <tr>
         <td>Email</td>
@@ -22,21 +20,41 @@
     </tr>
 
     <tr>
-        <td>is_active</td>
-        <td> {{ me["is_active"] }} </td>
+        <td>Aktiveret</td>
+        <td>
+            {% if me["is_active"] %}
+            <span class="label label-success">Ja</span>
+            {% else %}
+            <span class="label label-danger">Nej</span>
+            {% endif %}
+        </td>
     </tr>
 
     <tr>
-        <td>is_verified</td>
-        <td> {{ me["is_verified"] }} </td>
+        <td>Verificeret</td>
+        <td>
+            {% if me["is_verified"] %}
+            <span class="label label-success">Ja</span>
+            {% else %}
+            <span class="label label-danger">Nej</span>
+            {% endif %}
+        </td>
     </tr>
+    </table>
 
-    {% for key, value in me["permissions"].items() %}
+{{ basic_macros.page_title("Brugerrettigheder") }}
+<table>
+
+
+    {% for permission in permissions %}
     <tr>
-        <td>{{ key }}</td>
-        <td> {{ value }} </td>
+        <td>{{ permission }}</td>
+        <td>
+            <span class="label label-default">✓</span>
+        </td>
     </tr>
     {% endfor %}
+
 </table>
 
 <p>
