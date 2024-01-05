@@ -216,7 +216,7 @@ async def is_logged_in(request: Request) -> bool:
         return False
 
 
-async def permissions_as_list(permissions: dict) -> list[str]:
+def permissions_as_list(permissions: dict) -> list[str]:
     """{'guest': True, 'basic': True, 'employee': True, 'admin': True}"""
     permissions_list = []
     for permission, value in permissions.items():
@@ -231,7 +231,7 @@ async def has_permissions(request: Request, permissions: list[str]) -> bool:
     try:
         me = await users_me_get(request)
         user_permissions: dict = me.get("permissions", [])
-        user_permissions_list = await permissions_as_list(user_permissions)
+        user_permissions_list = permissions_as_list(user_permissions)
         for permission in permissions:
             if permission not in user_permissions_list:
                 return False
@@ -244,7 +244,7 @@ async def me_permissions(request: Request) -> list[str]:
     try:
         me = await users_me_get(request)
         user_permissions: dict = me.get("permissions", [])
-        return await permissions_as_list(user_permissions)
+        return permissions_as_list(user_permissions)
     except Exception:
         return []
 
