@@ -21,7 +21,7 @@ settings: dict[str, typing.Any] = {
     #
     "main_menu": [
         {"name": "auth_login_get", "title": "Log ind", "type": "dropdown"},
-        {"name": "auth_forgot_password_get", "title": "Glemt password", "type": "dropdown"},
+        # {"name": "auth_forgot_password_get", "title": "Glemt password", "type": "dropdown"},
         {"name": "auth_logout_get", "title": "Log ud", "type": "dropdown"},
         {"name": "auth_register_get", "title": "Ny bruger", "type": "dropdown"},
         {"name": "auth_me_get", "title": "Profil", "type": "dropdown"},
