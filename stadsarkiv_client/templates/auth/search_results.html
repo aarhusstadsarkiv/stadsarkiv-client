@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% import "macros/basic_macros.html" as basic_macros %}
+
+{% block body_class %}page-auth-search-results{% endblock %}
+
+{% block content %}
+
+{% include "auth/menu.html" %}
+
+{{ basic_macros.page_title(title) }}
+
+<p>Her kommer søgeresultater</p>
+
+{% endblock content %}

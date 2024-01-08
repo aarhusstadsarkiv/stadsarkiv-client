@@ -138,6 +138,60 @@ async def me_get(request: Request):
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
+@is_authenticated(message=translate("You need to be logged in to view this page."))
+async def orders(request: Request):
+    try:
+        me = await api.users_me_get(request)
+
+        orders: list = []
+        context_values = {"title": translate("Your orders"), "me": me, "orders": orders}
+        context = await get_context(request, context_values=context_values)
+
+        return templates.TemplateResponse("auth/orders.html", context)
+    except OpenAwsException as e:
+        flash.set_message(request, str(e), type="error")
+    except Exception as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+        return RedirectResponse(url="/auth/login", status_code=302)
+
+
+@is_authenticated(message=translate("You need to be logged in to view this page."))
+async def bookmarks(request: Request):
+    try:
+        me = await api.users_me_get(request)
+
+        bookmarks: list = []
+        context_values = {"title": translate("Your bookmarks"), "me": me, "bookmarks": bookmarks}
+        context = await get_context(request, context_values=context_values)
+
+        return templates.TemplateResponse("auth/bookmarks.html", context)
+    except OpenAwsException as e:
+        flash.set_message(request, str(e), type="error")
+    except Exception as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+        return RedirectResponse(url="/auth/login", status_code=302)
+
+
+@is_authenticated(message=translate("You need to be logged in to view this page."))
+async def search_results(request: Request):
+    try:
+        me = await api.users_me_get(request)
+
+        bookmarks: list = []
+        context_values = {"title": translate("Your search results"), "me": me, "bookmarks": bookmarks}
+        context = await get_context(request, context_values=context_values)
+
+        return templates.TemplateResponse("auth/search_results.html", context)
+    except OpenAwsException as e:
+        flash.set_message(request, str(e), type="error")
+    except Exception as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+        return RedirectResponse(url="/auth/login", status_code=302)
+
+
 async def forgot_password_get(request: Request):
     context_values = {"title": translate("Forgot your password")}
     context = await get_context(request, context_values=context_values)
