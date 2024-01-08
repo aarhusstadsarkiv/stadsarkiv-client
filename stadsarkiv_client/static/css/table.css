@@ -1,0 +1,12 @@
+.table-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* ensure that every td is only one line */
+.table-container table tr td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
