@@ -147,12 +147,24 @@ async def orders(request: Request):
 
         # TODO: Get orders from API
         order = {
-            "id": "1",
-            "title": "Order 1",
+            "uuid": "1",
+            "material_id": "000389633",
+            "title": "Kort 889: Signalturforklaringer til 5-farvet kort, Off-service, butikker m.m.",
             "status": "Completed",
             "created_at": "2024-01-01 12:00:00",
             "updated_at": "2024-01-02 12:00:00",
         }
+        orders.append(order)
+
+        order = {
+            "uuid": "1",
+            "material_id": "000182514",
+            "title": "Regnskaber (kopier)",
+            "status": "Completed",
+            "created_at": "2024-01-01 12:00:00",
+            "updated_at": "2024-01-02 12:00:00",
+        }
+
         orders.append(order)
 
         context_values = {"title": translate("Your orders"), "me": me, "orders": orders}
