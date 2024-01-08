@@ -58,7 +58,7 @@ da = {
     "Password should be at least 8 characters long": "Password skal være mindst 8 tegn langt",
     "Passwords do not match.": "Passwords er ikke ens",
     "Permission admin": "Administrator",
-    "Permission basic": "Basis",
+    "Permission basic": "Bruger",
     "Permission employee": "Medarbejder",
     "Permission guest": "Gæst",
     "Previous": "Forrige",
