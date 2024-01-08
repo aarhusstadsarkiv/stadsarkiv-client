@@ -13,6 +13,7 @@ from stadsarkiv_client.core import user
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
+from stadsarkiv_client.endpoints import auth_data
 
 log = get_log()
 
@@ -142,32 +143,7 @@ async def me_get(request: Request):
 async def orders(request: Request):
     try:
         me = await api.users_me_get(request)
-
-        orders: list = []
-
-        # TODO: Get orders from API
-        order = {
-            "uuid": "1",
-            "material_id": "000389633",
-            "title": "Kort 889: Signalturforklaringer til 5-farvet kort, Off-service, butikker m.m.",
-            "status": "Completed",
-            "created_at": "2024-01-01 12:00:00",
-            "updated_at": "2024-01-02 12:00:00",
-        }
-        orders.append(order)
-
-        order = {
-            "uuid": "1",
-            "material_id": "000182514",
-            "title": "Regnskaber (kopier)",
-            "status": "Completed",
-            "created_at": "2024-01-01 12:00:00",
-            "updated_at": "2024-01-02 12:00:00",
-        }
-
-        orders.append(order)
-
-        context_values = {"title": translate("Your orders"), "me": me, "orders": orders}
+        context_values = {"title": translate("Your orders"), "me": me, "orders": auth_data.api_orders}
         context = await get_context(request, context_values=context_values)
 
         return templates.TemplateResponse("auth/orders.html", context)
@@ -183,9 +159,7 @@ async def orders(request: Request):
 async def bookmarks(request: Request):
     try:
         me = await api.users_me_get(request)
-
-        bookmarks: list = []
-        context_values = {"title": translate("Your bookmarks"), "me": me, "bookmarks": bookmarks}
+        context_values = {"title": translate("Your bookmarks"), "me": me, "bookmarks": auth_data.api_booksmarks}
         context = await get_context(request, context_values=context_values)
 
         return templates.TemplateResponse("auth/bookmarks.html", context)
@@ -201,9 +175,7 @@ async def bookmarks(request: Request):
 async def search_results(request: Request):
     try:
         me = await api.users_me_get(request)
-
-        bookmarks: list = []
-        context_values = {"title": translate("Your search results"), "me": me, "bookmarks": bookmarks}
+        context_values = {"title": translate("Your search results"), "me": me, "search_results": auth_data.api_search_results}
         context = await get_context(request, context_values=context_values)
 
         return templates.TemplateResponse("auth/search_results.html", context)
