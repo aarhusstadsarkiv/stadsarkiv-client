@@ -144,6 +144,17 @@ async def orders(request: Request):
         me = await api.users_me_get(request)
 
         orders: list = []
+
+        # TODO: Get orders from API
+        order = {
+            "id": "1",
+            "title": "Order 1",
+            "status": "Completed",
+            "created_at": "2024-01-01 12:00:00",
+            "updated_at": "2024-01-02 12:00:00",
+        }
+        orders.append(order)
+
         context_values = {"title": translate("Your orders"), "me": me, "orders": orders}
         context = await get_context(request, context_values=context_values)
 
