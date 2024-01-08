@@ -5,7 +5,7 @@
 }
 
 /* ensure that every td is only one line */
-.table-container table tr td {
+.table-container > table tr td {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
