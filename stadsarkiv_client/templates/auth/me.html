@@ -4,58 +4,62 @@
 
 {% block body_class %}page-auth-me{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/table.css') }}?v={{ get_setting('version') }}">
+{% endblock head %}
+
 {% block content %}
 
 {% include "auth/menu.html" %}
 
 {{ basic_macros.page_title(title) }}
 
-<table>
-    <thead>
+<div class="table-container">
+    <table>
+        <tr>
+            <td>Email</td>
+            <td> {{ me["email"] }} </td>
+        </tr>
 
-    </thead>
-    <tr>
-        <td>Email</td>
-        <td> {{ me["email"] }} </td>
-    </tr>
+        <tr>
+            <td>Aktiveret</td>
+            <td>
+                {% if me["is_active"] %}
+                <span class="label label-success">Ja</span>
+                {% else %}
+                <span class="label label-danger">Nej</span>
+                {% endif %}
+            </td>
+        </tr>
 
-    <tr>
-        <td>Aktiveret</td>
-        <td>
-            {% if me["is_active"] %}
-            <span class="label label-success">Ja</span>
-            {% else %}
-            <span class="label label-danger">Nej</span>
-            {% endif %}
-        </td>
-    </tr>
-
-    <tr>
-        <td>Verificeret</td>
-        <td>
-            {% if me["is_verified"] %}
-            <span class="label label-success">Ja</span>
-            {% else %}
-            <span class="label label-danger">Nej</span>
-            {% endif %}
-        </td>
-    </tr>
+        <tr>
+            <td>Verificeret</td>
+            <td>
+                {% if me["is_verified"] %}
+                <span class="label label-success">Ja</span>
+                {% else %}
+                <span class="label label-danger">Nej</span>
+                {% endif %}
+            </td>
+        </tr>
     </table>
+</div>
+
 
 {{ basic_macros.page_title("Brugerrettigheder") }}
-<table>
+<div class="table-container">
+    <table>
+        {% for permission in permissions %}
+        <tr>
+            <td>{{ permission }}</td>
+            <td>
+                <span class="label label-default">✓</span>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 
-
-    {% for permission in permissions %}
-    <tr>
-        <td>{{ permission }}</td>
-        <td>
-            <span class="label label-default">✓</span>
-        </td>
-    </tr>
-    {% endfor %}
-
-</table>
 
 <p>
     {% if not me["is_verified"] %}
