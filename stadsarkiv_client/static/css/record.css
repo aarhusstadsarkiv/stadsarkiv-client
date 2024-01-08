@@ -198,3 +198,14 @@ a.active {
 .record-prev-next span {
     min-width: 40px;
 }
+
+.record-order {
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    font-size: 1.2em;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
