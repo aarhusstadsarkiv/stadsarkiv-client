@@ -32,7 +32,6 @@
   /**
    * default.css
    */
-
   --navigation-background: cornflowerblue;
   --navigation-background-hover: #ffffff22;
 
@@ -46,8 +45,8 @@
   --main-menu-top: 66px;
 
   /**
-    * record.css
-    */
+   * record.css
+   */
   --record-background-sejrs-sedler: rgb(250, 250, 196);
   --record-representation-box-shadow: rgba(0, 0, 0, 0.4);
 
@@ -74,7 +73,6 @@
   /**
    * footer.css
    */
-
   --footer-text: white;
   --footer-heading: white;
 
@@ -87,6 +85,6 @@
 
   /**
    * overlay.css
-      */
+   */
   --overlay-background: white;
 }
