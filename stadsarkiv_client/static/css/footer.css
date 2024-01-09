@@ -7,7 +7,7 @@
     --footer-heading: white;
 }
 
-footer {
+.footer {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
