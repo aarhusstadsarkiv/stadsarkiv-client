@@ -368,10 +368,14 @@
 
 <script type="module">
     import { searchEvents } from "/static/js/search.js";
+    import { autoCompleteInit  } from '/static/js/auto-complete-instance.js';
+
     searchEvents();
+
+    window.addEventListener("pageshow", function(event) {
+        autoCompleteInit();
+    });
 </script>
 
-{# Auto complete search. Placed in html because it uses variables from starlette context #}
-{% include "includes/auto_complete_search.html" %}
 
 {% endblock content %}
