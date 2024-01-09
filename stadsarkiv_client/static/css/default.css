@@ -13,6 +13,7 @@
 
     --main-menu: white;
     --main-menu-hover: #ffffff22;
+    --main-menu-top: 66px;
 
 }
 
@@ -66,7 +67,7 @@
 .main-menu {
     display: none;
     position: absolute;
-    top: 66px;
+    top: var(--main-menu-top);
     right: 0px;
     background-color: var(--navigation-background);
     border: 1px solid var(--background);
@@ -165,11 +166,6 @@
     top: 0;
     width: 100%;
     z-index: 100;
-    height: 66px;
-}
-
-* {
-    scroll-margin-top: 66px;
 }
 
 .container-fluid {
