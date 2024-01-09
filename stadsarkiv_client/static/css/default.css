@@ -1,22 +1,3 @@
-/**
- * default variables
- */
-:root {
-
-    --navigation-background: cornflowerblue;
-    --navigation-background-hover: #ffffff22;
-
-    --flash-color: white;
-    --flash-success-color: forestgreen;
-    --flash-notice-color: #1b1f23;
-    --flash-error-color: crimson;
-
-    --main-menu: white;
-    --main-menu-hover: #ffffff22;
-    --main-menu-top: 66px;
-
-}
-
 .navigation {
     display: flex;
     justify-content: space-between;
@@ -161,10 +142,9 @@
     box-sizing: border-box;
 }
 
-.container-sticky {
+.sticky-top {
     position: sticky;
     top: 0;
-    width: 100%;
     z-index: 100;
 }
 
