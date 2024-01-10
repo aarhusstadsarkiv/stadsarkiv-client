@@ -1,5 +1,13 @@
 <div class="sub-menu">
+    {% if has_permission( "admin", permissions_list) %}
     <a href="/admin/users">Brugere</a>
-    <a href="/entities">Entiteter</a>
+    {% endif %}
+
+    {% if has_permission( "employee", permissions_list) %}
+    <a href="/admin/users">Entiteter</a>
+    {% endif %}
+
+    {% if has_permission( "admin", permissions_list) %}
     <a href="/schemas">Skemaer</a>
+    {% endif %}
 </div>
