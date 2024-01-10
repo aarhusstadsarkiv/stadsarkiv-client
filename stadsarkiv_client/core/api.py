@@ -160,6 +160,35 @@ async def users_me_get(request: Request) -> dict:
             )
 
 
+async def users_get(request: Request) -> dict:
+    """cache me on request state. In case of multiple calls to me_read
+    in the same request, we don't need to call the api again.
+    """
+
+    if hasattr(request.state, "me"):
+        return request.state.me
+
+    headers = _get_jwt_headers(request, {"Accept": "application/json"})
+
+    url = base_url + "/users"
+
+    async with _get_async_client() as client:
+        response = await client.get(
+            url=url,
+            follow_redirects=True,
+            headers=headers,
+        )
+
+        if response.is_success:
+            request.state.me = response.json()
+            return response.json()
+        else:
+            raise OpenAwsException(
+                422,
+                translate("You need to be logged in to view this page."),
+            )
+
+
 async def auth_forgot_password(request: Request) -> None:
     form = await request.form()
     email = str(form.get("email"))
