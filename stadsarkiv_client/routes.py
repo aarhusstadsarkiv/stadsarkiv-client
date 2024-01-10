@@ -4,6 +4,7 @@ Define routes for the application.
 
 from starlette.routing import Route, Mount
 from stadsarkiv_client.endpoints import (
+    admin,
     auth,
     order,
     proxies_records,
@@ -48,6 +49,7 @@ def _get_static_dirs() -> list:
 # Add basic routes
 routes = [
     Mount("/static", MultiStaticFiles(directories=_get_static_dirs()), name="static"),
+    Route("/admin/users", endpoint=admin.users_get, name="admin_users_get", methods=["GET"]),
     Route("/auth/login", endpoint=auth.login_get, name="auth_login_get", methods=["GET"]),
     Route("/auth/login", endpoint=auth.login_post, name="auth_login_post", methods=["POST"]),
     Route("/auth/logout", endpoint=auth.logout_get, name="auth_logout_get", methods=["GET"]),
