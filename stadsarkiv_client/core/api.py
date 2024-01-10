@@ -287,7 +287,7 @@ async def schema_get_by_name(request: Request, schema_type: str) -> typing.Any:
 
 
 @disk_cache(ttl=ONE_YEAR, use_args=[1, 2])
-async def schema_get_by_version(request: Request, schema_name: str, schema_version: int) -> typing.Any:
+async def schema_get_by_name_version(request: Request, schema_name: str, schema_version: int) -> typing.Any:
     async with _get_async_client() as client:
         url = base_url + "/schemas/" + schema_name + "?version=" + str(schema_version)
         headers = {"Accept": "application/json"}

@@ -38,7 +38,7 @@ async def update(request: Request):
     entity = await api.entity_get(request)
 
     schema_name, schema_version = api.schema_get_name_version_from_entity(entity)
-    schema = await api.schema_get_by_version(request, schema_name, schema_version)
+    schema = await api.schema_get_by_name_version(request, schema_name, schema_version)
     schema_latest = await api.schema_get_by_name(request, schema_name)
 
     is_lastest_schema = False
@@ -159,7 +159,7 @@ async def get_single(request: Request):
     entity: dict = await api.entity_get(request)
     schema_name, schema_version = api.schema_get_name_version_from_entity(entity)
 
-    schema = await api.schema_get_by_version(request, schema_name, schema_version)
+    schema = await api.schema_get_by_name_version(request, schema_name, schema_version)
     types_and_values = _get_types_and_values(schema, entity)
 
     context_values = {
@@ -177,7 +177,7 @@ async def get_single_json(request: Request):
     entity: dict = await api.entity_get(request)
     schema_name, schema_version = api.schema_get_name_version_from_entity(entity)
 
-    schema = await api.schema_get_by_version(request, schema_name, schema_version)
+    schema = await api.schema_get_by_name_version(request, schema_name, schema_version)
     types_and_values = _get_types_and_values(schema, entity)
 
     if type == "types_and_values":
