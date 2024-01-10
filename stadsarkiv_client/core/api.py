@@ -261,6 +261,13 @@ async def schemas(request: Request) -> typing.Any:
             response.raise_for_status()
 
 
+def schema_get_name_version_from_entity(entity: dict):
+    schema_name = entity["schema_name"]
+    schema_version = schema_name.split("_")[1]
+    schema_name = schema_name.split("_")[0]
+    return schema_name, schema_version
+
+
 async def schema_get(request: Request) -> typing.Any:
     schema_type = request.path_params["schema_type"]
     return await schema_get_by_name(request, schema_type)
