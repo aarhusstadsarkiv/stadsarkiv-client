@@ -118,7 +118,6 @@ def get_icon(icon: str):
 
 
 def has_permission(role: str, roles: list):
-    log.debug(f"has_permission: {role} in {roles}")
     return role in roles
 
 
