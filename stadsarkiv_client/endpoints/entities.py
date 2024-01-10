@@ -39,7 +39,7 @@ async def update(request: Request):
 
     schema_name, schema_version = api.schema_get_name_version_from_entity(entity)
     schema = await api.schema_get_by_name_version(request, schema_name, schema_version)
-    schema_latest = await api.schema_get_by_name(request, schema_name)
+    schema_latest = await api.schema_get_latest(request, schema_name)
 
     is_lastest_schema = False
     if schema["name"] == schema_latest["name"] and schema["version"] == schema_latest["version"]:

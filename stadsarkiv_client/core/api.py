@@ -271,10 +271,10 @@ def schema_get_name_version_from_entity(entity: dict):
 
 async def schema_get(request: Request) -> typing.Any:
     schema_type = request.path_params["schema_type"]
-    return await schema_get_by_name(request, schema_type)
+    return await schema_get_latest(request, schema_type)
 
 
-async def schema_get_by_name(request: Request, schema_type: str) -> typing.Any:
+async def schema_get_latest(request: Request, schema_type: str) -> typing.Any:
     async with _get_async_client() as client:
         url = base_url + "/schemas/" + schema_type
         headers = {"Accept": "application/json"}
