@@ -12,6 +12,7 @@ from stadsarkiv_client.core import api
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core import cookie
+import asyncio
 
 
 log = get_log()
@@ -19,7 +20,8 @@ log = get_log()
 
 async def get_context(request: Request, context_values: dict = {}) -> dict:
     hooks = get_hooks(request)
-    logged_in = await api.is_logged_in(request)
+
+    logged_in, permissions_list = await asyncio.gather(api.is_logged_in(request), api.me_permissions(request))
 
     # query_str_display is used to display the last search query
     # it is already present in the context_values if the client is requesting the search page
@@ -27,11 +29,12 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
         context_values["query_str_display"] = cookie.get_query_str_display(request)
 
     context = {
+        "permissions_list": permissions_list,
         "flash_messages": get_messages(request),
         "path": request.url.path,
         "request": request,
         "title": _get_title(request),
-        "main_menu": await _get_main_menu(request),
+        "main_menu": await _get_main_menu(logged_in, permissions_list),
         "logged_in": logged_in,
     }
 
@@ -48,10 +51,7 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
     return context
 
 
-async def _get_main_menu(request: Request):
-    logged_in = await api.is_logged_in(request)
-    permissions_list = await api.me_permissions(request)
-
+async def _get_main_menu(logged_in: bool, permissions_list: list):
     main_menu: Any = []
     if "main_menu" in dynamic_settings.settings:
         main_menu = dynamic_settings.settings["main_menu"]  # type ignore
@@ -66,6 +66,7 @@ async def _get_main_menu(request: Request):
         main_menu = [item for item in main_menu if item["name"] != "auth_me_get"]
 
     if "admin" not in permissions_list:
+        main_menu = [item for item in main_menu if item["name"] != "admin_users_get"]
         main_menu = [item for item in main_menu if item["name"] != "schemas_get_list"]
         main_menu = [item for item in main_menu if item["name"] != "entities_get_list"]
 
