@@ -14,6 +14,6 @@ log = get_log()
 async def users_get(request: Request):
     users = await api.users_get(request)
 
-    context_values = {"title": translate("Users"), "users": users}
+    context_values = {"title": "Brugere", "users": users}
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse("admin/users.html", context)
