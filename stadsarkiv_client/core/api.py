@@ -9,6 +9,7 @@ from stadsarkiv_client.core import user
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import query
+from stadsarkiv_client.core.decorators import disk_cache
 from urllib.parse import quote
 import json
 import httpx
@@ -285,7 +286,7 @@ async def schema_get_by_name(request: Request, schema_type: str) -> typing.Any:
             response.raise_for_status()
 
 
-# @disk_cache(ttl=ONE_YEAR, use_args=[1, 2])
+@disk_cache(ttl=ONE_YEAR, use_args=[1, 2])
 async def schema_get_by_version(request: Request, schema_name: str, schema_version: int) -> typing.Any:
     async with _get_async_client() as client:
         url = base_url + "/schemas/" + schema_name + "?version=" + str(schema_version)
