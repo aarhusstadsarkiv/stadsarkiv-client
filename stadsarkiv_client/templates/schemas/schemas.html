@@ -1,26 +1,28 @@
+{% import "macros/basic_macros.html" as basic_macros %}
+
 {% extends "base.html" %}
 
 {% block body_class %}page-schemas-view{% endblock %}
 
 {% block content %}
 
-{% include "includes/main_title.html" %}
+{% include "admin/menu.html" %}
+
+{{ basic_macros.page_title(title) }}
+
+<table>
+{% for schema in schemas %}
+<tr>
+    <td><a href="/schemas/{{ schema.type }}"> {{ translate('View schema') }}: {{ schema.type }} </a></td>
+</tr>
+</tr>
+{% endfor %}
+</table>
 
 <form method="post" action="{{ url_for('schemas_post')}}">
     <input type="text" name="type" placeholder="Type" aria-label="Type">
     <textarea name="data" placeholder="Data"></textarea>
     <button type="submit" class="contrast">{{ 'Opret skema' }}</button>
 </form>
-
-<table>
-{% for schema in schemas %}
-<tr>
-    <td><a href="/schemas/{{ schema.type }}"> {{ translate('View schema') }}: {{ schema.type }} </a></td>
-    <td><a href="{{ url_for('entities_create', schema_type=schema.type) }}"> {{ 'Opret entitet' }}: {{ schema.type }} </a></td>
-</tr>
-</tr>
-{% endfor %}
-</table>
-
 
 {% endblock content %}

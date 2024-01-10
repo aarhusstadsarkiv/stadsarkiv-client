@@ -1,11 +1,15 @@
 {% import "macros/admin_macros.html" as admin_macros %}
+{% import "macros/basic_macros.html" as basic_macros %}
 
 {% extends "base.html" %}
 
 {% block body_class %}page-entities-delete-soft{% endblock %}
 
 {% block content %}
-{% include "includes/main_title.html" %}
+
+{% include "admin/menu.html" %}
+
+{{ basic_macros.page_title(title) }}
 
 <p>
     {{ admin_macros.render_action_link('/entities', "Til oversigt") }} | 
