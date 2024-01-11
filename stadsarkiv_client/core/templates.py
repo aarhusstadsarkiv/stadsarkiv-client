@@ -117,8 +117,8 @@ def get_icon(icon: str):
     return ICONS.get(icon)
 
 
-def has_permission(role: str, roles: list):
-    return role in roles
+def has_permission(permission: str, permissions: list):
+    return permission in permissions
 
 
 templates.env.globals.update(translate=translate)

@@ -111,23 +111,24 @@ async def verify_get(request: Request):
     return RedirectResponse(url="/", status_code=302)
 
 
-def _get_permissions_translated(permission_list):
+async def me_permission_translated(request: Request):
+    permission_list = await api.me_permissions(request)
     permissions_translated = []
 
     for permission in permission_list:
         permissions_translated.append(translate(f"Permission {permission}"))
 
-    return permissions_translated
+    return permissions_translated[-1]
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))
 async def me_get(request: Request):
     try:
         me = await api.users_me_get(request)
-        permission_list = await api.me_permissions(request)
-        permissions = _get_permissions_translated(permission_list)
+        permissions = await api.me_permissions(request)
+        permission_translated = user.permission_translated(permissions)
 
-        context_values = {"title": translate("Profile"), "me": me, "permissions": permissions}
+        context_values = {"title": translate("Profile"), "me": me, "permission_translated": permission_translated}
         context = await get_context(request, context_values=context_values)
 
         return templates.TemplateResponse("auth/me.html", context)
