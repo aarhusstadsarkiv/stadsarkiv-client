@@ -10,10 +10,10 @@ from stadsarkiv_client.core import api
 log = get_log()
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."))
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def users_get(request: Request):
-    users = await api.users_get(request)
-
+    # users = await api.users_get(request)
+    users: list = []
     context_values = {"title": "Brugere", "users": users}
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse("admin/users.html", context)

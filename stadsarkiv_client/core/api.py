@@ -165,9 +165,6 @@ async def users_get(request: Request) -> dict:
     in the same request, we don't need to call the api again.
     """
 
-    if hasattr(request.state, "me"):
-        return request.state.me
-
     headers = _get_jwt_headers(request, {"Accept": "application/json"})
 
     url = base_url + "/users"
