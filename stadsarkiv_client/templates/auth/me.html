@@ -21,17 +21,6 @@
             <td> {{ me["email"] }} </td>
         </tr>
 
-        <!-- <tr>
-            <td>Aktiveret</td>
-            <td>
-                {% if me["is_active"] %}
-                <span class="label label-success">Ja</span>
-                {% else %}
-                <span class="label label-danger">Nej</span>
-                {% endif %}
-            </td>
-        </tr> -->
-
         <tr>
             <td>Verificeret</td>
             <td>
@@ -42,24 +31,15 @@
                 {% endif %}
             </td>
         </tr>
-    </table>
-</div>
 
-
-{{ basic_macros.page_title("Brugerrettigheder") }}
-<div class="table-container">
-    <table>
-        {% for permission in permissions %}
         <tr>
-            <td>{{ permission }}</td>
+            <td>Rettighed</td>
             <td>
-                <span class="label label-default">✓</span>
+                {{ permission_translated }}
             </td>
         </tr>
-        {% endfor %}
     </table>
 </div>
-
 
 <p>
     {% if not me["is_verified"] %}
