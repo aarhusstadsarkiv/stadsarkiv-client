@@ -88,7 +88,7 @@ def _get_jwt_headers(request: Request, headers: dict = {}) -> dict:
 
 async def auth_jwt_login_post(request: Request):
     """
-    POST a email and password to the api in order to login
+    POST an email and password to the api in order to login
     """
     form = await request.form()
     username = str(form.get("username"))
@@ -113,7 +113,7 @@ async def auth_jwt_login_post(request: Request):
 
 async def auth_register_post(request: Request):
     """
-    POST a email and password to the api in order to register a new user
+    POST an email and password to the api in order to register a new user
     """
     await validate_passwords(request)
     form = await request.form()
@@ -203,7 +203,7 @@ async def users_get(request: Request) -> dict:
 
 async def auth_forgot_password(request: Request) -> None:
     """
-    POST a email to the api in order to reset the password
+    POST an email to the api in order to reset the password
     """
     form = await request.form()
     email = str(form.get("email"))
@@ -241,7 +241,7 @@ async def auth_reset_password_post(request: Request) -> None:
 
 async def auth_request_verify_post(request: Request):
     """
-    Sends a email with a token to the user. Used to verify email.
+    Sends an email with a token to the user. Used to verify email.
     """
     me = await users_me_get(request)
     email = me["email"]
