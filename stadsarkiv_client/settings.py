@@ -48,8 +48,8 @@ settings: dict[str, typing.Any] = {
         {"name": "auth_register_get", "title": "Ny bruger", "type": "dropdown"},
         {"name": "auth_me_get", "title": "Profil", "type": "dropdown"},
         {"name": "admin_users_get", "title": "Brugere", "type": "dropdown"},
-        {"name": "schemas_get_list", "title": "Schemas", "type": "dropdown"},
-        {"name": "entities_get_list", "title": "Entities", "type": "dropdown"},
+        {"name": "schemas_get_list", "title": "Skemaer", "type": "dropdown"},
+        {"name": "entities_get_list", "title": "Entiteter", "type": "dropdown"},
         {"name": "proxies_search_get", "title": "Søg", "type": "top"},
     ],
     "pages": [
