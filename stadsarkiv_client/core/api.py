@@ -167,7 +167,7 @@ async def users_get(request: Request) -> dict:
 
     headers = _get_jwt_headers(request, {"Accept": "application/json"})
 
-    url = base_url + "/users"
+    url = base_url + "/users/"
 
     async with _get_async_client() as client:
         response = await client.get(
@@ -177,7 +177,6 @@ async def users_get(request: Request) -> dict:
         )
 
         if response.is_success:
-            request.state.me = response.json()
             return response.json()
         else:
             raise OpenAwsException(
