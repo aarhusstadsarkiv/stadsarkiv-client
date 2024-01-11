@@ -57,18 +57,16 @@ async def _get_main_menu(logged_in: bool, permissions_list: list):
         main_menu = dynamic_settings.settings["main_menu"]  # type ignore
 
     if logged_in:
-        main_menu = [item for item in main_menu if item["name"] != "auth_login_get"]
-        main_menu = [item for item in main_menu if item["name"] != "auth_register_get"]
-        main_menu = [item for item in main_menu if item["name"] != "auth_forgot_password_get"]
+        excluded_items = {"auth_login_get", "auth_register_get", "auth_forgot_password_get"}
+        main_menu = [item for item in main_menu if item["name"] not in excluded_items]
 
     if not logged_in:
-        main_menu = [item for item in main_menu if item["name"] != "auth_logout_get"]
-        main_menu = [item for item in main_menu if item["name"] != "auth_me_get"]
+        excluded_items = {"auth_logout_get", "auth_me_get"}
+        main_menu = [item for item in main_menu if item["name"] not in excluded_items]
 
     if "admin" not in permissions_list:
-        main_menu = [item for item in main_menu if item["name"] != "admin_users_get"]
-        main_menu = [item for item in main_menu if item["name"] != "schemas_get_list"]
-        main_menu = [item for item in main_menu if item["name"] != "entities_get_list"]
+        excluded_items = {"admin_users_get", "schemas_get_list", "entities_get_list"}
+        main_menu = [item for item in main_menu if item["name"] not in excluded_items]
 
     return main_menu
 
