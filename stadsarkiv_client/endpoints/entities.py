@@ -122,7 +122,7 @@ async def get_list(request: Request):
         # remove from entities if property 'is_hard_deleted' is True
         entities = [entity for entity in entities if not entity["is_hard_deleted"]]
 
-        context_values = {"title": "Opret entiteter", "schemas": schemas, "entities": entities}
+        context_values = {"title": "Entiteter", "schemas": schemas, "entities": entities}
         context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("entities/entities_list.html", context)
 
