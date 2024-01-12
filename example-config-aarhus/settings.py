@@ -14,6 +14,7 @@ settings: dict[str, typing.Any] = {
         "secure": True,
         "samesite": "lax",
     },
+    # "api_base_url": "http://localhost:8000/v1",
     "api_base_url": "https://dev.openaws.dk/v1",
     #
     # Main menu containing built-in endpoints, but you may remove these and generate your own menu.
