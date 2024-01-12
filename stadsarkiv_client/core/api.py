@@ -199,7 +199,6 @@ async def users_get(request: Request) -> dict:
     """
 
     headers = _get_jwt_headers(request, {"Accept": "application/json"})
-
     url = base_url + "/users/"
 
     async with _get_async_client() as client:
@@ -216,6 +215,29 @@ async def users_get(request: Request) -> dict:
                 422,
                 translate("You need to be logged in to view this page."),
             )
+
+
+async def users_patch(request: Request) -> typing.Any:
+    """
+    PATCH a user from the api
+    """
+    uuid = request.path_params["uuid"]
+    json_data = await request.json()
+    headers = _get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
+    url = base_url + "/users/" + uuid + "/permissions"
+
+    async with _get_async_client() as client:
+        response = await client.patch(
+            url=url,
+            follow_redirects=True,
+            headers=headers,
+            json=json_data,
+        )
+
+        if response.is_success:
+            return response.json()
+        else:
+            response.raise_for_status()
 
 
 async def auth_forgot_password(request: Request) -> None:
@@ -256,7 +278,7 @@ async def auth_reset_password_post(request: Request) -> None:
             raise_openaws_exception(response.status_code, json_response)
 
 
-async def auth_request_verify_post(request: Request):
+async def auth_request_verify_post(request: Request) -> None:
     """
     Sends an email with a token to the user. Used to verify email.
     """
