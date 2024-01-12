@@ -12,7 +12,6 @@ from stadsarkiv_client.core import api
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core import cookie
-import asyncio
 
 
 log = get_log()
@@ -21,7 +20,8 @@ log = get_log()
 async def get_context(request: Request, context_values: dict = {}) -> dict:
     hooks = get_hooks(request)
 
-    logged_in, permissions_list = await asyncio.gather(api.is_logged_in(request), api.me_permissions(request))
+    logged_in = await api.is_logged_in(request)
+    permissions_list = await api.me_permissions(request)
 
     # query_str_display is used to display the last search query
     # it is already present in the context_values if the client is requesting the search page
