@@ -7,6 +7,7 @@ import httpx
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
+
 import typing
 import asyncio
 import json
@@ -33,6 +34,32 @@ async def proxies_get_resource(type: str, id: str) -> typing.Any:
             response.raise_for_status()
 
 
+async def entity_post(json_dict) -> typing.Any:
+    # schema_type = request.path_params["schema_type"]
+
+    json_data = json_dict["data"]
+
+    json_data = {"data": json_data, "schema_name": json_dict["schema_name"]}
+
+    access_token = "SOME_TOKEN"
+    headers = {"Content-Type": "application/json", "Accept": "application/json", "Authorization": f"Bearer {access_token}"}
+
+    url = base_url + "/entities/"
+
+    async with _get_async_client() as client:
+        response = await client.post(
+            url=url,
+            follow_redirects=True,
+            headers=headers,
+            json=json_data,
+        )
+
+        if response.is_success:
+            return response.json()
+        else:
+            response.raise_for_status()
+
+
 # skema: address: http://localhost:5555/locations/15815/json/api
 # skema: place: http://localhost:5555/locations/2335/json/api
 # Max: 000159827
@@ -51,14 +78,13 @@ def resource_exists(id):
 
 
 def utf8_fix(resource):
-
     # convert to string
     resource = json.dumps(resource)
 
     # replace as resource was a single string
-    resource = resource.replace('\u00f8', "ø")
-    resource = resource.replace('\u00e5', "å")
-    resource = resource.replace('\u00e6', "æ")
+    resource = resource.replace("\u00f8", "ø")
+    resource = resource.replace("\u00e5", "å")
+    resource = resource.replace("\u00e6", "æ")
 
     # convert back to json
     resource = json.loads(resource)
