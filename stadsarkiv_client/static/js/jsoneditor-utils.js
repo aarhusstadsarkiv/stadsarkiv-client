@@ -13,30 +13,36 @@ function showErrorMessages(schema, errors) {
 
     let messages = []
 
+
     for (let i = 0; i < errors.length; i++) {
 
         const error = errors[i]
 
-        // Remove root. from error.path e.g root.name.first
-        const field = error.path.split('.').slice(1).join('.')
+        // // Remove root. from error.path e.g root.name.first
+        // const field = error.path.split('.').slice(1).join('.')
 
-        // Remove any '.' and a number from end of field e.g name.0 -> name
-        let fieldCleaned = field
-        if (field.match(/\.\d+$/)) {
-            fieldCleaned = field.replace(/\.\d+$/, '')
-        }
+        // // Remove any '.' and a number from end of field e.g name.0 -> name
+        // let fieldCleaned = field
+        // if (field.match(/\.\d+$/)) {
+        //     fieldCleaned = field.replace(/\.\d+$/, '')
+        // }
 
-        // Split field into parts
-        const fieldParts = fieldCleaned.split('.')
+        // // Split field into parts
+        // const fieldParts = fieldCleaned.split('.')
 
-        // Iterate schema.data.properties and find the final fieldSchema
-        let fieldSchema = schema.data
-        fieldParts.forEach(fieldPart => {
-            fieldSchema = fieldSchema.properties[fieldPart]
-        });
+        // // Iterate schema.data.properties and find the final fieldSchema
+        // let fieldSchema = schema.data
+        // fieldParts.forEach(fieldPart => {
+        //     fieldSchema = fieldSchema.properties[fieldPart]
+        // });
 
-        const fieldTitle = fieldSchema.title || error.path
-        const message = "Validerings fejl i feltet " + fieldTitle + ": " + error.message;
+        // const fieldTitle = fieldSchema.title || error.path
+        // const message = "Validerings fejl i feltet " + fieldTitle + ": " + error.message;
+        // messages.push(message)
+
+        console.log(errors)
+
+        let message = `Validerings fejl i feltet "${error.path}": ${error.message}`
         messages.push(message)
 
     };
@@ -58,7 +64,10 @@ function showErrorMessages(schema, errors) {
             header.after(error_message)
         });
 
-        const element = document.querySelector('#editor_holder')
+        // const element = document.querySelector('#editor_holder')
+
+        // element is first h3
+        const element = document.querySelector('h3')
         element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
 }
@@ -76,6 +85,7 @@ async function getEditor(schema) {
         show_opt_in: false,
         use_default_values: true,
         schema: schema.data,
+        // show_errors: 'change',
     }
 
     /*

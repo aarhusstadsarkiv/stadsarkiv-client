@@ -7,6 +7,6 @@
     }
 
 
-    .error-message {
+    .error-message, .errmsg {
         color: var(--flash-error-color);
     }
