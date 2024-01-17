@@ -9,7 +9,6 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
 
 import typing
-import json
 
 
 log = get_log()
@@ -33,12 +32,14 @@ async def proxies_get_resource(type: str, id: str) -> typing.Any:
             response.raise_for_status()
 
 
-async def entity_post(token: str, json_dict: dict) -> typing.Any:
-    # schema_type = request.path_params["schema_type"]
+async def entity_post(json_data, schema_name) -> typing.Any:
+    """
+    POST entity to api
+    Entity is a json dict with data and schema_name
+    Endpoint will set latest version of schema
+    """
 
-    json_data = json_dict["data"]
-
-    json_data = {"data": json_data, "schema_name": json_dict["schema_name"]}
+    json_data = {"data": json_data, "schema_name": schema_name}
 
     access_token = "SOME_TOKEN"
     headers = {"Content-Type": "application/json", "Accept": "application/json", "Authorization": f"Bearer {access_token}"}
@@ -65,26 +66,3 @@ async def entity_post(token: str, json_dict: dict) -> typing.Any:
 
 # resource_type = "locations"
 # id = "2335"
-
-
-def save_resource(id, resource):
-    with open(f"resources/{id}.json", "w") as f:
-        json.dump(resource, f, indent=4, ensure_ascii=False)
-
-
-def resource_exists(id):
-    return os.path.isfile(f"resources/{id}.json")
-
-
-def utf8_fix(resource):
-    # convert to string
-    resource = json.dumps(resource)
-
-    # replace as resource was a single string
-    resource = resource.replace("\u00f8", "ø")
-    resource = resource.replace("\u00e5", "å")
-    resource = resource.replace("\u00e6", "æ")
-
-    # convert back to json
-    resource = json.loads(resource)
-    return resource
