@@ -40,8 +40,6 @@ function showErrorMessages(schema, errors) {
         // const message = "Validerings fejl i feltet " + fieldTitle + ": " + error.message;
         // messages.push(message)
 
-        console.log(errors)
-
         let message = `Validerings fejl i feltet "${error.path}": ${error.message}`
         messages.push(message)
 
@@ -85,7 +83,6 @@ async function getEditor(schema) {
         show_opt_in: false,
         use_default_values: true,
         schema: schema.data,
-        // show_errors: 'change',
     }
 
     /*

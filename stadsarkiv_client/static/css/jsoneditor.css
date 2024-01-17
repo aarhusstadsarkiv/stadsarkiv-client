@@ -1,12 +1,13 @@
+/**
+    * All input 100% in width
+    */
+select,
+input {
+    width: 100%;
+}
 
-    /**
-     * All input 100% in width
-     */
-     select, input {
-        width: 100%;
-    }
 
-
-    .error-message, .errmsg {
-        color: var(--flash-error-color);
-    }
+.error-message,
+.errmsg {
+    color: var(--flash-error-color);
+}
