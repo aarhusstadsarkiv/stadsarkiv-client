@@ -8,6 +8,12 @@
         "domain": "locations"
     },
     "properties": {
+        "id": {
+            "type": "string",
+            "options": {
+                "hidden": true
+            }
+        },
         "display_label": {
             "title": "Primær label",
             "type": "string",
