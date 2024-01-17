@@ -167,3 +167,4 @@ gunicorn_process.pid
 /hooks.py
 /settings_facets.py
 /local
+/resources
