@@ -1,0 +1,151 @@
+{
+    "domain": "locations",
+    "description": "En specifik adresse - inklusiv husnummer",
+    "parent_schema": "core",
+    "sub_display_template": [
+        [
+            "#",
+            "Sted"
+        ],
+        [
+            "local_area",
+            "%s"
+        ]
+    ],
+    "title": "Adresse",
+    "version_nr": 1,
+    "properties": {
+        "display_label": {
+            "title": "Primær label",
+            "type": "string",
+            "_meta": {
+                "type": "string"
+            },
+            "minLength": 1,
+            "propertyOrder": 1
+        },
+        "description": {
+            "title": "Beskrivelse (adskil hvert afsnit med en tom linje)",
+            "type": "string",
+            "_meta": {
+                "type": "paragraphs"
+            },
+            "format": "textarea",
+            "propertyOrder": 7
+        },
+        "parish": {
+            "type": "string",
+            "title": "Sogn",
+            "_meta": {
+                "type": "string"
+            },
+            "propertyOrder": 8
+        },
+        "zipcode": {
+            "title": "Postnummer",
+            "type": "string",
+            "pattern": "^[0-9]{4}$|^$",
+            "_meta": {
+                "type": "string"
+            },
+            "propertyOrder": 9
+        },
+        "date_from": {
+            "pattern": "^([0-9]{4})(-([0-9]{2}))?(-([0-9]{2}))?$",
+            "type": "unicode",
+            "title": "Oprettelsesdato"
+        },
+        "ext_data": {
+            "type": "dict",
+            "title": "Udvidet data"
+        },
+        "alt_names": {
+            "array_type": "unicode",
+            "type": "array",
+            "description": "Alternative navne",
+            "title": "Alternative navne"
+        },
+        "longitude": {
+            "type": "float",
+            "locked": true,
+            "title": "Breddegrad"
+        },
+        "sources": {
+            "array_type": "unicode",
+            "type": "array",
+            "description": "URL-links eller enkeltlinje referencer",
+            "title": "Kilder"
+        },
+        "local_area": {
+            "type": "unicode",
+            "title": "Lokal område"
+        },
+        "date_to": {
+            "pattern": "^([0-9]{4})(-([0-9]{2}))?(-([0-9]{2}))?$",
+            "type": "unicode",
+            "title": "Nedlæggelsesdato"
+        },
+        "latitude": {
+            "type": "float",
+            "locked": true,
+            "title": "Længdegrad"
+        },
+        "portrait": {
+            "array_type": "unicode",
+            "type": "array",
+            "title": "Portræt"
+        },
+        "rotation": {
+            "type": "float",
+            "locked": true,
+            "title": "Rotation"
+        },
+        "addr_nr": {
+            "pattern": "^[0-9].*?",
+            "type": "unicode",
+            "title": "Husnummer"
+        },
+        "name": {
+            "type": "unicode",
+            "title": "Vejnavn"
+        }
+    },
+    "remap": [],
+    "make_display": [
+        {
+            "date_template": "(%d0-%d1)",
+            "namePart": [
+                "name",
+                "addr_nr"
+            ],
+            "datePart": [
+                "date_from",
+                "date_to"
+            ],
+            "include_in_autocomplete": true,
+            "name_template": "%n0 %n1"
+        }
+    ],
+    "req_field": [
+        "name",
+        "addr_nr"
+    ],
+    "order": [
+        "display_label",
+        "name",
+        "addr_nr",
+        "alt_names",
+        "description",
+        "date_from",
+        "date_to",
+        "zipcode",
+        "local_area",
+        "parish",
+        "latitude",
+        "longitude",
+        "rotation",
+        "sources",
+        "portrait",
+        "ext_data"
+    ]
+}
