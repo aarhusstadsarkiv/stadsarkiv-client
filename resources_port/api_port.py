@@ -1,7 +1,7 @@
 import sys
 import os
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # noqa
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # noqa
 
 import httpx
 from stadsarkiv_client.core.dynamic_settings import settings
