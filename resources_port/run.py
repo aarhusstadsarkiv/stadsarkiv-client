@@ -6,8 +6,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # 
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.logging import get_log
 from resources_port import api_port
-
-import typing
 import asyncio
 import json
 
@@ -69,7 +67,7 @@ async def main():
             continue
 
         log.debug(f"Getting resource {id}")
-        # Assuming proxies_get_resource is an async function and type, id are defined
+
         try:
             resource = await api_port.proxies_get_resource(type=resource_type, id=str(id))
             resource = utf8_fix(resource)
@@ -86,5 +84,4 @@ async def main():
             break
 
 
-# Run the async main function
 asyncio.run(main())

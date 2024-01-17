@@ -1,8 +1,4 @@
-import sys
 import os
-
-# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # noqa
-
 import httpx
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.logging import get_log
@@ -13,6 +9,10 @@ import typing
 
 log = get_log()
 base_url = str(settings["api_base_url"])
+
+
+if not os.path.exists("resources"):
+    os.makedirs("resources")
 
 
 def _get_async_client() -> httpx.AsyncClient:
