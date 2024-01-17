@@ -1,19 +1,12 @@
 {
-    "domain": "locations",
-    "description": "En specifik adresse - inklusiv husnummer",
-    "parent_schema": "core",
-    "sub_display_template": [
-        [
-            "#",
-            "Sted"
-        ],
-        [
-            "local_area",
-            "%s"
-        ]
-    ],
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "Adresse",
-    "version_nr": 1,
+    "type": "object",
+    "_meta": {
+        "type": "location",
+        "link": "locations",
+        "domain": "locations"
+    },
     "properties": {
         "display_label": {
             "title": "Primær label",
@@ -23,6 +16,55 @@
             },
             "minLength": 1,
             "propertyOrder": 1
+        },
+        "name": {
+            "title": "Vejnavn",
+            "type": "string",
+            "_meta": {
+                "type": "string"
+            },
+            "minLength": 1,
+            "propertyOrder": 2
+        },
+        "addr_nr": {
+            "title": "Husnummer",
+            "type": "string",
+            "_meta": {
+                "type": "string"
+            },
+            "minLength": 1,
+            "propertyOrder": 3
+        },
+        "alt_names": {
+            "title": "Alternative navne",
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "_meta": {
+                "type": "string_list",
+                "link": "locations"
+            },
+            "propertyOrder": 4
+        },
+        "date_from": {
+            "title": "Oprettelsesdato (åååå-mm-dd)",
+            "type": "string",
+            "_meta": {
+                "type": "string"
+            },
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$|^$",
+            "default": "",
+            "propertyOrder": 5
+        },
+        "date_to": {
+            "title": "Nedlæggelsesdato (åååå-mm-dd)",
+            "type": "string",
+            "_meta": {
+                "type": "string"
+            },
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$|^$",
+            "propertyOrder": 6
         },
         "description": {
             "title": "Beskrivelse (adskil hvert afsnit med en tom linje)",
@@ -50,102 +92,131 @@
             },
             "propertyOrder": 9
         },
-        "date_from": {
-            "pattern": "^([0-9]{4})(-([0-9]{2}))?(-([0-9]{2}))?$",
-            "type": "unicode",
-            "title": "Oprettelsesdato"
-        },
-        "ext_data": {
-            "type": "dict",
-            "title": "Udvidet data"
-        },
-        "alt_names": {
-            "array_type": "unicode",
-            "type": "array",
-            "description": "Alternative navne",
-            "title": "Alternative navne"
-        },
-        "longitude": {
-            "type": "float",
-            "locked": true,
-            "title": "Breddegrad"
-        },
-        "sources": {
-            "array_type": "unicode",
-            "type": "array",
-            "description": "URL-links eller enkeltlinje referencer",
-            "title": "Kilder"
-        },
-        "local_area": {
-            "type": "unicode",
-            "title": "Lokal område"
-        },
-        "date_to": {
-            "pattern": "^([0-9]{4})(-([0-9]{2}))?(-([0-9]{2}))?$",
-            "type": "unicode",
-            "title": "Nedlæggelsesdato"
-        },
-        "latitude": {
-            "type": "float",
-            "locked": true,
-            "title": "Længdegrad"
-        },
-        "portrait": {
-            "array_type": "unicode",
-            "type": "array",
-            "title": "Portræt"
+        "coordinates": {
+            "title": "Koordinater",
+            "properties": {
+                "longitude": {
+                    "title": "Længdegrad",
+                    "type": [
+                        "null",
+                        "number"
+                    ],
+                    "minimum": -180,
+                    "maximum": 180
+                },
+                "latitude": {
+                    "title": "Breddegrad",
+                    "type": [
+                        "null",
+                        "number"
+                    ],
+                    "minimum": -90,
+                    "maximum": 90
+                }
+            },
+            "_meta": {
+                "type": "latitude_longitude_normalized"
+            },
+            "propertyOrder": 10
         },
         "rotation": {
-            "type": "float",
-            "locked": true,
-            "title": "Rotation"
+            "title": "Rotation",
+            "type": [
+                "null",
+                "number"
+            ],
+            "_meta": {
+                "type": "string"
+            },
+            "minimum": 0,
+            "maximum": 360,
+            "propertyOrder": 11
         },
-        "addr_nr": {
-            "pattern": "^[0-9].*?",
-            "type": "unicode",
-            "title": "Husnummer"
+        "local_area": {
+            "title": "Lokalområde",
+            "type": "string",
+            "_meta": {
+                "type": "string"
+            },
+            "propertyOrder": 12
         },
-        "name": {
-            "type": "unicode",
-            "title": "Vejnavn"
+        "image": {
+            "title": "Billede",
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://.*|^$",
+            "default": "",
+            "_meta": {
+                "type": "image"
+            },
+            "propertyOrder": 13
+        },
+        "portrait": {
+            "title": "Billeder (kan benyttes til slideshows)",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^https://.*",
+                "default": ""
+            },
+            "_meta": {
+                "type": "image_list"
+            },
+            "propertyOrder": 13
+        },
+        "sources_links": {
+            "title": "Kilder (som links)",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "label": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "minLength": 1,
+                        "pattern": "^https://.*"
+                    }
+                },
+                "required": [
+                    "label",
+                    "url"
+                ]
+            },
+            "_meta": {
+                "type": "url_list"
+            },
+            "propertyOrder": 14
+        },
+        "sources_texts": {
+            "title": "Kilder (som tekst)",
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "_meta": {
+                "type": "string_list"
+            },
+            "propertyOrder": 15
+        },
+        "ext_data": {
+            "title": "Udvidet data",
+            "type": "object",
+            "meta": {
+                "type": "key_value_dict"
+            },
+            "additionalProperties": {
+                "type": "string"
+            }
         }
     },
-    "remap": [],
-    "make_display": [
-        {
-            "date_template": "(%d0-%d1)",
-            "namePart": [
-                "name",
-                "addr_nr"
-            ],
-            "datePart": [
-                "date_from",
-                "date_to"
-            ],
-            "include_in_autocomplete": true,
-            "name_template": "%n0 %n1"
-        }
-    ],
-    "req_field": [
-        "name",
-        "addr_nr"
-    ],
-    "order": [
+    "required": [
         "display_label",
         "name",
-        "addr_nr",
-        "alt_names",
-        "description",
-        "date_from",
-        "date_to",
-        "zipcode",
-        "local_area",
-        "parish",
-        "latitude",
-        "longitude",
-        "rotation",
-        "sources",
-        "portrait",
-        "ext_data"
+        "addr_nr"
     ]
 }
