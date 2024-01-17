@@ -200,13 +200,31 @@
         },
         "ext_data": {
             "title": "Udvidet data",
-            "type": "object",
-            "meta": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "title": "Nøgle",
+                        "type": "string",
+                        "minLength": 1
+
+                    },
+                    "value": {
+                        "title": "Værdi",
+                        "type": "string",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "key",
+                    "value"
+                ]
+            },
+            "_meta": {
                 "type": "key_value_dict"
             },
-            "additionalProperties": {
-                "type": "string"
-            }
+            "propertyOrder": 16
         }
     },
     "required": [
