@@ -1,24 +1,6 @@
 /**
- * record is included on all pages
- * /record/1234 (most common)
- * /search (some modifications)
+ * record is included on all pages, because in some sense almost very page shows a record.
  */
-
-:root {
-
-    --record-background-sejrs-sedler: rgb(250, 250, 196);
-    --record-representation-box-shadow: rgba(0, 0, 0, 0.4);
-
-    --record-header-border: #cacaca;
-    --record-title: #2b2b2b;
-
-    --record-prev-next: #333;
-    --record-prev-next-active-background: #e0e0e0;
-    --record-prev-next-active-border: #c0c0c0;
-    --record-prev-next-disabled: #70777f;
-    --record-prev-next-disabled-background: #9e9e9e;
-}
-
 .record-section {
     display: flex;
     flex-direction: row;
@@ -198,3 +180,14 @@ a.active {
 .record-prev-next span {
     min-width: 40px;
 }
+
+.record-order {
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    font-size: 1.2em;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+

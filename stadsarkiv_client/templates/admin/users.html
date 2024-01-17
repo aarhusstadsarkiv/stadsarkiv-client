@@ -1,0 +1,48 @@
+{% import "macros/admin_macros.html" as admin_macros %}
+{% import "macros/basic_macros.html" as basic_macros %}
+
+{% extends "base.html" %}
+
+{% block body_class %}page-auth-admin-users{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/table.css') }}?v={{ get_setting('version') }}">
+{% endblock head %}
+
+{% block content %}
+
+{% include "admin/menu.html" %}
+
+{{ basic_macros.page_title(title) }}
+
+{# [{'id': 'c4139aa9-f458-46da-9208-9b6612f2fda8', 'email': 'dennis.iversen@gmail.com', 'is_active': True,
+'is_verified': False, 'data': {}, 'permissions': {'guest': True, 'basic': True, 'employee': False, 'admin': False}}] #}
+{# iterate over users in a table #}
+{% for user in users %}
+<table>
+    <thead>
+        <tr>
+            <th>E-mail</th>
+            <th>Verificeret</th>
+            <th>Rettighed</th>
+            <th>Handling</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ user.email }}</td>
+            <td>{{ user.is_verified }}</td>
+            <td>{{ user.permission_translated }}</td>
+            <td>
+                Slet ret
+            </td>
+        </tr>
+</table>
+
+{% endfor %}
+
+<table>
+
+</table>
+
+{% endblock content %}

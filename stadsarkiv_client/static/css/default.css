@@ -1,21 +1,3 @@
-/**
- * default variables
- */
-:root {
-
-    --navigation-background: cornflowerblue;
-    --navigation-background-hover: #ffffff22;
-
-    --flash-color: white;
-    --flash-success-color: forestgreen;
-    --flash-notice-color: #1b1f23;
-    --flash-error-color: crimson;
-
-    --main-menu: white;
-    --main-menu-hover: #ffffff22;
-
-}
-
 .navigation {
     display: flex;
     justify-content: space-between;
@@ -66,7 +48,7 @@
 .main-menu {
     display: none;
     position: absolute;
-    top: 66px;
+    top: var(--main-menu-top);
     right: 0px;
     background-color: var(--navigation-background);
     border: 1px solid var(--background);
@@ -160,16 +142,10 @@
     box-sizing: border-box;
 }
 
-.container-sticky {
+.sticky-top {
     position: sticky;
     top: 0;
-    width: 100%;
     z-index: 100;
-    height: 66px;
-}
-
-* {
-    scroll-margin-top: 66px;
 }
 
 .container-fluid {

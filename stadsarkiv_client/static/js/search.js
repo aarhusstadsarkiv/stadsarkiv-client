@@ -202,7 +202,6 @@ function searchEvents() {
         });
 
         window.addEventListener('pageshow', function (event) {
-            console.log("event")
             const q = document.querySelector('#q');
         });
 

@@ -21,12 +21,12 @@ settings: dict[str, typing.Any] = {
     #
     "main_menu": [
         {"name": "auth_login_get", "title": "Log ind", "type": "dropdown"},
-        {"name": "auth_forgot_password_get", "title": "Glemt password", "type": "dropdown"},
         {"name": "auth_logout_get", "title": "Log ud", "type": "dropdown"},
-        {"name": "auth_register_get", "title": "Ny bruger", "type": "dropwdown"},
+        {"name": "auth_register_get", "title": "Ny bruger", "type": "dropdown"},
         {"name": "auth_me_get", "title": "Profil", "type": "dropdown"},
-        {"name": "schemas_get_list", "title": "Schemas", "type": "dropdown"},
-        {"name": "entities_get_list", "title": "Entities", "type": "dropdown"},
+        {"name": "admin_users_get", "title": "Brugere", "type": "dropdown"},
+        {"name": "schemas_get_list", "title": "Skemaer", "type": "dropdown"},
+        {"name": "entities_get_list", "title": "Entiteter", "type": "dropdown"},
         {"name": "proxies_search_get", "title": "Søg", "type": "top"},
     ],
     #

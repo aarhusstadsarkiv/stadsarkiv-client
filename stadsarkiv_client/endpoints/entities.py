@@ -32,21 +32,14 @@ async def create(request: Request):
         raise HTTPException(500, detail=str(e), headers=None)
 
 
-def _get_schema_name_version(entity: dict):
-    schema_name = entity["schema_name"]
-    schema_version = schema_name.split("_")[1]
-    schema_name = schema_name.split("_")[0]
-    return schema_name, schema_version
-
-
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
 async def update(request: Request):
     uuid = request.path_params["uuid"]
     entity = await api.entity_get(request)
 
-    schema_name, schema_version = _get_schema_name_version(entity)
-    schema = await api.schema_get_by_version(request, schema_name, schema_version)
-    schema_latest = await api.schema_get_by_name(request, schema_name)
+    schema_name, schema_version = api.schema_get_name_version_from_entity(entity)
+    schema = await api.schema_get_by_name_version(request, schema_name, schema_version)
+    schema_latest = await api.schema_get_latest(request, schema_name)
 
     is_lastest_schema = False
     if schema["name"] == schema_latest["name"] and schema["version"] == schema_latest["version"]:
@@ -129,7 +122,7 @@ async def get_list(request: Request):
         # remove from entities if property 'is_hard_deleted' is True
         entities = [entity for entity in entities if not entity["is_hard_deleted"]]
 
-        context_values = {"title": "Opret entiteter", "schemas": schemas, "entities": entities}
+        context_values = {"title": "Entiteter", "schemas": schemas, "entities": entities}
         context = await get_context(request, context_values=context_values)
         return templates.TemplateResponse("entities/entities_list.html", context)
 
@@ -164,9 +157,9 @@ def _get_types_and_values(schema, entity):
 
 async def get_single(request: Request):
     entity: dict = await api.entity_get(request)
-    schema_name, schema_version = _get_schema_name_version(entity)
+    schema_name, schema_version = api.schema_get_name_version_from_entity(entity)
 
-    schema = await api.schema_get_by_version(request, schema_name, schema_version)
+    schema = await api.schema_get_by_name_version(request, schema_name, schema_version)
     types_and_values = _get_types_and_values(schema, entity)
 
     context_values = {
@@ -182,9 +175,9 @@ async def get_single(request: Request):
 async def get_single_json(request: Request):
     type = request.path_params["type"]
     entity: dict = await api.entity_get(request)
-    schema_name, schema_version = _get_schema_name_version(entity)
+    schema_name, schema_version = api.schema_get_name_version_from_entity(entity)
 
-    schema = await api.schema_get_by_version(request, schema_name, schema_version)
+    schema = await api.schema_get_by_name_version(request, schema_name, schema_version)
     types_and_values = _get_types_and_values(schema, entity)
 
     if type == "types_and_values":

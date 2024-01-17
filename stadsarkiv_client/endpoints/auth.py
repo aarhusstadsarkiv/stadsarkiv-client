@@ -13,6 +13,7 @@ from stadsarkiv_client.core import user
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
+from stadsarkiv_client.endpoints import auth_data
 
 log = get_log()
 
@@ -110,26 +111,75 @@ async def verify_get(request: Request):
     return RedirectResponse(url="/", status_code=302)
 
 
-def _get_permissions_translated(permission_list):
+async def me_permission_translated(request: Request):
+    permission_list = await api.me_permissions(request)
     permissions_translated = []
 
     for permission in permission_list:
         permissions_translated.append(translate(f"Permission {permission}"))
 
-    return permissions_translated
+    return permissions_translated[-1]
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."))
 async def me_get(request: Request):
     try:
         me = await api.users_me_get(request)
-        permission_list = await api.me_permissions(request)
-        permissions = _get_permissions_translated(permission_list)
+        permissions = await api.me_permissions(request)
+        permission_translated = user.permission_translated(permissions)
 
-        context_values = {"title": translate("Profile"), "me": me, "permissions": permissions}
+        context_values = {"title": translate("Profile"), "me": me, "permission_translated": permission_translated}
         context = await get_context(request, context_values=context_values)
 
         return templates.TemplateResponse("auth/me.html", context)
+    except OpenAwsException as e:
+        flash.set_message(request, str(e), type="error")
+    except Exception as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+        return RedirectResponse(url="/auth/login", status_code=302)
+
+
+@is_authenticated(message=translate("You need to be logged in to view this page."))
+async def orders(request: Request):
+    try:
+        me = await api.users_me_get(request)
+        context_values = {"title": translate("Your orders"), "me": me, "orders": auth_data.api_orders}
+        context = await get_context(request, context_values=context_values)
+
+        return templates.TemplateResponse("auth/orders.html", context)
+    except OpenAwsException as e:
+        flash.set_message(request, str(e), type="error")
+    except Exception as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+        return RedirectResponse(url="/auth/login", status_code=302)
+
+
+@is_authenticated(message=translate("You need to be logged in to view this page."))
+async def bookmarks(request: Request):
+    try:
+        me = await api.users_me_get(request)
+        context_values = {"title": translate("Your bookmarks"), "me": me, "bookmarks": auth_data.api_booksmarks}
+        context = await get_context(request, context_values=context_values)
+
+        return templates.TemplateResponse("auth/bookmarks.html", context)
+    except OpenAwsException as e:
+        flash.set_message(request, str(e), type="error")
+    except Exception as e:
+        log.exception(e)
+        flash.set_message(request, str(e), type="error")
+        return RedirectResponse(url="/auth/login", status_code=302)
+
+
+@is_authenticated(message=translate("You need to be logged in to view this page."))
+async def search_results(request: Request):
+    try:
+        me = await api.users_me_get(request)
+        context_values = {"title": translate("Your search results"), "me": me, "search_results": auth_data.api_search_results}
+        context = await get_context(request, context_values=context_values)
+
+        return templates.TemplateResponse("auth/search_results.html", context)
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
     except Exception as e:

@@ -4,12 +4,15 @@
      */
     --background-body: #fff;
     --background: #efefef;
-    --background-alt: #ffebeb;  /* Originally aliceblue */
+    --background-alt: #ffebeb;
+    /* Originally aliceblue */
     --text-main: #363636;
     --text-bright: #000;
     --text-muted: #70777f;
-    --links: #d10000;  /* Originally #0076d1 */
-    --focus: #bf2009ab;  /* Originally #0096bfab */
+    --links: #d10000;
+    /* Originally #0076d1 */
+    --focus: #bf2009ab;
+    /* Originally #0096bfab */
     --border: #dbdbdb;
     --code: #000;
     --animation-duration: 0.1s;
@@ -23,52 +26,78 @@
     --highlight: #ff0;
     --body-width: 100%;
     --container-width: 1200px;
-  
+
+    /* Can not be used in media queries - just to remember the settings */
+    --breakpoint-small: 576px;
+    --breakpoint-medium: 768px;
+    --breakpoint-large: 992px;
+
     /**
-     * Custom elements
+     * default.css
      */
-    --navigation-background: #cf5151;  /* Originally cornflowerblue */
+    --navigation-background: #cf5151;
+    /* Originally cornflowerblue */
     --navigation-background-hover: #ffffff22;
-  
+
+
     --flash-color: white;
-    --flash-success-color: #8c4a33;  /* Originally forestgreen */
+    --flash-success-color: #8c4a33;
+    /* Originally forestgreen */
     --flash-notice-color: #1b1f23;
-    --flash-error-color: #ff4b47;  /* Originally crimson */
-  
+    --flash-error-color: #ff4b47;
+    /* Originally crimson */
+
     --main-menu: white;
     --main-menu-hover: #ffffff22;
-  
+    --main-menu-top: 66px;
+
     --footer-text: white;
     --footer-heading: white;
-  
-    --search-result-background: white;
-    --search-result-border: #e6e6e6;
-    --search-result-background-hover: #fafafa;
-    --search-link-text: black;
-  
-    --search-pagination-background-disabled: #cccccc;
-    --search-pagination-disabled: #666666;
-  
-    --overlay-background: white;
-  
-    --record-background-sejrs-sedler: #ffd0d0;  /* Originally rgb(250, 250, 196) */
+
+    /**
+    * record.css
+    */
+    --record-background-sejrs-sedler: #ffd0d0;
+    /* Originally rgb(250, 250, 196) */
     --record-representation-box-shadow: rgba(0, 0, 0, 0.4);
-  
+
     --record-header-border: #cacaca;
     --record-title: #2b2b2b;
-  
+
     --record-prev-next: #333;
     --record-prev-next-active-background: #e0e0e0;
     --record-prev-next-active-border: #c0c0c0;
     --record-prev-next-disabled: #70777f;
     --record-prev-next-disabled-background: #9e9e9e;
-  
+
+
+    /**
+     * search.css
+     */
+    --search-result-background: white;
+    --search-result-border: #e6e6e6;
+    --search-result-background-hover: #fafafa;
+    --search-link-text: black;
+
+    --search-pagination-background-disabled: #cccccc;
+    --search-pagination-disabled: #666666;
+
+    /**
+     * footer.css
+     */
+    --footer-text: white;
+    --footer-heading: white;
+
+    /**
+      * overlay.css
+      */
+    --overlay-background: white;
+
+    /**
+     * slideshow.css
+     */
     --slideshow-background: rgba(0, 0, 0, 0.5);
     --slideshow-background-alt: rgba(0, 0, 0, 0.8);
     --slideshow-text: white;
-  
-    /* Can not be used in media queries - just to remember the settings */
-    --breakpoint-small: 576px;
-    --breakpoint-medium: 768px;
-    --breakpoint-large: 992px;
+
 }

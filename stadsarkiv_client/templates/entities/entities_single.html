@@ -1,6 +1,7 @@
 {% import "macros/admin_macros.html" as admin_macros %}
 {% import "macros/common_macros.html" as common_macros %}
 {% import "macros/slideshow_macros.html" as slideshow_macros %}
+{% import "macros/basic_macros.html" as basic_macros %}
 
 {% extends "base.html" %}
 
@@ -17,11 +18,9 @@
 
 {% block content %}
 
-{% include "includes/main_title.html" %}
+{% include "admin/menu.html" %}
 
-{{ admin_macros.render_action_link('/entities', "Til oversigt") }} | 
-{{ admin_macros.render_entity_update_link(entity) }} |
-{{ admin_macros.render_entity_delete_link(entity) }} 
+{{ basic_macros.page_title(title) }}
 
 {% set key = ["image_list", "portrait"] %}
 {{ slideshow_macros.parse_slideshow_block("Billede liste", key, types_and_values ) }}

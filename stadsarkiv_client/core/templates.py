@@ -117,6 +117,10 @@ def get_icon(icon: str):
     return ICONS.get(icon)
 
 
+def has_permission(permission: str, permissions: list):
+    return permission in permissions
+
+
 templates.env.globals.update(translate=translate)
 templates.env.globals.update(get_setting=get_setting)
 templates.env.globals.update(date_format=date_format)
@@ -124,4 +128,5 @@ templates.env.globals.update(to_json=_to_json)
 templates.env.globals.update(pre=_pre)
 templates.env.globals.update(paragraphs=_paragraphs)
 templates.env.globals.update(get_icon=get_icon)
+templates.env.globals.update(has_permission=has_permission)
 templates.env.globals.update(key_exist_in_dict=_key_exist_in_dict)

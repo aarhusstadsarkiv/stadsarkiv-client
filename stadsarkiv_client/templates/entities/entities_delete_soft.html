@@ -1,17 +1,15 @@
 {% import "macros/admin_macros.html" as admin_macros %}
+{% import "macros/basic_macros.html" as basic_macros %}
 
 {% extends "base.html" %}
 
 {% block body_class %}page-entities-delete-soft{% endblock %}
 
 {% block content %}
-{% include "includes/main_title.html" %}
 
-<p>
-    {{ admin_macros.render_action_link('/entities', "Til oversigt") }} | 
-    {{ admin_macros.render_entity_view_link(entity) }} |
-    {{ admin_macros.render_entity_update_link(entity) }}
-</p>
+{% include "admin/menu.html" %}
+
+{{ basic_macros.page_title(title) }}
 
 <p>
     Er du sikker på at du vil slette denne entitet?
