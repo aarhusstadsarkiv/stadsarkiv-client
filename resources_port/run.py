@@ -14,6 +14,10 @@ import json
 
 log = get_log()
 base_url = str(settings["api_base_url"])
+token = os.getenv("TOKEN")
+
+if not token:
+    raise Exception("No token. Set TOKEN environment variable")
 
 
 # skema: address: http://localhost:5555/locations/15815/json/api
@@ -49,7 +53,6 @@ def utf8_fix(resource):
 
 max_resources = 159827
 max_resources = 10
-token = "38lr0QMD_v6LptyiJtsdxbvgGwrWY0SdLXZpaQEoGyk"
 
 
 async def main():
