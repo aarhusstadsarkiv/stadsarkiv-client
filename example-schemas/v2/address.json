@@ -146,17 +146,6 @@
             },
             "propertyOrder": 12
         },
-        "image": {
-            "title": "Billede",
-            "type": "string",
-            "format": "uri",
-            "pattern": "^https://.*|^$",
-            "default": "",
-            "_meta": {
-                "type": "image"
-            },
-            "propertyOrder": 13
-        },
         "portrait": {
             "title": "Billeder (kan benyttes til slideshows)",
             "type": "array",
