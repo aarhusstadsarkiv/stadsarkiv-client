@@ -52,7 +52,8 @@ def utf8_fix(resource):
 
 
 max_resources = 159827
-max_resources = 10
+max_resources = 150
+iteration_add = 1000
 
 
 async def main():
@@ -64,7 +65,7 @@ async def main():
     while id != max_id:
         if resource_exists(id):
             log.info(f"Resource {id} exists")
-            id = id + 1
+            id = id + iteration_add
             continue
 
         log.debug(f"Getting resource {id}")
@@ -75,10 +76,10 @@ async def main():
             save_resource(id, resource)
         except Exception as e:
             log.exception(e)
-            id = id + 1
+            id = id + iteration_add
             continue
 
-        id = id + 1
+        id = id + iteration_add
         count = count + 1
 
         if count > max_resources:
