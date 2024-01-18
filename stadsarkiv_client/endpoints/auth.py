@@ -125,6 +125,7 @@ async def me_permission_translated(request: Request):
 async def me_get(request: Request):
     try:
         me = await api.users_me_get(request)
+        me["token"] = request.session["access_token"]
         permissions = await api.me_permissions(request)
         permission_translated = user.permission_translated(permissions)
 
