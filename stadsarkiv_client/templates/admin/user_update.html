@@ -32,23 +32,24 @@ False, 'data': {}, 'permissions': [{'name': 'user', 'grant_id': 6, 'entity_id': 
     <tbody>
         <tr>
             <td>{{ user.email }}</td>
-            <td>{{ user.is_verified }}</td>
+            <td>
+                {% if user.is_verified %}
+                    Ja
+                {% else %}
+                    Nej
+                {% endif %}
+            </td>
             <td>{{ user.permission_translated }}</td>
         </tr>
 </table>
 
+<h3>Raw user data</h3>
 
-{{ user }}
+{{ pre(user)|safe }}
 
-{# [{'name': 'root', 'grant_id': 1, 'entity_id': None}, {'name': 'researcher', 'grant_id': 5, 'entity_id': None},
-{'name': 'soft_delete', 'grant_id': 4, 'entity_id': None}, {'name': 'admin', 'grant_id': 2, 'entity_id': None}, {'name':
-'update', 'grant_id': 9, 'entity_id': None}, {'name': 'scoped_read', 'grant_id': 8, 'entity_id': None}, {'name':
-'employee', 'grant_id': 3, 'entity_id': None}, {'name': 'user', 'grant_id': 6, 'entity_id': None}, {'name': 'guest',
-'grant_id': 7, 'entity_id': None}, {'name': 'hard_delete', 'grant_id': 10, 'entity_id': None}, {'name': 'create',
-'grant_id': 13, 'entity_id': None}, {'name': 'restore', 'grant_id': 11, 'entity_id': None}, {'name': 'read', 'grant_id':
-12, 'entity_id': None}] #}
+<h3>Possible permissions</h3>
 
-{{ permissions }}
+{{ pre(permissions)|safe }}
 
 <p>Rediger rettigheder</p>
 <form>

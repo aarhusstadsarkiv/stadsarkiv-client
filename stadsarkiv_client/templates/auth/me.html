@@ -47,4 +47,9 @@
     {% endif %}
 </p>
 
+{% if get_setting("debug") %}
+<h3>Token</h3>
+<p>{{ me["token"] }}</p>
+{% endif %}
+
 {% endblock content %}

@@ -19,7 +19,7 @@
 'is_verified': False, 'data': {}, 'permissions': [{'name': 'user', 'grant_id': 6, 'entity_id': None}],
 'permission_translated': 'Permission user'}] #}
 
-{% for user in users %}
+
 <table>
     <thead>
         <tr>
@@ -30,17 +30,26 @@
         </tr>
     </thead>
     <tbody>
+    {% for user in users %}
         <tr>
             <td>{{ user.email }}</td>
-            <td>{{ user.is_verified }}</td>
+            <td>
+            {% if user.is_verified %}
+                Ja
+            {% else %}
+                Nej
+            {% endif %}
+            </td>
+            
             <td>{{ user.permission_translated }}</td>
             <td>
                 <a href="{{ url_for('admin_users_get_single', uuid=user.id) }}">Rediger</a>
             </td>
         </tr>
+    {% endfor %}
 </table>
 
-{% endfor %}
+
 
 <table>
 
