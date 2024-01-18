@@ -167,10 +167,12 @@
                 "type": "object",
                 "properties": {
                     "label": {
+                        "title": "Label",
                         "type": "string",
                         "minLength": 1
                     },
                     "url": {
+                        "title": "URL",
                         "type": "string",
                         "format": "uri",
                         "minLength": 1,
