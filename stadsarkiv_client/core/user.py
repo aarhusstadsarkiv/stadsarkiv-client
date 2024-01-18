@@ -30,12 +30,15 @@ def logout(request: Request):
 
 
 def permissions_as_list(permissions: dict) -> list[str]:
-    # permissions = [{'name': 'root', 'grant_id': 1, 'entity_id': None}]
     """
     Returns a list of permissions from a dict of permissions.
     """
+
+    # sort dict by grant_id
+    permissions_sorted = sorted(permissions, key=lambda k: k["grant_id"])
+
     permissions_list = []
-    for permission in permissions:
+    for permission in permissions_sorted:
         permissions_list.append(permission["name"])
 
     return permissions_list
@@ -45,13 +48,5 @@ def permission_translated(permissions: list) -> str:
     """
     Return the highest permission from a list of permissions. Permission is returned as a translated string.
     """
-    permissions_translated = []
-
-    for permission in permissions:
-        permissions_translated.append(translate(f"Permission {permission}"))
-
-    try:
-        return permissions_translated[-1]
-    except IndexError:
-        # return last permission
-        return permissions[-1]
+    permission = permissions[0]
+    return translate(f"Permission {permission}")
