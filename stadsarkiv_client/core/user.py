@@ -30,13 +30,14 @@ def logout(request: Request):
 
 
 def permissions_as_list(permissions: dict) -> list[str]:
+    # permissions = [{'name': 'root', 'grant_id': 1, 'entity_id': None}]
     """
     Returns a list of permissions from a dict of permissions.
     """
     permissions_list = []
-    for permission, value in permissions.items():
-        if value:
-            permissions_list.append(permission)
+    for permission in permissions:
+        permissions_list.append(permission["name"])
+
     return permissions_list
 
 
@@ -49,4 +50,8 @@ def permission_translated(permissions: list) -> str:
     for permission in permissions:
         permissions_translated.append(translate(f"Permission {permission}"))
 
-    return permissions_translated[-1]
+    try:
+        return permissions_translated[-1]
+    except IndexError:
+        # return last permission
+        return permissions[-1]
