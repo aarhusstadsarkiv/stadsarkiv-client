@@ -15,9 +15,10 @@
 
 {{ basic_macros.page_title(title) }}
 
-{# [{'id': 'c4139aa9-f458-46da-9208-9b6612f2fda8', 'email': 'dennis.iversen@gmail.com', 'is_active': True,
-'is_verified': False, 'data': {}, 'permissions': {'guest': True, 'basic': True, 'employee': False, 'admin': False}}] #}
-{# iterate over users in a table #}
+{# [{'id': '99c648f7-f739-4667-a495-b107669e1c0b', 'email': 'dennis.iversen@gmail.com', 'is_active': True,
+'is_verified': False, 'data': {}, 'permissions': [{'name': 'user', 'grant_id': 6, 'entity_id': None}],
+'permission_translated': 'Permission user'}] #}
+
 {% for user in users %}
 <table>
     <thead>
@@ -34,7 +35,7 @@
             <td>{{ user.is_verified }}</td>
             <td>{{ user.permission_translated }}</td>
             <td>
-                Slet ret
+                <a href="{{ url_for('admin_users_get_single', uuid=user.id) }}">Rediger</a>
             </td>
         </tr>
 </table>

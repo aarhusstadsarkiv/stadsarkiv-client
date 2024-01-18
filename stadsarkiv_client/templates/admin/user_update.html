@@ -1,0 +1,103 @@
+{% import "macros/admin_macros.html" as admin_macros %}
+{% import "macros/basic_macros.html" as basic_macros %}
+
+{% extends "base.html" %}
+
+{% block body_class %}page-auth-admin-users{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/table.css') }}?v={{ get_setting('version') }}">
+{% endblock head %}
+
+{% block content %}
+
+{% include "admin/menu.html" %}
+
+{{ basic_macros.page_title(title) }}
+
+{# 
+{'id': '99c648f7-f739-4667-a495-b107669e1c0b', 'email': 'dennis.iversen@gmail.com', 'is_active': True, 'is_verified':
+False, 'data': {}, 'permissions': [{'name': 'user', 'grant_id': 6, 'entity_id': None}]} 
+#}
+
+<table>
+    <thead>
+        <tr>
+            <th>E-mail</th>
+            <th>Verificeret</th>
+            <th>Rettighed</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ user.email }}</td>
+            <td>{{ user.is_verified }}</td>
+            <td>{{ user.permission_translated }}</td>
+        </tr>
+</table>
+
+
+{{ user }}
+
+{# [{'name': 'root', 'grant_id': 1, 'entity_id': None}, {'name': 'researcher', 'grant_id': 5, 'entity_id': None},
+{'name': 'soft_delete', 'grant_id': 4, 'entity_id': None}, {'name': 'admin', 'grant_id': 2, 'entity_id': None}, {'name':
+'update', 'grant_id': 9, 'entity_id': None}, {'name': 'scoped_read', 'grant_id': 8, 'entity_id': None}, {'name':
+'employee', 'grant_id': 3, 'entity_id': None}, {'name': 'user', 'grant_id': 6, 'entity_id': None}, {'name': 'guest',
+'grant_id': 7, 'entity_id': None}, {'name': 'hard_delete', 'grant_id': 10, 'entity_id': None}, {'name': 'create',
+'grant_id': 13, 'entity_id': None}, {'name': 'restore', 'grant_id': 11, 'entity_id': None}, {'name': 'read', 'grant_id':
+12, 'entity_id': None}] #}
+
+{{ permissions }}
+
+<p>Rediger rettigheder</p>
+<form>
+    <select name="permissions">
+        {% for permission in permissions %}
+            {% if permission.grant_id == user.permissions[0].grant_id %}
+            <option value="{{ permission.grant_id }}" selected>{{ permission.name }}</option>
+            {% else %}
+            <option value="{{ permission.grant_id }}">{{ permission.name }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <input id="submit" name="submit" type="submit" value="Rediger">
+</form>
+<script>
+
+    const endpoint = `{{get_setting('api_base_url')}}/users/{{user.id}}/permissions`    
+    const authorization = '{{ authorization }}'
+
+    // on submit
+    const submit = document.getElementById('submit')
+    submit.addEventListener('click', function(e) {
+        e.preventDefault()
+        const select = document.querySelector('select')
+        const grant_id = select.options[select.selectedIndex].value
+        const data = [{
+            grant_id: grant_id
+        }]
+        
+        fetch(endpoint, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': authorization
+            },
+            body: JSON.stringify(data)
+        }).then(response => {
+            if (response.status === 200) {
+                alert('Rettigheder opdateret')
+
+                // reload page
+                window.location.reload()
+            } else {
+                alert('Noget gik galt')
+            }
+
+            
+        })
+    })
+</script>
+
+{% endblock content %}
