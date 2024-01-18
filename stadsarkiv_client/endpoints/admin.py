@@ -1,5 +1,4 @@
 from starlette.requests import Request
-
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.decorators import is_authenticated
@@ -23,3 +22,22 @@ async def users_get(request: Request):
     context_values = {"title": "Brugere", "users": users}
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse("admin/users.html", context)
+
+
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
+async def users_get_single(request: Request):
+    # get by route path uuid
+    user_ = await api.user_get(request)
+    permissions = await api.users_permissions(request)
+
+    permissions_user = user.permissions_as_list(user_["permissions"])
+    permission_translated = user.permission_translated(permissions_user)
+    user_["permission_translated"] = permission_translated
+
+    log.debug(user_)
+    log.debug(permissions)
+
+    context_values = {"title": "Bruger", "user": user_, "permissions": permissions}
+    context = await get_context(request, context_values=context_values)
+
+    return templates.TemplateResponse("admin/user_update.html", context)
