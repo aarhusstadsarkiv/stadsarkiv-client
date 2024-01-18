@@ -224,7 +224,7 @@
                 ]
             },
             "_meta": {
-                "type": "key_value_dict"
+                "type": "key_value_dicts"
             },
             "propertyOrder": 16
         }
