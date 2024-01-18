@@ -217,6 +217,57 @@ async def users_get(request: Request) -> dict:
             )
 
 
+async def users_permissions(request: Request) -> dict:
+    """
+    GET all permissions available from the api
+    """
+    headers = _get_jwt_headers(request, {"Accept": "application/json"})
+    url = base_url + "/users/permissions"
+
+    async with _get_async_client() as client:
+        response = await client.get(
+            url=url,
+            follow_redirects=True,
+            headers=headers,
+        )
+
+        if response.is_success:
+            return response.json()
+        else:
+            raise OpenAwsException(
+                422,
+                translate("You need to be logged in to view this page."),
+            )
+
+
+async def user_get(request: Request) -> dict:
+    """
+    GET single user from the api by uuid
+    """
+
+    uuid = request.path_params["uuid"]
+
+    headers = _get_jwt_headers(request, {"Accept": "application/json"})
+    url = base_url + "/users/" + uuid
+
+    log.debug(url)
+
+    async with _get_async_client() as client:
+        response = await client.get(
+            url=url,
+            follow_redirects=True,
+            headers=headers,
+        )
+
+        if response.is_success:
+            return response.json()
+        else:
+            raise OpenAwsException(
+                422,
+                translate("You need to be logged in to view this page."),
+            )
+
+
 async def users_patch(request: Request) -> typing.Any:
     """
     PATCH a user from the api
