@@ -48,22 +48,32 @@ def is_authenticated(func=None, message=translate("You need to be logged in to v
             return response
 
         user_permissions_list = await api.me_permissions(request)
+        permission_granted = False
+
+        # root has all permissions
+        if "root" in user_permissions_list:
+            permission_granted = True
+
         for permission in permissions:
-            if permission not in user_permissions_list:
-                users_me_get = await api.users_me_get(request)
-                log.error(f"403 Forbidden: {request.url}. User {users_me_get}. Missing permission: {permission}")
+            if permission in user_permissions_list:
+                permission_granted = True
+                break
 
-                user.logout(request)
-                flash.clear(request)
-                flash.set_message(
-                    request,
-                    translate("You do not have the required permissions to view the page."),
-                    type="error",
-                )
+        if not permission_granted:
+            users_me_get = await api.users_me_get(request)
+            log.error(f"403 Forbidden: {request.url}. User {users_me_get}. Missing required permissions")
 
-                redirect_url = _get_redirect_url(request)
-                response = RedirectResponse(url=redirect_url, status_code=302, headers={"X-Message": message})
-                return response
+            user.logout(request)
+            flash.clear(request)
+            flash.set_message(
+                request,
+                translate("You do not have the required permissions to view the page."),
+                type="error",
+            )
+
+            redirect_url = _get_redirect_url(request)
+            response = RedirectResponse(url=redirect_url, status_code=302, headers={"X-Message": message})
+            return response
 
         response = await func(request, *args, **kwargs)
         return response
