@@ -26,11 +26,6 @@ class FirstMiddleware(BaseHTTPMiddleware):
         request.state.time_begin = time()
         response = await call_next(request)
 
-        # Add Bearer token to response headers
-        if "access_token" in request.session:
-            token = request.session["access_token"]
-            response.headers["Authorization"] = f"Bearer {token}"
-
         return response
 
 
