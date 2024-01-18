@@ -36,6 +36,7 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
         "title": _get_title(request),
         "main_menu": await _get_main_menu(logged_in, permissions_list),
         "logged_in": logged_in,
+        "authorization": _get_authorization(request),
     }
 
     context.update(context_values)
@@ -64,7 +65,7 @@ async def _get_main_menu(logged_in: bool, permissions_list: list):
         excluded_items = {"auth_logout_get", "auth_me_get"}
         main_menu = [item for item in main_menu if item["name"] not in excluded_items]
 
-    if "admin" not in permissions_list:
+    if "root" not in permissions_list and "admin" not in permissions_list:
         excluded_items = {"admin_users_get", "schemas_get_list", "entities_get_list"}
         main_menu = [item for item in main_menu if item["name"] not in excluded_items]
 
@@ -81,3 +82,14 @@ def _get_title(request: Request) -> str:
         if page["url"] == request.url.path:
             title = page["title"]
     return title
+
+
+def _get_authorization(request: Request):
+    """
+    Add authorization header to context if user is logged in.
+    """
+    if "access_token" in request.session:
+        token = request.session["access_token"]
+        return f"Bearer {token}"
+
+    return None
