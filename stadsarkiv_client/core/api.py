@@ -521,14 +521,14 @@ async def entity_patch(request: Request) -> typing.Any:
             response.raise_for_status()
 
 
-async def entity_delete(request: Request, type: str) -> typing.Any:
+async def entity_delete(request: Request, entity_type: str) -> typing.Any:
     """
     DELETE an entity to the api in order to delete a entity
     """
     entity_id = request.path_params["uuid"]
 
     async with _get_async_client() as client:
-        url = base_url + "/entities/" + entity_id + "/" + type
+        url = base_url + "/entities/" + entity_id + "/" + entity_type
         headers = _get_jwt_headers(request, {"Accept": "application/json"})
         response = await client.delete(url, headers=headers)
 
