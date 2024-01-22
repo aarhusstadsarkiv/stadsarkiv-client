@@ -151,12 +151,7 @@
 {% endmacro %}
 
 {% macro parse_coordinates(key, value) %}
-{# 
-"coordinates": {
-    "latitude": null,
-    "longitude": null
-},
-#}
+
 {% if value["latitude"] and value["longitude"] %}
 <div class="record-content record_content_{{ key }}">
     {{ parse_record_label(key)}}

@@ -43,7 +43,7 @@ resource_definitions = {
     "addr_nr": {"type": "string"},
     "zipcode": {"type": "string"},
     "display_label": {"type": "string"},
-    "latitude_longitude_normalized": {"type": "string"},
+    "latitude_longitude_normalized": {"type": "latitude_longitude_normalized"},
     "parish": {"type": "string"},
     "rotation": {"type": "string"},
     # events

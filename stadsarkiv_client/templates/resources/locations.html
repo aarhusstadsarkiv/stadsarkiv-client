@@ -31,10 +31,11 @@
     http://localhost:5555/locations/54897
 #} 
 
+
 {% set schema = meta.schema %}
 
 {% set options = {'icon': schema, 'icon_label': 'Lokation'} %}
-{% set keys = ["name", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area"] %}
+{% set keys = ["name", "addr_nr", "zipcode", "latitude_longitude_normalized", "parish", "rotation", "local_area"] %}
 {{ common_macros.parse_image_block('', keys, resource, options) }}
 
 {% set keys = [ "description"] %}

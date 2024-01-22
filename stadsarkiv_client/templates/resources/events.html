@@ -12,7 +12,7 @@
     <a href="/search?events={{ meta['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
-{% set keys = ["date_from", "event_type", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area"] %}
+{% set keys = ["date_from", "event_type", "addr_nr", "zipcode", "latitude_longitude_normalized", "parish", "rotation", "local_area"] %}
 {{ common_macros.parse_block_common('Stamdata', keys, resource) }}
 
 {% set keys = [ "description"] %}

@@ -79,10 +79,9 @@ def set_latitude_longitude(data: dict):
     Set 'latitude_longitude_normalized' field on dict
     """
     if "latitude" and "longitude" in data:
-        data["latitude_longitude"] = {
-            "type": "string",
-            "value": str(data["latitude"]) + ", " + str(data["longitude"]),
-            "name": "latitude_longitude_normalized",
+        data["latitude_longitude_normalized"] = {
+            "latitude": str(data["latitude"]),
+            "longitude": str(data["longitude"]),
         }
 
     return data
