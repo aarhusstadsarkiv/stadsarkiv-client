@@ -11,7 +11,7 @@ resource_definitions = {
     "local_area": {"type": "string"},
     "gender": {"type": "string"},
     "firstnames": {"type": "string_list_as_string"},
-    "lastnames": {"type": "string_list"},
+    "lastnames": {"type": "string_list_as_string"},
     "occupation": {"type": "string_list"},
     "industry": {"type": "string_list"},
     "collectors_link": {"type": "link_list"},
