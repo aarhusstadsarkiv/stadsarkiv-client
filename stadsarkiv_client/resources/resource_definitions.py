@@ -10,7 +10,7 @@ resource_definitions = {
     "domain": {"type": "string"},
     "local_area": {"type": "string"},
     "gender": {"type": "string"},
-    "firstnames": {"type": "string_list"},
+    "firstnames": {"type": "string_list_as_string"},
     "lastnames": {"type": "string_list"},
     "occupation": {"type": "string_list"},
     "industry": {"type": "string_list"},

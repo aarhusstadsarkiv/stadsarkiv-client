@@ -107,6 +107,18 @@
 </div>
 {% endmacro %}
 
+{% macro parse_string_list_as_string (key, value) %}
+{% if value|length > 0 %}
+<div class="record-content record_content_{{ key }}">
+    {{ parse_record_label(key) }}
+    <div class="content">
+        <p>{{ value|join(" ") }}</p>
+    </div>
+</div>
+{% endif %}
+{% endmacro %}
+
+
 {% macro parse_ordering (key, value, record_and_types) %}
 <div class="record-content record_content_{{ key }}">
     {{ parse_record_label(key) }}
@@ -221,6 +233,10 @@
 
 {% elif type == "string_list" %}
 {{ parse_string_list(key, value ) }}
+
+{% elif type == "string_list_as_string" %}
+{{ parse_string_list_as_string(key, value ) }}
+
 {% elif type == "link_list" %}
 {{ parse_link_list(key, value ) }}
 
