@@ -42,6 +42,7 @@ en = {
     "Large Image": "Large Image",
     "Last page": "Last page",
     "Latest search": "Latest search",
+    "Latest updated": "Latest updated",
     "Login": "Login",
     "Login to get access to speciel functions": "Login to get access to speciel functions",
     "Logout": "Logout",

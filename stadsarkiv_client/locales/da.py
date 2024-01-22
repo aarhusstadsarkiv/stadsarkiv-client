@@ -37,6 +37,7 @@ da = {
     "Large Image": "Stort Billede",
     "Last page": "Sidste",
     "Latest search": "Seneste søgning",
+    "Latest updated": "Senest opdateret",
     "Login": "Log ind",
     "Login to get access to speciel functions": "Login for at få adgang til specielle funktioner",
     "Logout": "Log ud",

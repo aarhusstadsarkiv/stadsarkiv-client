@@ -86,6 +86,9 @@ def _get_default_query_params(request: Request):
     if sort == "date_from":
         direction = request.query_params.get("direction", "asc")
 
+    if sort == "created_at":
+        direction = request.query_params.get("direction", "desc")
+
     if direction:
         add_list_items.append(("direction", direction))
 
@@ -157,7 +160,6 @@ async def get(request: Request):
     # Call api
     query_str_search = query.get_str_from_list(query_params_before_search)
     search_result = await api.proxies_records(request, query_str_search)
-
     search_result = _normalize_search(search_result)
 
     # Alter query params after search
