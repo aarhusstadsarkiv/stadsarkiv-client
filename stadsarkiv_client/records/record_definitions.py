@@ -38,7 +38,7 @@ record_definitions = {
     "representations": {"type": "representations"},  # special type
     "collection_tags": {"type": "link_list"},
     "created": {"type": "date"},
-    "summary": {"type": "string"},
+    "summary": {"type": "paragraphs"},
     "usability": {"type": "label_dict"},
     "organisations": {"type": "link_list"},
     "people": {"type": "link_list"},
