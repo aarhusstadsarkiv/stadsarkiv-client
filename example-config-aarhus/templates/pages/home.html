@@ -4,136 +4,262 @@
 
 {% block content %}
 
-    <nav class="container-fluid navigation sticky-top">
-        {% include "includes/logo.html" %}
-        {% include "includes/navigation.html" %}
-    </nav>
+<nav class="container-fluid navigation sticky-top">
+    {% include "includes/logo.html" %}
+    {% include "includes/navigation.html" %}
+</nav>
 
-    <main class="container-fluid">
+<main>
+    <div class="container-fluid">
         <div class="search-box">
             <img src="{{ url_for('static', path='/assets/front-page/topimagelogo_1920.jpg') }}" alt="Aarhus">
         </div>
 
         <div class="search-links">
-            <div class="search-card">
+            <div class="search-link">
                 <a href="/search?direction=desc&sort=created_at">
-                    <img src="{{ url_for('static', path='/assets/front-page/nyeste-dokument_480px.jpg') }}" alt="Nyt i arkivet">
+                    <img src="{{ url_for('static', path='/assets/front-page/nyeste-dokument_480px.jpg') }}"
+                        alt="Nyt i arkivet">
                 </a>
             </div>
-            <div class="search-card">
+            <div class="search-link">
                 <a href="/collections/194">
-                    <img src="{{ url_for('static', path='/assets/front-page/kommune-arkivet_480px.jpg') }}" alt="Kommune Arkivet">
+                    <img src="{{ url_for('static', path='/assets/front-page/kommune-arkivet_480px.jpg') }}"
+                        alt="Kommune Arkivet">
                 </a>
             </div>
-            <div class="search-card">
+            <div class="search-link">
                 <a href="/images">
-                    <img src="{{ url_for('static', path='/assets/front-page/billeder-fra-aarhus_480px.jpg') }}" alt="Billeder fra Aarhus">
+                    <img src="{{ url_for('static', path='/assets/front-page/billeder-fra-aarhus_480px.jpg') }}"
+                        alt="Billeder fra Aarhus">
                 </a>
             </div>
-            <div class="search-card">
+            <div class="search-link">
                 <a href="/city-council">
-                    <img src="{{ url_for('static', path='/assets/front-page/byraadsarkivet_v2_480px.jpg') }}" alt="Byrådsarkivet Version 2">
+                    <img src="{{ url_for('static', path='/assets/front-page/byraadsarkivet_v2_480px.jpg') }}"
+                        alt="Byrådsarkivet Version 2">
                 </a>
             </div>
-            
-            <div class="search-card">
+
+            <div class="search-link">
                 <a href="https://www.smartarkivering.dk/" target="blank">
-                <img src="{{ url_for('static', path='/assets/front-page/smartarkivering_480px.jpg') }}" alt="Smart Arkivering">
+                    <img src="{{ url_for('static', path='/assets/front-page/smartarkivering_480px.jpg') }}"
+                        alt="Smart Arkivering">
                 </a>
-                <div class="search-card-text">
+                <div class="search-text">
                     <h3>Bidrag med dine egne filer</h3>
-                    <p>Velkommen til Aarhus Stadsarkivs online arkiveringsservice! Her kan du aflevere filer fra dit ”digitale arkiv”. Vi modtager både fra private, foreninger og virksomheder.</p>
-                    <p>Som udgangspunkt kan du aflevere alle slags filer, både med hensyn til format og størrelse. Det eneste, vi kræver, er, at du også er villig til at beskrive de filer, du afleverer, samt at du accepterer de brugsvilkår, som vi har valgt at knytte til denne type online aflevering.</p>
-                    <p>Bidrag til historien på <a href="https://smartarkivering.dk" target="blank">smartarkivering.dk</a></p>
+                    <p>Velkommen til Aarhus Stadsarkivs online arkiveringsservice! Her kan du aflevere filer fra dit
+                        ”digitale arkiv”. Vi modtager både fra private, foreninger og virksomheder.</p>
+                    <p>Som udgangspunkt kan du aflevere alle slags filer, både med hensyn til format og størrelse. Det
+                        eneste, vi kræver, er, at du også er villig til at beskrive de filer, du afleverer, samt at du
+                        accepterer de brugsvilkår, som vi har valgt at knytte til denne type online aflevering.</p>
+                    <p>Bidrag til historien på <a href="https://smartarkivering.dk"
+                            target="blank">smartarkivering.dk</a>
+                    </p>
                 </div>
             </div>
-            <div class="search-card">
+            <div class="search-link">
                 <a href="https://www.retrodigitalisering.dk/" target="blank">
-                    <img src="{{ url_for('static', path='/assets/front-page/retrodigitalisering_480px.jpg') }}" alt="Retrodigitalisering">
+                    <img src="{{ url_for('static', path='/assets/front-page/retrodigitalisering_480px.jpg') }}"
+                        alt="Retrodigitalisering">
                 </a>
-                <div class="search-card-text">
+                <div class="search-text">
                     <h3>Sognerådsprotokoller og andre kommunale kilder</h3>
-                    <p>Retrodigitalisering.dk rummer digitale kilder til Aarhus’ og andre danske kommuners historie. Fra Aarhus er der først og fremmest sognerådsprotokoller fra de mere end 20 sognekommuner, der indgik i Aarhus Kommune i 1970. Fra andre kommuner er der desuden byrådsprotokoller.</p>
-                    <p>Projektets hovedformål er at sikre dansk kulturarv ved at digitalisere centrale kilder til dansk lokalhistorie og i samme proces udvikle modeller til maskinel genkendelse af håndskrift.</p>
-                    <p>Læs mere på hjemmesiden <a href="http://www.retrodigitalisering.dk/" target="blank">retrodigitalisering.dk</a></p>
+                    <p>Retrodigitalisering.dk rummer digitale kilder til Aarhus’ og andre danske kommuners historie. Fra
+                        Aarhus er der først og fremmest sognerådsprotokoller fra de mere end 20 sognekommuner, der
+                        indgik i
+                        Aarhus Kommune i 1970. Fra andre kommuner er der desuden byrådsprotokoller.</p>
+                    <p>Projektets hovedformål er at sikre dansk kulturarv ved at digitalisere centrale kilder til dansk
+                        lokalhistorie og i samme proces udvikle modeller til maskinel genkendelse af håndskrift.</p>
+                    <p>Læs mere på hjemmesiden <a href="http://www.retrodigitalisering.dk/"
+                            target="blank">retrodigitalisering.dk</a></p>
                 </div>
             </div>
-            <div class="search-card">
+            <div class="search-link">
                 <a href="https://sallingarkivet.dk/" target="blank">
-                    <img src="{{ url_for('static', path='/assets/front-page/salling-arkivet_480px.jpg') }}" alt="Salling Arkivet">
+                    <img src="{{ url_for('static', path='/assets/front-page/salling-arkivet_480px.jpg') }}"
+                        alt="Salling Arkivet">
                 </a>
-                <div class="search-card-text">
+                <div class="search-text">
                     <h3>Et stormagasins historie</h3>
-                    <p>Aarhus Stadsarkiv modtog i juni 2014 arkiver fra F. Salling Stormagasin A/S og Ferdinand og Herman Salling. To år senere modtog Stadsarkivet en samling dokumenter fra Dansk Supermarked mv.</p>
-                    <p>På hjemmesiden fortæller vi historien om stormagasinet og de to første indehavere, Ferdinand og Herman Salling, om kunder og personale. Du kan se Salling-dokumenter trukket fra AarhusArkivet.</p>
-                    <p>Læs om Sallings historie på <a href="http://sallingarkivet.dk" target="blank">sallingarkivet.dk</a></p>
+                    <p>Aarhus Stadsarkiv modtog i juni 2014 arkiver fra F. Salling Stormagasin A/S og Ferdinand og
+                        Herman
+                        Salling. To år senere modtog Stadsarkivet en samling dokumenter fra Dansk Supermarked mv.</p>
+                    <p>På hjemmesiden fortæller vi historien om stormagasinet og de to første indehavere, Ferdinand og
+                        Herman Salling, om kunder og personale. Du kan se Salling-dokumenter trukket fra AarhusArkivet.
+                    </p>
+                    <p>Læs om Sallings historie på <a href="http://sallingarkivet.dk"
+                            target="blank">sallingarkivet.dk</a>
+                    </p>
                 </div>
             </div>
-            
-            <div class="search-card">
+
+            <div class="search-link">
                 <a href="https://aarhuswiki.dk/" target="blank">
-                    <img src="{{ url_for('static', path='/assets/front-page/aarhus-wiki_480px.jpg') }}" alt="Aarhus Wiki">
+                    <img src="{{ url_for('static', path='/assets/front-page/aarhus-wiki_480px.jpg') }}"
+                        alt="Aarhus Wiki">
                 </a>
-                <div class="search-card-text">
+                <div class="search-text">
                     <h3>Aarhuswiki</h3>
-                    <p>AarhusWiki er en wikipedia om Aarhus’. Den indeholder artikler med vægt på historiske beskrivelser eller historiske vinkler på nutidige og aktuelle emner. </p>
-                    <p>Emnerne, der behandles, spænder vidt og omfatter alt, der har at gøre med Personer, Natur, Steder, Historiske perioder og temaer, Samfund, Erhverv og Kultur og fritid.</p>
+                    <p>AarhusWiki er en wikipedia om Aarhus’. Den indeholder artikler med vægt på historiske
+                        beskrivelser
+                        eller historiske vinkler på nutidige og aktuelle emner. </p>
+                    <p>Emnerne, der behandles, spænder vidt og omfatter alt, der har at gøre med Personer, Natur,
+                        Steder,
+                        Historiske perioder og temaer, Samfund, Erhverv og Kultur og fritid.</p>
                     <p>Læs mere om byens historie på <a href="http://aarhuswiki.dk" target="blank">aarhuswiki.dk</a></p>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <style>
-        .search-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px; /* Space between items */
-            /* Add any additional styling like padding or margin as needed */
-            /* Add left and right padding to the container to center the cards */
+    <div class="container-fluid search-collections-background">
 
-            padding: 25px;
-            padding-top: 15px;
-        }
-        
-        .search-card {
-            flex: 1 0 21%; /* Default to four columns */
-            /* Adjustments to keep the gap consistent and account for the flexbox's space distribution */
-            margin: 5px;
-            box-sizing: border-box;
-            /* Additional styling for search-card */
-        }
-        
-        /* For smaller devices (e.g., tablets), use two columns */
-        @media (max-width: 1024px) {
-            .search-card {
-                flex: 1 0 46%; /* Adjust for two columns */
-            }
-        }
-        
-        /* For the smallest devices (e.g., mobile phones), use a single column */
-        @media (max-width: 480px) {
-            .search-card {
-                flex: 1 0 96%; /* Adjust for one column */
-            }
-        }
+        <h3>Udvalgte samlinger</h3>
 
-        .search-card-text p {
-            font-size: 0.9em;
+        <div class="search-collections">
+            
+            <div class="search-collection">
+                <a href="/search?content_types=87&sort=date_to&direction=desc">
+                    <img src="{{ url_for('static', path='/assets/front-page/samling-film-og-medie_700px.jpg') }}"
+                        alt="Samling af film og medier">
+                </a>
+                <div class="search-text">
+                    <p>Dette er en materialetype, der indeholder dokumentarer, videokunst, fiktion og kortfilm, nyheds-
+                        og
+                        reportagefilm. De ældste film er fra 1902. Det meste kommer fra Aarhus Filmværksted, andre
+                        lokale
+                        filmmiljøer og Lokalhistorisk Samling. Det nyeste indhold er formidlingsfilm lavet i samarbejde
+                        med
+                        lokale tv- og medieproducenter. Alt indhold må ses på hjemmesiden, og meget må også deles.</p>
+                    <p><a href="/search?content_types=87&sort=date_to&direction=desc">Se alle
+                            film
+                            og videoklip her</a></p>
+                </div>
+            </div>
+            <div class="search-collection">
+                <a href="/search?content_types=50&sort=date_to&direction=desc">
+                    <img src="{{ url_for('static', path='/assets/front-page/erindringer-samling_700px.jpg') }}"
+                        alt="Erindringer">
+                </a>
+                <div class="search-text">
+                    <p>Her kommer aarhusianerne selv til orde i erindringer, livshistorier og dagbøger. Den største del
+                        af
+                        erindringerne blev indsamlet som en del af Aarhus 2017 – Europæisk Kulturhovedstad, og ønsker
+                        man at
+                        se denne samling for sig selv, kan man trykke på samlingsbeskrivelsen under de relevante poster.
+                        Andre erindringer og livshistorier er indsamlet i samarbejde med ældresektoren i Aarhus Kommune.
+                        Dagbøgerne fortæller f.eks. om livet under Coronaepidemien i 2019-2021.</p>
+                    <p><a href="/search?content_types=50&sort=date_to&direction=desc">Se alle erindringer
+                            her</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<style>
+    .search-box>img {
+        width: 100%;
+    }
+
+    .search-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 25px;
+        padding-top: 15px;
+        margin: 0 auto;
+        max-width: 1400px;
+    }
+
+    .search-link {
+        flex: 1 0 21%;
+        /* Four columns */
+        margin: 5px;
+        box-sizing: border-box;
+    }
+
+    @media (max-width: 1024px) {
+        .search-link {
+            flex: 1 0 46%;
+            /* Two columns */
         }
+    }
 
-        .search-card-text h3 {
-            font-size: 1.2em;
-            text-decoration: uppercase;
+    @media (max-width: 480px) {
+        .search-link {
+            flex: 1 0 96%;
+            /* One column */
         }
-        
-    </style>
+    }
 
-    <footer class="footer">
-        {% include "includes/footer.html" %}
-    </footer>
+    .search-text p {
+        font-size: 0.9em;
+    }
 
-    {% include "includes/flash.html" %}
+    .search-text h3 {
+        font-size: 1.2em;
+        text-decoration: uppercase;
+    }
+
+    .search-collections-background {
+        background-color: lightgrey;
+    }
+
+    .search-collections-background h3 {
+        padding: 25px;
+        margin: 0 auto;
+        max-width: 1400px;
+        padding-bottom: 0;
+        margin-left: 5px;
+    }
+
+    .search-collections {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 25px;
+        margin: 0 auto;
+        max-width: 1400px;
+    }
+
+    .search-collection img {
+        width: 100%;
+    }
+
+    .search-collection {
+        flex: 1 0 46%;
+        /* Four columns */
+        margin: 5px;
+        box-sizing: border-box;
+    }
+
+    @media (max-width: 1024px) {
+        .search-collection {
+            flex: 1 0 46%;
+            /* Two columns */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .search-collection {
+            flex: 1 0 96%;
+            /* One column */
+        }
+    }
+
+    .footer {
+        margin-top: 0;
+    }
+</style>
+
+<footer class="footer">
+    {% include "includes/footer.html" %}
+</footer>
+
+{% include "includes/flash.html" %}
 
 
 {% endblock content %}
