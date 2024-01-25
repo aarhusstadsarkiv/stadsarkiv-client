@@ -10,6 +10,11 @@ En besynderlig seddel:
 https://www.aarhusarkivet.dk/records/000097232?search=14
 
 
+Manglende PDF:
+
+https://stadsarkiv.aarhus.dk/media/17933/oplysninger-om-rent-private-forhold.pdf
+
+
 # Template-struktur
 
   - index
