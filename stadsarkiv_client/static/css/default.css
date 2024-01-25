@@ -50,7 +50,7 @@
     top: var(--main-menu-top);
     right: 0px;
     background-color: var(--navigation-background);
-    border: 1px solid var(--background);
+    /* border: 1px solid var(--background); */
     padding: 10px;
     font-size: 1.0em;
     min-width: 175px;
