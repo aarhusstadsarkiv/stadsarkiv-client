@@ -94,13 +94,6 @@ if settings["environment"] == "development":
     routes.append(Route("/test", endpoint=test.test_default, name="test_get", methods=["GET"]))
     routes.append(Route("/test", endpoint=test.test_post, name="test_post", methods=["POST"]))
 
-# Last as these are not very specific
-routes.append(Route("/{resource_type:str}/{id:str}", endpoint=proxies_resources.get, name="proxies_resources_get"))
-routes.append(
-    Route("/{resource_type:str}/{id:str}/json/{type:str}", endpoint=proxies_resources.get_json, name="proxies_resources_get_json")
-)
-
-
 # Add routes for custom pages
 common_pages: Any = []
 if "pages" in settings:
@@ -111,3 +104,9 @@ for common_page in common_pages:
     name = common_page["name"]
 
     routes.append(Route(url, endpoint=pages.default, name=name, methods=["GET"]))
+
+# Last as these are not very specific
+routes.append(Route("/{resource_type:str}/{id:str}", endpoint=proxies_resources.get, name="proxies_resources_get"))
+routes.append(
+    Route("/{resource_type:str}/{id:str}/json/{type:str}", endpoint=proxies_resources.get_json, name="proxies_resources_get_json")
+)
