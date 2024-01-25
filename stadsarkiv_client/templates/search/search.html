@@ -139,6 +139,7 @@
 {% endmacro %}
 
 {% macro parse_search_form() %}
+<!-- the div provides a context for search-suggestions with `position: absolute` -->
 <div>
     <form id="search" method="get" action="{{ url_for('proxies_search_get')}}" role="search">
         {% for key, value in query_params if key not in ['start', 'q'] %}
