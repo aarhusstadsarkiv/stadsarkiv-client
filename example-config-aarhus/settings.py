@@ -41,6 +41,32 @@ settings: dict[str, typing.Any] = {
     # or something similar.
     "pages": [
         {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
+        {"name": "page_images", "title": "Hjemmesider med billeder fra Aarhus", "template": "pages/images.html", "url": "/images"},
+        {"name": "page_council", "title": "Aarhus Byråds arkiv", "template": "pages/council.html", "url": "/city-council"},
+        {"name": "page_privacy", "title": "Privatlivspolitik", "template": "pages/about/privacy.html", "url": "/about/privacy"},
+        {"name": "page_usability", "title": "Brugbarhed ", "template": "pages/about/usability.html", "url": "/about/usability"},
+        {"name": "page_collections", "title": "Om samlingerne", "template": "pages/about/collections.html", "url": "/about/collections"},
+        {"name": "page_availability", "title": "Tilgængelighed", "template": "pages/about/availability.html", "url": "/about/availability"},
+        {
+            "name": "page_archival_availability",
+            "title": "Arkivlovens tilgængelighedsfrister",
+            "template": "pages/about/archival_availability.html",
+            "url": "/about/archival_availability",
+        },
+        {"name": "page_genealogy", "title": "Slægtsforskning", "template": "pages/guides/genealogy.html", "url": "/guides/genealogy"},
+        {
+            "name": "page_searchguide",
+            "title": "Hjælp til søgning",
+            "template": "pages/guides/searchguide.html",
+            "url": "/guides/searchguide",
+        },
+        {
+            "name": "page_municipality_records",
+            "title": "Kommunearkivet ",
+            "template": "pages/guides/municipality_records.html",
+            "url": "/guides/municipality_records",
+        },
+        # /guides/genealogy
     ],
     "search_base_url": "/search",
 }
