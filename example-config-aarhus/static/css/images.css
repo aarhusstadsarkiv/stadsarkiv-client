@@ -1,5 +1,5 @@
 /* 400px / 1920px * 100% equals 20.8333333333% */
-.images-top-image-container {
+.images-top-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,6 +20,7 @@
     padding-top: 15px;
     margin: 0 auto;
     max-width: 1400px;
+    padding-top: 50px;
 }
 
 /** image-link - default is 3 columns */
