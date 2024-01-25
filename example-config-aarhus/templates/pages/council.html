@@ -1,0 +1,87 @@
+{% extends "empty.html" %}
+
+{% block body_class %}page-council{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/council.css') }}?v={{ get_setting('version') }}">
+{% endblock head %}
+
+{% block content %}
+
+<nav class="container-fluid navigation sticky-top">
+    {% include "includes/logo.html" %}
+    {% include "includes/navigation.html" %}
+</nav>
+
+<main>
+    <div class="container-fluid">
+        <div class="council-top-container"></div>
+
+        <div class="council-links">
+
+
+            <div class="council-link">
+                <a href="/collections/48">
+                    <img src="{{ url_for('static', path='/assets/council-page/Byraad_AA_byraadsarkivet_1867-1940_420px.jpg') }}"
+                        alt="Aarhus Byråds arkiv (1867-1940)">
+                </a>
+                <div class="council-text">
+                    <p>Den ældste del af Aarhus Byråds arkiv (1867-1940) består af referater fra byrådets forhandlinger
+                        vedr. alle sager, som har været på byrådets dagsorden</p>
+                    <p>Både den åbne og den lukkede del af mødereferaterne er digitaliseret af Aarhus Stadsarkiv og er i
+                        udgangspunktet frit tilgængelig.</p>
+                    <p><a href="/collections/48">Læs mere om den ældste del af byrådsarkivet her.</a></p>
+                </div>
+            </div>
+
+            <div class="council-link">
+
+                <img src="https://placehold.co/420x300?text=Manglende billede" alt="Manglende billede">
+                
+                <div class="council-text">
+                    <p>Sagregistrene til de trykte byrådsforhandlinger for årene 1940-1994 (der mangler et register for
+                        årene 1994-1996) er tilgængelige online i en redigeret udgave. Stadsarkivet har fjernet alle
+                        henvisninger til sager, som indeholder personoplysninger, og andre sager, der ikke umiddelbart
+                        er tilgængelige.</p>
+                    <p>Sagregistrene fungerer som indgang til referaterne fra byrådsmøderne via sidehenvisninger til de
+                        trykte byrådsforhandlinger.</p>
+                    <p>Registrene er delt i 3 digitale publikationer, som dækker årene 1940-50, 1950-66 og 1966-1994:
+                    </p>
+                    <a href="/records/000438147" style="display:inline-block">Sagregister
+                        til Aarhus Byraads Forhandlinger, 1. april 1940 til 31. marts. 1950</a>
+                    <a href="/records/000441263" style="display:inline-block">Sagregister
+                        til Aarhus Byraads Forhandlinger, 1. april 1950 - 31. marts. 1966</a>
+                    <a href="/records/000493864" style="display:inline-block">Sagregister
+                        til Aarhus Byraads Forhandlinger, 1. april 1966 - 31. marts. 1994</a>
+                </div>
+            </div>
+
+            <div class="council-link">
+                <a href="https://byraadsarkivet.aarhus.dk/" target="blank">
+                    <img src="{{ url_for('static', path='/assets/council-page/Byraad_AA_byraadsarkivet_1997-_420px.jpg') }}"
+                        alt="Byrådsarkivet">
+                </a>
+                <div class="council-text">
+                    <p>Fra 1997 og frem indeholder byrådsarkivet både mødereferater og digitalt sagsmateriale vedr. åbne sager, der har været behandlet på møder i enten Aarhus Byråd, Magistraten og de politiske udvalg.</p>
+                    <p>Denne nyeste del af byrådsarkivet er tilgængelig på sin egen hjemmeside, hvor den en gang om året opdateret med de seneste mødereferater, sager og dokumenter.</p>
+                    <p><a href="https://byraadsarkivet.aarhus.dk">Den nyeste del af byrådsarkivet kan du finde her.</a></p>
+                </div>
+            </div>
+
+            <div class="council-link"> </div>
+        </div>
+    </div>
+</main>
+
+<style>
+
+</style>
+
+<footer class="footer">
+    {% include "includes/footer.html" %}
+</footer>
+
+{% include "includes/flash.html" %}
+
+
+{% endblock content %}
