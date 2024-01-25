@@ -121,11 +121,7 @@ class AutoComplete {
 
     updateSuggestions(data) {
 
-        const inputRect = this.autocompleteElem.getBoundingClientRect();
-
         this.suggestionsElem.style.display = 'block';
-        this.suggestionsElem.style.top = `${inputRect.bottom - 80}px`;
-        this.suggestionsElem.style.left = `${inputRect.left}px`;
         this.suggestionsElem.innerHTML = this.renderFunction(data);
     }
 }
