@@ -13,7 +13,6 @@
 }
 
 .home-search-form {
-    overflow: hidden;
     margin-top: 35%;
     padding: 25px;
 
@@ -89,7 +88,6 @@
     margin: 0 auto;
     max-width: 1400px;
     padding-bottom: 0;
-    margin-left: 5px;
 }
 
 .home-collections {

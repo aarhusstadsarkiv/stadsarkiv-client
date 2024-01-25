@@ -2,7 +2,22 @@
 
 {% block body_class %}page-home{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/search.css') }}?v={{ get_setting('version') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/home.css') }}?v={{ get_setting('version') }}">
+{% endblock head %}
+
 {% block content %}
+
+<script type="module">
+
+    import { autoCompleteInit } from '/static/js/auto-complete-instance.js';
+
+    const searchBaseUrl = '/search?{{ query_str_display }}';
+    window.addEventListener("pageshow", function(event) {
+        autoCompleteInit(searchBaseUrl);
+    });
+</script>
 
 <nav class="container-fluid navigation sticky-top">
     {% include "includes/logo.html" %}
@@ -10,38 +25,45 @@
 </nav>
 
 <main>
-    <div class="container-fluid">
-        <div class="search-box">
-            <img src="{{ url_for('static', path='/assets/front-page/topimagelogo_1920.jpg') }}" alt="Aarhus">
+    <div class="container-fluid" >
+        <div class="home-search-container">
+            <div class="home-search-form">
+                <form id="search" method="get" action="{{ url_for('proxies_search_get')}}" role="search">
+                    <input id="q" type="text" name="q" placeholder="{{ translate('Search') }}" value="{{ q }}">
+                    <button type="submit" class="search-button">{{ translate('Search') }}</button>
+                </form>
+                <div class="search-suggestions"></div>
+            </div>
+
         </div>
 
-        <div class="search-links">
-            <div class="search-link">
+        <div class="home-search-links">
+            <div class="home-search-link">
                 <a href="/search?direction=desc&sort=created_at">
                     <img src="{{ url_for('static', path='/assets/front-page/nyeste-dokument_480px.jpg') }}"
                         alt="Nyt i arkivet">
                 </a>
             </div>
-            <div class="search-link">
+            <div class="home-search-link">
                 <a href="/collections/194">
                     <img src="{{ url_for('static', path='/assets/front-page/kommune-arkivet_480px.jpg') }}"
                         alt="Kommune Arkivet">
                 </a>
             </div>
-            <div class="search-link">
+            <div class="home-search-link">
                 <a href="/images">
                     <img src="{{ url_for('static', path='/assets/front-page/billeder-fra-aarhus_480px.jpg') }}"
                         alt="Billeder fra Aarhus">
                 </a>
             </div>
-            <div class="search-link">
+            <div class="home-search-link">
                 <a href="/city-council">
                     <img src="{{ url_for('static', path='/assets/front-page/byraadsarkivet_v2_480px.jpg') }}"
                         alt="Byrådsarkivet Version 2">
                 </a>
             </div>
 
-            <div class="search-link">
+            <div class="home-search-link">
                 <a href="https://www.smartarkivering.dk/" target="blank">
                     <img src="{{ url_for('static', path='/assets/front-page/smartarkivering_480px.jpg') }}"
                         alt="Smart Arkivering">
@@ -58,7 +80,7 @@
                     </p>
                 </div>
             </div>
-            <div class="search-link">
+            <div class="home-search-link">
                 <a href="https://www.retrodigitalisering.dk/" target="blank">
                     <img src="{{ url_for('static', path='/assets/front-page/retrodigitalisering_480px.jpg') }}"
                         alt="Retrodigitalisering">
@@ -75,7 +97,7 @@
                             target="blank">retrodigitalisering.dk</a></p>
                 </div>
             </div>
-            <div class="search-link">
+            <div class="home-search-link">
                 <a href="https://sallingarkivet.dk/" target="blank">
                     <img src="{{ url_for('static', path='/assets/front-page/salling-arkivet_480px.jpg') }}"
                         alt="Salling Arkivet">
@@ -94,7 +116,7 @@
                 </div>
             </div>
 
-            <div class="search-link">
+            <div class="home-search-link">
                 <a href="https://aarhuswiki.dk/" target="blank">
                     <img src="{{ url_for('static', path='/assets/front-page/aarhus-wiki_480px.jpg') }}"
                         alt="Aarhus Wiki">
@@ -113,13 +135,13 @@
         </div>
     </div>
 
-    <div class="container-fluid search-collections-background">
+    <div class="container-fluid home-collections-background">
 
         <h3>Udvalgte samlinger</h3>
 
-        <div class="search-collections">
-            
-            <div class="search-collection">
+        <div class="home-collections">
+
+            <div class="home-collection">
                 <a href="/search?content_types=87&sort=date_to&direction=desc">
                     <img src="{{ url_for('static', path='/assets/front-page/samling-film-og-medie_700px.jpg') }}"
                         alt="Samling af film og medier">
@@ -137,7 +159,7 @@
                             og videoklip her</a></p>
                 </div>
             </div>
-            <div class="search-collection">
+            <div class="home-collection">
                 <a href="/search?content_types=50&sort=date_to&direction=desc">
                     <img src="{{ url_for('static', path='/assets/front-page/erindringer-samling_700px.jpg') }}"
                         alt="Erindringer">
@@ -145,7 +167,7 @@
                 <div class="search-text">
                     <p>Her kommer aarhusianerne selv til orde i erindringer, livshistorier og dagbøger. Den største del
                         af
-                        erindringerne blev indsamlet som en del af Aarhus 2017 – Europæisk Kulturhovedstad, og ønsker
+                        erindringerne blev indsamlet som en del af Aarhus 2017 - Europæisk Kulturhovedstad, og ønsker
                         man at
                         se denne samling for sig selv, kan man trykke på samlingsbeskrivelsen under de relevante poster.
                         Andre erindringer og livshistorier er indsamlet i samarbejde med ældresektoren i Aarhus Kommune.
@@ -155,104 +177,74 @@
                     </p>
                 </div>
             </div>
+            <div class="home-collection">
+                <a href="/search?content_types=21">
+                    <img src="{{ url_for('static', path='/assets/front-page/skattemandtal-samling_700px.png') }}"
+                        alt="Kommunale folketællinger">
+                </a>
+                <div class="search-text">
+                    <p>Aarhus Kommunes begyndte i 1885 at føre mandtal for at få et overblik for skatteopkrævningen.
+                        Listerne er ført adressevis, og på de enkelte adresser er alle ejendommens beboere listet op med
+                        stamoplysninger - herunder alder, fødesogn, arbejdssted og skole for børn. Ofte er forrige
+                        adresse anført ved flytning inden for det seneste år.</p>
+                    <p><a href="/search?content_types=21">Alle kommunale folketællinger (også kaldet
+                            skattemandtalslister) frem til 1940 er online her på AarhusArkivet</a>. For at se nyere
+                        lister skal du ansøge om adgang i henhold til reglerne for materialer, som indeholder
+                        personfølsomme oplysninger.</p>
+                </div>
+            </div>
+            <div class="home-collection">
+                <a href="/collections/204">
+                    <img src="{{ url_for('static', path='/assets/front-page/vejvisere-samling_700px.png') }}"
+                        alt="Aarhus vejvisere">
+                </a>
+                <div class="search-text">
+                    <p><a href="/collections/204">Aarhus Vejviser</a> er udgivet fra 1859 frem til 2016 - til sidst
+                        under navnet Den Grønne Vejviser (udgivet af Mostrups Forlag/Eniro). Vejviseren indeholder dels
+                        et personregister listet alfabetisk over 'hovedpersoner' på hver adresse, dels et
+                        adresseregister. Herudover indeholder vejviseren også et fagregister.</p>
+                    <p>Vi har lagt <a href="/search?collection=204">vejviserne for perioden 1859-1940 online her på
+                            AarhusArkivet</a>. På Stadsarkivets læsesal har arkivet vejviseren for perioden 1859-2007.
+                    </p>
+                </div>
+            </div>
+
+            <div class="home-collection">
+                <a href="/collections/2">
+                    <img src="{{ url_for('static', path='/assets/front-page/stiftstidende-samling_700px.jpg') }}"
+                        alt="Århus Stiftstidendes Fotosamling">
+                </a>
+                <div class="search-text">
+                    <p>Århus Stiftstidendes fotografer har i årtier været til stede ved små og store begivenheder i
+                        Aarhus. Dermed afspejler fotosamlingen byens liv og mennesker fra slutningen af 1930'erne frem
+                        til seneste årtusindeskifte. Det er hele byens fotoalbum.</p>
+                    <p>Fotosamlingen er en del af Århus Stiftstidendes overordnede virksomhedsarkiv, der ud over
+                        pressefotografier indeholder eksempelvis kasse-, lønnings- annonce og statusbøger samt
+                        udklipssamlinger. Den analoge del af samlingen tilhører Rigsarkivet, og det er dermed kun den
+                        digitale fotosamling, som her formidles af Aarhus Stadsarkiv.</p>
+                </div>
+            </div>
+
+            <div class="home-collection">
+                <a href="/collections/204">
+                    <img src="{{ url_for('static', path='/assets/front-page/samling-preben-rasmussen_700px.jpg') }}"
+                        alt="Aarhus vejvisere">
+                </a>
+                <div class="search-text">
+                    <p>Preben Rasmussens udklipssamling består primært af avisudklip, småtryk og beskrivelser om steder,
+                        personer og institutioner i Aarhus.</p>
+                    <p>Samlingen er opdelt i to - en topografisk på adresser og en emneopdelt efter Preben Rasmussens
+                        egen struktur. Den adresseopdelte samling dækker fortrinsvis adresser i midtbyen, mens den
+                        emneopdelte også behandler emner uden for Aarhus Kommunes grænser.</p>
+                    <p>Samlingen skal pga. ophavsret ses på læsesalens computere.</p>
+                </div>
+            </div>
         </div>
     </div>
 </main>
 
 <style>
-    .search-box>img {
-        width: 100%;
-    }
 
-    .search-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        padding: 25px;
-        padding-top: 15px;
-        margin: 0 auto;
-        max-width: 1400px;
-    }
-
-    .search-link {
-        flex: 1 0 21%;
-        /* Four columns */
-        margin: 5px;
-        box-sizing: border-box;
-    }
-
-    @media (max-width: 1024px) {
-        .search-link {
-            flex: 1 0 46%;
-            /* Two columns */
-        }
-    }
-
-    @media (max-width: 480px) {
-        .search-link {
-            flex: 1 0 96%;
-            /* One column */
-        }
-    }
-
-    .search-text p {
-        font-size: 0.9em;
-    }
-
-    .search-text h3 {
-        font-size: 1.2em;
-        text-decoration: uppercase;
-    }
-
-    .search-collections-background {
-        background-color: lightgrey;
-    }
-
-    .search-collections-background h3 {
-        padding: 25px;
-        margin: 0 auto;
-        max-width: 1400px;
-        padding-bottom: 0;
-        margin-left: 5px;
-    }
-
-    .search-collections {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        padding: 25px;
-        margin: 0 auto;
-        max-width: 1400px;
-    }
-
-    .search-collection img {
-        width: 100%;
-    }
-
-    .search-collection {
-        flex: 1 0 46%;
-        /* Four columns */
-        margin: 5px;
-        box-sizing: border-box;
-    }
-
-    @media (max-width: 1024px) {
-        .search-collection {
-            flex: 1 0 46%;
-            /* Two columns */
-        }
-    }
-
-    @media (max-width: 480px) {
-        .search-collection {
-            flex: 1 0 96%;
-            /* One column */
-        }
-    }
-
-    .footer {
-        margin-top: 0;
-    }
 </style>
 
 <footer class="footer">
