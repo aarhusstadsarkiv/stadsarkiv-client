@@ -16,6 +16,7 @@ from stadsarkiv_client.core.date_format import date_format
 from stadsarkiv_client.core.args import get_local_config_dir
 import json
 import re
+import markdown
 
 
 log = get_log()
@@ -86,6 +87,10 @@ def _key_exist_in_dict(keys: list, data: dict):
     return False
 
 
+def _markdown(text: str, safe: bool = True):
+    return markdown.markdown(text)
+
+
 loader = FileSystemLoader(template_dirs)
 templates = Jinja2Templates(
     directory="",
@@ -129,4 +134,5 @@ templates.env.globals.update(pre=_pre)
 templates.env.globals.update(paragraphs=_paragraphs)
 templates.env.globals.update(get_icon=get_icon)
 templates.env.globals.update(has_permission=has_permission)
+templates.env.globals.update(markdown=_markdown)
 templates.env.globals.update(key_exist_in_dict=_key_exist_in_dict)
