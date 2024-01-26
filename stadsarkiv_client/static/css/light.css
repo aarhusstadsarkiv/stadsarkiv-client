@@ -22,7 +22,7 @@
   --variable: #39a33c;
   --highlight: #ff0;
   --body-width: 100%;
-  --container-width: 1200px;
+  --container-width: 1400px;
 
   /* can not be used in media queries - just to remember the settings */
   --breakpoint-small: 576px;
