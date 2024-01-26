@@ -167,7 +167,10 @@
 }
 
 .container-max-width {
-    max-width: var(--container-width);
+    width: var(--container-width);
+    margin: auto;
+    margin-top: 20px;
+    
 }
 
 .container-left {
