@@ -12,251 +12,301 @@
     {% include "includes/navigation.html" %}
 </nav>
 
+<script type="module">
+
+import {showTOC} from '/static/js/table-of-contents.js';
+showTOC('article', 'toc');
+
+</script>
+
 <main>
-    <div class="container">
+    <div class="container-fluid-left-main">
 
-        <h3 id="introduction">Arkivlovens tilgængelighedsfrister</h3>
-        <p>Arkivlovens kapitel 6 og 7 bestemmer, hvornår både private og offentligt skabte arkivalier, som er afleveret
-            til offentligt arkiv, må tilgængeliggøres.</p>
+        <div class="container-left">
+            <div id="toc"></div>
+        </div>
 
-        <h4 id="private_material">Private arkivalier</h4>
-        <p><u>Privatskabte og -afleverede arkivalier</u> er tilgængelige efter aftale med giver og Stadsarkivet. Dog er
-            alle oplysninger om rent private forhold beskyttet af en tilgængelighedsfrist på 75 år. <a
-                href="#privacy">Se afsnittet om persondata</a></p>
-        <p>Arkivlovens regler gælder ikke for privatarkiver. Det er den person, der afleverer et privatarkiv til et
-            offentligt arkiv, der bestemmer tilgængelighedsreglerne.</p>
-        <p>Ofte vælger den pågældende fristerne i Arkivloven om oplysninger om rent private forhold. Det betyder, at
-            fristen er <strong>75 år</strong>. For privatarkiver afleveret før 2003 er fristen som regel 80 år.</p>
-        <p>Du skal endvidere være opmærksom på, at privatarkiver kan være omfattet af lov om ophavsret. Ophavsretten har
-            blandt andet betydning, hvis du vil offentliggøre og gengive private personers arkiver. Materiale i
-            privatarkiver, der er beskyttet af ophavsret, må ikke kopieres, og evt. fotografier må ikke viderebringes
-            uden tilladelse fra den, der har ophavsretten.</p>
+        <div class="container-main" id="article">
 
-        <h4 id="public_material">Offentlige arkivalier</h4>
-        <p>Arkivlovens kapitel 6 og 7 bestemmer, hvornår <u>offentligt skabte arkivalier</u>, som er afleveret til
-            offentligt arkiv, må tilgængeliggøres.</p>
-        <p>Den almindelige tilgængelighedsfrist er 20 år. Det vil sige, at almindelige sager er tilgængelige 20 år,
-            efter sagen er afsluttet. Arkivalier med personlige eller fortrolige oplysninger er derimod beskyttet af en
-            længere tilgængelighedsfrist. Læs her om hvilke oplysninger, der er beskyttet, samt hvilke frister, der er
-            tilknyttet de mest benyttede typer af arkivalier.</p>
+            <h3 id="introduction">Arkivlovens tilgængelighedsfrister</h3>
+            <p>Arkivlovens kapitel 6 og 7 bestemmer, hvornår både private og offentligt skabte arkivalier, som er
+                afleveret
+                til offentligt arkiv, må tilgængeliggøres.</p>
 
-        <h5 id="secret_material">Oplysninger om fortrolige forhold</h5>
-        <p>Blandt typer af oplysninger om fortrolige forhold, og som derfor er underlagt en længere
-            tilgængeliggørelsesfrist end sædvanlig, kan nævnes:</p>
-        <ul>
-            <li>Statens sikkerhed og rigets forsvar. Der er typisk en frist på 60 år.</li>
-            <li>Rigets udenrigspolitiske eller udenrigsøkonomiske interesser. Der er en frist på 40 år og opefter.</li>
-            <li>Sager vedrørende Kongehuset fx i Udenrigs- eller Forsvarsministeriets arkiver. Der er en frist på 100 år
-            </li>
-            <li>Indretning af bygninger (bygningstegninger), der i dag anvendes af domstole, politi og kriminalforsorg.
-                Der er en frist på 250 år.</li>
-        </ul>
-        <p>Blandt typer af arkivalier, som er underlagt en længere tilgængeliggørelsesfrist, kan nævnes:</p>
-        <ul>
-            <li>Borgerlige ægteskabsbøger og prøvelsesbøger (50 år). I henhold til arkivlovens bestemmelser afleveres
-                borgerlige ægteskabsbøger til Rigsarkivet frem til 2007.</li>
-            <li>Rigsarkivet opbevarer oplysninger om borgerlige ægteskab fra 1851. <a
-                    href="https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/borgerlige-vielser-kom-godt-gang/">De
-                    har udarbejdet en vejledning</a> til, hvor og hvordan man finder oplysninger i protokollerne.</li>
-        </ul>
+            <h4 id="private_material">Private arkivalier</h4>
+            <p><u>Privatskabte og -afleverede arkivalier</u> er tilgængelige efter aftale med giver og Stadsarkivet. Dog
+                er
+                alle oplysninger om rent private forhold beskyttet af en tilgængelighedsfrist på 75 år. <a
+                    href="#privacy">Se afsnittet om persondata</a></p>
+            <p>Arkivlovens regler gælder ikke for privatarkiver. Det er den person, der afleverer et privatarkiv til et
+                offentligt arkiv, der bestemmer tilgængelighedsreglerne.</p>
+            <p>Ofte vælger den pågældende fristerne i Arkivloven om oplysninger om rent private forhold. Det betyder, at
+                fristen er <strong>75 år</strong>. For privatarkiver afleveret før 2003 er fristen som regel 80 år.</p>
+            <p>Du skal endvidere være opmærksom på, at privatarkiver kan være omfattet af lov om ophavsret. Ophavsretten
+                har
+                blandt andet betydning, hvis du vil offentliggøre og gengive private personers arkiver. Materiale i
+                privatarkiver, der er beskyttet af ophavsret, må ikke kopieres, og evt. fotografier må ikke
+                viderebringes
+                uden tilladelse fra den, der har ophavsretten.</p>
 
-        <h5 id="privacy">Oplysninger om rent private forhold (persondata)</h5>
-        <p>Sager med oplysninger om rent private forhold er beskyttet af en tilgængelighedsfrist på 75 år, uanset
-            hvilken sammenhæng, oplysningerne optræder i. Til rent private forhold regnes oplysninger om:</p>
-        <ul>
-            <li>økonomi</li>
-            <li>race</li>
-            <li>religion</li>
-            <li>politiske og foreningsmæssige forhold</li>
-            <li>strafbare forhold</li>
-            <li>helbredsforhold</li>
-            <li>seksuelle forhold</li>
-            <li>sociale forhold</li>
-        </ul>
+            <h4 id="public_material">Offentlige arkivalier</h4>
+            <p>Arkivlovens kapitel 6 og 7 bestemmer, hvornår <u>offentligt skabte arkivalier</u>, som er afleveret til
+                offentligt arkiv, må tilgængeliggøres.</p>
+            <p>Den almindelige tilgængelighedsfrist er 20 år. Det vil sige, at almindelige sager er tilgængelige 20 år,
+                efter sagen er afsluttet. Arkivalier med personlige eller fortrolige oplysninger er derimod beskyttet af
+                en
+                længere tilgængelighedsfrist. Læs her om hvilke oplysninger, der er beskyttet, samt hvilke frister, der
+                er
+                tilknyttet de mest benyttede typer af arkivalier.</p>
 
-        <h4 id="dispensation">Ansøgning om benyttelse af ikke umiddelbart tilgængeligt materiale</h4>
-        <p>Enhver kan søge om tilladelse til benyttelse af ikke umiddelbart tilgængelige arkivalier. I forbindelse med
-            ansøgning om tilladelse skal formålet med den tilsigtede benyttelse af de oplysninger, der søges om adgang
-            til, oplyses.</p>
-        <p>Aarhus Byråd har bemyndiget stadsarkivaren til at træffe afgørelse i sager vedr. ansøgning om tilladelse til
-            at benytte ikke umiddelbart tilgængelige arkivalier.</p>
-        <p>Arkivskaberen kan selv forlænge fristen i op til 60 år. Endnu længere frister fastsættes efter aftale med
-            Kulturministeren.</p>
+            <h5 id="secret_material">Oplysninger om fortrolige forhold</h5>
+            <p>Blandt typer af oplysninger om fortrolige forhold, og som derfor er underlagt en længere
+                tilgængeliggørelsesfrist end sædvanlig, kan nævnes:</p>
+            <ul>
+                <li>Statens sikkerhed og rigets forsvar. Der er typisk en frist på 60 år.</li>
+                <li>Rigets udenrigspolitiske eller udenrigsøkonomiske interesser. Der er en frist på 40 år og opefter.
+                </li>
+                <li>Sager vedrørende Kongehuset fx i Udenrigs- eller Forsvarsministeriets arkiver. Der er en frist på
+                    100 år
+                </li>
+                <li>Indretning af bygninger (bygningstegninger), der i dag anvendes af domstole, politi og
+                    kriminalforsorg.
+                    Der er en frist på 250 år.</li>
+            </ul>
+            <p>Blandt typer af arkivalier, som er underlagt en længere tilgængeliggørelsesfrist, kan nævnes:</p>
+            <ul>
+                <li>Borgerlige ægteskabsbøger og prøvelsesbøger (50 år). I henhold til arkivlovens bestemmelser
+                    afleveres
+                    borgerlige ægteskabsbøger til Rigsarkivet frem til 2007.</li>
+                <li>Rigsarkivet opbevarer oplysninger om borgerlige ægteskab fra 1851. <a
+                        href="https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/borgerlige-vielser-kom-godt-gang/">De
+                        har udarbejdet en vejledning</a> til, hvor og hvordan man finder oplysninger i protokollerne.
+                </li>
+            </ul>
 
-        <h4 id="fosterhome">Børnehjem og andre sociale institutioner (75 år)</h4>
-        <p>Stambøger, klientsager, patientjournaler med mere indeholder oplysninger om rent private forhold og er
-            omfattet af en tilgængelighedsfrist på <strong>75 år</strong>.</p>
-        <p>Aarhus Stadsarkiv opbevarer materialer fra de kommunale institutioner, mens Rigsarkivet opbevarer materialer
-            fra amtslige og statslige institutioner.</p>
+            <h5 id="privacy">Oplysninger om rent private forhold (persondata)</h5>
+            <p>Sager med oplysninger om rent private forhold er beskyttet af en tilgængelighedsfrist på 75 år, uanset
+                hvilken sammenhæng, oplysningerne optræder i. Til rent private forhold regnes oplysninger om:</p>
+            <ul>
+                <li>økonomi</li>
+                <li>race</li>
+                <li>religion</li>
+                <li>politiske og foreningsmæssige forhold</li>
+                <li>strafbare forhold</li>
+                <li>helbredsforhold</li>
+                <li>seksuelle forhold</li>
+                <li>sociale forhold</li>
+            </ul>
 
-        <h4 id="examinations">Eksamensresultater (75 år)</h4>
-        <p>Oplysninger om uafsluttede og afsluttede eksaminer er oplysninger om rent private forhold. De er omfattet af
-            en tilgængelighedsfrist på <strong>75 år</strong>.</p>
-        <p>Til brug for jubilæumsarrangementer kan der mod betaling laves en udskrift af klasselister eller lignende.
-            Udskriften indeholder navn og fødselsdato, men du kan ikke få oplysninger om andres eksamensresultater.</p>
-        <p>Oplysningerne findes typisk i kommunale arkiver eller i uddannelsesinstitutionernes egne arkiver.</p>
-        <p>Aarhus Stadsarkiv opbevarer afgangsbeviser fra Aarhus Kommunes folkeskoler fra 1978 og frem. Hvis du har gået
-            her, så kan du bestille en kopi af dit afgangsbevis. Det kan du ved at udfylde denne formular:</p>
-        <p><span><a
-                    href="https://stadsarkiv.aarhus.dk/brug-arkivet/bestil-kopi-af-afgangsbevis-eksamensbevis/">https://stadsarkiv.aarhus.dk/brug-arkivet/bestil-kopi-af-afgangsbevis-eksamensbevis/</a></span>
-        </p>
+            <h4 id="dispensation">Ansøgning om benyttelse af ikke umiddelbart tilgængeligt materiale</h4>
+            <p>Enhver kan søge om tilladelse til benyttelse af ikke umiddelbart tilgængelige arkivalier. I forbindelse
+                med
+                ansøgning om tilladelse skal formålet med den tilsigtede benyttelse af de oplysninger, der søges om
+                adgang
+                til, oplyses.</p>
+            <p>Aarhus Byråd har bemyndiget stadsarkivaren til at træffe afgørelse i sager vedr. ansøgning om tilladelse
+                til
+                at benytte ikke umiddelbart tilgængelige arkivalier.</p>
+            <p>Arkivskaberen kan selv forlænge fristen i op til 60 år. Endnu længere frister fastsættes efter aftale med
+                Kulturministeren.</p>
 
-        <h4 id="family_cases">Familieretlige sager (75 år)</h4>
-        <p>Familieretslige sager indeholder oplysninger om rent private forhold og er omfattet af en
-            tilgængelighedsfrist på <strong>75 år</strong>.</p>
-        <p>Eksempler på familieretslige sager:</p>
-        <ul>
-            <li>Adoptionssager</li>
-            <li>Faderskabssager</li>
-            <li>Separations- og skilsmissesager</li>
-            <li>Sager vedr. forældremyndighed</li>
-            <li>Sager vedr. samkvemsret</li>
-        </ul>
-        <p>Familieretslige sager findes typisk i amtsarkiverne, statsamternes arkiver samt i skifteretternes og
-            Justitsministeriets arkiv.</p>
-        <p>Rigsarkivet har udarbejdet vejledninger til:</p>
-        <p>Adoptionssager: <span><a
-                    href="https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/adoptionssager-kom-godt-gang/">https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/adoptionssager-kom-godt-gang/</a></span>
-        </p>
-        <p>Faderskabssager: <span><a
-                    href="https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/faderskabssager-kom-godt-gang/">https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/faderskabssager-kom-godt-gang/</a></span>
-        </p>
-        <p>Separations- og skilsmissesager: <span><a
-                    href="https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/skilsmissesager-kom-godt-gang/">https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/skilsmissesager-kom-godt-gang/</a></span>
-        </p>
+            <h4 id="fosterhome">Børnehjem og andre sociale institutioner (75 år)</h4>
+            <p>Stambøger, klientsager, patientjournaler med mere indeholder oplysninger om rent private forhold og er
+                omfattet af en tilgængelighedsfrist på <strong>75 år</strong>.</p>
+            <p>Aarhus Stadsarkiv opbevarer materialer fra de kommunale institutioner, mens Rigsarkivet opbevarer
+                materialer
+                fra amtslige og statslige institutioner.</p>
 
-        <h4 id="social_security">Folkeregistre (75 år)</h4>
-        <p>Folkeregistre indeholder oplysninger om rent private forhold. De er omfattet af en tilgængelighedsfrist på
-            <strong>75 år</strong>.
-        </p>
-        <p>Folkeregisteroplysninger fra Aarhus Kommune og de tidligere forstads- og omegnskommuner opbevares på Aarhus
-            Stadsarkiv. Materialerne udleveres ikke på læsesalen, men man kan bestille en undersøgelse i materialerne,
-            hvis en række forudsætninger at er opfyldt.</p>
-        <p><a data-udi="umb://media/767f3ed1e95943bfb1c86e20bd52540e"
-                href="https://www.aarhusstadsarkiv.dk/media/17933/oplysninger-om-rent-private-forhold.pdf"
-                title="Oplysninger om rent private forhold.pdf">Læs mere i pdf-dokument om "Oplysninger om rent private
-                forhold"</a></p>
+            <h4 id="examinations">Eksamensresultater (75 år)</h4>
+            <p>Oplysninger om uafsluttede og afsluttede eksaminer er oplysninger om rent private forhold. De er omfattet
+                af
+                en tilgængelighedsfrist på <strong>75 år</strong>.</p>
+            <p>Til brug for jubilæumsarrangementer kan der mod betaling laves en udskrift af klasselister eller
+                lignende.
+                Udskriften indeholder navn og fødselsdato, men du kan ikke få oplysninger om andres eksamensresultater.
+            </p>
+            <p>Oplysningerne findes typisk i kommunale arkiver eller i uddannelsesinstitutionernes egne arkiver.</p>
+            <p>Aarhus Stadsarkiv opbevarer afgangsbeviser fra Aarhus Kommunes folkeskoler fra 1978 og frem. Hvis du har
+                gået
+                her, så kan du bestille en kopi af dit afgangsbevis. Det kan du ved at udfylde denne formular:</p>
+            <p><span><a
+                        href="https://stadsarkiv.aarhus.dk/brug-arkivet/bestil-kopi-af-afgangsbevis-eksamensbevis/">https://stadsarkiv.aarhus.dk/brug-arkivet/bestil-kopi-af-afgangsbevis-eksamensbevis/</a></span>
+            </p>
 
-        <h4 id="censuses">Folketællinger og kommunale skattemandtalslister (75 år)</h4>
-        <p>Folketællinger indeholder oplysninger om rent private forhold og er omfattet af en tilgængelighedsfrist på
-            <strong>75 år</strong>.
-        </p>
-        <p>At føre befolkningen i mandtal. Det var, hvad Aarhus Kommune begyndte at gøre i 1885. Kommunen skulle have
-            styr på sin befolkning bl.a. for at kunne opkræve de nødvendige skatter.</p>
-        <p>Frem til 1953 blev kommunens folk 1.oktober sendt ud i byen for at tælle byens. Det er der kommet et enormt
-            arkiv ud af. Mere end 4.500 protokoller er det blevet til, og de er rent guf for slægtshistorikere og
-            byhistorisk interesserede.</p>
-        <p>Mandtalslisterne oplister de talte personer husstand for husstand og indeholder lidt forskellige oplysninger
-            alt efter, hvornår de er lavet. Man finder altid navn, alder, køn, fødested, stilling i husstanden og
-            erhverv.</p>
-        <p>Mandtalslisterne er ført i særlige skemaer, hvor de forskellige oplysninger er skrevet op i kolonner.</p>
-        <p>På <span><a href="/">AarhusArkivet</a></span> er tællingerne opdelt efter
-            vejnavne.</p>
-        <p>På <span><a href="/">AarhusArkivet</a></span> er mandtalslisterne tilgængelige
-            protokol for protokol – altså på samme måde som de nationale folketællinger på Arkivalieronline. De kan
-            fremsøges via kommunearkivet – <span><a href="/search?collection=194&content_types=21">eller ved at
-                    klikke på dette link</a></span>.</p>
-        <p>Mandtalslister frem til 1942 er tilgængelige fra egen pc. Listerne efter 1942 kan ses på Stadsarkivets
-            læsesal efter godkendt ansøgning. Hvis formålet er <strong>slægtsforskning</strong>, kan du få særlig
-            tilladelse til at se folketællingerne 1942-1953. Tilladelsen kan søges på Stadsarkivets læsesal. Ansøgningen
-            behandles med det samme.</p>
+            <h4 id="family_cases">Familieretlige sager (75 år)</h4>
+            <p>Familieretslige sager indeholder oplysninger om rent private forhold og er omfattet af en
+                tilgængelighedsfrist på <strong>75 år</strong>.</p>
+            <p>Eksempler på familieretslige sager:</p>
+            <ul>
+                <li>Adoptionssager</li>
+                <li>Faderskabssager</li>
+                <li>Separations- og skilsmissesager</li>
+                <li>Sager vedr. forældremyndighed</li>
+                <li>Sager vedr. samkvemsret</li>
+            </ul>
+            <p>Familieretslige sager findes typisk i amtsarkiverne, statsamternes arkiver samt i skifteretternes og
+                Justitsministeriets arkiv.</p>
+            <p>Rigsarkivet har udarbejdet vejledninger til:</p>
+            <p>Adoptionssager: <span><a
+                        href="https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/adoptionssager-kom-godt-gang/">https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/adoptionssager-kom-godt-gang/</a></span>
+            </p>
+            <p>Faderskabssager: <span><a
+                        href="https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/faderskabssager-kom-godt-gang/">https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/faderskabssager-kom-godt-gang/</a></span>
+            </p>
+            <p>Separations- og skilsmissesager: <span><a
+                        href="https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/skilsmissesager-kom-godt-gang/">https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/skilsmissesager-kom-godt-gang/</a></span>
+            </p>
 
-        <h4 id="date_of_birth">Fødselstidspunkt (75 år)</h4>
-        <p>Jordemoderprotokoller indeholder oplysninger om rent private forhold. De er omfattet af en
-            tilgængelighedsfrist på <strong>75 år</strong>.</p>
-        <p>For Aarhus kan en stor del af oplysninger findes i Fødselsanstalten i Jylland/Fødselsstiftelsen i Aarhus
-            arkiv (1910-1997). Materialerne er afleveret til Rigsarkivet. </p>
-        <p>Ellers findes oplysninger typisk i lægekredsenes arkiv.</p>
+            <h4 id="social_security">Folkeregistre (75 år)</h4>
+            <p>Folkeregistre indeholder oplysninger om rent private forhold. De er omfattet af en tilgængelighedsfrist
+                på
+                <strong>75 år</strong>.
+            </p>
+            <p>Folkeregisteroplysninger fra Aarhus Kommune og de tidligere forstads- og omegnskommuner opbevares på
+                Aarhus
+                Stadsarkiv. Materialerne udleveres ikke på læsesalen, men man kan bestille en undersøgelse i
+                materialerne,
+                hvis en række forudsætninger at er opfyldt.</p>
+            <p><a data-udi="umb://media/767f3ed1e95943bfb1c86e20bd52540e"
+                    href="https://www.aarhusstadsarkiv.dk/media/17933/oplysninger-om-rent-private-forhold.pdf"
+                    title="Oplysninger om rent private forhold.pdf">Læs mere i pdf-dokument om "Oplysninger om rent
+                    private
+                    forhold"</a></p>
 
-        <h4 id="citizenship">Indfødsretssager (75 år)</h4>
-        <p>Sager om indfødsret (statsborgerskab) indeholder oplysninger om rent private forhold og er omfattet af en
-            tilgængelighedsfrist på <strong>75 år</strong>.</p>
-        <p>Materialerne findes på Rigsarkivet (1776-1992). De har udarbejdet en vejledning til, hvor og hvordan man
-            finder oplysninger arkiverne:</p>
-        <p><span><a
-                    href="https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/indfoedsretssager-kom-godt-gang/">https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/indfoedsretssager-kom-godt-gang/</a></span>
-        </p>
+            <h4 id="censuses">Folketællinger og kommunale skattemandtalslister (75 år)</h4>
+            <p>Folketællinger indeholder oplysninger om rent private forhold og er omfattet af en tilgængelighedsfrist
+                på
+                <strong>75 år</strong>.
+            </p>
+            <p>At føre befolkningen i mandtal. Det var, hvad Aarhus Kommune begyndte at gøre i 1885. Kommunen skulle
+                have
+                styr på sin befolkning bl.a. for at kunne opkræve de nødvendige skatter.</p>
+            <p>Frem til 1953 blev kommunens folk 1.oktober sendt ud i byen for at tælle byens. Det er der kommet et
+                enormt
+                arkiv ud af. Mere end 4.500 protokoller er det blevet til, og de er rent guf for slægtshistorikere og
+                byhistorisk interesserede.</p>
+            <p>Mandtalslisterne oplister de talte personer husstand for husstand og indeholder lidt forskellige
+                oplysninger
+                alt efter, hvornår de er lavet. Man finder altid navn, alder, køn, fødested, stilling i husstanden og
+                erhverv.</p>
+            <p>Mandtalslisterne er ført i særlige skemaer, hvor de forskellige oplysninger er skrevet op i kolonner.</p>
+            <p>På <span><a href="/">AarhusArkivet</a></span> er tællingerne opdelt efter
+                vejnavne.</p>
+            <p>På <span><a href="/">AarhusArkivet</a></span> er mandtalslisterne tilgængelige
+                protokol for protokol - altså på samme måde som de nationale folketællinger på Arkivalieronline. De kan
+                fremsøges via kommunearkivet - <span><a href="/search?collection=194&content_types=21">eller ved at
+                        klikke på dette link</a></span>.</p>
+            <p>Mandtalslister frem til 1942 er tilgængelige fra egen pc. Listerne efter 1942 kan ses på Stadsarkivets
+                læsesal efter godkendt ansøgning. Hvis formålet er <strong>slægtsforskning</strong>, kan du få særlig
+                tilladelse til at se folketællingerne 1942-1953. Tilladelsen kan søges på Stadsarkivets læsesal.
+                Ansøgningen
+                behandles med det samme.</p>
 
-        <h4 id="church_records">Kirkebøger (50/100 år)</h4>
-        <p>Kirkebøgerne er i vid udstrækning umiddelbart tilgængelige på Arkivalieronline.</p>
-        <p>Resten af materialerne er en del af Rigsarkivets samling.</p>
-        <p>For disse gælder:</p>
-        <p>Kirkebøger efter 1925 kan indeholde cpr-numre og er omfattet af en tilgængelighedsfrist på <strong>100
-                år</strong>.</p>
-        <p>Kirkebøger, der er mere end <strong>50 år</strong> gamle, kan benyttes med speciel tilladelse. Denne
-            tilladelse kan søges ved besøg på læsesalen. Ansøgningen behandles med det samme.</p>
-        <p>Du kan også søge om tilladelse til at benytte kirkebøger, der er mindre end 50 år gamle. Ansøgningen skal
-            være skriftlig på et ansøgningsskema eller i et brev. Du får skriftligt svar senest 15 dage efter, at
-            ansøgningen er modtaget. (Disse forhold gælder som nævnt ved henvendelse til Rigsarkivet, der ligger inde
-            med de ikke-publicerede kirkebøger).</p>
+            <h4 id="date_of_birth">Fødselstidspunkt (75 år)</h4>
+            <p>Jordemoderprotokoller indeholder oplysninger om rent private forhold. De er omfattet af en
+                tilgængelighedsfrist på <strong>75 år</strong>.</p>
+            <p>For Aarhus kan en stor del af oplysninger findes i Fødselsanstalten i Jylland/Fødselsstiftelsen i Aarhus
+                arkiv (1910-1997). Materialerne er afleveret til Rigsarkivet. </p>
+            <p>Ellers findes oplysninger typisk i lægekredsenes arkiv.</p>
 
-        <h4 id="employee_cases">Personalesager/borgersager (75 år)</h4>
-        <p>Personalesager/borgersager indeholder oplysninger om rent private forhold og er omfattet af en
-            tilgængelighedsfrist på <strong>75 år</strong>.</p>
-        <p>Sagerne findes i alle typer af arkiver – herunder også i Aarhus Kommunes samlinger og i virksomhedsarkiver.
-        </p>
+            <h4 id="citizenship">Indfødsretssager (75 år)</h4>
+            <p>Sager om indfødsret (statsborgerskab) indeholder oplysninger om rent private forhold og er omfattet af en
+                tilgængelighedsfrist på <strong>75 år</strong>.</p>
+            <p>Materialerne findes på Rigsarkivet (1776-1992). De har udarbejdet en vejledning til, hvor og hvordan man
+                finder oplysninger arkiverne:</p>
+            <p><span><a
+                        href="https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/indfoedsretssager-kom-godt-gang/">https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/indfoedsretssager-kom-godt-gang/</a></span>
+            </p>
 
-        <h4 id="court_cases">Retssager – civile sager (75 år)</h4>
-        <p>Retssager, der indeholder oplysninger om rent private forhold, er omfattet af en tilgængelighedsfrist på
-            <strong>75 år</strong>. Oplysningerne findes i politimyndighedernes og i domstolenes arkiver. Disse arkiver
-            findes på Rigsarkivet.
-        </p>
+            <h4 id="church_records">Kirkebøger (50/100 år)</h4>
+            <p>Kirkebøgerne er i vid udstrækning umiddelbart tilgængelige på Arkivalieronline.</p>
+            <p>Resten af materialerne er en del af Rigsarkivets samling.</p>
+            <p>For disse gælder:</p>
+            <p>Kirkebøger efter 1925 kan indeholde cpr-numre og er omfattet af en tilgængelighedsfrist på <strong>100
+                    år</strong>.</p>
+            <p>Kirkebøger, der er mere end <strong>50 år</strong> gamle, kan benyttes med speciel tilladelse. Denne
+                tilladelse kan søges ved besøg på læsesalen. Ansøgningen behandles med det samme.</p>
+            <p>Du kan også søge om tilladelse til at benytte kirkebøger, der er mindre end 50 år gamle. Ansøgningen skal
+                være skriftlig på et ansøgningsskema eller i et brev. Du får skriftligt svar senest 15 dage efter, at
+                ansøgningen er modtaget. (Disse forhold gælder som nævnt ved henvendelse til Rigsarkivet, der ligger
+                inde
+                med de ikke-publicerede kirkebøger).</p>
 
-        <h4 id="criminal_cases">Retssager – straffesager (20/75 år)</h4>
-        <p>Sager vedrørende strafferetsplejen, der indeholder oplysninger om rent private forhold, er omfattet af en
-            tilgængelighedsfrist på <strong>75 år</strong>. Andre straffesager er tilgængelige efter <strong>20
-                år</strong>.</p>
-        <p>Med til sager vedr. strafferetspleje regnes materiale om:</p>
-        <ul>
-            <li>efterforskning</li>
-            <li>anklage</li>
-            <li>domfældelse</li>
-            <li>fuldbyrdelse af straf</li>
-            <li>benådning</li>
-        </ul>
-        <p>Oplysningerne findes i politimyndighedernes og i domstolenes arkiver. Disse arkiver findes på Rigsarkivet.
-        </p>
+            <h4 id="employee_cases">Personalesager/borgersager (75 år)</h4>
+            <p>Personalesager/borgersager indeholder oplysninger om rent private forhold og er omfattet af en
+                tilgængelighedsfrist på <strong>75 år</strong>.</p>
+            <p>Sagerne findes i alle typer af arkiver - herunder også i Aarhus Kommunes samlinger og i
+                virksomhedsarkiver.
+            </p>
 
-        <h4 id="testaments">Skifteprotokoller, skiftesager og testamenter (75 år)</h4>
-        <p>Skifteprotokoller, skiftesager og testamenter indeholder oplysninger om rent private forhold. De er omfattet
-            af en tilgængelighedsfrist på <strong>75 år</strong>.</p>
-        <p>Materialerne er en del af retsarkiverne og er afleveret til Rigsarkivet.</p>
-        <p>Rigsarkivet har udarbejdet en vejledning til brug af materialerne.</p>
-        <p>Skiftearkiver:</p>
-        <p><span><a
-                    href="https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/skiftearkivalier-kom-godt-gang/">https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/skiftearkivalier-kom-godt-gang/</a></span>
-        </p>
-        <p>Testamenter:</p>
-        <p><span><a
-                    href="https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/testamenter-kom-godt-gang/">https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/testamenter-kom-godt-gang/</a></span>
-        </p>
-        <p>På Arkivalieronline kan du benytte digitaliserede skiftearkivalier fra forskellige myndigheder frem til
-            starten af 1900-tallet (For Sønderjyllands vedkommende kun frem til 1860’erne).</p>
+            <h4 id="court_cases">Retssager - civile sager (75 år)</h4>
+            <p>Retssager, der indeholder oplysninger om rent private forhold, er omfattet af en tilgængelighedsfrist på
+                <strong>75 år</strong>. Oplysningerne findes i politimyndighedernes og i domstolenes arkiver. Disse
+                arkiver
+                findes på Rigsarkivet.
+            </p>
 
-        <h4 id="deeds">Tinglyste dokumenter, skøde- og panteprotokoller (frit tilgængelig)</h4>
-        <p>Tinglyste dokumenter, skøde- og panteprotokoller er <strong>frit tilgængelige</strong>. Aftaler om køb og
-            salg af jord og ejendomme skal nedfældes i skøder og tinglyses. Tinglysningen finder sted i retterne og skal
-            sikre at handlerne er retsgyldige, samt at de bliver publiceret for offentligheden. Deklarationer på
-            ejendomme, pantelån og købekontrakter bliver også tinglyst.</p>
-        <p>I de tinglyste dokumenter kan man finde oplysninger om:</p>
-        <ul>
-            <li>Udstykning af ejendomme.</li>
-            <li>Særlige rettigheder eller bestemmelser, der er pålagt ejendommen. De tinglyste hæftelser angår pant i
-                ejendommen og diverse økonomiske forpligtelser.</li>
-        </ul>
-        <p>Det skal du vide for at bruge tinglysningsarkivalier</p>
-        <ul>
-            <li>Ejendommens matrikelnummer</li>
-            <li>Ejerlavets navn</li>
-            <li>Sognets og retskredsens navn</li>
-        </ul>
-        <p>Rigsarkivet har udarbejdet en vejledning til brug af materialerne:</p>
-        <p><span><a
-                    href="https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/ejendomsoplysninger-kom-godt-gang/">https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/ejendomsoplysninger-kom-godt-gang/</a></span>
-        </p>
+            <h4 id="criminal_cases">Retssager - straffesager (20/75 år)</h4>
+            <p>Sager vedrørende strafferetsplejen, der indeholder oplysninger om rent private forhold, er omfattet af en
+                tilgængelighedsfrist på <strong>75 år</strong>. Andre straffesager er tilgængelige efter <strong>20
+                    år</strong>.</p>
+            <p>Med til sager vedr. strafferetspleje regnes materiale om:</p>
+            <ul>
+                <li>efterforskning</li>
+                <li>anklage</li>
+                <li>domfældelse</li>
+                <li>fuldbyrdelse af straf</li>
+                <li>benådning</li>
+            </ul>
+            <p>Oplysningerne findes i politimyndighedernes og i domstolenes arkiver. Disse arkiver findes på
+                Rigsarkivet.
+            </p>
+
+            <h4 id="testaments">Skifteprotokoller, skiftesager og testamenter (75 år)</h4>
+            <p>Skifteprotokoller, skiftesager og testamenter indeholder oplysninger om rent private forhold. De er
+                omfattet
+                af en tilgængelighedsfrist på <strong>75 år</strong>.</p>
+            <p>Materialerne er en del af retsarkiverne og er afleveret til Rigsarkivet.</p>
+            <p>Rigsarkivet har udarbejdet en vejledning til brug af materialerne.</p>
+            <p>Skiftearkiver:</p>
+            <p><span><a
+                        href="https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/skiftearkivalier-kom-godt-gang/">https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/skiftearkivalier-kom-godt-gang/</a></span>
+            </p>
+            <p>Testamenter:</p>
+            <p><span><a
+                        href="https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/testamenter-kom-godt-gang/">https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/testamenter-kom-godt-gang/</a></span>
+            </p>
+            <p>På Arkivalieronline kan du benytte digitaliserede skiftearkivalier fra forskellige myndigheder frem til
+                starten af 1900-tallet (For Sønderjyllands vedkommende kun frem til 1860’erne).</p>
+
+            <h4 id="deeds">Tinglyste dokumenter, skøde- og panteprotokoller (frit tilgængelig)</h4>
+            <p>Tinglyste dokumenter, skøde- og panteprotokoller er <strong>frit tilgængelige</strong>. Aftaler om køb og
+                salg af jord og ejendomme skal nedfældes i skøder og tinglyses. Tinglysningen finder sted i retterne og
+                skal
+                sikre at handlerne er retsgyldige, samt at de bliver publiceret for offentligheden. Deklarationer på
+                ejendomme, pantelån og købekontrakter bliver også tinglyst.</p>
+            <p>I de tinglyste dokumenter kan man finde oplysninger om:</p>
+            <ul>
+                <li>Udstykning af ejendomme.</li>
+                <li>Særlige rettigheder eller bestemmelser, der er pålagt ejendommen. De tinglyste hæftelser angår pant
+                    i
+                    ejendommen og diverse økonomiske forpligtelser.</li>
+            </ul>
+            <p>Det skal du vide for at bruge tinglysningsarkivalier</p>
+            <ul>
+                <li>Ejendommens matrikelnummer</li>
+                <li>Ejerlavets navn</li>
+                <li>Sognets og retskredsens navn</li>
+            </ul>
+            <p>Rigsarkivet har udarbejdet en vejledning til brug af materialerne:</p>
+            <p><span><a
+                        href="https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/ejendomsoplysninger-kom-godt-gang/">https://www.sa.dk/da/hjaelp-og-vejledning/rigsarkivets-online-vejledninger/ejendomsoplysninger-kom-godt-gang/</a></span>
+            </p>
 
 
+        </div>
     </div>
+
 </main>
 
 <footer class="footer">
