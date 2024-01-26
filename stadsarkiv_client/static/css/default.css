@@ -166,10 +166,8 @@
     display: flex;
 }
 
-.container-main {
-    margin-left: 20px;
-    margin-right: 20px;
-    width: 100%;
+.container-max-width {
+    max-width: var(--container-width);
 }
 
 .container-left {
@@ -182,6 +180,12 @@
     position: sticky;
     top: var(  --main-menu-top);
     align-self: flex-start; /* Add this line */
+}
+
+.container-main {
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 100%;
 }
 
 .container-main-facets {
