@@ -32,7 +32,7 @@
   /**
    * default.css
    */
-  --navigation-background: cornflowerblue;
+  --navigation-background: #3c7b9b /* cornflowerblue */;
   --navigation-background-hover: #ffffff22;
 
   --flash-color: white;
@@ -42,7 +42,7 @@
 
   --main-menu: white;
   --main-menu-hover: #ffffff22;
-  --main-menu-top: 66px;
+  --main-menu-top: 61px;
 
   /**
    * record.css
