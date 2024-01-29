@@ -54,7 +54,6 @@
     top: var(--main-menu-top);
     right: 0px;
     background-color: var(--navigation-background);
-    /* border: 1px solid var(--background); */
     padding: 10px;
     font-size: 1.0em;
     min-width: 175px;
@@ -170,7 +169,7 @@
     width: var(--container-width);
     margin: auto;
     margin-top: 20px;
-    
+
 }
 
 .container-left {
@@ -181,8 +180,8 @@
 
 .sticky-left {
     position: sticky;
-    top: var(  --main-menu-top);
-    align-self: flex-start; /* Add this line */
+    top: var(--main-menu-top);
+    align-self: flex-start;
 }
 
 .container-main {
@@ -195,7 +194,7 @@
     display: none;
 }
 
-#toc > ul {
+#toc>ul {
     margin-top: 0.5em;
 }
 
