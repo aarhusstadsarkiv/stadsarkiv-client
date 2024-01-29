@@ -1,130 +1,114 @@
-{% extends "empty.html" %}
+{% extends "about_guides.html" %}
 
-{% block body_class %}page-about-searchguide{% endblock %}
+{% block body_class %}page-guides-searchguide{% endblock %}
 
 {% block head %}
 {% endblock head %}
 
 {% block content %}
 
-<nav class="container-fluid navigation sticky-top">
-    {% include "includes/logo.html" %}
-    {% include "includes/navigation.html" %}
-</nav>
 
-<main>
-    <div class="container">
+<h3>Søgning i AarhusArkivet</h3>
 
-        <h3>Søgning i AarhusArkivet</h3>
+<p id="fulltext-search">Indtaster man noget i søgefeltet, foretager man en fritekstsøgning i alle
+    materialebeskrivelserne. Det betyder, at der som udgangspunkt søges i både titler, overskrifter og
+    beskrivende metadatafelter.</p>
 
-        <p id="fulltext-search">Indtaster man noget i søgefeltet, foretager man en fritekstsøgning i alle
-            materialebeskrivelserne. Det betyder, at der som udgangspunkt søges i både titler, overskrifter og
-            beskrivende metadatafelter.</p>
+<p>Her er et par søgetips til fritekstsøgningen</p>
+<ul>
+    <li>Brug "*" til at trunkere et søgeord. Eks. "skattemandtal*", hvilket både returnerer resultater med
+        ordene "skattemandtalsliste" og "skattemandtalsprotokol"</li>
+    <li>Brug "-" (uden mellemrum) før et ord for at ekskludere det fra resultaterne.</li>
+    <li>Brug anførselstegn til at søge efter en frase, eks. "marselisborg slot". NOTE: Brug af "-" og "*" inden
+        i en frase har ingen effekt.</li>
+</ul>
 
-        <p>Her er et par søgetips til fritekstsøgningen</p>
-        <ul>
-            <li>Brug "*" til at trunkere et søgeord. Eks. "skattemandtal*", hvilket både returnerer resultater med
-                ordene "skattemandtalsliste" og "skattemandtalsprotokol"</li>
-            <li>Brug "-" (uden mellemrum) før et ord for at ekskludere det fra resultaterne.</li>
-            <li>Brug anførselstegn til at søge efter en frase, eks. "marselisborg slot". NOTE: Brug af "-" og "*" inden
-                i en frase har ingen effekt.</li>
-        </ul>
+<h4 id="entity-search">Søgning efter entiteter</h4>
+<p>Når man begynder at indtaste et ord i søgefeltet, vil en dropdown-menu med matchende entiteter (personer,
+    steder, organisationer..) åbne sig. Vælger man en af entiteterne, eks. adressen <a
+        href="/search?locations=94507">Vestergade 7</a>, vil alle materialer, som omhandler Vestergade 7 blive
+    vist.</p>
+<p>Der er ikke tale om en fritekstsøgning, men om en kurateret opmærkning, foretaget af de enkelte
+    registratører. Det betyder, at man kan 'fange' nogle resultater, som ellers ikke dukker frem i en
+    fritekstsøgning (eks. hvis adressen omtales 'Vesterg. 7'), men samtidig er vore registreringer ikke
+    perfekte, og man vil ofte kunne supplere en entitetssøgning med en efterfølgende fritekstsøgning (eks. <a
+        href="/search?q=&quot;Vestergade 7&quot;">"Vestergade 7"</a>) for at få et fyldestgivende resultat.</p>
 
-        <h4 id="entity-search">Søgning efter entiteter</h4>
-        <p>Når man begynder at indtaste et ord i søgefeltet, vil en dropdown-menu med matchende entiteter (personer,
-            steder, organisationer..) åbne sig. Vælger man en af entiteterne, eks. adressen <a
-                href="/search?locations=94507">Vestergade 7</a>, vil alle materialer, som omhandler Vestergade 7 blive
-            vist.</p>
-        <p>Der er ikke tale om en fritekstsøgning, men om en kurateret opmærkning, foretaget af de enkelte
-            registratører. Det betyder, at man kan 'fange' nogle resultater, som ellers ikke dukker frem i en
-            fritekstsøgning (eks. hvis adressen omtales 'Vesterg. 7'), men samtidig er vore registreringer ikke
-            perfekte, og man vil ofte kunne supplere en entitetssøgning med en efterfølgende fritekstsøgning (eks. <a
-                href="/search?q=&quot;Vestergade 7&quot;">"Vestergade 7"</a>) for at få et fyldestgivende resultat.</p>
-
-        <h4 id="filter-search">Søgefiltre</h4>
-        <p>Foruden fritekst- og entitetssøgningerne er der mulighed for at begrænse, hvilke materialer man ønsker at se.
-            AarhusArkivet benytter følgende filtre:
+<h4 id="filter-search">Søgefiltre</h4>
+<p>Foruden fritekst- og entitetssøgningerne er der mulighed for at begrænse, hvilke materialer man ønsker at se.
+    AarhusArkivet benytter følgende filtre:
+</p>
+<ul class="">
+    <li>
+        <span><strong>Tilgængelighed</strong></span>
+        <p>Alle materialer er enten på magasin, på læsesalen eller allerede online. Filteret bruges til
+            eksempelvis at begrænse resultaterne til de materialer, som er online og derfor kan ses hjemmefra.
+            <a href="/about/availability">Læs mere om tilgængelighed her</a>
         </p>
-        <ul class="">
+    </li>
+    <li>
+        <span><strong>Brug af materialer</strong></span>
+        <p>Alle materialer er placeret i en af følgende fire 'brugbarheds'-kategorier:</p>
+        <ul style="list-style-type: none;">
             <li>
-                <span><strong>Tilgængelighed</strong></span>
-                <p>Alle materialer er enten på magasin, på læsesalen eller allerede online. Filteret bruges til
-                    eksempelvis at begrænse resultaterne til de materialer, som er online og derfor kan ses hjemmefra.
-                    <a href="/about/availability">Læs mere om tilgængelighed her</a></p>
+                <strong>I offentlig eje</strong>. Materialer i denne kategori må genbruges uden begrænsninger.
             </li>
             <li>
-                <span><strong>Brug af materialer</strong></span>
-                <p>Alle materialer er placeret i en af følgende fire 'brugbarheds'-kategorier:</p>
-                <ul style="list-style-type: none;">
-                    <li>
-                        <strong>I offentlig eje</strong>. Materialer i denne kategori må genbruges uden begrænsninger.
-                    </li>
-                    <li>
-                        <strong>Creative Commons Navngivelse</strong>. Materialer i denne kategori må genbruges, så
-                        længe man krediterer ophavsretshaverne på passende vis. <a
-                            href="https://creativecommons.org/licenses/by/4.0/deed.da">Læs mere om Creative Commons
-                            Navngivelse og kreditering her</a>.
-                    </li>
-                    <li>
-                        <strong>Creative Commons Navngivelse-IkkeKommerciel</strong>. Materialer i denne kategori må kun
-                        genbruges og vises i ikke-kommercielle sammenhænge. De må derfor heller ikke gengives på sociale
-                        medier. <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.da">Læs mere om Creative
-                            Commons Navngivelse-IkkeKommerciel og kreditering her</a>.
-                    </li>
-                    <li>
-                        <strong>Alle rettigheder forbeholdes</strong>. Materialet må under ingen omstændigheder gengives
-                        eller bruges i sammenhænge som ikke er rent private.
-                    </li>
-                </ul>
+                <strong>Creative Commons Navngivelse</strong>. Materialer i denne kategori må genbruges, så
+                længe man krediterer ophavsretshaverne på passende vis. <a
+                    href="https://creativecommons.org/licenses/by/4.0/deed.da">Læs mere om Creative Commons
+                    Navngivelse og kreditering her</a>.
             </li>
             <li>
-                <span><strong>Materialetyper</strong></span>
-                <p>Vores materialer er placeret i knap 100 materialetyper, fordelt på 11 hovedtyper med tilhørende
-                    undertyper. Vælger man en hovedtype, eks. 'Billeder', returneres alle materialer af typen 'Billede'
-                    - inkl. de materialer, som er registreret under en af undertyperne, eks. 'Portræt' eller 'By- og
-                    gadebilleder'.</p>
+                <strong>Creative Commons Navngivelse-IkkeKommerciel</strong>. Materialer i denne kategori må kun
+                genbruges og vises i ikke-kommercielle sammenhænge. De må derfor heller ikke gengives på sociale
+                medier. <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.da">Læs mere om Creative
+                    Commons Navngivelse-IkkeKommerciel og kreditering her</a>.
             </li>
             <li>
-                <span><strong>Emner</strong></span>
-                <p>Vores materialer er placeret i knap 70 emnekategorier, fordelt på 8 hovedemner med tilhørende
-                    underemner. Vælger man et hovedemne, eks. 'Erhverv', returneres alle materialer med emnet 'Erhverv'
-                    - inkl. de materialer, som er registreret under en af underemnerne, eks. 'Fagforeninger' eller
-                    'Detailhandel og service'.</p>
-            </li>
-            <li>
-                <span><strong>Dateringsfilter</strong></span>
-                <p>Man kan begrænse, hvilken periode man vil se materialer fra. Dette kan gøres ved at definere en
-                    tidligste og/eller seneste dato for relevante materialer. Man skal minimum angive et fire-cifret
-                    årstal, men kan også angive præcise datoer.</p>
+                <strong>Alle rettigheder forbeholdes</strong>. Materialet må under ingen omstændigheder gengives
+                eller bruges i sammenhænge som ikke er rent private.
             </li>
         </ul>
+    </li>
+    <li>
+        <span><strong>Materialetyper</strong></span>
+        <p>Vores materialer er placeret i knap 100 materialetyper, fordelt på 11 hovedtyper med tilhørende
+            undertyper. Vælger man en hovedtype, eks. 'Billeder', returneres alle materialer af typen 'Billede'
+            - inkl. de materialer, som er registreret under en af undertyperne, eks. 'Portræt' eller 'By- og
+            gadebilleder'.</p>
+    </li>
+    <li>
+        <span><strong>Emner</strong></span>
+        <p>Vores materialer er placeret i knap 70 emnekategorier, fordelt på 8 hovedemner med tilhørende
+            underemner. Vælger man et hovedemne, eks. 'Erhverv', returneres alle materialer med emnet 'Erhverv'
+            - inkl. de materialer, som er registreret under en af underemnerne, eks. 'Fagforeninger' eller
+            'Detailhandel og service'.</p>
+    </li>
+    <li>
+        <span><strong>Dateringsfilter</strong></span>
+        <p>Man kan begrænse, hvilken periode man vil se materialer fra. Dette kan gøres ved at definere en
+            tidligste og/eller seneste dato for relevante materialer. Man skal minimum angive et fire-cifret
+            årstal, men kan også angive præcise datoer.</p>
+    </li>
+</ul>
 
-        <h4 id="active-filter-search">Aktive filtre</h4>
-        <p>Hvis man har sat et søgefilter eller valgt en entitet i dropdown-menuen under søgefeltet, vil de fremgå som
-            aktive søgefiltre øverst i søgemenuen. Klik på en af filtrene for at fjerne det eller negere det, dvs. bruge
-            det som negativt filter, søg eks. efter alle materialer, som IKKE er billeder</p>
-        <p>I mange tilfælde kan man også læse mere om filteret eller se om den valgte person eller organisation også er
-            arkivskabere.</p>
+<h4 id="active-filter-search">Aktive filtre</h4>
+<p>Hvis man har sat et søgefilter eller valgt en entitet i dropdown-menuen under søgefeltet, vil de fremgå som
+    aktive søgefiltre øverst i søgemenuen. Klik på en af filtrene for at fjerne det eller negere det, dvs. bruge
+    det som negativt filter, søg eks. efter alle materialer, som IKKE er billeder</p>
+<p>I mange tilfælde kan man også læse mere om filteret eller se om den valgte person eller organisation også er
+    arkivskabere.</p>
 
-        <h4 id="collection-search">Søgning i enkelte samlinger</h4>
-        <p>Har man sat en bestemt samling som søgefilter, vil alle søgninger naturligvis kun returnere materialer, som
-            er en del af netop denne samling.</p>
+<h4 id="collection-search">Søgning i enkelte samlinger</h4>
+<p>Har man sat en bestemt samling som søgefilter, vil alle søgninger naturligvis kun returnere materialer, som
+    er en del af netop denne samling.</p>
 
-        <h4 id="sorting">Sortering</h4>
-        <p>Som udgangspunkt er eventuelle søgeresultater sorteret efter relevans. Relevans udregnes kort fortalt efter,
-            hvor et søgeord findes i registreringen. Findes ordet i materialets titel, vurderes dette til at have større
-            relevans for søgningen end hvis ordet findes i beskrivelsesteksten.</p>
-        <p>Det er også muligt at sortere søgeresultaterne efter dato.</p>
-
-
-    </div>
-</main>
-
-<footer class="footer">
-    {% include "includes/footer.html" %}
-</footer>
-
-{% include "includes/flash.html" %}
+<h4 id="sorting">Sortering</h4>
+<p>Som udgangspunkt er eventuelle søgeresultater sorteret efter relevans. Relevans udregnes kort fortalt efter,
+    hvor et søgeord findes i registreringen. Findes ordet i materialets titel, vurderes dette til at have større
+    relevans for søgningen end hvis ordet findes i beskrivelsesteksten.</p>
+<p>Det er også muligt at sortere søgeresultaterne efter dato.</p>
 
 
 {% endblock content %}

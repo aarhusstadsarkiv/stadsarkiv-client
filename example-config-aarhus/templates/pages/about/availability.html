@@ -1,4 +1,4 @@
-{% extends "empty.html" %}
+{% extends "about_guides.html" %}
 
 {% block body_class %}page-about-availability{% endblock %}
 
@@ -7,49 +7,28 @@
 
 {% block content %}
 
-<nav class="container-fluid navigation sticky-top">
-    {% include "includes/logo.html" %}
-    {% include "includes/navigation.html" %}
-</nav>
+<h3>Tilgængelighed</h3>
+<p id="intro">Tilgængelighed definerer hvor de enkelte materialer befinder sig, og dermed hvad man skal gøre
+    for at se dem. Der er reelt kun følgende tre muligheder.</p>
 
-<main>
-    <div class="container">
-        <div class="media-object-section main-section">
+<h4 id="archive">På magasin</h4>
+<p>Materiale, som er angivet til at være på magasin, skal bestilles hjem til læsesalen, før det kan beses.
+    Hvis adgangen til materialet er begrænset af juridiske årsager, skal man søge dispensation til at få
+    adgang til det. Efter bestilling af et givet materiale, vil du vil få besked, hvis adgangen til
+    materialet kræver dispensation.</p>
 
-            <h3>Tilgængelighed</h3>
-            <p id="intro">Tilgængelighed definerer hvor de enkelte materialer befinder sig, og dermed hvad man skal gøre
-                for at se dem. Der er reelt kun følgende tre muligheder.</p>
+<h4 id="readingroom">Kan ses på læsesalen</h4>
+<p>Materiale, som er angivet til at være tilgængeligt på læsesalen, er som oftest materiale, som vi af
+    ophavsretsmæssige årsager ikke må vise online, eller materiale, som ikke er digitaliseret, men som dog
+    står frit tilgængeligt på læsesalen. Der kræves ikke forudgående bestilling for at se materialet på
+    læsesalen. Man skal blot møde op på læsesalen i åbningstiderne.</p>
 
-            <h4 id="archive">På magasin</h4>
-            <p>Materiale, som er angivet til at være på magasin, skal bestilles hjem til læsesalen, før det kan beses.
-                Hvis adgangen til materialet er begrænset af juridiske årsager, skal man søge dispensation til at få
-                adgang til det. Efter bestilling af et givet materiale, vil du vil få besked, hvis adgangen til
-                materialet kræver dispensation.</p>
-
-            <h4 id="readingroom">Kan ses på læsesalen</h4>
-            <p>Materiale, som er angivet til at være tilgængeligt på læsesalen, er som oftest materiale, som vi af
-                ophavsretsmæssige årsager ikke må vise online, eller materiale, som ikke er digitaliseret, men som dog
-                står frit tilgængeligt på læsesalen. Der kræves ikke forudgående bestilling for at se materialet på
-                læsesalen. Man skal blot møde op på læsesalen i åbningstiderne.</p>
-
-            <h4 id="online">Tilgængeligt online</h4>
-            <p>Materiale, som er angivet til at være tilgængeligt online, kan ses direkte i browseren. Både på læsesalen
-                og hjemme fra sofaen. Her skal man huske at skelne mellem tilgængelighed og genbrug. Bare fordi et
-                materiale er tilgængeligt online, må man ikke automatisk genbruge det i andre sammenhænge. De
-                materialer, som du kan se online, har vi lov til vise på Aarhusarkivet.dk, men det er det enkelte
-                materiales ophavsretslige og juridiske status, der bestemmer, hvad et givent materiale må bruges til.
-            </p>
-
-
-        </div>
-    </div>
-</main>
-
-<footer class="footer">
-    {% include "includes/footer.html" %}
-</footer>
-
-{% include "includes/flash.html" %}
-
+<h4 id="online">Tilgængeligt online</h4>
+<p>Materiale, som er angivet til at være tilgængeligt online, kan ses direkte i browseren. Både på læsesalen
+    og hjemme fra sofaen. Her skal man huske at skelne mellem tilgængelighed og genbrug. Bare fordi et
+    materiale er tilgængeligt online, må man ikke automatisk genbruge det i andre sammenhænge. De
+    materialer, som du kan se online, har vi lov til vise på Aarhusarkivet.dk, men det er det enkelte
+    materiales ophavsretslige og juridiske status, der bestemmer, hvad et givent materiale må bruges til.
+</p>
 
 {% endblock content %}

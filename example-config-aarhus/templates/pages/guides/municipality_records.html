@@ -1,100 +1,79 @@
-{% extends "empty.html" %}
+{% extends "about_guides.html" %}
 
-{% block body_class %}page-about-genealogy{% endblock %}
+{% block body_class %}page-guides-municipality-records{% endblock %}
 
 {% block head %}
 {% endblock head %}
 
 {% block content %}
+<h3>Kommunearkivet</h3>
+<p id="intro"><a href="/collections/194">Kommunearkivet</a> er Aarhus Stadsarkivs største enkelte samling.
+    Samlingen indeholder alle arkiver fra de kommunale enheder, som er blevet indsamlet af først Erhvervsarkivet
+    og siden 2011 af Aarhus Stadsarkiv.</p>
+<p>Størstedelen af samlingen udgøres af afleveringer fra Aarhus Købstadskommune (1868-1970) og Aarhus Kommune
+    (1970-) med hovedvægten på perioden fra 1970 og frem, hvor den kommunale administration for alvor
+    udvikledes. Det er en umulig opgave at lave en udtømmende beskrivelse af hele kommunearkivet. Derfor
+    fremhæves de centrale og nogle af de mest anvendte arkivserier.</p>
 
-<nav class="container-fluid navigation sticky-top">
-    {% include "includes/logo.html" %}
-    {% include "includes/navigation.html" %}
-</nav>
+<h4 id="political_level">Politisk niveau</h4>
+<p>Helt centralt i kommunearkivet står byrådets og sognerådenes forhandlingsprotokoller. Det er i disse dele af
+    arkivet, at den politiske beslutningsproces er dokumenteret, og derfor her retningslinjerne for by- eller
+    landområdets udvikling er udstukket. Alle sager af en vis vægt og betydning har været til afstemning i by-
+    og sognerådene, og disse kan derfor spores ned i arkiverne.</p>
+<p>Aarhus Stadsarkiv har i samarbejde med frivillige kræfter digitaliseret Aarhus Byråds trykte
+    forhandlingsprotokoller fra 1867-1997. Protokollerne fra 1867 til 1942 ligger tilgængelige på AarhusArkivet.
+    Resten kommer på løbende i takt med, at de bliver tilgængelige (75-årsreglen i henhold til arkivloven).
+    Forhandlingsprotokollerne har gengivet journalnumre ved hvert dagsordenpunkt. Dette nummer henviser til en
+    given sag i arkivserien Aarhus Byråds journalsager (1867-1985), som rummer de administrative indstillinger
+    til byrådet. Det er i udgangspunktet på baggrund af administrationens indstillinger, at byrådet træffer sine
+    beslutninger. I kommunestyrets ældre tid var forvaltningspraksis ikke altid gennemført. Nogle journalsager
+    er ikke bevaret. Andre skal findes i den sagsbehandlende afdeling, f.eks. Stadsarkitektens eller
+    Stadsingeniørens Kontor.</p>
+<p>Sognerådenes forhandlingsprotokoller er også under digitalisering. I modsætning til byrådets
+    forhandlingsprotokoller, som er trykt i bogform og udgivet, er sognerådenes forhandlinger håndskrevne.
+    Digitaliseringen af disse er derfor noget mere ressource- og ekspertisekrævende. Også dette arbejde udføres
+    af Stadsarkivets mange frivillige.</p>
+<p>Sognerådenes administrationsapparat har varieret meget i størrelse over tid, men også efter kommunens
+    indbyggertal. Derfor eksisterer der ikke i samme omfang administrative indstillinger til sognerådene, som
+    det er tilfældet med Aarhus Byråd. I nogle sogneråd har man helt frem til 1970 sagsbehandlet og truffet
+    beslutninger på sognerådsmødet - sådan var det nok i virkeligheden i alle 21 sogneråd - nogle årtier op i
+    1900-tallet.</p>
 
-<main>
-    <div class="container">
+<h4 id="administrative_level">Administrativt niveau</h4>
+<p>Byudviklingen er dokumenteret i i arkiverne efter Stadsingeniørens Kontor (1869-1998) og Stadsarkitektens
+    Kontor (1919-2005) (under Magistratens 2. afdeling fra 1950), hvor mange af de konkrete sager kan følges fra
+    idéstadiet til færdige projekter. Stadsarkitektens Kontor tog sig af kommunale projekter vedr. fysisk
+    formgivning og planlægning, som foregik over jorden, mens Stadsingeniørens Kontor tog af sig af kommunale
+    projekter vedr. det, som foregik i eller på jorden.</p>
+<p>Den offentlige forsørgelse kan studeres i Fattigvæsenets arkiv (1841/1868-1933) og senere Socialvæsenets
+    arkiv (1933-) under Magistratens 3. afdeling fra 1950. Her finder man personsager om borgere, som på den ene
+    eller anden måde har været i kontakt med det offentlige system f.eks. på fattiggården og har modtaget
+    offentlig forsørgelse og understøttelse, om anbragte børn, værger, plejeforældre etc. For de tidlige del af
+    materialet anvendes en kartoteksindgang efter navn og løbenummersystem, hvor en bogstavkode henviser til en
+    sagstype og løbenummeret til sagsjournalen på den pågældende person. Sager oprettet efter CPR-lovens
+    indførelse i 1968 er henlagt efter dette system. Det gælder derfor om at finde disse indgange i
+    arkivserierne. Stadsarkivet hjælper gerne hermed.</p>
+<p>I Aarhus Kommunes skolevæsens arkiv findes sager tilbage fra 1868. Fra 1950 er alle arkiver vedr. de
+    kommunale folkeskoler henlagt under Magistratens 4. afdeling. Heri ligger oftest protokoller, som indeholder
+    oplysninger om de enkelte elever, klassesammensætning m.v. I Aarhus Kommunes skolevæsens arkiv findes også
+    eksamensbeviser for de kommunale folkeskoler for perioden 1978 og frem. Disse skal rekvireres ved direkte
+    henvendelse ved Aarhus Stadsarkiv pr. mail.</p>
 
-        <h3>Kommunearkivet</h3>
-        <p id="intro"><a href="/collections/194">Kommunearkivet</a> er Aarhus Stadsarkivs største enkelte samling.
-            Samlingen indeholder alle arkiver fra de kommunale enheder, som er blevet indsamlet af først Erhvervsarkivet
-            og siden 2011 af Aarhus Stadsarkiv.</p>
-        <p>Størstedelen af samlingen udgøres af afleveringer fra Aarhus Købstadskommune (1868-1970) og Aarhus Kommune
-            (1970-) med hovedvægten på perioden fra 1970 og frem, hvor den kommunale administration for alvor
-            udvikledes. Det er en umulig opgave at lave en udtømmende beskrivelse af hele kommunearkivet. Derfor
-            fremhæves de centrale og nogle af de mest anvendte arkivserier.</p>
-
-        <h4 id="political_level">Politisk niveau</h4>
-        <p>Helt centralt i kommunearkivet står byrådets og sognerådenes forhandlingsprotokoller. Det er i disse dele af
-            arkivet, at den politiske beslutningsproces er dokumenteret, og derfor her retningslinjerne for by- eller
-            landområdets udvikling er udstukket. Alle sager af en vis vægt og betydning har været til afstemning i by-
-            og sognerådene, og disse kan derfor spores ned i arkiverne.</p>
-        <p>Aarhus Stadsarkiv har i samarbejde med frivillige kræfter digitaliseret Aarhus Byråds trykte
-            forhandlingsprotokoller fra 1867-1997. Protokollerne fra 1867 til 1942 ligger tilgængelige på AarhusArkivet.
-            Resten kommer på løbende i takt med, at de bliver tilgængelige (75-årsreglen i henhold til arkivloven).
-            Forhandlingsprotokollerne har gengivet journalnumre ved hvert dagsordenpunkt. Dette nummer henviser til en
-            given sag i arkivserien Aarhus Byråds journalsager (1867-1985), som rummer de administrative indstillinger
-            til byrådet. Det er i udgangspunktet på baggrund af administrationens indstillinger, at byrådet træffer sine
-            beslutninger. I kommunestyrets ældre tid var forvaltningspraksis ikke altid gennemført. Nogle journalsager
-            er ikke bevaret. Andre skal findes i den sagsbehandlende afdeling, f.eks. Stadsarkitektens eller
-            Stadsingeniørens Kontor.</p>
-        <p>Sognerådenes forhandlingsprotokoller er også under digitalisering. I modsætning til byrådets
-            forhandlingsprotokoller, som er trykt i bogform og udgivet, er sognerådenes forhandlinger håndskrevne.
-            Digitaliseringen af disse er derfor noget mere ressource- og ekspertisekrævende. Også dette arbejde udføres
-            af Stadsarkivets mange frivillige.</p>
-        <p>Sognerådenes administrationsapparat har varieret meget i størrelse over tid, men også efter kommunens
-            indbyggertal. Derfor eksisterer der ikke i samme omfang administrative indstillinger til sognerådene, som
-            det er tilfældet med Aarhus Byråd. I nogle sogneråd har man helt frem til 1970 sagsbehandlet og truffet
-            beslutninger på sognerådsmødet - sådan var det nok i virkeligheden i alle 21 sogneråd - nogle årtier op i
-            1900-tallet.</p>
-
-        <h4 id="administrative_level">Administrativt niveau</h4>
-        <p>Byudviklingen er dokumenteret i i arkiverne efter Stadsingeniørens Kontor (1869-1998) og Stadsarkitektens
-            Kontor (1919-2005) (under Magistratens 2. afdeling fra 1950), hvor mange af de konkrete sager kan følges fra
-            idéstadiet til færdige projekter. Stadsarkitektens Kontor tog sig af kommunale projekter vedr. fysisk
-            formgivning og planlægning, som foregik over jorden, mens Stadsingeniørens Kontor tog af sig af kommunale
-            projekter vedr. det, som foregik i eller på jorden.</p>
-        <p>Den offentlige forsørgelse kan studeres i Fattigvæsenets arkiv (1841/1868-1933) og senere Socialvæsenets
-            arkiv (1933-) under Magistratens 3. afdeling fra 1950. Her finder man personsager om borgere, som på den ene
-            eller anden måde har været i kontakt med det offentlige system f.eks. på fattiggården og har modtaget
-            offentlig forsørgelse og understøttelse, om anbragte børn, værger, plejeforældre etc. For de tidlige del af
-            materialet anvendes en kartoteksindgang efter navn og løbenummersystem, hvor en bogstavkode henviser til en
-            sagstype og løbenummeret til sagsjournalen på den pågældende person. Sager oprettet efter CPR-lovens
-            indførelse i 1968 er henlagt efter dette system. Det gælder derfor om at finde disse indgange i
-            arkivserierne. Stadsarkivet hjælper gerne hermed.</p>
-        <p>I Aarhus Kommunes skolevæsens arkiv findes sager tilbage fra 1868. Fra 1950 er alle arkiver vedr. de
-            kommunale folkeskoler henlagt under Magistratens 4. afdeling. Heri ligger oftest protokoller, som indeholder
-            oplysninger om de enkelte elever, klassesammensætning m.v. I Aarhus Kommunes skolevæsens arkiv findes også
-            eksamensbeviser for de kommunale folkeskoler for perioden 1978 og frem. Disse skal rekvireres ved direkte
-            henvendelse ved Aarhus Stadsarkiv pr. mail.</p>
-
-        <h4 id="private_data">Oplysninger om enkeltpersoner</h4>
-        <p>Stadsarkivet modtager mange henvendelser vedr. oplysninger om enkeltpersoner – altså egentlige
-            slægtshistoriske forespørgsler.</p>
-        <p>Her er to dele af den kommunale forvaltning helt centrale. Det drejer sig om Aarhus Kommunes Folkeregister
-            (1924-) og Aarhus Kommunes Begravelsesvæsen (1891-1985). Læs mere herom under Guides: <a
-                href="/guides/genealogy">slægtsforskning</a>.</p>
-        <p>Materialet kan groft sagt deles op i to. Den ene del kan man selv studere og undersøge. Den anden del skal
-            Stadsarkivets personale foretage undersøgelser i.</p>
-        <p>Aarhus Kommunes folkeregisters skattemandtalslister (1885-1953) og begravelsesvæsenets arkiv (1891-1983) kan
-            i det omfang, de ikke er begrænset af tilgængelighedsfristerne i arkivloven, ses på AarhusArkivet eller
-            lånes til læsesalen.</p>
-        <p>Aarhus Kommunes folkeregister indeholder også navnekort og folkeregisterkort. Navnekortene indeholder
-            oplysninger om enkeltpersoners adresser i Aarhus Kommune fra 1924 til 1977. Folkeregisterkortene rummer
-            personoplysninger om enkeltpersonerne. Forespørgsler i navnekort og folkeregisterkort ekspederes kun af
-            Stadsarkivets personale. De første 30 minutter er gratis, herefter er forespørgslen at betragte som en
-            undersøgelse, som faktureres efter Stadsarkivets gældende takster.</p>
-
-
-
-    </div>
-</main>
-
-<footer class="footer">
-    {% include "includes/footer.html" %}
-</footer>
-
-{% include "includes/flash.html" %}
-
+<h4 id="private_data">Oplysninger om enkeltpersoner</h4>
+<p>Stadsarkivet modtager mange henvendelser vedr. oplysninger om enkeltpersoner - altså egentlige
+    slægtshistoriske forespørgsler.</p>
+<p>Her er to dele af den kommunale forvaltning helt centrale. Det drejer sig om Aarhus Kommunes Folkeregister
+    (1924-) og Aarhus Kommunes Begravelsesvæsen (1891-1985). Læs mere herom under Guides: <a
+        href="/guides/genealogy">slægtsforskning</a>.</p>
+<p>Materialet kan groft sagt deles op i to. Den ene del kan man selv studere og undersøge. Den anden del skal
+    Stadsarkivets personale foretage undersøgelser i.</p>
+<p>Aarhus Kommunes folkeregisters skattemandtalslister (1885-1953) og begravelsesvæsenets arkiv (1891-1983) kan
+    i det omfang, de ikke er begrænset af tilgængelighedsfristerne i arkivloven, ses på AarhusArkivet eller
+    lånes til læsesalen.</p>
+<p>Aarhus Kommunes folkeregister indeholder også navnekort og folkeregisterkort. Navnekortene indeholder
+    oplysninger om enkeltpersoners adresser i Aarhus Kommune fra 1924 til 1977. Folkeregisterkortene rummer
+    personoplysninger om enkeltpersonerne. Forespørgsler i navnekort og folkeregisterkort ekspederes kun af
+    Stadsarkivets personale. De første 30 minutter er gratis, herefter er forespørgslen at betragte som en
+    undersøgelse, som faktureres efter Stadsarkivets gældende takster.</p>
 
 {% endblock content %}

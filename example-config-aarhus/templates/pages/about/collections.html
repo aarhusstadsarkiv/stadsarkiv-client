@@ -1,4 +1,4 @@
-{% extends "empty.html" %}
+{% extends "about_guides.html" %}
 
 {% block body_class %}page-about-collections{% endblock %}
 
@@ -6,64 +6,44 @@
 {% endblock head %}
 
 {% block content %}
+<h3>Om AarhusArkivet</h3>
 
-<nav class="container-fluid navigation sticky-top">
-    {% include "includes/logo.html" %}
-    {% include "includes/navigation.html" %}
-</nav>
+<p id="intro">AarhusArkivet er Aarhus Stadsarkivs digitale arkivservice. Her kan man finde kilder til Aarhus'
+    historie ved at søge i Stadsarkivets samlinger. På AarhusArkivet kan man læse eller se omkring 300.000
+    dokumenter, film og billeder online.</p>
 
-<main>
-    <div class="container">
+<p>Arkivalier, der ikke er online, kan bestilles til gennemsyn på Stadsarkivets læsesal på Dokk1. <a
+        href="https://stadsarkiv.aarhus.dk/besoeg-arkivet/besoeg-laesesalen/">Læs mere om læsesalen her</a>.</p>
 
-        <h3>Om AarhusArkivet</h3>
+<h4 id="whois">Hvem står bag</h4>
+<p>Aarhus Stadsarkiv er Aarhus Kommunes historiske arkiv og kommunale forvaltningsarkiv. Se mere på <a
+        href="https://stadsarkiv.aarhus.dk/">Aarhus Stadsarkivs hjemmeside</a>.</p>
+<p><a href="https://app.heyloyalty.com/subscribe/10234/3176">Tilmeld dig stadsarkivets nyhedsbrev</a> og modtag
+    nyheder fra arkivet ca. hver 2. måned.</p>
 
-        <p id="intro">AarhusArkivet er Aarhus Stadsarkivs digitale arkivservice. Her kan man finde kilder til Aarhus’
-            historie ved at søge i Stadsarkivets samlinger. På AarhusArkivet kan man læse eller se omkring 300.000
-            dokumenter, film og billeder online.</p>
+<h4 id="donors">Donatorer og partnere</h4>
+<p>Aarhus Stadsarkiv kunne ikke have udviklet AarhusArkivet uden donationer og samarbejder. Vi vil gerne takke
+    følgende for støtte:</p>
+<ul>
+    <li>AarhusArkivet er primært udviklet for midler fra Salling Fondene.</li>
+    <li>Digitalisering af kommunale skattemandtal og andre kommunale arkivalier med personhistorisk relevans er
+        er foretaget i samarbejde med Family Search.</li>
+    <li>Billeder og dokumenter er i vid udstrækning digitaliseret og opmærket i samarbejde med Stadsarkivets
+        frivillige.</li>
+</ul>
 
-        <p>Arkivalier, der ikke er online, kan bestilles til gennemsyn på Stadsarkivets læsesal på Dokk1. <a
-                href="https://stadsarkiv.aarhus.dk/besoeg-arkivet/besoeg-laesesalen/">Læs mere om læsesalen her</a>.</p>
-
-        <h4 id="whois">Hvem står bag</h4>
-        <p>Aarhus Stadsarkiv er Aarhus Kommunes historiske arkiv og kommunale forvaltningsarkiv. Se mere på <a
-                href="https://stadsarkiv.aarhus.dk/">Aarhus Stadsarkivs hjemmeside</a>.</p>
-        <p><a href="https://app.heyloyalty.com/subscribe/10234/3176">Tilmeld dig stadsarkivets nyhedsbrev</a> og modtag
-            nyheder fra arkivet ca. hver 2. måned.</p>
-
-        <h4 id="donors">Donatorer og partnere</h4>
-        <p>Aarhus Stadsarkiv kunne ikke have udviklet AarhusArkivet uden donationer og samarbejder. Vi vil gerne takke
-            følgende for støtte:</p>
-        <ul>
-            <li>AarhusArkivet er primært udviklet for midler fra Salling Fondene.</li>
-            <li>Digitalisering af kommunale skattemandtal og andre kommunale arkivalier med personhistorisk relevans er
-                er foretaget i samarbejde med Family Search.</li>
-            <li>Billeder og dokumenter er i vid udstrækning digitaliseret og opmærket i samarbejde med Stadsarkivets
-                frivillige.</li>
-        </ul>
-
-        <p>Dele af AarhusArkivet og tilhørende services er udviklet for midler fra følgende:</p>
-        <ul>
-            <li>Aarhuus Stiftstidendes Fond (digitalisering og registrering af <a href="/collections/2">Århus
-                    Stiftstidendes fotosamling</a>)</li>
-            <li>Slots- og Kulturstyrelsen, tidl. Biblioteksstyrelsen (<a
-                    href="https://www.smartarkivering.dk">Smartarkivering.dk</a>)</li>
-            <li>Aarhus – Europæisk Kulturhovedstad 2017 (<a href="http://2017aarhusianere.dk">2017 aarhusianere</a>)
-            </li>
-            <li>Arkivudvalget i Aarhus Kommune (<a href="https://aarhuswiki.dk">AarhusWiki</a> og digitalisering af
-                sognerådsprotokoller)</li>
-            <li>Borgerservice og Bibliotekers forsøgs- og udviklingspulje samt innovationsmidler fra Aarhus Kommune
-                (bl.a. Smartarkivering.dk, 2017 aarhusianere, billeddigitalisering og crowdsourcingværktøjer).</li>
-        </ul>
-
-
-    </div>
-</main>
-
-<footer class="footer">
-    {% include "includes/footer.html" %}
-</footer>
-
-{% include "includes/flash.html" %}
-
+<p>Dele af AarhusArkivet og tilhørende services er udviklet for midler fra følgende:</p>
+<ul>
+    <li>Aarhuus Stiftstidendes Fond (digitalisering og registrering af <a href="/collections/2">Århus
+            Stiftstidendes fotosamling</a>)</li>
+    <li>Slots- og Kulturstyrelsen, tidl. Biblioteksstyrelsen (<a
+            href="https://www.smartarkivering.dk">Smartarkivering.dk</a>)</li>
+    <li>Aarhus - Europæisk Kulturhovedstad 2017 (<a href="http://2017aarhusianere.dk">2017 aarhusianere</a>)
+    </li>
+    <li>Arkivudvalget i Aarhus Kommune (<a href="https://aarhuswiki.dk">AarhusWiki</a> og digitalisering af
+        sognerådsprotokoller)</li>
+    <li>Borgerservice og Bibliotekers forsøgs- og udviklingspulje samt innovationsmidler fra Aarhus Kommune
+        (bl.a. Smartarkivering.dk, 2017 aarhusianere, billeddigitalisering og crowdsourcingværktøjer).</li>
+</ul>
 
 {% endblock content %}

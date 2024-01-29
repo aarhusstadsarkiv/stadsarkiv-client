@@ -1,154 +1,134 @@
-{% extends "empty.html" %}
+{% extends "about_guides.html" %}
 
-{% block body_class %}page-about-genealogy{% endblock %}
+{% block body_class %}page-guides-genealogy{% endblock %}
 
 {% block head %}
 {% endblock head %}
 
 {% block content %}
 
-<nav class="container-fluid navigation sticky-top">
-    {% include "includes/logo.html" %}
-    {% include "includes/navigation.html" %}
-</nav>
+<h3>Slægtsforskning på AarhusArkivet</h3>
+<p id="intro">AarhusArkivet rummer mange muligheder for at søge oplysninger om personer.</p>
+<p>AarhusArkivet er et såkaldt entitetsbaseret søgesystem. Det vil sige, at man kan foretage meget målrettede og
+    dybdegående søgninger på oprettede søgeord, herunder navne. Man kan også søge i fritekstfeltet.</p>
+<p>Mange dokumenter er udstyret med entiteter. Størstedelen af arkivalierne er dog ikke påført disse søgeord,
+    der "går ned i" selve dokumenterne. Her skal man således selv vide, hvilke arkivalier man gerne vil se.
+    Disse arkivalier skal man typisk bestille til læsesalen.</p>
 
-<main>
-    <div class="container">
+<strong>Før 1841</strong>
+<p>Strækker dine studier sig længere tilbage end 1841, skal du benytte dig af Rigsarkivets materialer.
+    Rigsarkivet har digitaliseret de kildegrupper, som kan tilgås på <a
+        href="https://www.sa.dk/da/brug-arkivet/arkivalieronline-se-originale-dokumenter-paa-nettet/">arkivalieronline.dk</a>.
+</p>
 
-        <h3>Slægtsforskning på AarhusArkivet</h3>
-        <p id="intro">AarhusArkivet rummer mange muligheder for at søge oplysninger om personer.</p>
-        <p>AarhusArkivet er et såkaldt entitetsbaseret søgesystem. Det vil sige, at man kan foretage meget målrettede og
-            dybdegående søgninger på oprettede søgeord, herunder navne. Man kan også søge i fritekstfeltet.</p>
-        <p>Mange dokumenter er udstyret med entiteter. Størstedelen af arkivalierne er dog ikke påført disse søgeord,
-            der ’går ned i’ selve dokumenterne. Her skal man således selv vide, hvilke arkivalier man gerne vil se.
-            Disse arkivalier skal man typisk bestille til læsesalen.</p>
+<h4 id="entities">Sådan søger du efter personnavne oprettet som entiteter (søgeord) i AarhusArkivet</h4>
+<p>Man søger på entiteter ved at begynde at skrive det ønskede søgeord i søgefeltet.</p>
+<p>Oprettede entiteter dukker op under skrivningen. Man trykker på det ønskede navn og får resultaterne frem.
+</p>
+<p>Se evt. mere på <a href="/guides/searchguide">Sådan søger du</a> i AarhusArkivet.</p>
 
-        <strong>Før 1841</strong>
-        <p>Strækker dine studier sig længere tilbage end 1841, skal du benytte dig af Rigsarkivets materialer.
-            Rigsarkivet har digitaliseret de kildegrupper, som kan tilgås på <a
-                href="https://www.sa.dk/da/brug-arkivet/arkivalieronline-se-originale-dokumenter-paa-nettet/">arkivalieronline.dk</a>.
-        </p>
+<h4 id="digital_collections">Digitale kildesamlinger med personer i AarhusArkivet</h4>
+<strong>SEJRS SEDLER</strong>
+<p>Der er tale om et kartotek på over 120.000 sedler, som især indeholder udtræk af artikler afskrevet fra
+    Aarhus Stiftstidende fra ca. 1794, hvor avisen blev grundlagt, til ca. 1950.</p>
+<p><a href="/collections/1">Sejrs Sedler</a> består af to dele. Et emnekartotek med 22.000 optegnelser Og
+    vigtigst i denne sammenhæng: Et kartotek bygget op på personnavne med omkring 95.000 optegnelser om
+    Aarhusborgere registreret efter personens efternavn. Her kan man typisk finde oplysninger om kendte personer
+    og byens store og betydningsfulde slægter. Man kan bl.a. læse om, hvem der blev gift med hvem, hvem der stod
+    fadder, hvornår de døde og ikke mindst, hvad de døde af.</p>
+<p>Hertil kommer der et væld af annoncer fra både store og små handlende. Tyngden er mere på byens spidser end
+    den almindelige befolkning. Man kan ikke regne med at finde alt om personerne.</p>
+<strong>Tilgængelighed</strong>
+<p>Samlingen er frit tilgængelig.</p>
 
-        <h4 id="entities">Sådan søger du efter personnavne oprettet som entiteter (søgeord) i AarhusArkivet</h4>
-        <p>Man søger på entiteter ved at begynde at skrive det ønskede søgeord i søgefeltet.</p>
-        <p>Oprettede entiteter dukker op under skrivningen. Man trykker på det ønskede navn og får resultaterne frem.
-        </p>
-        <p>Se evt. mere på <a href="/guides/searchguide">Sådan søger du</a> i AarhusArkivet.</p>
+<strong>Sådan bruger du dem</strong>
+<p>Søg efter personer, adresser og emner i de oprettede entiteter. Som oftest optræder der flere navne på en
+    Sejrs Seddel, men det er kun hovednavnet, typisk et mandligt husstandsoverhold, der er oprettet som entitet.
+</p>
 
-        <h4 id="digital_collections">Digitale kildesamlinger med personer i AarhusArkivet</h4>
-        <strong>SEJRS SEDLER</strong>
-        <p>Der er tale om et kartotek på over 120.000 sedler, som især indeholder udtræk af artikler afskrevet fra
-            Aarhus Stiftstidende fra ca. 1794, hvor avisen blev grundlagt, til ca. 1950.</p>
-        <p><a href="/collections/1">Sejrs Sedler</a> består af to dele. Et emnekartotek med 22.000 optegnelser Og
-            vigtigst i denne sammenhæng: Et kartotek bygget op på personnavne med omkring 95.000 optegnelser om
-            Aarhusborgere registreret efter personens efternavn. Her kan man typisk finde oplysninger om kendte personer
-            og byens store og betydningsfulde slægter. Man kan bl.a. læse om, hvem der blev gift med hvem, hvem der stod
-            fadder, hvornår de døde og ikke mindst, hvad de døde af.</p>
-        <p>Hertil kommer der et væld af annoncer fra både store og små handlende. Tyngden er mere på byens spidser end
-            den almindelige befolkning. Man kan ikke regne med at finde alt om personerne.</p>
-        <strong>Tilgængelighed</strong>
-        <p>Samlingen er frit tilgængelig.</p>
+<strong>BYRÅDSFORHANDLINGERNE 1868-1997</strong>
+<p>Byrådet tog stilling til stort og småt fra dets indførelse i 1860'erne. Mange personer fik sager behandlet i
+    byrådet - tildeling af legater, offentlige ydelser, stillinger mv. Efter Socialreformen i 1933 og
+    indførelsen af magistratsstyret i 1950 ser det ud til, at personsager bliver færre. Stadsarkivet har
+    oprettet mange af de omtalte personer som entiteter, men arbejdet udbygges hele tiden.</p>
 
-        <strong>Sådan bruger du dem</strong>
-        <p>Søg efter personer, adresser og emner i de oprettede entiteter. Som oftest optræder der flere navne på en
-            Sejrs Seddel, men det er kun hovednavnet, typisk et mandligt husstandsoverhold, der er oprettet som entitet.
-        </p>
+<strong>Tilgængelighed</strong>
+<p>Tilgængelige med en løbende 75 års-grænse for personfølsomme oplysninger.</p>
 
-        <strong>BYRÅDSFORHANDLINGERNE 1868-1997</strong>
-        <p>Byrådet tog stilling til stort og småt fra dets indførelse i 1860’erne. Mange personer fik sager behandlet i
-            byrådet – tildeling af legater, offentlige ydelser, stillinger mv. Efter Socialreformen i 1933 og
-            indførelsen af magistratsstyret i 1950 ser det ud til, at personsager bliver færre. Stadsarkivet har
-            oprettet mange af de omtalte personer som entiteter, men arbejdet udbygges hele tiden.</p>
+<strong>Sådan bruger du dem</strong>
+<p>Søg efter personer, adresser og emner i de oprettede entiteter.</p>
 
-        <strong>Tilgængelighed</strong>
-        <p>Tilgængelige med en løbende 75 års-grænse for personfølsomme oplysninger.</p>
+<h4 id="digital_municipality_records">Slægtsforskning i Kommunearkivet - digitale kilder</h4>
+<p>På Stadsarkivet opbevarer vi myndighedsarkiverne fra den nuværende Aarhus Kommune, Aarhus Købstad 1869-1970
+    og sognekommunerne 1841-1970. Det kalder vi samlet for Kommunearkivet. Det indeholder mere end 6.000
+    hyldemeter papirarkiver.</p>
 
-        <strong>Sådan bruger du dem</strong>
-        <p>Søg efter personer, adresser og emner i de oprettede entiteter.</p>
+<strong>SKATTEMANDTALSLISTER</strong>
+<p>En væsentlig kildegruppe til slægtshistorie er skattemandtalslisterne (1885-1953).</p>
+<p>Aarhus Kommunes begyndte i 1885 at føre mandtal for at få et overblik for skatteopkrævningen - deraf navnet
+    skattemandtalslister. Listerne er ført adressevis, og på de enkelte adresser er alle ejendommens beboere
+    listet op med stamoplysninger - herunder alder, fødesogn, arbejdssted og skole for børn. Ofte er forrige
+    adresse anført ved flytning inden for det seneste år. Frem mod 1950 bliver listerne mindre indholdsrige.
+    Stadsarkivet har i samarbejde med FamilySearch digitaliseret Aarhus Kommunes skattemandtalslister.</p>
 
-        <h4 id="digital_municipality_records">Slægtsforskning i Kommunearkivet – digitale kilder</h4>
-        <p>På Stadsarkivet opbevarer vi myndighedsarkiverne fra den nuværende Aarhus Kommune, Aarhus Købstad 1869-1970
-            og sognekommunerne 1841-1970. Det kalder vi samlet for Kommunearkivet. Det indeholder mere end 6.000
-            hyldemeter papirarkiver.</p>
+<strong>Tilgængelighed</strong>
+<p>Skattemandtalslister ældre end 75 år kan ses online på AarhusArkivet. <a
+        href="/search?q=skattemandtalslister">Fritekstsøg efter "skattemandtalslister"</a> for at se en samlet
+    liste.</p>
+<p>For at se nyere lister skal du ansøge om adgang i henhold til reglerne for materialer, som indeholder
+    personfølsomme oplysninger. Dvs. arkivlovens tilgængelighedsfrister (75 år) og Datatilsynets regler (vedr.
+    nulevende personer og personer, der ikke har været døde i 10 år). Ansøgning kan udfyldes på læsesalen og
+    tilladelsen kan gives af læsesalsvagten. Adgang kommer an på dit formål mv.</p>
+<strong>Sådan bruger du skattemandtalslisterne</strong>
+<p>For at kunne bruge skattemandtalslisterne skal man altså kende adressen. Denne kan oftest findes i vejviseren
+    for Aarhus Kommune, som er tilgængelig på Stadsarkivets læsesal og snart i AarhusArkivet.dk.</p>
 
-        <strong>SKATTEMANDTALSLISTER</strong>
-        <p>En væsentlig kildegruppe til slægtshistorie er skattemandtalslisterne (1885-1953).</p>
-        <p>Aarhus Kommunes begyndte i 1885 at føre mandtal for at få et overblik for skatteopkrævningen – deraf navnet
-            skattemandtalslister. Listerne er ført adressevis, og på de enkelte adresser er alle ejendommens beboere
-            listet op med stamoplysninger – herunder alder, fødesogn, arbejdssted og skole for børn. Ofte er forrige
-            adresse anført ved flytning inden for det seneste år. Frem mod 1950 bliver listerne mindre indholdsrige.
-            Stadsarkivet har i samarbejde med FamilySearch digitaliseret Aarhus Kommunes skattemandtalslister.</p>
+<strong>BEGRAVELSER OG DØDSÅRSAGER</strong>
+<p>En anden væsentlig kildegruppe stammer fra Aarhus Kommunes begravelsesvæsen. Begravelsesvæsenet blev oprettet
+    i 1891 og drev de kommunale kirkegårde - først Søndre Kirkegård (nuværende Rådhuspark) og Nordre Kirkegård
+    og fra 1927 også Vestre Kirkegård.</p>
+<p>I arkivet kan du finde stamoplysninger om afdøde personer, deres dødsdag, gravplads og dødsårsag og evt.
+    slægtningene, som skulle betale for gravstedet.</p>
 
-        <strong>Tilgængelighed</strong>
-        <p>Skattemandtalslister ældre end 75 år kan ses online på AarhusArkivet. <a
-                href="/search?q=skattemandtalslister">Fritekstsøg efter "skattemandtalslister"</a> for at se en samlet
-            liste.</p>
-        <p>For at se nyere lister skal du ansøge om adgang i henhold til reglerne for materialer, som indeholder
-            personfølsomme oplysninger. Dvs. arkivlovens tilgængelighedsfrister (75 år) og Datatilsynets regler (vedr.
-            nulevende personer og personer, der ikke har været døde i 10 år). Ansøgning kan udfyldes på læsesalen og
-            tilladelsen kan gives af læsesalsvagten. Adgang kommer an på dit formål mv.</p>
-        <strong>Sådan bruger du skattemandtalslisterne</strong>
-        <p>For at kunne bruge skattemandtalslisterne skal man altså kende adressen. Denne kan oftest findes i vejviseren
-            for Aarhus Kommune, som er tilgængelig på Stadsarkivets læsesal og snart i AarhusArkivet.dk.</p>
+<strong>Tilgængelighed</strong>
+<p>Omfattet af arkivlovs- og persondatabeskyttelse.</p>
 
-        <strong>BEGRAVELSER OG DØDSÅRSAGER</strong>
-        <p>En anden væsentlig kildegruppe stammer fra Aarhus Kommunes begravelsesvæsen. Begravelsesvæsenet blev oprettet
-            i 1891 og drev de kommunale kirkegårde – først Søndre Kirkegård (nuværende Rådhuspark) og Nordre Kirkegård
-            og fra 1927 også Vestre Kirkegård.</p>
-        <p>I arkivet kan du finde stamoplysninger om afdøde personer, deres dødsdag, gravplads og dødsårsag og evt.
-            slægtningene, som skulle betale for gravstedet.</p>
+<strong>Sådan bruger du dem</strong>
+<p>Indgangen til samlingen er begravelsesregistrene, hvori du bliver henvist til en journal i
+    begravelsesjournalerne (1891-1942) og/eller dødsanmeldelserne (1912-1983).</p>
+<p>Vi vil i løbet af foråret lægge de begravelsesregistre og dødsanmeldelser online på AarhusArkivet, som vi må
+    jf. kravene til persondatabeskyttelse.</p>
 
-        <strong>Tilgængelighed</strong>
-        <p>Omfattet af arkivlovs- og persondatabeskyttelse.</p>
+<h4 id="analog_municipality_records">Slægtsforskning i Kommunearkivet - ikke-digitale kilder</h4>
+<strong>NAVNEKORT OG FOLKEREGISTERKORT</strong>
+<p>Aarhus Kommunes folkeregister indeholder navnekort og folkeregisterkort. Navnekortene indeholder oplysninger
+    om enkeltpersoners adresser i Aarhus Kommune fra 1924 til 1977. Folkeregisterkortene rummer
+    personoplysninger om enkeltpersonerne.</p>
 
-        <strong>Sådan bruger du dem</strong>
-        <p>Indgangen til samlingen er begravelsesregistrene, hvori du bliver henvist til en journal i
-            begravelsesjournalerne (1891-1942) og/eller dødsanmeldelserne (1912-1983).</p>
-        <p>Vi vil i løbet af foråret lægge de begravelsesregistre og dødsanmeldelser online på AarhusArkivet, som vi må
-            jf. kravene til persondatabeskyttelse.</p>
+<strong>Tilgængelighed</strong>
+<p>Forespørgsler i navnekort og folkeregisterkort ekspederes kun af Stadsarkivets personale. Årsagen hertil er
+    persondatabeskyttelse.</p>
+<p>De første 30 minutter, Stadsarkivet benytter til en ekspedition, er gratis. Herefter er forespørgslen at
+    betragte som en undersøgelse, som faktureres efter Stadsarkivets gældende takster.</p>
 
-        <h4 id="analog_municipality_records">Slægtsforskning i Kommunearkivet – ikke-digitale kilder</h4>
-        <strong>NAVNEKORT OG FOLKEREGISTERKORT</strong>
-        <p>Aarhus Kommunes folkeregister indeholder navnekort og folkeregisterkort. Navnekortene indeholder oplysninger
-            om enkeltpersoners adresser i Aarhus Kommune fra 1924 til 1977. Folkeregisterkortene rummer
-            personoplysninger om enkeltpersonerne.</p>
+<strong>Sådan bruger du dem</strong>
+<p>Registreringerne af navnekortene er på vej online, hvor de vil blive en del af <a
+        href="/collections/194">Kommunearkivet</a>.</p>
 
-        <strong>Tilgængelighed</strong>
-        <p>Forespørgsler i navnekort og folkeregisterkort ekspederes kun af Stadsarkivets personale. Årsagen hertil er
-            persondatabeskyttelse.</p>
-        <p>De første 30 minutter, Stadsarkivet benytter til en ekspedition, er gratis. Herefter er forespørgslen at
-            betragte som en undersøgelse, som faktureres efter Stadsarkivets gældende takster.</p>
+<h4 id="directories">Vejvisere for Aarhus</h4>
+<p>Vejviseren anvendes primært til finde adresseoplysninger på enkeltpersoner.</p>
+<p>Stadsarkivet har Vejvisere for Aarhus fra 1867 til 2007 på læsesalen. Stadsarkivet har i samarbejde med
+    FamilySearch affotograferet alle vejviserne.</p>
+<strong>Tilgængelighed</strong>
+<p>På læsesalen er alle vejvisere tilgængelige. På AarhusArkivet vil de ældre vejvisere løbende blive lagt ud
+    med respekt for persondatalovgivningen.</p>
 
-        <strong>Sådan bruger du dem</strong>
-        <p>Registreringerne af navnekortene er på vej online, hvor de vil blive en del af <a
-                href="/collections/194">Kommunearkivet</a>.</p>
-
-        <h4 id="directories">Vejvisere for Aarhus</h4>
-        <p>Vejviseren anvendes primært til finde adresseoplysninger på enkeltpersoner.</p>
-        <p>Stadsarkivet har Vejvisere for Aarhus fra 1867 til 2007 på læsesalen. Stadsarkivet har i samarbejde med
-            FamilySearch affotograferet alle vejviserne.</p>
-        <strong>Tilgængelighed</strong>
-        <p>På læsesalen er alle vejvisere tilgængelige. På AarhusArkivet vil de ældre vejvisere løbende blive lagt ud
-            med respekt for persondatalovgivningen.</p>
-
-        <h4 id="other_options">Andre søgemuligheder i datasæt</h4>
-        <p>Sejrs Sedler og Byrådsforhandlingerne er tilgængelige som datasæt. Dem kan man downloade og foretage sine
-            egne søgninger i. Herved kan man søge på personer, der ikke er oprettet som entiteter eller ikke optræder i
-            en arkivaliebeskrivelse (og dermed undslipper AarhusArkivets søgning).</p>
-        <p>Datasættene er enten lagt ud på Open Data DK. Se <a
-                href="https://portal.opendata.dk/organization/city-of-aarhus">opendata.dk</a>. Eller de kan udleveres
-            ved henvendelse til Aarhus Stadsarkiv.</p>
-
-
-
-    </div>
-</main>
-
-<footer class="footer">
-    {% include "includes/footer.html" %}
-</footer>
-
-{% include "includes/flash.html" %}
-
+<h4 id="other_options">Andre søgemuligheder i datasæt</h4>
+<p>Sejrs Sedler og Byrådsforhandlingerne er tilgængelige som datasæt. Dem kan man downloade og foretage sine
+    egne søgninger i. Herved kan man søge på personer, der ikke er oprettet som entiteter eller ikke optræder i
+    en arkivaliebeskrivelse (og dermed undslipper AarhusArkivets søgning).</p>
+<p>Datasættene er enten lagt ud på Open Data DK. Se <a
+        href="https://portal.opendata.dk/organization/city-of-aarhus">opendata.dk</a>. Eller de kan udleveres
+    ved henvendelse til Aarhus Stadsarkiv.</p>
 
 {% endblock content %}

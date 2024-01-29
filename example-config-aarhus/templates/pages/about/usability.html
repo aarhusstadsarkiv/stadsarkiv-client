@@ -1,4 +1,4 @@
-{% extends "empty.html" %}
+{% extends "about_guides.html" %}
 
 {% block body_class %}page-about-usability{% endblock %}
 
@@ -6,80 +6,62 @@
 {% endblock head %}
 
 {% block content %}
+<h3>Rettigheder og brug</h3>
+<p id="intro">På www.aarhusarkivet.dk finder du både materiale, hvor ophavsretten er udløbet, og dermed må
+    bruges frit, og materiale, der stadig er beskyttet af ophavsret. Materialets ophavsretsmæssige status er
+    registreret ved hver registrering.</p>
+<p>Vi gør os umage med at identificere ophavsmænd og vurdere materialernes ophavsretsmæssige status bedst
+    muligt. Men alle kan tage fejl. Vi tager derfor forbehold for, at materiale kan være fejlregistreret.</p>
+<p>Når du bruger fotografier og andet materiale fra www.aarhusarkivet.dk, skal du være opmærksom på, at du selv
+    er ansvarlig for at overholde ophavsretsloven.</p>
+<p>Med brug menes fx, at du deler et fotografi på Facebook, bruger et billede på din hjemmeside eller trykker et
+    billede i en bog eller i et tidsskrift. Disse eksempler udgør ikke en udtømmende liste over brug.</p>
 
-<nav class="container-fluid navigation sticky-top">
-    {% include "includes/logo.html" %}
-    {% include "includes/navigation.html" %}
-</nav>
+<h3>Typer af ophavsret på AarhusArkivet</h3>
+<p id="cc-types">Ophavsretten til et arkivalie tilhører den kreative skaber og ikke den kulturinstitution, der
+    ejer det fysiske fotografi. På AarhusArkivet kan du støde på følgende typer af ophavsretslicenser:</p>
 
-<main>
-    <div class="container">
+<h4 id="public-domain">I offentlig eje</h4>
+<p>Hvis der står ”I offentlig eje” ved et arkivalie på AarhusArkivet betyder det, at arkivaliet enten ikke er
+    ophavsretsværdigt (dvs. ikke er skabt ved en kreativ proces), eller at ophavsretten er udløbet. Ved
+    fotografier og andre arkivalier med en kreativ skaber er ophavsretten udløbet, når fotografen eller skaberen
+    har været død i 70 år.</p>
+<p>”I offentlig eje” betyder at du må dele, kopiere, bearbejde og videredistribuere materialet – også til
+    kommercielle formål, uden at spørge om tilladelse. Vi beder dig dog om at respektere Europeanas
+    retningslinjer for brug af materiale i det offentlige domæne.</p>
 
-        <h3>Rettigheder og brug</h3>
-        <p id="intro">På www.aarhusarkivet.dk finder du både materiale, hvor ophavsretten er udløbet, og dermed må
-            bruges frit, og materiale, der stadig er beskyttet af ophavsret. Materialets ophavsretsmæssige status er
-            registreret ved hver registrering.</p>
-        <p>Vi gør os umage med at identificere ophavsmænd og vurdere materialernes ophavsretsmæssige status bedst
-            muligt. Men alle kan tage fejl. Vi tager derfor forbehold for, at materiale kan være fejlregistreret.</p>
-        <p>Når du bruger fotografier og andet materiale fra www.aarhusarkivet.dk, skal du være opmærksom på, at du selv
-            er ansvarlig for at overholde ophavsretsloven.</p>
-        <p>Med brug menes fx, at du deler et fotografi på Facebook, bruger et billede på din hjemmeside eller trykker et
-            billede i en bog eller i et tidsskrift. Disse eksempler udgør ikke en udtømmende liste over brug.</p>
+<h4 id="cc-by">Creative Commons Navngivelse</h4>
+<p>Arkivalier med licensen ”CC Navngivelse” er underlagt ophavsret, men må benyttes mod tydelig kreditering af
+    den kreative skaber og Aarhus Stadsarkiv.</p>
+<p>Arkivalier med licensen ”CC Navngivelse” må gerne deles, kopieres, bearbejdes og videredistribueres, men
+    altid kun med tydelig kreditering af kreativ skaber og Aarhus Stadsarkiv.</p>
+<p>Den fulde licenstekst, samt vejledninger til hvad passende kreditering betyder, <a
+        href="https://creativecommons.org/licenses/by/4.0/deed.da">kan du finde her</a>.</p>
 
-        <h3>Typer af ophavsret på AarhusArkivet</h3>
-        <p id="cc-types">Ophavsretten til et arkivalie tilhører den kreative skaber og ikke den kulturinstitution, der
-            ejer det fysiske fotografi. På AarhusArkivet kan du støde på følgende typer af ophavsretslicenser:</p>
+<h4 id="cc-by-nc">Creative Commons Navngivelse-IkkeKommerciel</h4>
+<p>Arkivalier med brugslicensen ”CC Navngivelse-ikke kommerciel” er underlagt ophavsret og må kun benyttes i
+    ikke-kommercielle sammenhænge og kun mod tydelig kreditering af den kreative skaber og Aarhus Stadsarkiv.
+</p>
+<p>Arkivalier med denne licens må gerne deles, kopieres, bearbejdes og videredistribueres, så længe brugen ikke
+    er kommerciel.</p>
+<p><strong>NOTE: </strong>Da sociale medier som Facebook og Instagram er kommercielle må arkivalier, oftest
+    billeder, med denne licens ikke vises på disse platforme, eller i udgivelse med kommercielle
+    samarbejdspartnere såsom et forlag eller et hjemmesidemedie.</p>
+<p>Den fulde licenstekst, samt vejledninger til hvad passende kreditering betyder, <a
+        href="https://creativecommons.org/licenses/by-nc/4.0/deed.da">kan du finde her</a>.</p>
 
-        <h4 id="public-domain">I offentlig eje</h4>
-        <p>Hvis der står ”I offentlig eje” ved et arkivalie på AarhusArkivet betyder det, at arkivaliet enten ikke er
-            ophavsretsværdigt (dvs. ikke er skabt ved en kreativ proces), eller at ophavsretten er udløbet. Ved
-            fotografier og andre arkivalier med en kreativ skaber er ophavsretten udløbet, når fotografen eller skaberen
-            har været død i 70 år.</p>
-        <p>”I offentlig eje” betyder at du må dele, kopiere, bearbejde og videredistribuere materialet – også til
-            kommercielle formål, uden at spørge om tilladelse. Vi beder dig dog om at respektere Europeanas
-            retningslinjer for brug af materiale i det offentlige domæne.</p>
+<h4 id="all-rights-reserved">Alle rettigheder forbeholdes</h4>
+<p>Arkivalier med brugslicensen ”Alle rettigheder forbeholdes” må ikke gengives andre steder end på
+    AarhusArkivet.</p>
+<p><strong>NOTE: </strong>Er der tale om fotografier, hvor fotografen enten er ukendt, eller Aarhus Stadsarkiv
+    ikke har nogen ophavsretsaftale med fotografen, kan man købe adgang til brug af billedet gennem
+    www.visda.dk, der varetager danske fotografers rettigheder.</p>
 
-        <h4 id="cc-by">Creative Commons Navngivelse</h4>
-        <p>Arkivalier med licensen ”CC Navngivelse” er underlagt ophavsret, men må benyttes mod tydelig kreditering af
-            den kreative skaber og Aarhus Stadsarkiv.</p>
-        <p>Arkivalier med licensen ”CC Navngivelse” må gerne deles, kopieres, bearbejdes og videredistribueres, men
-            altid kun med tydelig kreditering af kreativ skaber og Aarhus Stadsarkiv.</p>
-        <p>Den fulde licenstekst, samt vejledninger til hvad passende kreditering betyder, <a
-                href="https://creativecommons.org/licenses/by/4.0/deed.da">kan du finde her</a>.</p>
+<h4 id="ethics">God skik</h4>
+Materialer fra Aarhusarkivet må ikke anvendes i sammenhænge, som enten miskrediterer ophavsmandens anseelse
+eller integritet, eller krænker omtalte eller afbillede personers anseelse eller privatliv. Det gælder uanset,
+om ophavsretten er udløbet eller ej.
 
-        <h4 id="cc-by-nc">Creative Commons Navngivelse-IkkeKommerciel</h4>
-        <p>Arkivalier med brugslicensen ”CC Navngivelse-ikke kommerciel” er underlagt ophavsret og må kun benyttes i
-            ikke-kommercielle sammenhænge og kun mod tydelig kreditering af den kreative skaber og Aarhus Stadsarkiv.
-        </p>
-        <p>Arkivalier med denne licens må gerne deles, kopieres, bearbejdes og videredistribueres, så længe brugen ikke
-            er kommerciel.</p>
-        <p><strong>NOTE: </strong>Da sociale medier som Facebook og Instagram er kommercielle må arkivalier, oftest
-            billeder, med denne licens ikke vises på disse platforme, eller i udgivelse med kommercielle
-            samarbejdspartnere såsom et forlag eller et hjemmesidemedie.</p>
-        <p>Den fulde licenstekst, samt vejledninger til hvad passende kreditering betyder, <a
-                href="https://creativecommons.org/licenses/by-nc/4.0/deed.da">kan du finde her</a>.</p>
-
-        <h4 id="all-rights-reserved">Alle rettigheder forbeholdes</h4>
-        <p>Arkivalier med brugslicensen ”Alle rettigheder forbeholdes” må ikke gengives andre steder end på
-            AarhusArkivet.</p>
-        <p><strong>NOTE: </strong>Er der tale om fotografier, hvor fotografen enten er ukendt, eller Aarhus Stadsarkiv
-            ikke har nogen ophavsretsaftale med fotografen, kan man købe adgang til brug af billedet gennem
-            www.visda.dk, der varetager danske fotografers rettigheder.</p>
-
-        <h4 id="ethics">God skik</h4>
-        Materialer fra Aarhusarkivet må ikke anvendes i sammenhænge, som enten miskrediterer ophavsmandens anseelse
-        eller integritet, eller krænker omtalte eller afbillede personers anseelse eller privatliv. Det gælder uanset,
-        om ophavsretten er udløbet eller ej.
-
-
-    </div>
-</main>
-
-<footer class="footer">
-    {% include "includes/footer.html" %}
-</footer>
-
-{% include "includes/flash.html" %}
 
 
 {% endblock content %}

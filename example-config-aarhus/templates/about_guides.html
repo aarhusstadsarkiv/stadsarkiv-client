@@ -1,0 +1,46 @@
+{# base template for about and guides #}
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+
+    {% include "includes/head_default.html" %}
+    {% block head %}
+    {% endblock head %}
+
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+
+    <nav class="container-fluid navigation sticky-top">
+        {% include "includes/logo.html" %}
+        {% include "includes/navigation.html" %}
+    </nav>
+
+    <main>
+        <div class="container-fluid-left-main container-max-width">
+            <div class="container-left">
+                <div id="toc"></div>
+            </div>
+            <div class="container-main" id="article">
+                {% block content %}
+                {% endblock content %}
+            </div>
+    </main>
+
+    <footer class="footer">
+        {% include "includes/footer.html" %}
+    </footer>
+
+    {% include "includes/flash.html" %}
+
+    <script type="module">
+
+        import { showTOC } from '/static/js/table-of-contents.js';
+        showTOC('article', 'toc');
+
+    </script>
+
+</body>
+
+</html>
