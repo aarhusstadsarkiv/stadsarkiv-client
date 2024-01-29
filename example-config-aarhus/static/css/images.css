@@ -1,5 +1,5 @@
 /* 400px / 1920px * 100% equals 20.8333333333% */
-.images-top-container {
+/* .images-top-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,7 +9,15 @@
     background-image: url(/static/assets/images-page/Billder-fra-Aarhus_AA_header_1920px.jpg);
     background-size: cover;
     background-position: center;
+} */
 
+.images-top-container {
+    display: flex;
+    background-image: url(/static/assets/images-page/Billder-fra-Aarhus_AA_header_1920px.jpg);
+    background-size: contain;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1920 / 400;
 }
 
 .images-links {
