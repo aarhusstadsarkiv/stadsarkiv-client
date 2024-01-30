@@ -54,6 +54,7 @@ h1, h2, h3, h4, h5, h6 {
     top: var(--main-menu-top);
     right: 0px;
     background-color: var(--navigation-background);
+    background-color: rgba(var(--navigation-background-rgb), 0.975);
     padding: 10px;
     font-size: 1.0em;
     min-width: 175px;

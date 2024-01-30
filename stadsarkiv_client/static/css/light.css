@@ -32,7 +32,8 @@
   /**
    * default.css
    */
-  --navigation-background: #3c7b9b /* cornflowerblue */;
+  --navigation-background:  #3c7b9b; /* rgb(60, 123, 155) */ /* cornflowerblue */;
+  --navigation-background-rgb: 60, 123, 155; 
   --navigation-background-hover: #ffffff22;
 
   --flash-color: white;
