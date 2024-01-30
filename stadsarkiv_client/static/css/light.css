@@ -23,6 +23,7 @@
   --highlight: #ff0;
   --body-width: 100%;
   --container-width: 1400px;
+  --container-width-small: 1200px;
 
   /* can not be used in media queries - just to remember the settings */
   --breakpoint-small: 576px;
