@@ -12,6 +12,14 @@
 
 }
 
+#q {
+    width: 400px;
+}
+
+.search-suggestions {
+    width: 400px;
+}
+
 /**
  * hide search button when screen is small
  */
@@ -29,6 +37,11 @@
     /* full width search input */
     #q {
         width: 100%;
+    }
+
+    .search-suggestions {
+        /* calculate same width as #q */
+        width: calc(100% - 50px);
     }
 }
 
