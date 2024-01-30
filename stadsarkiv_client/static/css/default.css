@@ -1,4 +1,4 @@
-* {
+h1, h2, h3, h4, h5, h6 {
     scroll-margin-top: var(--main-menu-top);
 }
 
@@ -58,6 +58,14 @@
     font-size: 1.0em;
     min-width: 175px;
 }
+/** 
+ When device is smaller than 576px the width should be 100%
+    */
+@media (max-width: 576px) {
+    .main-menu {
+        width: 100%;
+    }
+}
 
 .main-menu>h3,
 .main-menu>a,
@@ -83,7 +91,6 @@
     font-size: 0.9em;
     padding: 0;
     color: black;
-
 }
 
 .navigation-right-group a:hover {
