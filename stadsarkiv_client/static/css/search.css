@@ -69,9 +69,8 @@
     border-radius: 5px;
 }
 
-input,
-button {
-    display: inline-block !important;
+#q, #submit {
+    display: inline-block;
 }
 
 .from-year,
@@ -170,7 +169,7 @@ details>summary.inactive {
     background-color: whitesmoke;
     display: none;
     padding: 5px;
-    width: 300px;
+    width: 295px;
     max-height: calc(100vh - 150px);
     overflow-y: auto;
 }
