@@ -56,6 +56,7 @@ settings: dict[str, typing.Any] = {
     "pages": [
         {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
     ],
+    "main_menu_sections": [],
     "search_base_url": "/search",
     "facets_enabled": ["content_types", "subjects", "availability", "usability", "dates"],
 }
