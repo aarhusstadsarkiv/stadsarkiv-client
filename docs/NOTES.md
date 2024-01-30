@@ -14,6 +14,18 @@ Manglende PDF:
 
 https://stadsarkiv.aarhus.dk/media/17933/oplysninger-om-rent-private-forhold.pdf
 
+Manglende side: (Ret ligeledes link i http://localhost:5555/about/privacy)
+
+https://aarhusarkivet.dk/about/cookies
+
+https://localhost:5555/about/cookies
+
+https://stadsarkiv.aarhus.dk/besoeg-arkivet/besoeg-laesesalen/
+
+Manglende https://
+
+http://2017aarhusianere.dk/ -> redirecter til https://www.aarhusarkivet.dk/collections/213 
+
 
 # Template-struktur
 
