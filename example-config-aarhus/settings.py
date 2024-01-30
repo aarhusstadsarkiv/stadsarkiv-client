@@ -33,40 +33,86 @@ settings: dict[str, typing.Any] = {
     #
     # Custom pages
     #
-    # "name" is the route name. Title is the page title.
+    # "name" is the route name.
+    # "title" is the page title.
     # "template" if the page you will use. It is also the content of the page.
     # "url" is the path to the page
+    # "type" is the type of menu item. It can be "top" or "dropdown". If it is not set, it will not be displayed in the menu.
     #
-    # You can then make another menu which contains some of these pages, e.g. a "footer_items" entry
-    # or something similar.
-    "pages": [
-        {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
-        {"name": "page_images", "title": "Hjemmesider med billeder fra Aarhus", "template": "pages/images.html", "url": "/images"},
-        {"name": "page_council", "title": "Aarhus Byråds arkiv", "template": "pages/council.html", "url": "/city-council"},
-        {"name": "page_privacy", "title": "Privatlivspolitik", "template": "pages/about/privacy.html", "url": "/about/privacy"},
-        {"name": "page_usability", "title": "Brugbarhed ", "template": "pages/about/usability.html", "url": "/about/usability"},
-        {"name": "page_collections", "title": "Om samlingerne", "template": "pages/about/collections.html", "url": "/about/collections"},
-        {"name": "page_availability", "title": "Tilgængelighed", "template": "pages/about/availability.html", "url": "/about/availability"},
-        {
-            "name": "page_archival_availability",
-            "title": "Arkivlovens tilgængelighedsfrister",
-            "template": "pages/about/archival_availability.html",
-            "url": "/about/archival_availability",
-        },
-        {"name": "page_genealogy", "title": "Slægtsforskning", "template": "pages/guides/genealogy.html", "url": "/guides/genealogy"},
-        {
-            "name": "page_searchguide",
-            "title": "Hjælp til søgning",
-            "template": "pages/guides/searchguide.html",
-            "url": "/guides/searchguide",
-        },
-        {
-            "name": "page_municipality_records",
-            "title": "Kommunearkivet ",
-            "template": "pages/guides/municipality_records.html",
-            "url": "/guides/municipality_records",
-        },
-        # /guides/genealogy
-    ],
     "search_base_url": "/search",
 }
+
+pages: list = [
+    {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
+    {"name": "page_images", "title": "Hjemmesider med billeder fra Aarhus", "template": "pages/images.html", "url": "/images"},
+    {"name": "page_council", "title": "Aarhus Byråds arkiv", "template": "pages/council.html", "url": "/city-council"},
+]
+
+pages_guides: list = [
+    {
+        "name": "page_searchguide",
+        "title": "Hjælp til søgning",
+        "template": "pages/guides/searchguide.html",
+        "url": "/guides/searchguide",
+        "type": "dropdown",
+    },
+    {
+        "name": "page_genealogy",
+        "title": "Slægtsforskning",
+        "template": "pages/guides/genealogy.html",
+        "url": "/guides/genealogy",
+        "type": "dropdown",
+    },
+    {
+        "name": "page_municipality_records",
+        "title": "Kommunearkivet",
+        "template": "pages/guides/municipality_records.html",
+        "url": "/guides/municipality_records",
+        "type": "dropdown",
+    },
+]
+
+pages_about: list = [
+    {
+        "name": "page_collections",
+        "title": "Om samlingerne",
+        "template": "pages/about/collections.html",
+        "url": "/about/collections",
+        "type": "dropdown",
+    },
+    {
+        "name": "page_availability",
+        "title": "Tilgængelighed",
+        "template": "pages/about/availability.html",
+        "url": "/about/availability",
+        "type": "dropdown",
+    },
+    {
+        "name": "page_archival_availability",
+        "title": "Arkivlovens tilgængelighedsfrister",
+        "template": "pages/about/archival_availability.html",
+        "url": "/about/archival_availability",
+        "type": "dropdown",
+    },
+    {
+        "name": "page_usability",
+        "title": "Brugbarhed ",
+        "template": "pages/about/usability.html",
+        "url": "/about/usability",
+        "type": "dropdown",
+    },
+    {
+        "name": "page_privacy",
+        "title": "Privatlivspolitik",
+        "template": "pages/about/privacy.html",
+        "url": "/about/privacy",
+        "type": "dropdown",
+    },
+]
+
+settings["pages"] = pages + pages_guides + pages_about
+
+settings["main_menu_sections"] = [
+    {"name": "guides", "title": "Vejledninger", "pages": pages_guides},
+    {"name": "about", "title": "Om samlingerne", "pages": pages_about},
+]
