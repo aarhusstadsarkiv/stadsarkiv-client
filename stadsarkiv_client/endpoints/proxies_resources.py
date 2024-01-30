@@ -55,7 +55,11 @@ async def _get_resource_context(request):
 async def get(request: Request):
     resource_type = request.path_params["resource_type"]
 
-    context = await _get_resource_context(request)
+    try:
+        context = await _get_resource_context(request)
+    except Exception as e:
+        log.error(e)
+        raise HTTPException(status_code=404, detail="Resource not found")
 
     if resource_type == "collections":
         return templates.TemplateResponse("resources/collections.html", context)
