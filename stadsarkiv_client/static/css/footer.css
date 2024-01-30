@@ -19,7 +19,6 @@
 .footer-content {
     color: var(--footer-text);
     flex: 1;
-    box-sizing: border-box;
     text-align: center;
     padding: 2em;
 }
@@ -96,6 +95,7 @@ footer img {
     height: auto;
     max-height: 58px;
     padding: 2em;
+    box-sizing: content-box;
 }
 
 
@@ -147,4 +147,8 @@ footer img {
     footer img {
         display: unset;
     }
+}
+
+.footer-logo {
+    box-sizing: content-box;
 }

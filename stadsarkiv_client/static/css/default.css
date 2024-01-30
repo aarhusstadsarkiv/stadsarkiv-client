@@ -157,7 +157,7 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
     max-width: var(--container-width);
     margin: 0 auto;
-    box-sizing: border-box;
+
 }
 
 .sticky-top {

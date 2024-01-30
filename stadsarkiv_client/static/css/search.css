@@ -5,7 +5,6 @@
 
 
 .search-result {
-    box-sizing: border-box;
     background-color: var(--search-result-background);
     padding: 10px 0;
     border-top: 1px solid var(--search-result-border);
