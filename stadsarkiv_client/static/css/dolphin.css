@@ -1,3 +1,7 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 /**
  * kind of like a css reset
  * Makes a random page look a bit better
