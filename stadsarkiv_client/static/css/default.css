@@ -59,6 +59,7 @@
     min-width: 175px;
 }
 
+.main-menu>h3,
 .main-menu>a,
 .main-menu-static>a {
     display: block;
@@ -74,7 +75,15 @@
 }
 
 .main-menu>a {
-    font-size: 1.0em;
+    font-size: 0.9em;
+
+}
+
+.main-menu>h3 {
+    font-size: 0.9em;
+    padding: 0;
+    color: black;
+
 }
 
 .navigation-right-group a:hover {
