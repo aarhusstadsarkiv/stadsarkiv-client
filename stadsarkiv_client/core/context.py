@@ -34,7 +34,8 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
         "path": request.url.path,
         "request": request,
         "title": _get_title(request),
-        "main_menu": await _get_main_menu(logged_in, permissions_list),
+        "main_menu_user": _get_main_menu_user(logged_in, permissions_list),
+        "main_menu_sections": dynamic_settings.settings["main_menu_sections"],
         "logged_in": logged_in,
         "authorization": _get_authorization(request),
     }
@@ -52,10 +53,8 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
     return context
 
 
-async def _get_main_menu(logged_in: bool, permissions_list: list):
-    main_menu: Any = []
-    if "main_menu" in dynamic_settings.settings:
-        main_menu = dynamic_settings.settings["main_menu"]  # type ignore
+def _get_main_menu_user(logged_in: bool, permissions_list: list):
+    main_menu: list = dynamic_settings.settings["main_menu"]
 
     if logged_in:
         excluded_items = {"auth_login_get", "auth_register_get", "auth_forgot_password_get"}
