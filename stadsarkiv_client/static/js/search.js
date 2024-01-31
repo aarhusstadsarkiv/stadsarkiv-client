@@ -5,8 +5,8 @@ import { asyncLogError } from '/static/js/error.js';
 // Function to save the state of the tree to local storage
 function saveTree() {
 
-    const openFacets = [];
-    const detailsElements = document.querySelectorAll('.container-left .facets details');
+    var openFacets = [];
+    var detailsElements = document.querySelectorAll('.container-left .facets details');
     detailsElements.forEach(detailElement => {
         if (detailElement.open) {
             const dataId = detailElement.getAttribute('data-id');
@@ -15,6 +15,18 @@ function saveTree() {
     });
 
     localStorage.setItem('treeState', JSON.stringify(openFacets));
+
+    var openFacets = [];
+    var detailsElements = document.querySelectorAll('.container-main-facets .facets details');
+    detailsElements.forEach(detailElement => {
+        if (detailElement.open) {
+            const dataId = detailElement.getAttribute('data-id');
+            openFacets.push(dataId);
+        }
+    });
+
+    localStorage.setItem('treeStateCenter', JSON.stringify(openFacets));
+
 }
 
 function collapseTree() {
@@ -26,9 +38,20 @@ function collapseTree() {
 
 // Function to expand the tree based on the saved state from local storage
 function expandTree() {
-    const openFacets = JSON.parse(localStorage.getItem('treeState'));
+    var openFacets = JSON.parse(localStorage.getItem('treeState'));
     if (openFacets && openFacets.length) {
         const detailElements = document.querySelectorAll('.container-left .facets details');
+        detailElements.forEach(detailElement => {
+            const dataId = detailElement.getAttribute('data-id');
+            if (openFacets.includes(dataId)) {
+                detailElement.open = true;
+            }
+        });
+    }
+
+    var openFacets = JSON.parse(localStorage.getItem('treeStateCenter'));
+    if (openFacets && openFacets.length) {
+        const detailElements = document.querySelectorAll('.container-main-facets .facets details');
         detailElements.forEach(detailElement => {
             const dataId = detailElement.getAttribute('data-id');
             if (openFacets.includes(dataId)) {
@@ -136,14 +159,15 @@ function searchEvents() {
         });
 
         // Expand the tree based on the saved state
-        document.addEventListener('DOMContentLoaded', function (event) {
+        // document.addEventListener('DOMContentLoaded', function (event) {
             // Check if tree threshold has been reached
             const maxWidth = 992;
             const width = window.innerWidth;
             if (width > maxWidth) {
-                expandTree();
+                // expandTree();
             }
-        })
+            expandTree();
+        // })
 
         // 'beforeunload' will not work when e.g. searching for /search to /search?date_from=20200101
         // Instead we check all links
