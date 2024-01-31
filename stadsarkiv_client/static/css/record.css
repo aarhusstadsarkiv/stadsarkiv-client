@@ -16,12 +16,12 @@
 
 .record-representation {
     flex: 1;
+    text-align: center;
+
 }
 
 .record-representation img {
     box-shadow: 5px 5px 10px var(--record-representation-box-shadow);
-    width: 100%;
-
 }
 
 .record-main {
