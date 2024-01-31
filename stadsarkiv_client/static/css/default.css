@@ -61,7 +61,15 @@ h1, h2, h3, h4, h5, h6 {
     min-width: 175px;
     max-height: 80vh; 
     overflow-y: auto; 
+    scrollbar-width: none;
 }
+
+/* width */
+.main-menu::-webkit-scrollbar {
+    width: 0px;
+  }
+  
+
 /** 
  When device is smaller than 576px the width should be 100%
     */

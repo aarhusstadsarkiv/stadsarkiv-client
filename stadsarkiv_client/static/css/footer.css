@@ -100,6 +100,9 @@ footer img {
 
 
 @media (max-width: 768px) {
+    .footer {
+        padding: 10px 2%;
+    }
     .footer-content {
         max-width: 100%;
     }

@@ -76,6 +76,7 @@
 .from-year,
 .to-year {
     width: 60px;
+    display: inline-block;
 }
 
 .from-month,
@@ -83,6 +84,7 @@
 .from-day,
 .to-day {
     width: 50px;
+    display: inline-block;
 }
 
 
