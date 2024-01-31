@@ -4,11 +4,8 @@
 ## Install for development
 
     git clone git@github.com:aarhusstadsarkiv/stadsarkiv-client.git
-
     cd stadsarkiv-client
-
     virtualenv venv # Python >= 3.10.6 should work
-
     source venv/bin/activate
 
 Install requirements:
