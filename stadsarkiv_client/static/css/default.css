@@ -21,6 +21,7 @@ h1, h2, h3, h4, h5, h6 {
 .navigation-right-group {
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 #menu-hamburger svg {
@@ -80,7 +81,6 @@ h1, h2, h3, h4, h5, h6 {
     padding: 8px;
     transition: background-color 0.2s ease-in-out;
     text-transform: uppercase;
-    margin-right: 8px;
 }
 
 .main-menu>a {
