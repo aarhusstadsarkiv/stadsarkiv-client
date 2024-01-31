@@ -3,7 +3,7 @@
 
 ## Install for development
 
-    git clone https://github.com/aarhusstadsarkiv/stadsarkiv-client.git
+    git clone git@github.com:aarhusstadsarkiv/stadsarkiv-client.git
 
     cd stadsarkiv-client
 
