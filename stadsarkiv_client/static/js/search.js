@@ -2,62 +2,87 @@ import { Events } from '/static/js/events.js';
 import { Flash } from '/static/js/flash.js';
 import { asyncLogError } from '/static/js/error.js';
 
-// Function to save the state of the tree to local storage
-function saveTree() {
+/**
+ * Utility function to save the state of details elements from a given container
+ */
+function saveState(containerSelector, storageKey) {
+    const openFacets = [];
+    const detailsElements = document.querySelectorAll(`${containerSelector} .facets details`);
 
-    var openFacets = [];
-    var detailsElements = document.querySelectorAll('.container-left .facets details');
     detailsElements.forEach(detailElement => {
         if (detailElement.open) {
-            const dataId = detailElement.getAttribute('data-id');
-            openFacets.push(dataId);
+            openFacets.push(detailElement.getAttribute('data-id'));
         }
     });
 
-    localStorage.setItem('treeState', JSON.stringify(openFacets));
-
-    var openFacets = [];
-    var detailsElements = document.querySelectorAll('.container-main-facets .facets details');
-    detailsElements.forEach(detailElement => {
-        if (detailElement.open) {
-            const dataId = detailElement.getAttribute('data-id');
-            openFacets.push(dataId);
-        }
-    });
-
-    localStorage.setItem('treeStateCenter', JSON.stringify(openFacets));
-
+    localStorage.setItem(storageKey, JSON.stringify(openFacets));
 }
 
-function collapseTree() {
-    const detailsElements = document.querySelectorAll('.container-main-facets .facets details');
+/**
+ * Save the state of the tree to local storage
+ */
+function saveTree() {
+
+    const containerLeftIsDisplayed = window.getComputedStyle(document.querySelector('.container-left')).display != 'none';
+    if (containerLeftIsDisplayed) {
+        saveState('.container-left', 'treeState');
+        console.log("saved state left")
+    }
+
+    const containerMainFacetsIsDisplayed = window.getComputedStyle(document.querySelector('.container-main-facets')).display != 'none';
+    if (containerMainFacetsIsDisplayed) {
+        saveState('.container-main-facets', 'treeState');
+        console.log("saved state main")
+    }
+}
+
+/**
+ *  Utility function to collapse all details elements in a given container
+ */
+function collapseTree(containerSelector) {
+    const detailsElements = document.querySelectorAll(`${containerSelector} .facets details`);
     detailsElements.forEach(detailElement => {
         detailElement.open = false;
     });
 }
 
-// Function to expand the tree based on the saved state from local storage
-function expandTree() {
-    var openFacets = JSON.parse(localStorage.getItem('treeState'));
+/**
+ * Collapses all trees
+ */
+function collapseAllTrees() {
+    // collapseTree('.container-main-facets');
+}
+
+/**
+ * Utility function to expand tree from saved state
+ */
+function expandTreeFromState(containerSelector, storageKey) {
+    const openFacets = JSON.parse(localStorage.getItem(storageKey));
     if (openFacets && openFacets.length) {
-        const detailElements = document.querySelectorAll('.container-left .facets details');
+        const detailElements = document.querySelectorAll(`${containerSelector} .facets details`);
         detailElements.forEach(detailElement => {
-            const dataId = detailElement.getAttribute('data-id');
-            if (openFacets.includes(dataId)) {
+            if (openFacets.includes(detailElement.getAttribute('data-id'))) {
                 detailElement.open = true;
             }
         });
     }
+}
 
-    var openFacets = JSON.parse(localStorage.getItem('treeStateCenter'));
-    if (openFacets && openFacets.length) {
-        const detailElements = document.querySelectorAll('.container-main-facets .facets details');
-        detailElements.forEach(detailElement => {
-            const dataId = detailElement.getAttribute('data-id');
-            if (openFacets.includes(dataId)) {
-                detailElement.open = true;
-            }
-        });
+/**
+ * Expands the tree based on the saved state from local storage
+ */
+function expandTree() {
+
+    const containerLeftIsDisplayed = window.getComputedStyle(document.querySelector('.container-left')).display != 'none';
+    if (containerLeftIsDisplayed) {
+        expandTreeFromState('.container-left', 'treeState');
+        console.log("expanded state left")
+    }
+
+    const containerMainFacetsIsDisplayed = window.getComputedStyle(document.querySelector('.container-main-facets')).display != 'none';
+    if (containerMainFacetsIsDisplayed) {
+        expandTreeFromState('.container-main-facets', 'treeState');
+        console.log("expanded state main")
     }
 }
 
@@ -158,16 +183,22 @@ function searchEvents() {
             input.value = input.value.replace(/\D/g, '');
         });
 
-        // Expand the tree based on the saved state
-        // document.addEventListener('DOMContentLoaded', function (event) {
-            // Check if tree threshold has been reached
-            const maxWidth = 992;
-            const width = window.innerWidth;
-            if (width > maxWidth) {
-                // expandTree();
+        // Variable to track the last window width
+        let lastWindowWidth = window.innerWidth;
+
+        window.addEventListener('resize', function () {
+            const currentWindowWidth = window.innerWidth;
+
+            // Check if the resize event crosses the 992px to 993px boundary
+            if ((lastWindowWidth <= 992 && currentWindowWidth >= 993) || (lastWindowWidth >= 993 && currentWindowWidth <= 992)) {
+                expandTree();
             }
-            expandTree();
-        // })
+
+            // Update the last window width for the next resize event
+            lastWindowWidth = currentWindowWidth;
+        });
+
+        expandTree();
 
         // 'beforeunload' will not work when e.g. searching for /search to /search?date_from=20200101
         // Instead we check all links
@@ -188,7 +219,7 @@ function searchEvents() {
         })
 
         // Also add event listener to search form with id 'search-date'
-        const searchElem = document.getElementById('search');
+        const searchElem = document.getElementById('q');
         searchElem.addEventListener('submit', function (event) {
             event.preventDefault();
             saveTree();
@@ -225,19 +256,13 @@ function searchEvents() {
             document.getElementById('sort').submit();
         });
 
-        window.addEventListener('pageshow', function (event) {
-            const q = document.querySelector('#q');
-        });
-
     } catch (error) {
         // unset local storage if it fails. 
         // The tree may be updated and the saved state may be invalid
         localStorage.removeItem('treeState');
         asyncLogError(error);
-        
+
     }
 }
-
-
 
 export { searchEvents }
