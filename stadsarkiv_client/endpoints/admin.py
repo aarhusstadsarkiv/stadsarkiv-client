@@ -10,7 +10,7 @@ from stadsarkiv_client.core import user
 log = get_log()
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["root"])
 async def users_get(request: Request):
     users = await api.users_get(request)
 
@@ -24,7 +24,7 @@ async def users_get(request: Request):
     return templates.TemplateResponse("admin/users.html", context)
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
+@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["root"])
 async def users_get_single(request: Request):
     user_ = await api.user_get(request)
     permissions = await api.users_permissions(request)
