@@ -158,7 +158,7 @@
         {% for key, value in query_params if key not in ['start', 'size'] %}
         <input type="hidden" name="{{ key }}" value="{{ value }}">
         {% endfor %}
-        <select name="size" class="select-size">
+        <select name="size" class="select-size" aria-label="Antal resulter per side">
             <option value="20" {% if size=="20" %}selected{% endif %}>{{ translate('20 per page') }}</option>
             <option value="50" {% if size=="50" %}selected{% endif %}>{{ translate('50 per page') }}</option>
             <option value="100" {% if size=="100" %}selected{% endif %}>{{ translate('100 per page') }}</option>
@@ -173,7 +173,7 @@
         {% for key, value in query_params if key not in ['sort', 'direction'] %}
         <input type="hidden" name="{{ key }}" value="{{ value }}">
         {% endfor %}
-        <select name="sort" class="select-sort">
+        <select name="sort" class="select-sort" aria-label="Sorter resultater efter">
             <option value="_score" {% if sort=="_score" %}selected{% endif %}>{{ translate('Relavance') }}</option>
             <option value="date_from" {% if sort=="date_from" %}selected{% endif %}>{{ translate('Oldest date first') }}
             </option>
@@ -248,8 +248,8 @@
         <span class="disabled">{{ translate('First page') }}</span>
         <span class="disabled">{{ translate('Previous') }}</span>
         {% endif %}
-        {% if current_page < total_pages %} <a href="{{ search_base_url }}?{{ query_str_display }}start={{ start + size }}">{{
-            translate('Next')}}</a>
+        {% if current_page < total_pages %} 
+            <a href="{{ search_base_url }}?{{ query_str_display }}start={{ start + size }}">{{ translate('Next')}} </a>
             <a href="{{ search_base_url }}?{{ query_str_display }}start={{ (total_pages - 1) * size }}">{{ translate('Last page') }}</a>
             {% else %}
             <span class="disabled">{{ translate('Next') }}</span>
