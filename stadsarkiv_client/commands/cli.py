@@ -23,6 +23,7 @@ def cli():
 @click.option("--port", default=5555, help="Server port.")
 @click.option("--workers", default=3, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
+@click.option("-c", "--config-dir", default="local", help="Specify a local config directory.", required=False)
 @click.option("--config-dir", default="local", help="Specify a local config directory.", required=False)
 def server_prod(port: int, workers: int, host: str, config_dir: str):
     _stop_server(PID_FILE)
