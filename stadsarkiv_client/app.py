@@ -26,6 +26,7 @@ if sentry_dns:
 app = Starlette(
     debug=settings["debug"],  # type: ignore
     middleware=[
+        middleware.cors_middleware,
         middleware.first_middleware,
         middleware.session_middleware,
         middleware.session_autoload_middleware,
