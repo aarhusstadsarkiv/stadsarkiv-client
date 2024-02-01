@@ -2,10 +2,6 @@
  * footer styling in 4 sections
  */
 
-:root {
-    
-}
-
 .footer {
     display: flex;
     justify-content: space-between;
@@ -150,4 +146,9 @@ footer img {
     footer img {
         display: unset;
     }
+}
+
+footer p {
+    margin: 0;
+    padding-left: 0;
 }
