@@ -5,7 +5,7 @@
   --background-body: #fff;
   --background: #efefef;
   --background-alt: aliceblue;
-  --text-main: #363636;
+  --text-main: #111;
   --text-bright: #000;
   --text-muted: #70777f;
   --links: #0076d1;
@@ -33,7 +33,7 @@
   /**
    * default.css
    */
-  --navigation-background:  #3c7b9b; /* rgb(60, 123, 155) */ /* cornflowerblue */;
+  --navigation-background:rgb(60, 123, 155) /* #3c7b9b; /* /* cornflowerblue */;
   --navigation-background-rgb: 60, 123, 155; 
   --navigation-background-hover: #ffffff22;
 
@@ -58,7 +58,7 @@
   --record-prev-next: #333;
   --record-prev-next-active-background: #e0e0e0;
   --record-prev-next-active-border: #c0c0c0;
-  --record-prev-next-disabled: #70777f;
+  --record-prev-next-disabled: #02080f;
   --record-prev-next-disabled-background: #9e9e9e;
 
   /**
@@ -70,7 +70,7 @@
   --search-link-text: black;
 
   --search-pagination-background-disabled: #cccccc;
-  --search-pagination-disabled: #666666;
+  --search-pagination-disabled: #111;
 
   /**
    * footer.css
