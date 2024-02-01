@@ -51,7 +51,7 @@
 
 .pagination-pages a {
     background-color: var(--navigation-background);
-    color: var(--text-bright);
+    color: var(--main-menu);
     text-decoration: none;
     padding: 5px 10px;
     border-radius: 5px;
@@ -59,7 +59,7 @@
 }
 
 .pagination-pages a:hover {
-    background-color: var(--background-alt);
+    background-color: rgba(var(--navigation-background-rgb), 0.75 );    
 }
 
 .pagination-pages .disabled {
@@ -93,7 +93,7 @@ summary {
     margin-bottom: .1rem;
     box-shadow: 0 .1rem 1rem -.5rem rgba(0, 0, 0, 0.1);
     border-radius: 0.2px;
-    padding: 0.05rem;
+    padding: 0.25em;
 
 }
 
