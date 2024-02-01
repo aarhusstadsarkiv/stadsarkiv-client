@@ -32,6 +32,7 @@ app = Starlette(
         middleware.session_autoload_middleware,
         middleware.last_middleware,
         middleware.no_cache_middleware,
+        middleware.gzip_middleware,
     ],
     routes=routes,
     exception_handlers=exception_handlers,  # type: ignore
