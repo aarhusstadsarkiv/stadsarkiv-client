@@ -71,12 +71,11 @@
 <div class="record-content record_content_{{ key }}">
     {{ parse_record_label(key) }}
     <div class="content">
-            {% for link in value %}
-            <p>
-                <a href="{{ link['search_query'] }}">{{ link["label"] }}</a>
-            </p>
-            {% endfor %}
-        </ul>
+        {% for link in value %}
+        <p>
+            <a href="{{ link['search_query'] }}">{{ link["label"] }}</a>
+        </p>
+        {% endfor %}
     </div>
 </div>
 {% endmacro %}
@@ -182,7 +181,7 @@
     {{ parse_record_label('download')}}
     <div class="content">
         {% if value['record_image'] %}
-        <a href="{{ value['record_image'] }}"> {{ translate('Download medium size')}}</a><br />
+        <a href="{{ value['record_image'] }}"> {{ translate('Download medium size')}}</a><br>
         {% endif %}
         {% if value['large_image'] %}
         <a href="{{ value['large_image'] }}"> {{ translate('Download large size')}}</a>
@@ -194,7 +193,7 @@
 <div class="record-content record_content_{{ key }}">
     {{ parse_record_label('pdf_representations')}}
     <div class="content">
-        <a href="{{ value['web_document_url'] }}"> {{ translate('Download PDF')}}</a><br />
+        <a href="{{ value['web_document_url'] }}"> {{ translate('Download PDF')}}</a><br>
     </div>
 </div>
 {% endif %}
@@ -315,7 +314,7 @@
 {% if data["portrait"] %}
 {% set image = data["portrait"]['value'][0] %}
 <div class="record-representation">
-    <img class="record-image" src="{{ image }}" alt="{{ translate('Image') }}" />
+    <img class="record-image" src="{{ image }}" alt="{{ translate('Image') }}">
     <div class="overlay overlay-hidden">
         <img src="{{ image }}" alt="{{ translate('Large Image') }}">
     </div>
