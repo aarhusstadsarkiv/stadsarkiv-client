@@ -159,6 +159,8 @@ def _get_sources_normalized(sources: list):
     for i in range(len(sources)):
         sources_normalized.append(_linkify_str(sources[i]))
 
+    # Check if sources
+
     return sources_normalized
 
 
@@ -188,6 +190,11 @@ def _linkify_str(text):
 
     def replace_with_link(match):
         url = match.group(1)
+
+        # alter http:// to https:// if applicable
+        if url.startswith("http://"):
+            url = url.replace("http://", "https://")
+
         decoded_url = unquote(url)
         return f'<a href="{url}">{decoded_url}</a>'
 
