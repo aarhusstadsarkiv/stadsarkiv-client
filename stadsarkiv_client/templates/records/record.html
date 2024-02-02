@@ -44,7 +44,7 @@
 {% endif %}
 
 {% if meta_data["record_type"] == 'audio' %}
-<figcaption>{{ translate('Click in order to listen to the audio.') }}</figcaption><br />
+<figcaption>{{ translate('Click in order to listen to the audio.') }}</figcaption><br>
 <audio controls="" preload="metadata">
     <source src="{{ meta_data.representations.get('record_file') }}?{{ azure_allow_media_search }}" type="audio/mpeg" />
     <p>This browser doesn't support the audio tag.</p>
