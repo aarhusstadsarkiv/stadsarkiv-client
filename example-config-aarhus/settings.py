@@ -40,6 +40,10 @@ settings: dict[str, typing.Any] = {
     # "type" is the type of menu item. It can be "top" or "dropdown". If it is not set, it will not be displayed in the menu.
     #
     "search_base_url": "/search",
+    #
+    # Allow robots
+    #
+    "robots_allow": True,
 }
 
 pages: list = [
