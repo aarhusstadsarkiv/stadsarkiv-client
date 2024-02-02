@@ -2,19 +2,19 @@
   {{ meta_title }}
 </title>
 
-<meta name="description" content="{{ meta_description }}">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {% if not get_setting('robots_allow') %}
 <meta name="robots" content="noindex, nofollow">
 {% endif %}
+<meta name="description" content="{{ meta_description }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/light.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/dolphin.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/default.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/record.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/footer.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/local.css') }}?v={{ get_setting('version') }}">
-<link rel="shortcut icon" href="{{ url_for('static', path='/assets/favicon.ico') }}?v={{ get_setting('version') }}" />
+<link rel="shortcut icon" href="{{ url_for('static', path='/assets/favicon.ico') }}?v={{ get_setting('version') }}">
 <script type="importmap">
         {
           "imports": {
