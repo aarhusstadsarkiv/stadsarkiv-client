@@ -46,7 +46,7 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
         context["meta_title"] = context["title"]
 
     if "meta_description" not in context:
-        context["meta_description"] = context["title"]
+        context["meta_description"] = context["meta_title"]
 
     # Add context that applies to a single request to _context
     _context = context_values.copy()
