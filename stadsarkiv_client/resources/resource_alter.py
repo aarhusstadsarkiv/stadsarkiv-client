@@ -21,6 +21,7 @@ def resource_alter(resource: dict):
     resource = normalize_resource.set_sources_normalized(resource)
     resource = normalize_resource.set_outer_years(resource)
     resource = normalize_resource.set_latitude_longitude(resource)
+    resource = normalize_resource.alter_portrait_hightlights(resource)
     resource = normalize_resource.get_resource_and_types(resource)
 
     # These are either string_list or link_list.

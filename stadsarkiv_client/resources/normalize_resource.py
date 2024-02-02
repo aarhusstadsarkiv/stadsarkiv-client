@@ -128,6 +128,16 @@ def set_collectors_link_list(data: dict, schema):
     return data
 
 
+def alter_portrait_hightlights(resource: dict):
+    if "portrait" in resource:
+        resource["portrait"] = [_http_to_https(val) for val in resource["portrait"]]
+
+    if "highlights" in resource:
+        resource["highlights"] = [_http_to_https(val) for val in resource["highlights"]]
+
+    return resource
+
+
 def get_resource_and_types(resource):
     """
     Get resource with types
@@ -159,8 +169,6 @@ def _get_sources_normalized(sources: list):
     for i in range(len(sources)):
         sources_normalized.append(_linkify_str(sources[i]))
 
-    # Check if sources
-
     return sources_normalized
 
 
@@ -185,15 +193,20 @@ def _get_link_list(name: str, values: list):
     return links
 
 
+def _http_to_https(url: str):
+    if url.startswith("http://"):
+        url = url.replace("http://", "https://")
+
+    return url
+
+
 def _linkify_str(text):
     pattern = r"(https?://\S+)"
 
     def replace_with_link(match):
         url = match.group(1)
 
-        # alter http:// to https:// if applicable
-        if url.startswith("http://"):
-            url = url.replace("http://", "https://")
+        url = _http_to_https(url)
 
         decoded_url = unquote(url)
         return f'<a href="{url}">{decoded_url}</a>'
