@@ -26,6 +26,11 @@ Manglende https://
 
 http://2017aarhusianere.dk/ -> redirecter til https://www.aarhusarkivet.dk/collections/213 
 
+I det hele taget bør alle links være https://
+
+Se fx : http://localhost:5555/collectors/100701
+
+http://denstoredanske.dk/Dansk_Biografisk_Leksikon/Medier/Bibliotekar/Emanuel_Sejr
 
 # Template-struktur
 
