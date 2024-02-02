@@ -30,7 +30,7 @@
 
 {% macro _parse_representations_media(meta_data) %}
 {% if meta_data["record_type"] == 'image' %}
-    <img class="record-image" src="{{meta_data['portrait']}}" alt="{{ translate('Image') }}" />
+    <img class="record-image" src="{{meta_data['portrait']}}" alt="{{ translate('Image') }}">
     <div class="overlay overlay-hidden">
         <img id="overlay-image" src="{{meta_data['representations']['large_image']}}" alt="{{ translate('Large Image') }}">
     </div>
@@ -38,7 +38,7 @@
 
 {% if meta_data["record_type"] == 'video' %}
 <video controls="" poster="{{ meta_data.representations.get('record_image') }}" preload="metadata">
-    <source src="{{ meta_data.representations.get('record_file') }}?{{ azure_allow_media_search }}" type="video/mp4" />
+    <source src="{{ meta_data.representations.get('record_file') }}?{{ azure_allow_media_search }}" type="video/mp4">
     <p>This browser doesn't support video tag.</p>
 </video>
 {% endif %}
@@ -46,14 +46,14 @@
 {% if meta_data["record_type"] == 'audio' %}
 <figcaption>{{ translate('Click in order to listen to the audio.') }}</figcaption><br>
 <audio controls="" preload="metadata">
-    <source src="{{ meta_data.representations.get('record_file') }}?{{ azure_allow_media_search }}" type="audio/mpeg" />
+    <source src="{{ meta_data.representations.get('record_file') }}?{{ azure_allow_media_search }}" type="audio/mpeg">
     <p>This browser doesn't support the audio tag.</p>
 </audio>
 {% endif %}
 
 {% if meta_data["record_type"] == 'web_document' %}
-<a href="{{meta_data.representations.get('web_document_url')}}">
-    <img src="{{meta_data.portrait}}" alt="{{ section }}" />
+<a href="{{meta_data.representations.get('web_document_url')}}" aria-label="{{ translate('Click on the image to open the PDF document.') }}">
+    <img src="{{meta_data.portrait}}" alt="{{ section }}">
 </a>
 <p>
     {{ translate('Click on the image to open the PDF document.') }}
