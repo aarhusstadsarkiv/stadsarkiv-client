@@ -34,15 +34,14 @@ main_menu_sections =
         {# iterate main_menu_sections #}
         {% for section in main_menu_sections %}
             <h3>{{ section.title }}</h3>
-                    {% for page in section.pages %}
-                        <a href="{{ url_for(page.name) }}">{{ page.title }}</a>
-                    {% endfor %}
-
+                {% for page in section.pages %}
+                    <a href="{{ url_for(page.name) }}">{{ page.title }}</a>
+                {% endfor %}
         {% endfor %}
     </div>
     
     <div class="menu-dropdown">
-        <span id ="menu-hamburger" href="#" class="icon">
+        <span id ="menu-hamburger" class="icon">
             <span class="closed">
                 {{ get_icon('menu')|safe }}
             </span>
