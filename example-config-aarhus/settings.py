@@ -3,10 +3,7 @@ import typing
 
 settings: dict[str, typing.Any] = {
     "language": "da",
-    "log_handlers": ["stream"],  # [ "stream", "file"]
-    #
-    # cookie settings
-    #
+    "log_handlers": ["stream", "rotating_file"],  # [ "stream", "file"]
     "cookie": {
         "name": "session",
         "lifetime": 3600,  # seconds
@@ -16,10 +13,6 @@ settings: dict[str, typing.Any] = {
     },
     # "api_base_url": "http://localhost:8000/v1",
     "api_base_url": "https://dev.openaws.dk/v1",
-    #
-    # Main menu containing built-in endpoints, but you may remove these and generate your own menu.
-    # You may also add other "menus", e.g. "footer_items" or something similar.
-    #
     "main_menu": [
         {"name": "auth_login_get", "title": "Log ind", "type": "dropdown"},
         {"name": "auth_logout_get", "title": "Log ud", "type": "dropdown"},
@@ -30,22 +23,18 @@ settings: dict[str, typing.Any] = {
         {"name": "entities_get_list", "title": "Entiteter", "type": "dropdown"},
         {"name": "proxies_search_get", "title": "Søg", "type": "top"},
     ],
-    #
-    # Custom pages
-    #
-    # "name" is the route name.
-    # "title" is the page title.
-    # "template" if the page you will use. It is also the content of the page.
-    # "url" is the path to the page
-    # "type" is the type of menu item. It can be "top" or "dropdown". If it is not set, it will not be displayed in the menu.
-    #
     "search_base_url": "/search",
-    #
-    # Allow robots
-    #
     "robots_allow": True,
 }
 
+# Custom pages
+#
+# "name" is the route name.
+# "title" is the page title.
+# "template" if the page you will use. It is also the content of the page.
+# "url" is the path to the page
+# "type" is the type of menu item. It can be "top" or "dropdown". If it is not set, it will not be displayed in the menu.
+#
 pages: list = [
     {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
     {"name": "page_images", "title": "Hjemmesider med billeder fra Aarhus", "template": "pages/images.html", "url": "/images"},
