@@ -53,11 +53,12 @@ settings: dict[str, typing.Any] = {
         {"name": "entities_get_list", "title": "Entiteter", "type": "dropdown"},
         {"name": "proxies_search_get", "title": "Søg", "type": "top"},
     ],
-    "pages": [
-        {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
-    ],
     "main_menu_sections": [],
     "search_base_url": "/search",
     "facets_enabled": ["content_types", "subjects", "availability", "usability", "dates"],
     "cors_allow_origins": ["https://client.openaws.dk", "https://dev.openaws.dk"],
 }
+
+pages: list = [{"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"}]
+
+settings["pages"] = pages
