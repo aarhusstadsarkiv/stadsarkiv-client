@@ -1,6 +1,4 @@
 {% import "macros/common_macros.html" as common_macros %}
-
-
 {#
 
 main_menu_sections =
@@ -29,7 +27,6 @@ main_menu_sections =
             {% endif %}
         {% endfor %}
 
-        {# iterate main_menu_sections #}
         {% for section in main_menu_sections %}
             <h3>{{ section.title }}</h3>
                 {% for page in section.pages %}
