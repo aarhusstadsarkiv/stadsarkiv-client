@@ -1,5 +1,6 @@
 {% import "macros/common_macros.html" as common_macros %}
 
+
 {#
 
 main_menu_sections =
@@ -23,11 +24,8 @@ main_menu_sections =
     
     <div class="main-menu">
         {% for menu_item in main_menu_user %}
-            {% if menu_item.name == 'proxies_search_get' and query_str_display != '' %}
-            {% else %}
-                {% if menu_item.type == 'dropdown' %}
-                <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
-                {% endif %}
+            {% if menu_item.type == 'dropdown' %}
+            <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
             {% endif %}
         {% endfor %}
 
