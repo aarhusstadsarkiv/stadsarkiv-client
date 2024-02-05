@@ -2,6 +2,7 @@
   /** 
    * System colors
    */
+
   --background-body: #fff;
   --background: #efefef;
   --background-alt: aliceblue;
@@ -33,8 +34,8 @@
   /**
    * default.css
    */
-  --navigation-background:rgb(60, 123, 155) /* #3c7b9b; /* /* cornflowerblue */;
-  --navigation-background-rgb: 60, 123, 155; 
+  --navigation-background: rgb(60, 123, 155);
+  --navigation-background-rgb: 60, 123, 155;
   --navigation-background-hover: #ffffff22;
 
   --flash-color: white;
