@@ -1,6 +1,18 @@
-{% extends "empty.html" %}
+{% extends "base.html" %}
+
+
 
 {% block content %}
+
+{# Info about the request object #}
+{#
+{% for key, value in request.items() %}
+<pre>
+{{ key }}: {{ value }}
+</pre>    
+{% endfor %}
+#}
+
 <style>
     figure.zoom {
       background-position: 50% 50%;
