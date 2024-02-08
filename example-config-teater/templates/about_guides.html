@@ -17,12 +17,12 @@
         {% include "includes/navigation.html" %}
     </nav>
 
-    <main>
-        <div class="container container-max-width">
-            {% include "includes/main_title.html" %}
-            {% block content %}
-            {% endblock content %}
-        </div>
+    <main class="container">
+
+        {% include "includes/main_title.html" %}
+        {% block content %}
+        {% endblock content %}
+
     </main>
 
     <footer class="footer">
@@ -30,13 +30,6 @@
     </footer>
 
     {% include "includes/flash.html" %}
-
-    <script type="module">
-
-        import { showTOC } from '/static/js/table-of-contents.js';
-        showTOC('article', 'toc');
-
-    </script>
 
 </body>
 
