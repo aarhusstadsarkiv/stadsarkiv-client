@@ -48,11 +48,16 @@ settings: dict[str, typing.Any] = {
 #
 pages: list = [
     {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
+]
+
+pages_guides: list = [
     {"name": "how_to_search", "title": "Søgevejledning", "template": "pages/how-to-search.html", "url": "/how-to-search"},
     {"name": "about_aarhus_teater", "title": "Om Aarhus Teaters Arkiv", "template": "pages/about.html", "url": "/about"},
     {"name": "practical_information", "title": "Praktisk Information", "template": "pages/info.html", "url": "/info"},
 ]
 
-settings["pages"] = pages
+settings["pages"] = pages + pages_guides
 
-settings["main_menu_sections"] = []
+settings["main_menu_sections"] = [
+    {"name": "guides", "title": "Vejledninger", "pages": pages_guides},
+]
