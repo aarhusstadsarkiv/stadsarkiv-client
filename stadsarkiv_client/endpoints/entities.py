@@ -25,7 +25,7 @@ async def create(request: Request):
         schema = await api.schema_get(request)
         context_values = {"title": "Opret entitet", "schema": schema}
         context = await get_context(request, context_values=context_values)
-        return templates.TemplateResponse("entities/entities_create.html", context)
+        return templates.TemplateResponse(request, "entities/entities_create.html", context)
 
     except Exception as e:
         log.exception(e)
@@ -56,7 +56,7 @@ async def update(request: Request):
 
     context = await get_context(request, context_values=context_values)
 
-    return templates.TemplateResponse("entities/entities_update.html", context)
+    return templates.TemplateResponse(request, "entities/entities_update.html", context)
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
@@ -89,7 +89,7 @@ async def delete(request: Request):
         uuid = request.path_params["uuid"]
         context_values = {"title": "Slet entitet", "uuid": uuid, "entity": entity}
         context = await get_context(request, context_values=context_values)
-        return templates.TemplateResponse("entities/entities_delete_soft.html", context)
+        return templates.TemplateResponse(request, "entities/entities_delete_soft.html", context)
 
     except Exception as e:
         log.exception(e)
@@ -124,7 +124,7 @@ async def get_list(request: Request):
 
         context_values = {"title": "Entiteter", "schemas": schemas, "entities": entities}
         context = await get_context(request, context_values=context_values)
-        return templates.TemplateResponse("entities/entities_list.html", context)
+        return templates.TemplateResponse(request, "entities/entities_list.html", context)
 
     except Exception as e:
         log.exception(e)
@@ -169,7 +169,7 @@ async def get_single(request: Request):
         "schema": schema,
     }
     context = await get_context(request, context_values=context_values)
-    return templates.TemplateResponse("entities/entities_single.html", context)
+    return templates.TemplateResponse(request, "entities/entities_single.html", context)
 
 
 async def get_single_json(request: Request):

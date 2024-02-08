@@ -25,7 +25,7 @@ async def get_list(request: Request):
         schemas = await api.schemas(request)
         context_values = {"title": translate("Schemas"), "schemas": schemas}
         context = await get_context(request, context_values=context_values)
-        return templates.TemplateResponse("schemas/schemas.html", context)
+        return templates.TemplateResponse(request, "schemas/schemas.html", context)
     except Exception as e:
         raise HTTPException(status_code=404, detail=str(e))
 

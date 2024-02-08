@@ -118,7 +118,7 @@ async def get(request: Request):
     }
 
     context = await get_context(request, context_variables)
-    return templates.TemplateResponse("records/record.html", context)
+    return templates.TemplateResponse(request, "records/record.html", context)
 
 
 async def get_json(request: Request):

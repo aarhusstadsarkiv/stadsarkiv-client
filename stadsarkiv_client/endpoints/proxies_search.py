@@ -206,7 +206,7 @@ async def get(request: Request):
     DAYS_365 = 60 * 60 * 24 * 365 * 1
 
     context = await get_context(request, context_values=context_values)
-    response = templates.TemplateResponse("search/search.html", context)
+    response = templates.TemplateResponse(request, "search/search.html", context)
 
     search_cookie_value = {
         # Use site specific query params set before search

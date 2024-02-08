@@ -62,25 +62,25 @@ async def get(request: Request):
         raise HTTPException(status_code=404, detail="Resource not found")
 
     if resource_type == "collections":
-        return templates.TemplateResponse("resources/collections.html", context)
+        return templates.TemplateResponse(request, "resources/collections.html", context)
 
     elif resource_type == "people":
-        return templates.TemplateResponse("resources/people.html", context)
+        return templates.TemplateResponse(request, "resources/people.html", context)
 
     elif resource_type == "locations":
-        return templates.TemplateResponse("resources/locations.html", context)
+        return templates.TemplateResponse(request, "resources/locations.html", context)
 
     elif resource_type == "creators":
-        return templates.TemplateResponse("resources/creators.html", context)
+        return templates.TemplateResponse(request, "resources/creators.html", context)
 
     elif resource_type == "events":
-        return templates.TemplateResponse("resources/events.html", context)
+        return templates.TemplateResponse(request, "resources/events.html", context)
 
     elif resource_type == "organisations":
-        return templates.TemplateResponse("resources/organisations.html", context)
+        return templates.TemplateResponse(request, "resources/organisations.html", context)
 
     elif resource_type == "collectors":
-        return templates.TemplateResponse("resources/collectors.html", context)
+        return templates.TemplateResponse(request, "resources/collectors.html", context)
 
     raise HTTPException(status_code=404, detail="Resource type not found")
 

@@ -21,7 +21,7 @@ async def users_get(request: Request):
 
     context_values = {"title": "Brugere", "users": users}
     context = await get_context(request, context_values=context_values)
-    return templates.TemplateResponse("admin/users.html", context)
+    return templates.TemplateResponse(request, "admin/users.html", context)
 
 
 @is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["root"])
@@ -37,4 +37,4 @@ async def users_get_single(request: Request):
     context_values = {"title": "Bruger", "user": user_, "permissions": permissions}
     context = await get_context(request, context_values=context_values)
 
-    return templates.TemplateResponse("admin/user_update.html", context)
+    return templates.TemplateResponse(request, "admin/user_update.html", context)

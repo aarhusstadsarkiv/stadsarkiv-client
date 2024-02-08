@@ -30,7 +30,7 @@ async def test_default(request: Request):
     context_values = {"title": "Base test page", "random_images": random_images}
     context = await get_context(request, context_values=context_values)
 
-    return templates.TemplateResponse("testing/test.html", context)
+    return templates.TemplateResponse(request, "testing/test.html", context)
 
 
 async def test_page(request: Request):
@@ -39,9 +39,9 @@ async def test_page(request: Request):
     context_values = {"title": f"Test page: {page}"}
     context = await get_context(request, context_values=context_values)
 
-    return templates.TemplateResponse(f"testing/{page}.html", context)
+    return templates.TemplateResponse(request, f"testing/{page}.html", context)
 
 
 async def test_post(request: Request):
     context = await get_context(request)
-    return templates.TemplateResponse("testing/thanks.html", context)
+    return templates.TemplateResponse(request, "testing/thanks.html", context)

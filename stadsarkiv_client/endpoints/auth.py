@@ -27,7 +27,7 @@ async def login_get(request: Request):
         flash.set_message(request, translate("You are already logged in."), type="error", remove=True)
         return RedirectResponse(url="/", status_code=302)
 
-    return templates.TemplateResponse("auth/login.html", context)
+    return templates.TemplateResponse(request, "auth/login.html", context)
 
 
 async def login_post(request: Request):
@@ -50,7 +50,7 @@ async def login_post(request: Request):
 async def logout_get(request: Request):
     context_values = {"title": translate("Logout")}
     context = await get_context(request, context_values=context_values)
-    return templates.TemplateResponse("auth/logout.html", context)
+    return templates.TemplateResponse(request, "auth/logout.html", context)
 
 
 async def logout_post(request: Request):
@@ -70,7 +70,7 @@ async def logout_post(request: Request):
 async def register_get(request: Request):
     context_values = {"title": translate("Register new user")}
     context = await get_context(request, context_values=context_values)
-    return templates.TemplateResponse("auth/register.html", context)
+    return templates.TemplateResponse(request, "auth/register.html", context)
 
 
 async def register_post(request: Request):
@@ -132,7 +132,7 @@ async def me_get(request: Request):
         context_values = {"title": translate("Profile"), "me": me, "permission_translated": permission_translated}
         context = await get_context(request, context_values=context_values)
 
-        return templates.TemplateResponse("auth/me.html", context)
+        return templates.TemplateResponse(request, "auth/me.html", context)
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
     except Exception as e:
@@ -148,7 +148,7 @@ async def orders(request: Request):
         context_values = {"title": translate("Your orders"), "me": me, "orders": auth_data.api_orders}
         context = await get_context(request, context_values=context_values)
 
-        return templates.TemplateResponse("auth/orders.html", context)
+        return templates.TemplateResponse(request, "auth/orders.html", context)
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
     except Exception as e:
@@ -164,7 +164,7 @@ async def bookmarks(request: Request):
         context_values = {"title": translate("Your bookmarks"), "me": me, "bookmarks": auth_data.api_booksmarks}
         context = await get_context(request, context_values=context_values)
 
-        return templates.TemplateResponse("auth/bookmarks.html", context)
+        return templates.TemplateResponse(request, "auth/bookmarks.html", context)
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
     except Exception as e:
@@ -180,7 +180,7 @@ async def search_results(request: Request):
         context_values = {"title": translate("Your search results"), "me": me, "search_results": auth_data.api_search_results}
         context = await get_context(request, context_values=context_values)
 
-        return templates.TemplateResponse("auth/search_results.html", context)
+        return templates.TemplateResponse(request, "auth/search_results.html", context)
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
     except Exception as e:
@@ -192,7 +192,7 @@ async def search_results(request: Request):
 async def forgot_password_get(request: Request):
     context_values = {"title": translate("Forgot your password")}
     context = await get_context(request, context_values=context_values)
-    return templates.TemplateResponse("auth/forgot_password.html", context)
+    return templates.TemplateResponse(request, "auth/forgot_password.html", context)
 
 
 async def forgot_password_post(request: Request):
@@ -216,7 +216,7 @@ async def reset_password_get(request: Request):
     token = request.path_params["token"]
     context_values = {"title": translate("Enter new password"), "token": token}
     context = await get_context(request, context_values=context_values)
-    return templates.TemplateResponse("auth/reset_password.html", context)
+    return templates.TemplateResponse(request, "auth/reset_password.html", context)
 
 
 async def reset_password_post(request: Request):
