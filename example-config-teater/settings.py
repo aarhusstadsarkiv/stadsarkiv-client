@@ -46,7 +46,12 @@ settings: dict[str, typing.Any] = {
 # "url" is the path to the page
 # "type" is the type of menu item. It can be "top" or "dropdown". If it is not set, it will not be displayed in the menu.
 #
-pages: list = [{"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"}]
+pages: list = [
+    {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
+    {"name": "how_to_search", "title": "Søgevejledning", "template": "pages/how-to-search.html", "url": "/how-to-search"},
+    {"name": "about_aarhus_teater", "title": "Om Aarhus Teaters Arkiv", "template": "pages/about.html", "url": "/about"},
+    {"name": "practical_information", "title": "Praktisk Information", "template": "pages/info.html", "url": "/info"},
+]
 
 settings["pages"] = pages
 
