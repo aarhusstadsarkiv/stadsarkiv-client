@@ -93,7 +93,7 @@ def _markdown(text: str, safe: bool = True):
 
 loader = FileSystemLoader(template_dirs)
 templates = Jinja2Templates(
-    directory="",
+    directory=template_dirs,
     context_processors=[_get_app_context],
     loader=loader,
     trim_blocks=True,
