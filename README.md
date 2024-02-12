@@ -40,7 +40,7 @@ With some config dir `example-config`:
 
 Run black, mypy and flake8:
 
-     stadsarkiv-client source-fix
+    stadsarkiv-client source-fix
 
 ### Run tests
 
