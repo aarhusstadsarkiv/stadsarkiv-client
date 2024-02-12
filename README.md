@@ -50,6 +50,8 @@ Run black, mypy and flake8:
 
     pipx install git+https://github.com/diversen/bump-py-version@v0.0.8
 
+Bump version:
+
     bump-py-version v0.0.0 # or any other version
 
 ## Install using pipx
