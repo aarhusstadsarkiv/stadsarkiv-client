@@ -64,7 +64,7 @@ Install latest version:
 <!-- LATEST-VERSION-PIPX -->
 	pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.87
 
-Usage is the same as above.
+Usage is the same as for development.
 
 ### Configuration
 
