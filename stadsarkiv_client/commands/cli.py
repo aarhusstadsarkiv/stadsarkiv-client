@@ -111,18 +111,25 @@ def run_tests(config_dir, tests_path_pattern):
         print(f"No tests found matching pattern {tests_path_pattern}")
 
 
-@cli.command(help="Run all tests.")
-def dev_test():
-    run_tests(None, "tests/config-default/*.py")
-    run_tests("example-config-teater", "tests/config-teater/*.py")
-    run_tests("example-config-aarhus", "tests/config-aarhus/*.py")
+def _is_source_version():
+    if os.path.exists("../../.git"):
+        return True
+    return False
 
 
-@cli.command(help="Fix code according to black, flake8, mypy.")
-def dev_fix():
-    os.system("black . --config pyproject.toml")
-    os.system("mypy  --config-file pyproject.toml .")
-    os.system("flake8 . --config .flake8")
+if not _is_source_version():
+    # Only show dev commands if source version
+    @cli.command(help="Run all tests.")
+    def source_test():
+        run_tests(None, "tests/config-default/*.py")
+        run_tests("example-config-teater", "tests/config-teater/*.py")
+        run_tests("example-config-aarhus", "tests/config-aarhus/*.py")
+
+    @cli.command(help="Fix code according to black, flake8, mypy.")
+    def source_fix():
+        os.system("black . --config pyproject.toml")
+        os.system("mypy  --config-file pyproject.toml .")
+        os.system("flake8 . --config .flake8")
 
 
 def _save_pid_to_file(pid: int):
