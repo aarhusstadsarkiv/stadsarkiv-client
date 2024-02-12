@@ -40,7 +40,7 @@ With some config dir `example-config`:
 
 Run black, mypy and flake8:
 
-    ./bin/fix.py
+    ./bin/fix.py # python .\bin\fix.py on windows
 
 ### Tag a release
 
