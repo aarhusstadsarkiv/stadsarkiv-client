@@ -2,13 +2,13 @@
 File containing CLI commands for the Stadsarkiv Client.
 """
 
-
 import click
 import subprocess
 import os
 import signal
 import secrets
 import uvicorn
+import glob
 
 
 PID_FILE = "gunicorn_process.pid"
@@ -56,7 +56,7 @@ Default is 'local'.
 """
 
 
-@cli.command(help="Start the production docker gunicorn server when using docker.")
+@cli.command(help="Start the gunicorn server on docker.")
 @click.option("--port", default=5555, help="Server port.")
 @click.option("--workers", default=3, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
@@ -95,6 +95,34 @@ def server_stop():
 @click.option("--length", default=32, help="Length of secret.")
 def server_secret(length):
     print(secrets.token_hex(length))
+
+
+def run_tests(config_dir, tests_path_pattern):
+    if config_dir:
+        os.environ["CONFIG_DIR"] = config_dir
+
+    # get test files
+    test_files = glob.glob(tests_path_pattern)
+    if test_files:
+        for test_file in test_files:
+            print(f"Running tests in {test_file}")
+            subprocess.run(["python", "-m", "unittest", test_file], check=True)
+    else:
+        print(f"No tests found matching pattern {tests_path_pattern}")
+
+
+@cli.command(help="Run all tests.")
+def dev_test():
+    run_tests(None, "tests/config-default/*.py")
+    run_tests("example-config-teater", "tests/config-teater/*.py")
+    run_tests("example-config-aarhus", "tests/config-aarhus/*.py")
+
+
+@cli.command(help="Fix code according to black, flake8, mypy.")
+def dev_fix():
+    os.system("black . --config pyproject.toml")
+    os.system("mypy  --config-file pyproject.toml .")
+    os.system("flake8 . --config .flake8")
 
 
 def _save_pid_to_file(pid: int):
