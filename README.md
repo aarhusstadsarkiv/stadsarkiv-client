@@ -40,7 +40,11 @@ With some config dir `example-config`:
 
 Run black, mypy and flake8:
 
-    ./bin/fix.py # python .\bin\fix.py on windows
+     stadsarkiv-client source-fix
+
+### Run tests
+
+    stadsarkiv-client source-test
 
 ### Tag a release
 
@@ -58,13 +62,11 @@ Install latest version:
 <!-- LATEST-VERSION-PIPX -->
 	pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.87
 
-Usage: 
+Usage is the same as above.
 
-    same as above
+### Configuration
 
-### Modifying the required module
-
-You may override the default module using the following files and dirs:
+You may alter the default configuration using the following files and dirs:
 
     .env
     settings.py
@@ -80,7 +82,7 @@ All the above files and dirs are optional. You may see examples of all the above
 
 These files and dirs should be placed in the directory where you run the module from - otherwise they will be ignored.
 
-If the `--config` option is not used, the module will look for the above files and dirs in `local`.
+If the `--config` option is not used, the module will look for the above files and dirs in the folder `local`.
 
 ## Run on server
 
