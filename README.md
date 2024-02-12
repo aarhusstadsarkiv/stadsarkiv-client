@@ -84,7 +84,8 @@ All the above files and dirs are optional. You may see examples of all the above
 
 These files and dirs should be placed in the directory where you run the module from - otherwise they will be ignored.
 
-If the `--config` option is not used, the module will look for the above files and dirs in the folder `local`.
+If the `--config` option is not used, the module will look for the above files and dirs in the folder `local` if the
+folder exists. If the `local` does not exist, the module will use built-in defaults.
 
 ## Run on server
 
