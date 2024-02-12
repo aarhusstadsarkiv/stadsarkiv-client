@@ -112,12 +112,12 @@ def run_tests(config_dir, tests_path_pattern):
 
 
 def _is_source_version():
-    if os.path.exists("../../.git"):
+    if os.path.exists(".git"):
         return True
     return False
 
 
-if not _is_source_version():
+if _is_source_version():
     # Only show dev commands if source version
     @cli.command(help="Run all tests.")
     def source_test():
