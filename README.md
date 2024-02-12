@@ -1,7 +1,6 @@
 # stadsarkiv-client
 
-
-## Install for development
+## development
 
     git clone git@github.com:aarhusstadsarkiv/stadsarkiv-client.git
     cd stadsarkiv-client
@@ -10,34 +9,46 @@
 
 Install requirements:
 
-    # with pip
+Using pip
+
     pip install -r requirements.txt
 
-    # You may also need to install danish language packs
+You may also need to install danish language packs
+
     sudo apt-get install language-pack-da
     sudo locale-gen da_DK.UTF-8
 
-
 ### Run for development
+
+Install stadsarkiv-client and make the code "editable":
+
+    pip install -e .
+
+Show all commands: 
+
+    stadsarkiv-client
 
 Run dev server:
 
-    ./bin/cli.sh server-dev
+    stadsarkiv-client server-dev
 
+With some config dir `example-config`: 
 
-Show all commands:
-
-    ./bin/cli.sh
+    stadsarkiv-client server-dev -c example-config-aarhus
 
 ### Fix code
 
 Run black, mypy and flake8:
 
-    ./bin/fix.sh
+    ./bin/fix.py
 
-## Install as requirement
+### Tag a release
 
-### Using pipx
+    pipx install git+https://github.com/diversen/bump-py-version@v0.0.8
+
+    bump-py-version v0.0.0 # or any other version
+
+## Install using pipx
 
 Install main branch: 
     
@@ -47,55 +58,9 @@ Install latest version:
 <!-- LATEST-VERSION-PIPX -->
 	pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.87
 
-Run dev server:
+Usage: 
 
-Default:
-
-    stadsarkiv-client server-dev
-
-With some config dir `example-config`: 
-
-    stadsarkiv-client server-dev -c example-config-aarhus
-
-### Using virtualenv:
-
-    virtualenv venv
-
-    source venv/bin/activate
-
-Install latest version (or upgrade):
-<!-- LATEST-VERSION-PIP -->
-	pip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.1.87
-
-Uninstall:
-
-    pip uninstall -y stadsarkiv-client
-
-### Run required module
-
-Generate a `./bin/cli.sh` file as shortcut to all module commands:
-
-```bash
-#!/bin/sh
-./venv/bin/python -m stadsarkiv_client $@
-```
-    chmod +x bin/cli.sh
-
-For development:
-
-    ./bin/cli.sh server-dev
-
-Start or restart (stop and start) for production (gunicorn):
-
-    ./bin/cli.sh server-prod
-
-Stop server:
-
-    ./bin/cli.sh server-stop
-
-Generate a session secret:
-
-    ./bin/cli.sh server-secret
+    same as above
 
 ### Modifying the required module
 
@@ -115,13 +80,8 @@ All the above files and dirs are optional. You may see examples of all the above
 
 These files and dirs should be placed in the directory where you run the module from - otherwise they will be ignored.
 
+If the `--config` option is not used, the module will look for the above files and dirs in `local`.
+
 ## Run on server
 
 [See README.server.md](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/docs/README.server.md)
-
-## Tag a release
-
-    pipx install git+https://github.com/diversen/bump-py-version@v0.0.8
-
-    bump-py-version new-version
-
