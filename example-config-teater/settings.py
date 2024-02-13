@@ -47,7 +47,7 @@ settings: dict[str, typing.Any] = {
 # "type" is the type of menu item. It can be "top" or "dropdown". If it is not set, it will not be displayed in the menu.
 #
 pages: list = [
-    {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
+    {"name": "home", "title": "Forside", "template": "pages/home.html", "url": "/"},
 ]
 
 pages_guides: list = [
