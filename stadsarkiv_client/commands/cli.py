@@ -112,7 +112,8 @@ def run_tests(config_dir, tests_path_pattern):
 
 
 def _is_source_version():
-    if os.path.exists("setup.py"):
+    if os.path.exists("stadsarkiv_client/.is_source"):
+        print("Running source version.")
         return True
 
 

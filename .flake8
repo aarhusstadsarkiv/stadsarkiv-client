@@ -1,6 +1,6 @@
 [flake8]
 exclude = .git, __pycache__, .mypy_cache, .pytest_cache, venv, .github, \
     stadsarkiv_client/templates,stadsarkiv_client/locales, generate_client, tests, \
-    example-config-aarhus, example-config-simple, example-config-teater
+    example-config-aarhus, example-config-simple, example-config-teater, build
 ignore = E203, W503, E402
 max-line-length = 140
