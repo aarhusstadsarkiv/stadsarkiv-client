@@ -9,6 +9,7 @@ import signal
 import secrets
 import uvicorn
 import glob
+import sys
 
 
 PID_FILE = "gunicorn_process.pid"
@@ -111,13 +112,17 @@ def run_tests(config_dir, tests_path_pattern):
         print(f"No tests found matching pattern {tests_path_pattern}")
 
 
-def _is_source_version():
-    if os.path.exists("stadsarkiv_client/.is_source"):
-        print("Running source version.")
+def _allow_dev_commands():
+    """
+    If running in a virtual environment and if the .is_source file exists,
+    then allow dev commands
+    """
+
+    if sys.prefix != sys.base_prefix and os.path.exists("stadsarkiv_client/.is_source"):
         return True
 
 
-if _is_source_version():
+if _allow_dev_commands():
     # Only show dev commands if source version
     @cli.command(help="Run all tests.")
     def source_test():
