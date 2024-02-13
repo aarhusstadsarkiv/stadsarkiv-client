@@ -112,10 +112,8 @@ def run_tests(config_dir, tests_path_pattern):
 
 
 def _is_source_version():
-    """Check if we are in a source version. And not running from a package."""
     if os.path.exists("setup.py"):
-        print("setup.py exists")
-        return True
+        print("Exists")
 
 
 if _is_source_version():
