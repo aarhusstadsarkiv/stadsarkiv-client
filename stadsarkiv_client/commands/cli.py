@@ -113,7 +113,7 @@ def run_tests(config_dir, tests_path_pattern):
 
 def _is_source_version():
     if os.path.exists("setup.py"):
-        print("Exists")
+        return True
 
 
 if _is_source_version():
