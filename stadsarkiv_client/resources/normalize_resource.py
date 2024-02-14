@@ -128,6 +128,25 @@ def set_collectors_link_list(data: dict, schema):
     return data
 
 
+def set_persons_link_list(data: dict, schema):
+    """
+    Set person_link field on dict.
+    """
+    if schema == "person":
+        data["persons_links"] = [
+            {
+                "search_query": f"{_search_base_url}?people={data['id_real']}",
+                "label": translate("See all records about this person"),
+            },
+            {
+                "search_query": f"{_search_base_url}?creators={data['id_real']}",
+                "label": translate("See all records this person has created"),
+            },
+        ]
+
+    return data
+
+
 def alter_portrait_hightlights(resource: dict):
     if "portrait" in resource:
         resource["portrait"] = [_http_to_https(val) for val in resource["portrait"]]
