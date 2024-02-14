@@ -1,0 +1,33 @@
+<div class="footer-content" id="item-1">
+</div>
+
+<div class="footer-content" id="item-2">
+    <ul class="contact-info">
+        <li class="heading">AARHUS TEATER ARKIV</li>
+        <li><a href="https://www.openstreetmap.org/way/51265304">Teatergaden 1, 8000 Aarhus C</a></li>
+        <li><a href="tel:+4589332359">+45 89 33 23 59</a></li>
+        <li><a href="mailto:arkivar@aarhusteater.dk">arkivar@aarhusteater.dk</a></li>
+        <li><a href="https://www.aarhusteater.dk/om-teatret/om-huset/">Hjemmeside</a></li>
+        <!-- <li>
+            &nbsp;
+        </li> -->
+
+        {% if get_setting('show_version') %}
+        {% set version = get_setting('version') %}
+            <!-- <li>
+                &nbsp;
+            </li>
+            <li class="version">{{ version }}</li> -->
+        {% endif %}
+    </ul>
+</div>
+
+<div class="footer-content" id="item-3">
+    <div class="footer-logo-right">
+        <a href="#"><img src="/static/assets/ugle_hvid_png24.png" alt="Right image link"></a>
+    </div>
+</div>
+
+<div class="footer-content" id="item-4">
+    
+</div>

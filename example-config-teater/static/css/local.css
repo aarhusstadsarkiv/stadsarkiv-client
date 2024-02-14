@@ -6,3 +6,26 @@
     display: none;
 }
 
+.footer img {
+    max-height: unset;
+}
+
+.footer {
+    align-items: center;
+}
+
+.footer a {
+    text-decoration: none;
+}
+
+.footer-logo-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#item-3 img {
+    max-width: 100%; /* Ensures the image is not larger than its container */
+    height: auto; /* Maintains the aspect ratio of the image */
+}
+
