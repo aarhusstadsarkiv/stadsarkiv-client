@@ -22,7 +22,6 @@ if sentry_dns:
     enable_sentry(sentry_dns)
     log.debug("Logging to sentry enabled")
 
-
 app = Starlette(
     debug=settings["debug"],  # type: ignore
     middleware=[
