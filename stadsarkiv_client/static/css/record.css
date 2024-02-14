@@ -102,6 +102,7 @@ h3.record-header {
 .record-content>.content>p {
     margin: 0;
     padding-bottom: 5px;
+    word-break: break-word;
 }
 
 .record-content>.content>p.spacing {
