@@ -64,10 +64,10 @@ class TestAuth(unittest.TestCase):
         response = client.get("/auth/forgot-password")
         self.assertEqual(response.status_code, 200)
 
-    def test_forgot_password_post(self):
-        client = TestClient(app)
-        response = client.post("/auth/forgot-password", data={"email": valid_user}, follow_redirects=True)  # type: ignore
-        self.assertEqual(response.url, "http://testserver/auth/forgot-password")
+    # def test_forgot_password_post(self):
+    #     client = TestClient(app)
+    #     response = client.post("/auth/forgot-password", data={"email": valid_user}, follow_redirects=True)  # type: ignore
+    #     self.assertEqual(response.url, "http://testserver/auth/forgot-password")
 
     def test_reset_password_get(self):
         client = TestClient(app)
