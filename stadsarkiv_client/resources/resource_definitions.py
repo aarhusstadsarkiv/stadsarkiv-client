@@ -59,6 +59,7 @@ resource_definitions = {
     "ext_data_number_of_performances": {"type": "string"},
     "ext_data_translater": {"type": "string"},
     "date_from_premier": {"type": "string"},
+    "persons_links": {"type": "link_list"},
     # collectors
     "portrait": {"type": "image"},
     "date_created": {"type": "string"},

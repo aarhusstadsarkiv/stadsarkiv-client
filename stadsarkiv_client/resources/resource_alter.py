@@ -18,6 +18,7 @@ def resource_alter(resource: dict):
     resource = normalize_resource.set_created_decommissioned(resource)
     resource = normalize_resource.set_collectors_link_list(resource, schema)
     resource = normalize_resource.set_creators_link_list(resource, schema)
+    resource = normalize_resource.set_persons_link_list(resource, schema)
     resource = normalize_resource.set_sources_normalized(resource)
     resource = normalize_resource.set_outer_years(resource)
     resource = normalize_resource.set_latitude_longitude(resource)
