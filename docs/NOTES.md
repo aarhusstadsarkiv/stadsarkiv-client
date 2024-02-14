@@ -1,4 +1,13 @@
+# Ønsker 
+
+"Kreativ ophav skal sættes på." (Backend)
+
+Zoom på billeder.
+Større format på billeder (backend)
+
+
 # Rettelser: 
+
 
 Sejrs samling har en masse 'records' som har Emnekategori > Natur > Åer og bække
 Måske er der en mening med det, men jeg forstår den ikke. 
