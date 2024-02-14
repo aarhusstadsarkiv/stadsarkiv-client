@@ -10,6 +10,7 @@ import secrets
 import uvicorn
 import glob
 import sys
+from stadsarkiv_client import __version__
 
 
 PID_FILE = "gunicorn_process.pid"
@@ -96,6 +97,11 @@ def server_stop():
 @click.option("--length", default=32, help="Length of secret.")
 def server_secret(length):
     print(secrets.token_hex(length))
+
+
+@cli.command(help="Show version.")
+def version():
+    print(__version__)
 
 
 def run_tests(config_dir, tests_path_pattern):
