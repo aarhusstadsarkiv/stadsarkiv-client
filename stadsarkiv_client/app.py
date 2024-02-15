@@ -17,6 +17,9 @@ log = get_log()
 log.debug("Environment: " + str(os.getenv("ENVIRONMENT")))
 log.debug(json.dumps(settings, sort_keys=True, indent=4, ensure_ascii=False))
 
+# Log absolute path to this file (in case we use the pipx version)
+log.debug("App loaded from the file " + os.path.abspath(__file__))
+
 sentry_dns = os.getenv("SENTRY_DNS", "")
 if sentry_dns:
     enable_sentry(sentry_dns)
