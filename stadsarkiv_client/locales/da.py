@@ -10,6 +10,7 @@ da = {
     "Change your password": "Ændr dit password",
     "Click in order to listen to the audio.": "Klik for at lytte til lydfilen.",
     "Click on the image to open the PDF document.": "Klik på billedet for at hente pdf-dokumentet.",
+    "Close": "Close",
     "Create": "Create",
     "Create Schema": "Opret skema",
     "Create entity": "Create entity",

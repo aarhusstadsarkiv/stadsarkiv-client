@@ -12,6 +12,7 @@ en = {
     "Click in order to listen to the audio": "Click in order to listen to the audio",
     "Click in order to listen to the audio.": "Click in order to listen to the audio.",
     "Click on the image to open the PDF document.": "Click on the image to open the PDF document.",
+    "Close": "Close",
     "Create": "Create",
     "Create Schema": "Create Schema",
     "Create a resource": "Create a resource",
