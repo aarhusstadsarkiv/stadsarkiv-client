@@ -25,3 +25,11 @@
     left: 0;
     right: 0;
 }
+
+.overlay-close {
+    position: absolute;
+    top: 20px;
+    right: 50px; 
+    z-index: 110;
+
+}

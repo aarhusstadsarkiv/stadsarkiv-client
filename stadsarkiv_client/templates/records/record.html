@@ -33,6 +33,8 @@
     <img class="record-image" src="{{meta_data['portrait']}}" alt="{{ translate('Image') }}">
     <div class="overlay overlay-hidden">
         <img id="overlay-image" src="{{meta_data['representations']['large_image']}}" alt="{{ translate('Large Image') }}">
+
+        <button class="overlay-close" aria-label="{{ translate('Close') }}">{{ translate('Close')}}</button>
     </div>
 {% endif %}
 
