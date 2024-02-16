@@ -31,7 +31,9 @@
           }
         }
 </script>
+{% if not no_js %}
 <script type="module">
     import { Flash } from "/static/js/flash.js";
     import { } from "/static/js/main-events.js";
 </script>
+{% endif %}
