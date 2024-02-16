@@ -89,6 +89,7 @@ en = {
     "Remember me": "Remember me",
     "Remove facet": "Remove facet",
     "Repeat Password": "Repeat Password",
+    "Reset": "Reset",
     "Reset password": "Reset password",
     "Reset search": "Reset search",
     "Reset your password": "Reset your password",

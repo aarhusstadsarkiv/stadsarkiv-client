@@ -79,6 +79,7 @@ da = {
     "Remember me": "Husk login på denne computer",
     "Remove facet": "Fjern",
     "Repeat Password": "Gentag password",
+    "Reset": "Reset",
     "Reset password": "Nulstil password",
     "Reset search": "Nulstil søgning",
     "Reset your password": "Nulstil dit password",
