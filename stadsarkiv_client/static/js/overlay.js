@@ -1,104 +1,86 @@
-/**
- * activateOverlay enhances elements matching a selector to display an overlay with zoom and drag capabilities.
- */
 function activateOverlay(selector) {
-    // Track the currently opened overlay
-    let currentOverlay = null;
 
-    // Setup for each matching element
-    document.querySelectorAll(selector).forEach(element => {
+    // Check if the selector is valid
+    const allOverlays = document.querySelectorAll(selector);
+    if (allOverlays.length === 0) {
+        return;
+    }
+
+    // Initialize all overlays
+    allOverlays.forEach(element => {
         const overlay = element.querySelector('.overlay');
-        const image = overlay.querySelector('img');
-
-        if (overlay && image) {
-            setupOverlay(overlay, image);
-            setupImageClick(element, overlay);
-        }
+        setupSingleOverlay(overlay);
     });
 
-    // Handle the browser's back action to close the overlay
-    window.addEventListener('popstate', event => {
-        if (currentOverlay && currentOverlay.style.display === 'block') {
-            closeOverlay(currentOverlay);
-        }
+    window.addEventListener('hashchange', checkHash);
+    checkHash();
+}
+
+function setupSingleOverlay(overlay) {
+    const image = overlay.querySelector('img');
+    const overlayClose = overlay.querySelector('.overlay-close');
+    const overlayReset = overlay.querySelector('.overlay-reset');
+
+    let scale = 1;
+    let isDragging = false;
+    let startX;
+    let startY;
+    let posX = 0;
+    let posY = 0;
+
+    overlayClose.addEventListener('click', () => {
+        history.back();
     });
 
-    function setupOverlay(overlay, image) {
-        setupZoomAndDrag(image);
-        overlay.addEventListener('click', () => {
-            if (overlay.style.display === 'block') {
-                history.back(); // Triggers popstate event
-            }
-        });
-    }
+    overlayReset.addEventListener('click', () => {
+        scale = 1;
+        posX = 0;
+        posY = 0;
+        image.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+    });
 
-    function setupImageClick(element, overlay) {
-        element.addEventListener('click', () => {
-            overlay.style.display = 'block';
-            currentOverlay = overlay;
-            history.pushState({ overlayOpened: true }, null, null);
-        });
-    }
+    image.addEventListener('wheel', e => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        scale = Math.max(.125, Math.min(scale + delta, 4));
+        image.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+    });
 
-    function closeOverlay(overlay) {
-        overlay.style.display = 'none';
-        currentOverlay = null;
-    }
+    image.addEventListener('mousedown', e => {
+        isDragging = true;
+        startX = e.clientX - posX;
+        startY = e.clientY - posY;
+        image.style.cursor = 'grabbing';
+    });
 
-    function setupZoomAndDrag(image) {
-        let scale = 1, isDragging = false;
-        let startX, startY, posX = 0, posY = 0;
-
-        image.addEventListener('wheel', e => {
-            e.preventDefault();
-            adjustScale(e.deltaY, image);
-        });
-
-        image.addEventListener('mousedown', e => {
-            startDragging(e, image);
-        });
-
-        document.addEventListener('mousemove', e => {
-            if (isDragging) dragImage(e, image);
-        });
-
-        document.addEventListener('mouseup', () => {
-            if (isDragging) stopDragging(image);
-        });
-
-        image.addEventListener('click', e => {
-            e.stopPropagation(); // Prevent triggering click on the underlying elements
-        });
-
-        function adjustScale(deltaY, image) {
-            const delta = deltaY > 0 ? -0.1 : 0.1;
-            scale = Math.max(.125, Math.min(scale + delta, 4));
-            updateTransform(image);
-        }
-
-        function startDragging(e, image) {
-            isDragging = true;
-            startX = e.clientX - posX;
-            startY = e.clientY - posY;
-            image.style.cursor = 'grabbing';
-        }
-
-        function dragImage(e, image) {
+    document.addEventListener('mousemove', e => {
+        if (isDragging) {
             e.preventDefault();
             posX = e.clientX - startX;
             posY = e.clientY - startY;
-            updateTransform(image);
+            image.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
         }
+    });
 
-        function stopDragging(image) {
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
             isDragging = false;
             image.style.cursor = 'grab';
         }
+    });
+}
 
-        function updateTransform(image) {
-            image.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+function checkHash() {
+    document.querySelectorAll('[data-overlay-id]').forEach(element => {
+        const overlay = element.querySelector('.overlay');
+        if (overlay) {
+            if (window.location.hash === '#' + element.dataset.overlayId) {
+                overlay.style.display = 'block';
+            } else {
+                overlay.style.display = 'none';
+            }
         }
-    }
+    });
 }
 
 export { activateOverlay };
