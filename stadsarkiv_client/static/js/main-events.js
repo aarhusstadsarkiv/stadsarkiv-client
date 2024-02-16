@@ -26,4 +26,13 @@ document.addEventListener('click', function (event) {
 });
 
 
+// on pageshow event, if the menu is open, close it
+window.addEventListener('pageshow', function (e) {
+    if (e.persisted) {
+        menu.style.display = "none";
+        openMenu.style.display = "none";
+        closedMenu.style.display = "block";
+    }
+});
+
 export { }
