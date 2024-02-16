@@ -118,8 +118,15 @@ for template_dir in template_dirs:
                 ICONS[icon_name] = icon_as_str
 
 
-def get_icon(icon: str):
-    return ICONS.get(icon)
+def get_icon(icon: str, size: int = 24):
+    svg = ICONS.get(icon)
+    if not svg:
+        raise ValueError(f"Icon {icon} not found")
+    if size != 24:
+        # replace the width and height in the svg
+        svg = svg.replace('width="24"', f'width="{size}"')
+        svg = svg.replace('height="24"', f'height="{size}"')
+    return svg
 
 
 def has_permission(permission: str, permissions: list):
