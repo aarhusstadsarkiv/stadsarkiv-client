@@ -319,7 +319,7 @@
     </a>
     <div data-overlay-id="overlay-image-1">
         <div class="overlay overlay-hidden">
-            <img id="overlay-image" src="{{image}}" alt="{{ translate('Large Image') }}">
+            <img id="overlay-image" loading="lazy" src="{{image}}" alt="{{ translate('Large Image') }}">
             <div class="overlay-actions">
                 <div class="overlay-close" href="#" aria-label="{{ translate('Close') }}">{{ get_icon('close', '40')|safe}}</div>
                 <div class="overlay-reset" href="#" aria-label="{{ translate('Reset') }}">{{ get_icon('reset', '40')|safe}}</div>
