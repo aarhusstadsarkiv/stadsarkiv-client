@@ -86,6 +86,16 @@ function expandTree() {
     }
 }
 
+document.querySelectorAll('.facets-clickable').forEach(facet => {
+    facet.addEventListener('click', function (e) {
+        // The tree needs time to be updated before saving the state
+        setTimeout(() => {
+            saveTree();
+            console.log("Done saving tree")
+        }, 100);        
+    });
+});
+
 /**
  * Check if a string is a valid date
  */
@@ -156,7 +166,6 @@ function onSearchDateEvent(dateFormClass) {
             urlParams.set('date_to', `${toYear}${toMonth}${toDay}`);
         }
 
-        saveTree();
         window.location.href = url.split('?')[0] + '?' + urlParams.toString();
     });
 }
@@ -200,35 +209,15 @@ function searchEvents() {
 
         expandTree();
 
-        // 'beforeunload' will not work when e.g. searching for /search to /search?date_from=20200101
-        // Instead we check all links
-        const searchLinks = document.querySelectorAll('.search-link, a');
-        searchLinks.forEach(searchLink => {
-            searchLink.addEventListener('click', function (event) {
-                event.preventDefault();
-                saveTree();
-
-                // Check if _blank is set
-                const target = searchLink.getAttribute('target');
-                if (target == '_blank') {
-                    window.open(searchLink.href, '_blank');
-                } else {
-                    window.location.href = searchLink.href;
-                }
-            })
-        })
-
         // Also add event listener to search form with id 'search-date'
         const searchElem = document.getElementById('q');
         searchElem.addEventListener('submit', function (event) {
             event.preventDefault();
-            saveTree();
             searchElem.submit();
         })
 
         const selectSize = document.querySelector('.select-size');
         selectSize.addEventListener('change', function () {
-            saveTree();
             document.getElementById('size').submit();
         });
 
@@ -251,8 +240,6 @@ function searchEvents() {
                 input.value = 'asc';
                 document.getElementById('sort').appendChild(input);
             }
-
-            saveTree();
             document.getElementById('sort').submit();
         });
 
