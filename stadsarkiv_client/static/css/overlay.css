@@ -23,7 +23,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    cursor: pointer;
+    cursor: auto;
 }
 
 .overlay-actions {
@@ -31,5 +31,16 @@
     flex-direction: column;
     position: absolute;
     top: 20px;
-    right: 50px;
+    right: 40px;
+}
+
+.overlay-actions>div {
+    margin: 2px;
+    padding: 2px;
+}
+
+.overlay-actions svg {
+    width: 40;
+    height: 40;
+    cursor: pointer;
 }

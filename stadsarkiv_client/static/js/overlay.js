@@ -40,9 +40,8 @@ function setupSingleOverlay(overlay) {
     });
 
     image.addEventListener('wheel', e => {
-        e.preventDefault();
-        const delta = e.deltaY > 0 ? -0.1 : 0.1;
-        scale = Math.max(.125, Math.min(scale + delta, 4));
+        const dalta = e.deltaY > 0 ? -0.1 : 0.1;
+        scale = Math.max(.125, Math.min(scale + dalta, 4));
         image.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
     });
 
@@ -50,7 +49,7 @@ function setupSingleOverlay(overlay) {
         isDragging = true;
         startX = e.clientX - posX;
         startY = e.clientY - posY;
-        image.style.cursor = 'grabbing';
+
     });
 
     document.addEventListener('mousemove', e => {
@@ -65,7 +64,6 @@ function setupSingleOverlay(overlay) {
     document.addEventListener('mouseup', () => {
         if (isDragging) {
             isDragging = false;
-            image.style.cursor = 'grab';
         }
     });
 }
