@@ -26,13 +26,12 @@ function saveTree() {
     const containerLeftIsDisplayed = window.getComputedStyle(document.querySelector('.container-left')).display != 'none';
     if (containerLeftIsDisplayed) {
         saveState('.container-left', 'treeState');
-        console.log("saved state left")
     }
 
     const containerMainFacetsIsDisplayed = window.getComputedStyle(document.querySelector('.container-main-facets')).display != 'none';
     if (containerMainFacetsIsDisplayed) {
         saveState('.container-main-facets', 'treeState');
-        console.log("saved state main")
+
     }
 }
 
@@ -76,13 +75,11 @@ function expandTree() {
     const containerLeftIsDisplayed = window.getComputedStyle(document.querySelector('.container-left')).display != 'none';
     if (containerLeftIsDisplayed) {
         expandTreeFromState('.container-left', 'treeState');
-        console.log("expanded state left")
     }
 
     const containerMainFacetsIsDisplayed = window.getComputedStyle(document.querySelector('.container-main-facets')).display != 'none';
     if (containerMainFacetsIsDisplayed) {
         expandTreeFromState('.container-main-facets', 'treeState');
-        console.log("expanded state main")
     }
 }
 
@@ -91,7 +88,6 @@ document.querySelectorAll('.facets-clickable').forEach(facet => {
         // The tree needs time to be updated before saving the state
         setTimeout(() => {
             saveTree();
-            console.log("Done saving tree")
         }, 100);        
     });
 });
