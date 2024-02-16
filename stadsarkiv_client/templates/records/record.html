@@ -37,8 +37,8 @@
         <div class="overlay overlay-hidden">
             <img id="overlay-image" src="{{meta_data['representations']['large_image']}}" alt="{{ translate('Large Image') }}">
             <div class="overlay-actions">
-                <button class="overlay-close" aria-label="{{ translate('Close') }}">{{ translate('Close')}}</button>
-                <button class="overlay-reset" aria-label="{{ translate('Reset') }}">{{ translate('Reset')}}</button>
+                <div class="overlay-close" href="#" aria-label="{{ translate('Close') }}">{{ get_icon('close', '40')|safe}}</div>
+                <div class="overlay-reset" href="#" aria-label="{{ translate('Reset') }}">{{ get_icon('reset', '40')|safe}}</div>
             </div>
         </div>
     </div>    
