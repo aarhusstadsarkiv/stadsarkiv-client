@@ -20,6 +20,8 @@ function setupSingleOverlay(overlay) {
     const image = overlay.querySelector('img');
     const overlayClose = overlay.querySelector('.overlay-close');
     const overlayReset = overlay.querySelector('.overlay-reset');
+    const maxScale = 7;
+    const scaleStep = 0.15;
 
     let scale = 1;
     let isDragging = false;
@@ -27,6 +29,7 @@ function setupSingleOverlay(overlay) {
     let startY;
     let posX = 0;
     let posY = 0;
+
 
     overlayClose.addEventListener('click', () => {
         history.back();
@@ -40,8 +43,8 @@ function setupSingleOverlay(overlay) {
     });
 
     image.addEventListener('wheel', e => {
-        const dalta = e.deltaY > 0 ? -0.1 : 0.1;
-        scale = Math.max(.125, Math.min(scale + dalta, 4));
+        const dalta = e.deltaY > 0 ? -scaleStep : scaleStep;
+        scale = Math.max(.125, Math.min(scale + dalta, maxScale));
         image.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
     });
 
