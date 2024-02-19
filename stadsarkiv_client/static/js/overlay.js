@@ -69,6 +69,7 @@ function setupSingleOverlay(overlay) {
     });
 
     image.addEventListener('mousedown', e => {
+        e.preventDefault()
         isDragging = true;
         startX = e.clientX - posX;
         startY = e.clientY - posY;
@@ -83,7 +84,8 @@ function setupSingleOverlay(overlay) {
         }
     });
 
-    document.addEventListener('mouseup', () => {
+    document.addEventListener('mouseup', (e) => {
+        e.preventDefault();
         if (isDragging) {
             isDragging = false;
         }
