@@ -1,3 +1,24 @@
+/* 
+
+<div class="overlays">
+    <!-- a link to open the overlay --> 
+    <a href="#overlay-image-1"><img src="/image.jpg"></a>
+    
+    <!-- the overlay. Notice the data-overlay-id is the same as the link to open the overlay except for the '#' -->
+    <div data-overlay-id="overlay-image-1">
+        <div class="overlay overlay-hidden">
+            <img id="overlay-image" src=/image-large.jpg">
+            <!-- close and zoom reset buttons -->
+            <div class="overlay-actions">
+                <div class="overlay-close"">Close</div>
+                <div class="overlay-reset">Reset</div>
+            </div>
+        </div>
+    </div>
+</div>  
+
+*/
+
 function activateOverlay(selector) {
 
     // Check if the selector is valid
@@ -30,7 +51,6 @@ function setupSingleOverlay(overlay) {
     let posX = 0;
     let posY = 0;
 
-
     overlayClose.addEventListener('click', () => {
         history.back();
     });
@@ -44,7 +64,7 @@ function setupSingleOverlay(overlay) {
 
     image.addEventListener('wheel', e => {
         const dalta = e.deltaY > 0 ? -scaleStep : scaleStep;
-        scale = Math.max(.125, Math.min(scale + dalta, maxScale));
+        scale = Math.max(1, Math.min(scale + dalta, maxScale));
         image.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
     });
 
@@ -52,7 +72,6 @@ function setupSingleOverlay(overlay) {
         isDragging = true;
         startX = e.clientX - posX;
         startY = e.clientY - posY;
-
     });
 
     document.addEventListener('mousemove', e => {
@@ -71,15 +90,16 @@ function setupSingleOverlay(overlay) {
     });
 }
 
+
+
 function checkHash() {
-    document.querySelectorAll('[data-overlay-id]').forEach(element => {
+    const overlayIds = document.querySelectorAll('[data-overlay-id]')
+    overlayIds.forEach(element => {
         const overlay = element.querySelector('.overlay');
-        if (overlay) {
-            if (window.location.hash === '#' + element.dataset.overlayId) {
-                overlay.style.display = 'block';
-            } else {
-                overlay.style.display = 'none';
-            }
+        if (window.location.hash === '#' + element.dataset.overlayId) {
+            overlay.style.display = 'block';
+        } else {
+            overlay.style.display = 'none';
         }
     });
 }
