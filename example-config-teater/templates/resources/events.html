@@ -1,4 +1,5 @@
 {% import "macros/common_macros.html" as common_macros %}
+{% import "macros/relations_macros.html" as relations %}
 
 {% extends "base.html" %}
 
@@ -15,6 +16,8 @@
 {% block content %}
 
 {% include "includes/main_title.html" %}
+
+
 
 <p>
     <a href="/search?events={{ meta['id_real'] }}">Vis alle resultater i samlingen</a>
@@ -33,7 +36,7 @@
 {% set keys = ["sources_normalized"] %}
 {{ common_macros.parse_block_common('Kilder', keys, resource) }}
 
-{{ common_macros.parse_relations('people', resource) }}
+{{ relations.parse_relations('people', resource) }}
 
 {% set meta_links = [
     {"url": "/events/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
@@ -41,5 +44,6 @@
 ] %}
 
 {{ common_macros.parse_meta_block(meta_links) }}
+
 
 {% endblock content %}

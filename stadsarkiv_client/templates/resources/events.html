@@ -1,4 +1,5 @@
 {% import "macros/common_macros.html" as common_macros %}
+{% import "macros/relations_macros.html" as relations_macros %}
 
 {% extends "base.html" %}
 
@@ -24,7 +25,7 @@
 {% set keys = ["ext_data"] %}
 {{ common_macros.parse_block_common('Udvidet data', keys, resource) }}
 
-{{ common_macros.parse_relations('people', resource) }}
+{{ relations_macros.parse_relations('people', resource) }}
 
 {% set meta_links = [
     {"url": "/events/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
