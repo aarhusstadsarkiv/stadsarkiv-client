@@ -51,11 +51,13 @@ function setupSingleOverlay(overlay) {
     let posX = 0;
     let posY = 0;
 
-    overlayClose.addEventListener('click', () => {
+    overlayClose.addEventListener('click', (e) => {
+        e.preventDefault();
         history.back();
     });
 
-    overlayReset.addEventListener('click', () => {
+    overlayReset.addEventListener('click', (e) => {
+        e.preventDefault();
         scale = 1;
         posX = 0;
         posY = 0;
@@ -63,6 +65,7 @@ function setupSingleOverlay(overlay) {
     });
 
     image.addEventListener('wheel', e => {
+        e.preventDefault();
         const dalta = e.deltaY > 0 ? -scaleStep : scaleStep;
         scale = Math.max(1, Math.min(scale + dalta, maxScale));
         image.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
