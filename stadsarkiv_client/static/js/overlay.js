@@ -21,6 +21,10 @@
 
 function activateOverlay(selector) {
 
+    if (!selector) {
+        selector = '.overlays';
+    }
+
     // Check if the selector is valid
     const allOverlays = document.querySelectorAll(selector);
     if (allOverlays.length === 0) {
