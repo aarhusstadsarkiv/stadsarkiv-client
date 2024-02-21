@@ -13,6 +13,8 @@ log = get_log()
 def resource_alter(resource: dict):
     schema = resource["schema"]
 
+    resource_orginal = resource.copy()
+
     relations = resource.get("relations")
 
     resource = normalize_resource.set_created_decommissioned(resource)
@@ -36,4 +38,5 @@ def resource_alter(resource: dict):
             resource[elem] = normalize_resource.get_string_or_link_list(elem, resource[elem])
 
     resource["relations"] = relations
+    resource["resource_orginal"] = resource_orginal
     return resource
