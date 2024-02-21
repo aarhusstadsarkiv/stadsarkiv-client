@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Zoom</title>
+</head>
+
+<style>
+    .app {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 1rem;
+    }
+
+    .image-container {
+        width: 90vw;
+        height: 90vh;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .image-wrapper {
+
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        overflow: hidden;
+        background-color: grey;
+
+    }
+
+    .image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
+
+<body>
+    <div class="app">
+        <div class="image-container">
+            <div class="image-wrapper">
+                <img src="https://images.unsplash.com/photo-1519052537078-e6302a4968d4?ixlib=rb-4.0.3&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&amp;auto=format&amp;fit=crop&amp;w=4990&amp;q=80">
+            </div>
+        </div>
+    </div>
+</body>
+<script type="module">
+    // Better version:
+    // https://codesandbox.io/p/sandbox/intelligent-zeh-lgtttg
+
+    const imageWrapper = document.querySelector('.image-wrapper');
+    const img = imageWrapper.querySelector('img');
+    
+    // Initial scale factor
+    let scale = 1;
+    // The center of the image at the beginning
+    const origin = { x: 0, y: 0 };
+    
+    imageWrapper.addEventListener('wheel', (e) => {
+        // Prevent the default scroll behavior
+        e.preventDefault();
+    
+        // Determine the direction of the scroll (zoom in or out)
+        const delta = Math.sign(e.deltaY) * -0.05;
+    
+        // Update the scale factor based on scroll direction
+        scale += delta;
+        scale = Math.min(Math.max(1, scale), 4); // Limit scale between 0.125x and 4x
+    
+        // Calculate the position of the cursor relative to the image
+        const rect = img.getBoundingClientRect();
+        const mouseX = (e.clientX - rect.left) / rect.width;
+        const mouseY = (e.clientY - rect.top) / rect.height;
+    
+        // Adjust the origin of transformation to the current mouse position
+        const newOriginX = mouseX * 100;
+        const newOriginY = mouseY * 100;
+        origin.x = newOriginX;
+        origin.y = newOriginY;
+    
+        // Apply the transformation
+        img.style.transformOrigin = `${origin.x}% ${origin.y}%`;
+        img.style.transform = `scale(${scale})`;
+    });
+    
+    
+
+</script>
+
+</html>
+<!-- 
+
+    In the above the zoom works ok. But when you have made a zoom-in and move the mouse to another
+    position on the image and begin zooming, the image may jump away from the position where you planned to zoom.
+
+    Possible problems: 
+
+    1) It is like it is not taken into account that the image has been zoomed in. And you now have moved the cursor. 
+    2) The origin of the transformation is not updated when the image is zooming in on a new position.
+    3) The image can grow outside the container.
+-->
