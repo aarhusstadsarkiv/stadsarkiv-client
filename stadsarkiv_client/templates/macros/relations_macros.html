@@ -1,0 +1,44 @@
+{% macro parse_record_label (label) %}
+<div class="label">
+    {{ translate(label, translation_add_key = false) }}
+</div>
+{% endmacro %}
+
+{% macro parse_string (key, value) %}
+<div class="record-content">
+    {{ parse_record_label(key)}}
+    <div class="content">
+        <p>
+            {{ value }}
+        </p>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_relation_section(type, title, data) %}
+<div class="record-section">
+    <div class="record-main">
+        <h3 class="record-header">{{ title }}</h3>
+        {% for item in data %}
+        {% set label = item['rel_label'] %}
+        {% set value = item['display_label'] %}
+        {% set href = "/" + type + "/" + item['id'] %}
+        {% set link = "<a href='%s'>%s</a>" | format(href, value) %}
+
+        {{ parse_string(label, link|safe) }}
+        {% endfor %}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro parse_relations(type, resource) %}
+
+{% if resource.relations %}
+    {% set relations = resource.relations %}
+    {% for section in relations %}
+        {% if section['data'] %}
+        {{ parse_relation_section(type, section['label'],section["data"]) }}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+{% endmacro %}
