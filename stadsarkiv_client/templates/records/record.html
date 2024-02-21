@@ -30,22 +30,23 @@
 
 {% macro _parse_representations_media(meta_data) %}
 {% if meta_data["record_type"] == 'image' %}
-<a href="#overlay-image-1">
-    <img class="record-image" src="{{meta_data['portrait']}}" alt="{{ translate('Image') }}">
-</a>
-
-<div data-overlay-id="overlay-image-1">
-    <div class="overlay overlay-hidden">
-        <div class="overlay-wrapper">
-            <img id="overlay-image" loading="lazy" src="{{meta_data['representations']['large_image']}}"
-                alt="{{ translate('Large Image') }}">
+<div class="overlays">
+    <a href="#overlay-image-1">
+        <img class="record-image" src="{{meta_data['portrait']}}" alt="{{ translate('Image') }}">
+    </a>
+    <div data-overlay-id="overlay-image-1">
+        <div class="overlay overlay-hidden">
+            <div class="overlay-wrapper">
+                <img id="overlay-image" loading="lazy" src="{{meta_data['representations']['large_image']}}"
+                    alt="{{ translate('Large Image') }}">
+            </div>
+            <div class="overlay-actions">
+                <div class="overlay-close" aria-label="{{ translate('Close') }}">{{ get_icon('close', '40')|safe}}</div>
+                <div class="overlay-reset" aria-label="{{ translate('Reset') }}">{{ get_icon('reset', '40')|safe}}</div>
+            </div>
         </div>
-        <div class="overlay-actions">
-            <div class="overlay-close" aria-label="{{ translate('Close') }}">{{ get_icon('close', '40')|safe}}</div>
-            <div class="overlay-reset" aria-label="{{ translate('Reset') }}">{{ get_icon('reset', '40')|safe}}</div>
-        </div>
-    </div>
-</div>      
+    </div>  
+</div>
 {% endif %}
 
 {% if meta_data["record_type"] == 'video' %}
@@ -127,7 +128,7 @@
 <script type="module">
     import {  } from "/static/js/record.js";
     import { activateOverlay } from "/static/js/overlay.js";
-    activateOverlay('.record-representation');
+    activateOverlay();
 </script>
 {% endblock head %}
 
