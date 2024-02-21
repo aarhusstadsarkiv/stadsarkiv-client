@@ -90,8 +90,6 @@ function setupSingleOverlay(overlay) {
     });
 }
 
-
-
 function checkHash() {
     const overlayIds = document.querySelectorAll('[data-overlay-id]')
     overlayIds.forEach(element => {
