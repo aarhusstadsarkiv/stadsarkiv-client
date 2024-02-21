@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
 <script type="module">
     import { activateOverlay } from "/static/js/overlay.js";
-    activateOverlay('.record-representation');
+    activateOverlay();
 </script>
 {% endblock head %}
 
@@ -17,15 +17,13 @@
 
 {% include "includes/main_title.html" %}
 
-
-
 <p>
     <a href="/search?events={{ meta['id_real'] }}">Vis alle resultater i samlingen</a>
 </p>
 
 {% set keys = [
-    "id", "ext_data_season", "ext_data_stagename", "date_from_premier", "ext_data_playwright", "ext_data_original_id", 
-    "ext_data_production", "event_type", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area"] %}
+"id", "ext_data_season", "ext_data_stagename", "date_from_premier", "ext_data_playwright", "ext_data_original_id",
+"ext_data_production", "event_type", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area"] %}
 
 {% set options = {'icon': schema, 'icon_label': 'Lokation'} %}
 {{ common_macros.parse_image_block('Stamdata', keys, resource, options) }}
@@ -39,11 +37,178 @@
 {{ relations.parse_relations('people', resource) }}
 
 {% set meta_links = [
-    {"url": "/events/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
-    {"url": "/events/" + meta['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
+{"url": "/events/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
+{"url": "/events/" + meta['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
 ] %}
 
 {{ common_macros.parse_meta_block(meta_links) }}
 
+<div class="app"></div>
+
+<style>
+    .search-suggestions {
+        position: absolute;
+        background-color: whitesmoke;
+        display: none;
+        padding: 5px;
+        width: 295px;
+        max-height: calc(100vh - 150px);
+        overflow-y: auto;
+    }
+    
+    
+    .search-suggestion-item,
+    .search-suggestion-info {
+        flex: 2;
+        padding: 5px;
+        border-bottom: 1px solid #ccc;
+    }
+    
+    .search-suggestion-focus {
+        background-color: white;
+    }
+</style>
+
+<script>
+    // import { Requests } from "/static/js/requests.js";
+    // import { Flash } from "/static/js/flash.js";
+    // import { showErrorMessages, getEditor } from "/static/js/jsoneditor-utils.js";
+    // import { setLocalStorage, getLocalStorage, removeLocalStorage } from '/static/js/local-storage-ttl.js'
+    // import { html, render } from '/static/js/lit-core.min.js';
+</script>
+
+<script type="module">
+    import { html, render } from 'https://cdn.jsdelivr.net/npm/lit-html/lit-html.js';
+    import { AutoComplete } from '/static/js/auto-complete.js';
+
+    // Assuming 'relations' variable is already populated with the JSON data
+    const resource = {{ to_json(resource) | safe }};
+    const resource_original = resource.resource_orginal
+    const relations = resource.relations;
+
+    console.log(resource_original)
+
+    let state = {}
+
+    // Render function for autocomplete
+    const renderFunction = (data) => {
+
+        // Info if no results
+        if (data.length == 0) return `<div class="search-suggestion-info">Ingen forslag. Tryk på søgeknappen for at fritekstsøge i stedet.</div>`;
+
+        // Help text and suggestions
+        const suggestionHelp = `<div class="search-suggestion-info">Vælg et forslag nedenfor <strong>eller</strong> tryk på søgeknappen for at fritekstsøge.</div>`;
+        
+        // Suggestions
+        const suggestions = data.map(function(item) {
+            console.log(item)
+            return `
+                <div class="search-suggestion-item" data-url="/${item.domain}/${item.id}" data-text="">
+                    <div>
+                        <a href="/${item.domain}/${item.id}">${item.display}</a>
+                    </div>
+                    <div>${item.sub_display}</div>
+                </div>`;
+        }).join('');
+
+        return `${suggestionHelp} ${suggestions}`;
+    };
+
+
+
+    function autoCompleteInit() {
+        const autocompleteElem = document.querySelector('.typeahead');
+        console.log(autocompleteElem)
+
+        
+        const suggestionsElem = document.querySelector('.search-suggestions');
+    
+        const options = {
+            'autocompleteElem': autocompleteElem,
+            'suggestionsElem': suggestionsElem,
+            'renderFunction': renderFunction,
+            'endpoint': `/auto_complete?q=`,
+            'minInputLength': 2,
+            'suggestionFocusClass': 'search-suggestion-focus',
+        }
+        new AutoComplete(options);
+        
+    }
+
+
+    const renderForm = function(section, index) {
+
+        let relStart = '';
+        let relEnd = '';
+        if (resource_original.domain === 'events' && resource_original.date_from) {
+            relStart = html`<input type="hidden" name="rel_start" value="${resource_original.date_from}">`;
+        }
+        if (resource_original.domain === 'events' && resource_original.date_to) {
+            relEnd = html`<input type="hidden" name="rel_end" value="${resource_original.date_to}">`;
+        }
+
+        return html`
+      <form id="relation-form" class="clearfix" action="/relations" method="POST">
+        <input type="hidden" name="subject_domain" value="${resource_original.domain}">
+        <input type="hidden" name="subject_id" value="${resource_original.id}">
+        <input type="hidden" name="object_domain">
+        <input type="hidden" name="object_id">
+        ${relStart}
+        ${relEnd}
+        <label for="rel_label" class="float_left">Relationslabel</label>
+        <input type="text" name="rel_label" class="float_left">
+        <label for="object_label" class="float_left">Relationsobjekt</label>
+        <input class="typeahead" name="object_label" type="text" autocomplete="off" placeholder="Find entitet">
+        <button type="submit">Opret relation</button>
+        <div class="search-suggestions"></div>
+    `;
+    }
+
+    // Render a single section of the relations array
+    const renderRelationSection = (section, index) => html`
+      <div class="record-section" style="background-color: lightcyan">
+        <div class="record-main">
+          <h3 class="record-header">${section.label}<span data-id="${index}" @click=${showForm}> + relation </span> </h3>
+            ${state.formShow == index ? renderForm(section, index) : ''}
+            ${section.data.map(item => html`
+                <div class="record-content">
+                <div class="label">${item.rel_label}</div>
+                <div class="content">
+                    <p>
+                    <a href="/people/${item.id}">${item.display_label}</a>
+                    </p>
+                </div>
+                </div>
+            `)}
+        </div>
+      </div>
+    `;
+
+    const showForm = {
+        handleEvent(e) {
+            let id = e.target.dataset.id;
+            state.formShow = id
+            console.log('showForm', id)
+            renderRelationsMain();
+            autoCompleteInit();
+        }
+    }
+
+    // Iterate over the relations and render each section    
+    const renderRelationSections = (relations) => html`
+        ${relations.map((section, index) => renderRelationSection(section, index))}
+    `;
+
+    // Render the app
+    function renderRelationsMain() {
+        render(renderRelationSections(relations), document.querySelector('.app'));
+    }
+
+    renderRelationsMain();
+    // autoCompleteInit();
+</script>
+
+
+<!-- {{ pre(resource.relations)|safe}} -->
 
 {% endblock content %}
