@@ -7,7 +7,7 @@ resource_definitions = {
     "date_from": {"type": "string"},
     "date_to": {"type": "string"},
     "description": {"type": "paragraphs"},
-    "domain": {"type": "string"},
+    # "domain": {"type": "string"},
     "local_area": {"type": "string"},
     "gender": {"type": "string"},
     "firstnames": {"type": "string_list_as_string"},
