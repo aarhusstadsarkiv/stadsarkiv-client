@@ -42,3 +42,17 @@ async def get(request: Request):
     except Exception as e:
         log.exception(e)
         return JSONResponse({"error": True, "message": "Internal Server Error"})
+
+
+async def delete(request: Request):
+    try:
+        await api.proxies_delete_relations(request)
+        return JSONResponse({"error": False, "message": "Relation er slettet"})
+
+    except OpenAwsException as e:
+        log.exception(e)
+        return JSONResponse({"error": True, "message": e.message})
+
+    except Exception as e:
+        log.exception(e)
+        return JSONResponse({"error": True, "message": "Internal Server Error"})
