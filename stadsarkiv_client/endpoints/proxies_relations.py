@@ -7,7 +7,6 @@ log = get_log()
 
 
 async def post(request: Request):
-
     # Get form data
     data = await request.form()
     log.debug(f"Data: {data}")

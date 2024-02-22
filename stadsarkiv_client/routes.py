@@ -10,6 +10,7 @@ from stadsarkiv_client.endpoints import (
     proxies_records,
     proxies_search,
     proxies_resources,
+    proxies_relations,
     test,
     pages,
     schemas,
@@ -85,6 +86,7 @@ routes = [
     Route("/records/{record_id:str}", endpoint=proxies_records.get, name="proxies_records_get"),
     Route("/records/{record_id:str}/json/{type:str}", endpoint=proxies_records.get_json, name="proxies_records_get_json"),
     Route("/order/{record_id:str}", endpoint=order.order_get, name="proxies_records_get_json"),
+    Route("/relations", endpoint=proxies_relations.post, name="proxies_relations_post", methods=["POST"]),
     Route("/error/log", endpoint=error.log_post, name="error_log_post", methods=["POST"]),
 ]
 
