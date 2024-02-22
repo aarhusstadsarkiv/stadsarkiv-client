@@ -67,6 +67,14 @@
     .search-suggestion-focus {
         background-color: white;
     }
+
+    .relations-delete {
+        cursor: pointer;
+        color: red;
+        min-width: 25px;
+        display: inline-block;
+    }
+    
 </style>
 
 <script>
@@ -171,7 +179,7 @@
         }
 
         return html`
-      <form id="relation-form" @submit=${submitForm}>
+      <form id="relation-form" @submit=${submitRelationForm}>
         <input type="hidden" name="subject_domain" value="${resource_original.domain}">
         <input type="hidden" name="subject_id" value="${resource_original.id}">
         <input type="hidden" name="object_domain">
@@ -191,11 +199,14 @@
     const renderRelationSection = (section, index) => html`
       <div class="record-section" style="background-color: lightcyan">
         <div class="record-main">
-          <h3 class="record-header">${section.label}<span data-id="${index}" @click=${showForm}> + relation </span> </h3>
+          <h3 class="record-header">${section.label}<span data-id="${index}" @click=${showRelationForm}> + relation </span> </h3>
             ${state.formShow == index ? renderForm(section, index) : ''}
             ${section.data.map(item => html`
                 <div class="record-content">
-                <div class="label">${item.rel_label}</div>
+                <div class="label">
+                    <span class="relations-delete" @click=${deleteRelation} data-rel-id="${item.rel_id}" title="Fjern relation">x</span>
+                    ${item.rel_label}
+                </div>
                 <div class="content">
                     <p>
                     <a href="/people/${item.id}">${item.display_label}</a>
@@ -207,7 +218,27 @@
       </div>
     `;
 
-    const showForm = {
+    const deleteRelation = {
+        async handleEvent(e) {
+            let relId = e.target.dataset.relId;
+            let url = `/relations/${relId}`;
+            let options = {
+                method: 'DELETE'
+            }
+
+            try {
+                const result = await Requests.asyncGetJson(url,  'DELETE');  
+                Flash.setMessage('Relationen er slettet', 'success'); 
+                relations = await fetchRelations();
+                renderRelationsMain();
+            } catch (error) {
+                Flash.setMessage('Kunne ikke slette relation', 'error');
+                console.error(error);
+            }
+        }
+    }
+
+    const showRelationForm = {
         handleEvent(e) {
             let id = e.target.dataset.id;
             state.formShow = id
@@ -221,26 +252,7 @@
         }
     }
 
-    async function fetchRelations() {
-        let url = `/relations/${resource_original.domain}/${resource_original.id}`;
-
-        let options = {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            }
-        }
-
-        try {
-            let result = Requests.asyncGetJson(url, options);
-            return result
-        } catch (error) {
-            Flash.setMessage('Kunne ikke opdatere relationer', 'error');
-            console.error(error);
-        }
-    }
-
-    const submitForm = {
+    const submitRelationForm = {
         async handleEvent(e) {
             e.preventDefault();
             let form = e.target;
@@ -261,7 +273,6 @@
                 state.formShow = null;
                 Flash.setMessage('Relationen er oprettet', 'success');
                 relations = await fetchRelations();
-                console.log(relations)
                 renderRelationsMain();
             } catch (error) {
                 Flash.setMessage("Relationen kunne ikke oprettes. Der skal være en label og et objekt", 'error');
@@ -269,6 +280,21 @@
             }
         }
     }
+
+    async function fetchRelations() {
+        let url = `/relations/${resource_original.domain}/${resource_original.id}`;
+
+        try {
+            let result = await Requests.asyncGetJson(url);
+            console.log(result)
+            return result
+        } catch (error) {
+            Flash.setMessage('Kunne ikke opdatere relationer', 'error');
+            console.error(error);
+        }
+    }
+
+
 
     // Iterate over the relations and render each section    
     const renderRelationSections = (relations) => html`
