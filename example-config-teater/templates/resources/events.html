@@ -55,15 +55,15 @@
         max-height: calc(100vh - 150px);
         overflow-y: auto;
     }
-    
-    
+
+
     .search-suggestion-item,
     .search-suggestion-info {
         flex: 2;
         padding: 5px;
         border-bottom: 1px solid #ccc;
     }
-    
+
     .search-suggestion-focus {
         background-color: white;
     }
@@ -80,6 +80,7 @@
 <script type="module">
     import { html, render } from 'https://cdn.jsdelivr.net/npm/lit-html/lit-html.js';
     import { AutoComplete } from '/static/js/auto-complete.js';
+    import { Flash } from '/static/js/flash.js';
 
     // Assuming 'relations' variable is already populated with the JSON data
     const resource = {{ to_json(resource) | safe }};
@@ -89,21 +90,24 @@
     console.log(resource_original)
 
     let state = {}
+    let currentData = []
 
-    // Render function for autocomplete
+    // Render the autocomplete suggestions as HTML
     const renderFunction = (data) => {
+
+        currentData = data;
 
         // Info if no results
         if (data.length == 0) return `<div class="search-suggestion-info">Ingen forslag. Tryk på søgeknappen for at fritekstsøge i stedet.</div>`;
 
         // Help text and suggestions
         const suggestionHelp = `<div class="search-suggestion-info">Vælg et forslag nedenfor <strong>eller</strong> tryk på søgeknappen for at fritekstsøge.</div>`;
-        
+
         // Suggestions
-        const suggestions = data.map(function(item) {
-            console.log(item)
+        const suggestions = data.map(function (item) {
+
             return `
-                <div class="search-suggestion-item" data-url="/${item.domain}/${item.id}" data-text="">
+                <div class="search-suggestion-item" data-id="${item.id}" data-text="">
                     <div>
                         <a href="/${item.domain}/${item.id}">${item.display}</a>
                     </div>
@@ -114,15 +118,30 @@
         return `${suggestionHelp} ${suggestions}`;
     };
 
+    // Function to run when a suggestion is selected (On return)
+    const returnFunction = (data) => {
+        const autocompleteElem = document.querySelector('.typeahead');
 
+        let id = data.dataset.id
+        // Set the value of the input field
+        let selectedItem = currentData.find(item => item.id == id)
+        
+        const displayValue = selectedItem.display;
+        autocompleteElem.value = displayValue;
+
+        // Get object id elem from form and set value
+        const objectIdElem = document.querySelector('input[name="object_id"]');
+        objectIdElem.value = id;
+
+        // Get object domain elem from form and set value
+        const objectDomainElem = document.querySelector('input[name="object_domain"]');
+        objectDomainElem.value = selectedItem.domain;
+    }   
 
     function autoCompleteInit() {
         const autocompleteElem = document.querySelector('.typeahead');
-        console.log(autocompleteElem)
-
-        
         const suggestionsElem = document.querySelector('.search-suggestions');
-    
+
         const options = {
             'autocompleteElem': autocompleteElem,
             'suggestionsElem': suggestionsElem,
@@ -130,13 +149,16 @@
             'endpoint': `/auto_complete?q=`,
             'minInputLength': 2,
             'suggestionFocusClass': 'search-suggestion-focus',
+            'returnFunction': returnFunction,
+            'debug': true,
         }
+
         new AutoComplete(options);
-        
+
     }
 
 
-    const renderForm = function(section, index) {
+    const renderForm = function (section, index) {
 
         let relStart = '';
         let relEnd = '';
@@ -148,7 +170,7 @@
         }
 
         return html`
-      <form id="relation-form" class="clearfix" action="/relations" method="POST">
+      <form id="relation-form" @submit=${submitForm}>
         <input type="hidden" name="subject_domain" value="${resource_original.domain}">
         <input type="hidden" name="subject_id" value="${resource_original.id}">
         <input type="hidden" name="object_domain">
@@ -188,9 +210,50 @@
         handleEvent(e) {
             let id = e.target.dataset.id;
             state.formShow = id
-            console.log('showForm', id)
             renderRelationsMain();
             autoCompleteInit();
+
+            let relationForm = document.getElementById('relation-form');
+            relationForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+            })
+        }
+    }
+
+    async function fetchData(url, options) {
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                throw new Error(`Der skete en fejl. Prøv igen senere.`);
+            }
+            const data = await response.json();
+            
+            if (data.error) {
+                throw new Error(data.message);
+            }
+
+            state.formShow = null;
+            renderRelationsMain();
+            Flash.setMessage('Relationen er oprettet', 'success');
+        } catch (error) {
+            Flash.setMessage("Relationen kunne ikke oprettes. Der skal være en label og et objekt", 'error');
+            console.error(error);
+        }
+    }
+    
+
+    const submitForm = {
+        async handleEvent(e) {
+            e.preventDefault();
+            let form = e.target;
+            let data = new FormData(form);
+            let url = '/relations';
+            let options = {
+                method: 'POST',
+                body: data
+            }
+            
+            await fetchData(url, options);
         }
     }
 
@@ -205,7 +268,6 @@
     }
 
     renderRelationsMain();
-    // autoCompleteInit();
 </script>
 
 
