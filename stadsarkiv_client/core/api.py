@@ -638,6 +638,25 @@ async def proxies_get_relations(request: Request, type: str, id: str) -> typing.
             response.raise_for_status()
 
 
+async def proxies_post_relations(request: Request):
+    """
+    POST e a new relation
+    """
+
+    form_data = await request.form()
+
+    async with _get_async_client() as client:
+        url = base_url + "/proxy/relations"
+        headers = {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"}
+
+        response = await client.post(url, data=form_data, headers=headers)
+        if response.is_success:
+            return response.json()
+        else:
+            json_response = response.json()
+            raise_openaws_exception(response.status_code, json_response)
+
+
 async def proxies_records_from_list(request, query_params) -> typing.Any:
     """
     GET search results from the api
