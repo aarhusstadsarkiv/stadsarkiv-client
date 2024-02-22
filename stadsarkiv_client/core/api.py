@@ -250,8 +250,6 @@ async def user_get(request: Request) -> dict:
     headers = _get_jwt_headers(request, {"Accept": "application/json"})
     url = base_url + "/users/" + uuid
 
-    log.debug(url)
-
     async with _get_async_client() as client:
         response = await client.get(
             url=url,
@@ -650,6 +648,25 @@ async def proxies_post_relations(request: Request):
         headers = {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"}
 
         response = await client.post(url, data=form_data, headers=headers)
+        if response.is_success:
+            return response.json()
+        else:
+            json_response = response.json()
+
+            raise_openaws_exception(response.status_code, json_response)
+
+
+async def proxies_delete_relations(request: Request):
+    """
+    DELETE a relation
+    """
+    rel_id = request.path_params.get("rel_id", "")
+
+    async with _get_async_client() as client:
+        url = base_url + "/proxy/relations/" + rel_id
+        # headers = {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"}
+
+        response = await client.delete(url)
         if response.is_success:
             return response.json()
         else:
