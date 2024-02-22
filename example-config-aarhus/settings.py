@@ -11,8 +11,8 @@ settings: dict[str, typing.Any] = {
         "secure": True,
         "samesite": "lax",
     },
-    # "api_base_url": "http://localhost:8000/v1",
-    "api_base_url": "https://dev.openaws.dk/v1",
+    "api_base_url": "http://localhost:8000/v1",
+    # "api_base_url": "https://dev.openaws.dk/v1",
     "main_menu": [
         {"name": "auth_login_get", "title": "Log ind", "type": "dropdown"},
         {"name": "auth_logout_get", "title": "Log ud", "type": "dropdown"},

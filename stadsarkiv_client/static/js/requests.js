@@ -6,7 +6,7 @@ class Requests {
     static async asyncPost(url, formData, method) {
         if (!method) method = 'post'
         const rawResponse = await fetch(url, {
-            method: 'post',
+            method: method,
             headers: {
                 'Accept': 'application/json',
             },
@@ -41,9 +41,10 @@ class Requests {
         return rawResponse;
     }
 
-    static async asyncGetJson(url) {
+    static async asyncGetJson(url, method) {
+        if (!method) method = 'GET'
         const rawResponse = await fetch(url, {
-            method: 'get',
+            method: method,
             headers: {
                 'Accept': 'application/json',
             }
