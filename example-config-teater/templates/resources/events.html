@@ -81,16 +81,17 @@
     import { html, render } from 'https://cdn.jsdelivr.net/npm/lit-html/lit-html.js';
     import { AutoComplete } from '/static/js/auto-complete.js';
     import { Flash } from '/static/js/flash.js';
+    import { Requests } from "/static/js/requests.js";
 
     // Assuming 'relations' variable is already populated with the JSON data
     const resource = {{ to_json(resource) | safe }};
     const resource_original = resource.resource_orginal
-    const relations = resource.relations;
-
-    console.log(resource_original)
-
+    
+    let relations = resource.relations;
     let state = {}
     let currentData = []
+
+    console.log(relations)
 
     // Render the autocomplete suggestions as HTML
     const renderFunction = (data) => {
@@ -220,27 +221,24 @@
         }
     }
 
-    async function fetchData(url, options) {
-        try {
-            const response = await fetch(url, options);
-            if (!response.ok) {
-                throw new Error(`Der skete en fejl. Prøv igen senere.`);
-            }
-            const data = await response.json();
-            
-            if (data.error) {
-                throw new Error(data.message);
-            }
+    async function fetchRelations() {
+        let url = `/relations/${resource_original.domain}/${resource_original.id}`;
 
-            state.formShow = null;
-            renderRelationsMain();
-            Flash.setMessage('Relationen er oprettet', 'success');
+        let options = {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        }
+
+        try {
+            let result = Requests.asyncGetJson(url, options);
+            return result
         } catch (error) {
-            Flash.setMessage("Relationen kunne ikke oprettes. Der skal være en label og et objekt", 'error');
+            Flash.setMessage('Kunne ikke opdatere relationer', 'error');
             console.error(error);
         }
     }
-    
 
     const submitForm = {
         async handleEvent(e) {
@@ -253,7 +251,22 @@
                 body: data
             }
             
-            await fetchData(url, options);
+            try {
+                const result = await Requests.asyncPost(url, data)
+                if (result.error) {
+                    console.log(result)
+                    throw new Error(result.message);
+                }
+
+                state.formShow = null;
+                Flash.setMessage('Relationen er oprettet', 'success');
+                relations = await fetchRelations();
+                console.log(relations)
+                renderRelationsMain();
+            } catch (error) {
+                Flash.setMessage("Relationen kunne ikke oprettes. Der skal være en label og et objekt", 'error');
+                console.error(error);
+            }
         }
     }
 
