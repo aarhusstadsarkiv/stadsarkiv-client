@@ -1,3 +1,15 @@
+/**
+ * Default return function. 
+ * Checks if the focused item has a data-url attribute and redirects to that URL.
+ */
+function returnFunction(focusedItem) {
+    const url = focusedItem.getAttribute('data-url');
+    if (url) {
+        window.location.href = url;
+        return;
+    }
+}
+
 class AutoComplete {
     constructor(options) {
 
@@ -13,6 +25,8 @@ class AutoComplete {
         this.minInputLength = options.minInputLength || 2;
         this.suggestionFocusClass = options.suggestionFocusClass || 'search-suggestion-focused';
         this.suggestionItemClass = options.suggestionItemClass || 'search-suggestion-item';
+        this.returnFunction = options.returnFunction || returnFunction;
+        this.debug = options.debug || false;
 
         // Debounce timeout ID
         this.timeoutID = null;
@@ -37,7 +51,9 @@ class AutoComplete {
     onBlur() {
         // Set a short timeout to allow clicks on suggestions to register
         setTimeout(() => {
-            this.hideSuggestions();
+            if (!this.debug) {
+                this.hideSuggestions();
+            }
         }, this.debounceTimer);
     }
 
@@ -47,11 +63,11 @@ class AutoComplete {
         this.suggestionsElem.innerHTML = '';
     }
 
-    onInput(event) {
+    onInput(e) {
 
         clearTimeout(this.timeoutID);
         const inputLength = this.autocompleteElem.value.length;
-        const inputValue = event.target.value;
+        const inputValue = e.target.value;
 
         if (inputLength < this.minInputLength) {
             this.hideSuggestions();
@@ -74,13 +90,13 @@ class AutoComplete {
     /**
      * Check keys pressed in the input field
      */
-    onKeyDown(event) {
+    onKeyDown(e) {
 
         const items = this.suggestionsElem.querySelectorAll(`.${this.suggestionItemClass}`);
-        if (items.length === 0 && event.key !== 'Escape') return;
+        if (items.length === 0 && e.key !== 'Escape') return;
 
-        if (event.key === 'Escape') {
-            event.preventDefault();
+        if (e.key === 'Escape') {
+            e.preventDefault();
             this.hideSuggestions();
             return;
         }
@@ -93,18 +109,16 @@ class AutoComplete {
             }
         });
 
-        if (event.key === 'ArrowDown') {
+        if (e.key === 'ArrowDown') {
             currentIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
-        } else if (event.key === 'ArrowUp') {
+        } else if (e.key === 'ArrowUp') {
             currentIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
-        } else if (event.key === 'Enter' && currentIndex !== -1) {
-            event.preventDefault();
+        } else if (e.key === 'Enter' && currentIndex !== -1) {
+            e.stopPropagation(); // Prevent the form from submitting
+            e.preventDefault();
             const focusedItem = items[currentIndex];
-            const url = focusedItem.getAttribute('data-url');
-            if (url) {
-                window.location.href = url;
-                return;
-            }
+            this.returnFunction(focusedItem);
+            return;
         } else {
             return;
         }
