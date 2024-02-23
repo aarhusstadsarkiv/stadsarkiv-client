@@ -37,7 +37,7 @@
 {{ relations.parse_relations('people', resource) }}
 
 {% if has_permission( "root", permissions_list) %}
-<div class="app"></div>
+<div class="relations-edit-app"></div>
 {% endif %}
 
 {% set meta_links = [
@@ -49,41 +49,7 @@
 
 
 <style>
-    .search-suggestions {
-        position: absolute;
-        background-color: whitesmoke;
-        display: none;
-        padding: 5px;
-        width: 295px;
-        max-height: calc(100vh - 150px);
-        overflow-y: auto;
-    }
 
-    .search-suggestion-item,
-    .search-suggestion-info {
-        flex: 2;
-        padding: 5px;
-        border-bottom: 1px solid #ccc;
-    }
-
-    .search-suggestion-focus {
-        background-color: white;
-    }
-
-    .relations-delete {
-        cursor: pointer;
-        color: red;
-        min-width: 25px;
-        display: inline-block;
-    }
-
-    .relations-toggle {
-        cursor: pointer;
-        color: var(--links);
-        min-width: 25px;
-        float: right;
-    
-    }
 </style>
 
 <script type="module">
