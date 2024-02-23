@@ -37,10 +37,8 @@
 {{ relations.parse_relations('people', resource) }}
 
 {% if has_permission( "root", permissions_list) %}
-<a href="#" class="sub-menu edit-relations">Rediger</a>
-{% endif %}
-
 <div class="app"></div>
+{% endif %}
 
 {% set meta_links = [
 {"url": "/events/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
@@ -48,7 +46,6 @@
 ] %}
 
 {{ common_macros.parse_meta_block(meta_links) }}
-
 
 
 <style>
@@ -78,6 +75,14 @@
         color: red;
         min-width: 25px;
         display: inline-block;
+    }
+
+    .relations-toggle {
+        cursor: pointer;
+        color: var(--links);
+        min-width: 25px;
+        float: right;
+    
     }
 </style>
 

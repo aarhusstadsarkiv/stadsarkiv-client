@@ -6,7 +6,13 @@ import { Requests } from "/static/js/requests.js";
 
 let relations; 
 let resourceOriginal;
-let state = {}
+let state = {
+    // Show form for relation
+    formShow: null,
+    // If edit mode is on
+    editEnabled: false,
+
+}
 let currentAutoCompleteData = []
 
 // Render the autocomplete suggestions as HTML
@@ -66,7 +72,7 @@ function autoCompleteInit() {
         'minInputLength': 2,
         'suggestionFocusClass': 'search-suggestion-focus',
         'returnFunction': returnFunction,
-        'debug': true,
+        'debug': false,
     }
 
     new AutoComplete(options);
@@ -103,9 +109,9 @@ const renderForm = function () {
 
 // Render a single section of the relations array
 const renderRelationSection = (section, index) => html`
-      <div class="record-section" style="background-color: lightcyan">
+      <div class="record-section relations-edit">
         <div class="record-main">
-          <h3 class="record-header">${section.label}<span data-id="${index}" @click=${showRelationForm}> + relation </span> </h3>
+          <h3 class="record-header">${section.label}<span class="relations-toggle" data-id="${index}" @click=${showRelationForm}> + </span> </h3>
             ${state.formShow == index ? renderForm() : ''}
             ${section.data.map(item => html`
                 <div class="record-content">
@@ -155,6 +161,33 @@ const showRelationForm = {
     }
 }
 
+const toogleEditMode = {
+    handleEvent(e) {
+        
+        e.preventDefault();
+        state.editEnabled = !state.editEnabled;
+
+        // toggle relations
+        const relationsElems = document.querySelectorAll('.relations');
+        relationsElems.forEach((elem) => {
+            elem.classList.toggle('hidden');
+        });
+
+        renderRelationsMain();
+
+        // If state.editEnabled is true, then go to the first 'relations-edit' section
+        // Else go to the first 'relations' section
+        const firstSection = state.editEnabled ? document.querySelector('.relations-edit') : document.querySelector('.relations');
+        firstSection.scrollIntoView({block: "start", inline: "nearest"});
+
+        // If edit mode is turned off, then reload the current page
+        if (!state.editEnabled) {
+            location.reload();
+        }
+    }
+}
+
+
 const submitRelationForm = {
     async handleEvent(e) {
         e.preventDefault();
@@ -191,12 +224,36 @@ async function fetchRelations() {
 }
 
 // Iterate over the relations and render each section    
-const renderRelationSections = () => html`
+const renderRelationSections = function() {
+
+    if (state.editEnabled) {
+        return html`
         ${relations.map((section, index) => renderRelationSection(section, index))}
-    `;
+        ${editLink()}`;
+    } else {
+        return html`
+        ${editLink()}`;
+
+    }
+
+}
+
+function editLink () {
+
+    let editLink;
+    if (!state.editEnabled) {
+        editLink = html`<a class="toogle-edit" href="#" @click=${toogleEditMode}>Rediger relationer</a>`;
+    } else  {
+        editLink = html`<a class="toogle-edit" href="#" @click=${toogleEditMode}>Afslut Redigering af relationer</a>`;
+    }
+
+    return html`<div class="sub-menu">${editLink}</div>`;
+}
 
 // Render the app
 function renderRelationsMain() {
+    const appElem = document.querySelector('.app');
+    if (!appElem) return;
     render(renderRelationSections(), document.querySelector('.app'));
 }
 
