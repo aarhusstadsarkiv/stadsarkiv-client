@@ -19,7 +19,7 @@ log = get_log()
 
 
 async def login_get(request: Request):
-    next_url = request.query_params.get("next", "/")
+    next_url = request.query_params.get("next", "/search")
     context_values = {"title": translate("Login"), "post_url": "/auth/login?next=" + next_url}
     context = await get_context(request, context_values=context_values)
 
@@ -31,7 +31,7 @@ async def login_get(request: Request):
 
 
 async def login_post(request: Request):
-    next_url = request.query_params.get("next", "/")
+    next_url = request.query_params.get("next", "/search")
     try:
         await api.auth_jwt_login_post(request)
         flash.set_message(request, translate("You have been logged in."), type="success", remove=True)
