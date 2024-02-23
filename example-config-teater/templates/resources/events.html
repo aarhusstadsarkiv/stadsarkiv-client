@@ -38,20 +38,6 @@
 
 {% if has_permission( "root", permissions_list) %}
 <div class="relations-edit-app"></div>
-{% endif %}
-
-{% set meta_links = [
-{"url": "/events/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
-{"url": "/events/" + meta['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
-] %}
-
-{{ common_macros.parse_meta_block(meta_links) }}
-
-
-<style>
-
-</style>
-
 <script type="module">
 
     import { initRelationsEdit } from  '/static/js/relations-edit.js';
@@ -60,6 +46,13 @@
     initRelationsEdit(resource.relations, resource.resource_orginal)
 
 </script>
+{% endif %}
 
+{% set meta_links = [
+{"url": "/events/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
+{"url": "/events/" + meta['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
+] %}
+
+{{ common_macros.parse_meta_block(meta_links) }}
 
 {% endblock content %}
