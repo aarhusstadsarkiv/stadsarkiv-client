@@ -5,14 +5,14 @@ import { Flash } from '/static/js/flash.js';
 import { Requests } from "/static/js/requests.js";
 
 let relations; 
-let resource_original;
+let resourceOriginal;
 let state = {}
-let currentData = []
+let currentAutoCompleteData = []
 
 // Render the autocomplete suggestions as HTML
 const renderFunction = (data) => {
 
-    currentData = data;
+    currentAutoCompleteData = data;
 
     // Info if no results
     if (data.length == 0) return `<div class="search-suggestion-info">Ingen forslag. Tryk på søgeknappen for at fritekstsøge i stedet.</div>`;
@@ -40,7 +40,7 @@ const returnFunction = (data) => {
 
     let id = data.dataset.id
     // Set the value of the input field
-    let selectedItem = currentData.find(item => item.id == id)
+    let selectedItem = currentAutoCompleteData.find(item => item.id == id)
 
     const displayValue = selectedItem.display;
     autocompleteElem.value = displayValue;
@@ -72,23 +72,22 @@ function autoCompleteInit() {
     new AutoComplete(options);
 }
 
-
 const renderForm = function () {
 
     let relStart = '';
     let relEnd = '';
-    if (resource_original.domain === 'events' && resource_original.date_from) {
-        relStart = html`<input type="hidden" name="rel_start" value="${resource_original.date_from}">`;
+    if (resourceOriginal.domain === 'events' && resourceOriginal.date_from) {
+        relStart = html`<input type="hidden" name="rel_start" value="${resourceOriginal.date_from}">`;
     }
 
-    if (resource_original.domain === 'events' && resource_original.date_to) {
-        relEnd = html`<input type="hidden" name="rel_end" value="${resource_original.date_to}">`;
+    if (resourceOriginal.domain === 'events' && resourceOriginal.date_to) {
+        relEnd = html`<input type="hidden" name="rel_end" value="${resourceOriginal.date_to}">`;
     }
 
     return html`
       <form id="relation-form" @submit=${submitRelationForm}>
-        <input type="hidden" name="subject_domain" value="${resource_original.domain}">
-        <input type="hidden" name="subject_id" value="${resource_original.id}">
+        <input type="hidden" name="subject_domain" value="${resourceOriginal.domain}">
+        <input type="hidden" name="subject_id" value="${resourceOriginal.id}">
         <input type="hidden" name="object_domain">
         <input type="hidden" name="object_id">
         ${relStart}
@@ -181,7 +180,7 @@ const submitRelationForm = {
 }
 
 async function fetchRelations() {
-    let url = `/relations/${resource_original.domain}/${resource_original.id}`;
+    let url = `/relations/${resourceOriginal.domain}/${resourceOriginal.id}`;
 
     try {
         let result = await Requests.asyncGetJson(url);
@@ -190,8 +189,6 @@ async function fetchRelations() {
         Flash.setMessage('Kunne ikke opdatere relationer', 'error');
     }
 }
-
-
 
 // Iterate over the relations and render each section    
 const renderRelationSections = () => html`
@@ -203,10 +200,10 @@ function renderRelationsMain() {
     render(renderRelationSections(), document.querySelector('.app'));
 }
 
-function init(relations_init, resources_init) {
-    relations = relations_init;
-    resource_original = resources_init;
+function initRelationsEdit(relationsInit, resourcesInit) {
+    relations = relationsInit;
+    resourceOriginal = resourcesInit;
     renderRelationsMain();
 }
 
-export { init }
+export { initRelationsEdit}

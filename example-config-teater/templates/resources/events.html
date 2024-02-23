@@ -36,6 +36,12 @@
 
 {{ relations.parse_relations('people', resource) }}
 
+{% if has_permission( "root", permissions_list) %}
+<a href="#" class="sub-menu edit-relations">Rediger</a>
+{% endif %}
+
+<div class="app"></div>
+
 {% set meta_links = [
 {"url": "/events/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
 {"url": "/events/" + meta['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
@@ -43,7 +49,7 @@
 
 {{ common_macros.parse_meta_block(meta_links) }}
 
-<div class="app"></div>
+
 
 <style>
     .search-suggestions {
@@ -77,11 +83,10 @@
 
 <script type="module">
 
-    import { init } from  '/static/js/relations-edit.js';
+    import { initRelationsEdit } from  '/static/js/relations-edit.js';
 
-    // Assuming 'relations' variable is already populated with the JSON data
     const resource = {{ to_json(resource) | safe }};
-    init(resource.relations, resource.resource_orginal)
+    initRelationsEdit(resource.relations, resource.resource_orginal)
 
 </script>
 
