@@ -23,7 +23,7 @@ if os.getenv("ENVIRONMENT") == "production":
     debug = False
 
 settings: dict[str, typing.Any] = {
-    "client_name": "dev-client",
+    "client_name": "development",
     "debug": debug,
     "robots_allow": False,
     "version": stadsarkiv_client.__version__,
