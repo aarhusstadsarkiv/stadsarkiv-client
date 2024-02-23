@@ -36,7 +36,7 @@ class TestAuth(unittest.TestCase):
     def test_login_post_incorrect(self):
         client = TestClient(app)
         response = client.post("/auth/login", data=incorrect_login, follow_redirects=True)  # type: ignore
-        self.assertEqual(response.url, "http://testserver/auth/login?next=/")
+        self.assertEqual(response.url, "http://testserver/auth/login?next=/search")
 
     def test_logout_get(self):
         client = TestClient(app)
