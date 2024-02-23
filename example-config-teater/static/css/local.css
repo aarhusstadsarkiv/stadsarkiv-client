@@ -29,3 +29,51 @@
     height: auto; /* Maintains the aspect ratio of the image */
 }
 
+.relations, .relations-edit {
+    scroll-margin-top: var(--main-menu-top);
+}
+
+.resources-events .search-suggestions {
+    position: absolute;
+    background-color: whitesmoke;
+    display: none;
+    padding: 5px;
+    width: 295px;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+}
+
+.resources-events .search-suggestion-item,
+.resources-events .search-suggestion-info {
+    flex: 2;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.resources-events .search-suggestion-focus {
+    background-color: white;
+}
+
+.resources-events .relations-delete {
+    cursor: pointer;
+    color: red;
+    min-width: 25px;
+    display: inline-block;
+}
+
+.resources-events .relations-toggle {
+    cursor: pointer;
+    color: var(--links);
+    min-width: 25px;
+    float: right;
+
+}
+
+.resources-events .relations, .resources-events .relations-edit {
+    scroll-margin-top: var(--main-menu-top);
+}
+
+.hidden {
+    display: none;
+}
+
