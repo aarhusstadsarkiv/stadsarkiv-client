@@ -2,6 +2,7 @@ import typing
 
 
 settings: dict[str, typing.Any] = {
+    "client_name": "aarhusarkivet",
     "language": "da",
     "log_handlers": ["stream", "rotating_file"],  # [ "stream", "file"]
     "cookie": {
