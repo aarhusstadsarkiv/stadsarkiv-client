@@ -56,7 +56,7 @@
 
 .resources-events .relations-delete {
     cursor: pointer;
-    color: red;
+    color: var(--links);
     min-width: 25px;
     display: inline-block;
 }
