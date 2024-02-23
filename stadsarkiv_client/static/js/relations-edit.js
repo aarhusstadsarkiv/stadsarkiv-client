@@ -1,10 +1,9 @@
-// import { html, render } from 'https://cdn.jsdelivr.net/npm/lit-html/lit-html.js';
 import { html, render } from '/static/js/lit-html.js';
 import { AutoComplete } from '/static/js/auto-complete.js';
 import { Flash } from '/static/js/flash.js';
 import { Requests } from "/static/js/requests.js";
 
-let relations; 
+let relations;
 let resourceOriginal;
 let state = {
     // Show form for relation
@@ -163,7 +162,7 @@ const showRelationForm = {
 
 const toogleEditMode = {
     handleEvent(e) {
-        
+
         e.preventDefault();
         state.editEnabled = !state.editEnabled;
 
@@ -178,7 +177,7 @@ const toogleEditMode = {
         // If state.editEnabled is true, then go to the first 'relations-edit' section
         // Else go to the first 'relations' section
         const firstSection = state.editEnabled ? document.querySelector('.relations-edit') : document.querySelector('.relations');
-        firstSection.scrollIntoView({block: "start", inline: "nearest"});
+        firstSection.scrollIntoView({ block: "start", inline: "nearest" });
 
         // If edit mode is turned off, then reload the current page
         if (!state.editEnabled) {
@@ -224,7 +223,7 @@ async function fetchRelations() {
 }
 
 // Iterate over the relations and render each section    
-const renderRelationSections = function() {
+const renderRelationSections = function () {
 
     if (state.editEnabled) {
         return html`
@@ -233,28 +232,26 @@ const renderRelationSections = function() {
     } else {
         return html`
         ${editLink()}`;
-
     }
-
 }
 
-function editLink () {
+function editLink() {
 
     let editLink;
     if (!state.editEnabled) {
         editLink = html`<a class="toogle-edit" href="#" @click=${toogleEditMode}>Rediger relationer</a>`;
-    } else  {
+    } else {
         editLink = html`<a class="toogle-edit" href="#" @click=${toogleEditMode}>Afslut Redigering af relationer</a>`;
     }
 
     return html`<div class="sub-menu">${editLink}</div>`;
 }
 
-// Render the app
+// Render the relations-edit-app
 function renderRelationsMain() {
-    const appElem = document.querySelector('.app');
+    const appElem = document.querySelector('.relations-edit-app');
     if (!appElem) return;
-    render(renderRelationSections(), document.querySelector('.app'));
+    render(renderRelationSections(), document.querySelector('.relations-edit-app'));
 }
 
 function initRelationsEdit(relationsInit, resourcesInit) {
@@ -263,4 +260,4 @@ function initRelationsEdit(relationsInit, resourcesInit) {
     renderRelationsMain();
 }
 
-export { initRelationsEdit}
+export { initRelationsEdit }
