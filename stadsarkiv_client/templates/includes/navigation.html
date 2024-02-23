@@ -22,8 +22,13 @@ main_menu_sections =
     
     <div class="main-menu">
         {% for menu_item in main_menu_user %}
+           
+            {% if menu_item.name == 'auth_login_get' %} 
+            {% set query = "?next=" + request.url.path %}
+            {% endif %}
+
             {% if menu_item.type == 'dropdown' %}
-            <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
+            <a href="{{ url_for(menu_item.name) }}{{ query }}">{{ menu_item.title }}</a>
             {% endif %}
         {% endfor %}
 
