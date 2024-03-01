@@ -2,7 +2,7 @@
 line-length = 140
 
 [tool.mypy]
-exclude = [ "venv", ".venv", "generate_openaws_client", "tests", "example-config", "build", ]
+exclude = [ "venv", ".venv", "generate_openaws_client", "tests", "example-config", "build",]
 
 [tool.bump_version]
 version_file = "stadsarkiv_client/__init__.py"
