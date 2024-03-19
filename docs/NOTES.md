@@ -5,6 +5,11 @@
 Zoom på billeder.
 Større format på billeder (backend)
 
+Forskellige søgeresultater for fx:
+
+karré 211
+karre 211
+
 
 # Rettelser: 
 
