@@ -252,7 +252,7 @@ async def auto_complete_search(request: Request):
 
 async def auto_complete_relations(request: Request):
     """
-    Auto complete for search. 
+    Auto complete for search.
     Notice: There is no before and after hooks for this endpoint.
     """
     query_params: list = []

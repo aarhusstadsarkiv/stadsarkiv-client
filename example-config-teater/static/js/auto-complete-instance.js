@@ -1,5 +1,16 @@
 import { AutoComplete } from '/static/js/auto-complete.js';
 
+function returnFunction(focusedItem) {
+
+    // 'data-url' from focusedItem
+    const url = focusedItem.getAttribute('data-url');
+
+    if (url) {
+        window.location.href = url;
+        return;
+    }
+}
+
 // Render function for autocomplete
 const renderFunction = (data) => {
 
@@ -31,6 +42,7 @@ const options = {
     'endpoint': `/auto_complete?q=`,
     'minInputLength': 2,
     'suggestionFocusClass': 'search-suggestion-focus',
+    'returnFunction': returnFunction,
 }
 
 function autoCompleteInit() {
