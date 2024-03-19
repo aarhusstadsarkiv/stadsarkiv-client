@@ -10,6 +10,14 @@ class Hooks(HooksSpec):
     def __init__(self, request):
         super().__init__(request)
 
+    async def before_get_auto_complete(self, query_params: list) -> list:
+        query_params.append(("limit", "10"))
+
+        """
+        Alter the query params before the autocomplete is executed.
+        """
+        return query_params
+
     async def before_context(self, context: dict) -> dict:
         """
         Alter the context dictionary. Before the context is returned to the template.
