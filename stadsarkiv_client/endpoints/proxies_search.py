@@ -236,7 +236,7 @@ async def get_json(request: Request):
     return PlainTextResponse(record_json)
 
 
-async def auto_complete(request: Request):
+async def auto_complete_search(request: Request):
     """
     Auto complete for search
     """
@@ -244,16 +244,21 @@ async def auto_complete(request: Request):
     query_params: list = []
     query_params = await hooks.before_get_auto_complete(query_params=query_params)
 
-    query_str = query.get_str_from_list(query_params)
-    result = await api.proxies_auto_complete(request, query_str)
-
+    result = await api.proxies_auto_complete(request, query_params=query_params)
     query_params = await hooks.after_get_auto_complete(query_params=query_params)
 
-    # randomly choose between 0 and 10 results
-    # This is done to avoid showing all results
-    # This is just for demo
-    import random
+    return JSONResponse(result)
 
-    result = random.sample(result, random.randint(0, 10))
+
+async def auto_complete_(request: Request):
+    """
+    Auto complete for search
+    """
+    hooks = get_hooks(request)
+    query_params: list = []
+    query_params = await hooks.before_get_auto_complete(query_params=query_params)
+
+    result = await api.proxies_auto_complete(request, query_params=query_params)
+    query_params = await hooks.after_get_auto_complete(query_params=query_params)
 
     return JSONResponse(result)

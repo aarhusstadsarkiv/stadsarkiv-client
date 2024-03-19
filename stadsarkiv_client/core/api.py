@@ -1,5 +1,5 @@
 """
-All api calls to the webservice API is defined here. 
+All api calls to the webservice API is defined here.
 """
 
 from starlette.requests import Request
@@ -22,7 +22,7 @@ log = get_log()
 
 base_url = str(settings["api_base_url"])
 ONE_YEAR = 60 * 60 * 24 * 365
-REQUEST_TIME_USED = {}
+REQUEST_TIME_USED: dict = {}
 
 
 async def _request_start_time(request):
@@ -704,20 +704,21 @@ async def _get_server_url(request):
     return server_url
 
 
-async def proxies_auto_complete(request: Request, query_str: str) -> typing.Any:
+async def proxies_auto_complete(request: Request, query_params: list = []) -> typing.Any:
     """
     Fetch auto complete data from the api
     Test data is used for now
     """
 
-    # query_str = quote(request.query_params["q"])
+    q = request.query_params["q"]
+    query_params.append(("t", q))
 
-    server_url = await _get_server_url(request)
-    test_json_url = server_url + "/static/json/auto-suggest.json?" + query_str
+    query_str = query.get_str_from_list(query_params)
+    auto_complete_url = f"https://aarhusiana.appspot.com/autocomplete_v3?{query_str}"
 
     async with _get_async_client() as client:
-        response = await client.get(test_json_url)
+        response = await client.get(auto_complete_url)
         if response.is_success:
-            return response.json()
+            return response.json()["result"]
         else:
             response.raise_for_status()
