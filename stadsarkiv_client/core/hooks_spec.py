@@ -17,6 +17,7 @@ class HooksSpec:
         """
         Alter the query params before the autocomplete is executed.
         """
+        query_params.append(("limit", "25"))  # default limit
         return query_params
 
     async def after_get_auto_complete(self, query_params: list) -> list:

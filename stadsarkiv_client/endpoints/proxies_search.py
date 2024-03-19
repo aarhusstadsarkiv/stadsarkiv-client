@@ -250,15 +250,14 @@ async def auto_complete_search(request: Request):
     return JSONResponse(result)
 
 
-async def auto_complete_(request: Request):
+async def auto_complete_relations(request: Request):
     """
-    Auto complete for search
+    Auto complete for search. 
+    Notice: There is no before and after hooks for this endpoint.
     """
-    hooks = get_hooks(request)
     query_params: list = []
-    query_params = await hooks.before_get_auto_complete(query_params=query_params)
+    query_params.append(("limit", "25"))
 
     result = await api.proxies_auto_complete(request, query_params=query_params)
-    query_params = await hooks.after_get_auto_complete(query_params=query_params)
 
     return JSONResponse(result)

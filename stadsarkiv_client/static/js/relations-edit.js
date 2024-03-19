@@ -67,7 +67,7 @@ function autoCompleteInit() {
         'autocompleteElem': autocompleteElem,
         'suggestionsElem': suggestionsElem,
         'renderFunction': renderFunction,
-        'endpoint': `/auto_complete?q=`,
+        'endpoint': `/auto_complete_relations?q=`,
         'minInputLength': 2,
         'suggestionFocusClass': 'search-suggestion-focus',
         'returnFunction': returnFunction,
