@@ -11,7 +11,7 @@ log = get_log()
 
 
 async def post(request: Request):
-    await is_authenticated(request, permissions=["admin"])
+    await is_authenticated(request, permissions=["employee"])
     try:
         await api.proxies_post_relations(request)
         return JSONResponse({"error": False, "message": "Relation er oprettet"})
@@ -47,6 +47,7 @@ async def get(request: Request):
 
 
 async def delete(request: Request):
+    await is_authenticated(request, permissions=["employee"])
     try:
         await api.proxies_delete_relations(request)
         return JSONResponse({"error": False, "message": "Relation er slettet"})

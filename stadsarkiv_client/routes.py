@@ -56,8 +56,6 @@ routes = [
     Route("/auth/login", endpoint=auth.login_post, name="auth_login_post", methods=["POST"]),
     Route("/auth/logout", endpoint=auth.logout_get, name="auth_logout_get", methods=["GET"]),
     Route("/auth/logout", endpoint=auth.logout_post, name="auth_logout_post", methods=["POST"]),
-    Route("/auth/register", endpoint=auth.register_get, name="auth_register_get", methods=["GET"]),
-    Route("/auth/register", endpoint=auth.register_post, name="auth_register_post", methods=["POST"]),
     Route("/auth/forgot-password", endpoint=auth.forgot_password_get, name="auth_forgot_password_get", methods=["GET"]),
     Route("/auth/forgot-password", endpoint=auth.forgot_password_post, name="auth_forgot_password_post", methods=["POST"]),
     Route("/auth/reset-password/{token:str}", endpoint=auth.reset_password_get, name="auth_reset_password_get", methods=["GET"]),
@@ -93,11 +91,22 @@ routes = [
     Route("/error/log", endpoint=error.log_post, name="error_log_post", methods=["POST"]),
 ]
 
-# Add test route
+# Add registration routes if allowed
+if settings["allow_user_registration"]:
+    routes_registration = [
+        Route("/auth/register", endpoint=auth.register_get, name="auth_register_get", methods=["GET"]),
+        Route("/auth/register", endpoint=auth.register_post, name="auth_register_post", methods=["POST"]),
+    ]
+    routes.extend(routes_registration)
+
+# Add test route if in development
 if settings["environment"] == "development":
-    routes.append(Route("/test/{page:str}", endpoint=test.test_page, name="test_get", methods=["GET", "POST"]))
-    routes.append(Route("/test", endpoint=test.test_default, name="test_get", methods=["GET"]))
-    routes.append(Route("/test", endpoint=test.test_post, name="test_post", methods=["POST"]))
+    routes_test = [
+        Route("/test", endpoint=test.test_default, name="test_get", methods=["GET"]),
+        Route("/test", endpoint=test.test_post, name="test_post", methods=["POST"]),
+        Route("/test/{page:str}", endpoint=test.test_page, name="test_get", methods=["GET", "POST"]),
+    ]
+    routes.extend(routes_test)
 
 # Add routes for custom pages
 common_pages: Any = []

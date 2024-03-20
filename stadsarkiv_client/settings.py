@@ -57,6 +57,8 @@ settings: dict[str, typing.Any] = {
     "search_base_url": "/search",
     "facets_enabled": ["content_types", "subjects", "availability", "usability", "dates"],
     "cors_allow_origins": ["https://client.openaws.dk", "https://dev.openaws.dk"],
+    "allow_user_registration": True,
+    "allow_user_management": True,
 }
 
 pages: list = [{"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"}]
