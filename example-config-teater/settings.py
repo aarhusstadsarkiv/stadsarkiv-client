@@ -22,13 +22,13 @@ settings: dict[str, typing.Any] = {
     # You may also add other "menus", e.g. "footer_items" or something similar.
     #
     "main_menu": [
-        {"name": "auth_login_get", "title": "Log ind", "type": "dropdown"},
+        # {"name": "auth_login_get", "title": "Log ind", "type": "dropdown"},
         {"name": "auth_logout_get", "title": "Log ud", "type": "dropdown"},
-        {"name": "auth_register_get", "title": "Ny bruger", "type": "dropdown"},
-        {"name": "auth_me_get", "title": "Profil", "type": "dropdown"},
-        {"name": "admin_users_get", "title": "Brugere", "type": "dropdown"},
-        {"name": "schemas_get_list", "title": "Skemaer", "type": "dropdown"},
-        {"name": "entities_get_list", "title": "Entiteter", "type": "dropdown"},
+        # {"name": "auth_register_get", "title": "Ny bruger", "type": "dropdown"},
+        # {"name": "auth_me_get", "title": "Profil", "type": "dropdown"},
+        # {"name": "admin_users_get", "title": "Brugere", "type": "dropdown"},
+        # {"name": "schemas_get_list", "title": "Skemaer", "type": "dropdown"},
+        # {"name": "entities_get_list", "title": "Entiteter", "type": "dropdown"},
         {"name": "proxies_search_get", "title": "Søg", "type": "top"},
     ],
     "search_base_url": "/search",
@@ -37,6 +37,8 @@ settings: dict[str, typing.Any] = {
     #
     "robots_allow": True,
     "facets_enabled": ["events"],
+    "allow_user_registration": False,
+    "allow_user_management": True,
 }
 
 # Custom pages
