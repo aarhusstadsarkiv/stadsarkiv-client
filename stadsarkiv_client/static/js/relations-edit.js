@@ -186,7 +186,6 @@ const toogleEditMode = {
     }
 }
 
-
 const submitRelationForm = {
     async handleEvent(e) {
         e.preventDefault();
