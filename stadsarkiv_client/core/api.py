@@ -9,7 +9,7 @@ from stadsarkiv_client.core import user
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import query
-from stadsarkiv_client.core.decorators import disk_cache
+from stadsarkiv_client.core.cache import set_cache, get_cache
 from urllib.parse import quote
 import json
 import httpx
@@ -21,7 +21,6 @@ log = get_log()
 
 
 base_url = str(settings["api_base_url"])
-ONE_YEAR = 60 * 60 * 24 * 365
 REQUEST_TIME_USED: dict = {}
 
 
@@ -432,18 +431,25 @@ async def schema_get_latest(request: Request, schema_type: str) -> typing.Any:
             response.raise_for_status()
 
 
-@disk_cache(ttl=ONE_YEAR, use_args=[1, 2])
+ONE_YEAR = 60 * 60 * 24 * 365
+
+
 async def schema_get_by_name_version(request: Request, schema_name: str, schema_version: int) -> typing.Any:
     """
     GET schema by name and version from the api
     """
+    if get_cache(ONE_YEAR, [schema_name, schema_version]):
+        return get_cache(ONE_YEAR, [schema_name, schema_version])
+
     async with _get_async_client() as client:
         url = base_url + "/schemas/" + schema_name + "?version=" + str(schema_version)
         headers = {"Accept": "application/json"}
         response = await client.get(url, headers=headers)
 
         if response.is_success:
-            return response.json()
+            result = response.json()
+            set_cache(result, [schema_name, schema_version])
+            return result
         else:
             response.raise_for_status()
 
