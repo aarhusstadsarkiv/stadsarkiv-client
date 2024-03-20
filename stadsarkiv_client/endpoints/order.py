@@ -4,30 +4,25 @@ Proxy for search records endpoints
 
 from starlette.requests import Request
 
-# from starlette.responses import PlainTextResponse, JSONResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
-from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.logging import get_log
 
-# from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import api
-from stadsarkiv_client.core.decorators import is_authenticated
+from stadsarkiv_client.core.auth import is_authenticated
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 
-# import json
 from stadsarkiv_client.core.hooks import get_hooks
 import asyncio
-
-# from stadsarkiv_client.core.hooks import get_hooks
 
 
 log = get_log()
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."))
 async def order_get(request: Request):
+    await is_authenticated(request)
+
     hooks = get_hooks(request)
     record_id = request.path_params["record_id"]
 

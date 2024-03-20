@@ -5,7 +5,7 @@ Endpoints for schemas.
 from starlette.requests import Request
 from starlette.exceptions import HTTPException
 from starlette.responses import RedirectResponse, JSONResponse
-from stadsarkiv_client.core.decorators import is_authenticated
+from stadsarkiv_client.core.auth import is_authenticated
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.translate import translate
@@ -19,8 +19,8 @@ from json import JSONDecodeError
 log = get_log()
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def get_list(request: Request):
+    await is_authenticated(request, permissions=["admin"])
     try:
         schemas = await api.schemas(request)
         context_values = {"title": translate("Schemas"), "schemas": schemas}
@@ -39,8 +39,8 @@ async def get_single(request: Request):
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def post(request: Request):
+    await is_authenticated(request, permissions=["admin"])
     try:
         await api.schema_create(request)
         flash.set_message(request, translate("Schema created."), type="success")

@@ -4,11 +4,14 @@ There is a default handler for 403, 404 and 500 errors.
 """
 
 from starlette.exceptions import HTTPException
+from starlette.responses import RedirectResponse
 from starlette.requests import Request
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core import flash
+from stadsarkiv_client.core.auth import AuthException
 
 HTML_403_PAGE = "403"
 HTML_404_PAGE = "404"
@@ -42,4 +45,14 @@ async def forbidden_error(request: Request, exc: HTTPException):
     return templates.TemplateResponse(request, "errors/default.html", context, status_code=403)
 
 
-exception_handlers = {403: forbidden_error, 404: not_found, 500: server_error}
+async def auth_exception_handler(request: Request, exc: AuthException):
+    flash.set_message(request, exc.message, type="error")
+    return RedirectResponse(url=exc.redirect_url, status_code=302)
+
+
+exception_handlers = {
+    403: forbidden_error,
+    404: not_found,
+    500: server_error,
+    AuthException: auth_exception_handler,
+}

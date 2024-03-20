@@ -7,9 +7,8 @@ from starlette.exceptions import HTTPException
 from starlette.responses import JSONResponse, PlainTextResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
-from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.core.decorators import is_authenticated
+from stadsarkiv_client.core.auth import is_authenticated
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core import api
 import json
@@ -19,8 +18,8 @@ import asyncio
 log = get_log()
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
 async def create(request: Request):
+    await is_authenticated(request, permissions=["employee"])
     try:
         schema = await api.schema_get(request)
         context_values = {"title": "Opret entitet", "schema": schema}
@@ -32,8 +31,9 @@ async def create(request: Request):
         raise HTTPException(500, detail=str(e), headers=None)
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
 async def update(request: Request):
+    await is_authenticated(request, permissions=["employee"])
+
     uuid = request.path_params["uuid"]
     entity = await api.entity_get(request)
 
@@ -59,8 +59,8 @@ async def update(request: Request):
     return templates.TemplateResponse(request, "entities/entities_update.html", context)
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
 async def patch(request: Request):
+    await is_authenticated(request, permissions=["employee"])
     try:
         await api.entity_patch(request)
         flash.set_message(request, "Entitet opdateret", type="success", remove=True)
@@ -71,8 +71,8 @@ async def patch(request: Request):
         return JSONResponse({"message": "Entitet kunne ikke opdateres", "error": True})
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
 async def delete(request: Request):
+    await is_authenticated(request, permissions=["employee"])
     if request.method == "DELETE":
         delete_type = request.path_params["delete_type"]
         try:
@@ -96,8 +96,8 @@ async def delete(request: Request):
         raise HTTPException(500, detail=str(e), headers=None)
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
 async def post(request: Request):
+    await is_authenticated(request, permissions=["employee"])
     try:
         await api.entity_post(request)
         flash.set_message(request, "Entitet oprettet", type="success", remove=True)
@@ -108,8 +108,8 @@ async def post(request: Request):
         return JSONResponse({"message": "Entitet kunne ikke oprettes", "error": True})
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["employee"])
 async def get_list(request: Request):
+    await is_authenticated(request, permissions=["employee"])
     try:
         entities, schemas = await asyncio.gather(api.entities_get(request), api.schemas(request))
 

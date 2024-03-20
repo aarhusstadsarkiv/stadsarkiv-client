@@ -3,10 +3,11 @@ Set and get flash messages to be displayed to the user.
 """
 
 import typing
+from starlette.requests import Request
 from stadsarkiv_client.core.dynamic_settings import settings
 
 
-def set_message(request, message, type="notice", remove=True, use_settings=False) -> None:
+def set_message(request: Request, message: str, type="notice", remove=True, use_settings=False) -> None:
     """Set a flash message to be displayed to the user.
     Args:
         request: The request object.

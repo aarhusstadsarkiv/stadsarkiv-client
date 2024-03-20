@@ -6,7 +6,9 @@ from starlette.requests import Request
 from starlette.responses import RedirectResponse, JSONResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
-from stadsarkiv_client.core.decorators import is_authenticated
+
+# from stadsarkiv_client.core.decorators import is_authenticated
+from stadsarkiv_client.core.auth import is_authenticated
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core import user
@@ -46,8 +48,8 @@ async def login_post(request: Request):
         flash.set_message(request, str(e), type="error", use_settings=True)
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."))
 async def logout_get(request: Request):
+    await is_authenticated(request)
     context_values = {"title": translate("Logout")}
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse(request, "auth/logout.html", context)
@@ -121,8 +123,8 @@ async def me_permission_translated(request: Request):
     return permissions_translated[-1]
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."))
 async def me_get(request: Request):
+    await is_authenticated(request)
     try:
         me = await api.users_me_get(request)
         me["token"] = request.session["access_token"]
@@ -141,8 +143,8 @@ async def me_get(request: Request):
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."))
 async def orders(request: Request):
+    await is_authenticated(request)
     try:
         me = await api.users_me_get(request)
         context_values = {"title": translate("Your orders"), "me": me, "orders": auth_data.api_orders}
@@ -157,8 +159,8 @@ async def orders(request: Request):
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."))
 async def bookmarks(request: Request):
+    await is_authenticated(request)
     try:
         me = await api.users_me_get(request)
         context_values = {"title": translate("Your bookmarks"), "me": me, "bookmarks": auth_data.api_booksmarks}
@@ -173,8 +175,8 @@ async def bookmarks(request: Request):
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."))
 async def search_results(request: Request):
+    await is_authenticated(request)
     try:
         me = await api.users_me_get(request)
         context_values = {"title": translate("Your search results"), "me": me, "search_results": auth_data.api_search_results}

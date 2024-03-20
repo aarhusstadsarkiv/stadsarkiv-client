@@ -4,15 +4,14 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.relations import format_relations, sort_data
-from stadsarkiv_client.core.decorators import is_authenticated
-from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core.auth import is_authenticated
 
 
 log = get_log()
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["admin"])
 async def post(request: Request):
+    await is_authenticated(request, permissions=["admin"])
     try:
         await api.proxies_post_relations(request)
         return JSONResponse({"error": False, "message": "Relation er oprettet"})

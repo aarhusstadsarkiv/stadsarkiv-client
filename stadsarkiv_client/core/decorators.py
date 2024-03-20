@@ -2,83 +2,11 @@ import functools
 import time
 import pickle
 import os
-from stadsarkiv_client.core import flash
-from stadsarkiv_client.core import api
+
 from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.core.translate import translate
-from stadsarkiv_client.core import user
-from starlette.responses import RedirectResponse
-from functools import wraps
+
 
 log = get_log()
-
-
-def _get_redirect_url(request):
-    """
-    Create a redirect url with the current url as the next parameter.
-    The currect url is the url the user is trying to access - where the user needs to be authenticated.
-    """
-    current_url = request.url.path
-    redirect_url = f"/auth/login?next={current_url}"
-    return redirect_url
-
-
-def is_authenticated(func=None, message=translate("You need to be logged in to view this page."), permissions=[]):
-    """
-    Decorator to check if the user is logged in. If not, redirect to login page.
-    If permissions is set, check if the user has the required permissions.
-    """
-
-    if func is None:
-        return lambda func: is_authenticated(func, message=message, permissions=permissions)
-
-    @wraps(func)
-    async def wrapper(request, *args, **kwargs):
-        is_logged_in = await api.is_logged_in(request)
-        if not is_logged_in:
-            log.error(f"401 Unauthorized: {request.url}")
-            flash.set_message(request, message, type="error")
-
-            redirect_url = _get_redirect_url(request)
-            response = RedirectResponse(url=redirect_url, status_code=302, headers={"X-Message": message})
-            return response
-
-        if not permissions:
-            response = await func(request, *args, **kwargs)
-            return response
-
-        user_permissions_list = await api.me_permissions(request)
-        permission_granted = False
-
-        # root has all permissions
-        if "root" in user_permissions_list:
-            permission_granted = True
-
-        for permission in permissions:
-            if permission in user_permissions_list:
-                permission_granted = True
-                break
-
-        if not permission_granted:
-            users_me_get = await api.users_me_get(request)
-            log.error(f"403 Forbidden: {request.url}. User {users_me_get}. Missing required permissions")
-
-            user.logout(request)
-            flash.clear(request)
-            flash.set_message(
-                request,
-                translate("You do not have the required permissions to view the page."),
-                type="error",
-            )
-
-            redirect_url = _get_redirect_url(request)
-            response = RedirectResponse(url=redirect_url, status_code=302, headers={"X-Message": message})
-            return response
-
-        response = await func(request, *args, **kwargs)
-        return response
-
-    return wrapper
 
 
 # Generate cache dir from app base path

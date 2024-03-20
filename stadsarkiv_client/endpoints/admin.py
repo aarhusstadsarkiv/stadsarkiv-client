@@ -1,8 +1,7 @@
 from starlette.requests import Request
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
-from stadsarkiv_client.core.decorators import is_authenticated
-from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core.auth import is_authenticated
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core import user
@@ -10,8 +9,8 @@ from stadsarkiv_client.core import user
 log = get_log()
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["root"])
 async def users_get(request: Request):
+    await is_authenticated(request, permissions=["root"])
     users = await api.users_get(request)
 
     for user_ in users:
@@ -24,8 +23,9 @@ async def users_get(request: Request):
     return templates.TemplateResponse(request, "admin/users.html", context)
 
 
-@is_authenticated(message=translate("You need to be logged in to view this page."), permissions=["root"])
 async def users_get_single(request: Request):
+    await is_authenticated(request, permissions=["root"])
+
     user_ = await api.user_get(request)
     permissions = await api.users_permissions(request)
 
