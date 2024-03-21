@@ -43,6 +43,8 @@ const options = {
     'minInputLength': 2,
     'suggestionFocusClass': 'search-suggestion-focus',
     'returnFunction': returnFunction,
+    'preventOverflow': true,
+    'overflowSpace': 10, // In pixels
 }
 
 function autoCompleteInit() {

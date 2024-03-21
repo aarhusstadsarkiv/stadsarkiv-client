@@ -14,20 +14,24 @@ class AutoComplete {
     constructor(options) {
 
         // Required parameters
-        this.autocompleteElem = options.autocompleteElem;
+        this.autocompleteElem = options.autocompleteElem; 
         this.suggestionsElem = options.suggestionsElem;
         this.renderFunction = options.renderFunction;
         this.endpoint = options.endpoint;
 
         // Optional parameters
         this.debounceTimer = options.debounceTimer || 500;
-        this.lastInputValue = options.lastInputValue || '';
-        this.minInputLength = options.minInputLength || 2;
-        this.suggestionFocusClass = options.suggestionFocusClass || 'search-suggestion-focused';
-        this.suggestionItemClass = options.suggestionItemClass || 'search-suggestion-item';
-        this.returnFunction = options.returnFunction || returnFunction;
+        this.lastInputValue = options.lastInputValue || ''; // Last input value. Used to prevent fetching the same value multiple times
+        this.minInputLength = options.minInputLength || 2; 
+        this.suggestionFocusClass = options.suggestionFocusClass || 'search-suggestion-focused'; // Class for focused suggestion item
+        this.suggestionItemClass = options.suggestionItemClass || 'search-suggestion-item'; // Class for normal suggestion items
+        this.returnFunction = options.returnFunction || returnFunction; // Function to run when a suggestion is selected
         this.debug = options.debug || false;
+        
+        this.preventOverflow = options.preventOverflow || false; // Prevent suggestions from overflowing the window
+        this.overflowSpace = options.overflowSpace || 20; // Minimum space between suggestions and the bottom of the window in pixels
 
+        console.log(this.overflowSpace)
         // Debounce timeout ID
         this.timeoutID = null;
 
@@ -133,10 +137,21 @@ class AutoComplete {
         this.autocompleteElem.focus();
     }
 
+    setSuggestionsMaxHeight() {
+        const rect = this.autocompleteElem.getBoundingClientRect();
+        this.suggestionsElem.style.maxHeight = `calc(100vh - ${rect.bottom + this.overflowSpace}px)`;
+    }
+
     updateSuggestions(data) {
 
         this.suggestionsElem.style.display = 'block';
         this.suggestionsElem.innerHTML = this.renderFunction(data);
+
+        // Set max-height of suggestions to prevent overflowing the page, e.g. calc(100vh - 300px);
+
+        if (this.preventOverflow) {
+            this.setSuggestionsMaxHeight();
+        }
     }
 }
 

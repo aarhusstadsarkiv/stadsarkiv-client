@@ -72,6 +72,8 @@ function autoCompleteInit() {
         'suggestionFocusClass': 'search-suggestion-focus',
         'returnFunction': returnFunction,
         'debug': false,
+        'preventOverflow': true,
+        'overflowSpace': 60, // In pixels
     }
 
     new AutoComplete(options);
