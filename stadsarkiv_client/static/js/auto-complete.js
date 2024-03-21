@@ -31,7 +31,6 @@ class AutoComplete {
         this.preventOverflow = options.preventOverflow || false; // Prevent suggestions from overflowing the window
         this.overflowSpace = options.overflowSpace || 20; // Minimum space between suggestions and the bottom of the window in pixels
 
-        console.log(this.overflowSpace)
         // Debounce timeout ID
         this.timeoutID = null;
 
@@ -148,7 +147,6 @@ class AutoComplete {
         this.suggestionsElem.innerHTML = this.renderFunction(data);
 
         // Set max-height of suggestions to prevent overflowing the page, e.g. calc(100vh - 300px);
-
         if (this.preventOverflow) {
             this.setSuggestionsMaxHeight();
         }

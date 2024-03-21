@@ -44,7 +44,7 @@ const options = {
     'suggestionFocusClass': 'search-suggestion-focus',
     'returnFunction': returnFunction,
     'preventOverflow': true,
-    'overflowSpace': 10, // In pixels
+    'overflowSpace': 20, // In pixels
 }
 
 function autoCompleteInit() {

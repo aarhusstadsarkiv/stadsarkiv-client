@@ -28,6 +28,8 @@ function autoCompleteInit(searchBaseUrl) {
         'endpoint': `/auto_complete?q=`,
         'minInputLength': 2,
         'suggestionFocusClass': 'search-suggestion-focus',
+        'preventOverflow': true,
+        'overflowSpace': 20, // In pixels
     }
 
     new AutoComplete(options);
