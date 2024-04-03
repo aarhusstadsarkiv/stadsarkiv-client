@@ -1,20 +1,6 @@
-# docker
-
-Build:
-
-    docker-compose build 
-
-Run:
-    
-    docker-compose up
-
-Remove:
-
-    docker-compose down
-
 # systemd
 
-Create a systemd service file for the stadsarkiv-client:
+Create a systemd service file for the stadsarkiv-client. E.g.:
 
     sudo vim /etc/systemd/system/stadsarkiv-client.service
 
@@ -66,6 +52,37 @@ WantedBy=multi-user.target
     
     sudo systemctl status stadsarkiv-client.service
 
-## Upgrade
 
-    sudo ./bin/upgrade.sh GIT-TAG
+# Upgrade and restart service
+
+See: [example-config-aarhus/bin/upgrade.sh](example-config-aarhus/bin/upgrade.sh)
+
+The above script will upgrade the source code and restart the service. 
+
+Run it like this: `./example-config-aarhus/bin/upgrade.sh`
+
+Adjust it to your needs.
+
+# Restart service
+
+See: [example-config-aarhus/bin/restart.sh](example-config-aarhus/bin/restart.sh)
+
+The above script will restart the service.
+
+Run it like this: `./example-config-aarhus/bin/restart.sh`
+
+Adjust it to your needs.
+
+# docker
+
+Build:
+
+    docker-compose build 
+
+Run:
+    
+    docker-compose up
+
+Remove:
+
+    docker-compose down
