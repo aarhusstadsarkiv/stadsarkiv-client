@@ -65,7 +65,7 @@ Adjust it to your needs.
 
 # Restart service
 
-See: [example-config-aarhus/bin/restart.sh](example-config-aarhus/bin/restart.sh)
+See: [example-config-aarhus/bin/restart.sh](/aarhusstadsarkiv/stadsarkiv-client/blob/main/example-config-aarhus/bin/upgrade.sh)
 
 The above script will restart the service.
 
