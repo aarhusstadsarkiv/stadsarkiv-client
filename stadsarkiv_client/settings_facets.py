@@ -2,7 +2,6 @@
 Basic settings for facets in the search interface.
 """
 
-
 from stadsarkiv_client.core.logging import get_log
 import typing
 

@@ -35,9 +35,14 @@ def get_record_meta_data(request: Request, record: dict) -> dict:
     """
     meta_data = {}
 
+    title = _get_record_title(record)
+    if not title:
+        quote_title = record_utils.meaningful_substring(record.get("summary", ""), 200)
+        title = f"[{quote_title}]"
+
     meta_data["id"] = record["id"]
     meta_data["allowed_by_ip"] = _is_allowed_by_ip(request)
-    meta_data["title"] = _get_record_title(record)
+    meta_data["title"] = title
     meta_data["meta_title"] = _get_meta_title(record)
     meta_data["meta_description"] = record_utils.meaningful_substring(record.get("summary", ""), 120)
     meta_data["icon"] = _get_icon(record)
@@ -102,10 +107,6 @@ def _get_record_title(record: dict):
 
     if record_title:
         title = record_title
-
-    if not title:
-        title = record_utils.meaningful_substring(record.get("summary", ""), 200)
-        return f"[{title}]"
 
     return title
 
