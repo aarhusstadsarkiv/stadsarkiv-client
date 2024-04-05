@@ -112,6 +112,7 @@ async def get(request: Request):
         "is_employee": "employee" in permissions,
         "title": meta_data["title"],
         "meta_title": meta_data["meta_title"],
+        "meta_description": meta_data["meta_description"],
         "meta_data": meta_data,
         "record_and_types": record_and_types,
         "record_pagination": record_pagination,

@@ -1,6 +1,6 @@
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
-from stadsarkiv_client.records.record_utils import is_curator, is_collection
+from stadsarkiv_client.records import record_utils
 
 
 log = get_log()
@@ -44,19 +44,16 @@ class Hooks(HooksSpec):
         """
         Alter the record and meta_data dictionaries after the api call
         """
-        if is_collection(record, 1):
-            meta_title = f"[{record['summary'][:60]} ... ]"
-            meta_data["meta_title"] = meta_title
-            meta_data["record_type"] = "sejrs_sedler"
 
+        if record_utils.is_collection(record, 1):
+            meta_data["title"] = ""
+            meta_data["record_type"] = "sejrs_sedler"
             meta_data["representation_text"] = record["summary"]
             del record["summary"]
 
-        if is_curator(record, 4):
+        if record_utils.is_curator(record, 4):
             if record.get("summary"):
-                title = record["summary"]
-                meta_data["title"] = f"[{title}]"
-                meta_data["meta_title"] = f"[{title}]"
+                meta_data["title"] = f"[{record['summary']}]"
 
         return record, meta_data
 

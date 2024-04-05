@@ -4,6 +4,7 @@ Get some usefull meta data for a record
 
 from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
+from stadsarkiv_client.records import record_utils
 
 
 log = get_log()
@@ -37,9 +38,9 @@ def get_record_meta_data(request: Request, record: dict) -> dict:
     meta_data["id"] = record["id"]
     meta_data["allowed_by_ip"] = _is_allowed_by_ip(request)
     meta_data["title"] = _get_record_title(record)
-    meta_data["meta_title"] = _get_record_meta_title(record)
+    meta_data["meta_title"] = _get_meta_title(record)
+    meta_data["meta_description"] = record_utils.meaningful_substring(record.get("summary", ""), 120)
     meta_data["icon"] = _get_icon(record)
-
     meta_data["copyright_id"] = record["copyright_status"].get("id")
     meta_data["legal_id"] = record["other_legal_restrictions"].get("id")
     meta_data["contractual_id"] = record["contractual_status"].get("id")
@@ -89,16 +90,36 @@ def _is_downloadable(meta_data: dict) -> bool:
     )
 
 
-def _get_record_title(record_dict: dict):
+def _get_record_title(record: dict):
+    """
+    Try to get a title for the record. This is used as the title of the document, not the meta title
+    """
+
     title = ""
-    record_title = record_dict.get("title")
+    record_title = record.get("title")
     if not record_title:
-        record_title = record_dict.get("heading")
+        record_title = record.get("heading")
 
     if record_title:
         title = record_title
 
+    if not title:
+        title = record_utils.meaningful_substring(record.get("summary", ""), 200)
+        return f"[{title}]"
+
     return title
+
+
+def _get_meta_title(record: dict):
+    """
+    Get the meta title for the record. This is used as the meta title of the document, the <title> tag
+    """
+    meta_title = _get_record_title(record)
+
+    if not meta_title:
+        meta_title = record_utils.meaningful_substring(record.get("summary", ""), 60)
+
+    return meta_title
 
 
 def _set_representations(meta_data: dict, record: dict):
@@ -126,9 +147,3 @@ def _set_representations(meta_data: dict, record: dict):
         meta_data["is_representations_online"] = True
 
     return meta_data
-
-
-def _get_record_meta_title(record_dict: dict):
-    meta_title = _get_record_title(record_dict)
-
-    return meta_title

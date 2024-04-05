@@ -1,6 +1,5 @@
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
-from stadsarkiv_client.records.record_utils import is_curator
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.relations import format_relations, sort_data
 
@@ -93,18 +92,6 @@ class Hooks(HooksSpec):
         # query_params = [(key, value) for key, value in query_params if key != "collection"]
 
         return query_params
-
-    async def after_get_record(self, record: dict, meta_data: dict) -> tuple:
-        """
-        Alter the record and meta_data dictionaries after the api call
-        """
-        if is_curator(record, 4):
-            if record.get("summary"):
-                title = record["summary"]
-                meta_data["title"] = f"[{title}]"
-                meta_data["meta_title"] = f"[{title}]"
-
-        return record, meta_data
 
     async def after_get_resource(self, type: str, json: dict) -> dict:
         """
