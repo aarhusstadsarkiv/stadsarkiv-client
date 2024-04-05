@@ -145,7 +145,7 @@
         {% for key, value in query_params if key not in ['start', 'q'] %}
         <input type="hidden" name="{{ key }}" value="{{ value }}">
         {% endfor %}
-        <input id="q" type="text" name="q" placeholder="{{ translate('Search') }}" value="{{ q }}">
+        <input id="q" type="text" name="q" placeholder="{{ translate('Search') }}" value="{{ q }}" autocomplete="off">
         <button id="submit" type="submit" class="search-button">{{ translate('Search') }}</button>
     </form>
     <div class="search-suggestions"></div>

@@ -19,7 +19,7 @@
         <div class="home-search-container">
             <div class="home-search-form">
                 <form id="search" method="get" action="{{ url_for('proxies_search_get')}}" role="search">
-                    <input id="q" type="text" name="q" placeholder="{{ translate('Search') }}" value="{{ q }}">
+                    <input id="q" type="text" name="q" placeholder="{{ translate('Search') }}" value="{{ q }}" autocomplete="off">
                     <button id="submit" type="submit" class="search-button">{{ translate('Search') }}</button>
                 </form>
                 <div class="search-suggestions"></div>
