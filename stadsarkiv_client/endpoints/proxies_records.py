@@ -84,7 +84,15 @@ async def _get_record_pagination(request: Request):
             return None
 
     # Gather both API calls concurrently
-    next_record, prev_record = await asyncio.gather(get_next_record(), get_prev_record())
+    try:
+        """
+        This will fail if 'list index out of range'
+        This can happen if the user uses two tabs and the search result is updated in one tab.
+        """
+        next_record, prev_record = await asyncio.gather(get_next_record(), get_prev_record())
+    except Exception as e:
+        log.exception(e)
+        return None
 
     record_pagination["next_record"] = next_record
     record_pagination["prev_record"] = prev_record
