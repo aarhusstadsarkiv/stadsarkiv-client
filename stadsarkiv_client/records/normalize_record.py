@@ -31,12 +31,12 @@ def normalize_record_data(record: dict, meta_data: dict):
     record = _normalize_link_dicts(link_dict, record)
 
     record = _normalize_collection_tags(record)
-    record = normalize_representations(record, meta_data)
+    record = _normalize_representations(record, meta_data)
 
     return record
 
 
-def normalize_representations(record: dict, meta_data: dict):
+def _normalize_representations(record: dict, meta_data: dict):
     if "representations" in record:
         # Check if the record type is not "web_document" or "image"
         is_invalid_type = record["representations"]["record_type"] not in ["web_document", "image"]
