@@ -33,7 +33,6 @@ record_definitions = {
     "copyright_status_normalized": {"type": "string_list"},
     "collection": {"type": "link_dict"},
     "last_updated_by": {"type": "string"},
-    # "original_id": {"type": "string"},
     "date_to": {"type": "string"},
     "representations": {"type": "representations"},  # special type
     "collection_tags": {"type": "link_list"},
