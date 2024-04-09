@@ -74,11 +74,11 @@ class Hooks(HooksSpec):
 
         return record, record_and_types
 
-    async def after_get_resource(self, type: str, json: dict) -> dict:
+    async def after_get_resource(self, type: str, resource: dict) -> dict:
         """
         Alter the entity json is returned from the proxies api.
         """
-        return json
+        return resource
 
 
 def _convert_agenda_items_to_link_list(agenda_items: list) -> list:

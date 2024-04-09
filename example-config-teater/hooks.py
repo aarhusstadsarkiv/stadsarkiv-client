@@ -93,12 +93,12 @@ class Hooks(HooksSpec):
 
         return query_params
 
-    async def after_get_resource(self, type: str, json: dict) -> dict:
+    async def after_get_resource(self, type: str, resource: dict) -> dict:
         """
         Alter the entity json is returned from the proxies api.
         """
 
-        id = json["id"]
+        id = resource["id"]
 
         """
         'ext_data': {
@@ -110,13 +110,13 @@ class Hooks(HooksSpec):
             }
         """
 
-        if "ext_data" in json:
-            ext_data = json["ext_data"]
+        if "ext_data" in resource:
+            ext_data = resource["ext_data"]
             for key in ext_data:
-                json["ext_data_" + key] = ext_data[key]
+                resource["ext_data_" + key] = ext_data[key]
 
-        if type == "events" and "date_from" in json:
-            json["date_from_premier"] = json["date_from"]
+        if type == "events" and "date_from" in resource:
+            resource["date_from_premier"] = resource["date_from"]
 
         relations = await api.proxies_get_relations(self.request, type, id)
         relations_formatted = format_relations(type, relations)
@@ -125,6 +125,6 @@ class Hooks(HooksSpec):
         if type == "events":
             relations_formatted = sort_data(relations_formatted, "rel_label")
 
-        json["relations"] = relations_formatted
+        resource["relations"] = relations_formatted
 
-        return json
+        return resource
