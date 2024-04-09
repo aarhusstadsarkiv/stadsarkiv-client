@@ -26,6 +26,9 @@ settings: dict[str, typing.Any] = {
     ],
     "search_base_url": "/search",
     "robots_allow": True,
+    "allow_user_registration": True,
+    "allow_user_management": True,
+    "allow_online_ordering": True,
 }
 
 # Custom pages

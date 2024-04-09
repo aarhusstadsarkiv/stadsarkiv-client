@@ -59,6 +59,7 @@ settings: dict[str, typing.Any] = {
     "cors_allow_origins": ["https://client.openaws.dk", "https://dev.openaws.dk"],
     "allow_user_registration": True,
     "allow_user_management": True,
+    "allow_online_ordering": False,
 }
 
 pages: list = [{"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"}]
