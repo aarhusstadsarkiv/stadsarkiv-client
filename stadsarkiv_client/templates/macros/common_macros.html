@@ -1,20 +1,14 @@
-{% set settings = {'skip_translate': False} %}
 {% set search_base_url = get_setting('search_base_url') %}
 
 {% macro parse_record_label (label) %}
 <div class="label">
-    {% if settings.skip_translate %}
-    {{ translate(label, translation_add_key = false) }}
-    {% else %}
-    {% set label = "label_" + label %}
-    {{ translate(label) }}
-    {% endif %}
+    {{ label }}
 </div>
 {% endmacro %}
 
-{% macro parse_string (key, value) %}
+{% macro parse_string (key, value, label) %}
 <div class="record-content record_content_{{ key }}">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         <p>
             {{ value }}
@@ -23,18 +17,18 @@
 </div>
 {% endmacro %}
 
-{% macro parse_paragraphs (key, value) %}
+{% macro parse_paragraphs (key, value, label) %}
 <div class="record-content record_content_{{ key }}">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {{ paragraphs(value|trim)|safe }}
     </div>
 </div>
 {% endmacro %}
 
-{% macro parse_date (key, value) %}
+{% macro parse_date (key, value, label) %}
 <div class="record-content record_content_{{ key }}">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         <p>
             {{ date_format(value) }}
@@ -45,7 +39,7 @@
 
 {% macro parse_key_value_dict (value) %}
 {% for key, item in value.items() %}
-{{ parse_string(key, item) }}
+{{ parse_string(key, item, key) }}
 {% endfor %}
 {% endmacro %}
 
@@ -56,9 +50,9 @@
 {% endfor %}
 {% endmacro %}
 
-{% macro parse_link_dict(key, value) %}
+{% macro parse_link_dict(key, value, label) %}
 <div class="record-content record_content_{{ key }}">
-    {{ parse_record_label(key) }}
+    {{ parse_record_label(label) }}
     <div class="content">
         <p>
             <a href="{{ value['search_query'] }}">{{ value["label"] }}</a>
@@ -67,9 +61,9 @@
 </div>
 {% endmacro %}
 
-{% macro parse_link_list (key, value) %}
+{% macro parse_link_list (key, value, label) %}
 <div class="record-content record_content_{{ key }}">
-    {{ parse_record_label(key) }}
+    {{ parse_record_label(label) }}
     <div class="content">
         {% for link in value %}
         <p>
@@ -80,9 +74,9 @@
 </div>
 {% endmacro %}
 
-{% macro parse_url_list (key, value) %}
+{% macro parse_url_list (key, value, label) %}
 <div class="record-content record_content_{{ key }}">
-    {{ parse_record_label(key) }}
+    {{ parse_record_label(label) }}
     <div class="content">
             {% for link in value %}
             <p>
@@ -94,9 +88,9 @@
 </div>
 {% endmacro %}
 
-{% macro parse_string_list (key, value) %}
+{% macro parse_string_list (key, value, label) %}
 <div class="record-content record_content_{{ key }}">
-    {{ parse_record_label(key) }}
+    {{ parse_record_label(label) }}
     <div class="content">
         {% for item in value %}
         <p>{{ item|safe }}</p>
@@ -106,10 +100,10 @@
 </div>
 {% endmacro %}
 
-{% macro parse_string_list_as_string (key, value) %}
+{% macro parse_string_list_as_string (key, value, label) %}
 {% if value|length > 0 %}
 <div class="record-content record_content_{{ key }}">
-    {{ parse_record_label(key) }}
+    {{ parse_record_label(label) }}
     <div class="content">
         <p>{{ value|join(" ") }}</p>
     </div>
@@ -118,9 +112,9 @@
 {% endmacro %}
 
 
-{% macro parse_ordering (key, value, record_and_types) %}
+{% macro parse_ordering (key, value, record_and_types, label) %}
 <div class="record-content record_content_{{ key }}">
-    {{ parse_record_label(key) }}
+    {{ parse_record_label(label) }}
     <div class="content">
         {% for item in value %}
         <p>{{ item }}</p>
@@ -141,9 +135,9 @@
 </p>
 {% endmacro %}
 
-{% macro parse_link_list_hierarchy (key, value) %}
+{% macro parse_link_list_hierarchy (key, value, label) %}
 <div class="record-content record_content_{{ key }}">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         {% for item in value %}
         {{ _parse_list_in_hierarchy(item) }}
@@ -152,20 +146,20 @@
 </div>
 {% endmacro %}
 
-{% macro parse_icon(icon, label) %}
+{% macro parse_icon(icon, icon_label) %}
 <div class="record-icon">
     <span>{{ get_icon(icon)|safe }}</span>
 </div>
 <div class="record-icon-label">
-    {{ label }}
+    {{ icon_label }}
 </div>    
 {% endmacro %}
 
-{% macro parse_coordinates(key, value) %}
+{% macro parse_coordinates(key, value, label) %}
 
 {% if value["latitude"] and value["longitude"] %}
 <div class="record-content record_content_{{ key }}">
-    {{ parse_record_label(key)}}
+    {{ parse_record_label(label)}}
     <div class="content">
         <p>
             {{ value["latitude"] }}, {{ value["longitude"] }}
@@ -175,10 +169,10 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_representations(key, value) %}
+{% macro parse_representations(key, value, label) %}
 {% if value["record_type"] == "image" %}
 <div class="record-content record_content_{{ key }}">
-    {{ parse_record_label('download')}}
+    {{ parse_record_label(translate('label_download'))}}
     <div class="content">
         {% if value['record_image'] %}
         <a href="{{ value['record_image'] }}"> {{ translate('Download medium size')}}</a><br>
@@ -191,7 +185,7 @@
 {% endif %}
 {% if value["record_type"] == "web_document" %}
 <div class="record-content record_content_{{ key }}">
-    {{ parse_record_label('pdf_representations')}}
+    {{ parse_record_label(translate('label_pdf_representations'))}}
     <div class="content">
         <a href="{{ value['web_document_url'] }}"> {{ translate('Download PDF')}}</a><br>
     </div>
@@ -204,51 +198,51 @@
 {% set type = field["type"] %}
 {% set value = field["value"] %}
 {% set key = field["name"] %}
+{% set label = field["label"] %}
 
 {% if type == "string" %}
-{{ parse_string(key, value) }}
+{{ parse_string(key, value, label) }}
+
 {% elif type == "paragraphs" %}
-{{ parse_paragraphs(key, value) }}
+{{ parse_paragraphs(key, value, label) }}
+
 {% elif type == "date" %}
-{{ parse_date(key, value) }}
+{{ parse_date(key, value, label) }}
 
 {% elif type == "key_value_dicts" %}
-
-{% if settings.update({'skip_translate': True}) %} {% endif %}
 {{ parse_key_value_dicts(value ) }}
-{% if settings.update({'skip_translate': False}) %} {% endif %}
 
 {% elif type == "key_value_dict" %}
-
-{% if settings.update({'skip_translate': True}) %} {% endif %}
 {{ parse_key_value_dict(value ) }}
-{% if settings.update({'skip_translate': False}) %} {% endif %}
 
 {% elif type == "latitude_longitude_normalized" %}
-{{ parse_coordinates(key, value ) }}
+{{ parse_coordinates(key, value, label ) }}
 
 {% elif type == "ordering_normalized" %}
-{{ parse_ordering(key, value, record_and_types ) }}
+{{ parse_ordering(key, value, record_and_types, label ) }}
 
 {% elif type == "string_list" %}
-{{ parse_string_list(key, value ) }}
+{{ parse_string_list(key, value, label ) }}
 
 {% elif type == "string_list_as_string" %}
-{{ parse_string_list_as_string(key, value ) }}
+{{ parse_string_list_as_string(key, value, label ) }}
 
 {% elif type == "link_list" %}
-{{ parse_link_list(key, value ) }}
+{{ parse_link_list(key, value, label ) }}
 
 {% elif type == "url_list" %}
-{{ parse_url_list(key, value ) }}
+{{ parse_url_list(key, value, label ) }}
 
 {% elif type == "link_dict" %}
-{{ parse_link_dict(key, value ) }}
+{{ parse_link_dict(key, value, label ) }}
+
 {% elif type == "link_list_hierarchy" %}
-{{ parse_link_list_hierarchy(key, value ) }}
+{{ parse_link_list_hierarchy(key, value, label ) }}
+
 {% elif type == "representations" %}
-{{ parse_representations(key, value ) }}
+{{ parse_representations(key, value, label ) }}
 {% endif %}
+
 {% endmacro %}
 
 {% macro parse_block_common(title, block_keys, record_and_types) %}

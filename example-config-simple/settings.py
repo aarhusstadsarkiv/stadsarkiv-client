@@ -3,7 +3,7 @@ import typing
 
 settings: dict[str, typing.Any] = {
     "language": "da",
-    "log_handlers": ["stream", "rotating_file"],  # [ "stream", "file"]
+    "log_handlers": ["stream", "rotating_file"],  # [ "stream", "file", "rotating_file"]
     #
     # cookie settings
     #

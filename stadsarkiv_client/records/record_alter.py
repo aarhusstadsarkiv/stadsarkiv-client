@@ -11,6 +11,7 @@ from stadsarkiv_client.records.normalize_availability import normalize_availabil
 from stadsarkiv_client.records.normalize_ordering import normalize_ordering
 from stadsarkiv_client.records.normalize_record import normalize_record_data
 from stadsarkiv_client.records.record_definitions import record_definitions
+from stadsarkiv_client.core.translate import translate
 
 from starlette.requests import Request
 
@@ -45,6 +46,7 @@ def get_record_and_types(record):
         try:
             definition = record_definitions[key]
             record_item["type"] = definition["type"]
+            record_item["label"] = translate("label_" + key)
             record_altered[key] = record_item
         except KeyError:
             pass
@@ -60,5 +62,6 @@ def set_record_and_type(record_and_types, key, value, type):
     record_and_types[key]["name"] = key
     record_and_types[key]["value"] = value
     record_and_types[key]["type"] = type
+    record_and_types[key]["label"] = translate("label_" + key)
 
     return record_and_types

@@ -171,7 +171,9 @@ def get_resource_and_types(resource):
         try:
             definition = resource_definitions[key]
             resource_item["type"] = definition["type"]
+            resource_item["label"] = translate("label_" + key)
             resource_altered[key] = resource_item
+
         except KeyError:
             # create meta dict
             if key in ["id_real", "schema"]:

@@ -285,17 +285,17 @@
             <div class="search-details">
                 {{ parse_search_title(result) }}
                 {% if result.collectors_label %}
-                {{ common_macros.parse_string('collectors', result.collectors_label) }}
+                {{ common_macros.parse_string('collectors', result.collectors_label, translate('label_collectors')) }}
                 {% endif %}
                 {% if result.collection %}
-                {{ common_macros.parse_string('collection', result.collection) }}
+                {{ common_macros.parse_string('collection', result.collection, translate('label_collection')) }}
                 {% endif %}
                 {% if serie %}
-                {{ common_macros.parse_string('series', serie) }}
+                {{ common_macros.parse_string('series', serie, translate('label_series')) }}
                 {% endif %}
-                {{ common_macros.parse_string('date_normalized', result.date_normalized) }}
+                {{ common_macros.parse_string('date_normalized', result.date_normalized, translate('label_date_normalized')) }}
                 {% if result.content_type %}
-                {{ common_macros.parse_string('content_type', result.content_type) }}
+                {{ common_macros.parse_string('content_type', result.content_type, translate('label_content_type')) }}
                 {% endif %}
             </div>
         </a>
