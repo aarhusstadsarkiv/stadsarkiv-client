@@ -24,19 +24,9 @@ def get_string_or_link_list(name: str, values: list):
     should_linkify = _should_linkify(values[0])
     if should_linkify:
         links = _get_link_list(name, values)
-
-        return {
-            "type": "link_list",
-            "value": links,
-            "name": name,
-        }
-
+        return links
     else:
-        return {
-            "type": "string_list",
-            "value": values,
-            "name": name,
-        }
+        return values
 
 
 def set_sources_normalized(data: dict):

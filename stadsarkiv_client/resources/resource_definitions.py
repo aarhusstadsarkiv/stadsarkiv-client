@@ -14,6 +14,8 @@ resource_definitions = {
     "lastnames": {"type": "string_list_as_string"},
     "occupation": {"type": "string_list"},
     "industry": {"type": "string_list"},
+    "collectors": {"type": "link_list"},
+    "curators": {"type": "link_list"},
     "collectors_link": {"type": "link_list"},
     "creators_link": {"type": "link_list"},
     "sources_normalized": {"type": "string_list"},
