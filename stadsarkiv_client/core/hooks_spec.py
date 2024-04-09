@@ -38,6 +38,12 @@ class HooksSpec:
         """
         return record, meta_data
 
+    async def after_get_record_and_types(self, record: dict, record_and_types: dict) -> tuple:
+        """
+        Alter the record and meta_data dictionaries after the api call
+        """
+        return record, record_and_types
+
     async def before_get_search(self, query_params: list) -> list:
         """
         Alter the search query params. Before the search is executed.

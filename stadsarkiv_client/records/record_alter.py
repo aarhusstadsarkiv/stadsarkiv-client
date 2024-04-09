@@ -50,3 +50,15 @@ def get_record_and_types(record):
             pass
 
     return record_altered
+
+
+def set_record_and_type(record_and_types, key, value, type):
+    """
+    Set a new key value pair on record_and_type
+    """
+    record_and_types[key] = {}
+    record_and_types[key]["name"] = key
+    record_and_types[key]["value"] = value
+    record_and_types[key]["type"] = type
+
+    return record_and_types

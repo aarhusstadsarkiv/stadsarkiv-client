@@ -116,6 +116,8 @@ async def get(request: Request):
     record_altered = record_alter.record_alter(request, record, meta_data)
     record_and_types = record_alter.get_record_and_types(record_altered)
 
+    record, record_and_types = await hooks.after_get_record_and_types(record, record_and_types)
+
     context_variables = {
         "is_employee": "employee" in permissions,
         "title": meta_data["title"],
@@ -143,6 +145,8 @@ async def get_json(request: Request):
 
         record_altered = record_alter.record_alter(request, record, meta_data)
         record_and_types = record_alter.get_record_and_types(record_altered)
+
+        record, record_and_types = await hooks.after_get_record_and_types(record, record_and_types)
 
         if type == "record":
             record_json = json.dumps(record, indent=4, ensure_ascii=False)
