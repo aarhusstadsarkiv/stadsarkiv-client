@@ -17,7 +17,7 @@ _search_base_url = settings["search_base_url"]
 log = get_log()
 
 
-def get_string_or_link_list(name: str, values: list):
+def get_link_list(name: str, values: list):
     """
     Get string list and convert to link list if string contains ';'
     """
@@ -28,16 +28,7 @@ def get_string_or_link_list(name: str, values: list):
             links = _get_link_list(name, [value])
             link_list.extend(links)
 
-    # empty list return None
-    if not link_list:
-        return None
     return link_list
-    should_linkify = _should_linkify(values[0])
-    if should_linkify:
-        links = _get_link_list(name, values)
-        return links
-    else:
-        return values
 
 
 def set_sources_normalized(data: dict):
