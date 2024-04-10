@@ -6,6 +6,8 @@
 
 {% include "includes/main_title.html" %}
 
+{% if not is_logged_in %}
+
 <form method="post" action="{{ post_url }}">
     <input type="text" name="username" placeholder="{{ translate('Email') }}" aria-label="Login" autocomplete="email"
         required>
@@ -15,7 +17,10 @@
     <p>
         <a href="{{ url_for('auth_forgot_password_get') }}">{{ translate('Forgot your password') }}</a>
     </p>
-    
 </form>
+    
+{% else %}
+    <p>{{ translate('You are already logged in.') }}</p>
+{% endif %}
 
 {% endblock content %}

@@ -19,13 +19,15 @@ log = get_log()
 
 
 async def login_get(request: Request):
-    next_url = request.query_params.get("next", "/search")
-    context_values = {"title": translate("Login"), "post_url": "/auth/login?next=" + next_url}
-    context = await get_context(request, context_values=context_values)
 
-    if await api.is_logged_in(request):
-        flash.set_message(request, translate("You are already logged in."), type="error", remove=True)
-        return RedirectResponse(url="/", status_code=302)
+    is_logged_in = await api.is_logged_in(request)
+    next_url = request.query_params.get("next", "/search")
+    context_values = {
+        "title": translate("Login"),
+        "post_url": "/auth/login?next=" + next_url,
+        "is_logged_in": is_logged_in,
+    }
+    context = await get_context(request, context_values=context_values)
 
     return templates.TemplateResponse(request, "auth/login.html", context)
 
