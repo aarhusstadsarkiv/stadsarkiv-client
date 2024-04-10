@@ -43,7 +43,7 @@ def set_outer_years(data: dict):
     """
     Set 'outer_years' field on dict
     """
-    if "date_from" and "date_to" in data:
+    if "date_from" in data and "date_to" in data:
         outer_years = data["date_from"] + "-" + data["date_to"]
         data["outer_years"] = outer_years
     elif "date_from" in data:
