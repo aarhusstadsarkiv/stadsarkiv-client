@@ -1,14 +1,16 @@
 # Ønsker 
 
-"Kreativ ophav skal sættes på." (Backend)
-
-Zoom på billeder.
-Større format på billeder (backend)
-
-Forskellige søgeresultater for fx:
+* "Kreativ ophav skal sættes på." (Backend)
+* Zoom på billeder.
+* Større format på billeder (backend)
+* Forskellige søgeresultater for fx:
 
 karré 211
 karre 211
+
+* "Kan man søge på arkiv-id i AarhusArkivet"
+
+Bare til overvejelse, hvis man ikke kan.
 
 
 # Rettelser: 
