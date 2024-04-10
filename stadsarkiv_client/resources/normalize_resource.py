@@ -21,6 +21,17 @@ def get_string_or_link_list(name: str, values: list):
     """
     Get string list and convert to link list if string contains ';'
     """
+    link_list = []
+    for value in values:
+        should_linkify = _should_linkify(value)
+        if should_linkify:
+            links = _get_link_list(name, [value])
+            link_list.extend(links)
+
+    # empty list return None
+    if not link_list:
+        return None
+    return link_list
     should_linkify = _should_linkify(values[0])
     if should_linkify:
         links = _get_link_list(name, values)
@@ -154,6 +165,10 @@ def get_resource_and_types(resource):
     resource_altered = {}
     resource_altered["meta"] = {}
     for key, value in resource.items():
+
+        if not value:
+            continue
+
         resource_item = {}
         resource_item["value"] = value
         resource_item["name"] = key
@@ -198,8 +213,10 @@ def _should_linkify(value: str):
 def _get_link_list(name: str, values: list):
     links = []
     for elem in values:
-        id_label = elem.split(";")
-        links.append({"search_query": f"{_search_base_url}?{name}={id_label[0]}", "label": f"{id_label[1]}"})
+        query_id_or_label = elem.split(";")
+        query_id = query_id_or_label[0]
+        label = query_id_or_label[1]
+        links.append({"search_query": f"{_search_base_url}?{name}={query_id}", "label": f"{label}"})
 
     return links
 

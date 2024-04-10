@@ -39,6 +39,10 @@ def get_record_and_types(record):
     """
     record_altered = {}
     for key, value in record.items():
+
+        if not value:
+            continue
+
         record_item = {}
         record_item["value"] = value
         record_item["name"] = key
