@@ -42,6 +42,7 @@ async def _get_resource(request: Request):
 
 
 async def _get_resource_context(request):
+
     resource = await _get_resource(request)
     title = resource["display_label"]
     resource = resource_alter.resource_alter(resource)
@@ -53,13 +54,22 @@ async def _get_resource_context(request):
 
 
 async def get(request: Request):
-    resource_type = request.path_params["resource_type"]
 
-    try:
-        context = await _get_resource_context(request)
-    except Exception as e:
-        log.error(e)
-        raise HTTPException(status_code=404, detail="Resource not found")
+    allow_resource_types = [
+        "collections",
+        "people",
+        "locations",
+        "creators",
+        "events",
+        "organisations",
+        "collectors",
+    ]
+
+    resource_type = request.path_params["resource_type"]
+    if resource_type not in allow_resource_types:
+        raise HTTPException(status_code=404, detail="Resource type not found")
+
+    context = await _get_resource_context(request)
 
     if resource_type == "collections":
         return templates.TemplateResponse(request, "resources/collections.html", context)
@@ -81,8 +91,6 @@ async def get(request: Request):
 
     elif resource_type == "collectors":
         return templates.TemplateResponse(request, "resources/collectors.html", context)
-
-    raise HTTPException(status_code=404, detail="Resource type not found")
 
 
 async def get_json(request: Request):

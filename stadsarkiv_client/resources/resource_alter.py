@@ -11,6 +11,7 @@ log = get_log()
 
 
 def resource_alter(resource: dict):
+
     schema = resource["schema"]
 
     resource_orginal = resource.copy()
