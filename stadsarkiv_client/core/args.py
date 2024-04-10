@@ -17,7 +17,8 @@ def get_local_config_dir(*sub_dirs: str) -> str:
     Get a config dir from command line arguments.
     If it is not set, return "local".
     """
-    # Get env CONFIG_DIR from os
+    # Get env CONFIG_DIR from os. This is set in the command line arguments to the server.
+
     local_config_dir = os.environ.get("CONFIG_DIR", "local")
 
     # Unpack the list of directories or files

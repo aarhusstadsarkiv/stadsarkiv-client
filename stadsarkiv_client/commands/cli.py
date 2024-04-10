@@ -30,6 +30,7 @@ def cli():
 def server_prod(port: int, workers: int, host: str, config_dir: str):
     _stop_server(PID_FILE)
 
+    config_dir.rstrip("/\\")
     os.environ["CONFIG_DIR"] = config_dir
 
     if os.name == "nt":
@@ -82,6 +83,7 @@ def server_docker(port: int, workers: int, host: str):
 @click.option("-c", "--config-dir", default="local", help="Specify a local config directory.", required=False)
 @click.option("--reload", default=True, help="Reload on changes", required=False)
 def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True):
+    config_dir = config_dir.rstrip("/\\")
     os.environ["CONFIG_DIR"] = config_dir
     _stop_server(PID_FILE)
 
@@ -106,6 +108,7 @@ def version():
 
 def run_tests(config_dir, tests_path_pattern):
     if config_dir:
+        config_dir = config_dir.rstrip("/\\")
         os.environ["CONFIG_DIR"] = config_dir
 
     # get test files
