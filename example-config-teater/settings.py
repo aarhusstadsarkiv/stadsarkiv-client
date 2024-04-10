@@ -39,6 +39,7 @@ settings: dict[str, typing.Any] = {
     "facets_enabled": ["events"],
     "allow_user_registration": False,
     "allow_user_management": True,
+    "allow_online_ordering": False,
 }
 
 # Custom pages
