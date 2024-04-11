@@ -16,6 +16,7 @@ from stadsarkiv_client.endpoints import (
     schemas,
     entities,
     error,
+    upload,
 )
 import os
 from stadsarkiv_client.core.dynamic_settings import settings
@@ -89,6 +90,7 @@ routes = [
     Route("/relations/{rel_id:str}", endpoint=proxies_relations.delete, name="proxies_relations_delete", methods=["DELETE"]),
     Route("/relations/{type:str}/{id:str}", endpoint=proxies_relations.get, name="proxies_relations_get", methods=["GET"]),
     Route("/error/log", endpoint=error.log_post, name="error_log_post", methods=["POST"]),
+    Route("/upload", endpoint=upload.handle_uploads, name="upload", methods=["POST"]),
 ]
 
 # Add registration routes if allowed

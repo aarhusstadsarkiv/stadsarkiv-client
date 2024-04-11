@@ -19,8 +19,19 @@
 <div id='editor_holder' class='small'></div>
 <button id='submit'>{{ "Opret entitet" }}</button>
 
+<div id="upload_field">
+    <form enctype="multipart/form-data">
+        <label for="files">{{ "Upload fil" }}</label>
+        <input type="file" id="files" name="files" accept="image/*,application/pdf" multiple>
+        <button id="upload">{{ "Upload" }}</button>
+    </form>
+</div>
+
+<div id="upload_message"></div>
+
 <script type="module">
 
+    import '/static/js/upload.js';
     import { Requests } from "/static/js/requests.js";
     import { Flash } from "/static/js/flash.js";
     import { showErrorMessages, getEditor } from "/static/js/jsoneditor-utils.js";

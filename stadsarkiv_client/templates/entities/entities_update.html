@@ -25,10 +25,21 @@
     <button id='submit'>{{ "Opdater entitet" }}</button>
 </div>
 
+<div id="upload_field">
+    <form enctype="multipart/form-data">
+        <label for="files">{{ "Upload fil" }}</label>
+        <input type="file" id="files" name="files" accept="image/*,application/pdf" multiple>
+        <button id="upload">{{ "Upload" }}</button>
+    </form>
+</div>
+
+<div id="upload_message"></div>
+
 <script type="module">
 
-    // import { html, render } from '/static/js/lit-core.min.js';
-    import { html, render } from 'https://cdn.jsdelivr.net/gh/lit/dist@3/core/lit-core.min.js';
+    import '/static/js/upload.js';
+    import { html, render } from '/static/js/lit-core.min.js';
+    // import { html, render } from 'https://cdn.jsdelivr.net/gh/lit/dist@3/core/lit-core.min.js';
     import { Requests } from "/static/js/requests.js";
     import { Flash } from "/static/js/flash.js";
     import { showErrorMessages, getEditor } from "/static/js/jsoneditor-utils.js";
