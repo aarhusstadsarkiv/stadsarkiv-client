@@ -30,7 +30,7 @@ def cli():
 def server_prod(port: int, workers: int, host: str, config_dir: str):
     _stop_server(PID_FILE)
 
-    config_dir.rstrip("/\\")
+    config_dir = config_dir.rstrip("/\\")
     os.environ["CONFIG_DIR"] = config_dir
 
     if os.name == "nt":
