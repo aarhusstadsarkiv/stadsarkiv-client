@@ -182,8 +182,8 @@ def get_resource_and_types(resource):
     resource_altered["meta"] = {}
     for key, value in resource.items():
 
-        # if not value:
-        #     continue
+        if not value:
+            continue
 
         resource_item = {}
         resource_item["value"] = value
