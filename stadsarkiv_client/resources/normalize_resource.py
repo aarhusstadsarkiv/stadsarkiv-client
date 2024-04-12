@@ -17,16 +17,19 @@ _search_base_url = settings["search_base_url"]
 log = get_log()
 
 
-def get_link_list(name: str, values: list):
+def get_link_list(name: str, value: list):
     """
     Get string list and convert to link list if string contains ';'
+    Ignore if string does not contain ';'
     """
     link_list = []
-    for value in values:
-        should_linkify = _should_linkify(value)
-        if should_linkify:
-            links = _get_link_list(name, [value])
-            link_list.extend(links)
+    for item in value:
+        item = item.strip()
+        if item.find(";") == -1:
+            continue
+
+        link = _generate_semi_colon_link(name, item)
+        link_list.append(link)
 
     return link_list
 
@@ -45,6 +48,10 @@ def set_outer_years(data: dict):
     """
     Set 'outer_years' field on dict
     """
+
+    if data["schema"] != "collection":
+        return data
+
     if "date_from" in data and "date_to" in data:
         outer_years = data["date_from"] + "-" + data["date_to"]
         data["outer_years"] = outer_years
@@ -55,8 +62,13 @@ def set_outer_years(data: dict):
 
 def set_created_decommissioned(data: dict):
     """
-    copy date_from to date_created and date_to to date_decommissioned
+    copy 'date_from' to 'date_created' and 'date_to' to 'date_decommissioned'
+    This only applies to schema 'organisation'
     """
+
+    if data["schema"] != "organisation":
+        return data
+
     if "date_from" in data:
         data["date_created"] = data["date_from"]
 
@@ -70,7 +82,7 @@ def set_latitude_longitude(data: dict):
     """
     Set 'latitude_longitude_normalized' field on dict
     """
-    if "latitude" and "longitude" in data:
+    if "latitude" in data and "longitude" in data:
         data["latitude_longitude_normalized"] = {
             "latitude": str(data["latitude"]),
             "longitude": str(data["longitude"]),
@@ -83,8 +95,8 @@ def set_creators_link_list(data: dict, schema):
     """
     Set creator_link field on dict.
     """
-    is_creator = data.get("is_creator", False)
-    is_creative_creator = data.get("is_creative_creator", False)
+    is_creator = data.get("is_creator")
+    is_creative_creator = data.get("is_creative_creator")
 
     if is_creator and is_creative_creator:
         label_key = "creator" if schema == "person" else "organization"
@@ -104,7 +116,7 @@ def set_collectors_link_list(data: dict, schema):
     """
     Set collectors_link field on dict.
     """
-    is_creator = data.get("is_creator", False)
+    is_creator = data.get("is_creator")
 
     if is_creator:
         label_key = "creator" if schema == "person" else "organization"
@@ -149,6 +161,19 @@ def alter_portrait_hightlights(resource: dict):
     return resource
 
 
+def normalize_curators_collectors(resource: dict):
+    string_list_or_link_list = [
+        "collectors",
+        "curators",
+    ]
+
+    for elem in string_list_or_link_list:
+        if elem in resource:
+            resource[elem] = get_link_list(elem, resource[elem])
+
+    return resource
+
+
 def get_resource_and_types(resource):
     """
     Get resource with types
@@ -189,27 +214,16 @@ def _get_sources_normalized(sources: list):
     return sources_normalized
 
 
-def _should_linkify(value: str):
-    """
-    Check if string should be linkified. '1;collection'
-    Split into id and label. If ';' in string, return True
-    """
-    value = value.strip()
-    if value.find(";") != -1:
-        return True
+def _generate_semi_colon_link(name: str, value: str):
 
-    return False
+    query_id_or_label = value.split(";")
+    query_id = query_id_or_label[0]
+    label = query_id_or_label[1]
 
-
-def _get_link_list(name: str, values: list):
-    links = []
-    for elem in values:
-        query_id_or_label = elem.split(";")
-        query_id = query_id_or_label[0]
-        label = query_id_or_label[1]
-        links.append({"search_query": f"{_search_base_url}?{name}={query_id}", "label": f"{label}"})
-
-    return links
+    return {
+        "search_query": f"{_search_base_url}?{name}={query_id}",
+        "label": f"{label}",
+    }
 
 
 def _http_to_https(url: str):

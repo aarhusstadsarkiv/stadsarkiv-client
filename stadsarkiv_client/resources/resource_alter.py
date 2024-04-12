@@ -26,16 +26,7 @@ def resource_alter(resource: dict):
     resource = normalize_resource.set_outer_years(resource)
     resource = normalize_resource.set_latitude_longitude(resource)
     resource = normalize_resource.alter_portrait_hightlights(resource)
-
-    string_list_or_link_list = [
-        "collectors",
-        "curators",
-    ]
-
-    for elem in string_list_or_link_list:
-        if elem in resource:
-            resource[elem] = normalize_resource.get_link_list(elem, resource[elem])
-
+    resource = normalize_resource.normalize_curators_collectors(resource)
     resource = normalize_resource.get_resource_and_types(resource)
 
     resource["relations"] = relations
