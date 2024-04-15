@@ -17,10 +17,6 @@
     .record-section {
         flex-direction: column;
     }
-
-    .record-representation {
-        margin: 0 auto;
-    }
 }
 
 
@@ -87,7 +83,7 @@ h3.record-header {
     .record-content {
         flex-direction: column;
         gap: unset;
-        display: block;
+
     }
 
     .record-content>.label {
