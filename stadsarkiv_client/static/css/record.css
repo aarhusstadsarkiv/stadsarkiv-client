@@ -87,6 +87,7 @@ h3.record-header {
     .record-content {
         flex-direction: column;
         gap: unset;
+        display: block;
     }
 
     .record-content>.label {
