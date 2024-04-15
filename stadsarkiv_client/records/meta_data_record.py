@@ -139,12 +139,13 @@ def _set_representations(meta_data: dict, record: dict):
 
         meta_data["portrait"] = record.get("portrait")
 
-    meta_data["has_representations"] = False
-    if meta_data["legal_id"] == 1 and meta_data["contractual_id"] > 2:
-        meta_data["has_representations"] = True
+    if meta_data["record_type"]:
+        meta_data["has_representations"] = False
+        if meta_data["legal_id"] == 1 and meta_data["contractual_id"] > 2:
+            meta_data["has_representations"] = True
 
-    meta_data["is_representations_online"] = False
-    if meta_data["availability_id"] == 4 or meta_data["allowed_by_ip"]:
-        meta_data["is_representations_online"] = True
+        meta_data["is_representations_online"] = False
+        if meta_data["availability_id"] == 4 or meta_data["allowed_by_ip"]:
+            meta_data["is_representations_online"] = True
 
     return meta_data
