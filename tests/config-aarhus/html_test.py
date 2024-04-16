@@ -56,3 +56,16 @@ class TestHTML(unittest.TestCase):
 
         elem = soup.find("video")
         self.assertIsNotNone(elem)
+
+    def test_representations_slideshow(self):
+        client = TestClient(app)
+        response = client.get("/collections/1")
+
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        elem = soup.find("div", {"class": "slideshow-container"})
+        self.assertIsNotNone(elem)
+
+
+if __name__ == "__main__":
+    unittest.main()
