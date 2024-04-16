@@ -12,6 +12,14 @@ karre 211
 
 Bare til overvejelse, hvis man ikke kan.
 
+# Manglende data
+
+Fx: 
+
+https://aarhusteaterarkiv-web.appspot.com/records/000314543
+
+Denne har resources. Tilsyneladende et billede, men det vises ikke. 
+Ligeledes står der at "Materialet er online her på Aarhusarkivet.dk ... "
 
 # Rettelser: 
 
