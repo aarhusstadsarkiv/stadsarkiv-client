@@ -17,9 +17,8 @@ class TestHTML(unittest.TestCase):
         response = client.get("/records/000110411")
 
         soup = BeautifulSoup(response.content, "html.parser")
-
-        # check if there is div with the class "record-sejrs-sedler"
         elem = soup.find("div", {"class": "record-sejrs-sedler"})
+
         self.assertIsNotNone(elem)
 
     def test_representations_image(self):
@@ -28,11 +27,9 @@ class TestHTML(unittest.TestCase):
 
         soup = BeautifulSoup(response.content, "html.parser")
 
-        # check if there is div with the class "record-sejrs-sedler"
         overlays = soup.find("div", {"class": "overlays"})
         self.assertIsNotNone(overlays)
 
-        # check if id = "overlay-image" exists
         elem = soup.find("div", {"class": "overlay-wrapper"})
         self.assertIsNotNone(elem)
 
