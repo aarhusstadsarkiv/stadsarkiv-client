@@ -46,13 +46,14 @@ class Hooks(HooksSpec):
         """
         Alter the record and meta_data dictionaries after the api call
         """
-
+        # sejrs sedler
         if record_utils.is_collection(record, 1):
             meta_data["title"] = ""
             meta_data["record_type"] = "sejrs_sedler"
             meta_data["representation_text"] = record["summary"]
             del record["summary"]
 
+        # teater arkivet
         if record_utils.is_curator(record, 4):
             if record.get("summary"):
                 meta_data["title"] = f"[{record['summary']}]"

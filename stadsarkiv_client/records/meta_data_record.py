@@ -125,7 +125,7 @@ def _get_meta_title(record: dict):
 
 def _set_representations(meta_data: dict, record: dict):
     """
-    This indicates if the record has representations, which images, audio, video, pdf
+    This indicates if the record has representations, which images, audio, video, pdf, sejrs_sedler
     """
 
     meta_data["record_type"] = None
@@ -147,5 +147,13 @@ def _set_representations(meta_data: dict, record: dict):
         meta_data["is_representations_online"] = False
         if meta_data["availability_id"] == 4 or meta_data["allowed_by_ip"]:
             meta_data["is_representations_online"] = True
+
+    # sejrs_sedler does not have a "representations" key, but it is a representation (text)
+    # get the "collection" dict from the record and extract the "id" from it
+    collection_id = record.get("collection", {}).get("id")
+    if collection_id == 1:
+        meta_data["record_type"] = "sejrs_sedler"
+        meta_data["is_representations_online"] = True
+        meta_data["has_representations"] = True
 
     return meta_data
