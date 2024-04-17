@@ -34,5 +34,3 @@ window.addEventListener('pageshow', function (e) {
         closedMenu.style.display = "block";
     }
 });
-
-export { }
