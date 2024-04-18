@@ -51,7 +51,8 @@ def get_record_meta_data(request: Request, record: dict) -> dict:
     meta_data["contractual_id"] = record["contractual_status"].get("id")
     meta_data["availability_id"] = record["availability"].get("id")
     meta_data["usability_id"] = record["usability"].get("id")
-
+    meta_data["collection_id"] = record.get("collection", {}).get("id")
+    meta_data["series"] = record.get("series")
     # This should be altered to record_represenation_type
     meta_data = _set_representations(meta_data, record)
 
