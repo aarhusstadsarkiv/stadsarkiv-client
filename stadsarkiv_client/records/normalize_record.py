@@ -6,16 +6,27 @@ from stadsarkiv_client.core.logging import get_log
 import urllib.parse
 from stadsarkiv_client.records.record_definitions import record_definitions
 from stadsarkiv_client.core.dynamic_settings import settings
+from stadsarkiv_client.core import cookie
+from starlette.requests import Request
+from urllib.parse import quote_plus
 
 
 _search_base_url = settings["search_base_url"]
 log = get_log()
 
 
-def normalize_record_data(record: dict, meta_data: dict):
+search_query_params: list = []
+
+
+def normalize_record_data(request: Request, record: dict, meta_data: dict):
     """
     Normalize record data to a more sane data structure
     """
+
+    global search_query_params
+
+    search_query_params = cookie.get_search_query_params(request)  # type: ignore
+
     record = _normalize_dict_data(record)
     record = _normalize_series(record)
     record = _normalize_content_types(record)
@@ -34,6 +45,33 @@ def normalize_record_data(record: dict, meta_data: dict):
     record = _normalize_representations(record, meta_data)
 
     return record
+
+
+def _normalize_search_query(search_str: str):
+
+    # copy search_query_params
+    local_search_query_params = list(search_query_params)
+
+    # get query part of the search string
+    query_part = search_str.split("?")[1]
+
+    # generate list of tuples from query_part
+    query_list = []
+    for query in query_part.split("&"):
+        query_list.append(tuple(query.split("=")))
+
+    # add to search_query_params any query that is not already in search_query_params
+    for query in query_list:  # type: ignore
+        if query not in local_search_query_params:
+            log.debug(f"Adding query to search_query_params: {query}")
+            local_search_query_params.append(query)
+
+    # convert search_query_params to a string
+    search_str = "/search?"
+    for query in local_search_query_params:
+        search_str += f"{query[0]}={(query[1])}&"
+
+    return search_str
 
 
 def _normalize_representations(record: dict, meta_data: dict):
@@ -77,7 +115,9 @@ def _normalize_series(record: dict):
             label = last_label + serie["label"]
             last_label = label + "/"
 
-            serie["search_query"] = f"{_search_base_url}?collection={str(record['collection']['id'])}&series={urllib.parse.quote(label)}"
+            search_query = f"{_search_base_url}?collection={str(record['collection']['id'])}&series={label}"
+            search_query = _normalize_search_query(search_query)
+            serie["search_query"] = search_query
             series_normalized.append(serie)
 
         record["series"] = [series_normalized]
@@ -95,7 +135,9 @@ def _normalize_content_types(record: dict):
         content_types_list = record["content_types"]
         for content_type in content_types_list:
             for item in content_type:
-                item["search_query"] = f"{_search_base_url}?content_types={str(item['id'])}"
+                search_query = f"{_search_base_url}?content_types={str(item['id'])}"
+                search_query = _normalize_search_query(search_query)
+                item["search_query"] = search_query
 
         record["content_types"] = content_types_list
     return record
@@ -109,7 +151,9 @@ def _normalize_subjects(record: dict):
         subjects = record["subjects"]
         for subject in subjects:
             for item in subject:
-                item["search_query"] = f"{_search_base_url}?subjects={str(item['id'])}"
+                search_query = f"{_search_base_url}?subjects={str(item['id'])}"
+                search_query = _normalize_search_query(search_query)
+                item["search_query"] = search_query
 
     return record
 
@@ -131,7 +175,9 @@ def _normalize_collection_tags(record: dict):
 
         for tag in collection_tags:
             query_str = str(urllib.parse.quote(tag["path"]))
-            tag["search_query"] = f"{_search_base_url}?collection={str(collection_id)}&collection_tags={query_str}"
+            search_query = f"{_search_base_url}?collection={str(collection_id)}&collection_tags={query_str}"
+            search_query = _normalize_search_query(search_query)
+            tag["search_query"] = search_query
 
         record["collection_tags"] = collection_tags
 
@@ -177,7 +223,8 @@ def _normalize_link_lists(keys, record: dict):
     for key in keys:
         if key in record:
             for item in record[key]:
-                item["search_query"] = f"{_search_base_url}?{key}={str(item['id'])}"
+                search_query = f"{_search_base_url}?{key}={str(item['id'])}"
+                item["search_query"] = _normalize_search_query(search_query)
     return record
 
 
@@ -186,7 +233,8 @@ def _normalize_link_dicts(keys, record: dict):
     for key in keys:
         if key in record:
             item = record[key]
-            item["search_query"] = f"{_search_base_url}?{key}={str(item['id'])}"
+            search_query = f"{_search_base_url}?{key}={str(item['id'])}"
+            item["search_query"] = _normalize_search_query(search_query)
     return record
 
 

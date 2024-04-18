@@ -24,12 +24,22 @@ def get_search_cookie(request: Request) -> dict:
         # Convert back to list of tuples
         query_params = search_cookie["query_params"]
         query_params = [tuple(item) for item in query_params]
+        search_cookie["query_params"] = query_params
 
         assert isinstance(search_cookie, dict)
         return search_cookie
 
     except Exception:
         return {}
+
+
+def get_search_query_params(request: Request) -> list:
+    """Get query string from search cookie and return it as a list of tuples.
+    E.g. [('content_types', '96'), ('content_types', '97')]"""
+
+    search_cookie = get_search_cookie(request)
+    query_params = search_cookie.get("query_params", [])
+    return query_params
 
 
 def get_query_str_display(request: Request) -> str:
