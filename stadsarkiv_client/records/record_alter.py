@@ -10,11 +10,12 @@ from stadsarkiv_client.records.normalize_legal_restrictions import normalize_leg
 from stadsarkiv_client.records.normalize_availability import normalize_availability
 from stadsarkiv_client.records.normalize_ordering import normalize_ordering
 from stadsarkiv_client.records.normalize_record import RecordNormalizer
-from stadsarkiv_client.records.record_definitions import record_definitions
+from stadsarkiv_client.records.record_definitions import get_record_definitions
 from stadsarkiv_client.core.translate import translate
 from starlette.requests import Request
 
 
+_record_definitions = get_record_definitions()
 log = get_log()
 
 
@@ -49,7 +50,7 @@ def get_record_and_types(record):
         record_item["name"] = key
 
         try:
-            definition = record_definitions[key]
+            definition = _record_definitions[key]
             record_item["type"] = definition["type"]
             record_item["label"] = translate("label_" + key)
             record_altered[key] = record_item

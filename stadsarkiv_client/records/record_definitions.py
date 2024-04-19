@@ -1,9 +1,11 @@
+from stadsarkiv_client.core.dynamic_settings import settings
+
 """
 This file contains the definitions of the record fields.
 The definitions are used to normalize the record data.
 """
 
-record_definitions = {
+_record_definitions = {
     "last_updated": {"type": "date"},
     "date_normalized": {"type": "string"},
     "collectors": {"type": "link_list"},
@@ -48,3 +50,11 @@ record_definitions = {
     "desc_notes": {"type": "string"},
     "heading": {"type": "string"},
 }
+
+
+def get_record_definitions() -> dict:
+    """
+    Get record definitions that are not ignored.
+    """
+    ignore_keys = settings["ignore_record_keys"]
+    return {key: value for key, value in _record_definitions.items() if key not in ignore_keys}

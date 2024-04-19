@@ -40,6 +40,7 @@ settings: dict[str, typing.Any] = {
     "allow_user_registration": False,
     "allow_user_management": True,
     "allow_online_ordering": False,
+    "ignore_record_keys": ["curators"],
 }
 
 # Custom pages
