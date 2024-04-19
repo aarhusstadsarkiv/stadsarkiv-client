@@ -63,7 +63,6 @@ def _normalize_search_query(search_str: str):
     # add to search_query_params any query that is not already in search_query_params
     for query in query_list:  # type: ignore
         if query not in local_search_query_params:
-            log.debug(f"Adding query to search_query_params: {query}")
             local_search_query_params.append(query)
 
     # convert search_query_params to a string
