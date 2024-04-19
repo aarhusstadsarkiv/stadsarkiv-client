@@ -50,12 +50,23 @@
 {% endfor %}
 {% endmacro %}
 
+{% macro _parse_link(value) %}
+{% set display_as_text = value['display_as_text'] %}
+{% set search_query = value['search_query'] %}
+{% set text = value['label'] %}
+{% if display_as_text %}
+<a  title="Tilføj til nuværende søgning"  href="{{ search_query }}">{{ text }}</a>
+{% else %}
+<span title="Indgår i nuværende søgning">{{ text }}</span>
+{% endif %}
+{% endmacro %}
+
 {% macro parse_link_dict(key, value, label) %}
 <div class="record-content record_content_{{ key }}">
     {{ parse_record_label(label) }}
     <div class="content">
         <p>
-            <a href="{{ value['search_query'] }}">{{ value["label"] }}</a>
+            {{ _parse_link(value)}}
         </p>
     </div>
 </div>
@@ -67,7 +78,7 @@
     <div class="content">
         {% for link in value %}
         <p>
-            <a href="{{ link['search_query'] }}">{{ link["label"] }}</a>
+            {{ _parse_link(link)}}
         </p>
         {% endfor %}
     </div>
@@ -80,7 +91,7 @@
     <div class="content">
             {% for link in value %}
             <p>
-                <a href="{{ link['url'] }}">{{ link["label"] }}</a>
+                {{ _parse_link(link)}}
             </p>
             {% endfor %}
         </ul>
@@ -131,7 +142,7 @@
 {% macro _parse_list_in_hierarchy (value) %}
 <p>
 {% for item in value %}
-<a href="{{ item['search_query'] }}">{{ item['label'] }}</a>
+    {{ _parse_link(item)}}
     {% if not loop.last %} {{ '>' }} {% endif %}
 {% endfor %}
 </p>

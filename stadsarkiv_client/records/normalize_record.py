@@ -33,7 +33,7 @@ class RecordNormalizer:
         record = self._normalize_resources(record)
 
         link_list = self._get_list_of_type("link_list")
-        link_list.remove("collection_tags")  # remove 'collection_tags' from link_list
+        link_list.remove("collection_tags")
         record = self._normalize_link_lists(link_list, record)
 
         link_dict = self._get_list_of_type("link_dict")
@@ -48,20 +48,22 @@ class RecordNormalizer:
         """
         Normalizes the search query by filtering and combining parameters.
         """
-        local_search_query_params = list(self.search_query_params)
-        query_part = search_str.split("?")[1]
+        search_query_params = list(self.search_query_params)
+        query_str = search_str.split("?")[1]
 
-        query_list = [tuple(query.split("=")) for query in query_part.split("&")]
+        link_query_list = [tuple(query.split("=")) for query in query_str.split("&")]
 
-        for query in query_list:
-            if query not in local_search_query_params:
-                local_search_query_params.append(query)
+        display_as_text = False
+        for link_query in link_query_list:
+            if link_query not in search_query_params:
+                search_query_params.append(link_query)
+                display_as_text = True
 
         search_str = "/search?"
-        for query in local_search_query_params:
-            search_str += f"{query[0]}={query[1]}&"
+        for link_query in search_query_params:
+            search_str += f"{link_query[0]}={link_query[1]}&"
 
-        return search_str
+        return search_str, display_as_text
 
     def _normalize_representations(self, record: dict, meta_data: dict):
         if "representations" in record:
@@ -104,8 +106,9 @@ class RecordNormalizer:
                 last_label = label + "/"
 
                 search_query = f"{_search_base_url}?collection={str(record['collection']['id'])}&series={label}"
-                search_query = self._normalize_search_query(search_query)
+                search_query, display_as_text = self._normalize_search_query(search_query)
                 serie["search_query"] = search_query
+                serie["display_as_text"] = display_as_text
                 series_normalized.append(serie)
 
             record["series"] = [series_normalized]
@@ -123,8 +126,9 @@ class RecordNormalizer:
             for content_type in content_types_list:
                 for item in content_type:
                     search_query = f"{_search_base_url}?content_types={str(item['id'])}"
-                    search_query = self._normalize_search_query(search_query)
+                    search_query, diplay_as_link = self._normalize_search_query(search_query)
                     item["search_query"] = search_query
+                    item["display_as_text"] = diplay_as_link
 
             record["content_types"] = content_types_list
         return record
@@ -138,8 +142,9 @@ class RecordNormalizer:
             for subject in subjects:
                 for item in subject:
                     search_query = f"{_search_base_url}?subjects={str(item['id'])}"
-                    search_query = self._normalize_search_query(search_query)
+                    search_query, display_as_text = self._normalize_search_query(search_query)
                     item["search_query"] = search_query
+                    item["display_as_text"] = display_as_text
 
         return record
 
@@ -161,8 +166,9 @@ class RecordNormalizer:
             for tag in collection_tags:
                 query_str = str(urllib.parse.quote(tag["path"]))
                 search_query = f"{_search_base_url}?collection={str(collection_id)}&collection_tags={query_str}"
-                search_query = self._normalize_search_query(search_query)
+                search_query, display_as_text = self._normalize_search_query(search_query)
                 tag["search_query"] = search_query
+                tag["display_as_text"] = display_as_text
 
             record["collection_tags"] = collection_tags
 
@@ -205,7 +211,9 @@ class RecordNormalizer:
             if key in record:
                 for item in record[key]:
                     search_query = f"{_search_base_url}?{key}={str(item['id'])}"
-                    item["search_query"] = self._normalize_search_query(search_query)
+                    search_query, display_as_text = self._normalize_search_query(search_query)
+                    item["search_query"] = search_query
+                    item["display_as_text"] = display_as_text
         return record
 
     def _normalize_link_dicts(self, keys, record: dict):
@@ -214,7 +222,9 @@ class RecordNormalizer:
             if key in record:
                 item = record[key]
                 search_query = f"{_search_base_url}?{key}={str(item['id'])}"
-                item["search_query"] = self._normalize_search_query(search_query)
+                search_query, display_as_text = self._normalize_search_query(search_query)
+                item["search_query"] = search_query
+                item["display_as_text"] = display_as_text
         return record
 
     def _get_list_of_type(self, type: str):
