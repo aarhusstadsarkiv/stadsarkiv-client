@@ -8,7 +8,6 @@ from stadsarkiv_client.records.record_definitions import record_definitions
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import cookie
 from starlette.requests import Request
-from urllib.parse import quote_plus
 
 
 _search_base_url = settings["search_base_url"]
