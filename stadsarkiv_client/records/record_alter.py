@@ -9,7 +9,7 @@ from stadsarkiv_client.records.normalize_contractual_status import normalize_con
 from stadsarkiv_client.records.normalize_legal_restrictions import normalize_legal_restrictions
 from stadsarkiv_client.records.normalize_availability import normalize_availability
 from stadsarkiv_client.records.normalize_ordering import normalize_ordering
-from stadsarkiv_client.records.normalize_record import normalize_record_data
+from stadsarkiv_client.records.normalize_record import RecordNormalizer
 from stadsarkiv_client.records.record_definitions import record_definitions
 from stadsarkiv_client.core.translate import translate
 from starlette.requests import Request
@@ -21,7 +21,9 @@ log = get_log()
 def record_alter(request: Request, record: dict, meta_data: dict):
     record = record.copy()
 
-    record = normalize_record_data(request, record, meta_data)
+    record_normalizer = RecordNormalizer()
+    record = record_normalizer.normalize_record_data(request, record, meta_data)
+
     record = normalize_dates.normalize_dates(record)
     record = normalize_copyright_status(record, meta_data)
     record = normalize_contractual_status(record, meta_data)
