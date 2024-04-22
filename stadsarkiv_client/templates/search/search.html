@@ -346,6 +346,8 @@
 </div>
 <div class="container-main">
 
+    {% include "includes/flash.html" %}
+
     {{ parse_search() }}
     {{ parse_facets_filters(facets_filters) }}
     <div class="container-main-facets">

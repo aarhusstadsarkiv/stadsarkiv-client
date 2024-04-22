@@ -139,10 +139,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .flash-messages {
-    bottom: 0px;
+    /* bottom: 0px;
     position: fixed;
     width: 100%;
-    z-index: 1000;
+    z-index: 1000; */
+    padding-bottom: 10px;
 }
 
 .flash {
