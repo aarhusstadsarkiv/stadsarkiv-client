@@ -6,6 +6,7 @@ The definitions are used to normalize the record data.
 """
 
 _record_definitions = {
+    "title": {"type": "string"},
     "last_updated": {"type": "date"},
     "date_normalized": {"type": "string"},
     "collectors": {"type": "link_list"},
