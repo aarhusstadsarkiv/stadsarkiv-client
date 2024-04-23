@@ -15,7 +15,6 @@ async def handle_uploads(request: Request):
     Dummy upload to tempdir, e.g. /tmp on linux.
     """
     try:
-
         await is_authenticated(request, permissions=["employee"])
 
         form = await request.form()

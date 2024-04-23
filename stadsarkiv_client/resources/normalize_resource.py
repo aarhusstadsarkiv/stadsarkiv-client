@@ -181,7 +181,6 @@ def get_resource_and_types(resource):
     resource_altered = {}
     resource_altered["meta"] = {}
     for key, value in resource.items():
-
         if not value:
             continue
 
@@ -215,7 +214,6 @@ def _get_sources_normalized(sources: list):
 
 
 def _generate_semi_colon_link(name: str, value: str):
-
     query_id_or_label = value.split(";")
     query_id = query_id_or_label[0]
     label = query_id_or_label[1]

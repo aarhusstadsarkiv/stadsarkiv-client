@@ -31,22 +31,22 @@ class TestAuth(unittest.TestCase):
     def test_login_post_correct(self):
         client = TestClient(app)
         response = client.post("/auth/login", data=correct_login, follow_redirects=True)  # type: ignore
-        self.assertEqual(response.url, "http://testserver/search")
+        self.assertEqual(response.url, "http://testserver/auth/login")
 
     def test_login_post_incorrect(self):
         client = TestClient(app)
         response = client.post("/auth/login", data=incorrect_login, follow_redirects=True)  # type: ignore
-        self.assertEqual(response.url, "http://testserver/auth/login?next=/search")
+        self.assertEqual(response.url, "http://testserver/auth/login")
 
     def test_logout_get(self):
         client = TestClient(app)
         response = client.get("/auth/logout", follow_redirects=True)
-        self.assertEqual(response.url, "http://testserver/auth/login?next=/auth/logout")
+        self.assertEqual(response.url, "http://testserver/auth/logout")
 
     def test_logout_post(self):
         client = TestClient(app)
         response = client.post("/auth/logout", follow_redirects=True)
-        self.assertEqual(response.url, "http://testserver/auth/login")
+        self.assertEqual(response.url, "http://testserver/auth/logout")
 
     def test_register_get(self):
         client = TestClient(app)

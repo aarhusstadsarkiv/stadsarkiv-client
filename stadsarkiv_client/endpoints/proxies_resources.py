@@ -42,7 +42,6 @@ async def _get_resource(request: Request):
 
 
 async def _get_resource_context(request):
-
     resource = await _get_resource(request)
     title = resource["display_label"]
     resource = resource_alter.resource_alter(resource)
@@ -54,7 +53,6 @@ async def _get_resource_context(request):
 
 
 async def get(request: Request):
-
     allow_resource_types = [
         "collections",
         "people",

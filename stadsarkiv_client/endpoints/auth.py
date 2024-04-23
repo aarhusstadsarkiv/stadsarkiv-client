@@ -19,12 +19,17 @@ log = get_log()
 
 
 async def login_get(request: Request):
-
     is_logged_in = await api.is_logged_in(request)
-    next_url = request.query_params.get("next", "/search")
+
+    post_url = "/auth/login"
+    next_url = request.query_params.get("next")
+
+    if next_url:
+        post_url = "/auth/login?next=" + next_url
+
     context_values = {
         "title": translate("Login"),
-        "post_url": "/auth/login?next=" + next_url,
+        "post_url": post_url,
         "is_logged_in": is_logged_in,
     }
     context = await get_context(request, context_values=context_values)
@@ -33,24 +38,35 @@ async def login_get(request: Request):
 
 
 async def login_post(request: Request):
-    next_url = request.query_params.get("next", "/search")
+    next_url = request.query_params.get("next")
     try:
         await api.auth_jwt_login_post(request)
         flash.set_message(request, translate("You have been logged in."), type="success", remove=True)
 
-        return RedirectResponse(url=next_url, status_code=302)
+        if next_url:
+            return RedirectResponse(url=next_url, status_code=302)
+        else:
+            return RedirectResponse(url="/auth/login", status_code=302)
 
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
-        return RedirectResponse(url="/auth/login?next=" + next_url, status_code=302)
+
+        if next_url:
+            return RedirectResponse(url="/auth/login?next=" + next_url, status_code=302)
+        else:
+            return RedirectResponse(url="/auth/login", status_code=302)
+
     except Exception as e:
         log.exception(e)
         flash.set_message(request, str(e), type="error", use_settings=True)
 
 
 async def logout_get(request: Request):
-    await is_authenticated(request)
-    context_values = {"title": translate("Logout")}
+    is_logged_in = await api.is_logged_in(request)
+    context_values = {
+        "title": translate("Logout"),
+        "is_logged_in": is_logged_in,
+    }
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse(request, "auth/logout.html", context)
 
@@ -66,7 +82,7 @@ async def logout_post(request: Request):
         log.error("Logout error", exc_info=True)
         flash.set_message(request, str(e), type="error")
 
-    return RedirectResponse(url="/auth/login", status_code=302)
+    return RedirectResponse(url="/auth/logout", status_code=302)
 
 
 async def register_get(request: Request):

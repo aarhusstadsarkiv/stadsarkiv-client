@@ -41,7 +41,6 @@ def get_record_and_types(record):
     """
     record_altered = {}
     for key, value in record.items():
-
         if not value:
             continue
 
