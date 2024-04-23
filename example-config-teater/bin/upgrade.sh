@@ -37,5 +37,9 @@ git checkout $latest_tag
 # Activate virtual environment and install requirements
 ./venv/bin/pip install -r requirements.txt
 
+# overwrite config files from example-config-teater to local/
+# except hidden files and 'bin/' and '__pycache__/'
+rsync -a --exclude='bin/' --exclude='__pycache__/' --exclude='.*' example-config-teater/ local/
+
 # Start the service
 sudo systemctl start teater-client.service

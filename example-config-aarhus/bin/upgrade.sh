@@ -34,6 +34,10 @@ git checkout main
 git pull
 git checkout $latest_tag
 
+# overwrite config files from example-config-aarhus to local/
+# except hidden files and 'bin/' and '__pycache__/'
+rsync -a --exclude='bin/' --exclude='__pycache__/' --exclude='.*' example-config-aarhus/ local/
+
 # Activate virtual environment and install requirements
 ./venv/bin/pip install -r requirements.txt
 
