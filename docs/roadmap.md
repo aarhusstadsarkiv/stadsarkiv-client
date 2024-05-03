@@ -38,28 +38,28 @@
 
 4. GUI elementer på aarhusarkiv v2.
    1. Aarhus Arkivet
-      1. Tjek om elementer er identiske med eksisterende arkiv.
+      1. OK Tjek om elementer er identiske med eksisterende arkiv.
          1. Opret automatisk test til dette. 
       2. Manglende sider
-         1. Forside.
-         2. Undersider
-            1. Vejledning
-            2. Om samlingerne
-            3. Og andre. 
+         1. OK Forside.
+         2. OK. Undersider
+            1. OK Vejledning
+            2. OK Om samlingerne
+            3. OK Og andre. 
       3. Footer
-         1. Kopiere "footer" information.
-         2. Link til nyhedsbrev
-      4. Logo
+         1. OK Kopiere "footer" information.
+         2. OK Link til nyhedsbrev
+      4. OK Logo
    2. Teater Arkivet
-      1. "Add / Edit / Delete" relationer
+      1. OK "Add / Edit / Delete" relationer
       2. GUI-elements
-         1. Tjek om sidernes elementer er identiske i forhold til eksisterende arkiv
+         1. OK Tjek om sidernes elementer er identiske i forhold til eksisterende arkiv
             1. Automatisk test af dette.
 
 5. Servere.
    1. Udvikling
-      1. client.openaws.dk (aarhusarkivet)
-      2. teater.openaws.dk (teaterarkivet)
+      1. OK client.openaws.dk (aarhusarkivet)
+      2. OK teater.openaws.dk (teaterarkivet)
          1. Opret ny demo. DNS opsætning. 
    2. Produktion
       1. aarhusarkivet.dk
@@ -67,4 +67,4 @@
 
 6. E-mail
    1. DNS opsætning. Fix afsendelse af e-mails 
-      1. Se: Opsætning "spf-dkim-dmarc" (https://www.brevo.com/blog/understanding-spf-dkim-dmarc/)
+      1. OK Se: Opsætning "spf-dkim-dmarc" (https://www.brevo.com/blog/understanding-spf-dkim-dmarc/)
