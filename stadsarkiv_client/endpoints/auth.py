@@ -46,19 +46,20 @@ async def login_post(request: Request):
         if next_url:
             return RedirectResponse(url=next_url, status_code=302)
         else:
-            return RedirectResponse(url="/auth/login", status_code=302)
+            return RedirectResponse(url="/search", status_code=302)
 
     except OpenAwsException as e:
+        log.exception(e)
         flash.set_message(request, str(e), type="error")
-
-        if next_url:
-            return RedirectResponse(url="/auth/login?next=" + next_url, status_code=302)
-        else:
-            return RedirectResponse(url="/auth/login", status_code=302)
 
     except Exception as e:
         log.exception(e)
         flash.set_message(request, str(e), type="error", use_settings=True)
+
+    if next_url:
+        return RedirectResponse(url="/auth/login?next=" + next_url, status_code=302)
+    else:
+        return RedirectResponse(url="/auth/login", status_code=302)
 
 
 async def logout_get(request: Request):
@@ -82,11 +83,15 @@ async def logout_post(request: Request):
         log.error("Logout error", exc_info=True)
         flash.set_message(request, str(e), type="error")
 
-    return RedirectResponse(url="/auth/logout", status_code=302)
+    return RedirectResponse(url="/auth/login", status_code=302)
 
 
 async def register_get(request: Request):
-    context_values = {"title": translate("Register new user")}
+
+    context_values = {
+        "title": translate("Register new user"),
+        "register_done": request.query_params.get("register_done"),
+    }
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse(request, "auth/register.html", context)
 
@@ -119,14 +124,14 @@ async def verify_get(request: Request):
             type="success",
         )
 
-        return RedirectResponse(url="/", status_code=302)
+        return RedirectResponse(url="/auth/login", status_code=302)
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception(e)
         flash.set_message(request, str(e), type="error", use_settings=True)
 
-    return RedirectResponse(url="/", status_code=302)
+    return RedirectResponse(url="/auth/login", status_code=302)
 
 
 async def me_permission_translated(request: Request):
