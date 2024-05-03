@@ -128,7 +128,7 @@ da = {
     "You have been logged in.": "Du er nu logget ind.",
     "You have been logged out.": "Du er nu logget ud.",
     "You have been registered. Check your email to confirm your account.": "Du er blevet registreret. Tjek din email for at bekræfte din konto.",
-    "You have been verified.": "Din email er blevet verificeret.",
+    "You have been verified.": "Din email er blevet verificeret. Hvis du ikke er logget ind så kan du gøre det nu.",
     "You need to be logged in to view this page.": "Du er ikke logget ind. Log ind for at se siden.",
     "You will need to log in order to get access to your profile": "Du skal logge ind for at se din profil.",
     "Your bookmarks": "Bogmærker",
