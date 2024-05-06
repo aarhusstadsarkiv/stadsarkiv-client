@@ -49,7 +49,6 @@ async def login_post(request: Request):
             return RedirectResponse(url="/search", status_code=302)
 
     except OpenAwsException as e:
-        log.exception(e)
         flash.set_message(request, str(e), type="error")
 
     except Exception as e:
