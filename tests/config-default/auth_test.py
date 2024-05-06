@@ -31,7 +31,7 @@ class TestAuth(unittest.TestCase):
     def test_login_post_correct(self):
         client = TestClient(app)
         response = client.post("/auth/login", data=correct_login, follow_redirects=True)  # type: ignore
-        self.assertEqual(response.url, "http://testserver/auth/login")
+        self.assertEqual(response.url, "http://testserver/search")
 
     def test_login_post_incorrect(self):
         client = TestClient(app)
@@ -46,7 +46,7 @@ class TestAuth(unittest.TestCase):
     def test_logout_post(self):
         client = TestClient(app)
         response = client.post("/auth/logout", follow_redirects=True)
-        self.assertEqual(response.url, "http://testserver/auth/logout")
+        self.assertEqual(response.url, "http://testserver/auth/login")
 
     def test_register_get(self):
         client = TestClient(app)
@@ -84,7 +84,7 @@ class TestAuth(unittest.TestCase):
     def test_verify_get(self):
         client = TestClient(app)
         response = client.get("/auth/verify/fake-token")
-        self.assertEqual(response.url, "http://testserver/")
+        self.assertEqual(response.url, "http://testserver/auth/login")
 
     def test_me_loggedin_get(self):
         client = TestClient(app)
