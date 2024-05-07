@@ -16,7 +16,7 @@ Type=forking
 # run as
 User=www-data
 WorkingDirectory=/var/www/stadsarkiv-client
-ExecStart=/var/www/stadsarkiv-client/venv/bin/python -m stadsarkiv_client server-prod
+ExecStart=/var/www/stadsarkiv-client/venv/bin/python -m stadsarkiv_client server-prod --port 5555
 
 # restart on failure
 Restart=on-failure
@@ -39,39 +39,31 @@ WantedBy=multi-user.target
 
     sudo rm /etc/systemd/system/stadsarkiv-client.service 
 
-## reload systemd (after changes)
+## reload systemd (always reload after changes)
     
     sudo systemctl daemon-reload
 
-## start or stop a service
+## start, stop or restart a service
     
     sudo systemctl start stadsarkiv-client.service
     sudo systemctl stop stadsarkiv-client.service
+    sudo systemctl restart stadsarkiv-client.service
 
 ## status of a service
     
     sudo systemctl status stadsarkiv-client.service
 
-
 # Upgrade and restart service
 
-See: [example-config-aarhus/bin/upgrade.sh](example-config-aarhus/bin/upgrade.sh)
+See: [bin/upgrade.sh](bin/upgrade.sh)
 
-The above script will upgrade the source code and restart the service. 
+The above script will upgrade the source code to the latest tag. 
 
-Run it like this: `./example-config-aarhus/bin/upgrade.sh`
+Run it like this: `./bin/upgrade.sh`
 
-Adjust it to your needs.
+Then restart the service.
 
-# Restart service
-
-See: [example-config-aarhus/bin/restart.sh](/aarhusstadsarkiv/stadsarkiv-client/blob/main/example-config-aarhus/bin/upgrade.sh)
-
-The above script will restart the service.
-
-Run it like this: `./example-config-aarhus/bin/restart.sh`
-
-Adjust it to your needs.
+    sudo systemctl restart stadsarkiv-client.service
 
 # docker
 
