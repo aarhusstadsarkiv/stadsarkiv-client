@@ -24,6 +24,7 @@ if os.getenv("ENVIRONMENT") == "production":
 
 settings: dict[str, typing.Any] = {
     "client_name": "development",
+    "client_url": "https://client.openaws.dk",
     "debug": debug,
     "robots_allow": False,
     "version": stadsarkiv_client.__version__,
@@ -56,7 +57,7 @@ settings: dict[str, typing.Any] = {
     "main_menu_sections": [],
     "search_base_url": "/search",
     "facets_enabled": ["content_types", "subjects", "availability", "usability", "dates"],
-    "cors_allow_origins": ["https://client.openaws.dk", "https://dev.openaws.dk"],
+    "cors_allow_origins": [],
     "allow_user_registration": True,
     "allow_user_management": True,
     "allow_online_ordering": False,

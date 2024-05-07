@@ -4,7 +4,7 @@ Main application file for the stadsarkiv_client application.
 
 from starlette.applications import Starlette
 from stadsarkiv_client.routes import routes
-from stadsarkiv_client.core import middleware
+from stadsarkiv_client.core.middleware import middleware
 from stadsarkiv_client.core.exception_handlers import exception_handlers
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.logging import get_log
@@ -27,15 +27,7 @@ if sentry_dns:
 
 app = Starlette(
     debug=settings["debug"],  # type: ignore
-    middleware=[
-        middleware.cors_middleware,
-        middleware.first_middleware,
-        middleware.session_middleware,
-        middleware.session_autoload_middleware,
-        middleware.last_middleware,
-        middleware.no_cache_middleware,
-        middleware.gzip_middleware,
-    ],
+    middleware=middleware,
     routes=routes,
     exception_handlers=exception_handlers,  # type: ignore
 )
