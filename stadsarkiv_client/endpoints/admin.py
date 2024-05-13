@@ -25,21 +25,40 @@ async def users_get(request: Request):
     return templates.TemplateResponse(request, "admin/users.html", context)
 
 
+async def _get_used_permissions(request: Request):
+    """ "
+    Only a subset of permissions are editable. This function returns the editable permissions.
+
+    Permissions from endpoint is e.g.:
+     [{'name': 'read', 'grant_id': 7, 'entity_id': None}, {'name': 'hard_delete', 'grant_id': 9, 'entity_id': None}]
+    """
+    permissions = await api.users_permissions(request)
+    editable_permissions: list = ["guest", "user", "researcher", "admin", "employee", "root"]
+    used_permissions = [p for p in permissions if p["name"] in editable_permissions]
+    used_permissions = sorted(used_permissions, key=lambda x: x["grant_id"], reverse=False)
+    return used_permissions
+
+
 async def users_get_single(request: Request):
     await is_authenticated(request, permissions=["root"])
 
     user_ = await api.user_get(request)
-    permissions = await api.users_permissions(request)
-
+    used_permissions = await _get_used_permissions(request)
     permissions_user = user.permissions_as_list(user_["permissions"])
 
     permission_translated = user.permission_translated(permissions_user)
     user_["permission_translated"] = permission_translated
 
-    context_values = {"title": "Bruger", "user": user_, "permissions": permissions}
+    context_values = {"title": "Bruger", "user": user_, "permissions": used_permissions}
     context = await get_context(request, context_values=context_values)
 
     return templates.TemplateResponse(request, "admin/user_update.html", context)
+
+
+async def user_get_json(request: Request):
+    await is_authenticated(request, permissions=["root"])
+    user_ = await api.user_get(request)
+    return JSONResponse(user_)
 
 
 async def config_get(request: Request):

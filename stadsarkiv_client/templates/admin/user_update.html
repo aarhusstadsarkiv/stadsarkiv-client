@@ -15,17 +15,13 @@
 
 {{ basic_macros.page_title(title) }}
 
-{# 
-{'id': '99c648f7-f739-4667-a495-b107669e1c0b', 'email': 'dennis.iversen@gmail.com', 'is_active': True, 'is_verified':
-False, 'data': {}, 'permissions': [{'name': 'user', 'grant_id': 6, 'entity_id': None}]} 
-#}
-
 <table>
     <thead>
         <tr>
             <th>E-mail</th>
             <th>Verificeret</th>
             <th>Rettighed</th>
+            <th>JSON</th>
 
         </tr>
     </thead>
@@ -40,25 +36,20 @@ False, 'data': {}, 'permissions': [{'name': 'user', 'grant_id': 6, 'entity_id': 
                 {% endif %}
             </td>
             <td>{{ user.permission_translated }}</td>
+            <td>
+                <a href="{{ url_for('admin_users_get_json', uuid=user.id) }}">JSON</a>
+            </td>
         </tr>
 </table>
-
-<h3>Raw user data</h3>
-
-{{ pre(user)|safe }}
-
-<h3>Possible permissions</h3>
-
-{{ pre(permissions)|safe }}
 
 <p>Rediger rettigheder</p>
 <form>
     <select name="permissions">
         {% for permission in permissions %}
             {% if permission.grant_id == user.permissions[0].grant_id %}
-            <option value="{{ permission.grant_id }}" selected>{{ permission.name }}</option>
+            <option value="{{ permission.grant_id }}" selected>{{ translate("Permission " ~ permission.name) }}</option>
             {% else %}
-            <option value="{{ permission.grant_id }}">{{ permission.name }}</option>
+            <option value="{{ permission.grant_id }}">{{ translate('Permission ' ~ permission.name) }}</option>
             {% endif %}
         {% endfor %}
     </select>
@@ -73,20 +64,27 @@ False, 'data': {}, 'permissions': [{'name': 'user', 'grant_id': 6, 'entity_id': 
     const submit = document.getElementById('submit')
     submit.addEventListener('click', function(e) {
         e.preventDefault()
-        const select = document.querySelector('select')
-        const grant_id = select.options[select.selectedIndex].value
-        const data = [{
-            grant_id: grant_id
-        }]
-
-        console.log(data)
         
+        const usedPermissions = {{ to_json(permissions)|safe }}
+        const select = document.querySelector('select')
+        const grantId = select.options[select.selectedIndex].value
+
+        // Get object corresponding to the selected grant_id
+        const grantObject = usedPermissions.find(permission => permission.grant_id == grantId)
+
+        // Remove entity_id from grantObject
+        // delete grantObject.entity_id
+        const data = [grantObject]
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': authorization,
+            'x-client': '{{ get_setting('client_name') }}',
+        }
+
         fetch(endpoint, {
             method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': authorization
-            },
+            headers: headers,
             body: JSON.stringify(data)
         }).then(response => {
             if (response.status === 200) {

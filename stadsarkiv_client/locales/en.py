@@ -307,4 +307,5 @@ en = {
     "ordering_by_mail": "Du kan bestille materialet ved at sende en mail til stadsarkiv@aarhus.dk, hvori du angiver materialets arkiv-ID, som kan ses øverst på siden.",
     "ordering_from_rigsarkivet": "Hvis materialet ligger hos Rigsarkivet, skal bestillingen sendes dertil. Gå ind på Rigsarkivets hjemmeside og find materialet der. Efterfølgende kan det så bestilles hjem til en af deres læsesale.",
     "search": "search",
+    "user": "user",
 }
