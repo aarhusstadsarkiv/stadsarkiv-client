@@ -94,47 +94,40 @@ class AutoComplete {
      * Check keys pressed in the input field
      */
     onKeyDown(e) {
-
         const items = this.suggestionsElem.querySelectorAll(`.${this.suggestionItemClass}`);
-        if (items.length === 0 && e.key !== 'Escape') return;
-
-        if (e.key === 'Escape') {
-            e.preventDefault();
-            this.hideSuggestions();
-            return;
-        }
-
-        let currentIndex = -1;
-        items.forEach((item, index) => {
-            if (item.classList.contains(this.suggestionFocusClass)) {
-                currentIndex = index;
-                item.classList.remove(this.suggestionFocusClass);
+        let currentIndex = Array.from(items).findIndex(item => item.classList.contains(this.suggestionFocusClass));
+    
+        if (items.length === 0) return;
+    
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+            e.preventDefault(); // Prevent scrolling the page with arrow keys
+    
+            // Remove current focus
+            if (currentIndex !== -1) {
+                items[currentIndex].classList.remove(this.suggestionFocusClass);
             }
-        });
-
-        if (e.key === 'ArrowDown') {
-            currentIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
-        } else if (e.key === 'ArrowUp') {
-            currentIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+    
+            if (e.key === 'ArrowDown') {
+                currentIndex = (currentIndex + 1) % items.length;
+            } else if (e.key === 'ArrowUp') {
+                currentIndex = (currentIndex - 1 + items.length) % items.length;
+            }
+    
+            // Add new focus
+            items[currentIndex].classList.add(this.suggestionFocusClass);
+            items[currentIndex].scrollIntoView({ block: 'nearest', inline: 'start' });
         } else if (e.key === 'Enter' && currentIndex !== -1) {
-            e.stopPropagation(); // Prevent the form from submitting
+            e.stopPropagation();
             e.preventDefault();
-            const focusedItem = items[currentIndex];
-            this.returnFunction(focusedItem);
-            return;
-        } else {
-            return;
+            this.returnFunction(items[currentIndex]);
+        } else if (e.key === 'Escape') {
+            this.hideSuggestions();
         }
-
-        const newItem = items[currentIndex];
-        newItem.classList.add(this.suggestionFocusClass);
-
-        // Scroll the new item into view
-        newItem.scrollIntoView({ block: 'nearest', inline: 'start' });
-
-        // Focus on the input again
-        this.autocompleteElem.focus();
+        
+        // Keep focus on the input field
+        this.autocompleteElem.focus(); 
     }
+    
 
     setSuggestionsMaxHeight() {
         const rect = this.autocompleteElem.getBoundingClientRect();
