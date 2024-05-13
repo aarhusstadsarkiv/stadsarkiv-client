@@ -51,14 +51,9 @@
 {% endmacro %}
 
 {% macro _parse_link(value) %}
-{% set display_as_link = value['display_as_link'] %}
 {% set search_query = value['search_query'] %}
 {% set text = value['label'] %}
-{% if display_as_link %}
 <a  title="Opret ny søgning"  href="{{ search_query }}">{{ text }}</a>
-{% else %}
-<span title="Indgår i nuværende søgning">{{ text }}</span>
-{% endif %}
 {% endmacro %}
 
 {% macro parse_link_dict(key, value, label) %}

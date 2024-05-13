@@ -31,7 +31,7 @@
 {% set keys = ["sources_normalized"] %}
 {{ common_macros.parse_block_common('Kilder', keys, resource) }}
 
-{% set keys = ["ext_data", "persons_links"] %}
+{% set keys = ["ext_data"] %}
 {{ common_macros.parse_block_common('Udvidet data', keys, resource) }}
 
 {{ relations_macros.parse_relations('events', resource) }}
