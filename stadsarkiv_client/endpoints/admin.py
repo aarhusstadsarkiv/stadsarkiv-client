@@ -55,7 +55,7 @@ async def users_get_single(request: Request):
     return templates.TemplateResponse(request, "admin/user_update.html", context)
 
 
-async def user_get_json(request: Request):
+async def users_get_json(request: Request):
     await is_authenticated(request, permissions=["root"])
     user_ = await api.user_get(request)
     return JSONResponse(user_)

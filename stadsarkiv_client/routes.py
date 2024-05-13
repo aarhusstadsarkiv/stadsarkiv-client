@@ -53,7 +53,7 @@ routes = [
     Mount("/static", MultiStaticFiles(directories=_get_static_dirs()), name="static"),
     Route("/admin/users", endpoint=admin.users_get, name="admin_users_get", methods=["GET"]),
     Route("/admin/users/{uuid}/update", endpoint=admin.users_get_single, name="admin_users_get_single", methods=["GET"]),
-    Route("/admin/users/{uuid}/json", endpoint=admin.user_get_json, name="admin_users_get_json", methods=["GET"]),
+    Route("/admin/users/{uuid}/json", endpoint=admin.users_get_json, name="admin_users_get_json", methods=["GET"]),
     Route("/admin/config", endpoint=admin.config_get, name="admin_config_get", methods=["GET"]),
     Route("/auth/login", endpoint=auth.login_get, name="auth_login_get", methods=["GET"]),
     Route("/auth/login", endpoint=auth.login_post, name="auth_login_post", methods=["POST"]),
