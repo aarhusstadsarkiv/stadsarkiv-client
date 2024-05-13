@@ -8,7 +8,6 @@ from starlette.middleware import Middleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.gzip import GZipMiddleware
-from starlette.middleware.trustedhost import TrustedHostMiddleware
 from starlette.requests import Request
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.logging import get_log
