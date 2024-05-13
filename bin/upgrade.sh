@@ -43,4 +43,5 @@ DIR=${PWD##*/}
 # Restart the service named after the directory
 sudo service $DIR restart
 
-
+echo "If no errors occurred, the module has been successfully upgraded to the latest tag."
+echo "If no errors the service is also restarted"
