@@ -62,7 +62,7 @@ Install main branch:
 
 Install latest version: 
 <!-- LATEST-VERSION-PIPX -->
-	pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.2.30
+	pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.2.31
 
 Usage is the same as for development.
 
