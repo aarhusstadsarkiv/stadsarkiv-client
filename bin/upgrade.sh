@@ -37,3 +37,10 @@ git checkout $latest_tag
 # Activate virtual environment and install requirements
 ./venv/bin/pip install -r requirements.txt
 
+# get last part of current working directory
+DIR=${PWD##*/}
+
+# Restart the service named after the directory
+sudo service $DIR restart
+
+
