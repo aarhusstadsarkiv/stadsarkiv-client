@@ -1,10 +1,12 @@
 from starlette.requests import Request
+from starlette.responses import JSONResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.auth import is_authenticated
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core import user
+from stadsarkiv_client.core.dynamic_settings import settings
 
 log = get_log()
 
@@ -38,3 +40,9 @@ async def users_get_single(request: Request):
     context = await get_context(request, context_values=context_values)
 
     return templates.TemplateResponse(request, "admin/user_update.html", context)
+
+
+async def config_get(request: Request):
+    await is_authenticated(request, permissions=["root"])
+    dynamic_settings = settings
+    return JSONResponse(dynamic_settings)
