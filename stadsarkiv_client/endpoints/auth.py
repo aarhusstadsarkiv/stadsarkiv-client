@@ -79,7 +79,7 @@ async def logout_post(request: Request):
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
     except Exception as e:
-        log.error("Logout error", exc_info=True)
+        log.exception(e)
         flash.set_message(request, str(e), type="error")
 
     return RedirectResponse(url="/auth/login", status_code=302)
