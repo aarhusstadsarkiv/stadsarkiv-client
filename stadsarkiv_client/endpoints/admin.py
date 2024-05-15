@@ -1,5 +1,5 @@
 from starlette.requests import Request
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, RedirectResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.auth import is_authenticated
@@ -7,6 +7,8 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core import user
 from stadsarkiv_client.core.dynamic_settings import settings
+from stadsarkiv_client.core import flash
+from stadsarkiv_client.core.translate import translate
 
 log = get_log()
 
@@ -25,34 +27,36 @@ async def users_get(request: Request):
     return templates.TemplateResponse(request, "admin/users.html", context)
 
 
-async def _get_used_permissions(request: Request):
-    """ "
-    Only a subset of permissions are editable. This function returns the editable permissions.
-
-    Permissions from endpoint is e.g.:
-     [{'name': 'read', 'grant_id': 7, 'entity_id': None}, {'name': 'hard_delete', 'grant_id': 9, 'entity_id': None}]
-    """
-    permissions = await api.users_permissions(request)
-    editable_permissions: list = ["guest", "user", "researcher", "admin", "employee", "root"]
-    used_permissions = [p for p in permissions if p["name"] in editable_permissions]
-    used_permissions = sorted(used_permissions, key=lambda x: x["grant_id"], reverse=False)
-    return used_permissions
-
-
 async def users_get_single(request: Request):
     await is_authenticated(request, permissions=["root"])
 
-    user_ = await api.user_get(request)
-    used_permissions = await _get_used_permissions(request)
-    permissions_user = user.permissions_as_list(user_["permissions"])
+    single_user = await api.user_get(request)
+    used_permissions = await api.user_permissions_subset(request)
+    permissions_user = user.permissions_as_list(single_user["permissions"])
 
     permission_translated = user.permission_translated(permissions_user)
-    user_["permission_translated"] = permission_translated
+    single_user["permission_translated"] = permission_translated
 
-    context_values = {"title": "Bruger", "user": user_, "permissions": used_permissions}
+    context_values = {"title": "Bruger", "user": single_user, "permissions": used_permissions}
     context = await get_context(request, context_values=context_values)
 
     return templates.TemplateResponse(request, "admin/user_update.html", context)
+
+
+async def users_patch(request: Request):
+    uuid = request.path_params.get("uuid")
+    redirect_url = request.url_for("admin_users_get_single", uuid=uuid)
+
+    try:
+        await is_authenticated(request, permissions=["root"])
+        await api.users_patch(request)
+        flash.set_message(request, translate("User has been updated"), type="success")
+        return RedirectResponse(url=redirect_url, status_code=302)
+
+    except Exception as e:
+        log.exception(e)
+        flash.set_message(request, translate("User could not be updated."), type="error")
+        return RedirectResponse(url=redirect_url, status_code=302)
 
 
 async def users_get_json(request: Request):

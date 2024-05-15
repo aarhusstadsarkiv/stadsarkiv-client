@@ -265,12 +265,32 @@ async def user_get(request: Request) -> dict:
             )
 
 
+async def user_permissions_subset(request: Request):
+    """ "
+    Only a subset of permissions are editable. This function returns the editable permissions as a list.
+     [{'name': 'read', 'grant_id': 7, 'entity_id': None}, {'name': 'hard_delete', 'grant_id': 9, 'entity_id': None}]
+    """
+    permissions = await users_permissions(request)
+    editable_permissions: list = ["guest", "user", "researcher", "admin", "employee", "root"]
+    used_permissions = [p for p in permissions if p["name"] in editable_permissions]
+    used_permissions = sorted(used_permissions, key=lambda x: x["grant_id"], reverse=False)
+    return used_permissions
+
+
 async def users_patch(request: Request) -> typing.Any:
     """
     PATCH a user from the api
     """
+    used_permissions = await user_permissions_subset(request)
+    data = await request.form()
+
     uuid = request.path_params["uuid"]
-    json_data = await request.json()
+    grant_id = data.get("grant_id", "0")
+
+    # assert grant_id is a string. To satisfy mypy
+    assert isinstance(grant_id, str)
+
+    user_permission = [p for p in used_permissions if p["grant_id"] == int(grant_id)]
     headers = _get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
     url = base_url + "/users/" + uuid + "/permissions"
 
@@ -279,7 +299,7 @@ async def users_patch(request: Request) -> typing.Any:
             url=url,
             follow_redirects=True,
             headers=headers,
-            json=json_data,
+            json=user_permission,
         )
 
         if response.is_success:

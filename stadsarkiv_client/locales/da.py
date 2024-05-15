@@ -118,6 +118,8 @@ da = {
     "Update Password": "Opdater password",
     "Update entity": "Update entity",
     "User already exists. Try to login instead.": "En bruger med denne email findes allerede. Prøv at logge ind i stedet.",
+    "User could not be updated.": "Brugeren kunne ikke opdateres.",
+    "User has been updated": "Brugeren er opdateret.",
     "User information could not be found.": "Information omkring bruger kunne ikke findes.",
     "User is already verified.": "Brugerens email er allerede verificeret.",
     "View": "Vis",

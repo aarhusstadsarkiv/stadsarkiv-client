@@ -137,6 +137,8 @@ en = {
     "Update entity": "Update entity",
     "User already exists. Try to login instead.": "User already exists. Try to login instead.",
     "User could not be read.": "User could not be read.",
+    "User could not be updated.": "User could not be updated.",
+    "User has been updated": "User has been updated",
     "User is already verified.": "User is already verified.",
     "View": "View",
     "View schema": "View schema",

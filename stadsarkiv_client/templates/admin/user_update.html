@@ -43,8 +43,8 @@
 </table>
 
 <p>Rediger rettigheder</p>
-<form>
-    <select name="permissions">
+<form method="post" action="{{ url_for('admin_users_patch', uuid=user.id) }}" id="admin-users-patch">
+    <select name="grant_id">
         {% for permission in permissions %}
             {% if permission.grant_id == user.permissions[0].grant_id %}
             <option value="{{ permission.grant_id }}" selected>{{ translate("Permission " ~ permission.name) }}</option>
@@ -55,48 +55,5 @@
     </select>
     <input id="submit" name="submit" type="submit" value="Rediger">
 </form>
-<script>
-
-    const endpoint = `{{get_setting('api_base_url')}}/users/{{user.id}}/permissions`    
-    const authorization = '{{ authorization }}'
-
-    // on submit
-    const submit = document.getElementById('submit')
-    submit.addEventListener('click', function(e) {
-        e.preventDefault()
-        
-        const usedPermissions = {{ to_json(permissions)|safe }}
-        const select = document.querySelector('select')
-        const grantId = select.options[select.selectedIndex].value
-
-        // Get object corresponding to the selected grant_id
-        const grantObject = usedPermissions.find(permission => permission.grant_id == grantId)
-
-        // Remove entity_id from grantObject
-        // delete grantObject.entity_id
-        const data = [grantObject]
-
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': authorization,
-            'x-client': '{{ get_setting('client_name') }}',
-        }
-
-        fetch(endpoint, {
-            method: 'PATCH',
-            headers: headers,
-            body: JSON.stringify(data)
-        }).then(response => {
-            if (response.status === 200) {
-                alert('Rettigheder opdateret')
-
-                // reload page
-                window.location.reload()
-            } else {
-                alert('Noget gik galt')
-            }
-        })
-    })
-</script>
 
 {% endblock content %}
