@@ -9,6 +9,7 @@ from stadsarkiv_client.core import user
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
+import asyncio
 
 log = get_log()
 
@@ -30,10 +31,12 @@ async def users_get(request: Request):
 async def users_get_single(request: Request):
     await is_authenticated(request, permissions=["root"])
 
-    single_user = await api.user_get(request)
-    used_permissions = await api.user_permissions_subset(request)
-    permissions_user = user.permissions_as_list(single_user["permissions"])
+    single_user, used_permissions = await asyncio.gather(
+        api.user_get(request),
+        api.user_permissions_subset(request),
+    )
 
+    permissions_user = user.permissions_as_list(single_user["permissions"])
     permission_translated = user.permission_translated(permissions_user)
     single_user["permission_translated"] = permission_translated
 
