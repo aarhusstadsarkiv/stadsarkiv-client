@@ -15,7 +15,7 @@ log = get_log()
 
 
 async def users_get(request: Request):
-    await is_authenticated(request, permissions=["root"])
+    await is_authenticated(request, permissions=["admin"])
     users = await api.users_get(request)
 
     for user_ in users:
@@ -29,7 +29,7 @@ async def users_get(request: Request):
 
 
 async def users_get_single(request: Request):
-    await is_authenticated(request, permissions=["root"])
+    await is_authenticated(request, permissions=["admin"])
 
     single_user, used_permissions = await asyncio.gather(
         api.user_get(request),
@@ -47,11 +47,12 @@ async def users_get_single(request: Request):
 
 
 async def users_patch(request: Request):
+    await is_authenticated(request, permissions=["admin"])
+
     uuid = request.path_params.get("uuid")
     redirect_url = request.url_for("admin_users_get_single", uuid=uuid)
 
     try:
-        await is_authenticated(request, permissions=["root"])
         await api.users_patch(request)
         flash.set_message(request, translate("User has been updated"), type="success")
         return RedirectResponse(url=redirect_url, status_code=302)
@@ -63,12 +64,12 @@ async def users_patch(request: Request):
 
 
 async def users_get_json(request: Request):
-    await is_authenticated(request, permissions=["root"])
+    await is_authenticated(request, permissions=["admin"])
     user_ = await api.user_get(request)
     return JSONResponse(user_)
 
 
 async def config_get(request: Request):
-    await is_authenticated(request, permissions=["root"])
+    await is_authenticated(request, permissions=["admin"])
     dynamic_settings = settings
     return JSONResponse(dynamic_settings)
