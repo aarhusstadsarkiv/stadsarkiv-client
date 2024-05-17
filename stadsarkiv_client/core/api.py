@@ -36,7 +36,7 @@ async def _request_custom_header(request: httpx.Request):
     Custom event for httpx. Add a custom header to the request.
     """
     request.headers["x-client"] = settings["client_name"]
-    request.headers["x-client-domail-url"] = settings["client_url"]
+    request.headers["x-client-domain-url"] = settings["client_url"]
     return request
 
 
