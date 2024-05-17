@@ -19,16 +19,26 @@ log = get_log()
 settings_local: dict = {}
 
 
+# load local settings
 try:
     module_name = get_local_config_dir() + ".settings"
     submodule = importlib.import_module(module_name)
     settings_local = getattr(submodule, "settings")
+    settings.update(settings_local)
     log.debug(f"Loaded local settings file: {get_local_config_dir('settings.py')}")
 except ImportError:
     log.debug(f"Local settings file NOT loaded: {get_local_config_dir('settings.py')}")
 
 
-settings.update(settings_local)
+# load local settings-dev
+try:
+    module_name = get_local_config_dir() + ".settings-dev"
+    submodule = importlib.import_module(module_name)
+    settings_dev_local = getattr(submodule, "settings")
+    settings.update(settings_dev_local)
+    log.debug(f"Loaded local settings file: {get_local_config_dir('settings-dev.py')}")
+except ImportError:
+    log.debug(f"Local settings file NOT loaded: {get_local_config_dir('settings-dev.py')}")
 
 
 def get_setting(key):
