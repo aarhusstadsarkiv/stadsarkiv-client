@@ -168,3 +168,4 @@ gunicorn_process.pid
 /settings_facets.py
 /local
 /resources
+settings-dev.py
