@@ -2,6 +2,7 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.relations import format_relations, sort_data
+from stadsarkiv_client.search.normalize_search_result import normalize_search_result
 import asyncio
 
 log = get_log()
@@ -124,9 +125,11 @@ class Hooks(HooksSpec):
         if type == "events":
             search_params.append(("events", id))
 
-        search_results, relations = await asyncio.gather(
+        search_result, relations = await asyncio.gather(
             api.proxies_records_from_list(self.request, search_params), api.proxies_get_relations(self.request, type, id)
         )
+
+        search_result = normalize_search_result(search_result)
 
         relations_formatted = format_relations(type, relations)
         if type == "people":
@@ -135,7 +138,7 @@ class Hooks(HooksSpec):
             relations_formatted = sort_data(relations_formatted, "rel_label")
 
         resource["relations"] = relations_formatted
-        resource["search_results"] = search_results
+        resource["search_result"] = search_result
 
         return resource
 
