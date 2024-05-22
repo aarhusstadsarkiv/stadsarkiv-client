@@ -16,6 +16,7 @@ def resource_alter(resource: dict):
     resource_orginal = resource.copy()
 
     relations = resource.get("relations")
+    search_results = resource.get("search_results")
 
     resource = normalize_resource.set_created_decommissioned(resource)
     resource = normalize_resource.set_collectors_link_list(resource, schema)
@@ -29,5 +30,6 @@ def resource_alter(resource: dict):
     resource = normalize_resource.get_resource_and_types(resource)
 
     resource["relations"] = relations
+    resource["search_results"] = search_results
     resource["resource_orginal"] = resource_orginal
     return resource
