@@ -109,29 +109,33 @@ class Hooks(HooksSpec):
             'production': 'Gæstespil fra Det danske Teater'
             }
         """
-
+        # set ext data
         if "ext_data" in resource:
             ext_data = resource["ext_data"]
             for key in ext_data:
                 resource["ext_data_" + key] = ext_data[key]
 
+        # set date_from_premier
         if type == "events" and "date_from" in resource:
             resource["date_from_premier"] = resource["date_from"]
 
+        # search params
         search_params = [("start", "1"), ("size", "10")]
         if type == "people":
             search_params.append(("people", id))
-
         if type == "events":
             search_params.append(("events", id))
 
+        # fetch search result and relations
         search_result, relations = await asyncio.gather(
             api.proxies_records_from_list(self.request, search_params), api.proxies_get_relations(self.request, type, id)
         )
 
+        # normalize and format data
         search_result = normalize_search_result(search_result)
-
         relations_formatted = format_relations(type, relations)
+
+        # sort
         if type == "people":
             relations_formatted = sort_data(relations_formatted, "display_label")
         if type == "events":
