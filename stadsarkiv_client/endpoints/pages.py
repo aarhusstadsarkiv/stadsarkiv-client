@@ -25,4 +25,4 @@ async def default(request: Request):
 
     context_values = {"title": page["title"]}
     context = await get_context(request, context_values=context_values)
-    return templates.TemplateResponse(template, context)
+    return templates.TemplateResponse(request, template, context)
