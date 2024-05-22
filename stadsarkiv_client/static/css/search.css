@@ -162,6 +162,21 @@ details>summary.inactive {
     margin-bottom: 0.2em;
 }
 
+
+/**
+ * Override of the general record.css
+ */
+ .search-results .record-content {
+    padding-top: 0.2em;
+    margin-bottom: 0.2em
+}
+
+.search-results .record-content>.label {
+    width: 8em;
+    min-width: 8em;
+}
+
+
 /**
  * Search suggestions
  */
@@ -186,17 +201,4 @@ details>summary.inactive {
 
 .search-suggestion-focus {
     background-color: white;
-}
-
-/**
- * Override of the general record.css
- */
-.record-content {
-    padding-top: 0.2em;
-    margin-bottom: 0.2em
-}
-
-.record-content>.label {
-    width: 8em;
-    min-width: 8em;
 }
