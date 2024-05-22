@@ -21,6 +21,8 @@
     <a href="/search?events={{ meta['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
+{{ pre(resource.search_result)|safe }}
+
 {% set keys = [
 "id", "ext_data_season", "ext_data_stagename", "date_from_premier", "ext_data_playwright", "ext_data_original_id",
 "ext_data_production", "event_type", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area"] %}
