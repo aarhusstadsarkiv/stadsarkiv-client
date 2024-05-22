@@ -2,7 +2,7 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.relations import format_relations, sort_data
-
+import asyncio
 
 log = get_log()
 
@@ -93,11 +93,10 @@ class Hooks(HooksSpec):
 
         return query_params
 
-    async def after_get_resource(self, type: str, resource: dict) -> dict:
+    async def _alter_types_people_events(self, type: str, resource: dict) -> dict:
         """
-        Alter the entity json is returned from the proxies api.
+        Add relations and search results to people and events.
         """
-
         id = resource["id"]
 
         """
@@ -118,7 +117,17 @@ class Hooks(HooksSpec):
         if type == "events" and "date_from" in resource:
             resource["date_from_premier"] = resource["date_from"]
 
-        relations = await api.proxies_get_relations(self.request, type, id)
+        search_params = [("start", "1"), ("size", "10")]
+        if type == "people":
+            search_params.append(("people", id))
+
+        if type == "events":
+            search_params.append(("events", id))
+
+        search_results, relations = await asyncio.gather(
+            api.proxies_records_from_list(self.request, search_params), api.proxies_get_relations(self.request, type, id)
+        )
+
         relations_formatted = format_relations(type, relations)
         if type == "people":
             relations_formatted = sort_data(relations_formatted, "display_label")
@@ -126,5 +135,15 @@ class Hooks(HooksSpec):
             relations_formatted = sort_data(relations_formatted, "rel_label")
 
         resource["relations"] = relations_formatted
+        resource["search_results"] = search_results
 
+        return resource
+
+    async def after_get_resource(self, type: str, resource: dict) -> dict:
+        """
+        Alter the entity json is returned from the proxies api.
+        """
+
+        if type == "people" or type == "events":
+            resource = await self._alter_types_people_events(type, resource)
         return resource
