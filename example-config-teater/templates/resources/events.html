@@ -3,10 +3,125 @@
 
 {% extends "base.html" %}
 
+{% set truncate_summary = 300 %}
+
+{% macro parse_search_title(result) %}
+{% if result.label %}
+<div class="search-summary">{{ result.label|truncate(truncate_summary) }}</div>
+{% endif %}
+{% if result.summary %}
+<div class="search-summary">{{ result.summary|truncate(truncate_summary) }}</div>
+{% endif %}
+{% endmacro %}
+
+{% macro parse_search_result(search_result) %}
+{% set start = search_result["start"]|int %}
+{% set size = search_result["size"]|int %}
+<div class="search-results">
+    {% for result in search_result.result %}
+    {% set serie = None %}
+    {% if result.series is iterable %}
+    {% set serie = result.series | last %}
+    {% endif %}
+    {% set current = loop.index + start %}
+
+    <div class="search-result">
+        <a class="search-link" href="/records/{{ result.id }}?search={{ current }}">
+
+            {% if result.thumbnail %}
+            <div class="search-thumbnail">
+                <img src="{{ result.thumbnail }}" alt="{{ result.label }}">
+            </div>
+            {% endif %}
+
+            <div class="search-details">
+                {{ parse_search_title(result) }}
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endmacro %}
+
+
 {% block body_class %}resources-events{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
+<style>
+    .search-link {
+        color: var(--search-link-text);
+        text-decoration: none;
+    }
+
+    .search-link:hover {
+        text-decoration: none;
+    }
+
+    .search-link {
+        display: flex;
+    }
+
+
+    .search-results {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap; /* This allows the items to wrap onto the next line */
+    }
+    
+    .search-results > div {
+        flex: 1 0 25%; /* Grow each div to fill the space, but not shrink, starting with 25% of the space */
+    }
+
+
+    .search-result {
+        background-color: var(--search-result-background);
+        padding: 10px 0;
+        border-top: 1px solid var(--search-result-border);
+    }
+
+    .search-result:hover {
+        background-color: var(--search-result-background-hover);
+    }
+
+
+    .search-link {
+        color: var(--search-link-text);
+        text-decoration: none;
+    }
+
+    .search-link:hover {
+        text-decoration: none;
+    }
+
+    .search-link {
+        display: flex;
+    }
+
+    .search-thumbnail {
+        margin-right: 10px;
+    }
+
+    .search-thumbnail img {
+        min-width: 120px;
+        height: auto;
+        width: 120px;
+
+    }
+
+    .search-details {
+        flex-grow: 1;
+    }
+
+    .search-summary {
+        color: var(--links);
+    }
+
+    .search-summary:first-of-type {
+        font-weight: 600;
+        margin-bottom: 0.2em;
+    }
+</style>
 <script type="module">
     import { activateOverlay } from "/static/js/overlay.js";
     activateOverlay();
@@ -21,7 +136,7 @@
     <a href="/search?events={{ meta['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
-{{ pre(resource.search_result)|safe }}
+{{ parse_search_result(resource.search_result) }}
 
 {% set keys = [
 "id", "ext_data_season", "ext_data_stagename", "date_from_premier", "ext_data_playwright", "ext_data_original_id",
@@ -42,7 +157,7 @@
 <div class="relations-edit-app"></div>
 <script type="module">
 
-    import { initRelationsEdit } from  '/static/js/relations-edit.js';
+    import { initRelationsEdit } from '/static/js/relations-edit.js';
 
     const resource = {{ to_json(resource) | safe }};
     initRelationsEdit(resource.relations, resource.resource_orginal)

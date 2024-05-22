@@ -6,6 +6,7 @@
 {% block body_class %}page-resources-people{% endblock %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/search.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
 <script type="module">
     import { activateOverlay } from "/static/js/overlay.js";
