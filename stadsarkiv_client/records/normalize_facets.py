@@ -17,13 +17,13 @@ log = get_log()
 
 
 class NormalizeFacets:
-    def __init__(self, request: Request, records, query_params=[], query_str=""):
+    def __init__(self, request: Request, search_result, query_params=[], query_str=""):
         self._request = request
-        self._records = records
-        self._active_facets = records["active_facets"]
+        self._records = search_result
+        self._active_facets = search_result["active_facets"]
         self._query_params = query_params
         self._query_str = query_str
-        self._facets_resolved = records["facets_resolved"]
+        self._facets_resolved = search_result["facets_resolved"]
         self._filters: list = []
         self._facets = settings_facets
 

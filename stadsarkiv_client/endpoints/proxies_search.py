@@ -117,6 +117,29 @@ def _check_series(query_params: list) -> list:
     return query_params
 
 
+def _get_facets_and_filters(request: Request, search_result: dict, query_params=[], query_str=""):
+
+    normalized_facets = NormalizeFacets(
+        request=request,
+        search_result=search_result,
+        query_params=query_params,
+        query_str=query_str,
+    )
+
+    facets = normalized_facets.get_transformed_facets()
+    facets_enabled = settings["facets_enabled"]
+
+    # only use facets that are enabled in settings left menu
+    facets = {key: value for key, value in facets.items() if key in facets_enabled}
+
+    # sort by facets_enabled order
+    facets = {key: facets[key] for key in facets_enabled}
+
+    facets_filters = normalized_facets.get_filters()
+
+    return facets, facets_filters
+
+
 async def get(request: Request):
     hooks = get_hooks(request)
 
@@ -146,23 +169,14 @@ async def get(request: Request):
     # Remove pagination params from query params. In order to get a query string that can be used in e.g. facet links
     query_str_display = query.get_str_from_list(query_params_after_search, remove_keys=["start", "size", "sort", "direction"])
 
-    normalized_facets = NormalizeFacets(
-        request=request,
-        records=search_result,
+    # Get facets and filters
+    facets, facets_filters = _get_facets_and_filters(
+        request,
+        search_result,
         query_params=query_params_after_search,
         query_str=query_str_display,
     )
 
-    facets = normalized_facets.get_transformed_facets()
-    facets_enabled = settings["facets_enabled"]
-
-    # only use facets that are enabled in settings left menu
-    facets = {key: value for key, value in facets.items() if key in facets_enabled}
-
-    # sort by facets_enabled order
-    facets = {key: facets[key] for key in facets_enabled}
-
-    facets_filters = normalized_facets.get_filters()
     pagination_data = _get_search_pagination_data(request, search_result["size"], search_result["total"])
 
     context_values = {
