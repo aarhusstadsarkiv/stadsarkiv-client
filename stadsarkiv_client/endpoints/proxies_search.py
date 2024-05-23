@@ -3,6 +3,7 @@ Proxy for search records endpoints
 """
 
 from starlette.requests import Request
+from starlette.responses import Response
 from starlette.responses import PlainTextResponse, JSONResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
@@ -140,7 +141,38 @@ def _get_facets_and_filters(request: Request, search_result: dict, query_params=
     return facets, facets_filters
 
 
-async def get(request: Request):
+def _set_response_cookie(response: Response, context: dict):
+
+    size = context.get("size")
+    sort = context.get("sort")
+
+    # assert size and sort are ints
+    assert isinstance(size, str)
+    assert isinstance(sort, str)
+
+    pagination_data = context.get("pagination_data", {})
+    search_cookie_value = {
+        # Use site specific query params set before search
+        "query_str_display": context.get("query_str_display"),
+        "query_params": context.get("query_params_before_search"),
+        "total": pagination_data["total"],
+        "q": context.get("q"),
+    }
+
+    DAYS_365 = 60 * 60 * 24 * 365 * 1
+
+    response.set_cookie(key="search", value=json.dumps(search_cookie_value), httponly=True)
+    response.set_cookie(key="size", value=size, httponly=True, max_age=DAYS_365, expires=DAYS_365)
+    response.set_cookie(key="sort", value=sort, httponly=True, max_age=DAYS_365, expires=DAYS_365)
+
+    return response
+
+
+async def get_search_context_values(request: Request) -> dict:
+    """
+    Get all context values for search page
+    Then it is possible to create a custom request and get the context values
+    """
     hooks = get_hooks(request)
 
     q = query.get_search(request)
@@ -163,7 +195,7 @@ async def get(request: Request):
     search_result = normalize_search_result(search_result)
 
     # Alter query params after search
-    # You may want to remove all collections.
+    # You may want to remove all curators except one after search results are obtained
     query_params_after_search = await hooks.after_get_search(query_params=query_params_before_search)
 
     # Remove pagination params from query params. In order to get a query string that can be used in e.g. facet links
@@ -183,6 +215,7 @@ async def get(request: Request):
         "q": q,
         "title": translate("Search"),
         "search_result": search_result,
+        "query_params_before_search": query_params_before_search,
         "query_params": query_params_after_search,
         "query_str_search": query_str_search,
         "query_str_display": query_str_display,
@@ -194,22 +227,15 @@ async def get(request: Request):
         "pagination_data": pagination_data,
     }
 
-    DAYS_365 = 60 * 60 * 24 * 365 * 1
+    return context_values
 
+
+async def get(request: Request):
+    context_values = await get_search_context_values(request)
     context = await get_context(request, context_values=context_values)
     response = templates.TemplateResponse(request, "search/search.html", context)
 
-    search_cookie_value = {
-        # Use site specific query params set before search
-        "query_str_display": query_str_display,
-        "query_params": query_params_before_search,
-        "total": pagination_data["total"],
-        "q": q,
-    }
-
-    response.set_cookie(key="search", value=json.dumps(search_cookie_value), httponly=True)
-    response.set_cookie(key="size", value=size, httponly=True, max_age=DAYS_365, expires=DAYS_365)
-    response.set_cookie(key="sort", value=sort, httponly=True, max_age=DAYS_365, expires=DAYS_365)
+    _set_response_cookie(response, context)
 
     return response
 
