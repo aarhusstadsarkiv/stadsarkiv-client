@@ -4,8 +4,9 @@ import typing
 settings: dict[str, typing.Any] = {
     # test
     "client_name": "teaterarkivet",
+    "client_url": "https://teater.openaws.dk",
     "language": "da",
-    "log_handlers": ["stream", "rotating_file"],  # [ "stream", "file"]
+    "log_handlers": ["rotating_file"],  # [ "stream", "file"]
     #
     # cookie settings
     #

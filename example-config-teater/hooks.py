@@ -2,7 +2,6 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.relations import format_relations, sort_data
-from stadsarkiv_client.search.normalize_search_result import normalize_search_result
 import asyncio
 
 log = get_log()
@@ -119,20 +118,18 @@ class Hooks(HooksSpec):
         if type == "events" and "date_from" in resource:
             resource["date_from_premier"] = resource["date_from"]
 
-        # search params
-        search_params = [("start", "1"), ("size", "10")]
+        # compose search url
         if type == "people":
-            search_params.append(("people", id))
+            search_url = f"/search/json?people={id}"
         if type == "events":
-            search_params.append(("events", id))
+            search_url = f"/search/json?events={id}"
 
         # fetch search result and relations
-        search_result, relations = await asyncio.gather(
-            api.proxies_records_from_list(self.request, search_params), api.proxies_get_relations(self.request, type, id)
-        )
+        search_result, relations = await asyncio.gather(api.internal_api_get(search_url), api.proxies_get_relations(self.request, type, id))
+
+        search_result = search_result["search_result"]
 
         # normalize and format data
-        search_result = normalize_search_result(search_result)
         relations_formatted = format_relations(type, relations)
 
         # sort
