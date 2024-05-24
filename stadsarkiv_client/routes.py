@@ -85,7 +85,7 @@ routes = [
     Route("/search", endpoint=proxies_search.get, name="proxies_search_get"),
     Route("/auto_complete", endpoint=proxies_search.auto_complete_search, name="proxies_records_auto_complete_search"),
     Route("/auto_complete_relations", endpoint=proxies_search.auto_complete_relations, name="proxies_records_auto_complete_relations"),
-    Route("/search/json", endpoint=proxies_search.get_json, name="proxies_search_get_json"),
+    Route("/search/json", endpoint=proxies_search.get_json_search, name="proxies_search_get_json"),
     Route("/records/{record_id:str}", endpoint=proxies_records.get, name="proxies_records_get"),
     Route("/records/{record_id:str}/json/{type:str}", endpoint=proxies_records.get_json, name="proxies_records_get_json"),
     Route("/order/{record_id:str}", endpoint=order.order_get, name="proxies_records_get_json"),
