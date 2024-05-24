@@ -126,7 +126,6 @@ class Hooks(HooksSpec):
 
         # fetch search result and relations
         search_result, relations = await asyncio.gather(api.internal_api_get(search_url), api.proxies_get_relations(self.request, type, id))
-
         search_result = search_result["search_result"]
 
         # normalize and format data
