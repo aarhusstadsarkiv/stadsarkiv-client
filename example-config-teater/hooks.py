@@ -99,16 +99,7 @@ class Hooks(HooksSpec):
         """
         id = resource["id"]
 
-        """
-        'ext_data': {
-            'season': '1970-1971',
-            'playwright': 'Micheal MacLiammoir',
-            'original_id': '3701',
-            'stagename': 'Store Scene',
-            'production': 'Gæstespil fra Det danske Teater'
-            }
-        """
-        # set ext data
+        # Set ext data
         if "ext_data" in resource:
             ext_data = resource["ext_data"]
             for key in ext_data:
