@@ -717,6 +717,21 @@ async def proxies_records_from_list(request, query_params) -> typing.Any:
             response.raise_for_status()
 
 
+async def internal_api_get(path: str) -> typing.Any:
+    """
+    GET data from an internal api
+    """
+    client_url = settings["client_url"]
+    url = f"{client_url}{path}"
+    async with _get_async_client() as client:
+        response = await client.get(url)
+
+        if response.is_success:
+            return response.json()
+        else:
+            response.raise_for_status()
+
+
 async def _get_server_url(request):
     scheme = request.url.scheme
     host = request.url.hostname
