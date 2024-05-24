@@ -240,6 +240,14 @@ async def get(request: Request):
     return response
 
 
+async def get_json_search(request: Request):
+    context_values = await get_search_context_values(request)
+    response = JSONResponse(context_values)
+    _set_response_cookie(response, context_values)
+
+    return response
+
+
 async def get_json(request: Request):
     add_list_items = _get_default_query_params(request)
     query_params = query.get_list(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
