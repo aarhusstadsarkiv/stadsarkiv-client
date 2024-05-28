@@ -53,42 +53,23 @@ async def _get_resource_context(request):
 
 
 async def get(request: Request):
-    allow_resource_types = [
-        "collections",
-        "people",
-        "locations",
-        "creators",
-        "events",
-        "organisations",
-        "collectors",
-    ]
+    resource_templates = {
+        "collections": "resources/collections.html",
+        "people": "resources/people.html",
+        "locations": "resources/locations.html",
+        "creators": "resources/creators.html",
+        "events": "resources/events.html",
+        "organisations": "resources/organisations.html",
+        "collectors": "resources/collectors.html",
+    }
 
     resource_type = request.path_params["resource_type"]
-    if resource_type not in allow_resource_types:
+    if resource_type not in resource_templates:
         raise HTTPException(status_code=404, detail="Resource type not found")
 
     context = await _get_resource_context(request)
-
-    if resource_type == "collections":
-        return templates.TemplateResponse(request, "resources/collections.html", context)
-
-    elif resource_type == "people":
-        return templates.TemplateResponse(request, "resources/people.html", context)
-
-    elif resource_type == "locations":
-        return templates.TemplateResponse(request, "resources/locations.html", context)
-
-    elif resource_type == "creators":
-        return templates.TemplateResponse(request, "resources/creators.html", context)
-
-    elif resource_type == "events":
-        return templates.TemplateResponse(request, "resources/events.html", context)
-
-    elif resource_type == "organisations":
-        return templates.TemplateResponse(request, "resources/organisations.html", context)
-
-    elif resource_type == "collectors":
-        return templates.TemplateResponse(request, "resources/collectors.html", context)
+    template_path = resource_templates[resource_type]
+    return templates.TemplateResponse(request, template_path, context)
 
 
 async def get_json(request: Request):
