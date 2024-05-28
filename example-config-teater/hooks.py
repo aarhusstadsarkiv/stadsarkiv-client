@@ -2,7 +2,9 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.relations import format_relations, sort_data
+from stadsarkiv_client.endpoints.proxies_search import get_search_context_values, set_response_cookie
 import asyncio
+from starlette.responses import HTMLResponse
 
 log = get_log()
 
@@ -38,6 +40,9 @@ def _alter_events(context: dict) -> dict:
 
 
 class Hooks(HooksSpec):
+
+    context = {}
+
     def __init__(self, request):
         super().__init__(request)
 
@@ -111,15 +116,19 @@ class Hooks(HooksSpec):
 
         # compose search url
         if type == "people":
-            search_url = f"/search/json?people={id}"
+            query_params = [("people", id)]
         if type == "events":
-            search_url = f"/search/json?events={id}"
+            query_params = [("events", id)]
 
         # fetch search result and relations
-        search_result, relations = await asyncio.gather(api.internal_api_get(search_url), api.proxies_get_relations(self.request, type, id))
-        search_result = search_result["search_result"]
+        context, relations = await asyncio.gather(
+            get_search_context_values(self.request, extra_query_params=query_params),
+            api.proxies_get_relations(self.request, type, id),
+        )
 
-        # normalize and format data
+        Hooks.context = context
+
+        search_result = context["search_result"]
         relations_formatted = format_relations(type, relations)
 
         # sort
@@ -141,3 +150,11 @@ class Hooks(HooksSpec):
         if type == "people" or type == "events":
             resource = await self._alter_types_people_events(type, resource)
         return resource
+
+    async def before_resource_response(self, response: HTMLResponse) -> HTMLResponse:
+        """
+        Before the reponse is returned to the template.
+        """
+        set_response_cookie(response, Hooks.context)
+
+        return response

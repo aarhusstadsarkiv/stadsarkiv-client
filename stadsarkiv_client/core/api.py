@@ -690,7 +690,6 @@ async def proxies_delete_relations(request: Request):
 
     async with _get_async_client() as client:
         url = base_url + "/proxy/relations/" + rel_id
-        # headers = {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"}
 
         response = await client.delete(url)
         if response.is_success:
@@ -717,12 +716,14 @@ async def proxies_records_from_list(request, query_params) -> typing.Any:
             response.raise_for_status()
 
 
-async def internal_api_get(path: str) -> typing.Any:
+async def internal_api_get(request: Request, path: str) -> typing.Any:
     """
     GET data from an internal api
     """
-    client_url = settings["client_url"]
+
+    client_url = await _get_server_url(request)
     url = f"{client_url}{path}"
+
     async with _get_async_client() as client:
         response = await client.get(url)
 

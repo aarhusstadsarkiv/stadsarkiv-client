@@ -38,9 +38,9 @@ def _get_static_dirs() -> list:
     local_static_dir = get_local_config_dir("static")
     if os.path.exists(local_static_dir):
         static_dir_list.append(local_static_dir)
-        log.debug(f"Loaded local static files: {local_static_dir }")
+        log.debug(f"Loaded local static files: {local_static_dir}")
     else:
-        log.debug(f"Local static files NOT loaded: {local_static_dir }")
+        log.debug(f"Local static files NOT loaded: {local_static_dir}")
 
     # Module static files. Default static files
     static_dir = os.path.dirname(os.path.abspath(__file__)) + "/static"

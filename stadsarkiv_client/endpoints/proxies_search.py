@@ -141,7 +141,7 @@ def _get_facets_and_filters(request: Request, search_result: dict, query_params=
     return facets, facets_filters
 
 
-def _set_response_cookie(response: Response, context: dict):
+def set_response_cookie(response: Response, context: dict):
 
     size = context.get("size")
     sort = context.get("sort")
@@ -168,21 +168,26 @@ def _set_response_cookie(response: Response, context: dict):
     return response
 
 
-async def get_search_context_values(request: Request) -> dict:
+async def get_search_context_values(request: Request, extra_query_params: list = []) -> dict:
     """
-    Get all context values for search page
-    Then it is possible to create a custom request and get the context values
+    Get all context values used on the search page
+    extra_query_params: list of tuples that will be added to the query params before search
     """
     hooks = get_hooks(request)
 
     q = query.get_search(request)
     size, sort = _get_size_sort(request)
-    add_list_items = _get_default_query_params(request)
 
-    # size, sort, direction are read from query params
-    # If not set they may be read from cookies
-    # last resort is default values
-    query_params_before_search = query.get_list(request, remove_keys=["start", "size", "sort", "direction"], add_list_items=add_list_items)
+    # date_to, date_from, created_at, start, direction are read from query params
+    default_query_params = _get_default_query_params(request)
+    default_query_params.extend(extra_query_params)
+
+    query_params_before_search = query.get_list(
+        request,
+        remove_keys=["start", "size", "sort", "direction"],
+        default_query_params=default_query_params,
+    )
+
     query_params_before_search = _check_series(query_params_before_search)
 
     # Alter query params before search
@@ -235,7 +240,7 @@ async def get(request: Request):
     context = await get_context(request, context_values=context_values)
     response = templates.TemplateResponse(request, "search/search.html", context)
 
-    _set_response_cookie(response, context)
+    set_response_cookie(response, context)
 
     return response
 
@@ -243,14 +248,14 @@ async def get(request: Request):
 async def get_json_search(request: Request):
     context_values = await get_search_context_values(request)
     response = JSONResponse(context_values)
-    _set_response_cookie(response, context_values)
+    set_response_cookie(response, context_values)
 
     return response
 
 
 async def get_json(request: Request):
     add_list_items = _get_default_query_params(request)
-    query_params = query.get_list(request, remove_keys=["size", "sort", "direction"], add_list_items=add_list_items)
+    query_params = query.get_list(request, remove_keys=["size", "sort", "direction"], default_query_params=add_list_items)
 
     hooks = get_hooks(request)
     query_params = await hooks.before_get_search(query_params=query_params)
