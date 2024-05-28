@@ -37,6 +37,7 @@ settings: dict[str, typing.Any] = {
     #
     # Allow robots
     #
+    "show_version": True,
     "robots_allow": True,
     "facets_enabled": ["events"],
     "allow_user_registration": False,
