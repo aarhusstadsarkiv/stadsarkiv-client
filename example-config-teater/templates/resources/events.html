@@ -11,7 +11,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
-<link rel="stylesheet" href="{{ url_for('static', path='/css/resource.css') }}?v={{ get_setting('version') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/search.css') }}?v={{ get_setting('version') }}">
 
 <script type="module">
     import { activateOverlay } from "/static/js/overlay.js";
@@ -23,11 +23,7 @@
 
 {% include "includes/main_title.html" %}
 
-<p>
-    <a href="/search?events={{ meta['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
-</p>
-
-{# resource_macros.resource_search_result(resource.search_result) #}
+{{ resource_macros.parse_search_result(resource.search_result, meta) }}
 
 {% set keys = [
 "id", "ext_data_season", "ext_data_stagename", "date_from_premier", "ext_data_playwright", "ext_data_original_id",
