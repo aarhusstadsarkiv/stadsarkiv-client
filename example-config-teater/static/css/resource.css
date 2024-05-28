@@ -1,0 +1,72 @@
+.search-link {
+    color: var(--search-link-text);
+    text-decoration: none;
+}
+
+.search-link:hover {
+    text-decoration: none;
+}
+
+.search-link {
+    display: flex;
+}
+
+
+.search-results {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; /* This allows the items to wrap onto the next line */
+}
+
+.search-results > div {
+    flex: 1 0 25%; /* Grow each div to fill the space, but not shrink, starting with 25% of the space */
+}
+
+
+.search-result {
+    background-color: var(--search-result-background);
+    padding: 10px 0;
+    border-top: 1px solid var(--search-result-border);
+}
+
+.search-result:hover {
+    background-color: var(--search-result-background-hover);
+}
+
+
+.search-link {
+    color: var(--search-link-text);
+    text-decoration: none;
+}
+
+.search-link:hover {
+    text-decoration: none;
+}
+
+.search-link {
+    display: flex;
+}
+
+.search-thumbnail {
+    margin-right: 10px;
+}
+
+.search-thumbnail img {
+    min-width: 120px;
+    height: auto;
+    width: 120px;
+
+}
+
+.search-details {
+    flex-grow: 1;
+}
+
+.search-summary {
+    color: var(--links);
+}
+
+.search-summary:first-of-type {
+    font-weight: 600;
+    margin-bottom: 0.2em;
+}
