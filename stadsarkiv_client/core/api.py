@@ -690,7 +690,6 @@ async def proxies_delete_relations(request: Request):
 
     async with _get_async_client() as client:
         url = base_url + "/proxy/relations/" + rel_id
-        # headers = {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"}
 
         response = await client.delete(url)
         if response.is_success:
