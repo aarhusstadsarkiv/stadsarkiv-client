@@ -53,6 +53,7 @@ async def _get_resource_context(request):
 
 
 async def get(request: Request):
+    hooks = get_hooks(request)
     resource_templates = {
         "collections": "resources/collections.html",
         "people": "resources/people.html",
@@ -69,7 +70,9 @@ async def get(request: Request):
 
     context = await _get_resource_context(request)
     template_path = resource_templates[resource_type]
-    return templates.TemplateResponse(request, template_path, context)
+    response = templates.TemplateResponse(request, template_path, context)
+    response = await hooks.before_resource_response(response)
+    return response
 
 
 async def get_json(request: Request):

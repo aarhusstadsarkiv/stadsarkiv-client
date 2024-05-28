@@ -16,6 +16,7 @@ def get_list(request: Request, remove_keys: list = [], default_query_params: lis
     e.g. [('content_types', '96')]"""
     query_params = request.query_params
     items = query_params.multi_items()
+
     items = [(key, value) for key, value in items if key not in remove_keys]
     items.extend(default_query_params)
 
@@ -34,10 +35,16 @@ def get_str(request: Request, remove_keys: list = [], default_query_params: list
 
 def get_str_from_list(items: list, remove_keys: list = []) -> str:
     """Get list of tuples and return it as a quote plus encoded string."""
+
+    # hack to remove leading zeros
+    # trim all "0" from items value. Eg. "000096" -> "96" except if value is "0"
+    items = [(key, value.lstrip("0")) if value != "0" else (key, value) for key, value in items]
+
     query_str = ""
     for key, value in items:
         if key not in remove_keys:
-            query_str += f"{key}={quote_plus(value)}&"
+            value = quote_plus(value)
+            query_str += f"{key}={value}&"
 
     return query_str
 

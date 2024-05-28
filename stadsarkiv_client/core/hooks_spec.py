@@ -3,6 +3,7 @@ Default hooks specification.
 query_params is a list of tuples. Example: [("collection", 1), ("series", 2)]
 """
 
+import typing
 from starlette.requests import Request
 from stadsarkiv_client.core.logging import get_log
 
@@ -61,3 +62,9 @@ class HooksSpec:
         Alter the json returned from the proxies api.
         """
         return resource
+
+    async def before_resource_response(self, response: typing.Any) -> typing.Any:
+        """
+        Before the reponse is returned to the template.
+        """
+        return response
