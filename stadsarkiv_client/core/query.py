@@ -11,23 +11,23 @@ from urllib.parse import quote_plus
 log = get_log()
 
 
-def get_list(request: Request, remove_keys: list = [], add_list_items: list = []) -> list:
+def get_list(request: Request, remove_keys: list = [], default_query_params: list = []) -> list:
     """Get query params from request and return it as a list of tuples.
     e.g. [('content_types', '96')]"""
     query_params = request.query_params
     items = query_params.multi_items()
     items = [(key, value) for key, value in items if key not in remove_keys]
-    items += add_list_items
+    items.extend(default_query_params)
 
     return items
 
 
-def get_str(request: Request, remove_keys: list = [], add_list_items: list = []) -> str:
+def get_str(request: Request, remove_keys: list = [], default_query_params: list = []) -> str:
     """Get query params from request and return it as a quote plus encoded string.
     E.g. 'content_types=96&content_types=97&'"""
 
     items = get_list(request, remove_keys=remove_keys)
-    items += add_list_items
+    items += default_query_params
     query_str = get_str_from_list(items)
     return query_str
 
