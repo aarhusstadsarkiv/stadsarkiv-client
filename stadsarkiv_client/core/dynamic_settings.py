@@ -17,15 +17,15 @@ import importlib
 import os
 
 log = get_log()
-settings_local: dict = {}
+settings_config: dict = {}
 
 
 # load local settings
 try:
     module_name = get_local_config_dir() + ".settings"
     submodule = importlib.import_module(module_name)
-    settings_local = getattr(submodule, "settings")
-    settings.update(settings_local)
+    settings_config = getattr(submodule, "settings")
+    settings.update(settings_config)
     log.debug(f"Loaded local settings file: {get_local_config_dir('settings.py')}")
 except ImportError:
     log.debug(f"Local settings file NOT loaded: {get_local_config_dir('settings.py')}")
@@ -35,15 +35,19 @@ except ImportError:
 try:
     module_name = get_local_config_dir() + ".settings-local"
     submodule = importlib.import_module(module_name)
-    settings_dev_local = getattr(submodule, "settings")
-    settings.update(settings_dev_local)
+    settings_config_local = getattr(submodule, "settings")
+    settings.update(settings_config_local)
     log.debug(f"Loaded local settings file: {get_local_config_dir('settings-local.py')}")
 except ImportError:
     log.debug(f"Local settings file NOT loaded: {get_local_config_dir('settings-local.py')}")
 
 
+# settings for tests
 if os.getenv("TEST"):
-    settings.update({"api_base_url": "https://dev.openaws.dk/v1"})
+    module_name = "tests.settings-test"
+    submodule = importlib.import_module(module_name)
+    settings_test = getattr(submodule, "settings")
+    settings.update(settings_test)
 
 
 def get_setting(key):
