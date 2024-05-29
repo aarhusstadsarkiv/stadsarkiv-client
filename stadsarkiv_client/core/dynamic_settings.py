@@ -1,10 +1,9 @@
 """
-Override default settings with local settings.
+Override settings with settings from a config dir.
+Override settings with test settings if TEST is set.
 
 Merge settings_facets with settings_facets_local (settings_facets_local has precedence)
-
-Only use facets_enabled from settings
-Sort settings_facets by facets_enabled
+Only use facets_enabled from settings. Sort settings_facets by facets_enabled
 
 This is only run one time. When the server is started.
 """
