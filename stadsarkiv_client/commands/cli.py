@@ -112,6 +112,8 @@ def run_tests(config_dir, tests_path_pattern):
         config_dir = config_dir.rstrip("/\\")
         os.environ["CONFIG_DIR"] = config_dir
 
+    print(f"Running tests with config dir: {os.getenv('CONFIG_DIR')}")
+
     # get test files
     test_files = glob.glob(tests_path_pattern)
     if test_files:
