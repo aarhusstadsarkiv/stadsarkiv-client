@@ -14,8 +14,8 @@ from stadsarkiv_client.core import api
 import json
 from stadsarkiv_client.records.normalize_facets import NormalizeFacets
 from stadsarkiv_client.core import query
-from stadsarkiv_client.search.normalize_search_result import normalize_search_result
 from stadsarkiv_client.core.hooks import get_hooks
+from stadsarkiv_client.records import normalize_dates
 
 
 log = get_log()
@@ -168,6 +168,29 @@ def set_response_cookie(response: Response, context: dict):
     return response
 
 
+def _normalize_search_result(records: dict):
+    """
+    Normalize date
+    Get collection and content_type from facets_resolved
+    These are displayed in the search result
+    """
+    facets_resolved = records["facets_resolved"]
+
+    for record in records["result"]:
+        record = normalize_dates.split_date_strings(record)
+        record = normalize_dates.normalize_dates(record)
+
+        # Add collection as string
+        if "collection_id" in record and record["collection_id"]:
+            record["collection"] = facets_resolved["collection"].get(record["collection_id"]).get("display_label", None)
+
+        if "content_types" in record:
+            content_type = record["content_types"][-1]
+            record["content_type"] = facets_resolved["content_types"].get(content_type).get("display_label", None)
+
+    return records
+
+
 async def get_search_context_values(request: Request, extra_query_params: list = []) -> dict:
     """
     Get all context values used on the search page
@@ -197,7 +220,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
     # Call api
     query_str_search = query.get_str_from_list(query_params_before_search)
     search_result = await api.proxies_records(request, query_str_search)
-    search_result = normalize_search_result(search_result)
+    search_result = _normalize_search_result(search_result)
 
     # Alter query params after search
     # You may want to remove all curators except one after search results are obtained
