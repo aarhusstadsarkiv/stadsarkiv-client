@@ -12,7 +12,7 @@
 {% endmacro %}
 
 
-{% macro parse_search_result(search_result, meta) %}
+{% macro parse_search_result(search_result, meta, type) %}
 {% set start = search_result["start"]|int %}
 {% set size = search_result["size"]|int %}
 {% set total = search_result["total"]|int %}
@@ -26,7 +26,7 @@
     
     Viser {{ size }} ud af {{ total }} arkivalier
     {% if total > 0 %}
-    <a href="/search?events={{ meta['id_real'] }}">Vis alle relevante arkivalier</a>
+    <a href="/search?{{ type }}={{ meta['id_real'] }}">Vis alle relevante arkivalier</a>
     {% endif %}
 </p>
 

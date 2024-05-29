@@ -26,7 +26,7 @@
 {% set options = {'icon': schema, 'icon_label': 'Lokation'} %}
 {{ common_macros.parse_image_block('Stamdata', keys, resource, options) }}
 
-{{ resource_macros.parse_search_result(resource.search_result, meta) }}
+{{ resource_macros.parse_search_result(resource.search_result, meta, "events") }}
 
 {% set keys = ["ext_data_translater", "ext_data_arkiv_id", "ext_data_number_of_performances"] %}
 {{ common_macros.parse_block_common('Beskrivelse', keys, resource) }}

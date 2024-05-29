@@ -23,7 +23,7 @@
 {% set keys = ["firstnames", "lastnames", "gender", "date_of_birth", "place_of_birth", "date_of_death", "place_of_death", "occupation"] %}
 {{ common_macros.parse_image_block('', keys, resource, options) }}
 
-{{ resource_macros.parse_search_result(resource.search_result, meta) }}
+{{ resource_macros.parse_search_result(resource.search_result, meta, "people" ) }}
 
 {% set keys = ["description"] %}
 {{ common_macros.parse_block_common('Beskrivelse', keys, resource) }}
