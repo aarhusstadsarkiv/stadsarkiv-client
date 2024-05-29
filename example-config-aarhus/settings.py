@@ -2,10 +2,10 @@ import typing
 
 
 settings: dict[str, typing.Any] = {
-    "client_name": "development",
-    "client_url": "https://client.openaws.dk",
+    "client_name": "aarhusarkivet",
+    "client_url": "https://aarhusarkivet.openaws.dk",
     "language": "da",
-    "log_handlers": ["stream", "rotating_file"],  # [ "stream", "file"]
+    "log_handlers": ["rotating_file"],  # ["stream"]
     "cookie": {
         "name": "session",
         "lifetime": 3600,  # seconds
@@ -13,8 +13,7 @@ settings: dict[str, typing.Any] = {
         "secure": True,
         "samesite": "lax",
     },
-    # "api_base_url": "http://localhost:8000/v1",
-    "api_base_url": "https://dev.openaws.dk/v1",
+    "api_base_url": "https://api.openaws.dk/v1",
     "main_menu": [
         {"name": "auth_login_get", "title": "Log ind", "type": "dropdown"},
         {"name": "auth_logout_get", "title": "Log ud", "type": "dropdown"},
@@ -26,7 +25,7 @@ settings: dict[str, typing.Any] = {
         {"name": "proxies_search_get", "title": "Søg", "type": "top"},
     ],
     "search_base_url": "/search",
-    "robots_allow": True,
+    "robots_allow": False,
     "allow_user_registration": True,
     "allow_user_management": True,
     "allow_online_ordering": True,

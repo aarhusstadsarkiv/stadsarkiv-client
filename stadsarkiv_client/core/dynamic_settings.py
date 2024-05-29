@@ -32,13 +32,13 @@ except ImportError:
 
 # load local settings-dev
 try:
-    module_name = get_local_config_dir() + ".settings-dev"
+    module_name = get_local_config_dir() + ".settings-local"
     submodule = importlib.import_module(module_name)
     settings_dev_local = getattr(submodule, "settings")
     settings.update(settings_dev_local)
-    log.debug(f"Loaded local settings file: {get_local_config_dir('settings-dev.py')}")
+    log.debug(f"Loaded local settings file: {get_local_config_dir('settings-local.py')}")
 except ImportError:
-    log.debug(f"Local settings file NOT loaded: {get_local_config_dir('settings-dev.py')}")
+    log.debug(f"Local settings file NOT loaded: {get_local_config_dir('settings-local.py')}")
 
 
 def get_setting(key):
