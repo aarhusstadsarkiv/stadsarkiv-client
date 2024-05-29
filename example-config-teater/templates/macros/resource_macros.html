@@ -15,9 +15,19 @@
 {% macro parse_search_result(search_result, meta) %}
 {% set start = search_result["start"]|int %}
 {% set size = search_result["size"]|int %}
+{% set total = search_result["total"]|int %}
+{% if size > total %}
+{% set size = total %}
+{% endif %}
+
+<h3 class="record-header">Arkivalier</h3>
 
 <p>
-    Viser  <a href="/search?events={{ meta['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
+    
+    Viser {{ size }} ud af {{ total }} arkivalier
+    {% if total > 0 %}
+    <a href="/search?events={{ meta['id_real'] }}">Vis alle relevante arkivalier</a>
+    {% endif %}
 </p>
 
 

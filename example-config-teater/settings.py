@@ -6,7 +6,7 @@ settings: dict[str, typing.Any] = {
     "client_name": "teaterarkivet",
     "client_url": "https://teater.openaws.dk",
     "language": "da",
-    "log_handlers": ["rotating_file"],  # [ "stream", "file"]
+    "log_handlers": ["rotating_file"],
     #
     # cookie settings
     #
@@ -17,8 +17,7 @@ settings: dict[str, typing.Any] = {
         "secure": True,
         "samesite": "lax",
     },
-    # "api_base_url": "http://localhost:8000/v1",
-    "api_base_url": "https://dev.openaws.dk/v1",
+    "api_base_url": "https://api.openaws.dk/v1",
     #
     # Main menu containing built-in endpoints, but you may remove these and generate your own menu.
     # You may also add other "menus", e.g. "footer_items" or something similar.
@@ -38,7 +37,7 @@ settings: dict[str, typing.Any] = {
     # Allow robots
     #
     "show_version": True,
-    "robots_allow": True,
+    "robots_allow": False,
     "facets_enabled": ["events"],
     "allow_user_registration": False,
     "allow_user_management": True,

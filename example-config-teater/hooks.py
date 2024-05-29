@@ -116,9 +116,9 @@ class Hooks(HooksSpec):
 
         # compose search url
         if type == "people":
-            query_params = [("people", id)]
+            query_params = [("people", id), ("size", "10")]
         if type == "events":
-            query_params = [("events", id)]
+            query_params = [("events", id), ("size", "10")]
 
         # fetch search result and relations
         context, relations = await asyncio.gather(
