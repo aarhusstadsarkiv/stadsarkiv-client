@@ -14,6 +14,7 @@ from stadsarkiv_client.settings_facets import settings_facets as settings_facets
 from stadsarkiv_client.core.args import get_local_config_dir
 from stadsarkiv_client.core.logging import get_log
 import importlib
+import os
 
 log = get_log()
 settings_local: dict = {}
@@ -39,6 +40,10 @@ try:
     log.debug(f"Loaded local settings file: {get_local_config_dir('settings-local.py')}")
 except ImportError:
     log.debug(f"Local settings file NOT loaded: {get_local_config_dir('settings-local.py')}")
+
+
+if os.getenv("TEST"):
+    settings.update({"api_base_url": "https://dev.openaws.dk/v1"})
 
 
 def get_setting(key):

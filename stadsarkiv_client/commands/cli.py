@@ -107,6 +107,7 @@ def version():
 
 
 def run_tests(config_dir, tests_path_pattern):
+    os.environ["TEST"] = "TRUE"
     if config_dir:
         config_dir = config_dir.rstrip("/\\")
         os.environ["CONFIG_DIR"] = config_dir
