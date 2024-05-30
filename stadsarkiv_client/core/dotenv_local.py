@@ -6,6 +6,7 @@ Load the module .env-dist file and override with local .env file if it exists
 from dotenv import load_dotenv
 import sys
 import os
+from pathlib import Path
 from stadsarkiv_client.core.logging_handlers import get_init_logger
 from stadsarkiv_client.core.args import get_local_config_dir
 
@@ -19,8 +20,8 @@ def load():
     Load the module .env-dist file
     Override with "local" .env file if it exists
     """
-    dir_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-    env_dist = dir_path + "/.env-dist"
+    dir_path = Path(__file__).resolve().parent.parent
+    env_dist = dir_path / ".env-dist"
     load_dotenv(env_dist)
     log.debug("Loaded .env-dist file")
 

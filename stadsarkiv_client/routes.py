@@ -43,8 +43,9 @@ def _get_static_dirs() -> list:
         log.debug(f"Local static files NOT loaded: {local_static_dir}")
 
     # Module static files. Default static files
-    static_dir = os.path.dirname(os.path.abspath(__file__)) + "/static"
+    static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
     static_dir_list.append(static_dir)
+
     return static_dir_list
 
 

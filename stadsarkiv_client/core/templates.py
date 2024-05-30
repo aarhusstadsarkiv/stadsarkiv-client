@@ -33,8 +33,8 @@ else:
     log.debug(f"Local templates NOT loaded: {local_templates_dir}")
 
 # Full path to module templates
-current_dir = os.path.dirname(os.path.realpath(__file__))
-template_module_dirs = current_dir + "/../templates"
+current_dir = os.path.dirname(os.path.abspath(__file__))
+template_module_dirs = os.path.join(current_dir, "..", "templates")
 template_dirs.append(template_module_dirs)
 
 
