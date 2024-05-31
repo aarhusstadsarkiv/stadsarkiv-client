@@ -88,7 +88,7 @@ def _get_default_query_params(request: Request):
         direction = request.query_params.get("direction", "asc")
 
     if sort == "created_at":
-        direction = request.query_params.get("direction", "asc")
+        direction = request.query_params.get("direction", "desc")
 
     if direction:
         add_list_items.append(("direction", direction))

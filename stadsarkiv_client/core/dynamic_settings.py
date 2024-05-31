@@ -9,7 +9,7 @@ Default settings are defined in the settings.py file. These are always loaded.
 4) If the environment variable TEST is set, the settings will be overridden by the settings-test.py file.
 (Found in the tests directory)
 
-5) If a settings_facets.py file exists in the config dir, it will override the settings_facets.py file. 
+5) If a settings_facets.py file exists in the config dir, it will override the settings_facets.py file.
 
 """
 
