@@ -78,7 +78,8 @@ def _get_default_query_params(request: Request):
     size, sort, direction
     """
     size, sort = _get_size_sort(request)
-    add_list_items = [("size", size), ("sort", sort)]
+    view = request.query_params.get("view", "list")
+    add_list_items = [("size", size), ("sort", sort), ("view", view)]
 
     direction = None
     if sort == "date_to":
@@ -207,13 +208,15 @@ async def get_search_context_values(request: Request, extra_query_params: list =
 
     query_params_before_search = query.get_list(
         request,
-        remove_keys=["start", "size", "sort", "direction"],
+        remove_keys=["start", "size", "sort", "direction", "view"],
         default_query_params=default_query_params,
     )
 
     query_params_before_search = _check_series(query_params_before_search)
 
     # Alter query params before search
+    #
+    # Example usage:
     # You may want to remove all collections and add single one before search results are obtained
     query_params_before_search = await hooks.before_get_search(query_params=query_params_before_search)
 

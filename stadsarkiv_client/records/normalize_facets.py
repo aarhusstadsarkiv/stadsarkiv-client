@@ -147,7 +147,7 @@ class NormalizeFacets:
                 ignore_keys.remove(key)
 
         # Ignore the size, start, sort and direction query params
-        ignore_keys.extend(["size", "start", "sort", "direction"])
+        ignore_keys.extend(["size", "start", "sort", "direction", "view"])
         return ignore_keys
 
     def _sort_order_filters(self, filters):
