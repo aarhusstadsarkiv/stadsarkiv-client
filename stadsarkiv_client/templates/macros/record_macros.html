@@ -1,0 +1,120 @@
+{% set azure_allow_media_search = "sp=r&st=2023-02-03T12:19:05Z&se=2030-04-01T19:19:05Z&spr=https&sv=2021-06-08&sr=c&sig=QK9mOWt0oZ%2FtiY5biruFo0eGPirtjHYEQ061tPuZYHU%3D" %}
+
+{% import "macros/common_macros.html" as common_macros %}
+
+{% macro parse_record_pagination(record_pagination) %}
+{% if record_pagination %}
+<div class="record-pagination">
+    <div class="record-search-link">
+        <a href="/search?{{ record_pagination['query_str_display'] }}">{{translate('Latest search') }}</a> 
+    </div>
+    <div class="record-pages-info">
+        ({{ translate ('Page') }} {{ record_pagination["current_page"] }} / {{ record_pagination["total"] }})
+    </div>
+    <div class="record-prev-next">
+        {% if record_pagination.prev_record is none %}
+        <span class="disabled">&lt;</span>
+        {% else %}
+        <a class="prev" href="/records/{{ record_pagination.prev_record }}?search={{ record_pagination.prev_page }}">&lt;</a>
+        {% endif %}
+        {% if record_pagination.next_record is none %}
+        <span class="disabled">&gt;</span>
+        {% else %}
+        <a class="next" href="/records/{{ record_pagination.next_record }}?search={{ record_pagination.next_page }}">&gt;</a>
+        {% endif %}
+        
+    </div>
+</div>
+{% endif %}
+{% endmacro %}
+
+{% macro _parse_representations_media(meta_data) %}
+{% if meta_data["record_type"] == 'image' %}
+<div class="overlays">
+    <a href="#overlay-image-1">
+        <img class="record-image" src="{{meta_data['portrait']}}" alt="{{ translate('Image') }}">
+    </a>
+    <div data-overlay-id="overlay-image-1">
+        <div class="overlay overlay-hidden">
+            <div class="overlay-wrapper">
+                <img id="overlay-image" loading="lazy" src="{{meta_data['representations']['large_image']}}"
+                    alt="{{ translate('Large Image') }}">
+            </div>
+            <div class="overlay-actions">
+                <div class="overlay-close" aria-label="{{ translate('Close') }}">{{ get_icon('close', '40')|safe}}</div>
+                <div class="overlay-reset" aria-label="{{ translate('Reset') }}">{{ get_icon('reset', '40')|safe}}</div>
+            </div>
+        </div>
+    </div>  
+</div>
+{% endif %}
+
+{% if meta_data["record_type"] == 'video' %}
+<video controls="" poster="{{ meta_data.representations.get('record_image') }}" preload="metadata">
+    <source src="{{ meta_data.representations.get('record_file') }}?{{ azure_allow_media_search }}" type="video/mp4">
+    <p>This browser doesn't support video tag.</p>
+</video>
+{% endif %}
+
+{% if meta_data["record_type"] == 'audio' %}
+<figcaption>{{ translate('Click in order to listen to the audio.') }}</figcaption><br>
+<audio controls="" preload="metadata">
+    <source src="{{ meta_data.representations.get('record_file') }}?{{ azure_allow_media_search }}" type="audio/mpeg">
+    <p>This browser doesn't support the audio tag.</p>
+</audio>
+{% endif %}
+
+{% if meta_data["record_type"] == 'web_document' %}
+<a href="{{meta_data.representations.get('web_document_url')}}" aria-label="{{ translate('Click on the image to open the PDF document.') }}">
+    <img src="{{meta_data.portrait}}" alt="{{ section }}">
+</a>
+<p>
+    {{ translate('Click on the image to open the PDF document.') }}
+</p>
+{% endif %}
+
+{% if meta_data["record_type"] == 'sejrs_sedler' %}
+<div class="record-sejrs-sedler">{{ meta_data['representation_text']|trim }}</div>
+{% endif %}
+{% endmacro %}
+
+{% macro _parse_representations_block(meta_data) %}
+<div class="record-representation">
+{% if meta_data["is_representations_online"] %}
+{{ _parse_representations_media(meta_data)}}
+{% elif meta_data["availability_id"] == 3 %}
+{{ common_macros.parse_icon('lock', translate('The material is available in the reading room.'))}}
+{% elif meta_data["availability_id"] == 2 %}
+{{ common_macros.parse_icon('lock', translate('The material can be order home to the reading room.'))}}
+{% endif %}
+</div>
+{% endmacro %}
+
+{% macro _parse_representation_block(meta_data) %}
+{% if meta_data["has_representations"] %}
+{{ _parse_representations_block(meta_data) }}
+{% else %}
+<div class="record-representation">
+    {{ common_macros.parse_icon(meta_data["icon"]["icon"], meta_data["icon"]["label"]) }}
+</div>
+{% endif %}
+{% endmacro %}
+
+{% macro parse_block_first(block_keys, meta_data, record_and_types) %}
+{% if key_exist_in_dict(block_keys, record_and_types) %}
+<div class="record-section">
+    {{ _parse_representation_block(meta_data) }}
+
+    <div class="record-main">
+        {% if meta_data["title"] %}
+        <div class="record-title">{{ meta_data["title"] }}</div>
+        {% endif %}
+        {% for key in block_keys %}
+        {% if key in record_and_types %}
+        {{ common_macros.parse_block_section(record_and_types[key]) }}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endmacro %}
