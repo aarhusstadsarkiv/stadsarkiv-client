@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% import "macros/basic_macros.html" as basic_macros %}
+{% import "macros/page_macros.html" as page_macros %}
 
 {% block body_class %}page-auth-orders{% endblock %}
 
@@ -12,7 +12,7 @@
 
 {% include "auth/menu.html" %}
 
-{{ basic_macros.page_title(title) }}
+{{ page_macros.page_title(title) }}
 
 {% if orders|length == 0 %}
     <p>Du har ingen ordrer.</p>

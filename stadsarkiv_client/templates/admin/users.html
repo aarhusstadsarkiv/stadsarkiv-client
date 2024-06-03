@@ -1,5 +1,5 @@
 {% import "macros/admin_macros.html" as admin_macros %}
-{% import "macros/basic_macros.html" as basic_macros %}
+{% import "macros/page_macros.html" as page_macros %}
 
 {% extends "base.html" %}
 
@@ -13,7 +13,7 @@
 
 {% include "admin/menu.html" %}
 
-{{ basic_macros.page_title(title) }}
+{{ page_macros.page_title(title) }}
 
 {# [{'id': '99c648f7-f739-4667-a495-b107669e1c0b', 'email': 'dennis.iversen@gmail.com', 'is_active': True,
 'is_verified': False, 'data': {}, 'permissions': [{'name': 'user', 'grant_id': 6, 'entity_id': None}],

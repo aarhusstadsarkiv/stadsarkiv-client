@@ -1,4 +1,4 @@
-{% import "macros/basic_macros.html" as basic_macros %}
+{% import "macros/page_macros.html" as page_macros %}
 
 {% extends "base.html" %}
 
@@ -8,7 +8,7 @@
 
 {% include "admin/menu.html" %}
 
-{{ basic_macros.page_title(title) }}
+{{ page_macros.page_title(title) }}
 
 <pre>
 {{ schema | safe }}
