@@ -217,6 +217,11 @@ function searchEvents() {
             document.getElementById('size').submit();
         });
 
+        const selectView = document.querySelector('.select-view');
+        selectView.addEventListener('change', function () {
+            document.getElementById('view').submit();
+        });
+
         const selectSort = document.querySelector('.select-sort');
         selectSort.addEventListener('change', function () {
 

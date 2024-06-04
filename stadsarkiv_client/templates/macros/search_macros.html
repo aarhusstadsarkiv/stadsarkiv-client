@@ -183,12 +183,27 @@
 </div>
 {% endmacro %}
 
+{% macro parse_view_form() %}
+<div class="search-option">
+    <form class="view" id="view" method="get" action="{{ url_for('proxies_search_get')}}">
+        {% for key, value in query_params if key not in ['view'] %}
+        <input type="hidden" name="{{ key }}" value="{{ value }}">
+        {% endfor %}
+        <select name="view" class="select-view" aria-label="Visning">
+            <option value="list" {% if view=="list" %}selected{% endif %}>{{ translate('List view') }}</option>
+            <option value="gallery" {% if view=="gallery" %}selected{% endif %}>{{ translate('Gallery view') }}</option>
+        </select>
+    </form>
+</div>
+{% endmacro %}
+
 {% macro parse_search() %}
 <div class="search-form">
     {{ parse_search_form() }}
     <div class="search-options">
         {{ parse_size_form() }}
         {{ parse_sort_form() }}
+        {{ parse_view_form() }}
     </div>
 </div>
 {% endmacro %}

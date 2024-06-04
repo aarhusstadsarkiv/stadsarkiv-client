@@ -4,7 +4,7 @@ Proxy for search records endpoints
 
 from starlette.requests import Request
 from starlette.responses import Response
-from starlette.responses import PlainTextResponse, JSONResponse
+from starlette.responses import JSONResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.translate import translate
@@ -69,7 +69,8 @@ def _get_size_sort(request: Request):
     """
     size = request.query_params.get("size", request.cookies.get("size", "20"))
     sort = request.query_params.get("sort", request.cookies.get("sort", "date_from"))
-    return size, sort
+    view = request.query_params.get("view", request.cookies.get("view", "list"))
+    return size, sort, view
 
 
 def _get_default_query_params(request: Request):
@@ -77,7 +78,7 @@ def _get_default_query_params(request: Request):
     Get default query_params for records search as list of tuples:
     size, sort, direction
     """
-    size, sort = _get_size_sort(request)
+    size, sort, view = _get_size_sort(request)
     view = request.query_params.get("view", "list")
     add_list_items = [("size", size), ("sort", sort), ("view", view)]
 
@@ -146,10 +147,12 @@ def set_response_cookie(response: Response, context: dict):
 
     size = context.get("size")
     sort = context.get("sort")
+    view = context.get("view")
 
     # assert size and sort are ints
     assert isinstance(size, str)
     assert isinstance(sort, str)
+    assert isinstance(view, str)
 
     pagination_data = context.get("pagination_data", {})
     search_cookie_value = {
@@ -165,6 +168,7 @@ def set_response_cookie(response: Response, context: dict):
     response.set_cookie(key="search", value=json.dumps(search_cookie_value), httponly=True)
     response.set_cookie(key="size", value=size, httponly=True, max_age=DAYS_365, expires=DAYS_365)
     response.set_cookie(key="sort", value=sort, httponly=True, max_age=DAYS_365, expires=DAYS_365)
+    response.set_cookie(key="view", value=view, httponly=True, max_age=DAYS_365, expires=DAYS_365)
 
     return response
 
@@ -200,7 +204,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
     hooks = get_hooks(request)
 
     q = query.get_search(request)
-    size, sort = _get_size_sort(request)
+    size, sort, view = _get_size_sort(request)
 
     # date_to, date_from, created_at, start, direction are read from query params
     default_query_params = _get_default_query_params(request)
@@ -230,7 +234,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
     query_params_after_search = await hooks.after_get_search(query_params=query_params_before_search)
 
     # Remove pagination params from query params. In order to get a query string that can be used in e.g. facet links
-    query_str_display = query.get_str_from_list(query_params_after_search, remove_keys=["start", "size", "sort", "direction"])
+    query_str_display = query.get_str_from_list(query_params_after_search, remove_keys=["start", "size", "sort", "direction", "view"])
 
     # Get facets and filters
     facets, facets_filters = _get_facets_and_filters(
@@ -252,6 +256,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
         "query_str_display": query_str_display,
         "sort": sort,
         "size": size,
+        "view": view,
         "facets": facets,
         "facets_filters": facets_filters,
         "dates": _get_dates(request),
@@ -277,19 +282,6 @@ async def get_json_search(request: Request):
     set_response_cookie(response, context_values)
 
     return response
-
-
-async def get_json(request: Request):
-    add_list_items = _get_default_query_params(request)
-    query_params = query.get_list(request, remove_keys=["size", "sort", "direction"], default_query_params=add_list_items)
-
-    hooks = get_hooks(request)
-    query_params = await hooks.before_get_search(query_params=query_params)
-    query_str = query.get_str_from_list(query_params)
-    search_result = await api.proxies_records(request, query_str)
-
-    record_json = json.dumps(search_result, indent=4, ensure_ascii=False)
-    return PlainTextResponse(record_json)
 
 
 async def auto_complete_search(request: Request):
