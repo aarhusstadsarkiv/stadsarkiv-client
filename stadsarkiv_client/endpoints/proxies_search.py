@@ -269,7 +269,11 @@ async def get_search_context_values(request: Request, extra_query_params: list =
 async def get(request: Request):
     context_values = await get_search_context_values(request)
     context = await get_context(request, context_values=context_values)
-    response = templates.TemplateResponse(request, "search/search.html", context)
+
+    if context_values["view"] == "list":
+        response = templates.TemplateResponse(request, "search/search.html", context)
+    if context_values["view"] == "gallery":
+        response = templates.TemplateResponse(request, "search/search_gallery.html", context)
 
     set_response_cookie(response, context)
 
