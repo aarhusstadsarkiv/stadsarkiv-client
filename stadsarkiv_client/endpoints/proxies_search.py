@@ -149,7 +149,7 @@ def set_response_cookie(response: Response, context: dict):
     sort = context.get("sort")
     view = context.get("view")
 
-    # assert size and sort are ints
+    # assert size, sort and view are ints
     assert isinstance(size, str)
     assert isinstance(sort, str)
     assert isinstance(view, str)
