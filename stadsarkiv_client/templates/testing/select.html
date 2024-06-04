@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div>
+    <a href="#" class="open-modal">Open Modal</a>
+    <div class="modal modal-closed">
+        <h2>Testing</h2>
+    </div>
+</div>
+
+<div>
+    <a href="#" class="open-modal">Open Modal 2</a>
+    <div class="modal modal-closed">
+        <h2>Testing 2</h2>
+    </div>
+</div>
+<style>
+
+    .modal {
+        display: block;
+        position: absolute;
+    }
+
+    .modal-closed {
+        display: none;
+    }
+</style>
+<script>
+
+    // select all modal buttons
+    const modals = document.querySelectorAll('.open-modal');
+
+    // Add events to all modals
+    modals.forEach(modal => {
+        modal.addEventListener('click', () => {
+            const modalElement = modal.nextElementSibling;
+            modalElement.classList.toggle('modal-closed');
+        });
+    });
+</script>
+
+{% endblock content %}
