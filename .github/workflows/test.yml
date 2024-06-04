@@ -39,7 +39,7 @@ jobs:
         env:
           CONFIG_DIR: example-config-teater
 
-      - name: Run teater client tests
+      - name: Run aarhus client tests
         run: python -m unittest tests/config-aarhus/*.py
         env:
           CONFIG_DIR: example-config-aarhus
