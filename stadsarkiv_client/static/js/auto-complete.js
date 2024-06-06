@@ -112,6 +112,9 @@ class AutoComplete {
             } else if (e.key === 'ArrowUp') {
                 currentIndex = (currentIndex - 1 + items.length) % items.length;
             }
+
+            console.log(items)
+            console.log(currentIndex)
     
             // Add new focus
             items[currentIndex].classList.add(this.suggestionFocusClass);
