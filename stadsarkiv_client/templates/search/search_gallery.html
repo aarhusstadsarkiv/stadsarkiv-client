@@ -4,9 +4,18 @@
 {% import "macros/common_macros.html" as common_macros %}
 {% import "macros/search_macros.html" as search_macros with context %}
 
+{% macro parse_search_title_short(result) %}
+{% if result.label %}
+<div class="search-summary-gallery">{{ result.label|truncate(truncate_summary) }}</div>
+{% endif %}
+{% endmacro %}
+
 {% macro parse_search_title(result) %}
 {% if result.label %}
 <div class="search-summary-gallery">{{ result.label|truncate(truncate_summary) }}</div>
+{% endif %}
+{% if result.summary %}
+<div class="search-summary-gallery">{{ result.summary|truncate(truncate_summary) }}</div>
 {% endif %}
 {% endmacro %}
 
@@ -29,11 +38,13 @@
             <div class="search-portrait">
                 <img src="{{ result.portrait }}" alt="{{ result.label }}">
             </div>
+            {{ parse_search_title_short(result) }}
+            {% else %}
             {{ parse_search_title(result) }}
-            <div>
+            {% endif %}
+            <div class="search-result-date">
                 {{ result.date_normalized }}
             </div>
-            {% endif %}
         </a>
     </div>
     {% endfor %}
@@ -115,8 +126,17 @@
         font-size: 0.9rem;
     }
 
+    .search-link-gallery {
+        margin-top: 10px;
+    }
+
     .search-summary-gallery { 
         text-decoration: none;
+    }
+
+    .search-result-date {
+        font-weight: 600;
+        margin-top: 10px;
     }
 
     .search-portrait img {

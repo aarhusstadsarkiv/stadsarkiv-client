@@ -79,7 +79,6 @@ def _get_default_query_params(request: Request):
     size, sort, direction
     """
     size, sort, view = _get_size_sort(request)
-    view = request.query_params.get("view", "list")
     add_list_items = [("size", size), ("sort", sort), ("view", view)]
 
     direction = None
