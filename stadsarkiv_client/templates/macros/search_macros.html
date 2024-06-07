@@ -275,7 +275,7 @@
 
 {% endmacro %}
 
-{% macro parse_search_result(search_result) %}
+{% macro parse_search_result(search_result, ignore_fields = []) %}
 {% set start = search_result["start"]|int %}
 {% set size = search_result["size"]|int %}
 <div class="search-results">
@@ -297,17 +297,24 @@
 
             <div class="search-details">
                 {{ parse_search_title(result) }}
-                {% if result.collectors_label %}
+
+                {% if result.collectors_label and 'collectors' not in ignore_fields %}
                 {{ common_macros.parse_string('collectors', result.collectors_label, translate('label_collectors')) }}
                 {% endif %}
-                {% if result.collection %}
+
+                {% if result.collection and 'collection' not in ignore_fields %}
                 {{ common_macros.parse_string('collection', result.collection, translate('label_collection')) }}
                 {% endif %}
-                {% if serie %}
+
+                {% if serie and 'series' not in ignore_fields %}
                 {{ common_macros.parse_string('series', serie, translate('label_series')) }}
                 {% endif %}
+
+                {% if 'date_normalized' not in ignore_fields %}
                 {{ common_macros.parse_string('date_normalized', result.date_normalized, translate('label_date_normalized')) }}
-                {% if result.content_type %}
+                {% endif %}
+
+                {% if result.content_type and 'content_type' not in ignore_fields %}
                 {{ common_macros.parse_string('content_type', result.content_type, translate('label_content_type')) }}
                 {% endif %}
             </div>
@@ -346,3 +353,44 @@
     </form>
 </div>
 {% endmacro %}
+
+{% set truncate_summary_gallery = 160 %}
+
+{% macro parse_search_title_gallery(result) %}
+{% if result.label %}
+<div class="search-summary-gallery">{{ result.label|truncate(truncate_summary_gallery) }}</div>
+{% else %}
+<div class="search-summary-gallery">{{ result.summary|truncate(truncate_summary_gallery) }}</div>
+{% endif %}
+{% endmacro %}
+
+{% macro parse_search_result_gallery(search_result) %}
+{% set start = search_result["start"]|int %}
+{% set size = search_result["size"]|int %}
+
+<div class="search-results-gallery">
+    {% for result in search_result.result %}
+    {% set serie = None %}
+    {% if result.series is iterable %}
+    {% set serie = result.series | last %}
+    {% endif %}
+    {% set current = loop.index + start %}
+
+    <div class="search-result-gallery">
+        <a class="search-link-gallery" href="/records/{{ result.id }}?search={{ current }}">
+
+            {% if result.portrait %}
+            <div class="search-portrait-gallery">
+                <img src="{{ result.portrait }}" alt="{{ result.label }}">
+            </div>
+            {% endif %}
+            {{ parse_search_title_gallery(result) }}
+            <div class="search-result-date-gallery">
+                {{ result.date_normalized }}
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endmacro %}
+

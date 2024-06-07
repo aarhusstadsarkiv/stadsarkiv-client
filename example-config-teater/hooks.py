@@ -2,7 +2,7 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.relations import format_relations, sort_data
-from stadsarkiv_client.endpoints.proxies_search import get_search_context_values, set_response_cookie
+from stadsarkiv_client.endpoints.proxies_search import get_search_context_values, set_response_cookie, get_size_sort_view
 import asyncio
 from starlette.responses import HTMLResponse
 
@@ -119,6 +119,9 @@ class Hooks(HooksSpec):
             query_params = [("people", id), ("size", "10")]
         if type == "events":
             query_params = [("events", id), ("size", "10")]
+
+        _, _, view = get_size_sort_view(self.request)
+        query_params.append(("view", view))
 
         # fetch search result and relations
         context, relations = await asyncio.gather(

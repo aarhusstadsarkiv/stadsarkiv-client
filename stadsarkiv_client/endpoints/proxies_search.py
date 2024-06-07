@@ -62,7 +62,7 @@ def _get_dates(request: Request):
     return dates
 
 
-def _get_size_sort(request: Request):
+def get_size_sort_view(request: Request):
     """
     Get size and sort from request. If not set in request, then get from cookies.
     If not set in cookie use some default values
@@ -78,7 +78,7 @@ def _get_default_query_params(request: Request):
     Get default query_params for records search as list of tuples:
     size, sort, direction
     """
-    size, sort, view = _get_size_sort(request)
+    size, sort, view = get_size_sort_view(request)
     add_list_items = [("size", size), ("sort", sort), ("view", view)]
 
     direction = None
@@ -203,7 +203,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
     hooks = get_hooks(request)
 
     q = query.get_search(request)
-    size, sort, view = _get_size_sort(request)
+    size, sort, view = get_size_sort_view(request)
 
     # date_to, date_from, created_at, start, direction are read from query params
     default_query_params = _get_default_query_params(request)
