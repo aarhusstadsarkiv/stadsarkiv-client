@@ -7,6 +7,7 @@
 .search-result {
     background-color: var(--search-result-background);
     padding: 10px 0;
+    padding-left: 10px;
     border-top: 1px solid var(--search-result-border);
 }
 
@@ -165,7 +166,7 @@ details>summary.inactive {
 
 
 /**
- * Override of the general record.css
+ * Override of the general record.css 
  */
  .search-results .record-content {
     padding-top: 0.2em;
@@ -177,14 +178,12 @@ details>summary.inactive {
     min-width: 8em;
 }
 
-
 /**
  * Search suggestions
  */
-
 .search-suggestions {
     position: absolute;
-    background-color: whitesmoke;
+    background-color: var(--background);
     display: none;
     padding: 5px;
     width: 295px;
@@ -197,9 +196,74 @@ details>summary.inactive {
 .search-suggestion-info {
     flex: 2;
     padding: 5px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--border)
 }
 
 .search-suggestion-focus {
-    background-color: white;
+    background-color: var(--background-alt);
+}
+
+/**
+ * gallery view
+ */
+
+ .search-results-gallery {
+    column-count: 4;
+    column-gap: 20px;
+}
+
+.search-result-gallery {
+    border-radius: 5px;
+    break-inside: avoid;
+    margin-bottom: 20px;
+    background: var(--search-result-background);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.search-result-gallery:hover {
+    background-color: var(--search-result-background-hover);
+}
+
+a.search-link-gallery {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.9rem;
+}
+
+.search-link-gallery {
+    margin-top: 10px;
+}
+
+.search-summary-gallery { 
+    text-decoration: none;
+}
+
+.search-result-date-gallery {
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+@media (max-width: 1200px) {
+    .search-results-gallery {
+        column-count: 3;
+    }
+}
+
+@media (max-width: 992px) {
+    .search-results-gallery {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 576px) {
+    .search-results-gallery {
+        column-count: 1;
+    }
+}
+
+.search-portrait-gallery img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
