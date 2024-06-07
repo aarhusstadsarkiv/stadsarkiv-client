@@ -42,9 +42,8 @@ h3.record-header {
 .record-icon svg {
     width: 200px;
     height: 200px;
-    /* stroke: red; */
+    color: var(--svg-color);
     stroke-width: 1;
-    /* fill: yellow; */
 }
 
 .record-icon>span {

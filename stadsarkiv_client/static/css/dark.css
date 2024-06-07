@@ -1,0 +1,96 @@
+:root {
+    /** 
+     * System colors
+     */
+  
+    --background-body: #1f1f1f;
+    --background: #2a2a2a;
+    --background-alt: #333333;
+    --text-main: #cfcfcf;
+    --text-bright: #ffffff;
+    --text-muted: #6c757d;
+    --links: deepskyblue;
+    --focus: #1a73e8ab;
+    --border: #3a3a3a;
+    --code: #cfcfcf;
+    --animation-duration: 0.1s;
+    --button-base: #323232;
+    --button-hover: #505050;
+    --scrollbar-thumb: color-mod(var(--button-hover) lightness(+6%));
+    --scrollbar-thumb-hover: var(--button-hover);
+    --form-placeholder: #767676;
+    --form-text: #e1e1e1;
+    --variable: #56c596;
+    --highlight: #ffeb3b;
+    --body-width: 100%;
+    --container-width-large: 1400px;
+    --container-width-small: 1200px;
+    --svg-color: grey;
+  
+    /* can not be used in media queries - just to remember the settings */
+    --breakpoint-small: 576px;
+    --breakpoint-medium: 768px;
+    --breakpoint-large: 992px;
+    --breakpoint-xlarge: 1200px;
+  
+    /**
+     * default.css
+     */
+    --navigation-background: #303030;
+    --navigation-background-rgb: 90, 90, 90;
+    --navigation-background-hover: #ffffff22;
+  
+    --flash-color: #e0e0e0;  /* Light grey for general flash messages, offers good contrast */
+    --flash-success-color: mediumaquamarine; /* Bright green, more vibrant and noticeable */
+    --flash-notice-color: #2196F3;  /* Blue, stands out well against black */
+    --flash-error-color: indianred;  /* Red, slightly adjusted for better visibility */
+  
+    --main-menu: white;
+    --main-menu-hover: #ffffff22;
+    --main-menu-top: 61px;
+  
+    /**
+     * record.css
+     */
+    --record-background-sejrs-sedler: #424242;
+    --record-representation-box-shadow: rgba(255, 255, 255, 0.1);
+  
+    --record-header-border: #484848;
+    --record-title: #e1e1e1;
+  
+    --record-prev-next: #cfcfcf;
+    --record-prev-next-active-background: #383838;
+    --record-prev-next-active-border: #505050;
+    --record-prev-next-disabled: #252525;
+    --record-prev-next-disabled-background: #3a3a3a;
+  
+    /**
+     * search.css
+     */
+    --search-result-background: #2c2c2c;
+    --search-result-border: #343a40;
+    --search-result-background-hover: #383838;
+    --search-link-text: #e1e1e1;
+  
+    --search-pagination-background-disabled: #3a3a3a;
+    --search-pagination-disabled: lightblue;
+  
+    /**
+     * footer.css
+     */
+    --footer-text: #cfcfcf;
+    --footer-heading: #cfcfcf;
+  
+    /**
+     * slideshow.css
+     */
+    --slideshow-background: rgba(255, 255, 255, 0.05);
+    --slideshow-background-alt: rgba(255, 255, 255, 0.1);
+    --slideshow-text: #ffffff;
+  
+    /**
+     * overlay.css
+     */
+    --overlay-background: #242424;
+  }
+  
