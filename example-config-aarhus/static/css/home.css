@@ -87,13 +87,7 @@
 }
 
 .home-collections-background {
-    background-color: #fff;
-
-    /* border */
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-
-     
+    background-color: var(--background-alt);
 }
 
 .home-collections-background h3 {
