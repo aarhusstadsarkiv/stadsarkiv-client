@@ -17,7 +17,7 @@ from stadsarkiv_client.core import cookie
 log = get_log()
 
 
-async def get_context(request: Request, context_values: dict = {}, identifier: str = '') -> dict:
+async def get_context(request: Request, context_values: dict = {}, identifier: str = "") -> dict:
     hooks = get_hooks(request)
 
     logged_in = await api.is_logged_in(request)
