@@ -17,7 +17,7 @@ from stadsarkiv_client.core import cookie
 log = get_log()
 
 
-async def get_context(request: Request, context_values: dict = {}) -> dict:
+async def get_context(request: Request, context_values: dict = {}, identifier: str = '') -> dict:
     hooks = get_hooks(request)
 
     logged_in = await api.is_logged_in(request)
@@ -29,6 +29,7 @@ async def get_context(request: Request, context_values: dict = {}) -> dict:
         context_values["query_str_display"] = cookie.get_query_str_display(request)
 
     context = {
+        "identifier": identifier,
         "permissions_list": permissions_list,
         "flash_messages": get_messages(request),
         "path": request.url.path,
