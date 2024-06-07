@@ -12,10 +12,13 @@ log = get_log()
 def _alter_people(context: dict) -> dict:
     """
     Alter people so that search_query from e.g 'search_query': 'people=107465' to /people/107465
+    But add the query_display_str to the context so that it can be displayed in the template.
     """
     try:
+        people_id = context["request"].path_params["id"]
+        people_id = people_id.lstrip("0")
         people = context["record_and_types"]["people"]["value"]
-
+        context["query_str_display"] = "events=" + people_id
         for person in people:
             person["search_query"] = "/people/" + str(person["id"])
     except KeyError:
@@ -27,10 +30,15 @@ def _alter_people(context: dict) -> dict:
 def _alter_events(context: dict) -> dict:
     """
     Alter events so that search_query from e.g 'search_query': 'events=107465' to /events/107465
+    But add the query_display_str to the context so that it can be displayed in the template.
     """
-    try:
-        events = context["record_and_types"]["events"]["value"]
 
+    # get seoncd path params from self.request
+    try:
+        event_id = context["request"].path_params["id"]
+        event_id = event_id.lstrip("0")
+        context["query_str_display"] = "events=" + event_id
+        events = context["record_and_types"]["events"]["value"]
         for event in events:
             event["search_query"] = "/events/" + str(event["id"])
     except KeyError:
@@ -42,6 +50,7 @@ def _alter_events(context: dict) -> dict:
 class Hooks(HooksSpec):
 
     context = {}
+    query_str_display = ""
 
     def __init__(self, request):
         super().__init__(request)
@@ -66,8 +75,10 @@ class Hooks(HooksSpec):
         Alter the context dictionary. Before the context is returned to the template.
         """
         context["meta_title"] = context["meta_title"] + " | Aarhus Teaters Arkiv"
-        context = _alter_people(context)
-        context = _alter_events(context)
+        if context["identifier"] == "people":
+            context = _alter_people(context)
+        if context["identifier"] == "events":
+            context = _alter_events(context)
 
         return context
 
@@ -81,10 +92,6 @@ class Hooks(HooksSpec):
         query_params = [(key, value) for key, value in query_params if key != "curators"]
         query_params.append(("curators", "4"))
 
-        # Remove all collections from the query params and add collection (7)
-        # query_params = [(key, value) for key, value in query_params if key != "collection"]
-        # query_params.append(("collection", "7"))
-
         return query_params
 
     async def after_get_search(self, query_params: list) -> list:
@@ -94,7 +101,6 @@ class Hooks(HooksSpec):
         This is done to avoid that the curator added in the before_search method is added to filters and search cookie.
         """
         query_params = [(key, value) for key, value in query_params if key != "curators"]
-        # query_params = [(key, value) for key, value in query_params if key != "collection"]
 
         return query_params
 
@@ -114,7 +120,6 @@ class Hooks(HooksSpec):
         if type == "events" and "date_from" in resource:
             resource["date_from_premier"] = resource["date_from"]
 
-        # compose search url
         if type == "people":
             query_params = [("people", id), ("size", "10")]
         if type == "events":
