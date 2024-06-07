@@ -17,12 +17,10 @@ def _alter_people(context: dict) -> dict:
     try:
         people_id = context["request"].path_params["id"]
         people_id = people_id.lstrip("0")
-        people = context["record_and_types"]["people"]["value"]
-        context["query_str_display"] = "events=" + people_id
-        for person in people:
-            person["search_query"] = "/people/" + str(person["id"])
-    except KeyError:
-        pass
+        context["query_str_display"] = "people=" + people_id
+
+    except KeyError as e:
+        log.exception(e)
 
     return context
 
@@ -38,6 +36,23 @@ def _alter_events(context: dict) -> dict:
         event_id = context["request"].path_params["id"]
         event_id = event_id.lstrip("0")
         context["query_str_display"] = "events=" + event_id
+
+    except KeyError as e:
+        log.exception(e)
+
+    return context
+
+
+def _alter_record(context: dict) -> dict:
+
+    try:
+        people = context["record_and_types"]["people"]["value"]
+        for person in people:
+            person["search_query"] = "/people/" + str(person["id"])
+    except KeyError:
+        pass
+
+    try:
         events = context["record_and_types"]["events"]["value"]
         for event in events:
             event["search_query"] = "/events/" + str(event["id"])
@@ -79,6 +94,8 @@ class Hooks(HooksSpec):
             context = _alter_people(context)
         if context["identifier"] == "events":
             context = _alter_events(context)
+        if context["identifier"] == "record":
+            context = _alter_record(context)
 
         return context
 

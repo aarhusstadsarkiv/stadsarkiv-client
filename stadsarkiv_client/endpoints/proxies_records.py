@@ -128,7 +128,7 @@ async def get(request: Request):
         "record_pagination": record_pagination,
     }
 
-    context = await get_context(request, context_variables)
+    context = await get_context(request, context_variables, "record")
     return templates.TemplateResponse(request, "records/record.html", context)
 
 
