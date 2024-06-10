@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% import "macros/page_macros.html" as page_macros %}
+{% import "macros/basic_macros.html" as basic_macros %}
 
 {% block body_class %}page-auth-search-results{% endblock %}
 
@@ -12,7 +12,7 @@
 
 {% include "auth/menu.html" %}
 
-{{ page_macros.page_title(title) }}
+{{ basic_macros.page_title(title) }}
 
 {# 
 api_search_results: list = [

@@ -1,4 +1,4 @@
-{% import "macros/page_macros.html" as page_macros %}
+{% import "macros/basic_macros.html" as basic_macros %}
 
 {% extends "base.html" %}
 
@@ -8,7 +8,7 @@
 
 {% include "admin/menu.html" %}
 
-{{ page_macros.page_title(title) }}
+{{ basic_macros.page_title(title) }}
 
 <table>
 {% for schema in schemas %}
