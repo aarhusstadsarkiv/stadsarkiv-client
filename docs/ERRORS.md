@@ -37,3 +37,31 @@ Der er blandt mange af arkivets mange ansatte et meget stort ønske om at få im
 Dennis: Simpelt galleri med billede oprettet. 
 
 ---
+
+Ændre email brugernavn 'aarhus-teaters-arkiv'
+Fra 'Aarhus Teater'. Til 'Aarhus Teaters Arkiv'.
+
+Vi valgte UDEN bindestreger.
+
+
+---
+
+Jeg har lige et punkt i forhold til den nye hjemmeside.
+
+Kan menuen til venstre ”låses fast”, når man scroller ned?
+
+Og kan den få en makeover på et tidspunkt?
+
+Janne.
+
+---
+
+Hermed et eksempel på at jeg laver en søgning hvor tilgængeligheden ”kan ses on-line” er valgt. Desværre kan det bare ikke ses. Der må være noget der skalkigges nærmere på her.
+
+https://aarhusarkivet.openaws.dk/search?locations=1405&availability=4&content_types=61&
+
+Som det ses kan ”Biler på Vesterbro Torv” ikke ses. Formentlig fordi ” Tilgængelighed - Materialet er utilgængeligt som følge af nævnte juridiske forhold. ” er aktiveret, men så burde man jo ikke kunne sortere efter at det kan ses on-line.
+
+Phillip
+
+Dennis: Det er som eksisterende system. Vil først blive ændret når søgemaskine ændres. 
