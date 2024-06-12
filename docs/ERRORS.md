@@ -64,4 +64,14 @@ Som det ses kan ”Biler på Vesterbro Torv” ikke ses. Formentlig fordi ” Ti
 
 Phillip
 
-Dennis: Det er som eksisterende system. Vil først blive ændret når søgemaskine ændres. 
+Dennis: Det er som eksisterende system. Vil først blive ændret når søgemaskine ændres.
+
+---
+
+Når jeg er inde på en side med søgeresultater på søgeresultater og logger ind hopper den ind på en helt anden side.
+
+Jeg har også oplevet det på det ”gamle” AarhusArkivet.
+
+Janne
+
+--- 
