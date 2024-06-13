@@ -74,4 +74,10 @@ Jeg har også oplevet det på det ”gamle” AarhusArkivet.
 
 Janne
 
+---
+
+Måske skal vi genoverveje om, der skal være en ”skyggeramme” omkring et billede. Tror jeg vil foretrække en visning uden skyggeeffekt.
+
+Janne
+
 --- 
