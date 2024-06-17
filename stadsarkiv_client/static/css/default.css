@@ -202,8 +202,6 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 100%;
     margin: auto;
     margin-top: 20px;
-    
-
 }
 
 .container-left {
@@ -216,6 +214,8 @@ h1, h2, h3, h4, h5, h6 {
     position: sticky;
     top: var(--main-menu-top);
     align-self: flex-start;
+    max-height: 100vh;
+    overflow-y: auto;
 }
 
 .container-main {
