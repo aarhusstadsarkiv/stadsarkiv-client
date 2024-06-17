@@ -139,7 +139,7 @@
 {% macro parse_search_form() %}
 <!-- the div provides a context for search-suggestions with `position: absolute` -->
 <div>
-    <form id="search" method="get" action="{{ url_for('proxies_search_get')}}" role="search">
+    <form id="search" method="get" action="{{ url_for('search_get')}}" role="search">
         {% for key, value in query_params if key not in ['start', 'q'] %}
         <input type="hidden" name="{{ key }}" value="{{ value }}">
         {% endfor %}
@@ -152,7 +152,7 @@
 
 {% macro parse_size_form() %}
 <div class="search-option">
-    <form class="size" id="size" method="get" action="{{ url_for('proxies_search_get')}}">
+    <form class="size" id="size" method="get" action="{{ url_for('search_get')}}">
         {% for key, value in query_params if key not in ['start', 'size'] %}
         <input type="hidden" name="{{ key }}" value="{{ value }}">
         {% endfor %}
@@ -167,7 +167,7 @@
 
 {% macro parse_sort_form() %}
 <div class="search-option">
-    <form class="sort" id="sort" method="get" action="{{ url_for('proxies_search_get')}}">
+    <form class="sort" id="sort" method="get" action="{{ url_for('search_get')}}">
         {% for key, value in query_params if key not in ['sort', 'direction'] %}
         <input type="hidden" name="{{ key }}" value="{{ value }}">
         {% endfor %}
@@ -185,7 +185,7 @@
 
 {% macro parse_view_form() %}
 <div class="search-option">
-    <form class="view" id="view" method="get" action="{{ url_for('proxies_search_get')}}">
+    <form class="view" id="view" method="get" action="{{ url_for('search_get')}}">
         {% for key, value in query_params if key not in ['view'] %}
         <input type="hidden" name="{{ key }}" value="{{ value }}">
         {% endfor %}

@@ -31,7 +31,7 @@
     {% if get_setting('debug') %}
 
     {% set meta_links = [
-    {'label': 'JSON', 'url': url_for('proxies_search_get_json') ~ "?" ~ query_str_search | string}
+    {'label': 'JSON', 'url': url_for('search_get_json') ~ "?" ~ query_str_search | string}
     ] %}
 
     {{ common_macros.parse_meta_block(meta_links) }}

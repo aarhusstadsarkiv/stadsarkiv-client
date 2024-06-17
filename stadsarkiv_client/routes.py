@@ -6,11 +6,11 @@ from starlette.routing import Route, Mount
 from stadsarkiv_client.endpoints import (
     admin,
     auth,
+    endpoint_records,
+    endpoint_relations,
+    endpoint_resources,
+    endpoint_search,
     order,
-    proxies_records,
-    proxies_search,
-    proxies_resources,
-    proxies_relations,
     test,
     pages,
     schemas,
@@ -83,16 +83,16 @@ routes = [
     Route("/entities/create/{schema_type:str}", endpoint=entities.create, name="entities_create"),
     Route("/entities/update/{uuid:str}", endpoint=entities.update, name="entities_update"),
     Route("/entities/delete/{uuid:str}/{delete_type:str}", endpoint=entities.delete, name="entities_delete", methods=["DELETE", "GET"]),
-    Route("/search", endpoint=proxies_search.get, name="proxies_search_get"),
-    Route("/auto_complete", endpoint=proxies_search.auto_complete_search, name="proxies_records_auto_complete_search"),
-    Route("/auto_complete_relations", endpoint=proxies_search.auto_complete_relations, name="proxies_records_auto_complete_relations"),
-    Route("/search/json", endpoint=proxies_search.get_json_search, name="proxies_search_get_json"),
-    Route("/records/{record_id:str}", endpoint=proxies_records.get, name="proxies_records_get"),
-    Route("/records/{record_id:str}/json/{type:str}", endpoint=proxies_records.get_json, name="proxies_records_get_json"),
-    Route("/order/{record_id:str}", endpoint=order.order_get, name="proxies_records_get_json"),
-    Route("/relations", endpoint=proxies_relations.post, name="proxies_relations_post", methods=["POST"]),
-    Route("/relations/{rel_id:str}", endpoint=proxies_relations.delete, name="proxies_relations_delete", methods=["DELETE"]),
-    Route("/relations/{type:str}/{id:str}", endpoint=proxies_relations.get, name="proxies_relations_get", methods=["GET"]),
+    Route("/search", endpoint=endpoint_search.get, name="search_get"),
+    Route("/auto_complete", endpoint=endpoint_search.auto_complete_search, name="records_auto_complete_search"),
+    Route("/auto_complete_relations", endpoint=endpoint_search.auto_complete_relations, name="records_auto_complete_relations"),
+    Route("/search/json", endpoint=endpoint_search.get_json_search, name="search_get_json"),
+    Route("/records/{record_id:str}", endpoint=endpoint_records.get, name="records_get"),
+    Route("/records/{record_id:str}/json/{type:str}", endpoint=endpoint_records.get_json, name="records_get_json"),
+    Route("/order/{record_id:str}", endpoint=order.order_get, name="records_get_json"),
+    Route("/relations", endpoint=endpoint_relations.post, name="relations_post", methods=["POST"]),
+    Route("/relations/{rel_id:str}", endpoint=endpoint_relations.delete, name="relations_delete", methods=["DELETE"]),
+    Route("/relations/{type:str}/{id:str}", endpoint=endpoint_relations.get, name="relations_get", methods=["GET"]),
     Route("/error/log", endpoint=error.log_post, name="error_log_post", methods=["POST"]),
     Route("/upload", endpoint=upload.handle_uploads, name="upload", methods=["POST"]),
 ]
@@ -126,7 +126,5 @@ for common_page in common_pages:
     routes.append(Route(url, endpoint=pages.default, name=name, methods=["GET"]))
 
 # Last as these are not very specific
-routes.append(Route("/{resource_type:str}/{id:str}", endpoint=proxies_resources.get, name="proxies_resources_get"))
-routes.append(
-    Route("/{resource_type:str}/{id:str}/json/{type:str}", endpoint=proxies_resources.get_json, name="proxies_resources_get_json")
-)
+routes.append(Route("/{resource_type:str}/{id:str}", endpoint=endpoint_resources.get, name="resources_get"))
+routes.append(Route("/{resource_type:str}/{id:str}/json/{type:str}", endpoint=endpoint_resources.get_json, name="resources_get_json"))
