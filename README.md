@@ -48,11 +48,13 @@ Run black, mypy and flake8:
 
 ### Tag a release
 
+Install `bump-py-version`:
+
     pipx install git+https://github.com/diversen/bump-py-version@v0.0.8
 
 Bump version:
 
-    bump-py-version v0.0.0 # or any other version
+    bump-py-version v1.2.3 # or any other version
 
 ## Install using pipx
 

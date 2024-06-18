@@ -30,7 +30,7 @@ log = get_log()
 
 def _get_static_dirs() -> list:
     """
-    If static/ dir exists in current dir, add it to static_dir_list
+    If static/ dir exists in local config dir, add it to static_dir_list
     This will be override the module static files
     """
 
