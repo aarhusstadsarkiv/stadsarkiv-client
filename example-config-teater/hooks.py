@@ -2,7 +2,7 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.relations import format_relations, sort_data
-from stadsarkiv_client.endpoints.endpoint_search import get_search_context_values, set_response_cookie, get_size_sort_view
+from stadsarkiv_client.endpoints.endpoints_search import get_search_context_values, set_response_cookie, get_size_sort_view
 import asyncio
 from starlette.responses import HTMLResponse
 
