@@ -287,6 +287,22 @@ async def get_json_search(request: Request):
     return response
 
 
+def normalize_auto_complete_results(results: list):
+    """ "
+    collection is weird. normalize it.
+    all other domains has the same search_query as domain path, e.g.
+    /entities -> search?entities or /people -> search?records but
+    /collections -> search?collection
+    """
+    for result in results:
+        if result["domain"] == "collections":
+            result["search_query"] = "collection"
+        else:
+            result["search_query"] = result["domain"]
+
+    return results
+
+
 async def auto_complete_search(request: Request):
     """
     Auto complete for search
@@ -295,10 +311,12 @@ async def auto_complete_search(request: Request):
     query_params: list = []
     query_params = await hooks.before_get_auto_complete(query_params=query_params)
 
-    result = await api.proxies_auto_complete(request, query_params=query_params)
+    results = await api.proxies_auto_complete(request, query_params=query_params)
+    results = normalize_auto_complete_results(results)
+
     query_params = await hooks.after_get_auto_complete(query_params=query_params)
 
-    return JSONResponse(result)
+    return JSONResponse(results)
 
 
 async def auto_complete_relations(request: Request):

@@ -7,9 +7,9 @@ const renderFunction = (data, searchBaseUrl) => {
     const suggestionHelp = `<div class="search-suggestion-info">Vælg et forslag nedenfor <strong>eller</strong> tryk på søgeknappen for at fritekstsøge.</div>`;
     
     const suggestions = data.map(item => `
-        <div class="search-suggestion-item" data-url="${searchBaseUrl}${item.domain}=${item.id}">
+        <div class="search-suggestion-item" data-url="${searchBaseUrl}${item.search_query}=${item.id}">
             <div>
-                <a href="${searchBaseUrl}${item.domain}=${item.id}">${item.display}</a>
+                <a href="${searchBaseUrl}${item.search_query}=${item.id}">${item.display}</a>
             </div>
             <div>${item.sub_display}</div>
         </div>`).join('');
