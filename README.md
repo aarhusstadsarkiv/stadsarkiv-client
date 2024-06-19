@@ -89,6 +89,10 @@ These files and dirs should be placed in the directory where you run the module 
 If the `--config` option is not used, the module will look for the above files and dirs in the folder `local` if the
 folder exists. If the `local` does not exist, the module will use built-in defaults.
 
+## Create client
+
+[See README.client.md](docs/README.client.md)
+
 ## Run on server
 
-[See README.server.md](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/docs/README.server.md)
+[See README.server.md](docs/README.server.md)
