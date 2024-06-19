@@ -81,3 +81,22 @@ Måske skal vi genoverveje om, der skal være en ”skyggeramme” omkring et bi
 Janne
 
 --- 
+
+Her kommer endnu en kommentar – denne gang af kosmetisk karakter.
+Kan søgefeltet på forsiden gøres mere tydeligt på en pæn måde.
+Som det er nu, blender det for meget sammen med baggrunden.
+
+Janne
+
+---
+
+Hej med jer igen igen
+
+Kan man gøre det tydeligere, at man kan læse mere om en samling?
+Det er godt nok et blåt link, men det er ikke klart, at man her kan få mere information, og det lidt forvirrende, at det står opad ”Fjern”.
+I det gamle AarhusArkivet, er en tekst i sidemenuen, hvor der står ”Læs om …. Samling”. Det kunne måske løses ved noget lignende.
+
+Janne
+
+---
+
