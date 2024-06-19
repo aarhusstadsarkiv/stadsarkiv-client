@@ -2,11 +2,31 @@ import typing
 
 
 settings: dict[str, typing.Any] = {
+
+    # This should be the name of the client, e.g. "aarhusarkivet"
+    # 
+    # If you are running in production, you should change this to the name of your client
+    # If you are running in development, you can leave it as "development"
+    "client_name": "development",
+
+    # This should be the url of the client, e.g. "https://aarhusarkivet.openaws.dk"
+    # If running on localhost you may change this to e.g. "http://localhost:5555"
+    "client_url": "https://client.openaws.dk",
+
+    # If you are running in production, you may set this to True in order to allow robots to index the site
+    "robots_allow": False,
+
+    # show the version of the stadarkiv-client
+    "show_version": True,
+    
+    # only supported language is "da" for now
     "language": "da",
+
+    # log handlers can be "stream", "rotating_file"
+    # on development you can use "stream" to see logs in the console
     "log_handlers": ["stream", "rotating_file"],  # [ "stream", "file", "rotating_file"]
-    #
-    # cookie settings
-    #
+
+    # cookie settings. These settings are reasonable defaults
     "cookie": {
         "name": "session",
         "lifetime": 3600,  # seconds
@@ -14,8 +34,14 @@ settings: dict[str, typing.Any] = {
         "secure": True,
         "samesite": "lax",
     },
+
+    # Set a 500 custom error message
+    "custom_error": "Der skete en system fejl. Prøv igen lidt senere!",
+
+    # Is you are running in production, you should change the api_base_url to the production API.
+    # production "api_base_url": "https://api.openaws.dk/v1",
     "api_base_url": "https://dev.openaws.dk/v1",
-    #
+    
     # Main menu containing built-in endpoints, but you may remove these and generate your own menu.
     # You may also add other "menus", e.g. "footer_items" or something similar.
     #
@@ -29,18 +55,69 @@ settings: dict[str, typing.Any] = {
         {"name": "entities_get_list", "title": "Entiteter", "type": "dropdown"},
         {"name": "search_get", "title": "Søg", "type": "top"},
     ],
-    #
-    # Custom pages
-    #
-    # "name" is the route name. Title is the page title.
-    # "template" if the page you will use. It is also the content of the page.
-    # "url" is the path to the page
-    #
-    # You can then make another menu which contains some of these pages, e.g. a "footer_items" entry
-    # or something similar.
+
     "pages": [
         {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
     ],
-    # Which of the default facets should be enabled
+    
+
+    # The facets enabled in the search
+    # These are the defaults: ["content_types", "subjects", "availability", "usability", "dates"]
+    # The facets are loaded from 'settings_facets.py'
     "facets_enabled": ["content_types", "events", "dates"],
+    
+    # CORS allow origins
+    "cors_allow_origins": [],
+    
+    # Allow user registration
+    "allow_user_registration": True,
+    
+    # Allow user management
+    "allow_user_management": True,
+    
+    # Allow online ordering
+    "allow_online_ordering": False,
+    
+    # Ignore record keys so that the will not be displayed in the record template
+    "ignore_record_keys": [],
 }
+
+# pages
+#
+# "name" is the route name. Title is the page title.
+# "template" if the page you will use. It is also the content of the page.
+# "url" is the path to the page
+# "type" is the type of menu item. It can be "top" or "dropdown". 
+#  If it is not set, it will not be displayed in the menu.
+
+pages: list = [
+    {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
+]
+
+pages_guides: list = [
+    {
+        "name": "page_searchguide",
+        "title": "Hjælp til søgning",
+        "template": "pages/searchguide.html",
+        "url": "/guides/searchguide",
+        "type": "dropdown",
+    },
+]
+
+pages_about: list = [
+    {
+        "name": "page_collections",
+        "title": "Om samlingerne",
+        "template": "pages/collections.html",
+        "url": "/about/collections",
+        "type": "dropdown",
+    },
+]
+
+settings["pages"] = pages + pages_guides + pages_about
+
+settings["main_menu_sections"] = [
+    {"name": "guides", "title": "Vejledninger", "pages": pages_guides},
+    {"name": "about", "title": "Om samlingerne", "pages": pages_about},
+]
+
