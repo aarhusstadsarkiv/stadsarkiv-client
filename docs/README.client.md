@@ -105,7 +105,7 @@ An easy way to add custom css and js is just to create a `static/assets/css/loca
 
 ## Settings
 
-```
+```py
 import typing
 
 
