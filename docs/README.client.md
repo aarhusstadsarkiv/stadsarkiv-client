@@ -48,7 +48,7 @@ language = {
 }
 ```
 
-Original language files (and keys) may be found in [stadsarkiv_client/locales/da.py](stadsarkiv_client/locales/da.py)
+Original language files (and keys) may be found in [stadsarkiv_client/locales/da.py](/stadsarkiv_client/locales/da.py)
 
 
 
