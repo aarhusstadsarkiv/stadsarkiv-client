@@ -11,8 +11,11 @@ This is a simple example of a client. You may override the following files and d
     ├── settings_facets.py
     ├── settings.py
     ├── static
+    │   ├── css
+    │   │   └── local.css
     │   └── js
-    │       └── hello_world.js
+    │       ├── hello_world.js
+    │       └── local.js
     └── templates
         ├── auth
         │   └── login.html
@@ -75,7 +78,7 @@ anywhere in the `templates` directory. In the above example the custom page is p
 
 ## static
 
-You may also add custom css files. In the `example-config-simple` there is a custom `custom.css` file placed in `static/css/custom.css`. 
+You may also add custom css, js, and other assets (gif, pdf, and so on). In the `example-config-simple` there is a custom `custom.css` file placed in `static/css/custom.css`. 
 
 As with templates you may add custom static files. In the `example-config-simple` there is a custom `hello_world.js` file
 placed in `static/js/hello_world.js`. You may add custom static files anywhere in the `static` directory. 
