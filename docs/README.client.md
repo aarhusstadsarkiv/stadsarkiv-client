@@ -88,7 +88,11 @@ You may add custom pages. In the `example-config-simple` there is a custom page 
 
 You may also override any static file found in [stadsarkiv_client/static](/stadsarkiv_client/static)
 
-An easier way to add custom css and js is just to create a `css/local.css` and `css/local.js` file. These files are loaded in the base templates if they exist. They are loaded just before the closing `</head>` tags. 
+E.g. if you only want to alter the `logo` and the `favicon` you need to create a `static/assets/default_logo.png` and `static/assets/favicon.ico` in your `example-config-simple` directory.
+
+If you just want to change the color scheme you can create a `static/assets/css/light.css` file. Here are all the colors of the default theme defined. You may override any of them. 
+
+An easy way to add custom css and js is just to create a `assets/css/local.css` and `assets/css/local.js` file. These files are loaded in the base templates if they exist. The css file is loaded as the last css file in the `head` block. The js file is loaded as the last js file in the `head` block.
 
 
 
