@@ -105,8 +105,14 @@ An easy way to add custom css and js is just to create a `static/assets/css/loca
 
 ## Settings
 
-There are quite a few settings. In order to view all base settings you can go to the [example-config-simple/settings.py](/example-config-simple/settings.py) file.
+There are quite a few settings. In order to view all base settings you can go to the [example-config-simple/settings.py](/example-config-simple/settings.py) file. This is file is quite well documented.
 
 Another settings file is [example-config-simple/settings_facets.py](/example-config-simple/settings_facets.py). This file is used to define the facets that are shown in the search page. You may add, remove, or change the order of the facets. If the `settings_facets.py` file does not exist, the default facets are used. The default facets are defined in the [stadsarkiv_client/settings_facets.py](/stadsarkiv_client/settings_facets.py) file.
+
+In the settings.py file you can specify which of the default settings are enabled. In the `example-config-simple` it is `["content_types", "events", "dates"]`. If a local settings_facets.py file exists then these facets will override the default facets.
+
+If you look at the `type` of each facet section you will notice that there are three type: `default`, `resource_links`, and `date_form`. The `default` type is the default type. The `resource_links` type is used for the `resource_links` facet. The `date_form` type is used for the `dates` facet, which can alter the search results according to dates.
+
+```python
 
 
