@@ -105,4 +105,8 @@ An easy way to add custom css and js is just to create a `static/assets/css/loca
 
 ## Settings
 
-There are quite a few settings. In order to view all settings you can go to the [example-config-simple/settings.py](/example-config-simple/settings.py) file.
+There are quite a few settings. In order to view all base settings you can go to the [example-config-simple/settings.py](/example-config-simple/settings.py) file.
+
+Another settings file is [example-config-simple/settings_facets.py](/example-config-simple/settings_facets.py). This file is used to define the facets that are shown in the search page. You may add, remove, or change the order of the facets. If the `settings_facets.py` file does not exist, the default facets are used. The default facets are defined in the [stadsarkiv_client/settings_facets.py](/stadsarkiv_client/settings_facets.py) file.
+
+
