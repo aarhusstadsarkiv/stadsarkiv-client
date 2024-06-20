@@ -15,7 +15,9 @@ This is a simple example of a client.
     │       └── hello_world.js
     └── templates
         └── pages
-            └── home.html
+            ├── collections.html
+            ├── home.html
+            └── searchguide.html
 
 ## .env
 
@@ -49,6 +51,11 @@ language = {
 ```
 
 Original language files (and keys) may be found in [stadsarkiv_client/locales/da.py](/stadsarkiv_client/locales/da.py)
+
+## templates
+
+In `templates` you may add `custom pages` and override existing templates. The templates that you can override can be
+found in the [stadsarkiv_client/templates](/stadsarkiv_client/templates) directory. 
 
 
 
