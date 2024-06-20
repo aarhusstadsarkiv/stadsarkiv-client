@@ -100,3 +100,23 @@ Janne
 
 ---
 
+Knappen avanceret søgning mangler på forsiden af det nye site.
+
+Den bruger jeg ret ofte.
+
+Janne
+
+---
+
+
+Hvis jeg sørger på ordet ”amoriner” får jeg 19 resultater.
+
+https://aarhusarkivet.openaws.dk/search?size=100&sort=created_at&view=gallery&direction=desc&q=amoriner 
+
+Hvis jeg derimod søger på ”amoriner*” får jeg nul resultater. Og det på trods af, at der i stort set alle registreringer står ”amorinerne”.
+
+https://aarhusarkivet.openaws.dk/search?q=amoriner*
+
+Janne
+
+---
