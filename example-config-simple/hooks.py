@@ -58,21 +58,33 @@ class Hooks(HooksSpec):
     async def before_get_search(self, query_params: list) -> list:
         """
         Alter the search query params. Before the search is executed.
-        This example removes all curators from the query params and adds Aarhus Teater as curator (4).
+        This example shows online images (content_type 61) and available online (availability 4)
         """
-        # Remove all curators from the query params and add curator (4)
-        query_params = [(key, value) for key, value in query_params if key != "curators"]
-        query_params.append(("curators", "4"))
+
+        content_types = [value for key, value in query_params if key == "content_types"]
+        if "61" not in content_types:
+            query_params.append(("content_types", "61"))
+
+        content_types = [value for key, value in query_params if key == "availability"]
+        if "4" not in content_types:
+            query_params.append(("availability", "4"))
 
         return query_params
 
     async def after_get_search(self, query_params: list) -> list:
         """
         Alter the search query params. After the search is executed.
-        This example removes all curators from the query params.
-        This is done to avoid that the curator added in the before_search method is added to filters and search cookie.
+        Remove content_type 61 and availability 4 so that we don't see them as filters
+        These filters are hidden.
         """
-        query_params = [(key, value) for key, value in query_params if key != "curators"]
+
+        content_types = [value for key, value in query_params if key == "content_types"]
+        if "61" in content_types:
+            query_params = [(key, value) for key, value in query_params if key != "content_types"]
+
+        availability = [value for key, value in query_params if key == "availability"]
+        if "4" in availability:
+            query_params = [(key, value) for key, value in query_params if key != "availability"]
 
         return query_params
 
