@@ -105,14 +105,20 @@ An easy way to add custom css and js is just to create a `static/assets/css/loca
 
 ## Settings
 
-There are quite a few settings. In order to view all base settings you can go to the [example-config-simple/settings.py](/example-config-simple/settings.py) file. This is file is quite well documented.
+There are quite a few settings. In order to view all base settings you can go to the [example-config-simple/settings.py](/example-config-simple/settings.py) file. This file is quite well documented.
 
-Another settings file is [example-config-simple/settings_facets.py](/example-config-simple/settings_facets.py). This file is used to define the facets that are shown in the search page. You may add, remove, or change the order of the facets. If the `settings_facets.py` file does not exist, the default facets are used. The default facets are defined in the [stadsarkiv_client/settings_facets.py](/stadsarkiv_client/settings_facets.py) file.
+Another settings file is [example-config-simple/settings_facets.py](/example-config-simple/settings_facets.py). This file is used to define the facets that are shown on the search page. You may add, remove, or change the order of the facets. 
+
+If the `settings_facets.py` file does not exist, the default facets are used. The default facets are defined in the [stadsarkiv_client/settings_facets.py](/stadsarkiv_client/settings_facets.py) file.
 
 In the settings.py file you can specify which of the default facets are enabled. In the `example-config-simple` it is `["content_types", "events", "dates"]`. If a local settings_facets.py file exists then these facets will override the default facets.
 
-If you look at the `type` of each facet section you will notice that there are three type: `default`, `resource_links`, and `date_form`. The `resource_links` type is used for the `resource_links` facet. The `date_form` type is used for the `dates` facet, which can alter the search results according to dates.
+If you look at the `type` of each facet section you will notice that there are three types: 
 
-```python
+1. `default`. This extends the `current search` when the user select a new facet. 
+2. `resource_links`. These are links to a resouce, e.g. a `person` or `event` etc. 
+3. `date_form`. This type is used for display dates, which can alter the search results according to dates.
 
+## Hooks
 
+In the `hooks.py` file you may do some custom actions. In the [example-config-simple/hooks.py](example-config-simple/hooks.py) you can see all the hooks available. 
