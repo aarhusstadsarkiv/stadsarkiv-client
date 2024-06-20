@@ -32,7 +32,7 @@ Run dev server:
 
     stadsarkiv-client server-dev
 
-With some config dir `example-config`: 
+With some config dir `example-config-aarhus`: 
 
     stadsarkiv-client server-dev -c example-config-aarhus
 
@@ -68,28 +68,9 @@ Install latest version:
 
 Usage is the same as for development.
 
-### Configuration
-
-You may alter the default configuration using the following files and dirs:
-
-    .env
-    settings.py
-    settings_facets.py
-    language.py
-    hooks.py
-    templates/
-    static/
-
-All the above files and dirs are optional. You may see examples of all the above files in the 
-[example-config directory](https://github.com/aarhusstadsarkiv/stadsarkiv-client/tree/main/example-config-simple)
-(These files are well documented)
-
-These files and dirs should be placed in the directory where you run the module from - otherwise they will be ignored.
-
-If the `--config` option is not used, the module will look for the above files and dirs in the folder `local` if the
-folder exists. If the `local` does not exist, the module will use built-in defaults.
-
 ## Create client
+
+In order to create a client you may override templates, static files, and configuration files. 
 
 [See README.client.md](docs/README.client.md)
 
