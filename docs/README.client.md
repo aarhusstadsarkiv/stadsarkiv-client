@@ -2,7 +2,7 @@
 
 A new client is overriding the default client files. 
 
-This is a simple example of a client. 
+This is a simple example of a client. You may override the following files and directories:
 
     example-config-simple
     ├── .env
@@ -14,10 +14,18 @@ This is a simple example of a client.
     │   └── js
     │       └── hello_world.js
     └── templates
+        ├── auth
+        │   └── login.html
         └── pages
             ├── collections.html
             ├── home.html
             └── searchguide.html
+
+You may run the above client using the following command:
+
+```bash
+stadsarkiv-client server-dev -c example-config-simple
+```
 
 ## .env
 

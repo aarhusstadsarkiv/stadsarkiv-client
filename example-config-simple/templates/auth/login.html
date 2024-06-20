@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block body_class %}page-auth-login{% endblock %}
+
+{% block content %}
+
+{% include "includes/main_title.html" %}
+
+{% if not is_logged_in %}
+
+<form method="post" action="{{ post_url  }}">
+    <input type="text" name="username" placeholder="{{ translate('Email') }}" aria-label="Login" autocomplete="email"
+        required>
+    <input type="password" name="password" placeholder="{{ translate('Password') }}" aria-label="Password"
+        autocomplete="current-password" required>
+    <button type="submit" class="contrast">{{ translate('Login') }}</button>
+    <p>
+        <a href="{{ url_for('auth_forgot_password_get') }}">{{ translate('Forgot your password') }}</a>
+    </p>
+</form>
+
+<pre>
+    Some custom info about login!
+</pre>
+
+{% else %}
+    <p>{{ translate('You are already logged in.') }}</p>
+{% endif %}
+
+{% endblock content %}
