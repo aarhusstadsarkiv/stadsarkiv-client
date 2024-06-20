@@ -19,6 +19,8 @@ This is a simple example of a client. You may override the following files and d
     └── templates
         ├── auth
         │   └── login.html
+        ├── includes
+        │   └── head_extra.html
         └── pages
             ├── collections.html
             ├── home.html
@@ -67,18 +69,27 @@ Original language files (and keys) may be found in [stadsarkiv_client/locales/da
 
 **Override templates**
 
-In `templates` you may add `custom pages` and override existing templates. The templates that you can override can be
-found in the [stadsarkiv_client/templates](/stadsarkiv_client/templates) directory. In order to override you place your
-custom template in the `templates` directory. In the `example-config-simple` there is a override of `auth/login.html`.
+The templates that you can override can be found in the [stadsarkiv_client/templates](/stadsarkiv_client/templates) directory. In order to override a template you place your custom template in the `templates` directory. In the `example-config-simple` there is a override of `auth/login.html`.
+
+There is also an override of the `home.html`. As you can see in this template, you may add custom css and js files in the `head` block. This is done like this: 
+
+```html
+{% block head %}
+<script src="{{ url_for('static', path='/js/home.js') }}"></script>
+{% endblock head %}
+```
 
 **Add custom pages**
 
-You may add custom pages. In the `example-config-simple` there is a custom page `searchguide.html`. You may add custom
-anywhere in the `templates` directory. In the above example the custom page is placed in `templates/pages/searchguide.html`.
+You may add custom pages. In the `example-config-simple` there is a custom page `searchguide.html`. You may add custom pages anywhere in the `templates` directory. In the above example the custom page is placed in `templates/pages/searchguide.html`.
 
 ## static
 
-You may also add custom css, js, and other assets (gif, pdf, and so on). In the `example-config-simple` there is a custom `custom.css` file placed in `static/css/custom.css`. 
+You may also add custom css, js, and other assets (png, pdfs, and so on). In the `example-config-simple` there is a custom `custom.css` file placed in `static/css/custom.css`. In order to insert this css file you will need to insert the includes of the css file in the `includes/head_extra.html` file. 
+
+An easier way to add custom css and js is just to create a `css/local.css` and `css/local.js` file. These files are loaded in the base templates if they exist. They are loaded just before the closing `</head>` tags. 
+
+```html
 
 As with templates you may add custom static files. In the `example-config-simple` there is a custom `hello_world.js` file
 placed in `static/js/hello_world.js`. You may add custom static files anywhere in the `static` directory. 
