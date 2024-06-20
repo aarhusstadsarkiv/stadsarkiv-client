@@ -121,4 +121,4 @@ If you look at the `type` of each facet section you will notice that there are t
 
 ## Hooks
 
-In the `hooks.py` file you may do some custom actions. In the [example-config-simple/hooks.py](example-config-simple/hooks.py) you can see all the hooks available. 
+In the `hooks.py` file you may do some custom actions. In the [example-config-simple/hooks.py](/example-config-simple/hooks.py) you can see all the hooks available. 
