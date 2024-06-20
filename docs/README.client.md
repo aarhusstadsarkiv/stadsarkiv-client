@@ -33,7 +33,7 @@ Run the client:
 stadsarkiv-client server-dev -c example-config-aarhus
 ```
 
-If the `-c` (shortcut for `--config`) option is not used, then the module will look for templates, static files, and configuration in the folder `local`. If the `local` does not exist, the module will use built-in defaults.
+If the `-c` or `--config` option is not used, then the module will look for templates, static files, and configuration in the folder `local`. If the `local` does not exist, the module will use built-in defaults.
 
 ## .env
 
@@ -41,7 +41,7 @@ In `.env` you may set the following:
 
 ```ini
 # SESSION Secret
-SECRET=SECRET
+SECRET=some_secret
 
 # development or production
 # If ENVIRONMENT is set to production, the log level is INFO
@@ -74,7 +74,7 @@ Original language files (and keys) can be found in [stadsarkiv_client/locales/da
 
 Templates that you can override can be found in the [stadsarkiv_client/templates](/stadsarkiv_client/templates) directory. In order to override a template you place your custom template in the `templates` directory. In the `example-config-simple` there is a override of `auth/login.html` and `pages/home.html`. 
 
-As you can see in the home template, you may add custom css and js files in the `head` block. This is done like this: 
+As you can see in the home.html template, you may add custom css and js files in the `head` block. This is done like this: 
 
 ```html
 {% block head %}
@@ -84,7 +84,9 @@ As you can see in the home template, you may add custom css and js files in the 
 
 The above code adds custom css and js files to the `head` block of any individual template.
 
-You may also add custom css and js files to the `head` block of all templates. This is done by overriding `templates/includes/head_extra.html`. In the `example-config-simple` there is a custom `head_extra.html` file that just logs a message to the console.
+You may also add custom css and js files to the `head` block of all templates. This is done by overriding `templates/includes/head_extra.html`. In the `example-config-simple` there is a custom `head_extra.html` file that just adds a log message to the browser console.
+
+An easy way to alter the footer is to override the `templates/includes/footer.html`. 
 
 ### Custom pages
 
@@ -92,20 +94,15 @@ You may add custom pages. In the `example-config-simple` there is a custom page 
 
 ## Static files
 
+### Override
+
 You may also override any static file found in [stadsarkiv_client/static](/stadsarkiv_client/static)
 
 E.g. if you only want to alter the `logo` and the `favicon` you need to create a `static/assets/default_logo.png` and `static/assets/favicon.ico` in your `example-config-simple` directory.
 
 If you just want to change the color scheme you can create a `static/assets/css/light.css` file. Here are all the colors of the default theme defined. You may override any of them. 
 
-An easy way to add custom css and js is just to create a `assets/css/local.css` and `assets/css/local.js` file. These files are loaded in the base templates if they exist. The css file is loaded as the last css file in the `head` block. The js file is loaded as the last js file in the `head` block.
+An easy way to add custom css and js is just to create a `static/assets/css/local.css` and `static/assets/js/local.js` file. These files are loaded in the base templates if they exist. The css file is loaded as the last css file in the `head` block. The js file is loaded as the last js file in the `head` block.
 
-
-
-
-
-
-
-
-
+### Settings
 
