@@ -14,13 +14,12 @@ This is a simple example of a client. You may override the following files and d
     │   ├── css
     │   │   └── local.css
     │   └── js
-    │       ├── hello_world.js
+    │       ├── home.js
     │       └── local.js
     └── templates
         ├── auth
         │   └── login.html
         ├── includes
-        │   └── head_extra.html
         └── pages
             ├── collections.html
             ├── home.html
