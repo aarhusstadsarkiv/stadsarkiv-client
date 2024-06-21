@@ -42,7 +42,6 @@ settings_facets: dict[str, typing.Any] = {
         "label": "Forestillinger",
         "type": "resource_links",
         "resource_type": "events",
-        "allow_facet_removal": True,
         "content": [
             {
                 "label": "Sæson 2015-16",
