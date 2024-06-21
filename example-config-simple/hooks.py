@@ -58,7 +58,7 @@ class Hooks(HooksSpec):
     async def before_get_search(self, query_params: list) -> list:
         """
         Alter the search query params. Before the search is executed.
-        This example shows online images (content_type 61) and available online (availability 4)
+        This example only shows online images (content_type 61) and available online (availability 4)
         """
 
         content_types = [value for key, value in query_params if key == "content_types"]
@@ -77,14 +77,11 @@ class Hooks(HooksSpec):
         Remove content_type 61 and availability 4 so that we don't see them as filters
         These filters are hidden.
         """
+        # remove content_type 61 as this should not be shown in the filters
+        query_params = [(key, value) for key, value in query_params if key != "content_types" or value != "61"]
 
-        content_types = [value for key, value in query_params if key == "content_types"]
-        if "61" in content_types:
-            query_params = [(key, value) for key, value in query_params if key != "content_types"]
-
-        availability = [value for key, value in query_params if key == "availability"]
-        if "4" in availability:
-            query_params = [(key, value) for key, value in query_params if key != "availability"]
+        # remove availability 4 as this should not be shown in the filters
+        query_params = [(key, value) for key, value in query_params if key != "availability" or value != "4"]
 
         return query_params
 
