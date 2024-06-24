@@ -11578,10 +11578,6 @@
     ]
   },
   {
-    "display_label": "Sæson 2021-22",
-    "children": []
-  },
-  {
     "display_label": "Sæson 2022-23",
     "children": [
       {
@@ -11643,6 +11639,120 @@
       {
         "display_label": "Panic!",
         "id": "156876"
+      }
+    ]
+  },
+  {
+    "display_label": "Sæson 2023/24",
+    "children": [
+      {
+        "display_label": "Natten – en teaterkoncert",
+        "id": "157909"
+      },
+      {
+        "display_label": "Julefeber",
+        "id": "157911"
+      },
+      {
+        "display_label": "Skolekomedien",
+        "id": "157912"
+      },
+      {
+        "display_label": "Chicago",
+        "id": "157913"
+      },
+      {
+        "display_label": "Kong Lear",
+        "id": "157946"
+      },
+      {
+        "display_label": "Force Majeure",
+        "id": "157949"
+      },
+      {
+        "display_label": "Lady Chatterleys elsker",
+        "id": "157950"
+      },
+      {
+        "display_label": "Sleeping Beauties",
+        "id": "157951"
+      },
+      {
+        "display_label": "Øde lagt",
+        "id": "157952"
+      },
+      {
+        "display_label": "Peter Pan - Forever young",
+        "id": "157971"
+      },
+      {
+        "display_label": "Pan / Sult",
+        "id": "157972"
+      },
+      {
+        "display_label": "Fra Regnormenes Liv",
+        "id": "158026"
+      },
+      {
+        "display_label": "Væksthuset",
+        "id": "160210"
+      }
+    ]
+  },
+  {
+    "display_label": "Sæson 2024/25",
+    "children": [
+      {
+        "display_label": "Pagten",
+        "id": "160168"
+      },
+      {
+        "display_label": "Tro, håb og kærlighed",
+        "id": "160231"
+      },
+      {
+        "display_label": "Jeppe på Bjerget",
+        "id": "160233"
+      },
+      {
+        "display_label": "The Sound Of Music",
+        "id": "160235"
+      },
+      {
+        "display_label": "En lykkelig slutning",
+        "id": "160236"
+      },
+      {
+        "display_label": "Blodbadets Gud",
+        "id": "160237"
+      },
+      {
+        "display_label": "GenZ Endgame",
+        "id": "160239"
+      },
+      {
+        "display_label": "Idioten",
+        "id": "160240"
+      },
+      {
+        "display_label": "Derude",
+        "id": "160241"
+      },
+      {
+        "display_label": "Kirstens Hævn",
+        "id": "160242"
+      },
+      {
+        "display_label": "Clear Blue",
+        "id": "160243"
+      },
+      {
+        "display_label": "Lagerlöf",
+        "id": "160244"
+      },
+      {
+        "display_label": "#Jeanne",
+        "id": "160245"
       }
     ]
   }
