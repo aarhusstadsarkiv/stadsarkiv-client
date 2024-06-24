@@ -238,7 +238,9 @@
 
     const searchBaseUrl = '/search?{{ query_str_display }}';
     window.addEventListener("pageshow", function(event) {
-        autoCompleteInit(searchBaseUrl);
+        if (!event.persisted) {
+            autoCompleteInit(searchBaseUrl);
+        }
     });
 </script>
 
