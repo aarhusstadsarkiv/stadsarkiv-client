@@ -77,3 +77,19 @@
     display: none;
 }
 
+.page-records-search #search > button#submit {
+    display: none;
+}
+
+.page-records-search #search > input#q {
+    width: 295px;
+}
+
+.page-home #search > button#submit {
+    display: none;
+}
+
+.page-records-search #search > input#q {
+    width: 295px;
+}
+

@@ -4,7 +4,6 @@ function returnFunction(focusedItem) {
 
     // 'data-url' from focusedItem
     const url = focusedItem.getAttribute('data-url');
-
     if (url) {
         window.location.href = url;
         return;
@@ -15,10 +14,12 @@ function returnFunction(focusedItem) {
 const renderFunction = (data) => {
 
     // Info if no results
-    if (data.length == 0) return `<div class="search-suggestion-info">Ingen forslag. Tryk på søgeknappen for at fritekstsøge i stedet.</div>`;
+    // Tryk på søgeknappen for at fritekstsøge i stedet.
+    if (data.length == 0) return `<div class="search-suggestion-info">Ingen forslag.</div>`;
 
     // Help text and suggestions
-    const suggestionHelp = `<div class="search-suggestion-info">Vælg et forslag nedenfor <strong>eller</strong> tryk på søgeknappen for at fritekstsøge.</div>`;
+    // <strong>eller</strong> tryk på søgeknappen for at fritekstsøge i stedet.
+    const suggestionHelp = `<div class="search-suggestion-info">Vælg et forslag nedenfor.</div>`;
     
     // Suggestions
     const suggestions = data.map(item => `
@@ -32,6 +33,20 @@ const renderFunction = (data) => {
     return `${suggestionHelp} ${suggestions}`;
 };
 
+const afterRender = () => {
+
+    // Trigger keyboard event "ArrowDown" to focus the first suggestion
+    const firstSuggestion = document.querySelector('.search-suggestion-item');
+    if (firstSuggestion) {
+        const event = new KeyboardEvent('keydown', {
+            key: 'ArrowDown',
+            keyCode: 40,
+            which: 40
+        });
+        autocompleteElem.dispatchEvent(event);
+    }
+}
+
 const autocompleteElem = document.querySelector('#q');
 const suggestionsElem = document.querySelector('.search-suggestions');
 
@@ -39,16 +54,23 @@ const options = {
     'autocompleteElem': autocompleteElem,
     'suggestionsElem': suggestionsElem,
     'renderFunction': renderFunction,
+    'afterRender': afterRender,
     'endpoint': `/auto_complete?q=`,
     'minInputLength': 2,
     'suggestionFocusClass': 'search-suggestion-focus',
     'returnFunction': returnFunction,
     'preventOverflow': true,
     'overflowSpace': 20, // In pixels
+    'debug': false,
 }
 
 function autoCompleteInit() {
     new AutoComplete(options);
 }
+
+document.getElementById('search').addEventListener('submit', (event) => {
+    event.preventDefault();
+});
+
 
 export { autoCompleteInit };
