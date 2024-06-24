@@ -10,6 +10,11 @@ function returnFunction(focusedItem) {
     }
 }
 
+/**
+ * Default afterRender function.
+ */
+function afterRender() {}
+
 class AutoComplete {
     constructor(options) {
 
@@ -26,6 +31,7 @@ class AutoComplete {
         this.suggestionFocusClass = options.suggestionFocusClass || 'search-suggestion-focused'; // Class for focused suggestion item
         this.suggestionItemClass = options.suggestionItemClass || 'search-suggestion-item'; // Class for normal suggestion items
         this.returnFunction = options.returnFunction || returnFunction; // Function to run when a suggestion is selected
+        this.afterRender = options.afterRender || afterRender; // Function to run after rendering suggestions
         this.debug = options.debug || false;
         
         this.preventOverflow = options.preventOverflow || false; // Prevent suggestions from overflowing the window
@@ -85,6 +91,7 @@ class AutoComplete {
             fetch(`${this.endpoint}${inputValue}`)
                 .then(response => response.json())
                 .then(data => {
+                    this.hideSuggestions();
                     this.updateSuggestions(data)
                 });
         }, this.debounceTimer);
@@ -94,6 +101,7 @@ class AutoComplete {
      * Check keys pressed in the input field
      */
     onKeyDown(e) {
+
         const items = this.suggestionsElem.querySelectorAll(`.${this.suggestionItemClass}`);
         let currentIndex = Array.from(items).findIndex(item => item.classList.contains(this.suggestionFocusClass));
     
@@ -112,9 +120,6 @@ class AutoComplete {
             } else if (e.key === 'ArrowUp') {
                 currentIndex = (currentIndex - 1 + items.length) % items.length;
             }
-
-            console.log(items)
-            console.log(currentIndex)
     
             // Add new focus
             items[currentIndex].classList.add(this.suggestionFocusClass);
@@ -146,6 +151,8 @@ class AutoComplete {
         if (this.preventOverflow) {
             this.setSuggestionsMaxHeight();
         }
+
+        this.afterRender();
     }
 }
 
