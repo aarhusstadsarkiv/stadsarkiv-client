@@ -167,11 +167,86 @@ function onSearchDateEvent(dateFormClass) {
 }
 
 /**
+ * Facets events
+ * 
+ */
+
+function facetsEvents() {
+    const containerMainFacets = document.querySelector('.container-main-facets');
+    const hideFacets = document.getElementById('facets-toggle');
+    const hideFacetsState = localStorage.getItem('hideFacets') || 'true';
+
+    const hideFacetsElement = () => {
+        containerMainFacets.style.display = 'none';
+        hideFacets.textContent = 'Vis filtre';
+    }
+
+    const showFacetsElements = () => {
+        containerMainFacets.style.display = 'block';
+        hideFacets.textContent = 'Skjul filtre';
+    }
+
+    // Variable to track the last window width
+    let lastWindowWidth = window.innerWidth;
+
+    const initFacetsElements = () => {
+        if (hideFacetsState === 'true') {
+            hideFacetsElement();
+        } else {
+            showFacetsElements();
+        }
+    }
+
+    initFacetsElements();
+
+    hideFacets.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (containerMainFacets.style.display === 'none') {
+            showFacetsElements();
+            localStorage.setItem('hideFacets', 'false');
+        } else {
+            hideFacetsElement();
+            localStorage.setItem('hideFacets', 'true');
+        }
+    });
+
+    function onResize () {
+        const currentWindowWidth = window.innerWidth;
+
+        // Check if the resize event crosses the 992px to 993px boundary
+        if ((lastWindowWidth <= 992 && currentWindowWidth >= 993) || (lastWindowWidth >= 993 && currentWindowWidth <= 992)) {
+            expandTree();
+        }
+
+        if (lastWindowWidth > 992) {
+            containerMainFacets.style.display = 'none';
+        }
+
+        if (lastWindowWidth < 993) {
+            initFacetsElements();
+        }
+
+        // Update the last window width for the next resize event
+        lastWindowWidth = currentWindowWidth;
+    }
+
+    window.addEventListener('resize', () => {
+        onResize();
+    });
+
+    onResize();
+    expandTree();
+}
+
+
+/**
  * Expand tree based on saved state
  */
 function searchEvents() {
 
     try {
+
+        facetsEvents();
 
         // Two date search forms on search page
         onSearchDateEvent('.search-date');
@@ -187,23 +262,6 @@ function searchEvents() {
             const input = e.target;
             input.value = input.value.replace(/\D/g, '');
         });
-
-        // Variable to track the last window width
-        let lastWindowWidth = window.innerWidth;
-
-        window.addEventListener('resize', function () {
-            const currentWindowWidth = window.innerWidth;
-
-            // Check if the resize event crosses the 992px to 993px boundary
-            if ((lastWindowWidth <= 992 && currentWindowWidth >= 993) || (lastWindowWidth >= 993 && currentWindowWidth <= 992)) {
-                expandTree();
-            }
-
-            // Update the last window width for the next resize event
-            lastWindowWidth = currentWindowWidth;
-        });
-
-        expandTree();
 
         // Also add event listener to search form with id 'search-date'
         const searchElem = document.getElementById('q');

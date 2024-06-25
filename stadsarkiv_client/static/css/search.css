@@ -29,10 +29,6 @@
     margin-left: 10px;
 }
 
-.remove {
-    color: var(--flash-error-color);
-}
-
 .pagination-total {
     font-weight: 600;
     color: var(--text-bright);

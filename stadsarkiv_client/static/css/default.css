@@ -1,4 +1,9 @@
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     scroll-margin-top: var(--main-menu-top);
 }
 
@@ -58,8 +63,8 @@ h1, h2, h3, h4, h5, h6 {
     padding: 10px;
     font-size: 1.0em;
     min-width: 175px;
-    max-height: 80vh; 
-    overflow-y: auto; 
+    max-height: 80vh;
+    overflow-y: auto;
     scrollbar-width: none;
 }
 
@@ -71,7 +76,7 @@ h1, h2, h3, h4, h5, h6 {
 .main-title {
     text-transform: uppercase;
 }
-  
+
 
 /** 
  When device is smaller than 576px the width should be 100%
@@ -168,6 +173,10 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--flash-color);
 }
 
+/**
+ * a set of containers 
+ */
+
 .container {
     padding: 20px 20px;
     max-width: 100%;
@@ -187,9 +196,6 @@ h1, h2, h3, h4, h5, h6 {
     min-width: 100%;
 }
 
-/**
- * regarding the search page
- */
 .container-fluid-left-main {
     margin-top: 20px;
     max-width: 100%;
@@ -232,6 +238,15 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 0.5em;
 }
 
+.container-hide-facets {
+    display: none;
+}
+
+.action-link {
+    color: var(--links);
+    background-color: var(--background);
+}
+
 /**
  * When the width goes 992px or below, the container-left is hidden
  * When changing this you will need to change search.js as well 
@@ -242,6 +257,10 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .container-main-facets {
+        display: block;
+    }
+
+    .container-hide-facets {
         display: block;
     }
 }

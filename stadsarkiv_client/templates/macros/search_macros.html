@@ -5,10 +5,11 @@
 {% set search_base_url = get_setting('search_base_url') %}
 
 {% macro parse_facets_filters(facets_filters) %}
+{% if facets_filters %}
 <ul>
     {% for facet in facets_filters %}
     <li>
-        <a class="remove" href="{{ search_base_url }}?{{ facet['remove_link'] }}">{{ translate('Remove facet') }}</a>
+        <a class="action-link" href="{{ search_base_url }}?{{ facet['remove_link'] }}">{{ translate('Remove facet') }}</a>
         {% if facet["entity_url"] %}
         <span><a href="{{ facet['entity_url'] }}">{{ facet['label'] }}</a></span>
         {% else %}
@@ -17,10 +18,11 @@
     </li>
     {% endfor %}
 </ul>
+{% endif %}
 
 {% if facets_filters %}
     <p>
-        <a class="remove" href="{{ search_base_url }}?">{{ translate('Reset search') }}</a>
+        <a class="action-link" href="{{ search_base_url }}?">{{ translate('Reset search') }}</a>
     </p>
 {% endif %}
 
