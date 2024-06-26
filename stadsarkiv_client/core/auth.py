@@ -52,7 +52,7 @@ async def is_authenticated(request: Request, permissions=[]):
 
         # If the user has "root" permission, then permission is granted
         # If the user has any of the permissions in the permissions list, then permission is granted
-        permission_granted = "root" in user_permissions_list or any(permission in user_permissions_list for permission in permissions)
+        permission_granted = any(permission in user_permissions_list for permission in permissions)
 
         if not permission_granted:
             users_me_get = await api.users_me_get(request)
@@ -75,7 +75,7 @@ async def is_authenticated_json(request: Request, permissions=[]):
 
         # If the user has "root" permission, then permission is granted
         # If the user has any of the permissions in the permissions list, then permission is granted
-        permission_granted = "root" in user_permissions_list or any(permission in user_permissions_list for permission in permissions)
+        permission_granted = any(permission in user_permissions_list for permission in permissions)
 
         if not permission_granted:
             users_me_get = await api.users_me_get(request)
