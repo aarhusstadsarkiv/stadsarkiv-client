@@ -174,22 +174,19 @@ function searchEvents() {
 
     try {
 
-        const containerMainFacets = document.querySelector('.container-main-facets');
-        const hideFacets = document.getElementById('facets-toggle');
-        const hideFacetsState = localStorage.getItem('hideFacets') || 'true';
+        const containerMainFacetsElem = document.querySelector('.container-main-facets');
+        const hideFacetsElem = document.getElementById('facets-toggle');
+        let hideFacetsState = localStorage.getItem('hideFacets') || 'true';
 
         const hideFacetsElement = () => {
-            containerMainFacets.style.display = 'none';
-            if (hideFacets) hideFacets.textContent = 'Vis filtre';
+            containerMainFacetsElem.style.display = 'none';
+            if (hideFacetsElem) hideFacetsElem.textContent = 'Vis filtre';
         }
 
         const showFacetsElements = () => {
-            containerMainFacets.style.display = 'block';
-            if (hideFacets) hideFacets.textContent = 'Skjul filtre';
+            containerMainFacetsElem.style.display = 'block';
+            if (hideFacetsElem) hideFacetsElem.textContent = 'Skjul filtre';
         }
-
-        // Variable to track the last window width
-        let lastWindowWidth = window.innerWidth;
 
         const initFacetsElements = () => {
             if (hideFacetsState === 'true') {
@@ -201,30 +198,35 @@ function searchEvents() {
 
         initFacetsElements();
 
-        hideFacets?.addEventListener('click', function (e) {
+        hideFacetsElem?.addEventListener('click', function (e) {
             e.preventDefault();
-            if (containerMainFacets.style.display === 'none') {
+            if (containerMainFacetsElem.style.display === 'none') {
+                hideFacetsState = 'false';
                 showFacetsElements();
                 localStorage.setItem('hideFacets', 'false');
             } else {
+                hideFacetsState = 'true';
                 hideFacetsElement();
                 localStorage.setItem('hideFacets', 'true');
             }
         });
 
+        let lastWindowWidth = window.innerWidth;
+
         function onResize() {
             const currentWindowWidth = window.innerWidth;
 
             // Check if the resize event crosses the 992px to 993px boundary
-            if ((lastWindowWidth <= 992 && currentWindowWidth >= 993) || (lastWindowWidth >= 993 && currentWindowWidth <= 992)) {
+            if ((lastWindowWidth <= 992 && currentWindowWidth > 992) || (lastWindowWidth > 992 && currentWindowWidth <= 992)) {
+                console.log("Resize event crossed the 992px boundary")
                 expandTree();
             }
 
-            if (lastWindowWidth > 992) {
-                containerMainFacets.style.display = 'none';
+            if (currentWindowWidth > 992) {
+                hideFacetsElement();
             }
 
-            if (lastWindowWidth < 993) {
+            if (currentWindowWidth <= 992) {
                 initFacetsElements();
             }
 
