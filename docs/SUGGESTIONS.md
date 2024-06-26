@@ -120,3 +120,13 @@ https://aarhusarkivet.openaws.dk/search?q=amoriner*
 Janne
 
 ---
+
+Her kommer endnu et ønske til AarhusArkivet.
+
+Det ville være rigtig rart med en nem måde at sortere AarhusTeaters billeder fra på (og andre klientsider, når de kommer)
+
+Lige nu går jeg manuelt ind og tilføjer &-curators=4 hver gang.
+
+Janne
+
+---
