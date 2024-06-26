@@ -151,7 +151,7 @@ h3.record-header {
 
 @media screen and (max-width: 568px) {
     .record-pages-info {
-        display: none;
+        margin-right: 10px;
     }
 }
 

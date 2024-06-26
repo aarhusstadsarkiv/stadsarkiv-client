@@ -6,25 +6,36 @@
 
 {% macro parse_facets_filters(facets_filters) %}
 {% if facets_filters %}
-<ul>
-    {% for facet in facets_filters %}
-    <li>
-        <a class="action-link" href="{{ search_base_url }}?{{ facet['remove_link'] }}">{{ translate('Remove facet') }}</a>
-        {% if facet["entity_url"] %}
-        <span><a href="{{ facet['entity_url'] }}">{{ facet['label'] }}</a></span>
-        {% else %}
-        <span>{{ facet['label'] }}</span>
-        {% endif %}
-    </li>
-    {% endfor %}
-</ul>
+<div class="facets-filters">
+    <ul>
+        {% for facet in facets_filters %}
+        <li>
+            <div class="action-links">
+                <a href="{{ search_base_url }}?{{ facet['remove_link'] }}">{{ translate('Remove facet') }}</a>
+                {% if facet["entity_url"] %}
+                <span><a href="{{ facet['entity_url'] }}">{{ facet['label'] }}</a></span>
+                {% else %}
+                <span>{{ facet['label'] }}</span>
+            </div>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
 {% endif %}
 
 {% if facets_filters %}
-    <p>
-        <a class="action-link" href="{{ search_base_url }}?">{{ translate('Reset search') }}</a>
-    </p>
-{% endif %}
+<div class="action-links">
+    <a href="{{ search_base_url }}?">{{ translate('Reset search') }}</a>  
+</div>
+{% endif %}  
+
+<div class="facets-toggle-container">
+    <div class="action-links">
+        <a id="facets-toggle" href="#"></a>
+    </div>
+</div>
 
 {% endmacro %}
 

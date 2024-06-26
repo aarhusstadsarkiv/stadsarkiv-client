@@ -26,6 +26,7 @@ function saveTree() {
     const containerLeftIsDisplayed = window.getComputedStyle(document.querySelector('.container-left')).display != 'none';
     if (containerLeftIsDisplayed) {
         saveState('.container-left', 'treeState');
+        
     }
 
     const containerMainFacetsIsDisplayed = window.getComputedStyle(document.querySelector('.container-main-facets')).display != 'none';
@@ -175,17 +176,17 @@ function searchEvents() {
     try {
 
         const containerMainFacetsElem = document.querySelector('.container-main-facets');
-        const hideFacetsElem = document.getElementById('facets-toggle');
+        const facetsToogle = document.getElementById('facets-toggle');
         let hideFacetsState = localStorage.getItem('hideFacets') || 'true';
 
         const hideFacetsElement = () => {
             containerMainFacetsElem.style.display = 'none';
-            if (hideFacetsElem) hideFacetsElem.textContent = 'Vis filtre';
+            if (facetsToogle) facetsToogle.textContent = 'Vis filtre';
         }
 
         const showFacetsElements = () => {
             containerMainFacetsElem.style.display = 'block';
-            if (hideFacetsElem) hideFacetsElem.textContent = 'Skjul filtre';
+            if (facetsToogle) facetsToogle.textContent = 'Skjul filtre';
         }
 
         const initFacetsElements = () => {
@@ -198,7 +199,7 @@ function searchEvents() {
 
         initFacetsElements();
 
-        hideFacetsElem?.addEventListener('click', function (e) {
+        facetsToogle?.addEventListener('click', function (e) {
             e.preventDefault();
             if (containerMainFacetsElem.style.display === 'none') {
                 hideFacetsState = 'false';

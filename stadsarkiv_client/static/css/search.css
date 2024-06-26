@@ -29,16 +29,22 @@
     margin-left: 10px;
 }
 
+.facets-filters ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
 .pagination-total {
     font-weight: 600;
     color: var(--text-bright);
     background-color: var(--background-body);
-
+    padding: 5px 0;
 }
 
 .pagination {
     display: flex;
-    padding: 20px 0;
+    padding: 10px 0;
 }
 
 .pagination-pages {
@@ -240,6 +246,10 @@ a.search-link-gallery {
     margin-top: 10px;
 }
 
+.facets-toggle-container {
+    display: none;
+}
+
 @media (max-width: 1200px) {
     .search-results-gallery {
         column-count: 3;
@@ -249,6 +259,10 @@ a.search-link-gallery {
 @media (max-width: 992px) {
     .search-results-gallery {
         column-count: 2;
+    }
+
+    .facets-toggle-container {
+        display: block;
     }
 }
 

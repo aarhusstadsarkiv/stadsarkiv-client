@@ -9,7 +9,7 @@
         <a href="/search?{{ record_pagination['query_str_display'] }}">{{translate('Latest search') }}</a> 
     </div>
     <div class="record-pages-info">
-        ({{ translate ('Page') }} {{ record_pagination["current_page"] }} / {{ record_pagination["total"] }})
+        {{ record_pagination["current_page"] }} / {{ record_pagination["total"] }}
     </div>
     <div class="record-prev-next">
         {% if record_pagination.prev_record is none %}

@@ -20,10 +20,6 @@
     {{ search_macros.parse_search() }}
     {{ search_macros.parse_facets_filters(facets_filters) }}
 
-    <p class="container-hide-facets">
-        <a class="action-link" id="facets-toggle" href="#"></a>
-    </p>
-
     <div class="container-main-facets">
         {{ search_macros.parse_top_level_facets(facets, 'facets', 'search-date-main') }}
     </div>
