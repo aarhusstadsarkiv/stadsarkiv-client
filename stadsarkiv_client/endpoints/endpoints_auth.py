@@ -6,10 +6,11 @@ from starlette.requests import Request
 from starlette.responses import RedirectResponse, JSONResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
-from stadsarkiv_client.core.auth import is_authenticated
+from stadsarkiv_client.core.auth import is_authenticated, is_authenticated_json
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core import user
+from stadsarkiv_client.core.user_data import UserData
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
@@ -193,6 +194,32 @@ async def bookmarks(request: Request):
         log.exception(e)
         flash.set_message(request, str(e), type="error")
         return RedirectResponse(url="/auth/login", status_code=302)
+
+
+async def bookmarks_post(request: Request):
+    await is_authenticated_json(request, ["user"])
+
+    try:
+
+        me = await api.users_me_get(request)
+        json_data = await request.json()
+
+        user_bookmarks = UserData(me)
+        user_bookmarks.append_bookmark(json_data["record_id"])
+
+        data = user_bookmarks.get_data()
+
+        await api.users_data_post(request, data)
+
+    except OpenAwsException as e:
+        log.exception(e)
+        return JSONResponse({"message": str(e)}, status_code=400)
+
+    return JSONResponse({"message": "Bookmarked", "user_data": json_data}, status_code=200)
+
+
+async def bookmarks_delete(request: Request):
+    await is_authenticated_json(request)
 
 
 async def search_results(request: Request):
