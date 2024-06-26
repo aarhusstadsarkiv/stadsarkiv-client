@@ -192,6 +192,24 @@ async def users_me_get(request: Request) -> dict:
             )
 
 
+async def users_data_post(request: Request, data: dict):
+    """
+    POST user data to the api in order to update the user
+    """
+
+    me = await users_me_get(request)
+    id = me["id"]
+
+    async with _get_async_client() as client:
+        url = base_url + f"/users/{id}/data"
+        headers = _get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
+        response = await client.post(url, json=data, headers=headers)
+
+        if not response.is_success:
+            json_response = response.json()
+            raise_openaws_exception(response.status_code, json_response)
+
+
 async def users_get(request: Request) -> dict:
     """
     GET all users from the api
@@ -394,11 +412,14 @@ async def has_permissions(request: Request, permissions: list[str]) -> bool:
 async def me_permissions(request: Request) -> list[str]:
     """
     GET a list of permissions that the current user has.
+    ['root', 'admin', 'employee', 'user', 'guest'] and
+    ['soft_delete', 'researcher', 'hard_delete', 'read', 'update', 'create', 'restore', 'scoped_read',]
     """
     try:
         me = await users_me_get(request)
         user_permissions: dict = me.get("permissions", {})
-        return user.permissions_as_list(user_permissions)
+        user_permissions_list = user.permissions_as_list(user_permissions)
+        return user_permissions_list
     except Exception:
         return []
 
