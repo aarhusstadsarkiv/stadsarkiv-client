@@ -10,7 +10,7 @@ log = get_log()
 
 class UserData:
     """
-    User bookmarks class.
+    User data class.
     """
 
     def __init__(self, me: dict):
