@@ -393,22 +393,6 @@ async def is_logged_in(request: Request) -> bool:
         return False
 
 
-async def has_permissions(request: Request, permissions: list[str]) -> bool:
-    """
-    Check if the current user a list of permissions. Return True if the user has all permissions.
-    """
-    try:
-        me = await users_me_get(request)
-        user_permissions: dict = me.get("permissions", {})
-        user_permissions_list = user.permissions_as_list(user_permissions)
-        for permission in permissions:
-            if permission not in user_permissions_list:
-                return False
-        return True
-    except Exception:
-        return False
-
-
 async def me_permissions(request: Request) -> list[str]:
     """
     GET a list of permissions that the current user has.
