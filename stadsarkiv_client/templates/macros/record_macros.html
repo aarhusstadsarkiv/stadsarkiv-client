@@ -1,4 +1,6 @@
-{% set azure_allow_media_search = "sp=r&st=2023-02-03T12:19:05Z&se=2030-04-01T19:19:05Z&spr=https&sv=2021-06-08&sr=c&sig=QK9mOWt0oZ%2FtiY5biruFo0eGPirtjHYEQ061tPuZYHU%3D" %}
+{% set azure_allow_media_search =
+"sp=r&st=2023-02-03T12:19:05Z&se=2030-04-01T19:19:05Z&spr=https&sv=2021-06-08&sr=c&sig=QK9mOWt0oZ%2FtiY5biruFo0eGPirtjHYEQ061tPuZYHU%3D"
+%}
 
 {% import "macros/common_macros.html" as common_macros %}
 
@@ -6,7 +8,7 @@
 {% if record_pagination %}
 <div class="record-pagination">
     <div class="record-search-link">
-        <a href="/search?{{ record_pagination['query_str_display'] }}">{{translate('Latest search') }}</a> 
+        <a href="/search?{{ record_pagination['query_str_display'] }}">{{translate('Latest search') }}</a>
     </div>
     <div class="record-pages-info">
         {{ record_pagination["current_page"] }} / {{ record_pagination["total"] }}
@@ -15,14 +17,16 @@
         {% if record_pagination.prev_record is none %}
         <span class="disabled">&lt;</span>
         {% else %}
-        <a class="prev" href="/records/{{ record_pagination.prev_record }}?search={{ record_pagination.prev_page }}">&lt;</a>
+        <a class="prev"
+            href="/records/{{ record_pagination.prev_record }}?search={{ record_pagination.prev_page }}">&lt;</a>
         {% endif %}
         {% if record_pagination.next_record is none %}
         <span class="disabled">&gt;</span>
         {% else %}
-        <a class="next" href="/records/{{ record_pagination.next_record }}?search={{ record_pagination.next_page }}">&gt;</a>
+        <a class="next"
+            href="/records/{{ record_pagination.next_record }}?search={{ record_pagination.next_page }}">&gt;</a>
         {% endif %}
-        
+
     </div>
 </div>
 {% endif %}
@@ -45,7 +49,7 @@
                 <div class="overlay-reset" aria-label="{{ translate('Reset') }}">{{ get_icon('reset', '40')|safe}}</div>
             </div>
         </div>
-    </div>  
+    </div>
 </div>
 {% endif %}
 
@@ -65,7 +69,8 @@
 {% endif %}
 
 {% if meta_data["record_type"] == 'web_document' %}
-<a href="{{meta_data.representations.get('web_document_url')}}" aria-label="{{ translate('Click on the image to open the PDF document.') }}">
+<a href="{{meta_data.representations.get('web_document_url')}}"
+    aria-label="{{ translate('Click on the image to open the PDF document.') }}">
     <img src="{{meta_data.portrait}}" alt="{{ section }}">
 </a>
 <p>
@@ -80,13 +85,13 @@
 
 {% macro _parse_representations_block(meta_data) %}
 <div class="record-representation">
-{% if meta_data["is_representations_online"] %}
-{{ _parse_representations_media(meta_data)}}
-{% elif meta_data["availability_id"] == 3 %}
-{{ common_macros.parse_icon('lock', translate('The material is available in the reading room.'))}}
-{% elif meta_data["availability_id"] == 2 %}
-{{ common_macros.parse_icon('lock', translate('The material can be order home to the reading room.'))}}
-{% endif %}
+    {% if meta_data["is_representations_online"] %}
+    {{ _parse_representations_media(meta_data)}}
+    {% elif meta_data["availability_id"] == 3 %}
+    {{ common_macros.parse_icon('lock', translate('The material is available in the reading room.'))}}
+    {% elif meta_data["availability_id"] == 2 %}
+    {{ common_macros.parse_icon('lock', translate('The material can be order home to the reading room.'))}}
+    {% endif %}
 </div>
 {% endmacro %}
 
@@ -100,6 +105,41 @@
 {% endif %}
 {% endmacro %}
 
+{% macro _parse_bookmarks(meta_data) %}
+<a id="bookmark-add" data-id="{{ meta_data['id']}}" href="#">Tilføj bogmærke</a>
+<div class="loadingspinner hidden"></div>
+<script type="module">
+
+    import { asyncLogError } from "/static/js/error.js";
+    import { Requests } from "/static/js/requests.js";
+    import { Flash } from "/static/js/flash.js";
+
+    const bookmarkAddElem = document.getElementById('bookmark-add');
+    const recordId = bookmarkAddElem.getAttribute('data-id');
+    const data = JSON.stringify({ record_id: recordId });
+    const spinner = document.querySelector('.loadingspinner');
+
+    let res;
+
+    bookmarkAddElem.addEventListener('click', async function (e) {
+        e.preventDefault();
+        spinner.classList.toggle('hidden');
+        try {
+            res = await Requests.asyncPostJson('/auth/bookmarks', data, 'POST');
+            if (!res.error) {
+                Flash.setMessage(res.message, 'success');
+            }
+        } catch (e) {
+            Flash.setMessage(res.message, 'error');
+            await asyncLogError('/error/log', e.stack);
+        } finally {
+            spinner.classList.toggle('hidden');
+        }
+    });
+
+</script>
+{% endmacro %}
+
 {% macro parse_block_first(block_keys, meta_data, record_and_types) %}
 {% if key_exist_in_dict(block_keys, record_and_types) %}
 <div class="record-section">
@@ -110,6 +150,13 @@
         <div class="record-title">{{ meta_data["title"] }}</div>
         {% endif %}
         {% for key in block_keys %}
+
+        {% if key == 'bookmarks' %}
+            {% if has_permission('user', permissions_list) %}
+                {{ _parse_bookmarks (meta_data) }}
+            {% endif %}
+        {% endif %}
+
         {% if key in record_and_types %}
         {{ common_macros.parse_block_section(record_and_types[key]) }}
         {% endif %}
