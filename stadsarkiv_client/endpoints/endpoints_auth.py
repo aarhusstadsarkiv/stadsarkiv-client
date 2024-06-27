@@ -204,10 +204,10 @@ async def bookmarks_post(request: Request):
         me = await api.users_me_get(request)
         json_data = await request.json()
 
-        user_bookmarks = UserData(me)
-        user_bookmarks.append_bookmark(json_data["record_id"])
+        user_data = UserData(me)
+        user_data.append_bookmark(json_data["record_id"])
 
-        data = user_bookmarks.get_data()
+        data = user_data.get_data()
 
         await api.users_data_post(request, data)
 
