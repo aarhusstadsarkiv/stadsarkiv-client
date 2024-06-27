@@ -74,7 +74,7 @@ async def is_authenticated_json(request: Request, permissions=[], message=None):
 
     if not is_logged_in:
         log.error(f"401 Unauthorized: {request.url}")
-        raise AuthExceptionJSON(message=translate(message))
+        raise AuthExceptionJSON(message=message)
 
     if permissions:
         user_permissions_list = await api.me_permissions(request)
