@@ -245,7 +245,7 @@ function editLink() {
         editLink = html`<a class="toogle-edit" href="#" @click=${toogleEditMode}>Afslut Redigering af relationer</a>`;
     }
 
-    return html`<div class="sub-menu">${editLink}</div>`;
+    return html`<div class="action-links">${editLink}</div>`;
 }
 
 // Render the relations-edit-app

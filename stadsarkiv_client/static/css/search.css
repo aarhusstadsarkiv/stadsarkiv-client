@@ -42,36 +42,6 @@
     padding: 5px 0;
 }
 
-.pagination {
-    display: flex;
-    padding: 10px 0;
-}
-
-.pagination-pages {
-    display: flex;
-    gap: 10px;
-}
-
-.pagination-pages a {
-    background-color: var(--navigation-background);
-    color: var(--main-menu);
-    text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-.pagination-pages a:hover {
-    background-color: rgba(var(--navigation-background-rgb), 0.75 );    
-}
-
-.pagination-pages .disabled {
-    padding: 5px 10px;
-    background-color: var(--search-pagination-background-disabled);
-    color: var(--search-pagination-disabled);
-    border-radius: 5px;
-}
-
 #q, #submit {
     display: inline-block;
 }

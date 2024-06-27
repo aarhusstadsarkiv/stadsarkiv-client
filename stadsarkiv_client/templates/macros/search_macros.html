@@ -13,7 +13,9 @@
             <div class="action-links">
                 <a href="{{ search_base_url }}?{{ facet['remove_link'] }}">{{ translate('Remove facet') }}</a>
                 {% if facet["entity_url"] %}
-                <span><a href="{{ facet['entity_url'] }}">{{ facet['label'] }}</a></span>
+                <span>
+                    <a href="{{ facet['entity_url'] }}">{{ facet['label'] }}</a>
+                </span>
                 {% else %}
                 <span>{{ facet['label'] }}</span>
             </div>
@@ -264,26 +266,23 @@
 
 {% if pagination_data["total"] > 0 %}
 
-<div class="pagination">
-    <div class="pagination-pages">
-        {% if current_page > 1 %}
-        <a href="{{ search_base_url }}?{{ query_str_display }}start=0">{{ translate('First page') }}</a>
-        <a href="{{ search_base_url }}?{{ query_str_display }}start={{ start - size }}">{{ translate('Previous')
-            }}</a>
+<div class="action-links">
+    {% if current_page > 1 %}
+    <a href="{{ search_base_url }}?{{ query_str_display }}start=0">{{ translate('First page') }}</a>
+    <a href="{{ search_base_url }}?{{ query_str_display }}start={{ start - size }}">{{ translate('Previous')
+        }}</a>
+    {% else %}
+    <span class="disabled">{{ translate('First page') }}</span>
+    <span class="disabled">{{ translate('Previous') }}</span>
+    {% endif %}
+    {% if current_page < total_pages %} 
+        <a href="{{ search_base_url }}?{{ query_str_display }}start={{ start + size }}">{{ translate('Next')}} </a>
+        <a href="{{ search_base_url }}?{{ query_str_display }}start={{ (total_pages - 1) * size }}">{{ translate('Last page') }}</a>
         {% else %}
-        <span class="disabled">{{ translate('First page') }}</span>
-        <span class="disabled">{{ translate('Previous') }}</span>
+        <span class="disabled">{{ translate('Next') }}</span>
+        <span class="disabled">{{ translate('Last page') }}</span>
         {% endif %}
-        {% if current_page < total_pages %} 
-            <a href="{{ search_base_url }}?{{ query_str_display }}start={{ start + size }}">{{ translate('Next')}} </a>
-            <a href="{{ search_base_url }}?{{ query_str_display }}start={{ (total_pages - 1) * size }}">{{ translate('Last page') }}</a>
-            {% else %}
-            <span class="disabled">{{ translate('Next') }}</span>
-            <span class="disabled">{{ translate('Last page') }}</span>
-            {% endif %}
-    </div>
 </div>
-
 {% endif %}
 
 {% endmacro %}
