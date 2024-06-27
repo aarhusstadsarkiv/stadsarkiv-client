@@ -64,33 +64,6 @@
     </table>
 </div>
 {% endfor %}
-
 {% endif %}
-
-<button id="post-json-test">POST JSON test</button>
-<script>
-    // JSON data
-    const json_data = {"record_id": 10}
-
-    // POST to /auth/bookmarks
-    document.getElementById('post-json-test').addEventListener('click', function() {
-        fetch('/auth/bookmarks', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(json_data),
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-    });
-
-
-</script>
 
 {% endblock content %}
