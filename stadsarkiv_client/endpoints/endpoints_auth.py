@@ -197,7 +197,7 @@ async def bookmarks(request: Request):
 
 
 async def bookmarks_post(request: Request):
-    await is_authenticated_json(request, ["user"])
+    await is_authenticated_json(request, ["user"], message="You need to be logged in to bookmark a record.")
 
     try:
 
@@ -213,9 +213,11 @@ async def bookmarks_post(request: Request):
 
     except OpenAwsException as e:
         log.exception(e)
-        return JSONResponse({"message": str(e)}, status_code=400)
+        json_data = {"message": str(e), "error": True}
+        return JSONResponse(json_data, status_code=400)
 
-    return JSONResponse({"message": "Bookmarked", "user_data": json_data}, status_code=200)
+    json_data = {"message": "Bookmarked", "user_data": json_data, "error": False}
+    return JSONResponse(json_data, status_code=200)
 
 
 async def bookmarks_delete(request: Request):

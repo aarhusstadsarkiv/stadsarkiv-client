@@ -51,7 +51,7 @@ async def auth_exception_handler(request: Request, exc: AuthException):
 
 
 async def auth_exception_json_handler(request: Request, exc: AuthExceptionJSON):
-    return JSONResponse({"error": exc.message}, status_code=401)
+    return JSONResponse({"error": True, "message": exc.message}, status_code=401)
 
 
 exception_handlers = {

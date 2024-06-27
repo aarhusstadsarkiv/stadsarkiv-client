@@ -36,10 +36,13 @@ class AuthExceptionJSON(Exception):
         super().__init__(self.message)
 
 
-async def is_authenticated(request: Request, permissions=[]):
+async def is_authenticated(request: Request, permissions=[], message=None):
     is_logged_in = await api.is_logged_in(request)
-    if not is_logged_in:
+
+    if not message:
         message = translate("You need to be logged in to view this page.")
+
+    if not is_logged_in:
         log.error(f"401 Unauthorized: {request.url}")
         raise AuthException(
             request,
@@ -63,11 +66,15 @@ async def is_authenticated(request: Request, permissions=[]):
             )
 
 
-async def is_authenticated_json(request: Request, permissions=[]):
+async def is_authenticated_json(request: Request, permissions=[], message=None):
     is_logged_in = await api.is_logged_in(request)
+
+    if not message:
+        message = translate("You need to be logged in to view this page.")
+
     if not is_logged_in:
         log.error(f"401 Unauthorized: {request.url}")
-        raise AuthExceptionJSON(message=translate("You need to be logged in to view this page."))
+        raise AuthExceptionJSON(message=translate(message))
 
     if permissions:
         user_permissions_list = await api.me_permissions(request)
