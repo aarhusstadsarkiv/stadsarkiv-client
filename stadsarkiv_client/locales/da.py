@@ -79,7 +79,7 @@ da = {
     "Register to get access to speciel functions": "Opret bruger for at få adgang til specielle funktioner",
     "Relavance": "Relevans",
     "Remember me": "Husk login på denne computer",
-    "Remove facet": "Fjern",
+    "Remove facet": "Fjern filter",
     "Repeat Password": "Gentag password",
     "Reset": "Reset",
     "Reset password": "Nulstil password",
@@ -133,6 +133,7 @@ da = {
     "You have been logged out.": "Du er nu logget ud.",
     "You have been registered. Check your email to confirm your account.": "Du er blevet registreret. Tjek din email for at bekræfte din konto.",
     "You have been verified.": "Din email er blevet verificeret. Hvis du ikke er logget ind så kan du gøre det nu.",
+    "You need to be logged in to bookmark a record.": "You need to be logged in to bookmark a record.",
     "You need to be logged in to view this page.": "Du er ikke logget ind. Log ind for at se siden.",
     "You will need to log in order to get access to your profile": "Du skal logge ind for at se din profil.",
     "Your bookmarks": "Bogmærker",
@@ -150,7 +151,7 @@ da = {
     "contractual_status_id_3": "Materialet må kun ses på læsesalen. Ifølge aftale.",
     "contractual_status_id_4": "Materialet må offentliggøres på internettet. Ifølge aftale.",
     "contractual_status_id_4_pp": "Materialet må kun offentliggøres på Aarhus Stadsarkivs hjemmesider. Ifølge aftale.",
-    "copyright_creative_commons_license": 'Materialet er under ophavsret, men udgives efter aftale under en <a href="https://creativecommons.org/licenses/by/4.0/deed.da">Creative Commons Navngivelse licens</a>. ',
+    "copyright_creative_commons_license": "Materialet er under ophavsret, men udgives efter aftale under en <a href=\"https://creativecommons.org/licenses/by/4.0/deed.da\">Creative Commons Navngivelse licens</a>. ",
     "copyright_id_1": "Materialet har ikke værkshøjde og er derfor ikke beskyttet af ophavsret. Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. ",
     "copyright_id_2": "Materialet er i offentlig eje, da ophavsretten er udløbet. Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. ",
     "copyright_id_3": "Materialet er frigivet af alle ophavsretsholdere til offentlig eje. Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. ",
@@ -277,5 +278,5 @@ da = {
     "ordering_by_mail": "Du kan bestille materialet ved at sende en mail til stadsarkiv@aarhus.dk, hvori du angiver materialets arkiv-ID, som kan ses øverst på siden.",
     "ordering_from_rigsarkivet": "Hvis materialet ligger hos Rigsarkivet, skal bestillingen sendes dertil. Gå ind på Rigsarkivets hjemmeside og find materialet der. Efterfølgende kan det så bestilles hjem til en af deres læsesale.",
     "search": "search",
-    "user": "user",
+    "user": "user"
 }
