@@ -42,7 +42,8 @@
     padding: 5px 0;
 }
 
-#q, #submit {
+#q,
+#submit {
     display: inline-block;
 }
 
@@ -140,7 +141,7 @@ details>summary.inactive {
 /**
  * Override of the general record.css 
  */
- .search-results .record-content {
+.search-results .record-content {
     padding-top: 0.2em;
     margin-bottom: 0.2em
 }
@@ -179,7 +180,7 @@ details>summary.inactive {
  * gallery view
  */
 
- .search-results-gallery {
+.search-results-gallery {
     column-count: 4;
     column-gap: 20px;
 }
@@ -207,7 +208,7 @@ a.search-link-gallery {
     margin-top: 10px;
 }
 
-.search-summary-gallery { 
+.search-summary-gallery {
     text-decoration: none;
 }
 

@@ -126,19 +126,17 @@ h6 {
 }
 
 .flash-messages {
-    /* bottom: 0px;
+    bottom: 0px;
     position: fixed;
     width: 100%;
-    z-index: 1000; */
+    z-index: 1000;
 
 }
 
 .flash {
-    padding: 10px;
-    margin-bottom: 7px;
+    padding: 25px;
     opacity: 0.9;
     cursor: pointer;
-    padding-bottom: 10px;
 }
 
 .flash-success {
@@ -241,7 +239,7 @@ h6 {
 }
 
 .action-links>a:hover {
-    background-color: rgba(var(--navigation-background-rgb), 0.75 );    
+    background-color: rgba(var(--navigation-background-rgb), 0.75);
 }
 
 .action-links .disabled {
@@ -249,6 +247,31 @@ h6 {
     background-color: var(--search-pagination-background-disabled);
     color: var(--search-pagination-disabled);
     border-radius: 5px;
+}
+
+.loadingspinner {
+    margin-top: 10px;
+    pointer-events: none;
+    width: 1.5em;
+    height: 1.5em;
+    border: 0.4em solid transparent;
+    border-color: var(--focus);
+    border-top-color: var(--selection);
+    border-radius: 50%;
+    animation: loadingspin 1s linear infinite;
+    position: fixed;
+    top: 50%;
+    left: calc(50% - 30px)
+}
+
+@keyframes loadingspin {
+    100% {
+        transform: rotate(360deg)
+    }
+}
+
+.hidden {
+    visibility: hidden;
 }
 
 /**
