@@ -106,7 +106,9 @@
 {% endmacro %}
 
 {% macro _parse_bookmarks(meta_data) %}
-<a id="bookmark-add" data-id="{{ meta_data['id']}}" href="#">Tilføj bogmærke</a>
+<div class="action-links">
+    <a id="bookmark-add" data-id="{{ meta_data['id']}}" href="#">Tilføj bogmærke</a>
+</div>
 <div class="loadingspinner hidden"></div>
 <script type="module">
 

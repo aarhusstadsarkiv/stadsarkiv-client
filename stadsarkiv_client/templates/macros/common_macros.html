@@ -131,8 +131,8 @@
         <p>{{ item }}</p>
         {% endfor %}
         {% if get_setting('allow_online_ordering') %}
-        <div class="record-order">
-            <a data-id="{{ record_and_types.id.value }}" href="/order/{{ record_and_types.id.value }}">Bestil online</a>
+        <div class="action-links">
+            <a data-id="{{ record_and_types.id.value }}" href="/order/{{ record_and_types.id.value }}">{{ translate('Order online') }}</a>
         </div>
         {% endif %}
     </div>
