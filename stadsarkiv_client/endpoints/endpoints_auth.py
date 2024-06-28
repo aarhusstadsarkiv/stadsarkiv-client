@@ -56,11 +56,6 @@ async def login_post(request: Request):
         log.exception(e)
         flash.set_message(request, str(e), type="error", use_settings=True)
 
-    if next_url:
-        return RedirectResponse(url="/auth/login?next=" + next_url, status_code=302)
-    else:
-        return RedirectResponse(url="/auth/login", status_code=302)
-
 
 async def logout_get(request: Request):
     is_logged_in = await api.is_logged_in(request)
