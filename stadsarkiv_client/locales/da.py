@@ -7,6 +7,8 @@ da = {
     "A verify link has been sent to your email. You may verify your account now by clicking the link.": "Et verifikations-link er blevet sendt til din e-mail. Du kan nu verificere din konto ved at klikke på linket.",
     "An email has been sent to you with instructions on how to reset your password.": "En mail er blevet sendt til dig med instruktioner om hvordan du nulstiller dit password. Husk at din e-mail skal være registreret hos os. Hvis du ikke modtager en mail, så tjek din spam-mappe.",
     "Are you sure": "Er du sikker på at du vil logge ud?",
+    "Bookmark has been added.": "Bogmærke er blevet tilføjet.",
+    "Bookmark has been removed.": "Bogmærke er blever fjernet.",
     "Change your password": "Ændr dit password",
     "Click in order to listen to the audio.": "Klik for at lytte til lydfilen.",
     "Click on the image to open the PDF document.": "Klik på billedet for at hente pdf-dokumentet.",
@@ -134,7 +136,7 @@ da = {
     "You have been logged out.": "Du er nu logget ud.",
     "You have been registered. Check your email to confirm your account.": "Du er blevet registreret. Tjek din email for at bekræfte din konto. Hvis du ikke modtager en email, så tjek din spam-mappe.",
     "You have been verified.": "Din email er blevet verificeret. Hvis du ikke er logget ind så kan du gøre det nu.",
-    "You need to be logged in to bookmark a record.": "You need to be logged in to bookmark a record.",
+    "You need to be logged in as user in order to bookmark a record.": "Du er ikke logget ind. Du skal logge ind for at oprette et bogmærke.",
     "You need to be logged in to view this page.": "Du er ikke logget ind. Log ind for at se siden.",
     "You will need to log in order to get access to your profile": "Du skal logge ind for at se din profil.",
     "Your bookmarks": "Bogmærker",
@@ -152,7 +154,7 @@ da = {
     "contractual_status_id_3": "Materialet må kun ses på læsesalen. Ifølge aftale.",
     "contractual_status_id_4": "Materialet må offentliggøres på internettet. Ifølge aftale.",
     "contractual_status_id_4_pp": "Materialet må kun offentliggøres på Aarhus Stadsarkivs hjemmesider. Ifølge aftale.",
-    "copyright_creative_commons_license": 'Materialet er under ophavsret, men udgives efter aftale under en <a href="https://creativecommons.org/licenses/by/4.0/deed.da">Creative Commons Navngivelse licens</a>. ',
+    "copyright_creative_commons_license": "Materialet er under ophavsret, men udgives efter aftale under en <a href=\"https://creativecommons.org/licenses/by/4.0/deed.da\">Creative Commons Navngivelse licens</a>. ",
     "copyright_id_1": "Materialet har ikke værkshøjde og er derfor ikke beskyttet af ophavsret. Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. ",
     "copyright_id_2": "Materialet er i offentlig eje, da ophavsretten er udløbet. Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. ",
     "copyright_id_3": "Materialet er frigivet af alle ophavsretsholdere til offentlig eje. Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. ",
@@ -279,5 +281,5 @@ da = {
     "ordering_by_mail": "Du kan bestille materialet ved at sende en mail til stadsarkiv@aarhus.dk, hvori du angiver materialets arkiv-ID, som kan ses øverst på siden.",
     "ordering_from_rigsarkivet": "Hvis materialet ligger hos Rigsarkivet, skal bestillingen sendes dertil. Gå ind på Rigsarkivets hjemmeside og find materialet der. Efterfølgende kan det så bestilles hjem til en af deres læsesale.",
     "search": "search",
-    "user": "user",
+    "user": "user"
 }

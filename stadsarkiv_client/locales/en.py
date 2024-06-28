@@ -8,6 +8,8 @@ en = {
     "A verify link has been sent to your email. You may verify your account now by clicking the link.": "A verify link has been sent to your email. You may verify your account now by clicking the link.",
     "An email has been sent to you with instructions on how to reset your password.": "An email has been sent to you with instructions on how to reset your password.",
     "Are you sure": "Are you sure",
+    "Bookmark has been added.": "Bookmark has been added.",
+    "Bookmark has been removed.": "Bookmark has been removed.",
     "Change your password": "Change your password",
     "Click in order to listen to the audio": "Click in order to listen to the audio",
     "Click in order to listen to the audio.": "Click in order to listen to the audio.",
@@ -155,6 +157,7 @@ en = {
     "You have been registered. Check your email to confirm your account.": "You have been registered. Check your email to confirm your account.",
     "You have been verified.": "You have been verified.",
     "You have successfully registered. Please check your email for further instructions.": "You have successfully registered. Please check your email for further instructions.",
+    "You need to be logged in as user in order to bookmark a record.": "You need to be logged in as user in order to bookmark a record.",
     "You need to be logged in to access this page.": "You need to be logged in to access this page.",
     "You need to be logged in to bookmark a record.": "You need to be logged in to bookmark a record.",
     "You need to be logged in to view this page.": "You need to be logged in to view this page.",
@@ -174,7 +177,7 @@ en = {
     "contractual_status_id_3": "Materialet må kun ses på læsesalen. Ifølge aftale.",
     "contractual_status_id_4": "Materialet må offentliggøres på internettet. Ifølge aftale.",
     "contractual_status_id_4_pp": "Materialet må kun offentliggøres på Aarhus Stadsarkivs hjemmesider. Ifølge aftale.",
-    "copyright_creative_commons_license": 'Materialet er under ophavsret, men udgives efter aftale under en <a href="https://creativecommons.org/licenses/by/4.0/deed.da">Creative Commons Navngivelse licens</a>. ',
+    "copyright_creative_commons_license": "Materialet er under ophavsret, men udgives efter aftale under en <a href=\"https://creativecommons.org/licenses/by/4.0/deed.da\">Creative Commons Navngivelse licens</a>. ",
     "copyright_id_1": "Materialet har ikke værkshøjde og er derfor ikke beskyttet af ophavsret. Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. ",
     "copyright_id_2": "Materialet er i offentlig eje, da ophavsretten er udløbet. Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. ",
     "copyright_id_3": "Materialet er frigivet af alle ophavsretsholdere til offentlig eje. Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. ",
@@ -313,5 +316,5 @@ en = {
     "ordering_by_mail": "Du kan bestille materialet ved at sende en mail til stadsarkiv@aarhus.dk, hvori du angiver materialets arkiv-ID, som kan ses øverst på siden.",
     "ordering_from_rigsarkivet": "Hvis materialet ligger hos Rigsarkivet, skal bestillingen sendes dertil. Gå ind på Rigsarkivets hjemmeside og find materialet der. Efterfølgende kan det så bestilles hjem til en af deres læsesale.",
     "search": "search",
-    "user": "user",
+    "user": "user"
 }
