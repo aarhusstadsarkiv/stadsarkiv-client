@@ -29,6 +29,13 @@ ICONS = {
 }
 
 
+def _strip_pre_zeroes(value: str) -> str:
+    """
+    Strip pre zeroes from a string
+    """
+    return value.lstrip("0")
+
+
 def get_record_meta_data(request: Request, record: dict) -> dict:
     """
     Get usefull meta data for a record
@@ -41,6 +48,7 @@ def get_record_meta_data(request: Request, record: dict) -> dict:
         title = f"[{quote_title}]"
 
     meta_data["id"] = record["id"]
+    meta_data["real_id"] = _strip_pre_zeroes(record["id"])
     meta_data["allowed_by_ip"] = _is_allowed_by_ip(request)
     meta_data["title"] = title
     meta_data["meta_title"] = _get_meta_title(record)
