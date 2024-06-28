@@ -57,6 +57,7 @@ da = {
     "No such user exists.": "Bruger eksisterer ikke.",
     "No title": "Ingen titel",
     "Oldest date first": "Ældste data først",
+    "Order online": "Bestil online",
     "Page": "Side",
     "Password": "Password",
     "Password should be at least 8 characters long": "Password skal være mindst 8 tegn langt",

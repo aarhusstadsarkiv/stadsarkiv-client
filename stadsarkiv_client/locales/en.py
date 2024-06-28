@@ -64,6 +64,7 @@ en = {
     "No such user exists.": "No such user exists.",
     "No title": "No title",
     "Oldest date first": "Oldest date first",
+    "Order online": "Order online",
     "Page": "Page",
     "Password": "Password",
     "Password needs to be at least 8 characters long.": "Password needs to be at least 8 characters long.",
