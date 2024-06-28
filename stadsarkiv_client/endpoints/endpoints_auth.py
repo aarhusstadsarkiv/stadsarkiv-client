@@ -40,6 +40,7 @@ async def login_get(request: Request):
 
 async def login_post(request: Request):
     next_url = request.query_params.get("next")
+
     try:
         await api.auth_jwt_login_post(request)
         flash.set_message(request, translate("You have been logged in."), type="success", remove=True)
@@ -55,6 +56,11 @@ async def login_post(request: Request):
     except Exception as e:
         log.exception(e)
         flash.set_message(request, str(e), type="error", use_settings=True)
+
+    if next_url:
+        return RedirectResponse(url="/auth/login?next=" + next_url, status_code=302)
+    else:
+        return RedirectResponse(url="/auth/login", status_code=302)
 
 
 async def logout_get(request: Request):
