@@ -393,6 +393,18 @@ async def is_logged_in(request: Request) -> bool:
         return False
 
 
+async def me_get(request: Request) -> dict:
+    """
+    Check if the current user is logged in. Return True if the user is logged in.
+    """
+    try:
+        me: dict = await users_me_get(request)
+        return me
+
+    except Exception:
+        return {}
+
+
 async def me_permissions(request: Request) -> list[str]:
     """
     GET a list of permissions that the current user has.
