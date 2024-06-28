@@ -71,7 +71,7 @@ routes = [
     Route("/auth/orders", endpoint=endpoints_auth.orders, name="auth_orders", methods=["GET"]),
     Route("/auth/bookmarks", endpoint=endpoints_auth.bookmarks, name="auth_bookmarks_get", methods=["GET"]),
     Route("/auth/bookmarks", endpoint=endpoints_auth.bookmarks_post, name="auth_bookmarks_post", methods=["POST"]),
-    Route("/auth/bookmarks", endpoint=endpoints_auth.bookmarks_delete, name="auth_bookmarks_delete", methods=["DELETE"]),
+    Route("/auth/bookmarks_json", endpoint=endpoints_auth.bookmarks_json, name="auth_bookmarks_json", methods=["GET"]),
     Route("/auth/search-results", endpoint=endpoints_auth.search_results, name="auth_search_results", methods=["GET"]),
     Route("/auth/verify/{token:str}", endpoint=endpoints_auth.verify_get, name="auth_verify"),  # request token sent by email
     Route("/auth/send-verify-email", endpoint=endpoints_auth.send_verify_email, name="auth_send_verify_email"),  # send verify email again
