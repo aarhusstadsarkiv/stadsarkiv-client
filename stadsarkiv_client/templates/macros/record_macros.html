@@ -107,7 +107,7 @@
 
 {% macro _parse_bookmarks(meta_data) %}
 <div class="action-links">
-    <a id="bookmark-add" data-id="{{ meta_data['id']}}" href="#">Tilføj bogmærke</a>
+    <a id="bookmark-action" data-id="{{ meta_data['real_id']}}" href="#"></a>
 </div>
 <div class="loadingspinner hidden"></div>
 <script type="module">
@@ -116,25 +116,53 @@
     import { Requests } from "/static/js/requests.js";
     import { Flash } from "/static/js/flash.js";
 
-    const bookmarkAddElem = document.getElementById('bookmark-add');
-    const recordId = bookmarkAddElem.getAttribute('data-id');
-    const data = JSON.stringify({ record_id: recordId });
+    let action;
+    const bookmarkAddElem = document.getElementById('bookmark-action');
+    const recordId = parseInt(bookmarkAddElem.getAttribute('data-id'));
+
+    const initialize = async () => {
+        let bookmarks_json = await Requests.asyncGetJson('/auth/bookmarks_json', 'GET');
+
+        function bookmark_isset(bookmarks, recordId) {
+            return bookmarks.some(bookmark => bookmark.record_id === recordId);
+        }
+
+        if (bookmark_isset(bookmarks_json, recordId)) {
+            bookmarkAddElem.innerHTML = 'Fjern bogmærke';
+            action = 'remove';
+            bookmarkAddElem.setAttribute('data-action', action);
+        } else {
+            bookmarkAddElem.innerHTML = 'Tilføj bogmærke';
+            action = 'add';
+            bookmarkAddElem.setAttribute('data-action', action);
+        }
+    }
+
+    await initialize();
+
+    const get_data = () => {
+        const data = { record_id: recordId, action: action };
+        return JSON.stringify(data);
+    }
+
     const spinner = document.querySelector('.loadingspinner');
-
-    let res;
-
     bookmarkAddElem.addEventListener('click', async function (e) {
+        let res;
         e.preventDefault();
         spinner.classList.toggle('hidden');
         try {
+            const data = get_data();
             res = await Requests.asyncPostJson('/auth/bookmarks', data, 'POST');
-            if (!res.error) {
+            if (res.error) {
+                Flash.setMessage(res.message, 'error');
+            } else {
                 Flash.setMessage(res.message, 'success');
             }
         } catch (e) {
             Flash.setMessage(res.message, 'error');
             await asyncLogError('/error/log', e.stack);
         } finally {
+            initialize();
             spinner.classList.toggle('hidden');
         }
     });
@@ -154,9 +182,11 @@
         {% for key in block_keys %}
 
         {% if key == 'bookmarks' %}
-            {% if has_permission('user', permissions_list) %}
-                {{ _parse_bookmarks (meta_data) }}
-            {% endif %}
+
+        {% if has_permission('user', permissions_list) %}
+            {{ _parse_bookmarks (meta_data) }}
+        {% endif %}
+
         {% endif %}
 
         {% if key in record_and_types %}
