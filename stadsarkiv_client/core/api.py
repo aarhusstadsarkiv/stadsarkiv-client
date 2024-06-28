@@ -781,3 +781,24 @@ async def proxies_auto_complete(request: Request, query_params: list = []) -> ty
             return response.json()["result"]
         else:
             response.raise_for_status()
+
+
+async def proxies_resolve(request: Request, ids=[]):
+    """ "
+    Resolve directly from a proxy endpoint
+    """
+
+    # ids needs to be a list dumped to json
+    ids = json.dumps(ids)
+
+    url = "https://openaws.appspot.com/resolve_records_v2"
+    data = {"view": "record", "oasid": ids}
+
+    async with _get_async_client() as client:
+        response = await client.post(url, data=data)
+
+        if response.is_success:
+            result = response.json()["result"]
+            return result
+        else:
+            response.raise_for_status()
