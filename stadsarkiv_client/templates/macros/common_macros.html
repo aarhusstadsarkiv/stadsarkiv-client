@@ -130,7 +130,7 @@
         {% for item in value %}
         <p>{{ item }}</p>
         {% endfor %}
-        {% if get_setting('allow_online_ordering') %}
+        {% if get_setting('allow_online_ordering') and has_permission('user', permissions_list) %}
         <div class="action-links">
             <a data-id="{{ record_and_types.id.value }}" href="/order/{{ record_and_types.id.value }}">{{ translate('Order online') }}</a>
         </div>
