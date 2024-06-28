@@ -181,6 +181,7 @@ async def orders(request: Request):
 
 
 async def bookmarks(request: Request):
+    """User bookmarks page."""
     await is_authenticated(request)
     try:
         me = await api.users_me_get(request)
@@ -196,8 +197,26 @@ async def bookmarks(request: Request):
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
+async def bookmarks_json(request: Request):
+    """Get user bookmarks as JSON"""
+    try:
+        me = await api.me_get(request)
+        user_data = UserData(me)
+        bookmarks = user_data.get_bookmarks()
+        return JSONResponse(bookmarks, status_code=200)
+    except OpenAwsException as e:
+        log.exception(e)
+        json_data = {"message": str(e), "error": True}
+        return JSONResponse(json_data, status_code=400)
+
+
 async def bookmarks_post(request: Request):
-    await is_authenticated_json(request, ["user"], message="You need to be logged in to bookmark a record.")
+    """
+    POST request to bookmark a record.
+    """
+
+    message = translate("You need to be logged in as user in order to bookmark a record.")
+    await is_authenticated_json(request, ["user"], message=message)
 
     try:
 
@@ -205,10 +224,12 @@ async def bookmarks_post(request: Request):
         json_data = await request.json()
 
         user_data = UserData(me)
-        user_data.append_bookmark(json_data["record_id"])
+        if json_data["action"] == "remove":
+            user_data.remove_bookmark(json_data["record_id"])
+        else:
+            user_data.append_bookmark(json_data["record_id"])
 
         data = user_data.get_data()
-
         await api.users_data_post(request, data)
 
     except OpenAwsException as e:
@@ -216,12 +237,18 @@ async def bookmarks_post(request: Request):
         json_data = {"message": str(e), "error": True}
         return JSONResponse(json_data, status_code=400)
 
-    json_data = {"message": "Bookmarked", "user_data": json_data, "error": False}
+    except Exception as e:
+        log.exception(e)
+        json_data = {"message": str(e), "error": True}
+        return JSONResponse(json_data, status_code=400)
+
+    if json_data["action"] == "add":
+        message = translate("Bookmark has been added.")
+    else:
+        message = translate("Bookmark has been removed.")
+
+    json_data = {"message": message, "user_data": json_data, "error": False}
     return JSONResponse(json_data, status_code=200)
-
-
-async def bookmarks_delete(request: Request):
-    await is_authenticated_json(request)
 
 
 async def search_results(request: Request):
