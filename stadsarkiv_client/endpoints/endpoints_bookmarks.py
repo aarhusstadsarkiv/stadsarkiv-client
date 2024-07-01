@@ -14,16 +14,51 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from stadsarkiv_client.endpoints import auth_data
+from stadsarkiv_client.records import record_alter
+from stadsarkiv_client.records.meta_data_record import get_record_meta_data
+from stadsarkiv_client.core.hooks import get_hooks
+from stadsarkiv_client.records import normalize_dates
+
 
 log = get_log()
 
 
 async def bookmarks(request: Request):
     """User bookmarks page."""
+
     await is_authenticated(request)
     try:
-        me = await api.users_me_get(request)
-        context_values = {"title": translate("Your bookmarks"), "me": me, "bookmarks": auth_data.api_booksmarks}
+        me = await api.me_get(request)
+        user_data = UserData(me)
+        bookmarks = user_data.get_bookmarks_list()
+
+        records = await api.proxies_resolve(request, bookmarks)
+
+        bookmarks_data = []
+
+        for record in records:
+
+            record = normalize_dates.normalize_dates(record)
+            meta_data = get_record_meta_data(request, record)
+
+            record_id = meta_data["id"]
+            record_link = f"/records/{record_id}"
+            title = meta_data.get("title")
+            date_normalized = record.get("date_normalized")
+            collection_label = record.get("collection", {}).get("label", "")
+            content_types = meta_data.get("content_types")
+
+            bookmark_data = {
+                "record_link": record_link,
+                "title": title,
+                "date_normalized": date_normalized,
+                "collection_label": collection_label,
+                "content_types": content_types,
+            }
+
+            bookmarks_data.append(bookmark_data)
+
+        context_values = {"title": translate("Your bookmarks"), "me": me, "bookmarks": bookmarks_data}
         context = await get_context(request, context_values=context_values)
 
         return templates.TemplateResponse(request, "auth/bookmarks.html", context)

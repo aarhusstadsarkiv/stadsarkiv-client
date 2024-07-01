@@ -61,6 +61,7 @@ def get_record_meta_data(request: Request, record: dict) -> dict:
     meta_data["usability_id"] = record["usability"].get("id")
     meta_data["collection_id"] = record.get("collection", {}).get("id")
     meta_data["series"] = record.get("series")
+    meta_data["content_types"] = _get_content_type_label(record)
     # This should be altered to record_represenation_type
     meta_data = _set_representations(meta_data, record)
 
@@ -118,6 +119,18 @@ def _get_record_title(record: dict):
         title = record_title
 
     return title
+
+
+def _get_content_type_label(record: dict):
+    # 'content_types': [{'id': [49, 55], 'label': ['Manuskripter', 'Udklip og småtryk']}],
+    # Return it as a string, e.g. "Manuskripter > Udklip og småtryk"
+    content_types = record.get("content_types", [])
+    content_type_labels = []
+    for content_type in content_types:
+        content_type_labels.extend(content_type.get("label", []))
+
+    return " > ".join(content_type_labels)
+
 
 
 def _get_meta_title(record: dict):
