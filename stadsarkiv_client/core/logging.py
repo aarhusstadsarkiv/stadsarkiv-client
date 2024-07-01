@@ -13,7 +13,7 @@ import warnings
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
 # remove uvicorn noise in debug mode
-if settings["debug"]:
+if settings["environment"] == "development":
     logging.getLogger("uvicorn.error").setLevel(logging.CRITICAL)
 
 log = logging.getLogger("main")
