@@ -12,13 +12,16 @@ import warnings
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
+# remove uvicorn noise in debug mode
+if settings["debug"]:
+    logging.getLogger("uvicorn.error").setLevel(logging.CRITICAL)
 
 log = logging.getLogger("main")
 level: Any = settings["log_level"]
 log.setLevel(level)
 
-
 if not len(log.handlers):
+
     if "file" in settings["log_handlers"]:  # type: ignore
         log.debug("Logging to file enabled")
         logging_handlers.generate_log_dir()
