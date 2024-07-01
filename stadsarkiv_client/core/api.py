@@ -783,7 +783,7 @@ async def proxies_auto_complete(request: Request, query_params: list = []) -> ty
             response.raise_for_status()
 
 
-async def proxies_resolve(request: Request, ids=[]):
+async def proxies_resolve(request: Request, ids=[]) -> typing.Any:
     """ "
     Resolve directly from a proxy endpoint
     """
