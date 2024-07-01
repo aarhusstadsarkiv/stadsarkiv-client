@@ -4,15 +4,16 @@ Define routes for the application.
 
 from starlette.routing import Route, Mount
 from stadsarkiv_client.endpoints import (
-    endpoint_resources,
     endpoints_admin,
     endpoints_auth,
+    endpoints_bookmarks,
     endpoints_entities,
     endpoints_error,
     endpoints_order,
     endpoints_pages,
     endpoints_records,
     endpoints_relations,
+    endpoints_resources,
     endpoints_schemas,
     endpoints_search,
     endpoints_test,
@@ -69,13 +70,13 @@ routes = [
     ),
     Route("/auth/me", endpoint=endpoints_auth.me_get, name="auth_me_get", methods=["GET"]),
     Route("/auth/orders", endpoint=endpoints_auth.orders, name="auth_orders", methods=["GET"]),
-    Route("/auth/bookmarks", endpoint=endpoints_auth.bookmarks, name="auth_bookmarks_get", methods=["GET"]),
-    Route("/auth/bookmarks", endpoint=endpoints_auth.bookmarks_post, name="auth_bookmarks_post", methods=["POST"]),
-    Route("/auth/bookmarks_json", endpoint=endpoints_auth.bookmarks_json, name="auth_bookmarks_json", methods=["GET"]),
     Route("/auth/search-results", endpoint=endpoints_auth.search_results, name="auth_search_results", methods=["GET"]),
     Route("/auth/verify/{token:str}", endpoint=endpoints_auth.verify_get, name="auth_verify"),  # request token sent by email
     Route("/auth/send-verify-email", endpoint=endpoints_auth.send_verify_email, name="auth_send_verify_email"),  # send verify email again
     Route("/auth/user-info", endpoint=endpoints_auth.me_post, name="auth_user_info", methods=["POST"]),
+    Route("/auth/bookmarks", endpoint=endpoints_bookmarks.bookmarks, name="auth_bookmarks_get", methods=["GET"]),
+    Route("/auth/bookmarks", endpoint=endpoints_bookmarks.bookmarks_post, name="auth_bookmarks_post", methods=["POST"]),
+    Route("/auth/bookmarks_json", endpoint=endpoints_bookmarks.bookmarks_json, name="auth_bookmarks_json", methods=["GET"]),
     Route("/schemas/{schema_type:str}", endpoint=endpoints_schemas.get_single, name="schemas_get_single", methods=["GET"]),
     Route("/schemas", endpoint=endpoints_schemas.get_list, name="schemas_get_list", methods=["GET"]),
     Route("/schemas", endpoint=endpoints_schemas.post, name="schemas_post", methods=["POST"]),
@@ -140,5 +141,5 @@ for common_page in common_pages:
     routes.append(Route(url, endpoint=endpoints_pages.default, name=name, methods=["GET"]))
 
 # Last as these are not very specific
-routes.append(Route("/{resource_type:str}/{id:str}", endpoint=endpoint_resources.get, name="resources_get"))
-routes.append(Route("/{resource_type:str}/{id:str}/json/{type:str}", endpoint=endpoint_resources.get_json, name="resources_get_json"))
+routes.append(Route("/{resource_type:str}/{id:str}", endpoint=endpoints_resources.get, name="resources_get"))
+routes.append(Route("/{resource_type:str}/{id:str}/json/{type:str}", endpoint=endpoints_resources.get_json, name="resources_get_json"))
