@@ -49,6 +49,19 @@ class UserData:
         """
         return self.data.get("bookmarks", [])
 
+    def get_bookmarks_list(self) -> list:
+        """
+        Return the bookmarks list as a list of record_ids.
+        """
+        bookmarks: list = self.data.get("bookmarks", [])
+        bookmarks_list = [bookmark["record_id"] for bookmark in bookmarks]
+
+        # convert bookmarks_list to a list of strings with 9 chars.
+        # left padded with zeros
+        bookmarks_list = [str(record_id).zfill(9) for record_id in bookmarks_list]
+
+        return bookmarks_list
+
     def isset_bookmark(self, record_id: int) -> bool:
         """
         Check if a record_id is in the bookmarks list.
