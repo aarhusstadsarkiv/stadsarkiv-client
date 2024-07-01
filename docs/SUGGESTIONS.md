@@ -130,3 +130,23 @@ Lige nu går jeg manuelt ind og tilføjer &-curators=4 hver gang.
 Janne
 
 ---
+
+Jeg har nævnt dette før, så måske er den allerede på.
+
+Kan vi på kreativ skaber på listevisningen ved et søge resultatet?
+
+Lige nu viser den kun arkivskaber.
+
+Janne
+
+---
+
+Vil du være muligt at få funktionen negativt filter på igen.
+
+Det er dejligt, at jeg nu har mulighed for at sætte flere filtre på indenfor samme kategori – fx både vælge Billeder + Portrætter.
+
+Men hvad nu, hvis jeg gerne vil se billeder, men IKKE portrætter – altså tilføje et negativ filter valgmuligheder ud for ”fjern”.
+
+Janne
+
+---
