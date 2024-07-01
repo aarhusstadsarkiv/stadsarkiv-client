@@ -31,7 +31,7 @@
 },
 ] #}
 
-{% if bookmarks|length == 0 %}
+{% if bookmarks_data|length == 0 %}
 
 <p>Du har ingen bogmærker.</p>
 
@@ -39,22 +39,27 @@
 
 {# iterate each bookmark in a two column table containing key and value #}
 
-{% for bookmark in bookmarks %}
+{% for bookmark in bookmarks_data %}
 
 <div class="table-container">
-    <table>
+    <table data-id="{{ bookmark.record_id }}">
         <tr>
-            <td>Material</td>
-            <td><a href="/records/{{ bookmark.material_id}}">{{ bookmark.title }}</a></td>
+            <td  colspan="2"><a href="{{ bookmark.record_link }}">{{ bookmark.title }}</a></td>
         </tr>
         <tr>
-            <td>Material ID</td>
-            <td>{{ bookmark.material_id }}</td>
+            <td>Datering</td>
+            <td>{{ bookmark.date_normalized }}</td>
 
         </tr>
+        {% if bookmark.collection_label %}
         <tr>
-            <td>Created at</td>
-            <td>{{ bookmark.created_at }}</td>
+            <td>Arkivskaber</td>
+            <td>{{ bookmark.collection_label }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td>Indholdstype</td>
+            <td>{{ bookmark.content_types }}</td>
 
         </tr>
         <tr>

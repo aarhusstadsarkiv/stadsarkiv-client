@@ -46,19 +46,20 @@ async def bookmarks(request: Request):
             title = meta_data.get("title")
             date_normalized = record.get("date_normalized")
             collection_label = record.get("collection", {}).get("label", "")
-            content_types = meta_data.get("content_types")
+            content_types_label = meta_data.get("content_types_label")
 
             bookmark_data = {
+                "record_id": record_id,
                 "record_link": record_link,
                 "title": title,
                 "date_normalized": date_normalized,
                 "collection_label": collection_label,
-                "content_types": content_types,
+                "content_types": content_types_label,
             }
 
             bookmarks_data.append(bookmark_data)
 
-        context_values = {"title": translate("Your bookmarks"), "me": me, "bookmarks": bookmarks_data}
+        context_values = {"title": translate("Your bookmarks"), "me": me, "bookmarks_data": bookmarks_data}
         context = await get_context(request, context_values=context_values)
 
         return templates.TemplateResponse(request, "auth/bookmarks.html", context)
