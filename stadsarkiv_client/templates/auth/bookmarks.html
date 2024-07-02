@@ -14,37 +14,18 @@
 
 {{ basic_macros.page_title(title) }}
 
-{# api_booksmarks: list = [
-{
-"uuid": "abc",
-"material_id": "000389633",
-"title": "Gemt bogmærker 1",
-"created_at": "2024-01-01 12:00:00",
-"updated_at": "2024-01-02 12:00:00",
-},
-{
-"uuid": "def",
-"material_id": "000182514",
-"title": "Regnskaber (kopier)",
-"created_at": "2024-01-01 12:00:00",
-"updated_at": "2024-01-02 12:00:00",
-},
-] #}
-
 {% if bookmarks_data|length == 0 %}
 
 <p>Du har ingen bogmærker.</p>
 
 {% else %}
 
-{# iterate each bookmark in a two column table containing key and value #}
-
 {% for bookmark in bookmarks_data %}
 
 <div class="table-container">
-    <table data-id="{{ bookmark.record_id }}">
+    <table>
         <tr>
-            <td  colspan="2"><a href="{{ bookmark.record_link }}">{{ bookmark.title }}</a></td>
+            <td colspan="2"><a href="{{ bookmark.record_link }}">{{ bookmark.title }}</a></td>
         </tr>
         <tr>
             <td>Datering</td>
@@ -64,11 +45,18 @@
         </tr>
         <tr>
             <td>Handling</td>
-            <td><a href="#">Slet</a></td>
+            <td><a class="bookmark-delete" data-id="{{ bookmark.record_id }}" href="#">Slet</a></td>
         </tr>
     </table>
 </div>
 {% endfor %}
 {% endif %}
+
+<div class="loadingspinner hidden"></div>
+<script type="module">
+
+import "/static/js/bookmarks-user.js";
+
+</script>
 
 {% endblock content %}
