@@ -6,6 +6,11 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/table.css') }}?v={{ get_setting('version') }}">
+<style>
+    .record-header > a {
+        text-decoration: none;
+    }
+</style>
 {% endblock head %}
 
 {% block content %}
@@ -20,42 +25,70 @@
 
 {% else %}
 
+
 {% for bookmark in bookmarks_data %}
+<div class="record-section">
+    <div class="record-main">
+        <h3 class="record-header"><a href="{{ bookmark.record_link }}">{{ sub_string(bookmark.title, 75)}}</a></h3>
 
-<div class="table-container">
-    <table>
-        <tr>
-            <td colspan="2"><a href="{{ bookmark.record_link }}">{{ bookmark.title }}</a></td>
-        </tr>
-        <tr>
-            <td>Datering</td>
-            <td>{{ bookmark.date_normalized }}</td>
+        <div class="record-content">
+            <div class="label">Titel</div>
+            <div class="content">
+                <p>
+                    {{ bookmark.title }}
+                </p>
+            </div>
+        </div>
 
-        </tr>
+        <div class="record-content">
+            <div class="label">Datering</div>
+            <div class="content">
+                <p>
+                    {{ bookmark.date_normalized }}
+                </p>
+            </div>
+        </div>
+
         {% if bookmark.collection_label %}
-        <tr>
-            <td>Arkivskaber</td>
-            <td>{{ bookmark.collection_label }}</td>
-        </tr>
-        {% endif %}
-        <tr>
-            <td>Indholdstype</td>
-            <td>{{ bookmark.content_types }}</td>
 
-        </tr>
-        <tr>
-            <td>Handling</td>
-            <td><a class="bookmark-delete" data-id="{{ bookmark.record_id }}" href="#">Slet</a></td>
-        </tr>
-    </table>
+        <div class="record-content">
+            <div class="label">Arkivskaber</div>
+            <div class="content">
+                <p>
+                    {{ bookmark.collection_label }}
+                </p>
+            </div>
+        </div>
+
+        {% endif %}
+
+        <div class="record-content">
+            <div class="label">Indholdstype</div>
+            <div class="content">
+                <p>
+                    {{ bookmark.content_types }}
+                </p>
+            </div>
+        </div>
+
+        <div class="record-content">
+            <div class="label">Handling</div>
+            <div class="content">
+                <p>
+                    <a class="bookmark-delete" data-id="{{ bookmark.record_id }}" href="#">Slet</a>
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
 {% endfor %}
 {% endif %}
 
+
 <div class="loadingspinner hidden"></div>
 <script type="module">
 
-import "/static/js/bookmarks-user.js";
+    import "/static/js/bookmarks-user.js";
 
 </script>
 

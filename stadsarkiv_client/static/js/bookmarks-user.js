@@ -24,7 +24,7 @@ bookmarkElems.forEach((elem) => {
             if (res.error) {
                 Flash.setMessage(res.message, 'error');
             } else {
-                elem.closest('.table-container').remove();
+                elem.closest('.record-section').remove();
                 Flash.setMessage(res.message, 'success');
             }
         } catch (error) {
