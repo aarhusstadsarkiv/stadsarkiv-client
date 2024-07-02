@@ -133,6 +133,12 @@ def has_permission(permission: str, permissions: list):
     return permission in permissions
 
 
+def sub_string(value: str, length: int):
+    if len(value) <= length:
+        return value
+    return value[:length] + "..."
+
+
 templates.env.globals.update(translate=translate)
 templates.env.globals.update(get_setting=get_setting)
 templates.env.globals.update(date_format=date_format)
@@ -143,3 +149,4 @@ templates.env.globals.update(get_icon=get_icon)
 templates.env.globals.update(has_permission=has_permission)
 templates.env.globals.update(markdown=_markdown)
 templates.env.globals.update(key_exist_in_dict=_key_exist_in_dict)
+templates.env.globals.update(sub_string=sub_string)
