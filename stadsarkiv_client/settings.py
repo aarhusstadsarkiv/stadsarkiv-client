@@ -56,6 +56,7 @@ settings: dict[str, typing.Any] = {
     ],
     "main_menu_sections": [],
     "search_base_url": "/search",
+    "search_keep_results": True,
     "facets_enabled": ["content_types", "subjects", "availability", "usability", "dates"],
     "cors_allow_origins": [],
     "allow_user_registration": True,
