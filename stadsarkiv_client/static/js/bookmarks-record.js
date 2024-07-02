@@ -1,4 +1,4 @@
-
+// script to be used on record page to add or remove bookmarks
 import { asyncLogError } from "/static/js/error.js";
 import { Requests } from "/static/js/requests.js";
 import { Flash } from "/static/js/flash.js";
@@ -6,10 +6,16 @@ import { Flash } from "/static/js/flash.js";
 let action;
 const bookmarkAddElem = document.getElementById('bookmark-action');
 const recordId = parseInt(bookmarkAddElem.getAttribute('data-id'));
+const spinner = document.querySelector('.loadingspinner');
 
+/**
+ * Load bookmarks
+ * Initialize bookmark button
+ */
 const initialize = async () => {
     let bookmarks_json = await Requests.asyncGetJson('/auth/bookmarks_json', 'GET');
 
+    // Check if bookmark is set
     function bookmark_isset(bookmarks, recordId) {
         return bookmarks.some(bookmark => bookmark.record_id === recordId);
     }
@@ -27,12 +33,17 @@ const initialize = async () => {
 
 await initialize();
 
+/**
+ * Get data for record to be bookmarked
+ */
 const get_data = () => {
     const data = { record_id: recordId, action: action };
     return JSON.stringify(data);
 }
 
-const spinner = document.querySelector('.loadingspinner');
+/**
+ * Add or remove bookmark
+ */
 bookmarkAddElem.addEventListener('click', async function (e) {
     let res;
     e.preventDefault();
