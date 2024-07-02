@@ -13,10 +13,7 @@ from stadsarkiv_client.core.user_data import UserData
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
-from stadsarkiv_client.endpoints import auth_data
-from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
-from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.records import normalize_dates
 
 
