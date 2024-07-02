@@ -24,7 +24,6 @@ settings: dict[str, typing.Any] = {
         {"name": "entities_get_list", "title": "Entiteter", "type": "dropdown"},
         {"name": "search_get", "title": "Søg", "type": "top"},
     ],
-    "search_base_url": "/search",
     "robots_allow": False,
     "allow_user_registration": True,
     "allow_user_management": True,

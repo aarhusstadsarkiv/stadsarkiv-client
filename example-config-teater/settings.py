@@ -33,6 +33,7 @@ settings: dict[str, typing.Any] = {
         {"name": "search_get", "title": "Søg", "type": "top"},
     ],
     "search_base_url": "/search",
+    "search_keep_results": False,
     #
     # Allow robots
     #

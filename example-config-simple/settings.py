@@ -59,6 +59,8 @@ settings: dict[str, typing.Any] = {
     "allow_online_ordering": False,
     # Ignore record keys so that the will not be displayed in the record template
     "ignore_record_keys": [],
+    # keep search result from last search when navigating to other pages
+    "search_keep_results": True,
 }
 
 # pages
