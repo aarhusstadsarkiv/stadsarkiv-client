@@ -1,11 +1,8 @@
 {% import "macros/common_macros.html" as common_macros %}
-{#
 
-main_menu_sections =
-
-[{'name': 'guides', 'title': 'Vejledninger', 'pages': [{'name': 'page_searchguide', 'title': 'Hjælp til søgning', 'template': 'pages/guides/searchguide.html', 'url': '/guides/searchguide', 'type': 'dropdown'}, {'name': 'page_genealogy', 'title': 'Slægtsforskning', 'template': 'pages/guides/genealogy.html', 'url': '/guides/genealogy', 'type': 'dropdown'}, {'name': 'page_municipality_records', 'title': 'Kommunearkivet', 'template': 'pages/guides/municipality_records.html', 'url': '/guides/municipality_records', 'type': 'dropdown'}]}, {'name': 'about', 'title': 'Om samlingerne', 'pages': [{'name': 'page_collections', 'title': 'Om samlingerne', 'template': 'pages/about/collections.html', 'url': '/about/collections', 'type': 'dropdown'}, {'name': 'page_availability', 'title': 'Tilgængelighed', 'template': 'pages/about/availability.html', 'url': '/about/availability', 'type': 'dropdown'}, {'name': 'page_archival_availability', 'title': 'Arkivlovens tilgængelighedsfrister', 'template': 'pages/about/archival_availability.html', 'url': '/about/archival_availability', 'type': 'dropdown'}, {'name': 'page_usability', 'title': 'Brugbarhed ', 'template': 'pages/about/usability.html', 'url': '/about/usability', 'type': 'dropdown'}, {'name': 'page_privacy', 'title': 'Privatlivspolitik', 'template': 'pages/about/privacy.html', 'url': '/about/privacy', 'type': 'dropdown'}]}]
-
-#}
+{% if not get_setting('search_keep_results') %}
+{% set query_str_display = '' %}
+{% endif %}
 
 <div class="navigation-right-group">
     <div class="main-menu-static">
