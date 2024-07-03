@@ -103,14 +103,11 @@ details>summary.inactive {
 .search-link {
     color: var(--search-link-text);
     text-decoration: none;
+    display: flex;
 }
 
 .search-link:hover {
     text-decoration: none;
-}
-
-.search-link {
-    display: flex;
 }
 
 .search-thumbnail {
@@ -240,6 +237,9 @@ a.search-link-gallery {
 @media (max-width: 576px) {
     .search-results-gallery {
         column-count: 1;
+    }
+    .search-link {
+        flex-flow: column;
     }
 }
 
