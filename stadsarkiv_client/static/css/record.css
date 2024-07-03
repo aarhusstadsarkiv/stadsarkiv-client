@@ -46,11 +46,6 @@ h3.record-header {
     stroke-width: 1;
 }
 
-.record-icon>span {
-    padding-top: 0px;
-    font-size: 12em;
-}
-
 .record-icon-label {
     text-align: center;
 }
@@ -62,20 +57,18 @@ h3.record-header {
 .record-content {
     display: flex;
     margin-bottom: 1rem;
-    flex-wrap: nowrap;
-    align-items: flex-start;
     gap: 10px;
 }
 
 
 .record-content>.label {
     text-transform: uppercase;
-    font-weight: bold;
-    padding: 0.2rem 0;
-    font-size: 75%;
     flex-shrink: 0;
     word-wrap: break-word;
     width: 15em;
+    font-weight: 500;
+    font-size: 0.9rem;
+    line-height: 1.5rem;
 }
 
 @media (max-width: 576px) {
@@ -91,9 +84,7 @@ h3.record-header {
 }
 
 
-.record-content>.content {
-    flex: 1 1 0px;
-}
+
 
 .record-content>.content>p {
     margin: 0;

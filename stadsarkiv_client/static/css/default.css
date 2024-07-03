@@ -42,7 +42,7 @@ h6 {
     z-index: 110;
     cursor: pointer;
     margin-top: 10px;
-    font-size: 2em;
+    font-size: 2rem;
     padding-right: 10px;
 }
 
@@ -61,7 +61,7 @@ h6 {
     right: 0px;
     background-color: rgba(var(--navigation-background-rgb), 0.975);
     padding: 10px;
-    font-size: 1.0em;
+    font-size: 0.9rem;
     min-width: 175px;
     max-height: 80vh;
     overflow-y: auto;
@@ -92,7 +92,7 @@ h6 {
 .main-menu-static>a {
     display: block;
     color: var(--main-menu);
-    font-size: 1.2em;
+    font-size: 1.2rem;
     font-weight: 600;
     text-decoration: none;
     border-radius: 6px;
@@ -102,12 +102,12 @@ h6 {
 }
 
 .main-menu>a {
-    font-size: 0.9em;
+    font-size: 0.9rem;
 
 }
 
 .main-menu>h3 {
-    font-size: 0.9em;
+    font-size: 0.9rem;
     padding: 0;
     color: var(--text-main);
 }

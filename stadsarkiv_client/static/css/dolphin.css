@@ -2,6 +2,10 @@
     box-sizing: border-box;
 }
 
+html {
+    font-size: 16px;
+}
+
 /**
  * kind of like a css reset
  * Makes a random page look a bit better
@@ -24,7 +28,7 @@ body {
    * Typography
    */
 h1 {
-    font-size: 2.2em;
+    font-size: 2.0rem;
     margin-top: 0;
 }
 
@@ -116,8 +120,6 @@ textarea,
 select {
     color: var(--form-text);
     background-color: var(--background);
-    font-family: inherit;
-    font-size: inherit;
     margin-right: 6px;
     margin-bottom: 6px;
     padding: 10px;
@@ -236,7 +238,6 @@ fieldset {
 }
 
 legend {
-    font-size: 0.9em;
     font-weight: 600;
 }
 
@@ -262,7 +263,6 @@ time {
     color: var(--code);
     padding: 2.5px 5px;
     border-radius: 6px;
-    font-size: 1em;
 }
 
 pre>code {
