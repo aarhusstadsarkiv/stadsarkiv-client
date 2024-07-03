@@ -138,6 +138,7 @@ h3.record-header {
     }
 }
 
+
 .record-prev-next {
     display: flex;
     gap: 10px;
@@ -152,6 +153,10 @@ h3.record-header {
 @media screen and (max-width: 568px) {
     .record-pages-info {
         margin-right: 10px;
+    }
+
+    .record-search-link {
+        display: none;
     }
 }
 
@@ -184,4 +189,3 @@ a.active {
 .record-prev-next span {
     min-width: 40px;
 }
-

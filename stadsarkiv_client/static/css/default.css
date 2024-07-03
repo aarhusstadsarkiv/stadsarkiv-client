@@ -262,7 +262,7 @@ h6 {
     animation: loadingspin 1s linear infinite;
     position: fixed;
     top: 50%;
-    left: calc(50% - 30px)
+    left: calc(50% - 12px)
 }
 
 @keyframes loadingspin {
