@@ -7,7 +7,7 @@ Hooks: You are able to hook into the get_context function and add your own conte
 from typing import Any
 from starlette.requests import Request
 from stadsarkiv_client.core.flash import get_messages
-from stadsarkiv_client.core import dynamic_settings
+from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks import get_hooks
@@ -36,7 +36,7 @@ async def get_context(request: Request, context_values: dict = {}, identifier: s
         "request": request,
         "title": _get_title(request),
         "main_menu_user": _get_main_menu_user(logged_in, permissions_list),
-        "main_menu_sections": dynamic_settings.settings["main_menu_sections"],
+        "main_menu_sections": settings["main_menu_sections"],
         "logged_in": logged_in,
         "authorization": _get_authorization(request),
     }
@@ -58,7 +58,7 @@ async def get_context(request: Request, context_values: dict = {}, identifier: s
 
 
 def _get_main_menu_user(logged_in: bool, permissions_list: list):
-    main_menu: list = dynamic_settings.settings["main_menu"]
+    main_menu: list = settings["main_menu"]
 
     if logged_in:
         excluded_items = {"auth_login_get", "auth_register_get", "auth_forgot_password_get"}
@@ -78,8 +78,8 @@ def _get_main_menu_user(logged_in: bool, permissions_list: list):
 def _get_title(request: Request) -> str:
     pages: Any = []
     title = ""
-    if "pages" in dynamic_settings.settings:
-        pages = dynamic_settings.settings["pages"]
+    if "pages" in settings:
+        pages = settings["pages"]
 
     for page in pages:
         if page["url"] == request.url.path:
