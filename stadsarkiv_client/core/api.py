@@ -798,7 +798,10 @@ async def proxies_resolve(request: Request, ids=[]) -> typing.Any:
         response = await client.post(url, data=data)
 
         if response.is_success:
-            result = response.json()["result"]
-            return result
+            result_json = response.json()
+            if "result" not in result_json:
+                return []
+
+            return result_json["result"]
         else:
             response.raise_for_status()
