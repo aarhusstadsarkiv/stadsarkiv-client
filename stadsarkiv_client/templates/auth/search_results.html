@@ -14,48 +14,39 @@
 
 {{ basic_macros.page_title(title) }}
 
-{# 
-api_search_results: list = [
-    {
-        "search_query": "test&sort=created_at&order=desc",
-        "title": "Test 1",
-    },
-    {
-        "search_query": "test&sort=created_at&order=desc",
-        "title": "Test 2",
-    },
-    {
-        "search_query": "test&sort=created_at&order=desc",
-        "title": "Test 3",
-    },
-]
-#}
-
 {% if search_results|length == 0 %}
-    <p>Du har ingen søgninger.</p>
+<p>Du har ingen søgninger.</p>
 {% else %}
 
-{# iterate each search result in a two column table containing key and value #}
 
-{% for search_result in search_results %}
-<div class="table-container">
-    <table>
-        <tr>
-            <td>Søgning</td>
-            <td><a href="/search/{{ search_result.search_query }}">{{ search_result.title }}</a></td>
-        </tr>
-        <tr>
-            <td>Oprettet</td>
-            <td>{{ search_result.created_at }}</td>
-        </tr>
-        <tr>
-            <td>Handling</td>
-            <td><a href="#">Ret</td>
-        </tr>
-    </table>
+<div class="record-section">
+    <div class="record-main">
+        {% for search_result in search_results %}
+        <div class="record-content">
+            <div class="label">Søgning</div>
+            <div class="content">
+                <a href="/search/{{ search_result.search_query }}">{{ search_result.title }}</a>
+            </div>
+        </div>
+
+        <div class="record-content">
+            <div class="label">Oprettet</div>
+            <div class="content">{{ search_result.created_at }}</div>
+        </div>
+
+        <div class="record-content">
+            <div class="content">
+                <div class="action-links">
+                    <a href="#">Slet</a>
+                </div>
+            </div>
+        </div>
+        
+        <hr>
+
+        {% endfor %}
+    </div>
 </div>
-{% endfor %}
+    {% endif %}
 
-{% endif %}
-
-{% endblock content %}
+    {% endblock content %}

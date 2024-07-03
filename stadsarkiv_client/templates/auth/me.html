@@ -14,42 +14,55 @@
 
 {{ basic_macros.page_title(title) }}
 
-<div class="table-container">
-    <table>
-        <tr>
-            <td>Email</td>
-            <td> {{ me["email"] }} </td>
-        </tr>
+<div class="record-section">
+    <div class="record-main">
+        <div class="record-content">
+            <div class="label">Email</div>
+            <div class="content">
+                <p>{{ me["email"] }}</p>
+            </div>
+        </div>
 
-        <tr>
-            <td>Verificeret</td>
-            <td>
-                {% if me["is_verified"] %}
-                <span class="label label-success">Ja</span>
-                {% else %}
-                <span class="label label-danger">Nej</span>
-                {% endif %}
-            </td>
-        </tr>
+        <div class="record-content">
+            <div class="label">Verificeret</div>
+            <div class="content">
+                <p>
+                    {% if me["is_verified"] %}
+                    <span class="label label-success">Ja</span>
+                    {% else %}
+                    <span class="label label-danger">Nej</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
 
-        <tr>
-            <td>Rettighed</td>
-            <td>
-                {{ permission_translated }}
-            </td>
-        </tr>
-    </table>
+        <div class="record-content">
+            <div class="label">Rettighed</div>
+            <div class="content">
+                <p>
+                    {{ permission_translated }}
+                </p>
+            </div>
+        </div>
+
+        {% if get_setting('debug') %}
+        <div class="record-content">
+            <div class="label">Token</div>
+            <div class="content">
+                <p>{{ me["token"] }}</p>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if not me["is_verified"] %}
+        <div class="record-content">
+            <div class="label">Verfificer e-mail</div>
+            <div class="content">
+                <p><a href="/auth/send-verify-email">{{ translate("Send verification email") }}</a></p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
 </div>
-
-<p>
-    {% if not me["is_verified"] %}
-    <a href="/auth/send-verify-email">{{ translate("Send verification email") }}</a>
-    {% endif %}
-</p>
-
-{% if get_setting("debug") %}
-<h3>Token</h3>
-<p>{{ me["token"] }}</p>
-{% endif %}
 
 {% endblock content %}
