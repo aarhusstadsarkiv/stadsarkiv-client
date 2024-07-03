@@ -29,7 +29,7 @@
     flex: 1;
 }
 
-h3.record-header {
+.record-header {
     border-bottom: 1px solid var(--record-header-border);
     padding-bottom: 0.2rem;
     width: 100%;

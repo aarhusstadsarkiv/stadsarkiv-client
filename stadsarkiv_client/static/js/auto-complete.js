@@ -40,9 +40,12 @@ class AutoComplete {
         // Debounce timeout ID
         this.timeoutID = null;
 
-        // Bind methods
+        // Bind methods on autocomplete element
         this.autocompleteElem.addEventListener('input', this.onInput.bind(this));
         this.autocompleteElem.addEventListener('keydown', this.onKeyDown.bind(this));
+       
+       // Bind the onClick method on the suggestions element
+        this.suggestionsElem.addEventListener('click', this.onClick.bind(this));
 
         // Bind the onBlur method
         this.onBlur = this.onBlur.bind(this);
@@ -70,6 +73,12 @@ class AutoComplete {
         // Hide suggestions on resize and empty the suggestions
         this.suggestionsElem.style.display = 'none';
         this.suggestionsElem.innerHTML = '';
+    }
+
+    onClick(e) {
+        const item = e.target.closest(`.${this.suggestionItemClass}`);
+        if (!item) return;
+        this.returnFunction(item);
     }
 
     onInput(e) {

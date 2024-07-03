@@ -170,7 +170,12 @@ details>summary.inactive {
 }
 
 .search-suggestion-focus {
-    background-color: var(--background-alt);
+    background-color: var(--background-body);
+}
+
+.search-suggestion-item:hover {
+    cursor: pointer;
+    background-color:var(--background-body);
 }
 
 /**

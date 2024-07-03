@@ -30,6 +30,7 @@ function autoCompleteInit(searchBaseUrl) {
         'suggestionFocusClass': 'search-suggestion-focus',
         'preventOverflow': true,
         'overflowSpace': 20, // In pixels
+        'debug': false,
     }
 
     new AutoComplete(options);
