@@ -298,6 +298,9 @@ function searchEvents() {
             document.getElementById('sort').submit();
         });
 
+        // Focus on search input field
+        document.getElementById('q').focus();
+
     } catch (error) {
         console.log(error)
         // unset local storage if it fails. 
