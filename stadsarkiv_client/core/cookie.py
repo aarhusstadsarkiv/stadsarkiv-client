@@ -1,5 +1,6 @@
 import json
 from starlette.requests import Request
+from stadsarkiv_client.core.dynamic_settings import settings
 
 
 def get_search_cookie(request: Request) -> dict:
@@ -27,6 +28,10 @@ def get_search_cookie(request: Request) -> dict:
         search_cookie["query_params"] = query_params
 
         assert isinstance(search_cookie, dict)
+
+        if not settings["search_keep_results"]:
+            search_cookie["query_str_display"] = ""
+
         return search_cookie
 
     except Exception:

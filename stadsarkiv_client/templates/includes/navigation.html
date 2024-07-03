@@ -1,9 +1,5 @@
 {% import "macros/common_macros.html" as common_macros %}
 
-{% if not get_setting('search_keep_results') %}
-{% set query_str_display = '' %}
-{% endif %}
-
 <div class="navigation-right-group">
     <div class="main-menu-static">
         {% for menu_item in main_menu_user %}
