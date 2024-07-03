@@ -46,6 +46,8 @@ class AutoComplete {
        
        // Bind the onClick method on the suggestions element
         this.suggestionsElem.addEventListener('click', this.onClick.bind(this));
+        // on hover
+        this.suggestionsElem.addEventListener('mouseover', this.onMouseOver.bind(this));
 
         // Bind the onBlur method
         this.onBlur = this.onBlur.bind(this);
@@ -60,6 +62,18 @@ class AutoComplete {
         this.hideSuggestions();
     }
 
+    hideSuggestions() {
+        // Hide suggestions on resize and empty the suggestions
+        this.suggestionsElem.style.display = 'none';
+        this.suggestionsElem.innerHTML = '';
+    }
+
+    onMouseOver(e) {
+        // Remove .search-suggestion-focus
+        const items = this.suggestionsElem.querySelectorAll(`.${this.suggestionItemClass}`);
+        items.forEach(item => item.classList.remove(this.suggestionFocusClass));
+    }
+
     onBlur() {
         // Set a short timeout to allow clicks on suggestions to register
         setTimeout(() => {
@@ -67,12 +81,6 @@ class AutoComplete {
                 this.hideSuggestions();
             }
         }, this.debounceTimer);
-    }
-
-    hideSuggestions() {
-        // Hide suggestions on resize and empty the suggestions
-        this.suggestionsElem.style.display = 'none';
-        this.suggestionsElem.innerHTML = '';
     }
 
     onClick(e) {
