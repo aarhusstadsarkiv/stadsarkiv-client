@@ -99,7 +99,7 @@ h3.record-header {
     margin: 0;
     padding-bottom: 5px;
     word-break: break-word;
-    width: 100%;
+    min-width: 100%;
 }
 
 .record-content>.content>p.spacing {
