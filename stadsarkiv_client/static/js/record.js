@@ -17,10 +17,9 @@ document.addEventListener('keydown', function (e) {
     }
 });
 
-// add swipe left and right in vanilla js
-document.addEventListener('touchstart', handleTouchStart, false);
-document.addEventListener('touchmove', handleTouchMove, false);
-
+/**
+ * Swipe left and right on touch devices
+ */
 let xDown = null;
 let yDown = null;
 
@@ -65,8 +64,5 @@ function handleTouchMove(evt) {
     yDown = null;
 }
 
-// add swipe left and right in vanilla js
 document.addEventListener('touchstart', handleTouchStart, false);
 document.addEventListener('touchmove', handleTouchMove, false);
-
-export { }
