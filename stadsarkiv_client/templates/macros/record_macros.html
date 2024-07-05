@@ -14,13 +14,13 @@
         {{ record_pagination["current_page"] }} / {{ record_pagination["total"] }}
     </div>
     <div class="record-prev-next">
-        {% if record_pagination.prev_record is none %}
+        {% if not record_pagination.prev_record %}
         <span class="disabled">&lt;</span>
         {% else %}
         <a class="prev"
             href="/records/{{ record_pagination.prev_record }}?search={{ record_pagination.prev_page }}">&lt;</a>
         {% endif %}
-        {% if record_pagination.next_record is none %}
+        {% if not record_pagination.next_record %}
         <span class="disabled">&gt;</span>
         {% else %}
         <a class="next"

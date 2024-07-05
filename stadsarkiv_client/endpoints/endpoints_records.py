@@ -69,9 +69,10 @@ async def _get_record_pagination(request: Request):
             search_params = [("start", str(next_page - 1))]
             next_query_params.extend(search_params)
             records = await api.proxies_records_from_list(request, next_query_params)
-            return records["result"][0]["id"]
+            id = int(records["result"][0]["id"])
+            return id
         else:
-            return None
+            return 0
 
     async def get_prev_record():
         if prev_page:
@@ -79,9 +80,10 @@ async def _get_record_pagination(request: Request):
             search_params = [("start", str(prev_page - 1))]
             prev_query_params.extend(search_params)
             records = await api.proxies_records_from_list(request, prev_query_params)
-            return records["result"][0]["id"]
+            id = int(records["result"][0]["id"])
+            return id
         else:
-            return None
+            return 0
 
     # Gather both API calls concurrently
     try:
@@ -94,9 +96,13 @@ async def _get_record_pagination(request: Request):
         log.exception(e)
         return None
 
+    # log.debug(f"next_record: {next_record}, prev_record: {prev_record}, current_page: {current_page}")
+
     record_pagination["next_record"] = next_record
     record_pagination["prev_record"] = prev_record
     record_pagination["current_page"] = current_page
+
+    log.debug(f"record_pagination: {record_pagination}")
 
     return record_pagination
 
@@ -106,8 +112,9 @@ async def get(request: Request):
 
     record_id = request.path_params["record_id"]
 
-    record_pagination, permissions, record = await asyncio.gather(
-        _get_record_pagination(request), api.me_permissions(request), api.proxies_record_get_by_id(request, record_id)
+    permissions = await api.me_permissions(request)
+    record_pagination, record = await asyncio.gather(
+        _get_record_pagination(request), api.proxies_record_get_by_id(request, record_id)
     )
 
     meta_data = get_record_meta_data(request, record)
