@@ -13,8 +13,10 @@ from stadsarkiv_client.core import api
 from stadsarkiv_client.core import cookie
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
+from stadsarkiv_client.core.dataclasses import RecordPagination
 import asyncio
 import json
+import typing
 
 
 log = get_log()
@@ -35,10 +37,13 @@ def _get_altered_cookie(request: Request):
         return None
 
 
-async def _get_record_pagination(request: Request):
-    # 'search' as a 'get' param indicates that we came from a search.
-    # It is used as the current page number in the pagination
-    # If not present then the prev and next buttons should not be shown
+async def _get_record_pagination(request: Request) -> typing.Optional[RecordPagination]:
+    """
+    'search' as a 'get' param indicates that we came from a search.
+    It is used as the current page number in the pagination
+    If not present then the prev and next buttons should not be shown
+    The search cookie is also needed in order to generate the links to the next and previous records
+    """
     current_page = int(request.query_params.get("search", 0))
     if not current_page:
         return None
@@ -52,8 +57,8 @@ async def _get_record_pagination(request: Request):
     has_next = current_page < search_cookie["total"]
     has_prev = current_page > 1
 
-    next_page = current_page + 1 if has_next else None
-    prev_page = current_page - 1 if has_prev else None
+    next_page = current_page + 1 if has_next else 0
+    prev_page = current_page - 1 if has_prev else 0
 
     record_pagination = {}
 
@@ -63,7 +68,7 @@ async def _get_record_pagination(request: Request):
     record_pagination["next_page"] = next_page
     record_pagination["prev_page"] = prev_page
 
-    async def get_next_record():
+    async def get_next_record() -> int:
         if next_page:
             next_query_params = query_params.copy()
             search_params = [("start", str(next_page - 1))]
@@ -74,7 +79,7 @@ async def _get_record_pagination(request: Request):
         else:
             return 0
 
-    async def get_prev_record():
+    async def get_prev_record() -> int:
         if prev_page:
             prev_query_params = query_params.copy()
             search_params = [("start", str(prev_page - 1))]
@@ -96,15 +101,12 @@ async def _get_record_pagination(request: Request):
         log.exception(e)
         return None
 
-    # log.debug(f"next_record: {next_record}, prev_record: {prev_record}, current_page: {current_page}")
-
     record_pagination["next_record"] = next_record
     record_pagination["prev_record"] = prev_record
     record_pagination["current_page"] = current_page
 
-    log.debug(f"record_pagination: {record_pagination}")
-
-    return record_pagination
+    record_pagination_obj = RecordPagination(**record_pagination)
+    return record_pagination_obj
 
 
 async def get(request: Request):
@@ -113,9 +115,7 @@ async def get(request: Request):
     record_id = request.path_params["record_id"]
 
     permissions = await api.me_permissions(request)
-    record_pagination, record = await asyncio.gather(
-        _get_record_pagination(request), api.proxies_record_get_by_id(request, record_id)
-    )
+    record_pagination, record = await asyncio.gather(_get_record_pagination(request), api.proxies_record_get_by_id(request, record_id))
 
     meta_data = get_record_meta_data(request, record)
     record, meta_data = await hooks.after_get_record(record, meta_data)
