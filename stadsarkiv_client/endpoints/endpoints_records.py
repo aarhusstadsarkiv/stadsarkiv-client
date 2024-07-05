@@ -22,49 +22,42 @@ import typing
 log = get_log()
 
 
-def _get_altered_cookie(request: Request):
-    try:
-        search_cookie = cookie.get_search_cookie(request)
-
-        # change query size to 1 in order to just get single record
-        query_params = search_cookie["query_params"]
-        query_params = [tuple(item) for item in query_params if item[0] != "size"]
-        query_params.append(("size", "1"))
-        search_cookie["query_params"] = query_params
-        return search_cookie
-
-    except Exception:
-        return None
-
-
 async def _get_record_pagination(request: Request) -> typing.Optional[RecordPagination]:
     """
-    'search' as a 'get' param indicates that we came from a search.
-    It is used as the current page number in the pagination
-    If not present then the prev and next buttons should not be shown
-    The search cookie is also needed in order to generate the links to the next and previous records
+    Get the record pagination object or return None if not present
     """
+
+    # 'search' as a 'get' param indicates that we came from a search.
+    # It is used as the current page number in the pagination
     current_page = int(request.query_params.get("search", 0))
     if not current_page:
         return None
 
-    search_cookie = _get_altered_cookie(request)
-    if not search_cookie:
+    # Get the search cookie
+    # If not present then the prev and next buttons should not be shown
+    search_cookie = cookie.get_search_cookie(request)
+    if not search_cookie.total:
         return None
 
-    query_params = search_cookie["query_params"]
+    # Copy the query params and remove the size parameter
+    # This is needed to generate the next and previous links
+    # Only query for one record to get the next and previous record
+    query_params = search_cookie.query_params.copy()
+    query_params = [tuple(item) for item in query_params if item[0] != "size"]
+    query_params.append(("size", "1"))
 
-    has_next = current_page < search_cookie["total"]
+    # Calculate if there is a next and previous page
+    has_next = current_page < search_cookie.total
     has_prev = current_page > 1
 
+    # Calculate the next and previous page numbers
     next_page = current_page + 1 if has_next else 0
     prev_page = current_page - 1 if has_prev else 0
 
-    record_pagination = {}
-
-    # last query string is used to generate a link to last search result
-    record_pagination["query_str_display"] = search_cookie["query_str_display"]
-    record_pagination["total"] = search_cookie["total"]
+    # Create a record pagination dict
+    record_pagination: dict = {}
+    record_pagination["query_str_display"] = search_cookie.query_str_display
+    record_pagination["total"] = search_cookie.total
     record_pagination["next_page"] = next_page
     record_pagination["prev_page"] = prev_page
 
@@ -90,7 +83,7 @@ async def _get_record_pagination(request: Request) -> typing.Optional[RecordPagi
         else:
             return 0
 
-    # Gather both API calls concurrently
+    # Get the next and previous record
     try:
         """
         This will fail if 'list index out of range'
@@ -101,10 +94,12 @@ async def _get_record_pagination(request: Request) -> typing.Optional[RecordPagi
         log.exception(e)
         return None
 
+    # Add the next and previous record to the record pagination dict
     record_pagination["next_record"] = next_record
     record_pagination["prev_record"] = prev_record
     record_pagination["current_page"] = current_page
 
+    # Return the record pagination object
     record_pagination_obj = RecordPagination(**record_pagination)
     return record_pagination_obj
 

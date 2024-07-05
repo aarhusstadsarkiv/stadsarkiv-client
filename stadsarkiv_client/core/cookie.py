@@ -1,17 +1,15 @@
 import json
 from starlette.requests import Request
 from stadsarkiv_client.core.dynamic_settings import settings
+from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core.dataclasses import SearchCookie
+
+log = get_log()
 
 
-def get_search_cookie(request: Request) -> dict:
+def get_search_cookie(request: Request) -> SearchCookie:
     """
-    The search cookie contains the following data.
-    It is set on every new search request
-
-    "query_str_display" is a query string that can be used to display the last search query
-    "query_params" is a list of tuples that can be used to make a new search query,
-    "total": total number of results found
-    "q" is the search query (e.g. "Some text search query")
+    Get search cookie from request and return it as a SearchCookie dataclass object
     """
 
     try:
@@ -21,7 +19,7 @@ def get_search_cookie(request: Request) -> dict:
         search_cookie = json.loads(search_cookie_str)
         assert isinstance(search_cookie, dict)
 
-        # Query params is a list of tuples, but when converting to json it is converted to a list of lists
+        # Query params is a list of tuples, but when converting to JSON it is converted to a list of lists
         # Convert back to list of tuples
         query_params = search_cookie["query_params"]
         query_params = [tuple(item) for item in query_params]
@@ -29,28 +27,30 @@ def get_search_cookie(request: Request) -> dict:
 
         assert isinstance(search_cookie, dict)
 
+        # If the search results should not be kept then remove the query string
         if not settings["search_keep_results"]:
             search_cookie["query_str_display"] = ""
 
-        return search_cookie
+        # return search_cookie
+        return SearchCookie(**search_cookie)
 
     except Exception:
-        return {}
+        return SearchCookie()
 
 
 def get_search_query_params(request: Request) -> list:
-    """Get query string from search cookie and return it as a list of tuples.
-    E.g. [('content_types', '96'), ('content_types', '97')]"""
-
+    """
+    Get query string from search cookie and return it as a list of tuples\n
+    E.g. [('content_types', '96'), ('content_types', '97')]
+    """
     search_cookie = get_search_cookie(request)
-    query_params = search_cookie.get("query_params", [])
-    return query_params
+    return search_cookie.query_params
 
 
 def get_query_str_display(request: Request) -> str:
-    """Get query string from search cookie and return it as a string.
-    E.g. 'content_types=96&content_types=97&'"""
-
+    """
+    Get query string from search cookie and return it as a string.
+    E.g. 'content_types=96&content_types=97&'
+    """
     search_cookie = get_search_cookie(request)
-    query_str_display = search_cookie.get("query_str_display", "")
-    return query_str_display
+    return search_cookie.query_str_display
