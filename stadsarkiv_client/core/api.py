@@ -788,6 +788,9 @@ async def proxies_resolve(request: Request, ids=[]) -> typing.Any:
     Resolve directly from a proxy endpoint
     """
 
+    # zfill to 9 digits
+    ids = [str(i).zfill(9) for i in ids]
+
     # ids needs to be a list dumped to json
     ids = json.dumps(ids)
 
