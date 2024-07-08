@@ -20,7 +20,12 @@ class UserData:
         """
         self.data: dict = me.get("data", {})
 
-    def append_bookmark(self, record_id: int):
+        # ensure that all bookmarks are strings
+        bookmarks: list = self.data.get("bookmarks", [])
+        for bookmark in bookmarks:
+            bookmark["record_id"] = str(bookmark["record_id"])
+
+    def append_bookmark(self, record_id: str):
         """
         Append a record_id to the bookmarks list.
         """
@@ -32,7 +37,7 @@ class UserData:
         bookmarks.append(record)
         self.data["bookmarks"] = bookmarks
 
-    def remove_bookmark(self, record_id: int):
+    def remove_bookmark(self, record_id: str):
         """
         Remove a record_id from the bookmarks list.
         """
@@ -58,7 +63,7 @@ class UserData:
 
         return bookmarks_list
 
-    def isset_bookmark(self, record_id: int) -> bool:
+    def isset_bookmark(self, record_id: str) -> bool:
         """
         Check if a record_id is in the bookmarks list.
         """
