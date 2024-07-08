@@ -25,8 +25,6 @@ class UserData:
         for bookmark in bookmarks:
             bookmark["record_id"] = str(bookmark["record_id"])
 
-        self.data["bookmarks"] = bookmarks
-
     def append_bookmark(self, record_id: str):
         """
         Append a record_id to the bookmarks list.
