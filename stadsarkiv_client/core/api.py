@@ -295,7 +295,7 @@ async def user_permissions_subset(request: Request):
     return used_permissions
 
 
-async def users_patch(request: Request) -> typing.Any:
+async def users_patch_permissions(request: Request) -> typing.Any:
     """
     PATCH a user from the api
     """

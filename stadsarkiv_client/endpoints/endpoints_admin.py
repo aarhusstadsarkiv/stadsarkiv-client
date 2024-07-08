@@ -53,7 +53,7 @@ async def users_patch(request: Request):
     redirect_url = request.url_for("admin_users_get_single", uuid=uuid)
 
     try:
-        await api.users_patch(request)
+        await api.users_patch_permissions(request)
         flash.set_message(request, translate("User has been updated"), type="success")
         return RedirectResponse(url=redirect_url, status_code=302)
 
@@ -61,6 +61,19 @@ async def users_patch(request: Request):
         log.exception(e)
         flash.set_message(request, translate("User could not be updated."), type="error")
         return RedirectResponse(url=redirect_url, status_code=302)
+
+
+async def users_test(request: Request):
+    await is_authenticated(request, permissions=["admin"])
+    
+    me = await api.me_get(request)
+    log.debug(me)
+    users = await api.users_get(request)
+
+    await api.users_patch_permissions(request)
+
+    log.debug(users)
+    return JSONResponse(users)
 
 
 async def users_get_json(request: Request):

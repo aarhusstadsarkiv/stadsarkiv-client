@@ -57,6 +57,7 @@ routes = [
     Route("/admin/users/{uuid}/update", endpoint=endpoints_admin.users_get_single, name="admin_users_get_single", methods=["GET"]),
     Route("/admin/users/{uuid}/permissions", endpoint=endpoints_admin.users_patch, name="admin_users_patch", methods=["POST"]),
     Route("/admin/users/{uuid}/json", endpoint=endpoints_admin.users_get_json, name="admin_users_get_json", methods=["GET"]),
+    Route("/admin/test", endpoint=endpoints_admin.users_test, name="admin_test", methods=["GET"]),
     Route("/admin/config", endpoint=endpoints_admin.config_get, name="admin_config_get", methods=["GET"]),
     Route("/auth/login", endpoint=endpoints_auth.login_get, name="auth_login_get", methods=["GET"]),
     Route("/auth/login", endpoint=endpoints_auth.login_post, name="auth_login_post", methods=["POST"]),
