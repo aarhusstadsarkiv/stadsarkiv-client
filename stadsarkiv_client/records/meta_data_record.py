@@ -36,7 +36,7 @@ def _strip_pre_zeroes(value: str) -> str:
     return value.lstrip("0")
 
 
-def get_record_meta_data(request: Request, record: dict) -> dict:
+def get_record_meta_data(request: Request, record: dict, user_permissions=[]) -> dict:
     """
     Get usefull meta data for a record
     """
@@ -47,9 +47,13 @@ def get_record_meta_data(request: Request, record: dict) -> dict:
         quote_title = record_utils.meaningful_substring(record.get("summary", ""), 200)
         title = f"[{quote_title}]"
 
+    # check if "user" in user_permissions
+    # then the user has the permission as if the user is allowed_by_ip
+    permssion_granted = "employee" in user_permissions
+
     meta_data["id"] = record["id"]
     meta_data["real_id"] = _strip_pre_zeroes(record["id"])
-    meta_data["allowed_by_ip"] = _is_allowed_by_ip(request)
+    meta_data["allowed_by_ip"] = _is_allowed_by_ip(request) or permssion_granted
     meta_data["title"] = title
     meta_data["meta_title"] = _get_meta_title(record)
     meta_data["meta_description"] = record_utils.meaningful_substring(record.get("summary", ""), 120)

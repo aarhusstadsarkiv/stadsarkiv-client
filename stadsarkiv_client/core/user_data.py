@@ -24,8 +24,7 @@ class UserData:
         # maybe old bookmarks uses ints
         bookmarks: list = self.data.get("bookmarks", [])
         for bookmark in bookmarks:
-            bookmark["record_id"] = str(bookmark["record_id"])
-            bookmark["record_id"] = bookmark["record_id"].zfill(9)
+            bookmark["record_id"] = str(bookmark["record_id"]).zfill(9)
 
     def append_bookmark(self, record_id: str):
         """

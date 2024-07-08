@@ -192,13 +192,10 @@ async def users_me_get(request: Request) -> dict:
             )
 
 
-async def users_data_post(request: Request, data: dict):
+async def users_data_post(request: Request, id: str, data: dict):
     """
     POST user data to the api in order to update the user
     """
-
-    me = await users_me_get(request)
-    id = me["id"]
 
     async with _get_async_client() as client:
         url = base_url + f"/users/{id}/data"

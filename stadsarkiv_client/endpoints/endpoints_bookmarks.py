@@ -93,6 +93,7 @@ async def bookmarks_post(request: Request):
     try:
 
         me = await api.users_me_get(request)
+        id = me["id"]
         json_data = await request.json()
 
         user_data = UserData(me)
@@ -102,7 +103,9 @@ async def bookmarks_post(request: Request):
             user_data.append_bookmark(json_data["record_id"])
 
         data = user_data.get_data()
-        await api.users_data_post(request, data)
+
+        log.debug(data)
+        await api.users_data_post(request, id=id, data=data)
 
     except OpenAwsException as e:
         log.exception(e)
