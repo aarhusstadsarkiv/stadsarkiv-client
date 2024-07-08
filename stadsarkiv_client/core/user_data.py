@@ -20,10 +20,12 @@ class UserData:
         """
         self.data: dict = me.get("data", {})
 
-        # ensure that all bookmarks are strings
+        # ensure that all bookmarks are strings with 9 digits
+        # maybe old bookmarks uses ints
         bookmarks: list = self.data.get("bookmarks", [])
         for bookmark in bookmarks:
             bookmark["record_id"] = str(bookmark["record_id"])
+            bookmark["record_id"] = bookmark["record_id"].zfill(9)
 
     def append_bookmark(self, record_id: str):
         """

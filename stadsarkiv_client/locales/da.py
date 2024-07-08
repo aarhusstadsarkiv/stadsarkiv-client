@@ -8,7 +8,7 @@ da = {
     "An email has been sent to you with instructions on how to reset your password.": "En mail er blevet sendt til dig med instruktioner om hvordan du nulstiller dit password. Husk at din e-mail skal være registreret hos os. Hvis du ikke modtager en mail, så tjek din spam-mappe.",
     "Are you sure": "Er du sikker på at du vil logge ud?",
     "Bookmark has been added.": "Bogmærke er blevet tilføjet.",
-    "Bookmark has been removed.": "Bogmærke er blever fjernet.",
+    "Bookmark has been removed.": "Bogmærke er blevet fjernet.",
     "Change your password": "Ændr dit password",
     "Click in order to listen to the audio.": "Klik for at lytte til lydfilen.",
     "Click on the image to open the PDF document.": "Klik på billedet for at hente pdf-dokumentet.",
