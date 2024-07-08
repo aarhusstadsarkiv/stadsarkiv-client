@@ -9,6 +9,7 @@ from stadsarkiv_client.core import user
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core.user_data import UserData
 import asyncio
 
 log = get_log()
@@ -65,14 +66,30 @@ async def users_patch(request: Request):
 
 async def users_test(request: Request):
     await is_authenticated(request, permissions=["admin"])
-    
+
     me = await api.me_get(request)
+
+    log.debug("me")
     log.debug(me)
+
     users = await api.users_get(request)
+    for user in users:
+        id = user["id"]
+        email = user["email"]
+        log.debug(email)
 
-    await api.users_patch_permissions(request)
+        user_data = UserData(user)
 
-    log.debug(users)
+        user_data.remove_bookmark("000502888")
+        data = user_data.get_data()
+        log.debug(data)
+
+        await api.users_data_post(request, id=id, data=data)
+
+        # log.debug(user["data"])
+    # await api.users_patch_permissions(request)
+
+    # log.debug(users)
     return JSONResponse(users)
 
 
