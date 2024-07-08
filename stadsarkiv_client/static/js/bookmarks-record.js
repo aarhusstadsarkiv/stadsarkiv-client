@@ -5,7 +5,7 @@ import { Flash } from "/static/js/flash.js";
 
 let action;
 const bookmarkAddElem = document.getElementById('bookmark-action');
-const recordId = parseInt(bookmarkAddElem.getAttribute('data-id'));
+const recordId = bookmarkAddElem.getAttribute('data-id');
 const spinner = document.querySelector('.loadingspinner');
 
 /**

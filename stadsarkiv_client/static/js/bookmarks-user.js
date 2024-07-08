@@ -8,7 +8,7 @@ const bookmarkElems = document.querySelectorAll('.bookmark-delete');
 
 bookmarkElems.forEach((elem) => {
 
-    const recordId = parseInt(elem.getAttribute('data-id'));
+    const recordId = elem.getAttribute('data-id');
     const get_data = () => {
         const data = { record_id: recordId, action: 'remove' };
         return JSON.stringify(data);

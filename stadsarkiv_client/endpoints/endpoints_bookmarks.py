@@ -74,6 +74,7 @@ async def bookmarks_json(request: Request):
         me = await api.me_get(request)
         user_data = UserData(me)
         bookmarks = user_data.get_bookmarks()
+
         return JSONResponse(bookmarks, status_code=200)
     except OpenAwsException as e:
         log.exception(e)

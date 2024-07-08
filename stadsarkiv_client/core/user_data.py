@@ -56,10 +56,6 @@ class UserData:
         bookmarks: list = self.data.get("bookmarks", [])
         bookmarks_list = [bookmark["record_id"] for bookmark in bookmarks]
 
-        # convert bookmarks_list to a list of strings with 9 chars.
-        # left padded with zeros
-        bookmarks_list = [str(record_id).zfill(9) for record_id in bookmarks_list]
-
         return bookmarks_list
 
     def isset_bookmark(self, record_id: int) -> bool:
