@@ -73,12 +73,12 @@ async def users_test(request: Request):
     log.debug(me)
 
     users = await api.users_get(request)
-    for user in users:
-        id = user["id"]
-        email = user["email"]
+    for user_ in users:
+        id = user_["id"]
+        email = user_["email"]
         log.debug(email)
 
-        user_data = UserData(user)
+        user_data = UserData(user_)
 
         user_data.remove_bookmark("000502888")
         data = user_data.get_data()
