@@ -127,8 +127,5 @@ class TestJSON(unittest.TestCase):
 }
         """
 
-        # Directly parse the JSON string without needing to escape it manually
         json_expected = json.loads(json_expected)
-
-        # Compare the JSON object from the response with the expected JSON object
         self.assertEqual(response_json, json_expected)
