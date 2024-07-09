@@ -45,5 +45,3 @@ async def order_get(request: Request):
     context = await get_context(request, context_values=context_variables)
 
     return templates.TemplateResponse(request, "order/order.html", context)
-
-    # return JSONResponse(data)
