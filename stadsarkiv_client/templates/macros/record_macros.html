@@ -91,18 +91,10 @@
     {{ common_macros.parse_icon('lock', translate('The material is available in the reading room.'))}}
     {% elif meta_data["availability_id"] == 2 %}
     {{ common_macros.parse_icon('lock', translate('The material can be order home to the reading room.'))}}
+    {% else %}
+    {{ common_macros.parse_icon(meta_data["icon"]["icon"], meta_data["icon"]["label"]) }}
     {% endif %}
 </div>
-{% endmacro %}
-
-{% macro _parse_representation_block(meta_data) %}
-{% if meta_data["has_representations"] %}
-{{ _parse_representations_block(meta_data) }}
-{% else %}
-<div class="record-representation">
-    {{ common_macros.parse_icon(meta_data["icon"]["icon"], meta_data["icon"]["label"]) }}
-</div>
-{% endif %}
 {% endmacro %}
 
 {% macro _parse_bookmarks(meta_data) %}
@@ -118,7 +110,7 @@
 {% macro parse_block_first(block_keys, meta_data, record_and_types) %}
 {% if key_exist_in_dict(block_keys, record_and_types) %}
 <div class="record-section">
-    {{ _parse_representation_block(meta_data) }}
+    {{ _parse_representations_block(meta_data) }}
 
     <div class="record-main">
         {% if meta_data["title"] %}
