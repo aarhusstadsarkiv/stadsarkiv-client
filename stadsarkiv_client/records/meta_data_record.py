@@ -77,7 +77,6 @@ def get_record_meta_data(request: Request, record: dict, user_permissions=[]) ->
     meta_data["availability_id"] = record["availability"].get("id")
     meta_data["usability_id"] = record["usability"].get("id")
     meta_data["collection_id"] = record.get("collection", {}).get("id")
-    meta_data["series"] = record.get("series")
     meta_data["content_types_label"] = _get_content_type_label(record)
 
     # This should be altered to record_represenation_type
