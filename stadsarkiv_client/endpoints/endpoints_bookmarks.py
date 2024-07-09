@@ -69,7 +69,9 @@ async def bookmarks(request: Request):
 
 
 async def bookmarks_json(request: Request):
-    """Get user bookmarks as JSON"""
+    """
+    Get user bookmarks as JSON
+    """
     try:
         me = await api.me_get(request)
         user_data = UserData(me)
