@@ -1,6 +1,8 @@
 <div class="action-links">
     <a href="/auth/me">Profil</a>
     <a href="/auth/orders">Bestillinger</a>
-    <a href="/auth/bookmarks">Bogmærker</a>
+    {% if get_setting('allow_bookmarks') %}
+        <a href="/auth/bookmarks">Bogmærker</a>
+    {% endif %}
     <a href="/auth/search-results">Søgninger</a>
 </div>
