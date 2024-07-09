@@ -48,7 +48,7 @@ _record_definitions = {
     "events": {"type": "link_list"},
     "ordering_normalized": {"type": "ordering_normalized"},  # special type
     "creators": {"type": "link_list"},
-    "desc_notes": {"type": "string"},
+    "desc_notes": {"type": "paragraphs"},
     "heading": {"type": "string"},
 }
 
