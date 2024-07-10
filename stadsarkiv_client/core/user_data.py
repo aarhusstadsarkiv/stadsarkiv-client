@@ -3,6 +3,7 @@ User data functions.
 """
 
 from stadsarkiv_client.core.logging import get_log
+import typing
 
 
 log = get_log()
@@ -19,6 +20,8 @@ class UserData:
         This dict has two keys (so far): "booksmarks", "search_results"
         """
         self.data: dict = me.get("data", {})
+        self.custom: dict = self.data.get("custom", {})
+        self.custom_data: dict = self.custom.get("data", {})
 
         # ensure that all bookmarks are strings with 9 digits
         # maybe old bookmarks uses ints
@@ -73,6 +76,16 @@ class UserData:
             if record["record_id"] == record_id:
                 return True
         return False
+
+    def set_key_value(self, key: str, value: typing.Any):
+        self.custom_data[key] = value
+
+    def get_key_value(self, key: str) -> typing.Any:
+        return self.custom_data.get(key)
+
+    def clear_key_value(self, key: str):
+        if key in self.custom_data:
+            del self.custom_data[key]
 
     def get_data(self) -> dict:
         """
