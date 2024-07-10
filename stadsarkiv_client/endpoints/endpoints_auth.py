@@ -14,6 +14,7 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from stadsarkiv_client.endpoints import auth_data
+from stadsarkiv_client.core.user_data import UserData
 
 log = get_log()
 
@@ -149,8 +150,26 @@ async def me_get(request: Request):
     try:
         me = await api.users_me_get(request)
         me["token"] = request.session["access_token"]
+        id = me["id"]
         permissions = await api.me_permissions(request)
         permission_translated = user.permission_translated(permissions)
+
+        log.debug(f"Me {me}")
+
+        custom_data = UserData(me)
+        # custom_data.set_key_value("theme", "dark")
+
+        custom_data.append_bookmark("999888665")
+        custom_data.set_key_value("test_10", {"test": "test"})
+
+        custom_data.set_key_value("test", {"test": "test"})
+        # custom_data.clear_key_value("test")
+        data = custom_data.get_data()
+
+        log.debug("Data")
+        log.debug(data)
+
+        await api.users_data_post(request, id=id, data=data)
 
         context_values = {"title": translate("Profile"), "me": me, "permission_translated": permission_translated}
         context = await get_context(request, context_values=context_values)
