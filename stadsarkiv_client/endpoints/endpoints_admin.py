@@ -78,13 +78,15 @@ async def users_test(request: Request):
         email = user_["email"]
         log.debug(email)
 
-        user_data = UserData(user_)
+        custom_data = UserData(user_)
+        custom_data.set_key_value("test", "test")
 
-        user_data.remove_bookmark("000502888")
-        data = user_data.get_data()
-        log.debug(data)
+        custom_data.append_bookmark("111111222")
+        data = custom_data.get_data()
+        # log.debug(data)
 
-        await api.users_data_post(request, id=id, data=data)
+        new_data = await api.users_data_post(request, id=id, data=data)
+        log.debug(new_data)
 
         # log.debug(user["data"])
     # await api.users_patch_permissions(request)
