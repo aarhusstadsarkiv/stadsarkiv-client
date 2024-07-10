@@ -2,6 +2,8 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.records import record_utils
 from stadsarkiv_client.records import record_alter
+from stadsarkiv_client.core import api
+from stadsarkiv_client.core.user_data import UserData
 import json
 
 
@@ -11,6 +13,33 @@ log = get_log()
 class Hooks(HooksSpec):
     def __init__(self, request):
         super().__init__(request)
+
+    async def after_login(self, response: dict) -> dict:
+        """
+        Alter the response after a successful login.
+        """
+        me = await api.me_get(self.request)
+        id = me["id"]
+
+        custom_data = UserData(me)
+        custom_data.set_key_value("theme", "dark")
+
+        custom_data.append_bookmark("999888665")
+        custom_data.set_key_value("test_10", {"test": "test"})
+
+        custom_data.set_key_value("loggedin", {"test": "test"})
+        data = custom_data.get_data()
+
+        log.debug("Data")
+        log.debug(data)
+
+        response_obj = await api.users_data_post(self.request, id=id, data=data)
+        log.debug("me")
+        log.debug(me)
+        log.debug("response_obj")
+        log.debug(response_obj)
+
+        return response
 
     async def before_get_auto_complete(self, query_params: list) -> list:
         query_params.append(("limit", "10"))
