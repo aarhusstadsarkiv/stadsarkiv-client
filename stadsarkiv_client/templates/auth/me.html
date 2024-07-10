@@ -65,4 +65,8 @@
     </div>
 </div>
 
+{% if get_setting('debug') %}
+<pre>{{ to_json(me.data) }}</pre>
+{% endif %}
+
 {% endblock content %}
