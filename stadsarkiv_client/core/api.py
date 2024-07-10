@@ -10,6 +10,7 @@ from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import query
 from stadsarkiv_client.core.cache import set_cache, get_cache
+from stadsarkiv_client.core.hooks import get_hooks
 from urllib.parse import quote
 import json
 import httpx
@@ -106,6 +107,8 @@ async def auth_jwt_login_post(request: Request):
     """
     POST an email and password to the api in order to login
     """
+    hooks = get_hooks(request=request)
+
     form = await request.form()
     username = str(form.get("username"))
     password = str(form.get("password"))
@@ -122,6 +125,8 @@ async def auth_jwt_login_post(request: Request):
             access_token = json_response["access_token"]
             token_type = json_response["token_type"]
             user.set_user_jwt(request, access_token, token_type)
+
+            await hooks.after_login(json_response)
         else:
             json_response = response.json()
             raise_openaws_exception(response.status_code, json_response)
@@ -205,6 +210,8 @@ async def users_data_post(request: Request, id: str, data: dict):
         if not response.is_success:
             json_response = response.json()
             raise_openaws_exception(response.status_code, json_response)
+
+        return response.json()
 
 
 async def users_get(request: Request) -> dict:
