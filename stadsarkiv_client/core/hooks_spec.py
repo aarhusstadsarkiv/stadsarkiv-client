@@ -14,6 +14,12 @@ class HooksSpec:
     def __init__(self, request: Request):
         self.request = request
 
+    async def after_login(self, response: dict) -> dict:
+        """
+        Alter the response after a successful login.
+        """
+        return response
+
     async def before_get_auto_complete(self, query_params: list) -> list:
         """
         Alter the query params before the autocomplete is executed.
