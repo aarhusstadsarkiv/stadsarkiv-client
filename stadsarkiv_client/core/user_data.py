@@ -83,9 +83,12 @@ class UserData:
     def get_key_value(self, key: str) -> typing.Any:
         return self.custom_data.get(key)
 
-    def clear_key_value(self, key: str):
+    def clear_key(self, key: str):
         if key in self.custom_data:
             del self.custom_data[key]
+
+    def clear_all_keys(self):
+        self.custom_data = {}
 
     def get_data(self) -> dict:
         """
