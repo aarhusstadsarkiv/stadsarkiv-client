@@ -1,5 +1,16 @@
 """"
-This script reads a users.csv and bookmarks.csv file and adds the email field to the bookmarks_with_emails.csv file.
+Usage:
+
+    python bin/generate_bookmarks_csv.py
+
+This script will need two files:
+
+    data/users.csv
+    data/bookmarks.csv
+
+From these files it generates the `bookmarks_with_emails.csv` file.
+This file is the same as the `bookmarks.csv` file, but with an additional `email` field.
+
 """
 
 import csv
