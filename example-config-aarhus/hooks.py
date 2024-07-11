@@ -9,14 +9,17 @@ import csv
 import os
 
 
-current_path = os.path.abspath(__file__)
 log = get_log()
 
-
-bookmarks_file = os.path.join(os.path.dirname(current_path), "data/bookmarks_with_emails.csv")
+current_path = os.path.abspath(__file__)
+base_dir = os.path.dirname(os.path.abspath(__file__))
+bookmarks_file = os.path.join(base_dir, "..", "data", "bookmarks_with_emails.csv")
 
 
 def get_bookmarks_by_email(email):
+    """ "
+    Get bookmarks by email from csv file
+    """
     file = bookmarks_file
     resource_ids = []
     with open(file, "r") as file:
@@ -33,7 +36,7 @@ class Hooks(HooksSpec):
 
     async def after_login(self, response: dict) -> dict:
         """
-        Alter the response after a successful login.
+        After a successful login.
         """
         me = await api.me_get(self.request)
         id = me["id"]
