@@ -5,9 +5,26 @@ from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.user_data import UserData
 import json
+import csv
+import os
 
 
+current_path = os.path.abspath(__file__)
 log = get_log()
+
+
+bookmarks_file = os.path.join(os.path.dirname(current_path), "data/bookmarks_with_emails.csv")
+
+
+def get_bookmarks_by_email(email):
+    file = bookmarks_file
+    resource_ids = []
+    with open(file, "r") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            if row["email"] == email:
+                resource_ids.append(row["resource_id"])
+    return resource_ids
 
 
 class Hooks(HooksSpec):
@@ -20,26 +37,19 @@ class Hooks(HooksSpec):
         """
         me = await api.me_get(self.request)
         id = me["id"]
-
-        log.debug("me")
-        log.debug(me)
+        email = me["email"]
 
         custom_data = UserData(me)
-        custom_data.append_bookmark("999888000")
-        custom_data.set_key_value("theme", "dark")
+        if not custom_data.get_key_value("bookmarks_imported"):
+            bookmarks = get_bookmarks_by_email(email)
 
-        # custom_data.set_key_value("logged_in", {"test": "test"})
+            for bookmark in bookmarks:
+                custom_data.append_bookmark(bookmark)
 
-        # custom_data.set_key_value("bookmarks_imported", True)
-        data = custom_data.get_data()
-
-        log.debug("Data")
-        log.debug(data)
-
-        response_obj = await api.users_data_post(self.request, id=id, data=data)
-
-        log.debug("response_obj")
-        log.debug(response_obj)
+            # This needs to be fixed in the webservice
+            # custom_data.set_key_value("bookmarks_imported", True)
+            data = custom_data.get_data()
+            response = await api.users_data_post(self.request, id=id, data=data)
 
         return response
 
