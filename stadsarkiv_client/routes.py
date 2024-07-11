@@ -151,6 +151,6 @@ routes.append(Route("/{resource_type:str}/{id:str}/json/{type:str}", endpoint=en
 def get_routes():
 
     hooks = get_hooks()
-    hooks.after_routes_init(routes)
+    altered_routes = hooks.after_routes_init(routes)
 
-    return routes
+    return altered_routes
