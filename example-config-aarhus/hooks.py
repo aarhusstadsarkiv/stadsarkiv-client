@@ -21,21 +21,23 @@ class Hooks(HooksSpec):
         me = await api.me_get(self.request)
         id = me["id"]
 
+        log.debug("me")
+        log.debug(me)
+
         custom_data = UserData(me)
+        custom_data.append_bookmark("999888000")
         custom_data.set_key_value("theme", "dark")
 
-        custom_data.append_bookmark("999888665")
-        custom_data.set_key_value("test_10", {"test": "test"})
+        # custom_data.set_key_value("logged_in", {"test": "test"})
 
-        custom_data.set_key_value("loggedin", {"test": "test"})
+        # custom_data.set_key_value("bookmarks_imported", True)
         data = custom_data.get_data()
 
         log.debug("Data")
         log.debug(data)
 
         response_obj = await api.users_data_post(self.request, id=id, data=data)
-        log.debug("me")
-        log.debug(me)
+
         log.debug("response_obj")
         log.debug(response_obj)
 
