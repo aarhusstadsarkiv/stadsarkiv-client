@@ -1,9 +1,17 @@
+# from starlette.requests import Request
+from starlette.routing import Route
+from starlette.requests import Request
+from starlette.responses import JSONResponse
+from starlette.exceptions import HTTPException
+from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.records import record_utils
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.core.user_data import UserData
 from stadsarkiv_client.core import api
+from stadsarkiv_client.core.context import get_context
+from stadsarkiv_client.core.translate import translate
 import json
 import os
 import csv
@@ -20,9 +28,9 @@ def get_bookmarks_by_email(email):
     """ "
     Get bookmarks by email from csv file
     """
-    file = bookmarks_file
+    # file = bookmarks_file
     resource_ids = []
-    with open(file, "r") as file:
+    with open(bookmarks_file, "r") as file:
         reader = csv.DictReader(file)
         for row in reader:
             if row["email"] == email:
@@ -30,12 +38,43 @@ def get_bookmarks_by_email(email):
     return resource_ids
 
 
+async def docs_endpoint(request: Request):
+
+    docs_folder = str(os.path.join(base_dir, "..", "docs"))
+    page = str(request.path_params.get("page"))
+
+    # get all .md files from the docs folder
+    files = os.listdir(docs_folder)
+    files = [f for f in files if f.endswith(".md")]
+
+    if page in files:
+        # open file and read it.
+        file_path = os.path.join(docs_folder, page)
+        with open(file_path, "r") as file:
+            content = file.read()
+            log.warning(content)
+
+        context_values = {"title": "Documentation", "files": files, "content": content}
+        context = await get_context(request, context_values=context_values)
+        return templates.TemplateResponse(request, "docs/test.html", context)
+
+    raise HTTPException(404, detail="type not found", headers=None)
+
+
 class Hooks(HooksSpec):
     def __init__(self, request):
         super().__init__(request)
 
     def after_routes_init(self, routes: list) -> list:
-        log.warning("Loaded local hooks: example-config-demo/hooks.py")
+        log.warning("After routes init")
+
+        routes_test = [
+            Route("/", endpoint=docs_endpoint, name="doh", methods=["GET"]),
+            Route("/docs/{page:str}", endpoint=docs_endpoint, name="doh", methods=["GET"]),
+        ]
+
+        routes = routes_test + routes
+
         return routes
 
     async def after_login(self, response: dict) -> dict:
