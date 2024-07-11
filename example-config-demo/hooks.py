@@ -34,6 +34,10 @@ class Hooks(HooksSpec):
     def __init__(self, request):
         super().__init__(request)
 
+    def after_routes_init(self, routes: list) -> list:
+        log.warning("Loaded local hooks: example-config-demo/hooks.py")
+        return routes
+
     async def after_login(self, response: dict) -> dict:
         """
         After a successful login.

@@ -3,6 +3,7 @@ Define routes for the application.
 """
 
 from starlette.routing import Route, Mount
+from starlette.requests import Request
 from stadsarkiv_client.endpoints import (
     endpoints_admin,
     endpoints_auth,
@@ -24,6 +25,7 @@ from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.multi_static import MultiStaticFiles
 from stadsarkiv_client.core.args import get_local_config_dir
 from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core.hooks import get_hooks
 from typing import Any
 
 log = get_log()
@@ -144,3 +146,11 @@ for common_page in common_pages:
 # Last as these are not very specific
 routes.append(Route("/{resource_type:str}/{id:str}", endpoint=endpoints_resources.get, name="resources_get"))
 routes.append(Route("/{resource_type:str}/{id:str}/json/{type:str}", endpoint=endpoints_resources.get_json, name="resources_get_json"))
+
+
+def get_routes():
+
+    hooks = get_hooks()
+    hooks.after_routes_init(routes)
+
+    return routes

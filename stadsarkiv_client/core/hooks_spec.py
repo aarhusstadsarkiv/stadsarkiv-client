@@ -14,6 +14,12 @@ class HooksSpec:
     def __init__(self, request: Request):
         self.request = request
 
+    def after_routes_init(self, routes: list) -> list:
+        """
+        Alter the routes after have been initialized.
+        """
+        return routes
+
     async def after_login(self, response: dict) -> dict:
         """
         Alter the response after a successful login.

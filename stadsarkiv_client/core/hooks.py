@@ -3,6 +3,9 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.core.args import get_local_config_dir
 import importlib
+from starlette.types import Scope
+import typing
+
 
 log = get_log()
 
@@ -25,7 +28,16 @@ except ImportError:
     log.debug(f"Local hooks NOT loaded: {get_local_config_dir('hooks.py')}")
 
 
-def get_hooks(request: Request) -> HooksSpec:
+def get_hooks(request: typing.Optional[Request] = None) -> HooksSpec:
+
+    if not request:
+        scope = {"type": "http", "method": "GET", "path": "/", "headers": []}
+
+        async def receive():
+            return {"type": "http.disconnect"}
+
+        request = Request(scope, receive=receive)
+
     """
     Get local hooks if they exist, otherwise get the default hooks
     """
