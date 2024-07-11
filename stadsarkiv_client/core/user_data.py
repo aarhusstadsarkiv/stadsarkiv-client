@@ -17,7 +17,6 @@ class UserData:
     def __init__(self, me: dict):
         """
         User data contains user data as a dict.
-        This dict has two keys (so far): "booksmarks", "search_results"
         """
         self.data: dict = me.get("data", {})
         self.custom: dict = self.data.get("custom", {})
@@ -28,6 +27,25 @@ class UserData:
         bookmarks: list = self.data.get("bookmarks", [])
         for bookmark in bookmarks:
             bookmark["record_id"] = str(bookmark["record_id"]).zfill(9)
+
+    def set_key_value(self, key: str, value: typing.Any):
+        self.custom_data[key] = value
+
+    def get_key_value(self, key: str) -> typing.Any:
+        return self.custom_data.get(key)
+
+    def clear_key(self, key: str):
+        if key in self.custom_data:
+            del self.custom_data[key]
+
+    def clear_all_keys(self):
+        self.custom_data = {}
+
+    def get_data(self) -> dict:
+        """
+        Return the data dict.
+        """
+        return self.data
 
     def append_bookmark(self, record_id: str):
         """
@@ -76,22 +94,3 @@ class UserData:
             if record["record_id"] == record_id:
                 return True
         return False
-
-    def set_key_value(self, key: str, value: typing.Any):
-        self.custom_data[key] = value
-
-    def get_key_value(self, key: str) -> typing.Any:
-        return self.custom_data.get(key)
-
-    def clear_key(self, key: str):
-        if key in self.custom_data:
-            del self.custom_data[key]
-
-    def clear_all_keys(self):
-        self.custom_data = {}
-
-    def get_data(self) -> dict:
-        """
-        Return the data dict.
-        """
-        return self.data
