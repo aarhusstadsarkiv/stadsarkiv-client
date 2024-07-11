@@ -169,3 +169,4 @@ gunicorn_process.pid
 /local
 /resources
 settings-local.py
+data
