@@ -2,15 +2,59 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.records import record_utils
 from stadsarkiv_client.records import record_alter
+from stadsarkiv_client.core.user_data import UserData
+from stadsarkiv_client.core import api
 import json
+import os
+import csv
 
 
 log = get_log()
+
+current_path = os.path.abspath(__file__)
+base_dir = os.path.dirname(os.path.abspath(__file__))
+bookmarks_file = os.path.join(base_dir, "..", "data", "bookmarks_with_emails.csv")
+
+
+def get_bookmarks_by_email(email):
+    """ "
+    Get bookmarks by email from csv file
+    """
+    file = bookmarks_file
+    resource_ids = []
+    with open(file, "r") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            if row["email"] == email:
+                resource_ids.append(row["resource_id"])
+    return resource_ids
 
 
 class Hooks(HooksSpec):
     def __init__(self, request):
         super().__init__(request)
+
+    async def after_login(self, response: dict) -> dict:
+        """
+        After a successful login.
+        """
+        me = await api.me_get(self.request)
+        id = me["id"]
+        email = me["email"]
+
+        custom_data = UserData(me)
+        if not custom_data.get_key_value("bookmarks_imported"):
+            bookmarks = get_bookmarks_by_email(email)
+
+            for bookmark in bookmarks:
+                custom_data.append_bookmark(bookmark)
+
+            # This needs to be fixed in the webservice
+            # custom_data.set_key_value("bookmarks_imported", True)
+            data = custom_data.get_data()
+            response = await api.users_data_post(self.request, id=id, data=data)
+
+        return response
 
     async def before_get_auto_complete(self, query_params: list) -> list:
         query_params.append(("limit", "10"))
