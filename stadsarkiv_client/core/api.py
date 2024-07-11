@@ -107,7 +107,6 @@ async def auth_jwt_login_post(request: Request):
     """
     POST an email and password to the api in order to login
     """
-    hooks = get_hooks(request=request)
 
     form = await request.form()
     username = str(form.get("username"))
@@ -126,6 +125,7 @@ async def auth_jwt_login_post(request: Request):
             token_type = json_response["token_type"]
             user.set_user_jwt(request, access_token, token_type)
 
+            hooks = get_hooks(request=request)
             await hooks.after_login(json_response)
         else:
             json_response = response.json()
@@ -167,14 +167,15 @@ async def auth_verify_post(request: Request):
             raise_openaws_exception(response.status_code, json_response)
 
 
-async def users_me_get(request: Request) -> dict:
+async def users_me_get(request: Request, allow_request_state=True) -> dict:
     """
     GET the current user from the api.
     The user is stored in the request state in order to avoid multiple api calls.
     """
 
-    if hasattr(request.state, "me"):
-        return request.state.me
+    if allow_request_state:
+        if hasattr(request.state, "me"):
+            return request.state.me
 
     headers = _get_jwt_headers(request, {"Accept": "application/json"})
 
@@ -195,6 +196,14 @@ async def users_me_get(request: Request) -> dict:
                 422,
                 translate("You need to be logged in to view this page."),
             )
+
+
+def update_request_state_me(request: Request, me: dict) -> dict:
+    """
+    Update the request state with the current user.
+    """
+    request.state.me = me
+    return me
 
 
 async def users_data_post(request: Request, id: str, data: dict):
@@ -397,12 +406,12 @@ async def is_logged_in(request: Request) -> bool:
         return False
 
 
-async def me_get(request: Request) -> dict:
+async def me_get(request: Request, allow_request_state=True) -> dict:
     """
     Check if the current user is logged in. Return True if the user is logged in.
     """
     try:
-        me: dict = await users_me_get(request)
+        me: dict = await users_me_get(request, allow_request_state)
         return me
 
     except Exception:
