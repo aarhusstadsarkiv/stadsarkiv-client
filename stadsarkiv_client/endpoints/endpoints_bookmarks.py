@@ -21,7 +21,9 @@ log = get_log()
 
 
 async def bookmarks(request: Request):
-    """User bookmarks page."""
+    """
+    User bookmarks page.
+    """
 
     await is_authenticated(request)
     try:
@@ -35,24 +37,29 @@ async def bookmarks(request: Request):
 
         for record in records:
 
-            record = normalize_dates.normalize_dates(record)
-            meta_data = get_record_meta_data(request, record)
+            try:
 
-            record_id = meta_data["id"]
-            record_link = f"/records/{record_id}"
-            title = meta_data.get("title")
-            date_normalized = record.get("date_normalized")
-            collection_label = record.get("collection", {}).get("label", "")
-            content_types_label = meta_data.get("content_types_label")
+                record = normalize_dates.normalize_dates(record)
+                meta_data = get_record_meta_data(request, record)
 
-            bookmark_data = {
-                "record_id": record_id,
-                "record_link": record_link,
-                "title": title,
-                "date_normalized": date_normalized,
-                "collection_label": collection_label,
-                "content_types": content_types_label,
-            }
+                record_id = meta_data["id"]
+                record_link = f"/records/{record_id}"
+                title = meta_data.get("title")
+                date_normalized = record.get("date_normalized")
+                collection_label = record.get("collection", {}).get("label", "")
+                content_types_label = meta_data.get("content_types_label")
+
+                bookmark_data = {
+                    "record_id": record_id,
+                    "record_link": record_link,
+                    "title": title,
+                    "date_normalized": date_normalized,
+                    "collection_label": collection_label,
+                    "content_types": content_types_label,
+                }
+            except KeyError:
+                # Some record_id might not exist in the database
+                continue
 
             bookmarks_data.append(bookmark_data)
 
