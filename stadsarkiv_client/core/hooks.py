@@ -3,7 +3,6 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.core.args import get_local_config_dir
 import importlib
-from starlette.types import Scope
 import typing
 
 
