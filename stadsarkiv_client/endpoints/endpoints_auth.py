@@ -94,7 +94,7 @@ async def set_cookie(request: Request):
     cookie_value = post_data.get("cookie_value")
 
     if cookie_name == "dark_theme":
-        response = JSONResponse({"message": cookie_name, "value": cookie_value})
+        response = JSONResponse({})
         MAX_AGE = 10 * 365 * 24 * 60 * 60
         if cookie_value:
             flash.set_message(request, message=translate("Dark theme enabled."), type="success")
@@ -104,7 +104,7 @@ async def set_cookie(request: Request):
             flash.set_message(request, message=translate("Dark theme disabled."), type="success")
         return response
     else:
-        return JSONResponse({"message": cookie_name})
+        return JSONResponse({})
 
 
 async def register_get(request: Request):
