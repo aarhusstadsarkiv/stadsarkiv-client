@@ -53,13 +53,13 @@
         
                 const button = document.createElement("button");
                 button.classList.add('copy-button');
-                button.textContent = "Copy code";
+                button.textContent = "Copy";
                 button.onclick = function () {
                     navigator.clipboard.writeText(code.textContent).then(() => {
                         button.textContent = "Copied!";
         
                         setTimeout(() => {
-                            button.textContent = "Copy code";
+                            button.textContent = "Copy";
                         }, 2000);
         
                     }, err => {
@@ -83,10 +83,19 @@
     </script>
     <style>
 
+        .container-main {
+            width: calc(100% - 375px);
+            margin: 0 20px;
+            max-width: 100%;
+        }
+
         .copy-button {
             cursor: pointer;
             padding: 5px;
             font-size: 12px;
+            cursor: pointer;
+            position: absolute;
+    margin: 5px;
         }
         
         .copy-button-container {
