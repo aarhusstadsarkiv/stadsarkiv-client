@@ -29,7 +29,7 @@ The above structure shows the `example-config-simple` client. You may use this c
 Run the client:
 
 ```bash
-stadsarkiv-client server-dev -c example-config-aarhus
+stadsarkiv-client server-dev -c example-config-simple
 ```
 
 If the `-c` or `--config` option is not used, then the module will look for templates, static files, and configuration in the folder `local`. If the `local` does not exist, the module will use built-in defaults.
