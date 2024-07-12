@@ -8,7 +8,11 @@
 <meta name="robots" content="noindex, nofollow">
 {% endif %}
 <meta name="description" content="{{ meta_description }}">
+{% if dark_theme %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/dark.css') }}?v={{ get_setting('version') }}">
+{% else %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/light.css') }}?v={{ get_setting('version') }}">
+{% endif %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/dolphin.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/default.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/record.css') }}?v={{ get_setting('version') }}">

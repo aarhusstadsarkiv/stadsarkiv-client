@@ -39,6 +39,7 @@ async def get_context(request: Request, context_values: dict = {}, identifier: s
         "main_menu_sections": settings["main_menu_sections"],
         "logged_in": logged_in,
         "authorization": _get_authorization(request),
+        "dark_theme": request.cookies.get("dark_theme", False),
     }
 
     context.update(context_values)

@@ -86,6 +86,27 @@ async def logout_post(request: Request):
     return RedirectResponse(url="/auth/login", status_code=302)
 
 
+async def set_cookie(request: Request):
+
+    # get all POST variables
+    post_data = await request.json()
+    cookie_name = post_data.get("cookie_name")
+    cookie_value = post_data.get("cookie_value")
+
+    if cookie_name == "dark_theme":
+        response = JSONResponse({"message": cookie_name, "value": cookie_value})
+        MAX_AGE = 10 * 365 * 24 * 60 * 60
+        if cookie_value:
+            flash.set_message(request, message=translate("Dark theme enabled."), type="success")
+            response.set_cookie(cookie_name, cookie_value, max_age=MAX_AGE, httponly=True)
+        else:
+            response.delete_cookie(cookie_name)
+            flash.set_message(request, message=translate("Dark theme disabled."), type="success")
+        return response
+    else:
+        return JSONResponse({"message": cookie_name})
+
+
 async def register_get(request: Request):
 
     context_values = {

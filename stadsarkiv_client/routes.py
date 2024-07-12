@@ -72,6 +72,7 @@ routes = [
         "/auth/reset-password/{token:str}", endpoint=endpoints_auth.reset_password_post, name="auth_reset_password_post", methods=["POST"]
     ),
     Route("/auth/me", endpoint=endpoints_auth.me_get, name="auth_me_get", methods=["GET"]),
+    Route("/auth/cookie", endpoint=endpoints_auth.set_cookie, name="auth_set_cooke", methods=["POST"]),
     Route("/auth/orders", endpoint=endpoints_auth.orders, name="auth_orders", methods=["GET"]),
     Route("/auth/search-results", endpoint=endpoints_auth.search_results, name="auth_search_results", methods=["GET"]),
     Route("/auth/verify/{token:str}", endpoint=endpoints_auth.verify_get, name="auth_verify"),  # request token sent by email
