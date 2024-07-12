@@ -40,8 +40,59 @@
         import { showTOC } from '/static/js/table-of-contents.js';
         showTOC('article', 'toc');
 
+        /**
+         * Add copy buttons to code blocks
+         */
+        function addCopyButtons(elem) {
+
+            const codeBlocks = elem.querySelectorAll('pre code');
+        
+            // Get 'content' element and add 'copy-button-container' and 'copy-button' elements
+            const contentElem = elem.querySelector('.content');
+            codeBlocks.forEach(code => {
+        
+                const button = document.createElement("button");
+                button.classList.add('copy-button');
+                button.textContent = "Copy code";
+                button.onclick = function () {
+                    navigator.clipboard.writeText(code.textContent).then(() => {
+                        button.textContent = "Copied!";
+        
+                        setTimeout(() => {
+                            button.textContent = "Copy code";
+                        }, 2000);
+        
+                    }, err => {
+                        console.log('Failed to copy: ', err);
+                    });
+                };
+
+                // Wrap button in div and insert before code block
+                const buttonContainer = document.createElement('div');
+                buttonContainer.classList.add('copy-button-container');
+                buttonContainer.appendChild(button);
+        
+                const parent = code.parentNode; // 'pre' element
+                parent.insertBefore(buttonContainer, code);
+            });
+        }
+
+        let copyPasteEleme = document.getElementById('article');
+        addCopyButtons(copyPasteEleme);
+
     </script>
     <style>
+
+        .copy-button {
+            cursor: pointer;
+            padding: 5px;
+            font-size: 12px;
+        }
+        
+        .copy-button-container {
+            display: flex;
+            justify-content: flex-end;
+        }
 
         #toc {
             position: sticky;
