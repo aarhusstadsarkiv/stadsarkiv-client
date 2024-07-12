@@ -1,5 +1,12 @@
 # stadsarkiv-client
 
+The `stadsarkiv-client` is a piece of software used to make web clients 
+that can interact with aarhus stadsarkivs API service. Aarhus stadsarkiv
+contains a lot of public archives and the API service is used to search
+and retrieve data from the archives.
+
+The following describes how to install and use the stadsarkiv-client.
+
 ## development
 
     git clone git@github.com:aarhusstadsarkiv/stadsarkiv-client.git
