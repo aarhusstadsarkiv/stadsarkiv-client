@@ -1,7 +1,6 @@
 # from starlette.requests import Request
 from starlette.routing import Route
 from starlette.requests import Request
-from starlette.responses import JSONResponse
 from starlette.exceptions import HTTPException
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.logging import get_log
@@ -11,7 +10,6 @@ from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.core.user_data import UserData
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.context import get_context
-from stadsarkiv_client.core.translate import translate
 import json
 import os
 import csv
@@ -43,9 +41,9 @@ async def docs_endpoint(request: Request):
     docs_folder = str(os.path.join(base_dir, "..", "docs"))
 
     docs_data = [
-        {"title": "Install", "file": "README.md", "path": "/"},
-        {"title": "Client", "file": "README.client.md", "path": "/docs/README.client.md"},
-        {"title": "Server", "file": "README.server.md", "path": "/docs/README.server.md"},
+        {"title": "stadsarkiv-client", "file": "README.md", "path": "/"},
+        {"title": "Create client", "file": "README.client.md", "path": "/docs/README.client.md"},
+        {"title": "Run on server", "file": "README.server.md", "path": "/docs/README.server.md"},
     ]
 
     url_path = request.url.path

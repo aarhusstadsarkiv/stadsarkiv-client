@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "page_with_toc.html" %}
 
 {% block body_class %}page-docs{% endblock %}
 
@@ -9,6 +9,7 @@
 <a href="{{ doc.path }}">{{ doc.title }}</a>
 {% endfor %}
 </div>
+    
 {{ markdown(content)|safe }}
 
 {% endblock content %}

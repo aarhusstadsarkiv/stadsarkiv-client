@@ -17,6 +17,7 @@ from stadsarkiv_client.core.args import get_local_config_dir
 import json
 import re
 import markdown
+from markdown.extensions.toc import TocExtension
 
 
 log = get_log()
@@ -88,7 +89,7 @@ def _key_exist_in_dict(keys: list, data: dict):
 
 
 def _markdown(text: str, safe: bool = True):
-    return markdown.markdown(text, extensions=["fenced_code"])
+    return markdown.markdown(text, extensions=["fenced_code", TocExtension(permalink=False)])
 
 
 loader = FileSystemLoader(template_dirs)
