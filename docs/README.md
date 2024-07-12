@@ -67,13 +67,3 @@ Install latest version:
 	pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@v1.3.322
 
 Usage is the same as for development.
-
-## Create client
-
-In order to create a client you may override templates, static files, and configuration files. 
-
-[See README.client.md](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/docs/README.client.md)
-
-## Run on server
-
-[See README.server.md](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/docs/README.client.md)
