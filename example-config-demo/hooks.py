@@ -41,22 +41,26 @@ def get_bookmarks_by_email(email):
 async def docs_endpoint(request: Request):
 
     docs_folder = str(os.path.join(base_dir, "..", "docs"))
-    page = str(request.path_params.get("page"))
 
-    # get all .md files from the docs folder
-    files = os.listdir(docs_folder)
-    files = [f for f in files if f.endswith(".md")]
+    docs_data = [
+        {"title": "Install", "file": "README.md", "path": "/"},
+        {"title": "Client", "file": "README.client.md", "path": "/docs/README.client.md"},
+        {"title": "Server", "file": "README.server.md", "path": "/docs/README.server.md"},
+    ]
 
-    if page in files:
+    url_path = request.url.path
+
+    for doc in docs_data:
+        if doc["path"] != url_path:
+            continue
         # open file and read it.
-        file_path = os.path.join(docs_folder, page)
+        file_path = os.path.join(docs_folder, doc.get("file", ""))
         with open(file_path, "r") as file:
             content = file.read()
-            log.warning(content)
 
-        context_values = {"title": "Documentation", "files": files, "content": content}
+        context_values = {"title": "Documentation", "doc_data": docs_data, "content": content}
         context = await get_context(request, context_values=context_values)
-        return templates.TemplateResponse(request, "docs/test.html", context)
+        return templates.TemplateResponse(request, "docs/docs.html", context)
 
     raise HTTPException(404, detail="type not found", headers=None)
 
@@ -70,7 +74,7 @@ class Hooks(HooksSpec):
 
         routes_test = [
             Route("/", endpoint=docs_endpoint, name="doh", methods=["GET"]),
-            Route("/docs/{page:str}", endpoint=docs_endpoint, name="doh", methods=["GET"]),
+            Route("/docs/{page:str}", endpoint=docs_endpoint, name="doh_2", methods=["GET"]),
         ]
 
         routes = routes_test + routes

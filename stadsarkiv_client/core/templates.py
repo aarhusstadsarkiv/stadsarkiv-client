@@ -88,7 +88,7 @@ def _key_exist_in_dict(keys: list, data: dict):
 
 
 def _markdown(text: str, safe: bool = True):
-    return markdown.markdown(text)
+    return markdown.markdown(text, extensions=["fenced_code"])
 
 
 loader = FileSystemLoader(template_dirs)
