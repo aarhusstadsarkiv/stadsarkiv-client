@@ -86,7 +86,12 @@
         .container-main {
             width: calc(100% - 375px);
             margin: 0 20px;
-            max-width: 100%;
+        }
+
+        @media (max-width: 992px) {
+            .container-main {
+                width: 100%;
+            }
         }
 
         .copy-button {
