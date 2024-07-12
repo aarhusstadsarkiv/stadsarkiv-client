@@ -72,8 +72,8 @@ Usage is the same as for development.
 
 In order to create a client you may override templates, static files, and configuration files. 
 
-[See README.client.md](docs/README.client.md)
+[See README.client.md](/docs/README.client.md)
 
 ## Run on server
 
-[See README.server.md](docs/README.server.md)
+[See README.server.md](/docs/README.server.md)
