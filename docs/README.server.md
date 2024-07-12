@@ -55,7 +55,7 @@ WantedBy=multi-user.target
 
 # Upgrade and restart service
 
-See: [bin/upgrade.sh](bin/upgrade.sh)
+See: [bin/upgrade.sh](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/bin/upgrade.sh)
 
 The above script will upgrade the source code to the latest tag. 
 

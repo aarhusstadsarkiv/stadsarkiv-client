@@ -65,13 +65,13 @@ language = {
 }
 ```
 
-Original language files (and keys) can be found in [stadsarkiv_client/locales/da.py](/stadsarkiv_client/locales/da.py)
+Original language files (and keys) can be found in [stadsarkiv_client/locales/da.py](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/locales/da.py)
 
 ## Templates
 
 ### Override
 
-Templates that you can override can be found in the [stadsarkiv_client/templates](/stadsarkiv_client/templates) directory. In order to override a template you place your custom template in the `templates` directory. In the `example-config-simple` there is a override of `auth/login.html` and `pages/home.html`.
+Templates that you can override can be found in the [stadsarkiv_client/templates](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/templates) directory. In order to override a template you place your custom template in the `templates` directory. In the `example-config-simple` there is a override of `auth/login.html` and `pages/home.html`.
 
 As you can see in the home.html template, you may add custom css and js files in the `head` block. This is done like this:
 
@@ -95,7 +95,7 @@ You may add custom pages. In the `example-config-simple` there is a custom page 
 
 ### Override
 
-You may also override any static file found in [stadsarkiv_client/static](/stadsarkiv_client/static)
+You may also override any static file found in [stadsarkiv_client/static](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/static)
 
 E.g. if you only want to alter the `logo` and the `favicon` you need to create a `static/assets/default_logo.png` and `static/assets/favicon.ico` in your `example-config-simple` directory.
 
@@ -105,11 +105,11 @@ An easy way to add custom css and js is just to create a `static/assets/css/loca
 
 ## Settings
 
-There are quite a few settings. In order to view all base settings you can go to the [example-config-simple/settings.py](/example-config-simple/settings.py) file. This file is quite well documented.
+There are quite a few settings. In order to view all base settings you can go to the [example-config-simple/settings.py](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/example-config-simple/settings.py) file. This file is quite well documented.
 
-Another settings file is [example-config-simple/settings_facets.py](/example-config-simple/settings_facets.py). This file is used to define the facets that are shown on the search page. You may add, remove, or change the order of the facets. 
+Another settings file is [example-config-simple/settings_facets.py](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/example-config-simple/settings_facets.py). This file is used to define the facets that are shown on the search page. You may add, remove, or change the order of the facets. 
 
-If the `settings_facets.py` file does not exist, the default facets are used. The default facets are defined in the [stadsarkiv_client/settings_facets.py](/stadsarkiv_client/settings_facets.py) file.
+If the `settings_facets.py` file does not exist, the default facets are used. The default facets are defined in the [stadsarkiv_client/settings_facets.py](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadarkiv_client/settings_facets.py) file.
 
 In the settings.py file you can specify which of the default facets are enabled. In the `example-config-simple` it is `["content_types", "events", "dates"]`. If a local settings_facets.py file exists then these facets will override the default facets.
 
@@ -121,4 +121,4 @@ If you look at the `type` of each facet section you will notice that there are t
 
 ## Hooks
 
-In the `hooks.py` file you may do some custom actions. In the [example-config-simple/hooks.py](/example-config-simple/hooks.py) you can see all the hooks available. 
+In the `hooks.py` file you may do some custom actions. In the [example-config-simple/hooks.py](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/example-config-simple/hooks.py) you can see all the hooks available. 
