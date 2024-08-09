@@ -50,7 +50,7 @@ class Hooks(HooksSpec):
                 custom_data.append_bookmark(bookmark)
 
             # This needs to be fixed in the webservice
-            # custom_data.set_key_value("bookmarks_imported", True)
+            custom_data.set_key_value("bookmarks_imported", True)
             data = custom_data.get_data()
             response = await api.users_data_post(self.request, id=id, data=data)
 
