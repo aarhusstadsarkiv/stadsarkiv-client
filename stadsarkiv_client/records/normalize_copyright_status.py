@@ -10,6 +10,7 @@ log = get_log()
 
 
 creative_commons_license = translate("copyright_creative_commons_license")
+creative_commons_license_nc = translate("copyright_creative_commons_license_nc")
 special_notice = translate("copyright_special_notice")
 
 
@@ -39,7 +40,7 @@ def normalize_copyright_status(record: dict, meta_data: dict):
         lines.append(text)
 
     if copyright_id == 5:
-        lines.append(creative_commons_license)
+        lines.append(creative_commons_license_nc)
         text = translate("copyright_id_5")
         lines.append(text)
 
