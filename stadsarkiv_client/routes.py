@@ -3,7 +3,6 @@ Define routes for the application.
 """
 
 from starlette.routing import Route, Mount
-from starlette.requests import Request
 from stadsarkiv_client.endpoints import (
     endpoints_admin,
     endpoints_auth,
