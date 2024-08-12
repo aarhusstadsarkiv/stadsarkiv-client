@@ -107,6 +107,8 @@ def _get_error_string(error: str) -> str:
         return translate("User already exists. Try to login instead.")
     if error == "value_error.email":
         return translate("Email needs to be correct.")
+    if error == "value_error.missing":
+        return translate("Username is required.")
 
     # verify errors
     if error == "VERIFY_USER_BAD_TOKEN":

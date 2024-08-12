@@ -138,13 +138,15 @@ async def auth_register_post(request: Request):
     """
     await validate_passwords(request)
     form = await request.form()
+    display_name = str(form.get("display_name"))
     email = str(form.get("email"))
     password = str(form.get("password"))
 
     async with _get_async_client() as client:
         url = base_url + "/auth/register"
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
-        response = await client.post(url, json={"email": email, "password": password}, headers=headers)
+        json_post = {"email": email, "password": password, "display_name": display_name}
+        response = await client.post(url, json=json_post, headers=headers)
 
         if not response.is_success:
             json_response = response.json()
