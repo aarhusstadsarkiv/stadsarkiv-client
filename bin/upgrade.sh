@@ -7,24 +7,29 @@
 git fetch --tags
 
 # Get the latest tag
-latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+install_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
 
 # Check if latest tag is empty
-if [ -z "$latest_tag" ]; then
+if [ -z "$install_tag" ]; then
     echo "No tags found in the repository."
     exit 1
+fi
+
+# if first argument is not empty, use it as the tag to install
+if [ ! -z "$1" ]; then
+    install_tag=$1
 fi
 
 # Get the current checked out tag
 current_tag=$(git describe --tags)
 
 # Check if the current tag is the latest
-if [ "$current_tag" = "$latest_tag" ]; then
-    echo "Latest tag ($latest_tag) is already checked out."
+if [ "$current_tag" = "$install_tag" ]; then
+    echo "Latest tag ($install_tag) is already checked out."
     exit 0
 fi
 
-echo "Upgrading to the latest tag: $latest_tag"
+echo "Upgrading to the latest tag: $install_tag"
 
 # get last part of current working directory
 DIR=${PWD##*/}
@@ -34,7 +39,7 @@ sudo service $DIR stop
 # Upgrade the repo and checkout the latest tag
 git checkout main
 git pull
-git checkout $latest_tag
+git checkout $install_tag
 
 # Activate virtual environment and install requirements
 ./venv/bin/pip install -r requirements.txt
