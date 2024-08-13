@@ -179,6 +179,10 @@ class Hooks(HooksSpec):
         """
         Before the reponse is returned to the template.
         """
-        set_response_cookie(response, Hooks.context)
+        try:
+            set_response_cookie(response, Hooks.context)
+        except AssertionError:
+            log.debug("Not enough data to set cookie. size sort and view should be set.")
+            pass
 
         return response
