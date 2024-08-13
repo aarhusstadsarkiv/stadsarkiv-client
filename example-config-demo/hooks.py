@@ -1,4 +1,3 @@
-# from starlette.requests import Request
 from starlette.routing import Route
 from starlette.requests import Request
 from starlette.exceptions import HTTPException
@@ -68,11 +67,11 @@ class Hooks(HooksSpec):
         super().__init__(request)
 
     def after_routes_init(self, routes: list) -> list:
-        log.warning("After routes init")
+        log.info("Hooks. After routes init")
 
         routes_test = [
-            Route("/", endpoint=docs_endpoint, name="doh", methods=["GET"]),
-            Route("/docs/{page:str}", endpoint=docs_endpoint, name="doh_2", methods=["GET"]),
+            Route("/", endpoint=docs_endpoint, name="homepage", methods=["GET"]),
+            Route("/docs/{page:str}", endpoint=docs_endpoint, name="docs", methods=["GET"]),
         ]
 
         routes = routes_test + routes
