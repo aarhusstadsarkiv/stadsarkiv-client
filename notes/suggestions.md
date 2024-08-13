@@ -150,3 +150,12 @@ Men hvad nu, hvis jeg gerne vil se billeder, men IKKE portrætter – altså til
 Janne
 
 ---
+
+
+Jeg vil meget gerne have muligheden for at kunne vælge to filtre fra samme kategori.
+
+Fx både have kategorien ”CC Navngivelse” + ”I offentlige eje” fra kategorien ”Brug af materialer”.
+
+Janne
+
+---
