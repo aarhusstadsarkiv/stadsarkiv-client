@@ -175,23 +175,18 @@ class Hooks(HooksSpec):
             resource = await self._alter_types_people_events(type, resource)
         return resource
 
-    async def before_resource_response(self, response: HTMLResponse) -> HTMLResponse:
-        """
-        Before the reponse is returned to the template.
-        """
-        try:
-            set_response_cookie(response, Hooks.context)
-        except AssertionError:
-            log.debug("Not enough data to set cookie. size sort and view should be set.")
-            pass
-
-        return response
-
     async def before_reponse(self, response: HTMLResponse) -> HTMLResponse:
-        log.debug("Before response")
 
-        # get name of route
-        route_name = self.request.scope['endpoint'].__name__
-        log.debug(route_name)
+        route_name = self.request.scope["endpoint"].__name__
+        if route_name == "get_resource":
+            """
+            Before the reponse is returned to the template.
+            """
+            resource_type = self.request.path_params["resource_type"]
+
+            # only set cookie on 'people' and 'events' because we know a search has been made performed
+            alter_response_on = ["people", "events"]
+            if resource_type in alter_response_on:
+                set_response_cookie(response, Hooks.context)
 
         return response

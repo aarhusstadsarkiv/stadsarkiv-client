@@ -90,11 +90,3 @@ class Hooks(HooksSpec):
         Alter the json returned from the proxies api.
         """
         return resource
-
-    async def before_resource_response(self, response: typing.Any) -> typing.Any:
-        """
-        Before the reponse is returned to the template.
-        This is a good place to alter the response before it is returned.
-        E.g. you want to set a cookie or alter the response.
-        """
-        return response
