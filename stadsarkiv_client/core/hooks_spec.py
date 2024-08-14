@@ -20,7 +20,7 @@ class HooksSpec:
         """
         return routes
 
-    async def before_reponse(self, response: Response) -> Response:
+    async def before_response(self, response: Response) -> Response:
         """
         Alter the response before it is returned.
         """

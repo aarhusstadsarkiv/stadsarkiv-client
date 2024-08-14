@@ -82,7 +82,7 @@ class BeforeResponseMiddleware(BaseHTTPMiddleware):
 
         hooks = get_hooks(request)
         response = await call_next(request)
-        response = await hooks.before_reponse(response)
+        response = await hooks.before_response(response)
         return response
 
 

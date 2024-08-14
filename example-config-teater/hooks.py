@@ -175,7 +175,7 @@ class Hooks(HooksSpec):
             resource = await self._alter_types_people_events(type, resource)
         return resource
 
-    async def before_reponse(self, response: HTMLResponse) -> HTMLResponse:
+    async def before_response(self, response: HTMLResponse) -> HTMLResponse:
 
         route_name = self.request.scope["endpoint"].__name__
         if route_name == "get_resource":
