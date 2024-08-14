@@ -159,3 +159,12 @@ Fx både have kategorien ”CC Navngivelse” + ”I offentlige eje” fra kateg
 Janne
 
 ---
+
+Kan det lade sig gøre at åbne op for at feltet ”Beskrivelsesnoter” også er tilgængeligt i fritekstsøgning?
+
+Så vidt jeg har forstået søger en fritektstsøgning pt. kun i Overskrift og Abstrakt.
+
+Janne
+
+---
+
