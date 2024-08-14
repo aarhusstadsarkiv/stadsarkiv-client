@@ -145,7 +145,8 @@ def _get_facets_and_filters(request: Request, search_result: dict, query_params=
 def set_response_cookie(response: Response, context: dict):
     """
     Set cookies for search page
-    This has a public function so it can be used in other endpoints where search is used
+    This is a public function so it can be used in other endpoints where a search may be performed
+    It is based on the context values used in the search page, e.g. size, sort and view
     """
 
     size = context.get("size")
