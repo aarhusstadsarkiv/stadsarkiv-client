@@ -20,6 +20,12 @@ class HooksSpec:
         """
         return routes
 
+    def before_reponse(self, response: dict) -> dict:
+        """
+        Alter the response before it is returned.
+        """
+        return response
+
     async def after_login(self, response: dict) -> dict:
         """
         Alter the response after a successful login.
