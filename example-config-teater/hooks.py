@@ -186,3 +186,12 @@ class Hooks(HooksSpec):
             pass
 
         return response
+
+    async def before_reponse(self, response: HTMLResponse) -> HTMLResponse:
+        log.debug("Before response")
+
+        # get name of route
+        route_name = self.request.scope['endpoint'].__name__
+        log.debug(route_name)
+
+        return response

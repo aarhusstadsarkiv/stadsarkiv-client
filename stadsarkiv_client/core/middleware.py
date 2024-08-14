@@ -8,12 +8,14 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.gzip import GZipMiddleware
 from starlette.requests import Request
+from starlette.responses import Response
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import api
 import os
 import json
 from time import time
+from stadsarkiv_client.core.hooks import get_hooks
 
 
 log = get_log()
@@ -78,7 +80,10 @@ class NoCacheMiddleware(BaseHTTPMiddleware):
 
 class BeforeResponseMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
+
+        hooks = get_hooks(request)
         response = await call_next(request)
+        response = await hooks.before_reponse(response)
         return response
 
 

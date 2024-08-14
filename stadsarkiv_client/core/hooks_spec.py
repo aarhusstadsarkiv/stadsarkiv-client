@@ -5,6 +5,7 @@ query_params is a list of tuples. Example: [("collection", 1), ("series", 2)]
 
 import typing
 from starlette.requests import Request
+from starlette.responses import Response
 from stadsarkiv_client.core.logging import get_log
 
 log = get_log()
@@ -20,7 +21,7 @@ class HooksSpec:
         """
         return routes
 
-    def before_reponse(self, response: dict) -> dict:
+    async def before_reponse(self, response: Response) -> Response:
         """
         Alter the response before it is returned.
         """

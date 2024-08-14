@@ -30,6 +30,7 @@ except ImportError:
 def get_hooks(request: typing.Optional[Request] = None) -> HooksSpec:
 
     if not request:
+        # generate a fake request
         scope = {"type": "http", "method": "GET", "path": "/", "headers": []}
 
         async def receive():
