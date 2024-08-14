@@ -288,11 +288,13 @@ async def get_json_search(request: Request):
 
 
 def normalize_auto_complete_results(results: list):
-    """ "
-    collection is weird. normalize it.
-    all other domains has the same search_query as domain path, e.g.
-    /entities -> search?entities or /people -> search?records but
-    /collections -> search?collection
+    """
+    Collection is weird so normalize it a bit. All other domains has the same 'search_query' as 'domain path', e.g.
+    /people/120169 -> search?people=120169
+
+    But collections is different:
+
+    /collections/7 -> /search?collection=7
     """
     for result in results:
         if result["domain"] == "collections":
