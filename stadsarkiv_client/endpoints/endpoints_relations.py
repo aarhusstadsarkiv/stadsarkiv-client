@@ -10,7 +10,7 @@ from stadsarkiv_client.core.auth import is_authenticated
 log = get_log()
 
 
-async def post(request: Request):
+async def relations_post(request: Request):
     await is_authenticated(request, permissions=["employee"])
     try:
         await api.proxies_post_relations(request)
@@ -25,7 +25,7 @@ async def post(request: Request):
         return JSONResponse({"error": True, "message": "Internal Server Error"})
 
 
-async def get(request: Request):
+async def relations_get(request: Request):
     type = request.path_params.get("type", "")
     id = request.path_params.get("id", "")
     try:
@@ -46,7 +46,7 @@ async def get(request: Request):
         return JSONResponse({"error": True, "message": "Internal Server Error"})
 
 
-async def delete(request: Request):
+async def relations_delete(request: Request):
     await is_authenticated(request, permissions=["employee"])
     try:
         await api.proxies_delete_relations(request)

@@ -14,7 +14,7 @@ import random
 log = get_log()
 
 
-async def test_default(request: Request):
+async def test_get(request: Request):
     # https://placehold.co/600x400
     # generate a context containing 10 images with random sizes.
     # But min width is 200px and max width is 360px

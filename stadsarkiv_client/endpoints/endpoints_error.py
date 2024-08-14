@@ -9,7 +9,7 @@ from stadsarkiv_client.core.logging import get_log
 log = get_log()
 
 
-async def log_post(request: Request):
+async def error_log_post(request: Request):
     """
     Log posted json data
     """

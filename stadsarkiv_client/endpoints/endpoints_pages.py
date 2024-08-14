@@ -19,7 +19,7 @@ async def _get_page(request: Request) -> dict:
     return page
 
 
-async def default(request: Request):
+async def custom_page(request: Request):
     page = await _get_page(request)
     template = page["template"]
 

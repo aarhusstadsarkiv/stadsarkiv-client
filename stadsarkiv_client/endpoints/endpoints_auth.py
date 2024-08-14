@@ -18,7 +18,7 @@ from stadsarkiv_client.endpoints import auth_data
 log = get_log()
 
 
-async def login_get(request: Request):
+async def auth_login_get(request: Request):
     is_logged_in = await api.is_logged_in(request)
 
     post_url = "/auth/login"
@@ -37,7 +37,7 @@ async def login_get(request: Request):
     return templates.TemplateResponse(request, "auth/login.html", context)
 
 
-async def login_post(request: Request):
+async def auth_login_post(request: Request):
     next_url = request.query_params.get("next")
 
     try:
@@ -62,7 +62,7 @@ async def login_post(request: Request):
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
-async def logout_get(request: Request):
+async def auth_logout_get(request: Request):
     is_logged_in = await api.is_logged_in(request)
     context_values = {
         "title": translate("Logout"),
@@ -72,7 +72,7 @@ async def logout_get(request: Request):
     return templates.TemplateResponse(request, "auth/logout.html", context)
 
 
-async def logout_post(request: Request):
+async def auth_logout_post(request: Request):
     try:
         user.logout(request)
         flash.set_message(request, translate("You have been logged out."), type="success")
@@ -86,7 +86,7 @@ async def logout_post(request: Request):
     return RedirectResponse(url="/auth/login", status_code=302)
 
 
-async def set_cookie(request: Request):
+async def auth_set_cooke(request: Request):
 
     # get all POST variables
     post_data = await request.json()
@@ -107,7 +107,7 @@ async def set_cookie(request: Request):
         return JSONResponse({})
 
 
-async def register_get(request: Request):
+async def auth_register_get(request: Request):
 
     context_values = {
         "title": translate("Register new user"),
@@ -117,7 +117,7 @@ async def register_get(request: Request):
     return templates.TemplateResponse(request, "auth/register.html", context)
 
 
-async def register_post(request: Request):
+async def auth_register_post(request: Request):
     try:
         await api.auth_register_post(request)
         flash.set_message(
@@ -136,7 +136,7 @@ async def register_post(request: Request):
     return RedirectResponse(url="/auth/register", status_code=302)
 
 
-async def verify_get(request: Request):
+async def auth_verify(request: Request):
     try:
         await api.auth_verify_post(request)
         flash.set_message(
@@ -165,7 +165,7 @@ async def me_permission_translated(request: Request):
     return permissions_translated[-1]
 
 
-async def me_get(request: Request):
+async def auth_me_get(request: Request):
     await is_authenticated(request)
     try:
         me = await api.users_me_get(request)
@@ -185,7 +185,7 @@ async def me_get(request: Request):
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
-async def orders(request: Request):
+async def auth_orders(request: Request):
     await is_authenticated(request)
     try:
         me = await api.users_me_get(request)
@@ -201,7 +201,7 @@ async def orders(request: Request):
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
-async def search_results(request: Request):
+async def auth_search_results(request: Request):
     await is_authenticated(request)
     try:
         me = await api.users_me_get(request)
@@ -217,13 +217,13 @@ async def search_results(request: Request):
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
-async def forgot_password_get(request: Request):
+async def auth_forgot_password_get(request: Request):
     context_values = {"title": translate("Forgot your password")}
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse(request, "auth/forgot_password.html", context)
 
 
-async def forgot_password_post(request: Request):
+async def auth_forgot_password_post(request: Request):
     try:
         await api.auth_forgot_password(request)
         flash.set_message(
@@ -240,14 +240,14 @@ async def forgot_password_post(request: Request):
     return RedirectResponse(url="/auth/forgot-password", status_code=302)
 
 
-async def reset_password_get(request: Request):
+async def auth_reset_password_get(request: Request):
     token = request.path_params["token"]
     context_values = {"title": translate("Enter new password"), "token": token}
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse(request, "auth/reset_password.html", context)
 
 
-async def reset_password_post(request: Request):
+async def auth_reset_password_post(request: Request):
     try:
         await api.auth_reset_password_post(request)
         flash.set_message(
@@ -267,7 +267,7 @@ async def reset_password_post(request: Request):
     return RedirectResponse(url="/auth/reset-password/" + token, status_code=302)
 
 
-async def send_verify_email(request: Request):
+async def auth_send_verify_email(request: Request):
     try:
         await api.auth_request_verify_post(request)
         flash.set_message(
@@ -285,6 +285,6 @@ async def send_verify_email(request: Request):
     return RedirectResponse(url="/auth/me", status_code=302)
 
 
-async def me_post(request: Request):
+async def auth_user_info(request: Request):
     is_logged_in = await api.is_logged_in(request)
     return JSONResponse({"is_logged_in": is_logged_in})

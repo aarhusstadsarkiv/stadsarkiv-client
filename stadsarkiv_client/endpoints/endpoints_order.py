@@ -20,7 +20,7 @@ import asyncio
 log = get_log()
 
 
-async def order_get(request: Request):
+async def records_get_json(request: Request):
     await is_authenticated(request)
 
     hooks = get_hooks(request)

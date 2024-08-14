@@ -20,7 +20,7 @@ from stadsarkiv_client.records import normalize_dates
 log = get_log()
 
 
-async def bookmarks(request: Request):
+async def auth_bookmarks_get(request: Request):
     """
     User bookmarks page.
     """
@@ -75,7 +75,7 @@ async def bookmarks(request: Request):
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
-async def bookmarks_json(request: Request):
+async def auth_bookmarks_json(request: Request):
     """
     Get user bookmarks as JSON
     """
@@ -91,7 +91,7 @@ async def bookmarks_json(request: Request):
         return JSONResponse(json_data, status_code=400)
 
 
-async def bookmarks_post(request: Request):
+async def auth_bookmarks_post(request: Request):
     """
     POST request to bookmark a record.
     """

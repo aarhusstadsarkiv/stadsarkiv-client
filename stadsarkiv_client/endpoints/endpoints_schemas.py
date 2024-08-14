@@ -19,7 +19,7 @@ from json import JSONDecodeError
 log = get_log()
 
 
-async def get_list(request: Request):
+async def schemas_get_list(request: Request):
     await is_authenticated(request, permissions=["admin"])
     try:
         schemas = await api.schemas(request)
@@ -30,7 +30,7 @@ async def get_list(request: Request):
         raise HTTPException(status_code=404, detail=str(e))
 
 
-async def get_single(request: Request):
+async def schemas_get_single(request: Request):
     try:
         schema = await api.schema_get(request)
         return JSONResponse(schema)
@@ -39,7 +39,7 @@ async def get_single(request: Request):
         raise HTTPException(status_code=404, detail=str(e))
 
 
-async def post(request: Request):
+async def schemas_post(request: Request):
     await is_authenticated(request, permissions=["admin"])
     try:
         await api.schema_create(request)

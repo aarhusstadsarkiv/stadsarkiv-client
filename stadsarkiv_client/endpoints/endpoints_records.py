@@ -104,7 +104,7 @@ async def _get_record_pagination(request: Request) -> typing.Optional[RecordPagi
     return record_pagination_obj
 
 
-async def get(request: Request):
+async def records_get(request: Request):
     hooks = get_hooks(request)
 
     record_id = request.path_params["record_id"]

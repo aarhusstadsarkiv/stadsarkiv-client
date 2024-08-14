@@ -15,7 +15,7 @@ import asyncio
 log = get_log()
 
 
-async def users_get(request: Request):
+async def admin_users_get(request: Request):
     await is_authenticated(request, permissions=["admin"])
     users = await api.users_get(request)
 
@@ -29,7 +29,7 @@ async def users_get(request: Request):
     return templates.TemplateResponse(request, "admin/users.html", context)
 
 
-async def users_get_single(request: Request):
+async def admin_users_get_single(request: Request):
     await is_authenticated(request, permissions=["admin"])
 
     single_user, used_permissions = await asyncio.gather(
@@ -47,7 +47,7 @@ async def users_get_single(request: Request):
     return templates.TemplateResponse(request, "admin/user_update.html", context)
 
 
-async def users_patch(request: Request):
+async def admin_users_patch(request: Request):
     await is_authenticated(request, permissions=["admin"])
 
     uuid = request.path_params.get("uuid")
@@ -64,7 +64,7 @@ async def users_patch(request: Request):
         return RedirectResponse(url=redirect_url, status_code=302)
 
 
-async def users_test(request: Request):
+async def admin_test(request: Request):
     await is_authenticated(request, permissions=["admin"])
 
     me = await api.me_get(request)
@@ -95,13 +95,13 @@ async def users_test(request: Request):
     return JSONResponse(users)
 
 
-async def users_get_json(request: Request):
+async def admin_users_get_json(request: Request):
     await is_authenticated(request, permissions=["admin"])
     user_ = await api.user_get(request)
     return JSONResponse(user_)
 
 
-async def config_get(request: Request):
+async def admin_config_get(request: Request):
     await is_authenticated(request, permissions=["admin"])
     dynamic_settings = settings
     return JSONResponse(dynamic_settings)

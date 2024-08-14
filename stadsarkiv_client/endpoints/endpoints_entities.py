@@ -18,7 +18,7 @@ import asyncio
 log = get_log()
 
 
-async def create(request: Request):
+async def entities_create(request: Request):
     await is_authenticated(request, permissions=["employee"])
     try:
         schema = await api.schema_get(request)
@@ -31,7 +31,7 @@ async def create(request: Request):
         raise HTTPException(500, detail=str(e), headers=None)
 
 
-async def update(request: Request):
+async def entities_update(request: Request):
     await is_authenticated(request, permissions=["employee"])
 
     uuid = request.path_params["uuid"]
@@ -59,7 +59,7 @@ async def update(request: Request):
     return templates.TemplateResponse(request, "entities/entities_update.html", context)
 
 
-async def patch(request: Request):
+async def entities_patch(request: Request):
     await is_authenticated(request, permissions=["employee"])
     try:
         await api.entity_patch(request)
@@ -71,7 +71,7 @@ async def patch(request: Request):
         return JSONResponse({"message": "Entitet kunne ikke opdateres", "error": True})
 
 
-async def delete(request: Request):
+async def entities_delete(request: Request):
     await is_authenticated(request, permissions=["employee"])
     if request.method == "DELETE":
         delete_type = request.path_params["delete_type"]
@@ -96,7 +96,7 @@ async def delete(request: Request):
         raise HTTPException(500, detail=str(e), headers=None)
 
 
-async def post(request: Request):
+async def entities_post(request: Request):
     await is_authenticated(request, permissions=["employee"])
     try:
         await api.entity_post(request)
@@ -108,7 +108,7 @@ async def post(request: Request):
         return JSONResponse({"message": "Entitet kunne ikke oprettes", "error": True})
 
 
-async def get_list(request: Request):
+async def entities_get_list(request: Request):
     await is_authenticated(request, permissions=["employee"])
     try:
         entities, schemas = await asyncio.gather(api.entities_get(request), api.schemas(request))
@@ -156,7 +156,7 @@ def _get_types_and_values(schema, entity):
     return data_and_values
 
 
-async def get_single(request: Request):
+async def entities_get_single(request: Request):
     entity: dict = await api.entity_get(request)
     schema_name, schema_version = api.schema_get_name_version_from_entity(entity)
 
@@ -173,7 +173,7 @@ async def get_single(request: Request):
     return templates.TemplateResponse(request, "entities/entities_single.html", context)
 
 
-async def get_single_json(request: Request):
+async def entities_get_single_json(request: Request):
     type = request.path_params["type"]
     entity: dict = await api.entity_get(request)
     schema_name, schema_version = api.schema_get_name_version_from_entity(entity)

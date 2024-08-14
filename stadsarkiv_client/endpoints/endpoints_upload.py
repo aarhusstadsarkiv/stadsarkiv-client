@@ -9,7 +9,7 @@ import tempfile
 log = get_log()
 
 
-async def handle_uploads(request: Request):
+async def upload(request: Request):
     """
     Handle file uploads.
     Dummy upload to tempdir, e.g. /tmp on linux.

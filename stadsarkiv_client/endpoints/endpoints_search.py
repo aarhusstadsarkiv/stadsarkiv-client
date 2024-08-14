@@ -269,7 +269,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
     return context_values
 
 
-async def get(request: Request):
+async def search_get(request: Request):
     context_values = await get_search_context_values(request)
     context = await get_context(request, context_values=context_values)
 
@@ -283,7 +283,7 @@ async def get(request: Request):
     return response
 
 
-async def get_json_search(request: Request):
+async def search_get_json(request: Request):
     context_values = await get_search_context_values(request)
     response = JSONResponse(context_values)
     set_response_cookie(response, context_values)
@@ -309,7 +309,7 @@ def normalize_auto_complete_results(results: list):
     return results
 
 
-async def auto_complete_search(request: Request):
+async def records_auto_complete_search(request: Request):
     """
     Auto complete for search
     """
@@ -325,7 +325,7 @@ async def auto_complete_search(request: Request):
     return JSONResponse(results)
 
 
-async def auto_complete_relations(request: Request):
+async def records_auto_complete_relations(request: Request):
     """
     Auto complete for search.
     Notice: There is no before and after hooks for this endpoint.
