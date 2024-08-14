@@ -143,6 +143,10 @@ def _get_facets_and_filters(request: Request, search_result: dict, query_params=
 
 
 def set_response_cookie(response: Response, context: dict):
+    """
+    Set cookies for search page
+    This has a public function so it can be used in other endpoints where search is used
+    """
 
     size = context.get("size")
     sort = context.get("sort")
