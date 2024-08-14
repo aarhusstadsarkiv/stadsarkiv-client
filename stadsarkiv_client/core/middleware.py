@@ -19,7 +19,7 @@ from time import time
 log = get_log()
 
 
-class RequestBegin(BaseHTTPMiddleware):
+class RequestBeginMiddleware(BaseHTTPMiddleware):
     """
     Used to set time_begin on request state in order to calculate time used on request
     """
@@ -34,7 +34,7 @@ class RequestBegin(BaseHTTPMiddleware):
         return response
 
 
-class RequestEnd(BaseHTTPMiddleware):
+class RequestEndMiddleware(BaseHTTPMiddleware):
     """
     Used to calculate time used on request and log it
     """
@@ -76,6 +76,12 @@ class NoCacheMiddleware(BaseHTTPMiddleware):
         return response
 
 
+class BeforeResponseMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        return response
+
+
 # Variables for cookie handling
 secret_key = str(os.getenv("SECRET_KEY"))
 session_store: CookieStore = CookieStore(secret_key=secret_key)
@@ -84,10 +90,11 @@ cookie_httponly = settings["cookie"]["httponly"]  # type: ignore
 
 middleware = [
     Middleware(CORSMiddleware, allow_origins=settings["cors_allow_origins"]),
-    Middleware(RequestBegin),
+    Middleware(RequestBeginMiddleware),
     Middleware(SessionMiddleware, store=session_store, cookie_https_only=cookie_httponly, lifetime=lifetime),
     Middleware(SessionAutoloadMiddleware, paths=["/"]),
-    Middleware(RequestEnd),
+    Middleware(BeforeResponseMiddleware),
+    Middleware(RequestEndMiddleware),
     Middleware(NoCacheMiddleware),
     Middleware(GZipMiddleware, minimum_size=1),
 ]
