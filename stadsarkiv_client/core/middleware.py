@@ -1,8 +1,7 @@
 """
-Session middleware for Starlette
+Middleware for the application
 """
 
-import re
 from starsessions import CookieStore, SessionMiddleware, SessionAutoloadMiddleware
 from starlette.middleware import Middleware
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -20,7 +19,11 @@ from time import time
 log = get_log()
 
 
-class FirstMiddleware(BaseHTTPMiddleware):
+class RequestBegin(BaseHTTPMiddleware):
+    """
+    Used to set time_begin on request state in order to calculate time used on request
+    """
+
     async def dispatch(self, request: Request, call_next):
         """
         Set time_begin on request state and add token to response header
@@ -31,7 +34,11 @@ class FirstMiddleware(BaseHTTPMiddleware):
         return response
 
 
-class LastMiddleware(BaseHTTPMiddleware):
+class RequestEnd(BaseHTTPMiddleware):
+    """
+    Used to calculate time used on request and log it
+    """
+
     async def dispatch(self, request: Request, call_next):
         response = await call_next(request)
 
@@ -69,30 +76,18 @@ class NoCacheMiddleware(BaseHTTPMiddleware):
         return response
 
 
+# Variables for cookie handling
 secret_key = str(os.getenv("SECRET_KEY"))
 session_store: CookieStore = CookieStore(secret_key=secret_key)
 lifetime = settings["cookie"]["lifetime"]  # type: ignore
 cookie_httponly = settings["cookie"]["httponly"]  # type: ignore
 
-
-admin_rx = re.compile("/*")
-
-session_middleware: Middleware = Middleware(SessionMiddleware, store=session_store, cookie_https_only=cookie_httponly, lifetime=lifetime)
-session_autoload_middleware: Middleware = Middleware(SessionAutoloadMiddleware, paths=["/"])
-first_middleware = Middleware(FirstMiddleware)
-last_middleware = Middleware(LastMiddleware)
-no_cache_middleware = Middleware(NoCacheMiddleware)
-
-# Only allow requests from origins specified in settings
-cors_middleware = Middleware(CORSMiddleware, allow_origins=settings["cors_allow_origins"])
-gzip_middleware = Middleware(GZipMiddleware, minimum_size=1)
-
 middleware = [
-    cors_middleware,
-    first_middleware,
-    session_middleware,
-    session_autoload_middleware,
-    last_middleware,
-    no_cache_middleware,
-    gzip_middleware,
+    Middleware(CORSMiddleware, allow_origins=settings["cors_allow_origins"]),
+    Middleware(RequestBegin),
+    Middleware(SessionMiddleware, store=session_store, cookie_https_only=cookie_httponly, lifetime=lifetime),
+    Middleware(SessionAutoloadMiddleware, paths=["/"]),
+    Middleware(RequestEnd),
+    Middleware(NoCacheMiddleware),
+    Middleware(GZipMiddleware, minimum_size=1),
 ]
