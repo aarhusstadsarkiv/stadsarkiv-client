@@ -54,7 +54,6 @@ async def _get_resource_context(request):
 
 
 async def get_resource(request: Request):
-    hooks = get_hooks(request)
     resource_templates = {
         "collections": "resources/collections.html",
         "people": "resources/people.html",
@@ -72,7 +71,6 @@ async def get_resource(request: Request):
     context = await _get_resource_context(request)
     template_path = resource_templates[resource_type]
     response = templates.TemplateResponse(request, template_path, context)
-    response = await hooks.before_resource_response(response)
     return response
 
 
