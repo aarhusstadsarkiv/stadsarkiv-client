@@ -12,6 +12,8 @@ from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.auth import AuthException, AuthExceptionJSON
+from httpx import HTTPStatusError
+import traceback
 
 HTML_403_PAGE = "403"
 HTML_404_PAGE = "404"
@@ -29,8 +31,14 @@ async def not_found(request: Request, exc: HTTPException):
     return templates.TemplateResponse(request, "errors/default.html", context, status_code=404)
 
 
-async def server_error(request: Request, exc: HTTPException):
-    context_values = {"title": translate("500 Server Error")}
+async def server_error(request: Request, exc: Exception):
+
+    exc_traceback = traceback.format_exc()
+    context_values = {
+        "title": translate("500 Server Error"),
+        "exc": exc,
+        "exc_traceback": exc_traceback,
+    }
 
     log.exception(f"500 Error: {request.url}", exc_info=exc)
     context = await get_context(request, context_values=context_values)
@@ -58,6 +66,7 @@ exception_handlers = {
     403: forbidden_error,
     404: not_found,
     500: server_error,
+    HTTPStatusError: server_error,
     AuthException: auth_exception_handler,
     AuthExceptionJSON: auth_exception_json_handler,
 }

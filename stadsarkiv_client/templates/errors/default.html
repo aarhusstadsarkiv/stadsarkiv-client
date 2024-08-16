@@ -4,4 +4,11 @@
 
 {% block content %}
 {% include "includes/main_title.html" %}
+
+
+{% if get_setting('debug') %}
+<p>{{ exc }}</p>
+<pre>{{ exc_traceback }}</pre>
+{% endif %}
+
 {% endblock content %}
