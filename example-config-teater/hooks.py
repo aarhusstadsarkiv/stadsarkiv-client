@@ -177,14 +177,17 @@ class Hooks(HooksSpec):
 
     async def before_response(self, response: HTMLResponse) -> HTMLResponse:
 
+        # static files does not have an endpoint attribute __name__
+        if not hasattr(self.request.scope["endpoint"], "__name__"):
+            return response
+
         route_name = self.request.scope["endpoint"].__name__
         if route_name == "get_resource":
             """
-            Before the reponse is returned to the template.
+            Before the response is returned to the template.
             """
             resource_type = self.request.path_params["resource_type"]
-
-            # only set cookie on 'people' and 'events' because we know a search has been made performed
+            # only set cookie on 'people' and 'events' because we know a search has been performed
             alter_response_on = ["people", "events"]
             if resource_type in alter_response_on:
                 set_response_cookie(response, Hooks.context)
