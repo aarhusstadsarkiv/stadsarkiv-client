@@ -24,13 +24,13 @@ settings: dict[str, typing.Any] = {
     #
     "main_menu": [
         # {"name": "auth_login_get", "title": "Log ind", "type": "dropdown"},
-        {"name": "auth_logout_get", "title": "Log ud", "type": "dropdown"},
+        {"name": "auth_logout_get", "title": "Log ud", "type": "overlay"},
         # {"name": "auth_register_get", "title": "Ny bruger", "type": "dropdown"},
         # {"name": "auth_me_get", "title": "Profil", "type": "dropdown"},
         # {"name": "admin_users_get", "title": "Brugere", "type": "dropdown"},
         # {"name": "schemas_get_list", "title": "Skemaer", "type": "dropdown"},
         # {"name": "entities_get_list", "title": "Entiteter", "type": "dropdown"},
-        {"name": "search_get", "title": "Søg", "type": "top"},
+        {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],
     "search_base_url": "/search",
     "search_keep_results": False,

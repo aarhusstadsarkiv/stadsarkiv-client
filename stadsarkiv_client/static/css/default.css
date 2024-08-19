@@ -29,32 +29,19 @@ h6 {
     gap: 10px;
 }
 
-.menu-icon svg {
-    color: white;
-    fill: white;
-    height: 40px;
-    width: 40px;
-}
-
-.menu-icon {
-    display: block;
-    color: var(--main-menu);
-    z-index: 110;
-    cursor: pointer;
-    margin-top: 10px;
-    font-size: 2rem;
-    padding-right: 10px;
-}
-
-.menu-icon:hover {
-    color: var(--main-menu-hover);
+/** 
+ * The main title of a page
+ */
+.main-title {
+    text-transform: uppercase;
+    margin: 20px 0;
 }
 
 /**
  * The main menu is hidden by default
  * When the hamburger menu is clicked, the main menu is shown
  */
-.main-menu {
+.main-menu-overlay {
     display: none;
     position: absolute;
     top: var(--main-menu-top);
@@ -66,31 +53,25 @@ h6 {
     max-height: 80vh;
     overflow-y: auto;
     scrollbar-width: none;
+    z-index: 110;
 }
 
-/* width */
-.main-menu::-webkit-scrollbar {
+.main-menu-overlay::-webkit-scrollbar {
     width: 0px;
-}
-
-.main-title {
-    text-transform: uppercase;
-    margin: 20px 0;
 }
 
 /** 
  When device is smaller than 576px the width should be 100%
  */
 @media (max-width: 576px) {
-    .main-menu {
+    .main-menu-overlay {
         width: 100%;
     }
 }
 
-.main-menu>h3,
-.main-menu>a,
-.main-menu-static>a {
-    display: block;
+.main-menu-overlay h3,
+.main-menu-overlay a {
+    display: flex;
     color: var(--main-menu);
     font-size: 1.2rem;
     font-weight: 600;
@@ -101,30 +82,77 @@ h6 {
     text-transform: uppercase;
 }
 
-.main-menu>a {
+.main-menu-overlay a {
     font-size: 0.9rem;
-
 }
 
-.main-menu>h3 {
+.main-menu-overlay a:hover {
+    background-color: var(--main-menu-hover);
+}
+
+.main-menu-overlay h3 {
     font-size: 0.9rem;
     padding: 0;
     color: var(--text-main);
 }
 
-.navigation-right-group a:hover {
-    background-color: var(--main-menu-hover);
-}
-
-.main-menu.active {
+.main-menu-overlay.active {
     display: block;
 }
 
-.main-menu-static {
+/**
+ * main menu icons
+ */ 
+.menu-icon svg {
+    color: white;
+    fill: white;
+    height: 40px;
+    width: 40px;
+    padding: 4px;
+}
+
+.menu-icon {
+    color: var(--main-menu);
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 2rem;
+    padding-right: 10px;
+}
+
+.menu-icon svg:hover  {
+    border-radius: 6px;
+    transition: background-color 0.2s ease-in-out;
+    background-color: var(--main-menu-hover);
+}
+
+/**
+ * main-menu menu-text
+ */
+.menu-text a {
+    display: flex;
+    color: var(--main-menu);
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 6px;
+    padding: 8px;
+    margin: 4px;
+    transition: background-color 0.2s ease-in-out;
+    text-transform: uppercase;
+}
+
+.menu-text a:hover {
+    background-color: var(--main-menu-hover);
+}
+
+.menu-text {
     display: flex;
     flex-direction: row;
 }
 
+/**
+ * flash messages
+ */
 .flash-messages {
     bottom: 0px;
     position: fixed;

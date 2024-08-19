@@ -15,14 +15,14 @@ settings: dict[str, typing.Any] = {
     },
     "api_base_url": "https://api.openaws.dk/v1",
     "main_menu": [
-        {"name": "auth_login_get", "title": "Log ind", "type": "dropdown"},
-        {"name": "auth_logout_get", "title": "Log ud", "type": "dropdown"},
-        {"name": "auth_register_get", "title": "Ny bruger", "type": "dropdown"},
-        {"name": "auth_me_get", "title": "Profil", "type": "dropdown"},
-        {"name": "admin_users_get", "title": "Brugere", "type": "dropdown"},
-        {"name": "schemas_get_list", "title": "Skemaer", "type": "dropdown"},
-        {"name": "entities_get_list", "title": "Entiteter", "type": "dropdown"},
-        {"name": "search_get", "title": "Søg", "type": "top"},
+        {"name": "auth_login_get", "title": "Log ind", "type": "overlay"},
+        {"name": "auth_logout_get", "title": "Log ud", "type": "overlay"},
+        {"name": "auth_register_get", "title": "Ny bruger", "type": "overlay"},
+        {"name": "auth_me_get", "title": "Profil", "type": "overlay"},
+        {"name": "admin_users_get", "title": "Brugere", "type": "overlay"},
+        {"name": "schemas_get_list", "title": "Skemaer", "type": "overlay"},
+        {"name": "entities_get_list", "title": "Entiteter", "type": "overlay"},
+        {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],
     "robots_allow": False,
     "allow_user_registration": True,
@@ -37,7 +37,7 @@ settings: dict[str, typing.Any] = {
 # "title" is the page title.
 # "template" if the page you will use. It is also the content of the page.
 # "url" is the path to the page
-# "type" is the type of menu item. It can be "top" or "dropdown". If it is not set, it will not be displayed in the menu.
+# "type" is the type of menu item. It can be "top" or "overlay". If it is not set, it will not be displayed in the menu.
 #
 pages: list = [
     {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
@@ -51,21 +51,21 @@ pages_guides: list = [
         "title": "Hjælp til søgning",
         "template": "pages/guides/searchguide.html",
         "url": "/guides/searchguide",
-        "type": "dropdown",
+        "type": "overlay",
     },
     {
         "name": "page_genealogy",
         "title": "Slægtsforskning",
         "template": "pages/guides/genealogy.html",
         "url": "/guides/genealogy",
-        "type": "dropdown",
+        "type": "overlay",
     },
     {
         "name": "page_municipality_records",
         "title": "Kommunearkivet",
         "template": "pages/guides/municipality_records.html",
         "url": "/guides/municipality_records",
-        "type": "dropdown",
+        "type": "overlay",
     },
 ]
 
@@ -75,35 +75,35 @@ pages_about: list = [
         "title": "Om samlingerne",
         "template": "pages/about/collections.html",
         "url": "/about/collections",
-        "type": "dropdown",
+        "type": "overlay",
     },
     {
         "name": "page_availability",
         "title": "Tilgængelighed",
         "template": "pages/about/availability.html",
         "url": "/about/availability",
-        "type": "dropdown",
+        "type": "overlay",
     },
     {
         "name": "page_archival_availability",
         "title": "Arkivlovens tilgængelighedsfrister",
         "template": "pages/about/archival_availability.html",
         "url": "/about/archival_availability",
-        "type": "dropdown",
+        "type": "overlay",
     },
     {
         "name": "page_usability",
         "title": "Brugbarhed ",
         "template": "pages/about/usability.html",
         "url": "/about/usability",
-        "type": "dropdown",
+        "type": "overlay",
     },
     {
         "name": "page_privacy",
         "title": "Privatlivspolitik",
         "template": "pages/about/privacy.html",
         "url": "/about/privacy",
-        "type": "dropdown",
+        "type": "overlay",
     },
 ]
 

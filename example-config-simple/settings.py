@@ -36,14 +36,14 @@ settings: dict[str, typing.Any] = {
     # You may also add other "menus", e.g. "footer_items" or something similar.
     #
     "main_menu": [
-        {"name": "auth_login_get", "title": "Log ind", "type": "dropdown"},
-        {"name": "auth_logout_get", "title": "Log ud", "type": "dropdown"},
-        {"name": "auth_register_get", "title": "Ny bruger", "type": "dropdown"},
-        {"name": "auth_me_get", "title": "Profil", "type": "dropdown"},
-        {"name": "admin_users_get", "title": "Brugere", "type": "dropdown"},
-        {"name": "schemas_get_list", "title": "Skemaer", "type": "dropdown"},
-        {"name": "entities_get_list", "title": "Entiteter", "type": "dropdown"},
-        {"name": "search_get", "title": "Søg", "type": "top"},
+        {"name": "auth_login_get", "title": "Log ind", "type": "overlay"},
+        {"name": "auth_logout_get", "title": "Log ud", "type": "overlay"},
+        {"name": "auth_register_get", "title": "Ny bruger", "type": "overlay"},
+        {"name": "auth_me_get", "title": "Profil", "type": "overlay"},
+        {"name": "admin_users_get", "title": "Brugere", "type": "overlay"},
+        {"name": "schemas_get_list", "title": "Skemaer", "type": "overlay"},
+        {"name": "entities_get_list", "title": "Entiteter", "type": "overlay"},
+        {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],
     # The facets enabled in the search
     # These are the defaults: ["content_types", "subjects", "availability", "usability", "dates"]
@@ -68,7 +68,7 @@ settings: dict[str, typing.Any] = {
 # "name" is the route name. Title is the page title.
 # "template" if the page you will use. It is also the content of the page.
 # "url" is the path to the page
-# "type" is the type of menu item. It can be "top" or "dropdown".
+# "type" is the type of menu item. It can be "top" or "overlay".
 #  If it is not set, it will not be displayed in the top bar menu.
 
 pages: list = [
@@ -81,7 +81,7 @@ pages_guides: list = [
         "title": "Hjælp til søgning",
         "template": "pages/searchguide.html",
         "url": "/guides/searchguide",
-        "type": "dropdown",
+        "type": "overlay",
     },
 ]
 
@@ -91,7 +91,7 @@ pages_about: list = [
         "title": "Om samlingerne",
         "template": "pages/collections.html",
         "url": "/about/collections",
-        "type": "dropdown",
+        "type": "overlay",
     },
 ]
 

@@ -1,41 +1,50 @@
 {% import "macros/common_macros.html" as common_macros %}
 
-<div class="navigation-right-group">
-    <div class="main-menu-static">
-        {% for menu_item in main_menu_user %}
-            {% if menu_item.name == 'search_get' and query_str_display != '' %}
-            <a href="{{ url_for(menu_item.name) }}?{{ query_str_display }}">{{ menu_item.title }}</a>
-            {% else %}
-                {% if menu_item.type == 'top' %}
-                <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-    </div>
-    
-    <div class="main-menu">
-        {% for menu_item in main_menu_user %}
-            {% if menu_item.type == 'dropdown' %}
+<div class="main-menu-overlay">
+    {% for menu_item in main_menu_user %}
+        {% if menu_item.type == 'overlay' %}
             <a href="{{ url_for(menu_item.name) }}{{ query }}">{{ menu_item.title }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% for section in main_menu_sections %}
+        <h3>{{ section.title }}</h3>
+        {% for page in section.pages %}
+        <a href="{{ url_for(page.name) }}">{{ page.title }}</a>
+        {% endfor %}
+    {% endfor %}
+</div>
+
+<div class="navigation-right-group">
+    {# static items. Text menu items #}
+
+    {% for menu_item in main_menu_user %}
+        {% if menu_item.type == 'text' %}
+            <div class="menu-text">
+            {% if menu_item.name == 'search_get' %}
+                <a href="{{ url_for(menu_item.name) }}?{{ query_str_display }}">{{ menu_item.title }}</a>        
+            {% else %}
+                <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
             {% endif %}
-        {% endfor %}
-
-        {% for section in main_menu_sections %}
-            <h3>{{ section.title }}</h3>
-                {% for page in section.pages %}
-                    <a href="{{ url_for(page.name) }}">{{ page.title }}</a>
-                {% endfor %}
-        {% endfor %}
-    </div>
-
-    <div class="menu-dropdown">
-        <span id ="menu-hamburger" class="menu-icon">
-            <span class="closed">
-                {{ get_icon('menu')|safe }}
-            </span>
-            <span class="open" style="display:none">
-                {{ get_icon('menu_open')|safe }}
-            </span>
+            </div>
+        {% endif %}
+        {% if menu_item.type == 'icon' %}
+            <div class="menu-icon">
+            {% if menu_item.name == 'search_get' %}
+                <a href="{{ url_for(menu_item.name) }}?{{ query_str_display }}">{{ get_icon(menu_item.icon)|safe }}</a>        
+            {% else %}
+                <a href="{{ url_for(menu_item.name) }}">{{ get_icon(menu_item.icon)|safe }}</a>
+            {% endif %}
+            </div>
+        {% endif %}
+    {% endfor %}
+    
+    <div id="menu-hamburger" class="menu-icon">
+        <span class="closed">
+            {{ get_icon('menu')|safe }}
+        </span>
+        <span class="open" style="display:none">
+            {{ get_icon('menu_open')|safe }}
         </span>
     </div>
 </div>

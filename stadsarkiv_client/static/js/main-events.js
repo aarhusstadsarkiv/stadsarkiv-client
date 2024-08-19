@@ -1,7 +1,7 @@
 const hamburgerMenu = document.getElementById('menu-hamburger');
 const openMenu = hamburgerMenu.querySelector('.open')
 const closedMenu = hamburgerMenu.querySelector('.closed')
-const menu = document.querySelector('.main-menu');
+const menu = document.querySelector('.main-menu-overlay');
 
 hamburgerMenu.addEventListener('click', function (event) {
     event.preventDefault();
