@@ -292,7 +292,7 @@ async def search_get_json(request: Request):
     return response
 
 
-def normalize_auto_complete_results(results: list):
+def _normalize_auto_complete_results(results: list):
     """
     Collection is weird so normalize it a bit. All other domains has the same 'search_query' as 'domain path', e.g.
     /people/120169 -> search?people=120169
@@ -319,7 +319,7 @@ async def records_auto_complete_search(request: Request):
     query_params = await hooks.before_get_auto_complete(query_params=query_params)
 
     results = await api.proxies_auto_complete(request, query_params=query_params)
-    results = normalize_auto_complete_results(results)
+    results = _normalize_auto_complete_results(results)
 
     query_params = await hooks.after_get_auto_complete(query_params=query_params)
 
