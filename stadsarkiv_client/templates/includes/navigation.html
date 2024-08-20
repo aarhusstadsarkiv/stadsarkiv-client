@@ -29,22 +29,26 @@
             </div>
         {% endif %}
         {% if menu_item.type == 'icon' %}
-            <div class="menu-icon">
             {% if menu_item.name == 'search_get' %}
-                <a href="{{ url_for(menu_item.name) }}?{{ query_str_display }}">{{ get_icon(menu_item.icon)|safe }}</a>        
+                <a href="{{ url_for(menu_item.name) }}?{{ query_str_display }}">
+                    <div class="menu-icon">{{ get_icon(menu_item.icon)|safe }}</div>
+                </a>
             {% else %}
-                <a href="{{ url_for(menu_item.name) }}">{{ get_icon(menu_item.icon)|safe }}</a>
+                <a href="{{ url_for(menu_item.name) }}">
+                    <div class="menu-icon">{{ get_icon(menu_item.icon)|safe }}</div>
+                </a>
             {% endif %}
-            </div>
         {% endif %}
     {% endfor %}
     
-    <div id="menu-hamburger" class="menu-icon">
-        <span class="closed">
-            {{ get_icon('menu')|safe }}
-        </span>
-        <span class="open" style="display:none">
-            {{ get_icon('menu_open')|safe }}
-        </span>
-    </div>
+    <a href="#">
+        <div id="menu-hamburger">
+            <div class="menu-icon closed">
+                {{ get_icon('menu')|safe }}
+            </div>
+            <div class="menu-icon open"  style="display: none">
+                {{ get_icon('menu_open')|safe }}
+            </div>
+        </div>
+    </a>
 </div>

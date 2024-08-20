@@ -11,6 +11,8 @@ h6 {
     display: flex;
     justify-content: space-between;
     background-color: var(--navigation-background);
+    height: var(--main-menu-top);
+    align-items: stretch; 
 }
 
 .logo {
@@ -29,6 +31,11 @@ h6 {
     gap: 10px;
 }
 
+.navigation-right-group a {
+    padding: 5px;
+}
+
+
 /** 
  * The main title of a page
  */
@@ -44,7 +51,7 @@ h6 {
 .main-menu-overlay {
     display: none;
     position: absolute;
-    top: var(--main-menu-top);
+    top: calc(var(--main-menu-top) + 2px);
     right: 0px;
     background-color: rgba(var(--navigation-background-rgb), 0.975);
     padding: 10px;
@@ -108,21 +115,15 @@ h6 {
     fill: white;
     height: 40px;
     width: 40px;
-    padding: 4px;
 }
 
 .menu-icon {
-    color: var(--main-menu);
-    cursor: pointer;
-    margin-top: 10px;
-    font-size: 2rem;
-    padding-right: 10px;
+    padding: 0 5px;
 }
 
-.menu-icon svg:hover  {
-    border-radius: 6px;
-    transition: background-color 0.2s ease-in-out;
-    background-color: var(--main-menu-hover);
+
+.menu-icon:hover {
+    color: var(--main-menu-hover);
 }
 
 /**
@@ -185,7 +186,6 @@ h6 {
 /**
  * a set of containers 
  */
-
 .container {
     padding: 20px 20px;
     max-width: 100%;
@@ -251,7 +251,6 @@ h6 {
     gap: 10px;
     padding: 7px 0;
 }
-
 
 .action-links>span {
     padding: 4px;
