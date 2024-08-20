@@ -6,14 +6,17 @@ const menu = document.querySelector('.main-menu-overlay');
 hamburgerMenu.addEventListener('click', function (event) {
     event.preventDefault();
 
+    // Expand
     if (menu.style.display === "none" || menu.style.display === "") {
         menu.style.display = "block";
         openMenu.style.display = "block";
         closedMenu.style.display = "none";
+        hamburgerMenu.setAttribute('aria-expanded', 'true');
     } else {
         menu.style.display = "none";
         openMenu.style.display = "none";
         closedMenu.style.display = "block";
+        hamburgerMenu.setAttribute('aria-expanded', 'false');
     }
 });
 
@@ -22,6 +25,7 @@ document.addEventListener('click', function (event) {
         menu.style.display = "none";
         openMenu.style.display = "none";
         closedMenu.style.display = "block";
+        hamburgerMenu.setAttribute('aria-expanded', 'false');
     }
 });
 
@@ -32,5 +36,6 @@ window.addEventListener('pageshow', function (e) {
         menu.style.display = "none";
         openMenu.style.display = "none";
         closedMenu.style.display = "block";
+        hamburgerMenu.setAttribute('aria-expanded', 'false');
     }
 });
