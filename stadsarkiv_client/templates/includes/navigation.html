@@ -16,7 +16,6 @@
 </div>
 
 <div class="navigation-right-group">
-    {# static items. Text menu items #}
 
     {% for menu_item in main_menu_user %}
         {% if menu_item.type == 'text' %}
@@ -30,25 +29,23 @@
         {% endif %}
         {% if menu_item.type == 'icon' %}
             {% if menu_item.name == 'search_get' %}
-                <a href="{{ url_for(menu_item.name) }}?{{ query_str_display }}">
+                <a href="{{ url_for(menu_item.name) }}?{{ query_str_display }}" aria-label="{{ menu_item.title }}">
                     <div class="menu-icon">{{ get_icon(menu_item.icon)|safe }}</div>
                 </a>
             {% else %}
-                <a href="{{ url_for(menu_item.name) }}">
+                <a href="{{ url_for(menu_item.name) }}" aria-label="{{ menu_item.title }}">
                     <div class="menu-icon">{{ get_icon(menu_item.icon)|safe }}</div>
                 </a>
             {% endif %}
         {% endif %}
     {% endfor %}
     
-    <a href="#">
-        <div id="menu-hamburger">
-            <div class="menu-icon closed">
-                {{ get_icon('menu')|safe }}
-            </div>
-            <div class="menu-icon open"  style="display: none">
-                {{ get_icon('menu_open')|safe }}
-            </div>
+    <a id="menu-hamburger" href="#" aria-label="{{ translate('Open menu') }}" id="menu-toggle" aria-expanded="false">
+        <div class="menu-icon closed">
+            {{ get_icon('menu')|safe }}
+        </div>
+        <div class="menu-icon open" style="display: none">
+            {{ get_icon('menu_open')|safe }}
         </div>
     </a>
 </div>
