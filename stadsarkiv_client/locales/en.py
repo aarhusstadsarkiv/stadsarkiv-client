@@ -68,6 +68,7 @@ en = {
     "No such user exists.": "No such user exists.",
     "No title": "No title",
     "Oldest date first": "Oldest date first",
+    "Open menu": "Open menu",
     "Order online": "Order online",
     "Page": "Page",
     "Password": "Password",

@@ -61,6 +61,7 @@ da = {
     "No such user exists.": "Bruger eksisterer ikke.",
     "No title": "Ingen titel",
     "Oldest date first": "Ældste data først",
+    "Open menu": "Åbn menu",
     "Order online": "Bestil online",
     "Page": "Side",
     "Password": "Password",
