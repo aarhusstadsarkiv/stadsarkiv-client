@@ -46,7 +46,7 @@ settings: dict[str, typing.Any] = {
         {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],
 
-    # There is another "type of menu" which "text" which is a simple text link, e.g.:
+    # There is another "type of menu" which is "text" that is a simple text link, e.g.:
     # {"name": "auth_login_get", "title": "Log ind", "type": "text"},
 
     # The facets enabled in the search
