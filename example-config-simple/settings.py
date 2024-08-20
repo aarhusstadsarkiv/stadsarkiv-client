@@ -45,6 +45,10 @@ settings: dict[str, typing.Any] = {
         {"name": "entities_get_list", "title": "Entiteter", "type": "overlay"},
         {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],
+
+    # There is another "type of menu" which "text" which is a simple text link, e.g.:
+    # {"name": "auth_login_get", "title": "Log ind", "type": "text"},
+
     # The facets enabled in the search
     # These are the defaults: ["content_types", "subjects", "availability", "usability", "dates"]
     # The facets are loaded from 'settings_facets.py'

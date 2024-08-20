@@ -52,7 +52,7 @@ settings: dict[str, typing.Any] = {
         {"name": "admin_users_get", "title": "Brugere", "type": "overlay"},
         {"name": "schemas_get_list", "title": "Skemaer", "type": "overlay"},
         {"name": "entities_get_list", "title": "Entiteter", "type": "overlay"},
-        {"name": "search_get", "title": "Søg", "type": "top_icon", "icon": "search"},
+        {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],
     "main_menu_sections": [],
     "search_base_url": "/search",
