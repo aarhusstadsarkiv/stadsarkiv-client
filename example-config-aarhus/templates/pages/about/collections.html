@@ -3,10 +3,11 @@
 {% block body_class %}page-about-collections{% endblock %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/toc.css') }}?v={{ get_setting('version') }}">
 {% endblock head %}
 
 {% block content %}
-<h3>Om AarhusArkivet</h3>
+<h1 id="top">Om AarhusArkivet</h1>
 
 <p id="intro">AarhusArkivet er Aarhus Stadsarkivs digitale arkivservice. Her kan man finde kilder til Aarhus'
     historie ved at søge i Stadsarkivets samlinger. På AarhusArkivet kan man læse eller se omkring 300.000
@@ -15,13 +16,13 @@
 <p>Arkivalier, der ikke er online, kan bestilles til gennemsyn på Stadsarkivets læsesal på Dokk1. <a
         href="https://stadsarkiv.aarhus.dk/besoeg-arkivet/besoeg-laesesalen/">Læs mere om læsesalen her</a>.</p>
 
-<h4 id="whois">Hvem står bag</h4>
+<h3 id="whois">Hvem står bag</h3>
 <p>Aarhus Stadsarkiv er Aarhus Kommunes historiske arkiv og kommunale forvaltningsarkiv. Se mere på <a
         href="https://stadsarkiv.aarhus.dk/">Aarhus Stadsarkivs hjemmeside</a>.</p>
 <p><a href="https://app.heyloyalty.com/subscribe/10234/3176">Tilmeld dig stadsarkivets nyhedsbrev</a> og modtag
     nyheder fra arkivet ca. hver 2. måned.</p>
 
-<h4 id="donors">Donatorer og partnere</h4>
+<h3 id="donors">Donatorer og partnere</h3>
 <p>Aarhus Stadsarkiv kunne ikke have udviklet AarhusArkivet uden donationer og samarbejder. Vi vil gerne takke
     følgende for støtte:</p>
 <ul>

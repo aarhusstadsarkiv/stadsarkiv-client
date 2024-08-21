@@ -3,10 +3,11 @@
 {% block body_class %}page-guides-municipality-records{% endblock %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/toc.css') }}?v={{ get_setting('version') }}">
 {% endblock head %}
 
 {% block content %}
-<h3>Kommunearkivet</h3>
+<h1 id="top">Kommunearkivet</h1>
 <p id="intro"><a href="/collections/194">Kommunearkivet</a> er Aarhus Stadsarkivs største enkelte samling.
     Samlingen indeholder alle arkiver fra de kommunale enheder, som er blevet indsamlet af først Erhvervsarkivet
     og siden 2011 af Aarhus Stadsarkiv.</p>
@@ -15,7 +16,7 @@
     udvikledes. Det er en umulig opgave at lave en udtømmende beskrivelse af hele kommunearkivet. Derfor
     fremhæves de centrale og nogle af de mest anvendte arkivserier.</p>
 
-<h4 id="political_level">Politisk niveau</h4>
+<h3 id="political_level">Politisk niveau</h3>
 <p>Helt centralt i kommunearkivet står byrådets og sognerådenes forhandlingsprotokoller. Det er i disse dele af
     arkivet, at den politiske beslutningsproces er dokumenteret, og derfor her retningslinjerne for by- eller
     landområdets udvikling er udstukket. Alle sager af en vis vægt og betydning har været til afstemning i by-
@@ -39,7 +40,7 @@
     beslutninger på sognerådsmødet - sådan var det nok i virkeligheden i alle 21 sogneråd - nogle årtier op i
     1900-tallet.</p>
 
-<h4 id="administrative_level">Administrativt niveau</h4>
+<h3 id="administrative_level">Administrativt niveau</h3>
 <p>Byudviklingen er dokumenteret i i arkiverne efter Stadsingeniørens Kontor (1869-1998) og Stadsarkitektens
     Kontor (1919-2005) (under Magistratens 2. afdeling fra 1950), hvor mange af de konkrete sager kan følges fra
     idéstadiet til færdige projekter. Stadsarkitektens Kontor tog sig af kommunale projekter vedr. fysisk
@@ -59,7 +60,7 @@
     eksamensbeviser for de kommunale folkeskoler for perioden 1978 og frem. Disse skal rekvireres ved direkte
     henvendelse ved Aarhus Stadsarkiv pr. mail.</p>
 
-<h4 id="private_data">Oplysninger om enkeltpersoner</h4>
+<h3 id="private_data">Oplysninger om enkeltpersoner</h3>
 <p>Stadsarkivet modtager mange henvendelser vedr. oplysninger om enkeltpersoner - altså egentlige
     slægtshistoriske forespørgsler.</p>
 <p>Her er to dele af den kommunale forvaltning helt centrale. Det drejer sig om Aarhus Kommunes Folkeregister

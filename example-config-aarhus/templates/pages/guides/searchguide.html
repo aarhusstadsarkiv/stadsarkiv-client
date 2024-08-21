@@ -3,12 +3,13 @@
 {% block body_class %}page-guides-searchguide{% endblock %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/toc.css') }}?v={{ get_setting('version') }}">
 {% endblock head %}
 
 {% block content %}
 
 
-<h3>Søgning i AarhusArkivet</h3>
+<h1 id="top">Søgning i AarhusArkivet</h1>
 
 <p id="fulltext-search">Indtaster man noget i søgefeltet, foretager man en fritekstsøgning i alle
     materialebeskrivelserne. Det betyder, at der som udgangspunkt søges i både titler, overskrifter og
@@ -23,7 +24,7 @@
         i en frase har ingen effekt.</li>
 </ul>
 
-<h4 id="entity-search">Søgning efter entiteter</h4>
+<h3 id="entity-search">Søgning efter entiteter</h3>
 <p>Når man begynder at indtaste et ord i søgefeltet, vil en dropdown-menu med matchende entiteter (personer,
     steder, organisationer..) åbne sig. Vælger man en af entiteterne, eks. adressen <a
         href="/search?locations=94507">Vestergade 7</a>, vil alle materialer, som omhandler Vestergade 7 blive
@@ -34,7 +35,7 @@
     perfekte, og man vil ofte kunne supplere en entitetssøgning med en efterfølgende fritekstsøgning (eks. <a
         href="/search?q=&quot;Vestergade 7&quot;">"Vestergade 7"</a>) for at få et fyldestgivende resultat.</p>
 
-<h4 id="filter-search">Søgefiltre</h4>
+<h3 id="filter-search">Søgefiltre</h3>
 <p>Foruden fritekst- og entitetssøgningerne er der mulighed for at begrænse, hvilke materialer man ønsker at se.
     AarhusArkivet benytter følgende filtre:
 </p>
@@ -93,18 +94,18 @@
     </li>
 </ul>
 
-<h4 id="active-filter-search">Aktive filtre</h4>
+<h3 id="active-filter-search">Aktive filtre</h3>
 <p>Hvis man har sat et søgefilter eller valgt en entitet i dropdown-menuen under søgefeltet, vil de fremgå som
     aktive søgefiltre øverst i søgemenuen. Klik på en af filtrene for at fjerne det eller negere det, dvs. bruge
     det som negativt filter, søg eks. efter alle materialer, som IKKE er billeder</p>
 <p>I mange tilfælde kan man også læse mere om filteret eller se om den valgte person eller organisation også er
     arkivskabere.</p>
 
-<h4 id="collection-search">Søgning i enkelte samlinger</h4>
+<h3 id="collection-search">Søgning i enkelte samlinger</h3>
 <p>Har man sat en bestemt samling som søgefilter, vil alle søgninger naturligvis kun returnere materialer, som
     er en del af netop denne samling.</p>
 
-<h4 id="sorting">Sortering</h4>
+<h3 id="sorting">Sortering</h3>
 <p>Som udgangspunkt er eventuelle søgeresultater sorteret efter relevans. Relevans udregnes kort fortalt efter,
     hvor et søgeord findes i registreringen. Findes ordet i materialets titel, vurderes dette til at have større
     relevans for søgningen end hvis ordet findes i beskrivelsesteksten.</p>

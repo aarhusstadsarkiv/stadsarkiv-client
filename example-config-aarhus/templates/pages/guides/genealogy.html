@@ -3,11 +3,12 @@
 {% block body_class %}page-guides-genealogy{% endblock %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/toc.css') }}?v={{ get_setting('version') }}">
 {% endblock head %}
 
 {% block content %}
 
-<h3>Slægtsforskning på AarhusArkivet</h3>
+<h1 id="top">Slægtsforskning på AarhusArkivet</h1>
 <p id="intro">AarhusArkivet rummer mange muligheder for at søge oplysninger om personer.</p>
 <p>AarhusArkivet er et såkaldt entitetsbaseret søgesystem. Det vil sige, at man kan foretage meget målrettede og
     dybdegående søgninger på oprettede søgeord, herunder navne. Man kan også søge i fritekstfeltet.</p>
@@ -21,13 +22,13 @@
         href="https://www.sa.dk/da/brug-arkivet/arkivalieronline-se-originale-dokumenter-paa-nettet/">arkivalieronline.dk</a>.
 </p>
 
-<h4 id="entities">Sådan søger du efter personnavne oprettet som entiteter (søgeord) i AarhusArkivet</h4>
+<h3 id="entities">Sådan søger du efter personnavne oprettet som entiteter (søgeord) i AarhusArkivet</h3>
 <p>Man søger på entiteter ved at begynde at skrive det ønskede søgeord i søgefeltet.</p>
 <p>Oprettede entiteter dukker op under skrivningen. Man trykker på det ønskede navn og får resultaterne frem.
 </p>
 <p>Se evt. mere på <a href="/guides/searchguide">Sådan søger du</a> i AarhusArkivet.</p>
 
-<h4 id="digital_collections">Digitale kildesamlinger med personer i AarhusArkivet</h4>
+<h3 id="digital_collections">Digitale kildesamlinger med personer i AarhusArkivet</h3>
 <strong>SEJRS SEDLER</strong>
 <p>Der er tale om et kartotek på over 120.000 sedler, som især indeholder udtræk af artikler afskrevet fra
     Aarhus Stiftstidende fra ca. 1794, hvor avisen blev grundlagt, til ca. 1950.</p>
@@ -58,7 +59,7 @@
 <strong>Sådan bruger du dem</strong>
 <p>Søg efter personer, adresser og emner i de oprettede entiteter.</p>
 
-<h4 id="digital_municipality_records">Slægtsforskning i Kommunearkivet - digitale kilder</h4>
+<h3 id="digital_municipality_records">Slægtsforskning i Kommunearkivet - digitale kilder</h3>
 <p>På Stadsarkivet opbevarer vi myndighedsarkiverne fra den nuværende Aarhus Kommune, Aarhus Købstad 1869-1970
     og sognekommunerne 1841-1970. Det kalder vi samlet for Kommunearkivet. Det indeholder mere end 6.000
     hyldemeter papirarkiver.</p>
@@ -99,7 +100,7 @@
 <p>Vi vil i løbet af foråret lægge de begravelsesregistre og dødsanmeldelser online på AarhusArkivet, som vi må
     jf. kravene til persondatabeskyttelse.</p>
 
-<h4 id="analog_municipality_records">Slægtsforskning i Kommunearkivet - ikke-digitale kilder</h4>
+<h3 id="analog_municipality_records">Slægtsforskning i Kommunearkivet - ikke-digitale kilder</h3>
 <strong>NAVNEKORT OG FOLKEREGISTERKORT</strong>
 <p>Aarhus Kommunes folkeregister indeholder navnekort og folkeregisterkort. Navnekortene indeholder oplysninger
     om enkeltpersoners adresser i Aarhus Kommune fra 1924 til 1977. Folkeregisterkortene rummer
@@ -115,7 +116,7 @@
 <p>Registreringerne af navnekortene er på vej online, hvor de vil blive en del af <a
         href="/collections/194">Kommunearkivet</a>.</p>
 
-<h4 id="directories">Vejvisere for Aarhus</h4>
+<h3 id="directories">Vejvisere for Aarhus</h3>
 <p>Vejviseren anvendes primært til finde adresseoplysninger på enkeltpersoner.</p>
 <p>Stadsarkivet har Vejvisere for Aarhus fra 1867 til 2007 på læsesalen. Stadsarkivet har i samarbejde med
     FamilySearch affotograferet alle vejviserne.</p>
@@ -123,7 +124,7 @@
 <p>På læsesalen er alle vejvisere tilgængelige. På AarhusArkivet vil de ældre vejvisere løbende blive lagt ud
     med respekt for persondatalovgivningen.</p>
 
-<h4 id="other_options">Andre søgemuligheder i datasæt</h4>
+<h3 id="other_options">Andre søgemuligheder i datasæt</h3>
 <p>Sejrs Sedler og Byrådsforhandlingerne er tilgængelige som datasæt. Dem kan man downloade og foretage sine
     egne søgninger i. Herved kan man søge på personer, der ikke er oprettet som entiteter eller ikke optræder i
     en arkivaliebeskrivelse (og dermed undslipper AarhusArkivets søgning).</p>
