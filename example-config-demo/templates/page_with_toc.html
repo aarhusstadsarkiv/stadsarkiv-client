@@ -6,6 +6,7 @@
 
     {% include "includes/head_default.html" %}
     {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/toc.css') }}?v={{ get_setting('version') }}">
     {% endblock head %}
 
 </head>
@@ -113,35 +114,6 @@
             justify-content: flex-end;
         }
 
-        #toc {
-            position: sticky;
-            top: 65px;
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            max-width: 600px;
-            margin: 5px auto;
-            padding: 5px;
-            background-color: var(--background-alt);
-            border: 1px solid var(--text-muted);
-            border-radius: 8px;
-        }
-        
-        #toc ul {
-            list-style-type: none;
-            padding-left: 5px;
-        }
-        
-        #toc a {
-            text-decoration: none;
-            color: var(--text-bright);
-            padding: 5px 10px;
-            display: block;
-            border-radius: 4px;
-        }
-        
-        #toc a:hover {
-            background-color: var(--background-body);    
-        }
     </style>
 </body>
 </html>
