@@ -81,7 +81,7 @@ def _get_main_menu_user(logged_in: bool, permissions_list: list):
 
 
 def _get_title(request: Request) -> str:
-    """"
+    """
     Get a title for a page which is part of settings["pages"].
     """
 
