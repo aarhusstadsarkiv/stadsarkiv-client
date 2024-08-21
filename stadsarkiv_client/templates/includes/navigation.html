@@ -3,14 +3,18 @@
 <div class="main-menu-overlay">
     {% for menu_item in main_menu_user %}
         {% if menu_item.type == 'overlay' %}
-            <a href="{{ url_for(menu_item.name) }}{{ query }}">{{ menu_item.title }}</a>
+            {% if menu_item.name == 'auth_login_get' %}                
+                <a href="{{ url_for(menu_item.name) }}?next={{ path }}">{{ menu_item.title }}</a>    
+            {% else %}
+                <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
+            {% endif %}
         {% endif %}
     {% endfor %}
 
     {% for section in main_menu_sections %}
         <h3>{{ section.title }}</h3>
-        {% for page in section.pages %}
-        <a href="{{ url_for(page.name) }}">{{ page.title }}</a>
+        {% for menu_item in section.pages %}
+            <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
         {% endfor %}
     {% endfor %}
 </div>
@@ -20,8 +24,8 @@
     {% for menu_item in main_menu_user %}
         {% if menu_item.type == 'text' %}
             <div class="menu-text">
-            {% if menu_item.name == 'search_get' %}
-                <a href="{{ url_for(menu_item.name) }}?{{ query_str_display }}">{{ menu_item.title }}</a>        
+            {% if menu_item.name == 'search_get' %}                
+                <a href="{{ url_for(menu_item.name) }}?{{ query_str_display }}">{{ menu_item.title }}</a>    
             {% else %}
                 <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
             {% endif %}
