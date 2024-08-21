@@ -4,7 +4,6 @@ that returns a dict with basic context values for the templates.
 Hooks: You are able to hook into the get_context function and add your own context values.
 """
 
-from typing import Any
 from starlette.requests import Request
 from stadsarkiv_client.core.flash import get_messages
 from stadsarkiv_client.core.dynamic_settings import settings
@@ -18,6 +17,9 @@ log = get_log()
 
 
 async def get_context(request: Request, context_values: dict = {}, identifier: str = "") -> dict:
+    """
+    Adding some default values to the context.
+    """
     hooks = get_hooks(request)
 
     logged_in = await api.is_logged_in(request)
@@ -25,6 +27,7 @@ async def get_context(request: Request, context_values: dict = {}, identifier: s
 
     # query_str_display is used to display the last search query
     # it is already present in the context_values if the client is requesting the search page
+    # if it is not present, we need to add it to the context_values
     if "query_str_display" not in context_values:
         context_values["query_str_display"] = cookie.get_query_str_display(request)
 
@@ -42,6 +45,7 @@ async def get_context(request: Request, context_values: dict = {}, identifier: s
         "dark_theme": request.cookies.get("dark_theme", False),
     }
 
+    # Add context_values to context
     context.update(context_values)
 
     if "meta_title" not in context:
@@ -77,10 +81,12 @@ def _get_main_menu_user(logged_in: bool, permissions_list: list):
 
 
 def _get_title(request: Request) -> str:
-    pages: Any = []
+    """"
+    Get a title for a page which is part of settings["pages"].
+    """
+
     title = ""
-    if "pages" in settings:
-        pages = settings["pages"]
+    pages: list[dict] = settings["pages"]
 
     for page in pages:
         if page["url"] == request.url.path:
@@ -91,6 +97,8 @@ def _get_title(request: Request) -> str:
 def _get_authorization(request: Request):
     """
     Add authorization header to context if user is logged in.
+    This makes it possible to use the header in the frontend.
+    E.g. to make requests to the API using javascript.
     """
     if "access_token" in request.session:
         token = request.session["access_token"]
