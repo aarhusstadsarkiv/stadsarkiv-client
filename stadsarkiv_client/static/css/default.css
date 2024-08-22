@@ -17,12 +17,8 @@ h6 {
 
 .logo {
     margin-left: 10px;
-    align-self: flex-start;
-}
-
-.logo img {
-    margin-top: 10px;
-    max-height: 40px;
+    display: flex; 
+    align-items: center;
 }
 
 .navigation-right-group {
