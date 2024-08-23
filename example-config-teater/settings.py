@@ -43,6 +43,7 @@ settings: dict[str, typing.Any] = {
     "allow_user_registration": False,
     "allow_user_management": True,
     "allow_online_ordering": False,
+    "allow_bookmarks": False,
     "ignore_record_keys": ["curators"],
 }
 
@@ -60,12 +61,15 @@ pages: list = [
 
 pages_guides: list = [
     {"name": "how_to_search", "title": "Søgevejledning", "template": "pages/how-to-search.html", "url": "/how-to-search"},
-    {"name": "about_aarhus_teater", "title": "Om Aarhus Teaters Arkiv", "template": "pages/about.html", "url": "/about"},
-    {"name": "practical_information", "title": "Praktisk Information", "template": "pages/info.html", "url": "/info"},
+    {"name": "about_aarhus_teater", "title": "Samling", "template": "pages/about.html", "url": "/about"},
+    {"name": "history", "title": "Historie", "template": "pages/history.html", "url": "/history"},
+    {"name": "architecture", "title": "Arkitektur", "template": "pages/architecture.html", "url": "/architecture"},
+    {"name": "scenes", "title": "Scener", "template": "pages/scenes.html", "url": "/scenes"},
+    {"name": "contact", "title": "Kontakt", "template": "pages/contact.html", "url": "/contact"},
 ]
 
 settings["pages"] = pages + pages_guides
 
 settings["main_menu_sections"] = [
-    {"name": "guides", "title": "Vejledninger", "pages": pages_guides},
+    {"name": "guides", "title": "", "pages": pages_guides},
 ]
