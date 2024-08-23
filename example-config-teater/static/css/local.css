@@ -97,3 +97,7 @@
     display: none;
 }
 
+.logo img {
+    max-height: calc(var(--main-menu-top) - 20px);
+}
+
