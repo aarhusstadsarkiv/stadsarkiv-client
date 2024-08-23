@@ -105,14 +105,14 @@
     font-weight: bold;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
     .home-search-link {
         /* Two columns */
         flex: 1 0 46%;
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 576px) {
     .home-search-link {
         /* One column */
         flex: 1 0 96%;
