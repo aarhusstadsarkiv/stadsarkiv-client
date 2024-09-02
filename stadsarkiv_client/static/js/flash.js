@@ -1,7 +1,7 @@
 /**
  * Remove pre-loaded flash messages after some seconds
  */
-function removeFlashMessages() {
+function clearMessages() {
     let elems = document.querySelectorAll('.flash-remove')
     elems.forEach(function (elem) {
         elem.remove();
@@ -14,7 +14,7 @@ const removeAfterSecs = 20;
  * Remove loaded flash messages after some seconds
  */
 setTimeout(function () {
-    removeFlashMessages();
+    clearMessages();
 }, removeAfterSecs * 1000);
 
 /**
@@ -56,6 +56,10 @@ class Flash {
 
         const html = `<div class="flash flash-${type} ${class_random}">${message}</div>`;
         messageElem.insertAdjacentHTML('afterbegin', html);
+    }
+
+    static clearMessages() {
+        clearMessages();
     }
 }
 
