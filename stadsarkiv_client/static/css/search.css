@@ -6,8 +6,7 @@
 
 .search-result {
     background-color: var(--search-result-background);
-    padding: 10px 0;
-    padding-left: 10px;
+    padding: 10px;
     border-top: 1px solid var(--search-result-border);
 }
 
