@@ -126,14 +126,12 @@ async def auth_register_post(request: Request):
             type="success",
         )
 
-        return RedirectResponse(url="/auth/login", status_code=302)
+        return JSONResponse({"error": False})
     except OpenAwsException as e:
-        flash.set_message(request, str(e), type="error")
+        return JSONResponse({"message": str(e), "error": True})
     except Exception as e:
         log.exception(e)
-        flash.set_message(request, str(e), type="error", use_settings=True)
-
-    return RedirectResponse(url="/auth/register", status_code=302)
+        return JSONResponse({"message": str(e), "error": True})
 
 
 async def auth_verify(request: Request):

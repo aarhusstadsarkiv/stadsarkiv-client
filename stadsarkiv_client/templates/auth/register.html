@@ -6,12 +6,47 @@
 
 {% include "includes/main_title.html" %}
 
-<form method="post" action="{{ url_for('auth_register_post')}}">
+<form id="auth_register_post" method="post" action="{{ url_for('auth_register_post')}}">
     <input type="text" name="display_name" placeholder="{{ translate('Username') }}" aria-label="Username" autocomplete="username">
     <input type="text" name="email" placeholder="{{ translate('Email') }}" aria-label="Login" autocomplete="email">
     <input type="password" name="password" placeholder="{{ translate('Password') }}" aria-label="Password">
     <input type="password" name="password_2" placeholder="{{ translate('Repeat Password') }}" aria-label="Repeat Password">
-    <button type="submit">{{ translate('Register') }}</button>
+    <button id="submit" type="submit">{{ translate('Register') }}</button>
 </form>
+<div class="loadingspinner hidden"></div>
+<script type="module">
+
+    import { asyncLogError } from "/static/js/error.js";
+    import { Requests } from "/static/js/requests.js";
+    import { Flash } from "/static/js/flash.js";
+
+    const spinner = document.querySelector('.loadingspinner');
+    const submit = document.getElementById('submit');
+    submit.addEventListener('click', async function(event) {
+
+        event.preventDefault();
+        Flash.clearMessages();
+        spinner.classList.toggle('hidden');
+
+        try {
+            const url = '/auth/register';
+            const form = document.getElementById('auth_register_post');
+            const formData = new FormData(form);
+            const res = await Requests.asyncPost(url, formData);
+            if (res.error) {
+                Flash.setMessage(res.message, 'error');
+            } else {
+                window.location.href = '/auth/login';
+            }
+            
+        } catch (e) {
+            Flash.setMessage(res.message, 'error');
+            await asyncLogError('/error/log', e.stack);
+        } finally {
+            spinner.classList.toggle('hidden');
+        }   
+    });
+
+</script>
 
 {% endblock content %}
