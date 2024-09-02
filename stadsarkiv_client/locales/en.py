@@ -25,6 +25,7 @@ en = {
     "Dark theme enabled.": "Dark theme enabled.",
     "Date From": "Date From",
     "Date To": "Date To",
+    "Display name should be at least 3 characters long": "Display name should be at least 3 characters long",
     "Download PDF": "Download PDF",
     "Download large size": "Download large size",
     "Download medium size": "Download medium size",

@@ -74,6 +74,21 @@ async def validate_passwords(request: Request):
         )
 
 
+async def validate_display_name(request: Request):
+    """
+    Validate that the display name is at least 3 characters long.
+    """
+
+    form = await request.form()
+    display_name = str(form.get("display_name"))
+
+    if len(display_name) < 3:
+        raise OpenAwsException(
+            400,
+            translate("Display name should be at least 3 characters long"),
+        )
+
+
 def _extract_validation_error(error_dict: dict) -> str:
     try:
         error_detail = error_dict["detail"]

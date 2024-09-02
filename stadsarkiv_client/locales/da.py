@@ -22,6 +22,7 @@ da = {
     "Dark theme enabled.": "Mørkt tema aktiveret",
     "Date From": "Tidligste dato",
     "Date To": "Seneste dato",
+    "Display name should be at least 3 characters long": "Det brugernavn skal være mindst 3 tegn langt",
     "Download PDF": "Download PDF",
     "Download large size": "Download stor størrelse",
     "Download medium size": "Download mellem størrelse",

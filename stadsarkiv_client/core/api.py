@@ -3,7 +3,7 @@ All api calls to the webservice API is defined here.
 """
 
 from starlette.requests import Request
-from stadsarkiv_client.core.api_error import OpenAwsException, validate_passwords, raise_openaws_exception
+from stadsarkiv_client.core.api_error import OpenAwsException, validate_passwords, validate_display_name, raise_openaws_exception
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import user
 from stadsarkiv_client.core.translate import translate
@@ -136,7 +136,9 @@ async def auth_register_post(request: Request):
     """
     POST an email and password to the api in order to register a new user
     """
+    await validate_display_name(request)
     await validate_passwords(request)
+
     form = await request.form()
     display_name = str(form.get("display_name"))
     email = str(form.get("email"))
