@@ -127,6 +127,7 @@ details>summary.inactive {
 
 .search-summary {
     color: var(--links);
+    max-width: var(--text-max-width);
 }
 
 .search-summary:first-of-type {
