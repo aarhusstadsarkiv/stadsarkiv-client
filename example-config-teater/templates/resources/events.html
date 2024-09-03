@@ -3,6 +3,8 @@
 {% import "macros/resource_macros.html" as resource_macros %}
 {% import "macros/search_macros.html" as search_macros %}
 
+{% set view = resource.search_result.view %}
+
 {% extends "base.html" %}
 
 {% block body_class %}resources-events{% endblock %}
@@ -10,6 +12,10 @@
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/search.css') }}?v={{ get_setting('version') }}">
+{% if view == 'grid' %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/search_grid.css') }}?v={{ get_setting('version') }}">
+{% endif %}
+
 <script type="module">
     import { activateOverlay } from "/static/js/overlay.js";
     activateOverlay();
@@ -29,10 +35,9 @@
 
 {{ resource_macros.parse_search_pagination(resource.search_result, meta, 'events') }}
 
-{% set view = resource.search_result.view %}
 {% set ignore_fields = ['collection'] %}
 
-{% if view == 'gallery' %}
+{% if view == 'gallery' or view == 'grid' %}
 {{ search_macros.parse_search_result_gallery(resource.search_result) }}
 {% else %}
 {{ search_macros.parse_search_result(resource.search_result, ignore_fields) }}

@@ -17,6 +17,7 @@
 <main>
     <div class="container-fluid" >
         <div class="home-search-container">
+            <!--
             <div class="home-search-form">
                 <form id="search" method="get" action="{{ url_for('search_get')}}" role="search">
                     <input id="q" type="text" name="q" placeholder="{{ translate('Search') }}" value="{{ q }}" autocomplete="off">
@@ -24,6 +25,7 @@
                 </form>
                 <div class="search-suggestions"></div>
             </div>
+            -->
         </div>
     </div>
     <div class="home-search-links">
@@ -34,7 +36,6 @@
                 <div class="headline">Samling</div>
             </a>            
         </div>
-
         
         <div class="home-search-link">
             <a href="/history">
@@ -74,6 +75,7 @@
 
 <script type="module">
 
+    /*
     import { autoCompleteInit } from '/static/js/auto-complete-instance.js';
 
     const searchBaseUrl = '/search?{{ query_str_display }}';
@@ -84,6 +86,7 @@
     });
 
     document.getElementById('q').focus();
+    */
 </script>
 
 {% endblock content %}

@@ -101,3 +101,7 @@
     max-height: calc(var(--main-menu-top) - 20px);
 }
 
+.navigation-right-group {
+    align-items: unset;
+    gap: 0px;
+}
