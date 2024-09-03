@@ -24,7 +24,8 @@
   --highlight: #ff0;
   --body-width: 100%;
   --container-width-large: 1400px;
-  --container-width-small: 1200px;
+  --container-width-medium: 1200px;
+  --container-width-small: 1000px;
   /* In order to control the max width on text */
   --text-max-width: 600px;
   --svg-color: black;

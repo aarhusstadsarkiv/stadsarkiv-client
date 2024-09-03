@@ -182,12 +182,25 @@ h6 {
 /**
  * a set of containers 
  */
-.container {
+.container-small {
     padding: 20px 20px;
     max-width: 100%;
     width: var(--container-width-small);
     margin: 0 auto;
+}
 
+.container-medium {
+    padding: 20px 20px;
+    max-width: 100%;
+    width: var(--container-width-medium);
+    margin: 0 auto;
+}
+
+.container-large {
+    padding: 20px 20px;
+    max-width: 100%;
+    width: var(--container-width-large);
+    margin: 0 auto;
 }
 
 .sticky-top {
@@ -205,13 +218,6 @@ h6 {
     margin-top: 20px;
     max-width: 100%;
     display: flex;
-}
-
-.container-large {
-    width: var(--container-width-large);
-    max-width: 100%;
-    margin: auto;
-    margin-top: 20px;
 }
 
 .container-left {
