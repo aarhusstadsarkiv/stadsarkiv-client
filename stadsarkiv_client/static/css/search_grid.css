@@ -1,0 +1,8 @@
+.search-portrait-gallery img {
+    width: 100%;
+    height: auto;
+    max-height: 10000px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+}

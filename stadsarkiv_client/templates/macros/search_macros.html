@@ -207,6 +207,7 @@
         <select name="view" class="select-view" aria-label="Visning">
             <option value="list" {% if view=="list" %}selected{% endif %}>{{ translate('List view') }}</option>
             <option value="gallery" {% if view=="gallery" %}selected{% endif %}>{{ translate('Gallery view') }}</option>
+            <option value="grid" {% if view=="grid" %}selected{% endif %}>{{ translate('Grid view') }}</option>
         </select>
     </form>
 </div>
@@ -398,6 +399,36 @@
             {% endif %}
             {{ parse_search_title_gallery(result) }}
             <div class="search-result-date-gallery">
+                {{ result.date_normalized }}
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro parse_search_result_grid(search_result) %}
+{% set start = search_result["start"]|int %}
+{% set size = search_result["size"]|int %}
+
+<div class="search-results-grid">
+    {% for result in search_result.result %}
+    {% set serie = None %}
+    {% if result.series is iterable %}
+    {% set serie = result.series | last %}
+    {% endif %}
+    {% set current = loop.index + start %}
+
+    <div class="search-result-grid">
+        <a class="search-link-grid" href="/records/{{ result.id }}?search={{ current }}">
+
+            {% if result.portrait %}
+            <div class="search-portrait-grid">
+                <img src="{{ result.portrait }}" alt="{{ result.label }}">
+            </div>
+            {% endif %}
+            {{ parse_search_title_gallery(result) }}
+            <div class="search-result-date-grid">
                 {{ result.date_normalized }}
             </div>
         </a>
