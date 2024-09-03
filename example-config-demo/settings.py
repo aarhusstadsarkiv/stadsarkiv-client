@@ -3,7 +3,7 @@ import typing
 
 settings: dict[str, typing.Any] = {
     "client_name": "development",
-    "client_url": "https://client.openaws.dk",
+    "client_url": "https://demo.openaws.dk",
     "language": "da",
     "log_handlers": ["rotating_file"],  # [ "stream", "file"]
     # "cors_allow_origins": ['https://client.openaws.dk'],
