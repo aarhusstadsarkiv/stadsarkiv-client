@@ -1,8 +1,47 @@
+.search-results-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+    max-width: 100%;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+@media (max-width: 1200px) {
+    .search-results-gallery {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .search-results-gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .search-results-gallery {
+        grid-template-columns: 1fr;
+    }
+}
+
+.search-link-gallery {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
 .search-portrait-gallery img {
     width: 100%;
     height: auto;
-    max-height: 10000px;
     aspect-ratio: 1 / 1;
-    object-fit: cover;
-    display: block;
+    object-fit: contain;
+}
+
+.search-summary-gallery {
+    flex-grow: 1;
+}
+
+.search-result-date-gallery {
+    font-size: 0.9em;
 }
