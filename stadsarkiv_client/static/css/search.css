@@ -186,6 +186,7 @@ details>summary.inactive {
 .search-results-gallery {
     column-count: 4;
     column-gap: 20px;
+    margin-top: 20px;
 }
 
 .search-result-gallery {
