@@ -168,3 +168,17 @@ Janne
 
 ---
 
+Når jeg har lavet en søgning på AarhusArkivet og gerne vil begynde på en helt ny søgning, plejer jeg at trykke AarhusArkivet-ikonet i venstre hjørne for at komme til forsiden.
+
+På det nye site gemmer den dog filtrene fra min seneste søgning, når jeg søger på noget nyt.
+
+ 
+
+Burde den ikke lave en nulstilling af tidligere søgeresultater når jeg aktivt vælger at trykke på linket til forsiden?
+
+Det gør den i hvert fald på det gamle site.
+
+Janne
+
+---
+
