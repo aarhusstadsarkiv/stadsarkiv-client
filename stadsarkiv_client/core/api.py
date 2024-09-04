@@ -109,7 +109,7 @@ async def auth_jwt_login_post(request: Request):
     """
 
     form = await request.form()
-    username = str(form.get("username"))
+    username = str(form.get("email"))  # email is used as username
     password = str(form.get("password"))
 
     login_dict = {"username": username, "password": password}
