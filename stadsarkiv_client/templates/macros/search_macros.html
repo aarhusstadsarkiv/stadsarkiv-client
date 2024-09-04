@@ -391,10 +391,14 @@
 
     <div class="search-result-gallery">
         <a class="search-link-gallery" href="/records/{{ result.id }}?search={{ current }}">
-
             {% if result.portrait %}
             <div class="search-portrait-gallery">
-                <img src="{{ result.portrait }}" alt="{{ result.label }}">
+                {% if result.label %}
+                {% set label = result.label %}
+                {% else %}
+                {% set label = result.summary %}
+                {% endif %}
+                <img src="{{ result.portrait }}" alt="{{ label }}">
             </div>
             {% endif %}
             {{ parse_search_title_gallery(result) }}
