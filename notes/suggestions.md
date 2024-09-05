@@ -182,3 +182,10 @@ Janne
 
 ---
 
+resources -> location
+Reol 38/fag 4/hylde 2. Det er bedre med det her: 38 + 4 +2
+
+Christian
+
+----
+
