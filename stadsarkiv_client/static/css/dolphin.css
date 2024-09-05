@@ -21,7 +21,8 @@ body {
     display:flex; 
     flex-direction:column;
     overflow: scroll;
-    overflow-x: hidden;
+    /* This rule prevents sticky inside a flex container from working */
+    /* overflow-x: hidden; */  
 }
 
 /**

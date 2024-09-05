@@ -187,6 +187,8 @@ h6 {
     max-width: 100%;
     width: var(--container-width-small);
     margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
 }
 
 .container-medium {
@@ -194,6 +196,8 @@ h6 {
     max-width: 100%;
     width: var(--container-width-medium);
     margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
 }
 
 .container-large {
@@ -201,6 +205,8 @@ h6 {
     max-width: 100%;
     width: var(--container-width-large);
     margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
 }
 
 .sticky-top {
@@ -327,3 +333,13 @@ summary {
 main {
     flex: 1;
 }
+
+.content-right {
+    position: sticky;
+    top: 110px;
+    align-self: flex-start; /* this is needed */
+    height:100%;
+    width:25%;
+    margin: 20px;
+}
+

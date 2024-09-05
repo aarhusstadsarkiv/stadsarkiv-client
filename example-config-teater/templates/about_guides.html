@@ -18,11 +18,11 @@
     </nav>
 
     <main class="container-small">
-
-        {% include "includes/main_title.html" %}
-        {% block content %}
-        {% endblock content %}
-
+        <div class="content-main">
+            {% include "includes/main_title.html" %}
+            {% block content %}
+            {% endblock content %}
+        </div>
     </main>
 
     <footer class="footer">
