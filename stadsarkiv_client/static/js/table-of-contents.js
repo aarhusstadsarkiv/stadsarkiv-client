@@ -1,48 +1,45 @@
 class TableOfContents {
-    constructor(rootElementId) {
-        this.rootElement = document.getElementById(rootElementId);
+    constructor(rootElement, autoGenerateIDs = false) {
+        if (!rootElement || !(rootElement instanceof HTMLElement)) {
+            throw new Error("Invalid root element provided");
+        }
+
+        this.rootElement = rootElement;
         this.toc = document.createElement('ul');
         this.currentUL = this.toc;
-        this.firstHeaderFound = false; // Flag to track if the first header is found
+        this.autoGenerateIDs = autoGenerateIDs;
     }
 
     generateTOC() {
-        this._generateTOCForElement(this.rootElement, 0);
+        if (this.autoGenerateIDs) {
+            this._generateIDsForHeaders();
+        }
+        this._generateTOCFromHeaders();
         return this.toc;
     }
 
-    _generateTOCForElement(element, level) {
-        Array.from(element.children).forEach(child => {
-            if (this._isHeader(child) && child.id) {
-                const headerLevel = parseInt(child.tagName.substring(1), 10);
+    _generateTOCFromHeaders() {
+        const headers = Array.from(this.rootElement.querySelectorAll('h1, h2, h3, h4, h5, h6'));
+        let previousLevel = 0;
 
-                if (!this.firstHeaderFound) {
-                    level = headerLevel; // Start the TOC at the level of the first header
-                    this.firstHeaderFound = true;
+        headers.forEach(header => {
+            const headerLevel = parseInt(header.tagName.substring(1), 10);
+
+            if (headerLevel > previousLevel) {
+                const newUL = document.createElement('ul');
+                this.currentUL.appendChild(newUL);
+                this.currentUL = newUL;
+            } else if (headerLevel < previousLevel) {
+                let levelDiff = previousLevel - headerLevel;
+                while (levelDiff > 0) {
+                    this.currentUL = this.currentUL.parentNode;
+                    levelDiff--;
                 }
-
-                while (headerLevel > level) {
-                    const newUL = document.createElement('ul');
-                    if (this.currentUL.lastElementChild) {
-                        this.currentUL.lastElementChild.appendChild(newUL);
-                    } else {
-                        this.currentUL.appendChild(newUL);
-                    }
-                    this.currentUL = newUL;
-                    level++;
-                }
-
-                while (headerLevel < level) {
-                    this.currentUL = this.currentUL.parentNode.parentNode;
-                    level--;
-                }
-
-                const newLI = this._createListItem(child);
-                this.currentUL.appendChild(newLI);
-                this._generateTOCForElement(child, level);
-            } else {
-                this._generateTOCForElement(child, level);
             }
+
+            const newLI = this._createListItem(header);
+            this.currentUL.appendChild(newLI);
+            previousLevel = headerLevel;
         });
     }
 
@@ -58,19 +55,36 @@ class TableOfContents {
         item.appendChild(link);
         return item;
     }
+
+    _generateIDsForHeaders() {
+        let idCount = 0;
+        Array.from(this.rootElement.querySelectorAll('h1, h2, h3, h4, h5, h6')).forEach(header => {
+            if (!header.id) {
+                header.id = `header-${idCount++}`;
+            }
+        });
+    }
 }
 
 /**
- * Show the table of content based on the sourceID and tocID
- * sourceID: the id of the source, e.g. <div id="article">...</div>
- * tocID: the id of the table of content, e.g. <div id="toc">...</div>
- * @param {*} sourceID 
- * @param {*} tocID 
+ * Show the table of content based on the sourceElement and tocElement
+ * sourceElement is the element that contains the content
+ * tocElement is the element that the TOC will be appended to
+ * 
+ * By default only h1, h2, h3, h4, h5, h6 will be included in the TOC
+ * These need to have an id attribute to be included in the TOC
+ * 
+ * autoGenerateIDs is a flag to automatically generate ids for headers, 
+ * so that they can be included in the TOC
+ * 
+ * @param {*} sourceElement 
+ * @param {*} tocElement 
+ * @param {*} autoGenerateIDs 
  */
-function showTOC(sourceID, tocID) {
-    const tocGenerator = new TableOfContents(sourceID);
+function showTOC(sourceElement, tocElement, autoGenerateIDs = false) {
+    const tocGenerator = new TableOfContents(sourceElement, autoGenerateIDs);
     const toc = tocGenerator.generateTOC();
-    document.getElementById(tocID).appendChild(toc);
+    tocElement.appendChild(toc); 
 }
 
 export { showTOC };
