@@ -94,7 +94,7 @@ da = {
     "Reset password": "Nulstil password",
     "Reset search": "Nulstil søgning",
     "Reset your password": "Nulstil dit password",
-    "Save search": "Save search",
+    "Save search": "Gem søgning",
     "Schema": "Skema",
     "Schema could not be created": "Skema kunne ikke oprettes",
     "Schema created.": "Skema oprettet.",
