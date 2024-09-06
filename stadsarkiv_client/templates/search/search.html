@@ -50,6 +50,19 @@
             autoCompleteInit(searchBaseUrl);
         }
     });
+
+
+    const bookmarkSearch = document.querySelector('.bookmark-search');
+    if (bookmarkSearch) {
+        bookmarkSearch.addEventListener('click', function() {
+            console.log('bookmarkSearch');
+            let sign = prompt("Indtast en tekst som gemmes med din søgning");
+            if (sign) {
+                
+            }
+            // console.log(sign);
+        });
+    }
 </script>
 
 {% endblock content %}

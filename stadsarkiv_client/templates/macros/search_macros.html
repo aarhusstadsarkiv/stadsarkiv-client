@@ -29,7 +29,8 @@
 
 {% if facets_filters %}
 <div class="action-links">
-    <a href="{{ search_base_url }}?">{{ translate('Reset search') }}</a>  
+    <a href="{{ search_base_url }}?">{{ translate('Reset search') }}</a>
+    <a class="bookmark-search" style="background-color: var(--focus);" href="#">{{ translate('Save search') }}</a>  
 </div>
 {% endif %}  
 
