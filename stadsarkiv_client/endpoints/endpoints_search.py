@@ -276,8 +276,10 @@ async def search_get(request: Request):
 
     if context_values["view"] == "list":
         response = templates.TemplateResponse(request, "search/search.html", context)
-    if context_values["view"] == "gallery" or context_values["view"] == "grid":
+    elif context_values["view"] == "gallery" or context_values["view"] == "grid":
         response = templates.TemplateResponse(request, "search/search_gallery.html", context)
+    else:
+        response = templates.TemplateResponse(request, "search/search.html", context)
 
     set_response_cookie(response, context)
 
