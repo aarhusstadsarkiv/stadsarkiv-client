@@ -6,7 +6,6 @@ from starlette.routing import Route, Mount
 from stadsarkiv_client.endpoints import (
     endpoints_admin,
     endpoints_auth,
-    endpoints_bookmarks,
     endpoints_entities,
     endpoints_error,
     endpoints_order,
@@ -18,6 +17,7 @@ from stadsarkiv_client.endpoints import (
     endpoints_search,
     endpoints_test,
     endpoints_upload,
+    endpoints_user_data,
 )
 import os
 from stadsarkiv_client.core.dynamic_settings import settings
@@ -82,9 +82,9 @@ routes = [
     # send verify email again
     Route("/auth/send-verify-email", endpoint=endpoints_auth.auth_send_verify_email, name="auth_send_verify_email"),
     Route("/auth/user-info", endpoint=endpoints_auth.auth_user_info, name="auth_user_info", methods=["POST"]),
-    Route("/auth/bookmarks", endpoint=endpoints_bookmarks.auth_bookmarks_get, name="auth_bookmarks_get"),
-    Route("/auth/bookmarks", endpoint=endpoints_bookmarks.auth_bookmarks_post, name="auth_bookmarks_post", methods=["POST"]),
-    Route("/auth/bookmarks_json", endpoint=endpoints_bookmarks.auth_bookmarks_json, name="auth_bookmarks_json"),
+    Route("/auth/bookmarks", endpoint=endpoints_user_data.auth_bookmarks_get, name="auth_bookmarks_get"),
+    Route("/auth/bookmarks", endpoint=endpoints_user_data.auth_bookmarks_post, name="auth_bookmarks_post", methods=["POST"]),
+    Route("/auth/bookmarks_json", endpoint=endpoints_user_data.auth_bookmarks_json, name="auth_bookmarks_json"),
     Route("/schemas/{schema_type:str}", endpoint=endpoints_schemas.schemas_get_single, name="schemas_get_single"),
     Route("/schemas", endpoint=endpoints_schemas.schemas_get_list, name="schemas_get_list"),
     Route("/schemas", endpoint=endpoints_schemas.schemas_post, name="schemas_post", methods=["POST"]),
