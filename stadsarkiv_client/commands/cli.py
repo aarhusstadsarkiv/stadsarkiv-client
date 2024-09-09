@@ -14,14 +14,15 @@ from stadsarkiv_client import __version__
 
 def handle_exit_signal(signum, frame):
     print("Received exit signal. Shutting down server.")
-    _stop_server(PID_FILE)
+    _stop_server(GUNICORN_PID_FILE)
     os._exit(0)
 
 
 signal.signal(signal.SIGINT, handle_exit_signal)  # Catch Ctrl+C
 
 
-PID_FILE = "gunicorn_process.pid"
+GUNICORN_PID_FILE = "gunicorn_process.pid"
+UVICORN_PID_FILE = "uvicorn_process.pid"
 
 
 @click.group()
@@ -36,7 +37,7 @@ def cli():
 @click.option("-c", "--config-dir", default="local", help="Specify a local config directory.", required=False)
 @click.option("--config-dir", default="local", help="Specify a local config directory.", required=False)
 def server_prod(port: int, workers: int, host: str, config_dir: str):
-    _stop_server(PID_FILE)
+    _stop_server(GUNICORN_PID_FILE)
 
     config_dir = config_dir.rstrip("/\\")
     os.environ["CONFIG_DIR"] = config_dir
@@ -56,7 +57,7 @@ def server_prod(port: int, workers: int, host: str, config_dir: str):
     ]
 
     gunicorn_process = subprocess.Popen(cmd)
-    _save_pid_to_file(gunicorn_process.pid)
+    _save_pid_to_file(GUNICORN_PID_FILE, gunicorn_process.pid)
     print(f"Started Gunicorn in background with PID: {gunicorn_process.pid}")  # Print the PID for reference
 
 
@@ -93,29 +94,33 @@ def server_docker(port: int, workers: int, host: str):
 def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True):
     config_dir = config_dir.rstrip("/\\")
     os.environ["CONFIG_DIR"] = config_dir
-    _stop_server(PID_FILE)
+    _stop_server(UVICORN_PID_FILE)
 
     cmd = [
         sys.executable,  # Use the current Python interpreter
-        "-m", "uvicorn",
+        "-m",
+        "uvicorn",
         "stadsarkiv_client.app:app",
         f"--port={port}",
         f"--host={host}",
         f"--workers={workers}",
-        "--log-level=debug"
+        "--log-level=debug",
     ]
 
     if reload:
         cmd.append("--reload")
 
     uvicorn_process = subprocess.Popen(cmd)
-    _save_pid_to_file(uvicorn_process.pid)
+    _save_pid_to_file(UVICORN_PID_FILE, uvicorn_process.pid)
     print(f"Started Uvicorn in background with PID: {uvicorn_process.pid}")
 
 
 @cli.command(help="Stop the running Gunicorn server.")
 def server_stop():
-    _stop_server(PID_FILE)
+    if os.path.exists(GUNICORN_PID_FILE):
+        _stop_server(GUNICORN_PID_FILE)
+    if os.path.exists(UVICORN_PID_FILE):
+        _stop_server(UVICORN_PID_FILE)
 
 
 @cli.command(help="Generate a session secret.")
@@ -172,8 +177,8 @@ if _allow_dev_commands():
         os.system("flake8 . --config .flake8")
 
 
-def _save_pid_to_file(pid: int):
-    with open("gunicorn_process.pid", "w") as file:
+def _save_pid_to_file(PID_FILE, pid: int):
+    with open(PID_FILE, "w") as file:
         file.write(str(pid))
 
 

@@ -163,6 +163,7 @@ client_test.py
 generate_client/openaws-client
 cache
 gunicorn_process.pid
+uvicorn_process.pid
 /settings.py
 /hooks.py
 /settings_facets.py
