@@ -96,12 +96,13 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
     _stop_server(PID_FILE)
 
     cmd = [
-        "./venv/bin/uvicorn",
+        sys.executable,  # Use the current Python interpreter
+        "-m", "uvicorn",
         "stadsarkiv_client.app:app",
         f"--port={port}",
         f"--host={host}",
         f"--workers={workers}",
-        "--log-level=debug",
+        "--log-level=debug"
     ]
 
     if reload:
