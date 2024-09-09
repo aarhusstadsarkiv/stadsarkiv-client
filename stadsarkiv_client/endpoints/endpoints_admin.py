@@ -78,15 +78,15 @@ async def admin_test(request: Request):
         email = user_["email"]
         log.debug(email)
 
-        custom_data = UserData(user_)
+        # custom_data = UserData(user_)
         # custom_data.set_custom_value("test", "test")
 
-        custom_data.append_bookmark("111111222")
-        data = custom_data.get_data()
+        # custom_data.append_bookmark("111111222")
+        # data = custom_data.get_data()
         # log.debug(data)
 
-        new_data = await api.users_data_post(request, id=id, data=data)
-        log.debug(new_data)
+        # new_data = await api.users_data_post(request, id=id, data=data)
+        # log.debug(new_data)
 
         # log.debug(user["data"])
     # await api.users_patch_permissions(request)
