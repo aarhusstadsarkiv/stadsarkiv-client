@@ -79,7 +79,7 @@ async def admin_test(request: Request):
         log.debug(email)
 
         custom_data = UserData(user_)
-        custom_data.set_key_value("test", "test")
+        # custom_data.set_custom_value("test", "test")
 
         custom_data.append_bookmark("111111222")
         data = custom_data.get_data()
