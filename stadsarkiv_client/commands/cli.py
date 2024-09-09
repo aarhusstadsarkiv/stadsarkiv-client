@@ -9,16 +9,8 @@ import signal
 import secrets
 import glob
 import sys
+import psutil
 from stadsarkiv_client import __version__
-
-
-def handle_exit_signal(signum, frame):
-    print("Received exit signal. Shutting down server.")
-    _stop_server(GUNICORN_PID_FILE)
-    os._exit(0)
-
-
-signal.signal(signal.SIGINT, handle_exit_signal)  # Catch Ctrl+C
 
 
 GUNICORN_PID_FILE = "gunicorn_process.pid"
@@ -182,20 +174,26 @@ def _save_pid_to_file(PID_FILE, pid: int):
         file.write(str(pid))
 
 
-def _stop_server(pid_file: str):
-    if os.path.exists(pid_file):
-        with open(pid_file, "r") as file:
-            old_pid = int(file.read())
+def _stop_server(pid_file):
+    try:
+        with open(pid_file, "r") as f:
+            pid = int(f.read().strip())
 
+        # Check if the process exists
+        if psutil.pid_exists(pid):
+            print(f"Stopping server with PID: {pid}")
             if os.name == "nt":
-                try:
-                    os.kill(old_pid, signal.CTRL_BREAK_EVENT)  # type: ignore
-                except ProcessLookupError:
-                    print(f"No process with PID {old_pid} found.")
+                os.kill(pid, signal.CTRL_BREAK_EVENT)
             else:
-                try:
-                    os.kill(old_pid, signal.SIGTERM)
-                except ProcessLookupError:
-                    print(f"No process with PID {old_pid} found.")
+                os.kill(pid, signal.SIGINT)
 
+            print("Server stopped successfully.")
+        else:
+            print(f"Process with PID {pid} does not exist.")
+
+        if os.path.exists(pid_file):
+            print(pid_file)
             os.remove(pid_file)
+
+    except Exception as e:
+        print(f"Error stopping the server: {e}")
