@@ -13,6 +13,15 @@ import sys
 from stadsarkiv_client import __version__
 
 
+def handle_exit_signal(signum, frame):
+    print("Received exit signal. Shutting down server.")
+    _stop_server(PID_FILE)
+    os._exit(0)
+
+
+signal.signal(signal.SIGINT, handle_exit_signal)  # Catch Ctrl+C
+
+
 PID_FILE = "gunicorn_process.pid"
 
 
