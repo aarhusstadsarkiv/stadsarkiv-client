@@ -43,14 +43,14 @@ class Hooks(HooksSpec):
         email = me["email"]
 
         custom_data = UserData(me)
-        if not custom_data.get_key_value("bookmarks_imported"):
+        if not custom_data.get_custom_data("bookmarks_imported"):
             bookmarks = get_bookmarks_by_email(email)
 
             for bookmark in bookmarks:
                 custom_data.append_bookmark(bookmark)
 
             # This needs to be fixed in the webservice
-            custom_data.set_key_value("bookmarks_imported", True)
+            custom_data.set_custom_value("bookmarks_imported", True)
             data = custom_data.get_data()
             response = await api.users_data_post(self.request, id=id, data=data)
 

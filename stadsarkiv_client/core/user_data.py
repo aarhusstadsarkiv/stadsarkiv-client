@@ -4,6 +4,7 @@ User data functions.
 
 from stadsarkiv_client.core.logging import get_log
 import typing
+import uuid
 
 
 log = get_log()
@@ -28,18 +29,43 @@ class UserData:
         for bookmark in bookmarks:
             bookmark["record_id"] = str(bookmark["record_id"]).zfill(9)
 
-    def set_key_value(self, key: str, value: typing.Any):
+    def set_custom_value(self, key: str, value: typing.Any):
+        """
+        Set a key value pair in the custom data dict.
+        """
         self.custom_data[key] = value
 
-    def get_key_value(self, key: str) -> typing.Any:
+    def get_custom_data(self, key: str) -> typing.Any:
+        """
+        Get a value from the custom data dict.
+        """
         return self.custom_data.get(key)
 
-    def clear_key(self, key: str):
+    def clear_custom_key(self, key: str):
+        """
+        Clear custom key value
+        """
         if key in self.custom_data:
             del self.custom_data[key]
 
-    def clear_all_keys(self):
-        self.custom_data = {}
+    def append_key_value(self, key: str, value: typing.Any):
+        """
+        Append a value to a custom data dict.
+        """
+        custom_data = self.custom_data.get(key, [])
+        value["uuid"] = str(uuid.uuid4())
+        self.custom_data[key] = custom_data
+
+    def remove_key_value(self, key: str, value: typing.Any):
+        """
+        Remove a value from a custom data dict.
+        """
+        custom_data = self.custom_data.get(key, [])
+        for data in custom_data:
+            if data["uuid"] == value["uuid"]:
+                custom_data.remove(data)
+                break
+        self.custom_data[key] = custom_data
 
     def get_data(self) -> dict:
         """

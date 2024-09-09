@@ -87,7 +87,7 @@ class Hooks(HooksSpec):
         email = me["email"]
 
         custom_data = UserData(me)
-        if not custom_data.get_key_value("bookmarks_imported"):
+        if not custom_data.get_custom_data("bookmarks_imported"):
             bookmarks = get_bookmarks_by_email(email)
 
             for bookmark in bookmarks:
