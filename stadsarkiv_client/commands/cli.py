@@ -7,7 +7,6 @@ import subprocess
 import os
 import signal
 import secrets
-import uvicorn
 import glob
 import sys
 from stadsarkiv_client import __version__
@@ -96,19 +95,21 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
     os.environ["CONFIG_DIR"] = config_dir
     _stop_server(PID_FILE)
 
-    # Function to handle graceful shutdown on Windows
-    def shutdown_server(sig, frame):
-        print("Shutting down server...")
-        if os.name == "nt":
-            # On Windows, send CTRL_C_EVENT to gracefully stop the process
-            try:
-                os.kill(os.getpid(), signal.CTRL_C_EVENT)  # Simulates Ctrl-C on Windows
-            except OSError:
-                print("Failed to send CTRL_C_EVENT.")
+    cmd = [
+        "./venv/bin/uvicorn",
+        "stadsarkiv_client.app:app",
+        f"--port={port}",
+        f"--host={host}",
+        f"--workers={workers}",
+        "--log-level=debug",
+    ]
 
-    signal.signal(signal.SIGINT, shutdown_server)
+    if reload:
+        cmd.append("--reload")
 
-    uvicorn.run("stadsarkiv_client.app:app", reload=reload, port=port, workers=workers, host=host, log_level="debug")
+    uvicorn_process = subprocess.Popen(cmd)
+    _save_pid_to_file(uvicorn_process.pid)
+    print(f"Started Uvicorn in background with PID: {uvicorn_process.pid}")
 
 
 @cli.command(help="Stop the running Gunicorn server.")
