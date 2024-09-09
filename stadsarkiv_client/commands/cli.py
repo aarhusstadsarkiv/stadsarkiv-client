@@ -96,6 +96,18 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
     os.environ["CONFIG_DIR"] = config_dir
     _stop_server(PID_FILE)
 
+    # Function to handle graceful shutdown on Windows
+    def shutdown_server(sig, frame):
+        print("Shutting down server...")
+        if os.name == "nt":
+            # On Windows, send CTRL_C_EVENT to gracefully stop the process
+            try:
+                os.kill(os.getpid(), signal.CTRL_C_EVENT)  # Simulates Ctrl-C on Windows
+            except OSError:
+                print("Failed to send CTRL_C_EVENT.")
+
+    signal.signal(signal.SIGINT, shutdown_server)
+
     uvicorn.run("stadsarkiv_client.app:app", reload=reload, port=port, workers=workers, host=host, log_level="debug")
 
 
