@@ -7,14 +7,13 @@ import subprocess
 import os
 import signal
 import secrets
+import uvicorn
 import glob
 import sys
-import psutil
 from stadsarkiv_client import __version__
 
 
-GUNICORN_PID_FILE = "gunicorn_process.pid"
-UVICORN_PID_FILE = "uvicorn_process.pid"
+PID_FILE = "gunicorn_process.pid"
 
 
 @click.group()
@@ -29,7 +28,7 @@ def cli():
 @click.option("-c", "--config-dir", default="local", help="Specify a local config directory.", required=False)
 @click.option("--config-dir", default="local", help="Specify a local config directory.", required=False)
 def server_prod(port: int, workers: int, host: str, config_dir: str):
-    _stop_server(GUNICORN_PID_FILE)
+    _stop_server(PID_FILE)
 
     config_dir = config_dir.rstrip("/\\")
     os.environ["CONFIG_DIR"] = config_dir
@@ -49,32 +48,8 @@ def server_prod(port: int, workers: int, host: str, config_dir: str):
     ]
 
     gunicorn_process = subprocess.Popen(cmd)
-    _save_pid_to_file(GUNICORN_PID_FILE, gunicorn_process.pid)
+    _save_pid_to_file(gunicorn_process.pid)
     print(f"Started Gunicorn in background with PID: {gunicorn_process.pid}")  # Print the PID for reference
-
-
-"""
-Docker command for starting the production gunicorn server.
-Notice: No config-dir option. If needed it should be set in the docker-compose.tml.
-Default is 'local'.
-"""
-
-
-@cli.command(help="Start the gunicorn server on docker.")
-@click.option("--port", default=5555, help="Server port.")
-@click.option("--workers", default=3, help="Number of workers.")
-@click.option("--host", default="0.0.0.0", help="Server host.")
-def server_docker(port: int, workers: int, host: str):
-    cmd = [
-        "gunicorn",
-        "stadsarkiv_client.app:app",
-        f"--workers={workers}",
-        f"--bind={host}:{port}",
-        "--worker-class=uvicorn.workers.UvicornWorker",
-        "--log-level=info",
-    ]
-
-    subprocess.call(cmd)
 
 
 @cli.command(help="Start the running Uvicorn dev-server. Notice: By default it watches for changes in current dir.")
@@ -86,33 +61,23 @@ def server_docker(port: int, workers: int, host: str):
 def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True):
     config_dir = config_dir.rstrip("/\\")
     os.environ["CONFIG_DIR"] = config_dir
-    _stop_server(UVICORN_PID_FILE)
+    _stop_server(PID_FILE)
 
-    cmd = [
-        sys.executable,  # Use the current Python interpreter
-        "-m",
-        "uvicorn",
-        "stadsarkiv_client.app:app",
-        f"--port={port}",
-        f"--host={host}",
-        f"--workers={workers}",
-        "--log-level=debug",
-    ]
+    if not _is_source():
+        # Prevent watching giant dir if not _is_source, e.g. the users home folder on Windows
+        # check if config_dir exists
+        if not os.path.exists(config_dir):
+            reload = False
+            reload_dirs = []
+        else:
+            reload_dirs = [config_dir]
 
-    if reload:
-        cmd.append("--reload")
-
-    uvicorn_process = subprocess.Popen(cmd)
-    _save_pid_to_file(UVICORN_PID_FILE, uvicorn_process.pid)
-    print(f"Started Uvicorn in background with PID: {uvicorn_process.pid}")
+    uvicorn.run("stadsarkiv_client.app:app", reload=reload, reload_dirs=reload_dirs, port=port, workers=workers, host=host, log_level="debug")
 
 
 @cli.command(help="Stop the running Gunicorn server.")
 def server_stop():
-    if os.path.exists(GUNICORN_PID_FILE):
-        _stop_server(GUNICORN_PID_FILE)
-    if os.path.exists(UVICORN_PID_FILE):
-        _stop_server(UVICORN_PID_FILE)
+    _stop_server(PID_FILE)
 
 
 @cli.command(help="Generate a session secret.")
@@ -144,7 +109,7 @@ def run_tests(config_dir, tests_path_pattern):
         print(f"No tests found matching pattern {tests_path_pattern}")
 
 
-def _allow_dev_commands():
+def _is_source():
     """
     If running in a virtual environment and if the .is_source file exists,
     then allow dev commands
@@ -154,7 +119,7 @@ def _allow_dev_commands():
         return True
 
 
-if _allow_dev_commands():
+if _is_source():
     # Only show dev commands if source version
     @cli.command(help="Run all tests.")
     def source_test():
@@ -169,31 +134,25 @@ if _allow_dev_commands():
         os.system("flake8 . --config .flake8")
 
 
-def _save_pid_to_file(PID_FILE, pid: int):
-    with open(PID_FILE, "w") as file:
+def _save_pid_to_file(pid: int):
+    with open("gunicorn_process.pid", "w") as file:
         file.write(str(pid))
 
 
-def _stop_server(pid_file):
-    try:
-        with open(pid_file, "r") as f:
-            pid = int(f.read().strip())
+def _stop_server(pid_file: str):
+    if os.path.exists(pid_file):
+        with open(pid_file, "r") as file:
+            old_pid = int(file.read())
 
-        # Check if the process exists
-        if psutil.pid_exists(pid):
-            print(f"Stopping server with PID: {pid}")
             if os.name == "nt":
-                os.kill(pid, signal.CTRL_BREAK_EVENT)
+                try:
+                    os.kill(old_pid, signal.CTRL_BREAK_EVENT)  # type: ignore
+                except ProcessLookupError:
+                    print(f"No process with PID {old_pid} found.")
             else:
-                os.kill(pid, signal.SIGINT)
+                try:
+                    os.kill(old_pid, signal.SIGTERM)
+                except ProcessLookupError:
+                    print(f"No process with PID {old_pid} found.")
 
-            print("Server stopped successfully.")
-        else:
-            print(f"Process with PID {pid} does not exist.")
-
-        if os.path.exists(pid_file):
-            print(pid_file)
             os.remove(pid_file)
-
-    except Exception as e:
-        print(f"Error stopping the server: {e}")
