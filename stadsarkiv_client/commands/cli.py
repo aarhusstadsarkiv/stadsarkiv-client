@@ -72,7 +72,15 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
         else:
             reload_dirs = [config_dir]
 
-    uvicorn.run("stadsarkiv_client.app:app", reload=reload, reload_dirs=reload_dirs, port=port, workers=workers, host=host, log_level="debug")
+    uvicorn.run(
+        "stadsarkiv_client.app:app",
+        reload=reload,
+        reload_dirs=reload_dirs,
+        port=port,
+        workers=workers,
+        host=host,
+        log_level="debug",
+    )
 
 
 @cli.command(help="Stop the running Gunicorn server.")
@@ -99,12 +107,15 @@ def run_tests(config_dir, tests_path_pattern):
 
     print(f"Running tests with config dir: {os.getenv('CONFIG_DIR')}")
 
+    # get python executable in order use the same python version as the current process
+    python_executable = sys.executable
+
     # get test files
     test_files = glob.glob(tests_path_pattern)
     if test_files:
         for test_file in test_files:
             print(f"Running tests in {test_file}")
-            subprocess.run(["python", "-m", "unittest", test_file], check=True)
+            subprocess.run([python_executable, "-m", "unittest", test_file], check=True)
     else:
         print(f"No tests found matching pattern {tests_path_pattern}")
 
