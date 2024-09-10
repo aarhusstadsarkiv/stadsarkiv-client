@@ -19,6 +19,11 @@ PID_FILE: str = "gunicorn_process.pid"
 @click.group()
 @click.version_option(version=__version__, prog_name=__program__)
 def cli():
+    """
+    stadsarkiv-client generates individual browser-based GUI-clients that uses the webservice from Aarhus City Archives as backend and datastore.
+
+    For full documentation see https://demo.openaws.dk
+    """
     pass
 
 
