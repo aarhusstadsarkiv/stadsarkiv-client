@@ -13,7 +13,7 @@ import sys
 from stadsarkiv_client import __version__
 
 
-PID_FILE = "gunicorn_process.pid"
+PID_FILE: str = "gunicorn_process.pid"
 
 
 @click.group()
