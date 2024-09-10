@@ -57,16 +57,20 @@ def server_prod(port: int, workers: int, host: str, config_dir: str):
 @click.option("--workers", default=1, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
 @click.option("-c", "--config-dir", default="local", help="Specify a local config directory.", required=False)
-@click.option("--reload", default=True, help="Reload on changes", required=False)
+# @click.option("--reload", default=True, help="Reload on changes", required=False)
 def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True):
+
+    reload = True
+    reload_dirs = ["."]
+
     config_dir = config_dir.rstrip("/\\")
     os.environ["CONFIG_DIR"] = config_dir
     _stop_server(PID_FILE)
 
+    # Prevent watching giant dir if dir is not 'source', e.g. the users home folder on Windows
     if not _is_source():
-        # Prevent watching giant dir if not _is_source, e.g. the users home folder on Windows
-        # check if config_dir exists
         if not os.path.exists(config_dir):
+            print(f"Config dir '{config_dir}' does not exist.")
             reload = False
             reload_dirs = []
         else:
