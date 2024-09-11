@@ -21,9 +21,9 @@ def load():
     Override with "local" .env file if it exists
     """
     dir_path = Path(__file__).resolve().parent.parent
-    env_dist = dir_path / ".env-dist"
+    env_dist = dir_path / ".env.dist"
     load_dotenv(env_dist)
-    log.debug("Loaded .env-dist file")
+    log.debug("Loaded .env.dist file")
 
     local_dot_env = get_local_config_dir(".env")
 

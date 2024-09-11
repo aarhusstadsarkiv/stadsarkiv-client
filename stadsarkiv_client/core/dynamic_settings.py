@@ -41,9 +41,9 @@ try:
     submodule = importlib.import_module(module_name)
     settings_config_local = getattr(submodule, "settings")
     settings.update(settings_config_local)
-    log.debug(f"Loaded local settings file: {get_local_config_dir('settings-local.py')}")
+    log.debug(f"Loaded local settings file: {get_local_config_dir('settings_local.py')}")
 except ImportError:
-    log.debug(f"Local settings file NOT loaded: {get_local_config_dir('settings-local.py')}")
+    log.debug(f"Local settings file NOT loaded: {get_local_config_dir('settings_local.py')}")
 
 
 # load settings for tests (overrides settings)
