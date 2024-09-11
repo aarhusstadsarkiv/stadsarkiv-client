@@ -38,7 +38,7 @@ def server_prod(port: int, workers: int, host: str, config_dir: str):
     _stop_server(PID_FILE)
 
     config_dir = config_dir.rstrip("/\\")
-    config_dir = os.path.abspath(config_dir)
+    # config_dir = os.path.abspath(config_dir)
     os.environ["CONFIG_DIR"] = config_dir
 
     if os.name == "nt":
@@ -71,7 +71,7 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
     reload_dirs = ["."]
 
     config_dir = config_dir.rstrip("/\\")
-    config_dir = os.path.abspath(config_dir)
+    # config_dir = os.path.abspath(config_dir)
 
     os.environ["CONFIG_DIR"] = config_dir
     _stop_server(PID_FILE)
