@@ -21,5 +21,7 @@ def get_local_config_dir(*sub_dirs: str) -> str:
 
     local_config_dir = os.environ.get("CONFIG_DIR", "local")
 
-    # Unpack the list of directories or files
-    return os.path.join(local_config_dir, *sub_dirs)
+    # join the sub_dirs to the local_config_dir
+    paths = os.path.join(local_config_dir, *sub_dirs)
+
+    return paths
