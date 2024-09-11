@@ -4,14 +4,12 @@ Load the module .env-dist file and override with local .env file if it exists
 """
 
 from dotenv import load_dotenv
-import sys
 import os
 from pathlib import Path
 from stadsarkiv_client.core.logging_handlers import get_init_logger
 from stadsarkiv_client.core.args import get_local_config_dir
 
 
-sys.path.append(".")
 log = get_init_logger()
 
 

@@ -11,7 +11,9 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.sentry import enable_sentry
 import os
 import json
+import sys
 
+sys.path.append(".")
 log = get_log()
 
 log.debug("Environment: " + str(os.getenv("ENVIRONMENT")))
