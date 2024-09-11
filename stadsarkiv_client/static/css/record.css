@@ -84,13 +84,10 @@
     }
 }
 
-
-
-
 .record-content>.content>p {
     margin: 0;
     padding-bottom: 5px;
-    word-break: break-word;
+    /* word-break: break-word; */
     min-width: 100%;
 }
 
