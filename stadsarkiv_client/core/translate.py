@@ -10,19 +10,17 @@ from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.locales.en import en
 from stadsarkiv_client.locales.da import da
 from stadsarkiv_client.core.args import get_local_config_dir
+from stadsarkiv_client.core.module_loader import load_submodule_from_file
 import json
-import importlib
 from stadsarkiv_client.core.logging import get_log
 
 
 log = get_log()
 
 try:
-    module_name = get_local_config_dir() + ".language"
-    submodule = importlib.import_module(module_name)
-    language_local = getattr(submodule, "language")  # type: ignore
+    language_local = load_submodule_from_file("language", "language", get_local_config_dir("language.py"))
     log.debug(f"Loaded local language file: {get_local_config_dir('language.py')}")
-except ImportError:
+except Exception:
     log.debug(f"Local language file NOT loaded: {get_local_config_dir('language.py')}")
     language_local = {}
 
@@ -52,8 +50,8 @@ def _add_key_language_file(lang, key) -> None:
 
 def _save_file_dict(lang) -> None:
     """
-    Don't update and save language files in production
-    Else save language files with new key
+    Save language files with new key
+    But do not update and save language files in production
     """
     if settings["environment"] == "production":
         return
