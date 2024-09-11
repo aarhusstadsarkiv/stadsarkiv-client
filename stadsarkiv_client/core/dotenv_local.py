@@ -29,6 +29,6 @@ def load():
 
     if os.path.exists(local_dot_env):
         load_dotenv(local_dot_env, override=True)
-        log.debug(f"{local_dot_env} file loaded. Will override .env-dist settings")
+        log.debug(f"{local_dot_env} file loaded. Will override .env.dist settings")
     else:
         log.debug(f"Local {local_dot_env} file NOT loaded")
