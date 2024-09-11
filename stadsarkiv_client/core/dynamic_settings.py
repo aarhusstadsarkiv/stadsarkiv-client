@@ -2,13 +2,12 @@
 Dynamic settings module that tries to load settings from:
 
 * settings.py
-* settings_local.py, 
+* settings_local.py
 * settings_facets.py
 
 If the environment variable TEST is set, it will also load settings from:
 
 settings_test.py
-
 """
 
 from stadsarkiv_client.settings import settings
