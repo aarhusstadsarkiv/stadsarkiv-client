@@ -64,17 +64,3 @@ Run it like this: `./bin/upgrade.sh`
 Then restart the service.
 
     sudo systemctl restart stadsarkiv-client.service
-
-# docker
-
-Build:
-
-    docker-compose build 
-
-Run:
-    
-    docker-compose up
-
-Remove:
-
-    docker-compose down

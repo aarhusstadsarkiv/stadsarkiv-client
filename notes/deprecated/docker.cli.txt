@@ -20,3 +20,19 @@ def server_docker(port: int, workers: int, host: str):
     ]
 
     subprocess.call(cmd)
+
+
+
+# docker
+
+Build:
+
+    docker-compose build 
+
+Run:
+    
+    docker-compose up
+
+Remove:
+
+    docker-compose down
