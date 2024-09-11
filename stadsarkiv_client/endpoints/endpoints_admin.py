@@ -9,7 +9,6 @@ from stadsarkiv_client.core import user
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
-from stadsarkiv_client.core.user_data import UserData
 import asyncio
 
 log = get_log()
@@ -65,34 +64,33 @@ async def admin_users_patch(request: Request):
 
 
 async def admin_test(request: Request):
-    await is_authenticated(request, permissions=["admin"])
+    pass
+    # await is_authenticated(request, permissions=["admin"])
 
-    me = await api.me_get(request)
+    # me = await api.me_get(request)
 
-    log.debug("me")
-    log.debug(me)
+    # log.debug("me")
+    # log.debug(me)
 
-    users = await api.users_get(request)
-    for user_ in users:
-        id = user_["id"]
-        email = user_["email"]
-        log.debug(email)
+    # users = await api.users_get(request)
+    # for user_ in users:
+    #     id = user_["id"]
+    #     email = user_["email"]
+    #     log.debug(email)
 
-        # custom_data = UserData(user_)
-        # custom_data.set_custom_value("test", "test")
+    #     custom_data = UserData(user_)
+    #     custom_data.set_custom_value("test", "test")
 
-        # custom_data.append_bookmark("111111222")
-        # data = custom_data.get_data()
-        # log.debug(data)
+    #     custom_data.append_bookmark("111111222")
+    #     data = custom_data.get_data()
+    #     log.debug(data)
 
-        # new_data = await api.users_data_post(request, id=id, data=data)
-        # log.debug(new_data)
-
-        # log.debug(user["data"])
+    #     new_data = await api.users_data_post(request, id=id, data=data)
+    #     log.debug(new_data)
     # await api.users_patch_permissions(request)
 
     # log.debug(users)
-    return JSONResponse(users)
+    # return JSONResponse(users)
 
 
 async def admin_users_get_json(request: Request):
