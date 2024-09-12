@@ -177,7 +177,10 @@ class Hooks(HooksSpec):
 
     async def before_response(self, response: HTMLResponse) -> HTMLResponse:
 
-        # static files does not have an endpoint attribute __name__
+        if "endpoint" not in self.request.scope:
+            return response
+
+        # Ignore static files
         if not hasattr(self.request.scope["endpoint"], "__name__"):
             return response
 
