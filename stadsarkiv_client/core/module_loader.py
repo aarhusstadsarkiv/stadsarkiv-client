@@ -35,3 +35,13 @@ def load_submodule_from_file(module_name: str, submodule_name: str, file_path: s
     submodule = getattr(module, submodule_name)
 
     return submodule
+
+
+def load_module_attr(module_name: str, attr_name: str):
+    """
+    Loads an attribute from a module
+    This is more secure because this methods does not execute the module
+    """
+    submodule = importlib.import_module(module_name)
+    attr = getattr(submodule, attr_name)
+    return attr
