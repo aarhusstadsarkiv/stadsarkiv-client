@@ -1,6 +1,7 @@
 from starlette.requests import Request
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
+from stadsarkiv_client.hooks import Hooks
 from stadsarkiv_client.core.args import get_local_config_dir
 from stadsarkiv_client.core.module_loader import load_module_attr
 import typing
@@ -45,5 +46,5 @@ def get_hooks(request: typing.Optional[Request] = None) -> HooksSpec:
         hooks_local = HooksLocal(request)
         return hooks_local
     except ImportError:
-        hooks = HooksSpec(request)
+        hooks = Hooks(request)
         return hooks
