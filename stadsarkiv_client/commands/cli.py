@@ -24,7 +24,12 @@ class ConfigDirValidator:
         self.error_message: str = ""
 
     def validate(self) -> bool:
+
         if not self._exists():
+
+            if self.config_dir == "local":
+                return True
+
             self.error_message = f"Config directory '{self.config_dir}' does not exist."
             return False
 
@@ -68,12 +73,10 @@ def cli():
 @click.option("--workers", default=3, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
 @click.option("-c", "--config-dir", default="local", help="Specify a local config directory.", required=False)
-@click.option("--config-dir", default="local", help="Specify a local config directory.", required=False)
 def server_prod(port: int, workers: int, host: str, config_dir: str):
     _stop_server(PID_FILE)
 
     config_dir = config_dir.rstrip("/\\")
-
     config_dir_validator = ConfigDirValidator(config_dir)
     if not config_dir_validator.validate():
         print(config_dir_validator.get_error_message())
@@ -109,8 +112,8 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
 
     reload = True
     reload_dirs = ["."]
-    config_dir = config_dir.rstrip("/\\")
 
+    config_dir = config_dir.rstrip("/\\")
     config_dir_validator = ConfigDirValidator(config_dir)
     if not config_dir_validator.validate():
         print(config_dir_validator.get_error_message())
@@ -122,7 +125,7 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
     # Prevent watching giant dir if dir is not 'source', e.g. the users home folder on Windows
     if not _is_source():
         if not os.path.exists(config_dir):
-            print(f"Config dir '{config_dir}' does not exist.")
+            print("Config dir is not set. No reloading of source code.")
             reload = False
             reload_dirs = []
         else:
