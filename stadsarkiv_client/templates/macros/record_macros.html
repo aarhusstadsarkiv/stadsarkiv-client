@@ -120,7 +120,7 @@
 
         {% if key == 'bookmarks' %}
 
-        {% if has_permission('user', permissions_list) and get_setting('allow_bookmarks') %}
+        {% if has_permission('user', permissions_list) and get_setting('allow_save_bookmarks') %}
             {{ _parse_bookmarks (meta_data) }}
         {% endif %}
 

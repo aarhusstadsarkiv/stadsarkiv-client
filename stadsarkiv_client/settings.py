@@ -62,7 +62,7 @@ settings: dict[str, typing.Any] = {
     "allow_user_registration": True,
     "allow_user_management": True,
     "allow_online_ordering": False,
-    "allow_bookmarks": False,
+    "allow_save_bookmarks": False,
     "ignore_record_keys": [],
 }
 

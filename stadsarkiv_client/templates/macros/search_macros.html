@@ -30,7 +30,9 @@
 {% if facets_filters %}
 <div class="action-links">
     <a href="{{ search_base_url }}?">{{ translate('Reset search') }}</a>
+    {% if has_permission('user', permissions_list) and get_setting('allow_save_search') %}
     <a class="bookmark-search" style="background-color: var(--focus);" href="#">{{ translate('Save search') }}</a>  
+    {% endif %}
 </div>
 {% endif %}  
 
