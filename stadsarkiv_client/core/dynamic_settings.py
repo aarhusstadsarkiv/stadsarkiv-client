@@ -25,9 +25,9 @@ log = get_log()
 try:
     settings_config = load_submodule_from_file("settings", "settings", get_local_config_dir("settings.py"))
     settings.update(settings_config)
-    log.debug(f"Loaded local settings file: {get_local_config_dir('settings.py')}")
+    log.debug(f"Loaded settings file: {get_local_config_dir('settings.py')}")
 except Exception:
-    log.debug(f"Local settings file NOT loaded: {get_local_config_dir('settings.py')}")
+    log.debug(f"Settings file NOT loaded: {get_local_config_dir('settings.py')}")
 
 
 # load local settings_local (overrides settings)
