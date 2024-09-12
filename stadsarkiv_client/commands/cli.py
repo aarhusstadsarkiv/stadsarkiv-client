@@ -16,6 +16,41 @@ from stadsarkiv_client import __version__, __program__
 PID_FILE: str = "gunicorn_process.pid"
 
 
+class ConfigDirValidator:
+    def __init__(self, config_dir: str):
+        self.config_dir = config_dir
+        self.current_dir = os.path.abspath(os.getcwd())
+        self.config_dir_abs = os.path.abspath(config_dir)
+        self.error_message: str = ""
+
+    def validate(self) -> bool:
+        if not self._exists():
+            self.error_message = f"Config directory '{self.config_dir}' does not exist."
+            return False
+
+        if not self._is_single_directory():
+            self.error_message = f"Config directory '{self.config_dir}' should not contain subdirectories."
+            return False
+
+        if not self._is_within_current_dir():
+            self.error_message = f"Config directory '{self.config_dir}' is not in the current working directory."
+            return False
+
+        return True
+
+    def _exists(self) -> bool:
+        return os.path.exists(self.config_dir_abs)
+
+    def _is_single_directory(self) -> bool:
+        return os.path.dirname(self.config_dir_abs) == self.current_dir
+
+    def _is_within_current_dir(self) -> bool:
+        return os.path.commonpath([self.current_dir]) == os.path.commonpath([self.current_dir, self.config_dir_abs])
+
+    def get_error_message(self) -> str:
+        return self.error_message
+
+
 @click.group()
 @click.version_option(version=__version__, prog_name=__program__)
 def cli():
@@ -38,7 +73,12 @@ def server_prod(port: int, workers: int, host: str, config_dir: str):
     _stop_server(PID_FILE)
 
     config_dir = config_dir.rstrip("/\\")
-    # config_dir = os.path.abspath(config_dir)
+
+    config_dir_validator = ConfigDirValidator(config_dir)
+    if not config_dir_validator.validate():
+        print(config_dir_validator.get_error_message())
+        exit(1)
+
     os.environ["CONFIG_DIR"] = config_dir
 
     if os.name == "nt":
@@ -69,9 +109,12 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
 
     reload = True
     reload_dirs = ["."]
-
     config_dir = config_dir.rstrip("/\\")
-    # config_dir = os.path.abspath(config_dir)
+
+    config_dir_validator = ConfigDirValidator(config_dir)
+    if not config_dir_validator.validate():
+        print(config_dir_validator.get_error_message())
+        exit(1)
 
     os.environ["CONFIG_DIR"] = config_dir
     _stop_server(PID_FILE)
