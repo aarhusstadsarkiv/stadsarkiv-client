@@ -20,7 +20,7 @@
             <div class="council-link">
                 <a href="/collections/48">
                     <img src="{{ url_for('static', path='/assets/council-page/Byraad_AA_byraadsarkivet_1867-1940_420px.jpg') }}"
-                        alt="Aarhus Byråds arkiv (1867-1940)">
+                        alt="Aarhus Byråds arkiv 1867-1940">
                 </a>
                 <div class="council-text">
                     <p>Den ældste del af Aarhus Byråds arkiv (1867-1940) består af referater fra byrådets forhandlinger
@@ -33,7 +33,8 @@
 
             <div class="council-link">
 
-                <img src="https://placehold.co/420x300?text=Manglende billede" alt="Manglende billede">
+                <img src="{{ url_for('static', path='/assets/council-page/Byraad_AA_byraadsarkivet_1940-1996_420px.jpg') }}"
+                    alt="Byrådsarkivet 1940-1996">
 
                 <div class="council-text">
                     <p>Sagregistrene til de trykte byrådsforhandlinger for årene 1940-1994 (der mangler et register for
@@ -50,13 +51,19 @@
                         til Aarhus Byraads Forhandlinger, 1. april 1950 - 31. marts. 1966</a>
                     <a href="/records/000493864" style="display:inline-block">Sagregister
                         til Aarhus Byraads Forhandlinger, 1. april 1966 - 31. marts. 1994</a>
+
+                    <a href="/records/000495137" style="display:inline-block">Sagregister til Aarhus Byraads
+                        Forhandlinger, 1. april 1976 - 31. december 1988</a>
+                    <a href="/records/000495138" style="display:inline-block">Sagregister til Aarhus Byraads
+                        Forhandlinger, 1. januar 1989 - 31. december 1994</a>
+
                 </div>
             </div>
 
             <div class="council-link">
                 <a href="https://byraadsarkivet.aarhus.dk/" target="blank">
                     <img src="{{ url_for('static', path='/assets/council-page/Byraad_AA_byraadsarkivet_1997-_420px.jpg') }}"
-                        alt="Byrådsarkivet">
+                        alt="Byrådsarkivet 1997-">
                 </a>
                 <div class="council-text">
                     <p>Fra 1997 og frem indeholder byrådsarkivet både mødereferater og digitalt sagsmateriale vedr. åbne

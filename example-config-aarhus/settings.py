@@ -42,7 +42,7 @@ settings: dict[str, typing.Any] = {
 pages: list = [
     {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
     {"name": "page_images", "title": "Hjemmesider med billeder fra Aarhus", "template": "pages/images.html", "url": "/images"},
-    {"name": "page_council", "title": "Aarhus Byråds arkiv", "template": "pages/council.html", "url": "/city-council"},
+    {"name": "page_council", "title": "Aarhus Byråds arkiv", "template": "pages/city-council.html", "url": "/city-council"},
 ]
 
 pages_guides: list = [
