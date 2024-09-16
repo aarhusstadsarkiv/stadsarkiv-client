@@ -148,7 +148,7 @@ routes.append(Route("/{resource_type:str}/{id:str}", endpoint=endpoints_resource
 routes.append(
     Route(
         "/{resource_type:str}/{id:str}/json/{type:str}",
-        endpoint=endpoints_resources.get_resopurce_json,
+        endpoint=endpoints_resources.get_resource_json,
         name="resources_get_json",
     )
 )

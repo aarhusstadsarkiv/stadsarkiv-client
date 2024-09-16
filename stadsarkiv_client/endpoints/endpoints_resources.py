@@ -74,7 +74,7 @@ async def get_resource(request: Request):
     return response
 
 
-async def get_resopurce_json(request: Request):
+async def get_resource_json(request: Request):
     id = request.path_params["id"]
     json_type = request.path_params["type"]
     resource_type = request.path_params["resource_type"]
