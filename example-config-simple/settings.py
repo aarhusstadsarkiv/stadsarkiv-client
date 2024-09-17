@@ -35,7 +35,7 @@ settings: dict[str, typing.Any] = {
     # Main menu containing built-in endpoints, but you may remove these and generate your own menu.
     # You may also add other "menus", e.g. "footer_items" or something similar.
     #
-    "main_menu": [
+    "main_menu_system": [
         {"name": "auth_login_get", "title": "Log ind", "type": "overlay"},
         {"name": "auth_logout_get", "title": "Log ud", "type": "overlay"},
         {"name": "auth_register_get", "title": "Ny bruger", "type": "overlay"},

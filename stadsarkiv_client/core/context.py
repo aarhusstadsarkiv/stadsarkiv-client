@@ -38,7 +38,7 @@ async def get_context(request: Request, context_values: dict = {}, identifier: s
         "path": request.url.path,
         "request": request,
         "title": _get_title(request),
-        "main_menu_user": _get_main_menu_user(logged_in, permissions_list),
+        "main_menu_system": _get_main_menu_system(logged_in, permissions_list),
         "main_menu_sections": settings["main_menu_sections"],
         "logged_in": logged_in,
         "authorization": _get_authorization(request),
@@ -62,22 +62,22 @@ async def get_context(request: Request, context_values: dict = {}, identifier: s
     return context
 
 
-def _get_main_menu_user(logged_in: bool, permissions_list: list):
-    main_menu: list = settings["main_menu"]
+def _get_main_menu_system(logged_in: bool, permissions_list: list):
+    main_menu_system: list = settings["main_menu_system"]
 
     if logged_in:
         excluded_items = {"auth_login_get", "auth_register_get", "auth_forgot_password_get"}
-        main_menu = [item for item in main_menu if item["name"] not in excluded_items]
+        main_menu_system = [item for item in main_menu_system if item["name"] not in excluded_items]
 
     if not logged_in:
         excluded_items = {"auth_logout_get", "auth_me_get"}
-        main_menu = [item for item in main_menu if item["name"] not in excluded_items]
+        main_menu_system = [item for item in main_menu_system if item["name"] not in excluded_items]
 
     if "root" not in permissions_list and "admin" not in permissions_list:
         excluded_items = {"admin_users_get", "schemas_get_list", "entities_get_list"}
-        main_menu = [item for item in main_menu if item["name"] not in excluded_items]
+        main_menu_system = [item for item in main_menu_system if item["name"] not in excluded_items]
 
-    return main_menu
+    return main_menu_system
 
 
 def _get_title(request: Request) -> str:

@@ -1,7 +1,7 @@
 {% import "macros/common_macros.html" as common_macros %}
 
 <div class="main-menu-overlay">
-    {% for menu_item in main_menu_user %}
+    {% for menu_item in main_menu_system %}
         {% if menu_item.type == 'overlay' %}
             {% if menu_item.name == 'auth_login_get' %}                
                 <a href="{{ url_for(menu_item.name) }}?next={{ path }}">{{ menu_item.title }}</a>    
@@ -21,7 +21,7 @@
 
 <div class="navigation-right-group">
 
-    {% for menu_item in main_menu_user %}
+    {% for menu_item in main_menu_system %}
         {% if menu_item.type == 'text' %}
             <div class="menu-text">
             {% if menu_item.name == 'search_get' %}                

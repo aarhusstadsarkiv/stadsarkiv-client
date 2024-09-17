@@ -44,7 +44,7 @@ settings: dict[str, typing.Any] = {
     },
     "custom_error": "Der skete en system fejl. Prøv igen lidt senere!",
     "api_base_url": "https://dev.openaws.dk/v1",
-    "main_menu": [
+    "main_menu_system": [
         {"name": "auth_login_get", "title": "Log ind", "type": "overlay"},
         {"name": "auth_logout_get", "title": "Log ud", "type": "overlay"},
         {"name": "auth_register_get", "title": "Ny bruger", "type": "overlay"},
