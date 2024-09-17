@@ -11,7 +11,10 @@ valid_password = "testtest"
 invalid_user = "bad.mail@test.com"
 invalid_password = "bad_password"
 
-correct_login = {"username": valid_user, "password": valid_password}
+correct_login = {
+    "username": valid_user,
+    "password": valid_password,
+}
 incorrect_login = {"username": invalid_user, "password": invalid_password}
 
 
@@ -58,7 +61,12 @@ class TestAuth(unittest.TestCase):
 
     def test_register_post(self):
         client = TestClient(app)
-        data = {"email": correct_login["username"], "password": correct_login["password"], "password_2": correct_login["password"]}
+        data = {
+            "display_name": "test",
+            "email": correct_login["username"],
+            "password": correct_login["password"],
+            "password_2": correct_login["password"],
+        }
         response = client.post("/auth/register", data=data, follow_redirects=True)  # type: ignore
         self.assertEqual(response.url, "http://testserver/auth/register")
 
