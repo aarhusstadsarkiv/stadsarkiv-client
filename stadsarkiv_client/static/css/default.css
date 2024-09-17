@@ -333,13 +333,3 @@ summary {
 main {
     flex: 1;
 }
-
-.content-right {
-    position: sticky;
-    top: 110px;
-    align-self: flex-start; /* this is needed */
-    height:100%;
-    width:25%;
-    margin: 20px;
-}
-
