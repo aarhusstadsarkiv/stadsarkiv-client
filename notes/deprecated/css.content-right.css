@@ -1,0 +1,8 @@
+.content-right {
+    position: sticky;
+    top: 110px;
+    align-self: flex-start;
+    height:100%;
+    width:25%;
+    margin: 20px;
+}
