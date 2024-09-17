@@ -32,7 +32,7 @@ settings: dict[str, typing.Any] = {
         # {"name": "admin_users_get", "title": "Brugere"},
         # {"name": "schemas_get_list", "title": "Skemaer"},
         # {"name": "entities_get_list", "title": "Entiteter"},
-        {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
+        # {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],
     "search_base_url": "/search",
     "search_keep_results": False,
