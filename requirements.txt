@@ -29,6 +29,7 @@ pyflakes==3.0.1
 python-dateutil==2.8.2
 python-dotenv==0.21.1
 python-multipart==0.0.7
+PyYAML==6.0.2
 rfc3986==1.5.0
 sentry-sdk==2.8.0
 six==1.15.0

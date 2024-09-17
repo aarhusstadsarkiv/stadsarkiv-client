@@ -24,7 +24,7 @@ if os.getenv("ENVIRONMENT") == "production":
 
 settings: dict[str, typing.Any] = {
     "client_name": "development",
-    "client_url": "https://client.openaws.dk",
+    "client_url": "https://demo.openaws.dk",
     "debug": debug,
     "robots_allow": False,
     "version": stadsarkiv_client.__version__,

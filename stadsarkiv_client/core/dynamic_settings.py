@@ -17,8 +17,19 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.module_loader import load_submodule_from_file
 import importlib
 import os
+import yaml
 
 log = get_log()
+
+
+# read settings from yaml file
+# try:
+#     with open(get_local_config_dir("settings.yml"), "r") as stream:
+#         settings_yml = yaml.safe_load(stream)
+#         settings.update(settings_yml)
+#         log.debug(f"Loaded settings file: {get_local_config_dir('settings.yml')}")
+# except Exception:
+#     log.debug(f"Settings file NOT loaded: {get_local_config_dir('settings.yml')}")
 
 
 # load local settings (overrides settings)
@@ -52,7 +63,7 @@ except Exception:
 
 # load settings for tests (overrides settings)
 if os.getenv("TEST"):
-    module_name = "tests.settings-test"
+    module_name = "tests.settings_test"
     submodule = importlib.import_module(module_name)
     settings_test = getattr(submodule, "settings")
     settings.update(settings_test)
