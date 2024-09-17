@@ -9,7 +9,7 @@ settings: dict[str, typing.Any] = {
     "client_name": "development",
     # This should be the url of the client, e.g. "https://aarhusarkivet.openaws.dk"
     # If running on localhost you may change this to e.g. "http://localhost:5555"
-    "client_url": "https://client.openaws.dk",
+    "client_url": "https://demo.openaws.dk",
     # If you are running in production, you may set this to True in order to allow robots to index the site
     "robots_allow": False,
     # show the version of the stadarkiv-client
