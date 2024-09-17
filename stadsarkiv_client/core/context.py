@@ -38,6 +38,7 @@ async def get_context(request: Request, context_values: dict = {}, identifier: s
         "path": request.url.path,
         "request": request,
         "title": _get_title(request),
+        "main_menu_top": settings["main_menu_top"],
         "main_menu_system": _get_main_menu_system(logged_in, permissions_list),
         "main_menu_sections": settings["main_menu_sections"],
         "logged_in": logged_in,

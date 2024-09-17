@@ -1,13 +1,13 @@
 {% import "macros/common_macros.html" as common_macros %}
 
+{# alter 'auth_login_get'. Add 'next' #}
+
 <div class="main-menu-overlay">
     {% for menu_item in main_menu_system %}
-        {% if menu_item.type == 'overlay' %}
-            {% if menu_item.name == 'auth_login_get' %}                
-                <a href="{{ url_for(menu_item.name) }}?next={{ path }}">{{ menu_item.title }}</a>    
-            {% else %}
-                <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
-            {% endif %}
+        {% if menu_item.name == 'auth_login_get' %}
+            <a href="{{ url_for(menu_item.name) }}?next={{ path }}">{{ menu_item.title }}</a>    
+        {% else %}
+            <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
         {% endif %}
     {% endfor %}
 
@@ -21,7 +21,7 @@
 
 <div class="navigation-right-group">
 
-    {% for menu_item in main_menu_system %}
+    {% for menu_item in main_menu_top %}
         {% if menu_item.type == 'text' %}
             <div class="menu-text">
             {% if menu_item.name == 'search_get' %}                

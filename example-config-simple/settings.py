@@ -32,18 +32,24 @@ settings: dict[str, typing.Any] = {
     # Is you are running in production, you should change the api_base_url to the production API.
     # production "api_base_url": "https://api.openaws.dk/v1",
     "api_base_url": "https://dev.openaws.dk/v1",
-    # Main menu containing built-in endpoints, but you may remove these and generate your own menu.
+
+    # Top menu items. These are the default items. You may remove or add more.
+    # The "type" can be "icon" or "text". If it is not set, it will be "text".
+    "main_menu_top": [
+        {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
+    ],
+
+    # Main menu system contains built-in endpoints. You may remove some of these. 
     # You may also add other "menus", e.g. "footer_items" or something similar.
     #
     "main_menu_system": [
-        {"name": "auth_login_get", "title": "Log ind", "type": "overlay"},
-        {"name": "auth_logout_get", "title": "Log ud", "type": "overlay"},
-        {"name": "auth_register_get", "title": "Ny bruger", "type": "overlay"},
-        {"name": "auth_me_get", "title": "Profil", "type": "overlay"},
-        {"name": "admin_users_get", "title": "Brugere", "type": "overlay"},
-        {"name": "schemas_get_list", "title": "Skemaer", "type": "overlay"},
-        {"name": "entities_get_list", "title": "Entiteter", "type": "overlay"},
-        {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
+        {"name": "auth_login_get", "title": "Log ind"},
+        {"name": "auth_logout_get", "title": "Log ud"},
+        {"name": "auth_register_get", "title": "Ny bruger"},
+        {"name": "auth_me_get", "title": "Profil"},
+        {"name": "admin_users_get", "title": "Brugere"},
+        {"name": "schemas_get_list", "title": "Skemaer"},
+        {"name": "entities_get_list", "title": "Entiteter"},
     ],
     # There is another "type of menu" which is "text" that is a simple text link, e.g.:
     # {"name": "auth_login_get", "title": "Log ind", "type": "text"},
