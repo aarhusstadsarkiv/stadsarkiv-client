@@ -1,14 +1,8 @@
 {% import "macros/common_macros.html" as common_macros %}
 
-{# alter 'auth_login_get'. Add 'next' #}
-
 <div class="main-menu-overlay">
     {% for menu_item in main_menu_system %}
-        {% if menu_item.name == 'auth_login_get' %}
-            <a href="{{ url_for(menu_item.name) }}?next={{ path }}">{{ menu_item.title }}</a>    
-        {% else %}
-            <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
-        {% endif %}
+        <a href="{{ menu_item.url }}">{{ menu_item.title }}</a>
     {% endfor %}
 
     {% for section in main_menu_sections %}
@@ -24,23 +18,13 @@
     {% for menu_item in main_menu_top %}
         {% if menu_item.type == 'text' %}
             <div class="menu-text">
-            {% if menu_item.name == 'search_get' %}                
-                <a href="{{ url_for(menu_item.name) }}?{{ query_str_display }}">{{ menu_item.title }}</a>    
-            {% else %}
-                <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
-            {% endif %}
+                <a href="{{ menu_item.url }}">{{ menu_item.title }}</a>    
             </div>
         {% endif %}
         {% if menu_item.type == 'icon' %}
-            {% if menu_item.name == 'search_get' %}
-                <a href="{{ url_for(menu_item.name) }}?{{ query_str_display }}" aria-label="{{ menu_item.title }}">
-                    <div class="menu-icon">{{ get_icon(menu_item.icon)|safe }}</div>
-                </a>
-            {% else %}
-                <a href="{{ url_for(menu_item.name) }}" aria-label="{{ menu_item.title }}">
-                    <div class="menu-icon">{{ get_icon(menu_item.icon)|safe }}</div>
-                </a>
-            {% endif %}
+            <a href="{{ menu_item.url }}" aria-label="{{ menu_item.title }}">
+                <div class="menu-icon">{{ get_icon(menu_item.icon)|safe }}</div>
+            </a>
         {% endif %}
     {% endfor %}
     

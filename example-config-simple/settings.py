@@ -32,14 +32,12 @@ settings: dict[str, typing.Any] = {
     # Is you are running in production, you should change the api_base_url to the production API.
     # production "api_base_url": "https://api.openaws.dk/v1",
     "api_base_url": "https://dev.openaws.dk/v1",
-
     # Top menu items. These are the default items. You may remove or add more.
     # The "type" can be "icon" or "text". If it is not set, it will be "text".
     "main_menu_top": [
         {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],
-
-    # Main menu system contains built-in endpoints. You may remove some of these. 
+    # Main menu system contains built-in endpoints. You may remove some of these.
     # You may also add other "menus", e.g. "footer_items" or something similar.
     #
     "main_menu_system": [

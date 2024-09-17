@@ -19,9 +19,7 @@ settings: dict[str, typing.Any] = {
     },
     "api_base_url": "https://api.openaws.dk/v1",
     # Top menu items. These are the default items. You may remove or add more.
-    "main_menu_top": [
-        {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"}
-    ],
+    "main_menu_top": [{"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"}],
     #
     # Main menu containing built-in endpoints, but you may remove these and generate your own menu.
     # You may also add other "menus", e.g. "footer_items" or something similar.
