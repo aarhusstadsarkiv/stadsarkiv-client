@@ -18,7 +18,6 @@ formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(messag
 def generate_log_dir():
     dir = "./logs"
     os.makedirs(dir, exist_ok=True)
-    Path("./logs/main.log").touch()
 
 
 def get_file_handler(level: Any):
@@ -35,8 +34,9 @@ def get_stream_handler(level: Any):
     return ch
 
 
-def get_rotating_file_handler(level: Any):
-    handler = RotatingFileHandler("logs/main.log", maxBytes=10 * 1024 * 1024, backupCount=10)
+def get_rotating_file_handler(level: Any, file_name: str = "logs/main.log"):
+    Path(file_name).touch()
+    handler = RotatingFileHandler(file_name, maxBytes=10 * 1024 * 1024, backupCount=10)
     handler.setLevel(level)
     handler.setFormatter(formatter)
     return handler

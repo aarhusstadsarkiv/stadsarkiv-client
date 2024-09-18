@@ -10,10 +10,21 @@ import secrets
 import uvicorn
 import glob
 import sys
+import logging
+from stadsarkiv_client.core import logging_handlers
 from stadsarkiv_client import __version__, __program__
 
 
 PID_FILE: str = "gunicorn_process.pid"
+
+
+logging_handlers.generate_log_dir()
+logging.basicConfig(level=logging.INFO)
+logger: logging.Logger = logging.getLogger(__name__)
+rotating_file_handler = logging_handlers.get_rotating_file_handler(logging.INFO, 'logs/server.log')
+stream_handler = logging_handlers.get_stream_handler(logging.INFO)
+logger.addHandler(rotating_file_handler)
+logger.addHandler(stream_handler)
 
 
 class ConfigDirValidator:
@@ -204,20 +215,39 @@ def _save_pid_to_file(pid: int):
         file.write(str(pid))
 
 
+def _can_kill_pid(pid: int) -> bool:
+    """
+    Get the process name from the given pid using pwdx
+    """
+    try:
+        process_name = subprocess.check_output(["pwdx", str(pid)], stderr=subprocess.STDOUT).decode("utf-8")
+        return "stadsarkiv-client" in process_name
+    except subprocess.CalledProcessError:
+        return False
+
+
 def _stop_server(pid_file: str):
+
     if os.path.exists(pid_file):
+        logger.info("Stopping server")
         with open(pid_file, "r") as file:
             old_pid = int(file.read())
+
+            if not _can_kill_pid(old_pid):
+                logger.info(f"Process with PID {old_pid} is not a stadsarkiv-client process.")
+                return
+            else:
+                logger.info(f"Stopping process with PID {old_pid}")
 
             if os.name == "nt":
                 try:
                     os.kill(old_pid, signal.CTRL_BREAK_EVENT)  # type: ignore
                 except ProcessLookupError:
-                    print(f"No process with PID {old_pid} found.")
+                    logger.info(f"No process with PID {old_pid} found.")
             else:
                 try:
                     os.kill(old_pid, signal.SIGTERM)
                 except (ProcessLookupError, PermissionError):
-                    print(f"No process with PID {old_pid} found.")
+                    logger.info(f"No process with PID {old_pid} found.")
 
             os.remove(pid_file)
