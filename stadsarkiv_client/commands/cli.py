@@ -221,6 +221,7 @@ def _can_kill_pid(pid: int) -> bool:
     """
     try:
         process_name = subprocess.check_output(["pwdx", str(pid)], stderr=subprocess.STDOUT).decode("utf-8")
+        logger.info(f"Process name: {process_name}")
         return "stadsarkiv-client" in process_name
     except subprocess.CalledProcessError:
         return False
