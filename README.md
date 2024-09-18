@@ -4,4 +4,4 @@
 
 github: [stadsarkiv-client](docs)
 
-website and demo: [stadsarkiv-client](https://client.openaws.dk/)
+website and demo: [stadsarkiv-client](https://demo.openaws.dk/)
