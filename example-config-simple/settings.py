@@ -32,13 +32,21 @@ settings: dict[str, typing.Any] = {
     # Is you are running in production, you should change the api_base_url to the production API.
     # production "api_base_url": "https://api.openaws.dk/v1",
     "api_base_url": "https://dev.openaws.dk/v1",
+    # pages
+    # "name" is the route name. Title is the page title.
+    # "template" if the page you will use. It is also the content of the page.
+    # "url" is the path to the page
+    "pages": [
+        {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
+        {"name": "page_searchguide", "title": "Hjælp til søgning", "template": "pages/searchguide.html", "url": "/guides/searchguide"},
+        {"name": "page_collections", "title": "Om samlingerne", "template": "pages/collections.html", "url": "/about/collections"},
+    ],
     # Top menu items. These are the default items. You may remove or add more.
-    # The "type" can be "icon" or "text". If it is not set, it will be "text".
+    # The "type" can be "icon" or "text".
     "main_menu_top": [
         {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],
     # Main menu system contains built-in endpoints. You may remove some of these.
-    # You may also add other "menus", e.g. "footer_items" or something similar.
     #
     "main_menu_system": [
         {"name": "auth_login_get", "title": "Log ind"},
@@ -49,8 +57,30 @@ settings: dict[str, typing.Any] = {
         {"name": "schemas_get_list", "title": "Skemaer"},
         {"name": "entities_get_list", "title": "Entiteter"},
     ],
-    # There is another "type of menu" which is "text" that is a simple text link, e.g.:
-    # {"name": "auth_login_get", "title": "Log ind", "type": "text"},
+    # Main menu sections
+    # Custom pages can be added to the main menu sections
+    "main_menu_sections": [
+        {
+            "name": "guides",
+            "title": "Vejledninger",
+            "pages": [
+                {
+                    "name": "page_searchguide",
+                    "title": "Hjælp til søgning",
+                },
+            ],
+        },
+        {
+            "name": "about",
+            "title": "Om samlingerne",
+            "pages": [
+                {
+                    "name": "page_collections",
+                    "title": "Om samlingerne",
+                },
+            ],
+        },
+    ],
     # The facets enabled in the search
     # These are the defaults: ["content_types", "subjects", "availability", "usability", "dates"]
     # The facets are loaded from 'settings_facets.py'
@@ -68,43 +98,3 @@ settings: dict[str, typing.Any] = {
     # keep search result from last search when navigating to other pages
     "search_keep_results": True,
 }
-
-# pages
-#
-# "name" is the route name. Title is the page title.
-# "template" if the page you will use. It is also the content of the page.
-# "url" is the path to the page
-# "type" is the type of menu item. It can be "top" or "overlay".
-#  If it is not set, it will not be displayed in the top bar menu.
-
-pages: list = [
-    {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
-]
-
-pages_guides: list = [
-    {
-        "name": "page_searchguide",
-        "title": "Hjælp til søgning",
-        "template": "pages/searchguide.html",
-        "url": "/guides/searchguide",
-        "type": "overlay",
-    },
-]
-
-pages_about: list = [
-    {
-        "name": "page_collections",
-        "title": "Om samlingerne",
-        "template": "pages/collections.html",
-        "url": "/about/collections",
-        "type": "overlay",
-    },
-]
-
-settings["pages"] = pages + pages_guides + pages_about
-
-# Add pages as sections in the main menu
-settings["main_menu_sections"] = [
-    {"name": "guides", "title": "Vejledninger", "pages": pages_guides},
-    {"name": "about", "title": "Om samlingerne", "pages": pages_about},
-]

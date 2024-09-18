@@ -62,10 +62,6 @@ async def get_context(request: Request, context_values: dict = {}, identifier: s
     if "meta_description" not in context:
         context["meta_description"] = context["meta_title"]
 
-    # Add context that applies to a single request to _context
-    # _context = context_values.copy()
-    # context["_context"] = _context
-
     context = await hooks.before_context(context=context)
     return context
 
