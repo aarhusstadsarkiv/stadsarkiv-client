@@ -326,6 +326,10 @@ h6 {
     }
 }
 
+.content-main {
+    width: 100%;
+}
+
 summary {
     cursor: pointer;
 }
