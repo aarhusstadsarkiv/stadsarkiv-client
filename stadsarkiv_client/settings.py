@@ -44,6 +44,7 @@ settings: dict[str, typing.Any] = {
     },
     "custom_error": "Der skete en system fejl. Prøv igen lidt senere!",
     "api_base_url": "https://dev.openaws.dk/v1",
+    "pages": [{"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"}],
     "main_menu_top": [
         {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],
@@ -68,7 +69,3 @@ settings: dict[str, typing.Any] = {
     "allow_save_bookmarks": False,
     "ignore_record_keys": [],
 }
-
-pages: list = [{"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"}]
-
-settings["pages"] = pages
