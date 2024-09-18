@@ -217,7 +217,7 @@ def _stop_server(pid_file: str):
             else:
                 try:
                     os.kill(old_pid, signal.SIGTERM)
-                except ProcessLookupError:
+                except (ProcessLookupError, PermissionError):
                     print(f"No process with PID {old_pid} found.")
 
             os.remove(pid_file)
