@@ -5,7 +5,6 @@ File containing CLI commands for the Stadsarkiv Client.
 import click
 import subprocess
 import os
-import signal
 import secrets
 import uvicorn
 import glob
@@ -15,13 +14,10 @@ from stadsarkiv_client.core import logging_handlers
 from stadsarkiv_client import __version__, __program__
 
 
-PID_FILE: str = "gunicorn_process.pid"
-
-
 logging_handlers.generate_log_dir()
 logging.basicConfig(level=logging.INFO)
 logger: logging.Logger = logging.getLogger(__name__)
-rotating_file_handler = logging_handlers.get_rotating_file_handler(logging.INFO, 'logs/server.log')
+rotating_file_handler = logging_handlers.get_rotating_file_handler(logging.INFO, "logs/server.log")
 stream_handler = logging_handlers.get_stream_handler(logging.INFO)
 logger.addHandler(rotating_file_handler)
 logger.addHandler(stream_handler)
@@ -85,18 +81,17 @@ def cli():
 @click.option("--host", default="0.0.0.0", help="Server host.")
 @click.option("-c", "--config-dir", default="local", help="Specify a local config directory.", required=False)
 def server_prod(port: int, workers: int, host: str, config_dir: str):
-    _stop_server(PID_FILE)
 
     config_dir = config_dir.rstrip("/\\")
     config_dir_validator = ConfigDirValidator(config_dir)
     if not config_dir_validator.validate():
-        print(config_dir_validator.get_error_message())
+        logger.info(config_dir_validator.get_error_message())
         exit(1)
 
     os.environ["CONFIG_DIR"] = config_dir
 
     if os.name == "nt":
-        print("Gunicorn does not work on Windows. Use server-dev instead.")
+        logger.info("Gunicorn does not work on Windows. Use server-dev instead.")
         exit(1)
 
     cmd = [
@@ -109,9 +104,19 @@ def server_prod(port: int, workers: int, host: str, config_dir: str):
         "--log-level=info",
     ]
 
-    gunicorn_process = subprocess.Popen(cmd)
-    _save_pid_to_file(gunicorn_process.pid)
-    print(f"Started Gunicorn in background with PID: {gunicorn_process.pid}")  # Print the PID for reference
+    # Run the command in the foreground
+    try:
+        subprocess.run(cmd, check=True)
+        logger.info(f"Started Gunicorn in the foreground with PID: {os.getpid()}")
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Gunicorn failed to start: {e}")
+        exit(1)
+
+    # gunicorn_process = subprocess.Popen(cmd)
+    # with open("gunicorn_process.pid", "w") as file:
+    #     file.write(str(gunicorn_process.pid))
+
+    # logger.info(f"Started Gunicorn in background with PID: {gunicorn_process.pid}")
 
 
 @cli.command(help="Start the running Uvicorn dev-server. Notice: By default it watches for changes in current dir.")
@@ -127,16 +132,15 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
     config_dir = config_dir.rstrip("/\\")
     config_dir_validator = ConfigDirValidator(config_dir)
     if not config_dir_validator.validate():
-        print(config_dir_validator.get_error_message())
+        logger.info(config_dir_validator.get_error_message())
         exit(1)
 
     os.environ["CONFIG_DIR"] = config_dir
-    _stop_server(PID_FILE)
 
     # Prevent watching giant dir if dir is not 'source', e.g. the users home folder on Windows
     if not _is_source():
         if not os.path.exists(config_dir):
-            print("Config dir is not set. No reloading of source code.")
+            logger.info("Config dir is not set. No reloading of source code.")
             reload = False
             reload_dirs = []
         else:
@@ -153,11 +157,6 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
     )
 
 
-@cli.command(help="Stop the running Gunicorn server.")
-def server_stop():
-    _stop_server(PID_FILE)
-
-
 @cli.command(help="Generate a session secret.")
 @click.option("--length", default=32, help="Length of secret.")
 def server_secret(length):
@@ -170,7 +169,10 @@ def run_tests(config_dir, tests_path_pattern):
         config_dir = config_dir.rstrip("/\\")
         os.environ["CONFIG_DIR"] = config_dir
 
-    print(f"Running tests with config dir: {os.getenv('CONFIG_DIR')}")
+    if not os.getenv("CONFIG_DIR"):
+        logger.info("No config dir set. Running with default config dir.")
+    else:
+        logger.info(f"Running tests with config dir: {os.getenv('CONFIG_DIR')}")
 
     # get python executable in order use the same python version as the current process
     python_executable = sys.executable
@@ -179,10 +181,10 @@ def run_tests(config_dir, tests_path_pattern):
     test_files = glob.glob(tests_path_pattern)
     if test_files:
         for test_file in test_files:
-            print(f"Running tests in {test_file}")
+            logger.info(f"Running tests in {test_file}")
             subprocess.run([python_executable, "-m", "unittest", test_file], check=True)
     else:
-        print(f"No tests found matching pattern {tests_path_pattern}")
+        logger.info(f"No tests found matching pattern {tests_path_pattern}")
 
 
 def _is_source():
@@ -208,47 +210,3 @@ if _is_source():
         os.system("black . --config pyproject.toml")
         os.system("mypy  --config-file pyproject.toml .")
         os.system("flake8 . --config .flake8")
-
-
-def _save_pid_to_file(pid: int):
-    with open("gunicorn_process.pid", "w") as file:
-        file.write(str(pid))
-
-
-def _can_kill_pid(pid: int) -> bool:
-    """
-    Get the process name from the given pid using pwdx
-    """
-    try:
-        process_name = subprocess.check_output(["pwdx", str(pid)], stderr=subprocess.STDOUT).decode("utf-8")
-        logger.info(f"Process name: {process_name}")
-        return "stadsarkiv-client" in process_name
-    except subprocess.CalledProcessError:
-        return False
-
-
-def _stop_server(pid_file: str):
-
-    if os.path.exists(pid_file):
-        logger.info("Stopping server")
-        with open(pid_file, "r") as file:
-            old_pid = int(file.read())
-
-            if not _can_kill_pid(old_pid):
-                logger.info(f"Process with PID {old_pid} is not a stadsarkiv-client process.")
-                return
-            else:
-                logger.info(f"Stopping process with PID {old_pid}")
-
-            if os.name == "nt":
-                try:
-                    os.kill(old_pid, signal.CTRL_BREAK_EVENT)  # type: ignore
-                except ProcessLookupError:
-                    logger.info(f"No process with PID {old_pid} found.")
-            else:
-                try:
-                    os.kill(old_pid, signal.SIGTERM)
-                except (ProcessLookupError, PermissionError):
-                    logger.info(f"No process with PID {old_pid} found.")
-
-            os.remove(pid_file)
