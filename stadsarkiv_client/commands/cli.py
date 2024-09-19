@@ -106,17 +106,11 @@ def server_prod(port: int, workers: int, host: str, config_dir: str):
 
     # Run the command in the foreground
     try:
+        logger.info("Started Gunicorn in the foreground")
         subprocess.run(cmd, check=True)
-        logger.info(f"Started Gunicorn in the foreground with PID: {os.getpid()}")
     except subprocess.CalledProcessError as e:
         logger.error(f"Gunicorn failed to start: {e}")
         exit(1)
-
-    # gunicorn_process = subprocess.Popen(cmd)
-    # with open("gunicorn_process.pid", "w") as file:
-    #     file.write(str(gunicorn_process.pid))
-
-    # logger.info(f"Started Gunicorn in background with PID: {gunicorn_process.pid}")
 
 
 @cli.command(help="Start the running Uvicorn dev-server. Notice: By default it watches for changes in current dir.")
