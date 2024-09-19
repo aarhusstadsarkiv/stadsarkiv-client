@@ -7,7 +7,7 @@ settings: dict[str, typing.Any] = {
     # If you are running in production, you should change this to the name of your client
     # If you are running in development, you can leave it as "development"
     "client_name": "development",
-    # This should be the url of the client, e.g. "https://aarhusarkivet.openaws.dk"
+    # This should be the url of the client, e.g. "https://demo.openaws.dk"
     # If running on localhost you may change this to e.g. "http://localhost:5555"
     "client_url": "https://demo.openaws.dk",
     # If you are running in production, you may set this to True in order to allow robots to index the site
@@ -33,7 +33,8 @@ settings: dict[str, typing.Any] = {
     # production "api_base_url": "https://api.openaws.dk/v1",
     "api_base_url": "https://dev.openaws.dk/v1",
     # pages
-    # "name" is the route name. Title is the page title.
+    # "name" is the route name.
+    # "title" is the page title.
     # "template" if the page you will use. It is also the content of the page.
     # "url" is the path to the page
     "pages": [

@@ -4,7 +4,7 @@
 # If you are running in development, you can leave it as "development"
 client_name: development
 
-# This should be the url of the client, e.g. "https://aarhusarkivet.openaws.dk"
+# This should be the url of the client, e.g. "https://demo.openaws.dk"
 # If running on localhost you may change this to e.g. "http://localhost:5555"
 client_url: https://demo.openaws.dk
 
@@ -14,7 +14,7 @@ robots_allow: false
 # show the version of the stadarkiv-client
 show_version: true
 
-# only supported language is "da" for now
+# supported languages are "da" and "en"
 language: da
 
 # log handlers can be "stream", "rotating_file"
@@ -32,9 +32,10 @@ custom_error: "Der skete en system fejl. Prøv igen lidt senere!"
 api_base_url: https://dev.openaws.dk/v1
 
 # pages
-# "name" is the route name. Title is the page title.
+# "name" is the route name. 
+# "title" is the page title.
 # "template" is the page you will use. It is also the content of the page.
-# "url" is the path to the page
+# "url" is the path to the page.
 pages:
   - {name: home, title: Hjem, template: pages/home.html, url: "/"}
   - {name: page_searchguide, title: Hjælp til søgning, template: pages/searchguide.html, url: /guides/searchguide}
@@ -42,9 +43,10 @@ pages:
 
 # Top menu items. These are the default items. You may remove or add more.
 # The "type" can be "icon" or "text".
+# A text menu item would look like this: 
+# - {name: search_get, title: Søg, type: text}
 main_menu_top:
   - {name: search_get, title: Søg, type: icon, icon: search}
-
 # Main menu system contains built-in endpoints. You may remove some of these.
 main_menu_system:
   - {name: auth_login_get, title: Log ind}
