@@ -11,7 +11,7 @@ After=network.target
 
 [Service]
 # gunicorn
-Type=forking
+Type=simple
 
 # run as
 User=www-data
@@ -39,7 +39,9 @@ WantedBy=multi-user.target
 
     sudo rm /etc/systemd/system/stadsarkiv-client.service 
 
-## reload systemd (always reload after changes)
+## reload systemd
+
+E.g. you can edit the service file, but then remember to reload systemd.
     
     sudo systemctl daemon-reload
 
@@ -50,6 +52,8 @@ WantedBy=multi-user.target
     sudo systemctl restart stadsarkiv-client.service
 
 ## status of a service
+
+E.g. you want to see the main process id of the service.
     
     sudo systemctl status stadsarkiv-client.service
 
