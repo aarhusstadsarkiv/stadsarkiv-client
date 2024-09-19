@@ -4,10 +4,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    ignore:
-      - dependency-type: "all"
-    allow:
-      - dependency-type: "security"
     open-pull-requests-limit: 5
     commit-message:
       prefix: "chore(deps)"
