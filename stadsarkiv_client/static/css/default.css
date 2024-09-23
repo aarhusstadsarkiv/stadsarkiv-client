@@ -235,7 +235,6 @@ h6 {
  * Used for main menu
  */
  .container-fluid {
-    display: flex; 
     margin: 0 auto;
     min-width: 100%;
 }
