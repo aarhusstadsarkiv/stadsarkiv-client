@@ -10,6 +10,10 @@
     border-radius: 8px;
 }
 
+#toc>ul {
+    margin-top: 0.5em;
+}
+
 #toc ul {
     list-style-type: none;
     padding-left: 5px;

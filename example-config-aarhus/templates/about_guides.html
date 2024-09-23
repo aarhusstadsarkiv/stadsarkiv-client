@@ -17,15 +17,13 @@
         {% include "includes/navigation.html" %}
     </nav>
 
-    <main>
-        <div class="container-fluid-left-main container-small">
-            <div class="container-left">
-                <div id="toc"></div>
-            </div>
-            <div class="container-main" id="article">
-                {% block content %}
-                {% endblock content %}
-            </div>
+    <main class="container-max container-small">
+        <div class="container-left">
+            <div id="toc"></div>
+        </div>
+        <div class="container-main" id="article">
+            {% block content %}
+            {% endblock content %}
         </div>
     </main>
 

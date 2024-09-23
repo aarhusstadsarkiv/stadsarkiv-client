@@ -37,7 +37,6 @@ h6 {
  */
 .main-title {
     text-transform: uppercase;
-    margin: 20px 0;
 }
 
 /**
@@ -180,56 +179,79 @@ h6 {
 }
 
 /**
- * a set of containers 
+ * a set of containers with 
+ * - different widths
+ * - padding on top and bottom
+ * - width is set by css variables
+ * - centered 
  */
 .container-small {
-    padding: 20px 20px;
+    padding: 20px 0px;
     max-width: 100%;
     width: var(--container-width-small);
-    margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    margin: 0 auto;
 }
 
 .container-medium {
-    padding: 20px 20px;
+    padding: 20px 0px;
     max-width: 100%;
     width: var(--container-width-medium);
-    margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    margin: 0 auto;
 }
 
 .container-large {
-    padding: 20px 20px;
+    padding: 20px 0px;
     max-width: 100%;
     width: var(--container-width-large);
-    margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    margin: 0 auto;
 }
 
+/**
+ * Same as above container
+ * - full width 
+ */
+.container-max {
+    padding: 20px 0px;
+    max-width: 100%;
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/**
+ * used for the main menu top bar
+ */
 .sticky-top {
     position: sticky;
     top: 0;
     z-index: 100;
 }
 
-.container-fluid {
+/**
+ * Container-fluid but with no padding
+ * Used for main menu
+ */
+ .container-fluid {
+    display: flex; 
     margin: 0 auto;
     min-width: 100%;
 }
 
-.container-fluid-left-main {
-    margin-top: 20px;
-    max-width: 100%;
-    display: flex;
+/**
+ * Should be used for the main content
+ * margin on the sides
+ */
+.container-main {
+    width: 100%;
+    margin: 0 20px;
 }
 
 .container-left {
     min-width: 350px;
     margin-left: 20px;
-    max-width: 350px;
 }
 
 .sticky-left {
@@ -240,19 +262,9 @@ h6 {
     overflow-y: auto;
 }
 
-.container-main {
-    width: 100%;
-    margin: 0 20px;
-}
-
 .container-main-facets {
     display: none;
 }
-
-#toc>ul {
-    margin-top: 0.5em;
-}
-
 
 .action-links {
     display: flex;
@@ -325,10 +337,6 @@ h6 {
         display: block;
         margin: 10px 0;
     }
-}
-
-.content-main {
-    width: 100%;
 }
 
 summary {

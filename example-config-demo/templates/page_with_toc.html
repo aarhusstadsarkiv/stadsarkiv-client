@@ -18,15 +18,13 @@
         {% include "includes/navigation.html" %}
     </nav>
 
-    <main>
-        <div class="container-fluid-left-main container-large">
-            <div class="container-left">
-                <div id="toc"></div>
-            </div>
-            <div class="container-main" id="article">
-                {% block content %}
-                {% endblock content %}
-            </div>
+    <main class="container-large">
+        <div class="container-left">
+            <div id="toc"></div>
+        </div>
+        <div class="container-main" id="article">
+            {% block content %}
+            {% endblock content %}
         </div>
     </main>
 
@@ -49,22 +47,22 @@
         function addCopyButtons(elem) {
 
             const codeBlocks = elem.querySelectorAll('pre code');
-        
+
             // Get 'content' element and add 'copy-button-container' and 'copy-button' elements
             const contentElem = elem.querySelector('.content');
             codeBlocks.forEach(code => {
-        
+
                 const button = document.createElement("button");
                 button.classList.add('copy-button');
                 button.textContent = "Copy";
                 button.onclick = function () {
                     navigator.clipboard.writeText(code.textContent).then(() => {
                         button.textContent = "Copied!";
-        
+
                         setTimeout(() => {
                             button.textContent = "Copy";
                         }, 2000);
-        
+
                     }, err => {
                         console.log('Failed to copy: ', err);
                     });
@@ -74,7 +72,7 @@
                 const buttonContainer = document.createElement('div');
                 buttonContainer.classList.add('copy-button-container');
                 buttonContainer.appendChild(button);
-        
+
                 const parent = code.parentNode; // 'pre' element
                 parent.insertBefore(buttonContainer, code);
             });
@@ -85,15 +83,6 @@
 
     </script>
     <style>
-
-        .container-large {
-            font-size: 1rem;
-        }
-
-        .container-main {
-            width: calc(100% - 415px);
-            margin: 0 20px;            
-        }
 
         @media (max-width: 992px) {
             .container-main {
@@ -110,12 +99,12 @@
             position: absolute;
             margin: 5px;
         }
-        
+
         .copy-button-container {
             display: flex;
             justify-content: flex-end;
         }
-
     </style>
 </body>
+
 </html>
