@@ -189,3 +189,21 @@ Christian
 
 ----
 
+Skulle man / kan man åbne op for at fritekstsøgning også søger i entitetsfelterne + beskrivelsesnoter.
+
+Som jeg husker det søger, man pt kun ned i overskrift og abstrakt.
+
+ 
+
+I forhold til entiteter har vi en del registreringer, hvor der er tilknyttet entiteter, som ikke er nævnt i abstraktteksten.
+
+Et eksempel kan være firmaet underground. Har for man forskellige resultater alt efter om man vælger entiteten eller fritekst søger.
+
+ 
+
+I forhold til beskrivelsesnoter, er det ikke et felt vi bruger meget i billedregistreringen, men jeg ved, at Thomas’ crew bruger det meget. Derfor er der rigtig mange af vores analoge arkivalier, som ikke kommer frem ved en fritekstsøgning, fordi de relevante data, står i beskrivelsesnotefeltet.
+
+Janne
+
+---
+
