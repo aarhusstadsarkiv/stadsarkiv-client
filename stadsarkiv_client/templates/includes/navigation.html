@@ -6,7 +6,9 @@
     {% endfor %}
 
     {% for section in main_menu_sections %}
+        {% if section.title %}
         <h3>{{ section.title }}</h3>
+        {% endif %}
         {% for menu_item in section.pages %}
             <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
         {% endfor %}
