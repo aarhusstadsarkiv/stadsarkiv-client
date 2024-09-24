@@ -276,6 +276,7 @@ pre>code {
     display: block;
     overflow-x: auto;
     white-space: pre-wrap;
+    overflow-x: auto;
 }
 
 var {
