@@ -1,6 +1,6 @@
 #toc {
     position: sticky;
-    top: 65px;
+    top: calc(var(--main-menu-top) + 10px);
     line-height: 1.6;
     max-width: 600px;
     margin: 5px auto;
