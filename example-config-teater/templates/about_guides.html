@@ -17,9 +17,7 @@
     </nav>
 
     <main class="container-small">
-        <div class="container-left">
-            <div id="toc"></div>
-        </div>
+        
         <div class="container-main" id="article">
             {% include "includes/main_title.html" %}
             {% block content %}
@@ -38,7 +36,7 @@
         import { showTOC } from '/static/js/table-of-contents.js';
         const sourceElem = document.getElementById('article');
         const tocElem = document.getElementById('toc');
-        showTOC(sourceElem, tocElem);
+        // showTOC(sourceElem, tocElem);
 
     </script>
 
