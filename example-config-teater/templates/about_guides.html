@@ -3,11 +3,10 @@
 <html lang="da">
 
 <head>
-
     {% include "includes/head_default.html" %}
     {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/toc.css') }}?v={{ get_setting('version') }}">
     {% endblock head %}
-
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
@@ -18,7 +17,10 @@
     </nav>
 
     <main class="container-small">
-        <div class="container-main">
+        <div class="container-left">
+            <div id="toc"></div>
+        </div>
+        <div class="container-main" id="article">
             {% include "includes/main_title.html" %}
             {% block content %}
             {% endblock content %}
@@ -30,6 +32,15 @@
     </footer>
 
     {% include "includes/flash.html" %}
+
+    <script type="module">
+
+        import { showTOC } from '/static/js/table-of-contents.js';
+        const sourceElem = document.getElementById('article');
+        const tocElem = document.getElementById('toc');
+        showTOC(sourceElem, tocElem);
+
+    </script>
 
 </body>
 
