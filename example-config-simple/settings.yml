@@ -22,7 +22,12 @@ language: da
 log_handlers: [stream, rotating_file]  # [ "stream", "file", "rotating_file"]
 
 # cookie settings. These settings are reasonable defaults
-cookie: {name: session, lifetime: 3600, httponly: true, secure: true, samesite: lax}
+cookie:
+  name: session
+  lifetime: 3600
+  httponly: true
+  secure: true
+  samesite: lax
 
 # Set a 500 custom error message
 custom_error: "Der skete en system fejl. Prøv igen lidt senere!"
@@ -37,25 +42,45 @@ api_base_url: https://dev.openaws.dk/v1
 # "template" is the page you will use. It is also the content of the page.
 # "url" is the path to the page.
 pages:
-  - {name: home, title: Hjem, template: pages/home.html, url: "/"}
-  - {name: page_searchguide, title: Hjælp til søgning, template: pages/searchguide.html, url: /guides/searchguide}
-  - {name: page_collections, title: Om samlingerne, template: pages/collections.html, url: /about/collections}
+  - name: home
+    title: Hjem
+    template: pages/home.html
+    url: "/"
+  - name: page_searchguide
+    title: Hjælp til søgning
+    template: pages/searchguide.html
+    url: /guides/searchguide
+  - name: page_collections
+    title: Om samlingerne
+    template: pages/collections.html
+    url: /about/collections
 
 # Top menu items. These are the default items. You may remove or add more.
 # The "type" can be "icon" or "text".
 # A text menu item would look like this: 
 # - {name: search_get, title: Søg, type: text}
 main_menu_top:
-  - {name: search_get, title: Søg, type: icon, icon: search}
+  - name: search_get
+    title: Søg
+    type: icon
+    icon: search
 # Main menu system contains built-in endpoints. You may remove some of these.
 main_menu_system:
-  - {name: auth_login_get, title: Log ind}
-  - {name: auth_logout_get, title: Log ud}
-  - {name: auth_register_get, title: Ny bruger}
-  - {name: auth_me_get, title: Profil}
-  - {name: admin_users_get, title: Brugere}
-  - {name: schemas_get_list, title: Skemaer}
-  - {name: entities_get_list, title: Entiteter}
+  - name: auth_login_get
+    title: Log ind
+  - name: auth_logout_get
+    title: Log ud
+  - name: auth_register_get
+    title: Ny bruger
+  - name: auth_me_get
+    title: Profil
+  - name: admin_users_get
+    title: Brugere
+  - name: schemas_get_list
+    title: Skemaer
+  - name: entities_get_list
+    title: Entiteter
+
 
 # Main menu sections
 # Custom pages can be added to the main menu sections
@@ -63,11 +88,13 @@ main_menu_sections:
   - name: guides
     title: Vejledninger
     pages:
-      - {name: page_searchguide, title: Hjælp til søgning}
+      - name: page_searchguide
+        title: Hjælp til søgning
   - name: about
     title: Om samlingerne
     pages:
-      - {name: page_collections, title: Om samlingerne}
+      - name: page_collections
+        title: Om samlingerne
 
 # The facets enabled in the search
 # These are the defaults: ["content_types", "subjects", "availability", "usability", "dates"]
