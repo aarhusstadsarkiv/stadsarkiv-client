@@ -3,7 +3,7 @@ Dynamic settings module that tries to load settings from:
 
 * settings.yml or settings.py
 * settings_local.yml or settings_local.py
-* settings_facets.py
+* facets.yml or facets.py
 
 If the environment variable TEST is set, it will also load settings from:
 
@@ -22,55 +22,67 @@ import yaml
 log = get_log()
 
 
+def _load_yaml_settings(file_name):
+    """
+    Load settings from a .yml file
+    """
+    if os.path.exists(get_local_config_dir(file_name)):
+        # load from .yml file
+        try:
+            with open(get_local_config_dir(file_name), "r") as stream:
+                settings_yml = yaml.safe_load(stream)
+                settings.update(settings_yml)
+                log.debug(f"Local {file_name} loaded: {get_local_config_dir(file_name)}")
+        except Exception:
+            log.debug(f"Local {file_name} NOT loaded: {get_local_config_dir(file_name)}")
+
+
+def _load_py_settings(file_name):
+    """
+    Load settings from a .py file
+    """
+    if os.path.exists(get_local_config_dir(file_name)):
+        # load from .py file
+        try:
+            settings_config = load_submodule_from_file("settings", "settings", get_local_config_dir(file_name))
+            settings.update(settings_config)
+            log.debug(f"Local {file_name} loaded: {get_local_config_dir(file_name)}")
+        except Exception:
+            log.debug(f"Local {file_name} NOT loaded: {get_local_config_dir(file_name)}")
+
+
 # load settings from .yml file or .py
-# .yml has precedence
 if os.path.exists(get_local_config_dir("settings.yml")):
-    # load from .yml file
-    try:
-        with open(get_local_config_dir("settings.yml"), "r") as stream:
-            settings_yml = yaml.safe_load(stream)
-            settings.update(settings_yml)
-            log.debug(f"Loaded settings file: {get_local_config_dir('settings.yml')}")
-    except Exception:
-        log.debug(f"Settings file NOT loaded: {get_local_config_dir('settings.yml')}")
+    _load_yaml_settings("settings.yml")
 elif os.path.exists(get_local_config_dir("settings.py")):
-    # load from .py file
-    try:
-        settings_config = load_submodule_from_file("settings", "settings", get_local_config_dir("settings.py"))
-        settings.update(settings_config)
-        log.debug(f"Loaded settings file: {get_local_config_dir('settings.py')}")
-    except Exception:
-        log.debug(f"Settings file NOT loaded: {get_local_config_dir('settings.py')}")
+    _load_py_settings("settings.py")
 
-# load settings_local from .yml file or .py
-# .yml has precedence
+
+# load settings from .yml file or .py
 if os.path.exists(get_local_config_dir("settings_local.yml")):
-    # load from .yml file
-    try:
-        with open(get_local_config_dir("settings_local.yml"), "r") as stream:
-            settings_local_yml = yaml.safe_load(stream)
-            settings.update(settings_local_yml)
-            log.debug(f"Loaded local settings file: {get_local_config_dir('settings_local.yml')}")
-    except Exception:
-        log.debug(f"Local settings file NOT loaded: {get_local_config_dir('settings_local.yml')}")
+    _load_yaml_settings("settings_local.yml")
 elif os.path.exists(get_local_config_dir("settings_local.py")):
-    try:
-
-        settings_local_config = load_submodule_from_file("settings", "settings", get_local_config_dir("settings_local.py"))
-        settings.update(settings_local_config)
-        log.debug(f"Loaded local settings file: {get_local_config_dir('settings_local.py')}")
-    except Exception:
-        log.debug(f"Local settings file NOT loaded: {get_local_config_dir('settings_local.py')}")
+    _load_py_settings("settings_local.py")
 
 
 # load local settings_facets (overrides settings_facets)
-try:
-    settings_facets_local = load_submodule_from_file("settings_facets", "settings_facets", get_local_config_dir("settings_facets.py"))
-    settings_facets.update(settings_facets_local)
-    log.debug(f"Loaded local facets file: {get_local_config_dir('settings_facets.py')}")
+if os.path.exists(get_local_config_dir("facets.yml")):
+    try:
+        with open(get_local_config_dir("facets.yml"), "r") as stream:
+            settings_facets_local = yaml.safe_load(stream)
+            settings_facets.update(settings_facets_local)
+            log.debug(f"Local facets.yml loaded: {get_local_config_dir('facets.yml')}")
+    except Exception:
+        log.debug(f"Local facets.yml NOT loaded: {get_local_config_dir('facets.yml')}")
 
-except Exception:
-    log.debug(f"Local facets file NOT loaded: {get_local_config_dir('settings_facets.py')}")
+elif os.path.exists(get_local_config_dir("facets.py")):
+    try:
+        settings_facets_local = load_submodule_from_file("settings_facets", "settings_facets", get_local_config_dir("facets.py"))
+        settings_facets.update(settings_facets_local)
+        log.debug(f"Local facets.py loaded: {get_local_config_dir('facets.py')}")
+
+    except Exception:
+        log.debug(f"Local facets.py file NOT loaded: {get_local_config_dir('facets.py')}")
 
 
 # load settings for tests (overrides settings)
