@@ -6,7 +6,6 @@ import click
 import subprocess
 import os
 import secrets
-import uvicorn
 import glob
 import sys
 import logging
@@ -104,7 +103,6 @@ def server_prod(port: int, workers: int, host: str, config_dir: str):
         "--log-level=info",
     ]
 
-    # Run the command in the foreground
     try:
         logger.info("Started Gunicorn in the foreground")
         subprocess.run(cmd, check=True)
@@ -120,9 +118,6 @@ def server_prod(port: int, workers: int, host: str, config_dir: str):
 @click.option("-c", "--config-dir", default="local", help="Specify a local config directory.", required=False)
 def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True):
 
-    reload = True
-    reload_dirs = ["."]
-
     config_dir = config_dir.rstrip("/\\")
     config_dir_validator = ConfigDirValidator(config_dir)
     if not config_dir_validator.validate():
@@ -131,7 +126,10 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
 
     os.environ["CONFIG_DIR"] = config_dir
 
-    # Prevent watching giant dir if dir is not 'source', e.g. the users home folder on Windows
+    reload = True
+    reload_dirs = ["."]
+
+    # Prevent watching giant directories if dir is not 'source'
     if not _is_source():
         if not os.path.exists(config_dir):
             logger.info("Config dir is not set. No reloading of source code.")
@@ -140,15 +138,27 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
         else:
             reload_dirs = [config_dir]
 
-    uvicorn.run(
+    cmd = [
+        "uvicorn",
         "stadsarkiv_client.app:app",
-        reload=reload,
-        reload_dirs=reload_dirs,
-        port=port,
-        workers=workers,
-        host=host,
-        log_level="debug",
-    )
+        f"--host={host}",
+        f"--port={port}",
+        f"--workers={workers}",
+        "--log-level=debug",
+    ]
+
+    if reload:
+        cmd.append("--reload")
+        if reload_dirs:
+            for dir in reload_dirs:
+                cmd.append(f"--reload-dir={dir}")
+
+    try:
+        logger.info("Started Uvicorn in the foreground")
+        subprocess.run(cmd, check=True)
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Uvicorn failed to start: {e}")
+        exit(1)
 
 
 @cli.command(help="Generate a session secret.")
