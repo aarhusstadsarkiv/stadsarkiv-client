@@ -29,7 +29,7 @@ def _load_yaml_settings(file_name):
     if os.path.exists(get_local_config_dir(file_name)):
         # load from .yml file
         try:
-            with open(get_local_config_dir(file_name), "r") as stream:
+            with open(get_local_config_dir(file_name), "r", encoding="utf-8") as stream:
                 settings_yml = yaml.safe_load(stream)
                 settings.update(settings_yml)
                 log.debug(f"Local {file_name} loaded: {get_local_config_dir(file_name)}")
@@ -68,7 +68,7 @@ elif os.path.exists(get_local_config_dir("settings_local.py")):
 # load local settings_facets (overrides settings_facets)
 if os.path.exists(get_local_config_dir("facets.yml")):
     try:
-        with open(get_local_config_dir("facets.yml"), "r") as stream:
+        with open(get_local_config_dir("facets.yml"), "r", encoding="utf-8") as stream:
             settings_facets_local = yaml.safe_load(stream)
             settings_facets.update(settings_facets_local)
             log.debug(f"Local facets.yml loaded: {get_local_config_dir('facets.yml')}")
