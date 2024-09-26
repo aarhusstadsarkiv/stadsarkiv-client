@@ -7,22 +7,33 @@ Exposes a translate function that is used in the jinja2 template engine and in p
 """
 
 from stadsarkiv_client.core.dynamic_settings import settings
-from stadsarkiv_client.locales.en import en
-from stadsarkiv_client.locales.da import da
 from stadsarkiv_client.core.args import get_local_config_dir
-from stadsarkiv_client.core.module_loader import load_submodule_from_file
 import json
 from stadsarkiv_client.core.logging import get_log
+import yaml
+from pathlib import Path
+import os
 
 
 log = get_log()
 
-try:
-    language_local = load_submodule_from_file("language", "language", get_local_config_dir("language.py"))
-    log.debug(f"Loaded local language file: {get_local_config_dir('language.py')}")
-except Exception:
-    log.debug(f"Local language file NOT loaded: {get_local_config_dir('language.py')}")
-    language_local = {}
+# Load built-in languages
+locales_path = Path(__file__).parent.parent / "locales"
+da_path = locales_path / "da.yml"
+with open(da_path, "r", encoding="utf-8") as stream:
+    da = yaml.safe_load(stream)
+
+en_path = locales_path / "en.yml"
+with open(en_path, "r", encoding="utf-8") as stream:
+    en = yaml.safe_load(stream)
+
+
+# load local yml file if it exists
+language_local = {}
+if os.path.exists(get_local_config_dir("language.yml")):
+    with open(get_local_config_dir("language.yml"), "r", encoding="utf-8") as stream:
+        language_local = yaml.safe_load(stream)
+        log.debug(f"Loaded local language file: {get_local_config_dir('language.yml')}")
 
 
 def _get_translation_override(key: str) -> str:
@@ -57,14 +68,16 @@ def _save_file_dict(lang) -> None:
         return
 
     if lang == "en":
-        file_contents_en = f"{lang} = {json.dumps(en, indent=4, sort_keys=True, ensure_ascii=False)}"
-        with open("stadsarkiv_client/locales/en.py", "w") as f:
-            f.write(file_contents_en)
+        with open("stadsarkiv_client/locales/en.yml", "w", encoding="utf8") as file:
+            yaml.dump(en, file, allow_unicode=True, sort_keys=True)
 
     if lang == "da":
         file_contents_da = f"{lang} = {json.dumps(da, indent=4, sort_keys=True, ensure_ascii=False)}"
         with open("stadsarkiv_client/locales/da.py", "w") as f:
             f.write(file_contents_da)
+
+        with open("stadsarkiv_client/locales/da.yml", "w", encoding="utf8") as file:
+            yaml.dump(da, file, allow_unicode=True, sort_keys=True)
 
 
 def translate(key: str, translation_add_key=True) -> str:
