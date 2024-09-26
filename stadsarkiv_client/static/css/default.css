@@ -178,6 +178,25 @@ h6 {
     color: var(--flash-color);
 }
 
+
+/**
+ * Container-fluid but with no padding
+ * Used for main menu
+ */
+ .container-fluid {
+    margin: 0 auto;
+    min-width: 100%;
+}
+
+/**
+ * used for the main menu top bar
+ */
+ .sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
 /**
  * a set of containers with 
  * - different widths
@@ -222,24 +241,6 @@ h6 {
 }
 
 /**
- * used for the main menu top bar
- */
-.sticky-top {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-/**
- * Container-fluid but with no padding
- * Used for main menu
- */
- .container-fluid {
-    margin: 0 auto;
-    min-width: 100%;
-}
-
-/**
  * Should be used for the main content
  * margin on the sides
  */
@@ -253,16 +254,35 @@ h6 {
     margin-left: 20px;
 }
 
+@media (max-width: 992px) {
+    .container-left {
+        display: none;
+    }
+}
+
+/**
+ * main content facets is hidden by default
+ */
+.container-main-facets {
+    display: none;
+}
+
+/**
+ * display the facets on the left side
+ */
+ @media (max-width: 992px) {
+    .container-main-facets {
+        display: block;
+        margin: 10px 0;
+    }
+}
+
 .sticky-left {
     position: sticky;
     top: var(--main-menu-top);
     align-self: flex-start;
     max-height: 100vh;
     overflow-y: auto;
-}
-
-.container-main-facets {
-    display: none;
 }
 
 .action-links {
@@ -321,21 +341,6 @@ h6 {
 
 .hidden {
     visibility: hidden;
-}
-
-/**
- * When the width goes 992px or below, the container-left is hidden
- * When changing this you will need to change search.js as well 
- */
-@media (max-width: 992px) {
-    .container-left {
-        display: none;
-    }
-
-    .container-main-facets {
-        display: block;
-        margin: 10px 0;
-    }
 }
 
 summary {
