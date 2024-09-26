@@ -1,0 +1,113 @@
+content_types:
+  content:
+  - id: '99'
+    label: Andet materiale
+  - children:
+    - icon: image
+      id: '66'
+      label: Afbildning af arkitektur og bygning
+    - icon: image
+      id: '65'
+      label: Afbildning af kunst
+    - icon: image
+      id: '73'
+      label: Arkitekturtegning
+    - icon: image
+      id: '64'
+      label: By- og gadebilleder
+    - icon: image
+      id: '70'
+      label: Collage
+    - icon: image
+      id: '71'
+      label: Illustrationer
+    - icon: image
+      id: '100'
+      label: Landskabs- og naturbilleder
+    - icon: image
+      id: '62'
+      label: Luftfoto
+    - icon: image
+      id: '68'
+      label: Maleri
+    - icon: image
+      id: '67'
+      label: Plakat
+    - icon: image
+      id: '69'
+      label: Planche
+    - icon: image
+      id: '63'
+      label: Portræt
+    - icon: image
+      id: '74'
+      label: Postkort
+    - icon: image
+      id: '72'
+      label: Tekniske tegninger
+    icon: far fa-image
+    id: '61'
+    label: Billeder
+  - children:
+    - icon: fas fa-laptop
+      id: '98'
+      label: Hjemmesider
+    - icon: fas fa-laptop
+      id: '96'
+      label: Software
+    - icon: fas fa-laptop
+      id: '97'
+      label: Spil
+    icon: fas fa-laptop
+    id: '95'
+    label: Elektronisk materiale
+  label: Materialetype
+  type: default
+events:
+  content:
+  - children:
+    - id: '118731'
+      label: Imagine
+    - id: '118689'
+      label: Frk. Julie
+    id: Sæson 2015-16
+    label: Sæson 2015-16
+  - children:
+    - id: '119843'
+      label: American Spirit
+    - id: '119569'
+      label: En kvinde uden betydning
+    id: Sæson 2016-17
+    label: Sæson 2016-17
+  - children:
+    - id: '149860'
+      label: Lyden af de skuldre vi står på
+    - id: '149881'
+      label: Fragt
+    id: Sæson 2017-18
+    label: Sæson 2017-18
+  - children:
+    - id: '150474'
+      label: Friheden
+    - id: '150478'
+      label: Revolution
+    id: Sæson 2018-19
+    label: Sæson 2018-19
+  - children:
+    - id: '154644'
+      label: Lazarus
+    - id: '154814'
+      label: Pagten
+    - id: '154899'
+      label: Denungewertherslidelser
+    - id: '154907'
+      label: Lyden af de skuldre vi står på
+    - id: '154912'
+      label: Ordet
+    - id: '154654'
+      label: Se dagens lys
+    id: Sæson 2019-20
+    label: Sæson 2019-20
+  label: Forestillinger
+  resource_type: events
+  type: resource_links
