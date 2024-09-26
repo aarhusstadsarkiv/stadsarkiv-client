@@ -62,7 +62,7 @@ In `language.yml` you may override translations:
 Forgot your password: Glemt password (Fra local language.yml)
 ```
 
-Original language files (and keys) can be found in [stadsarkiv_client/locales/da.yml](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/locales/da.py)
+Original language files (and keys) can be found in [stadsarkiv_client/locales/da.yml](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/locales/da.yml)
 
 ## Templates
 
