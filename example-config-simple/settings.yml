@@ -18,8 +18,8 @@ show_version: true
 language: da
 
 # log handlers can be "stream", "rotating_file"
-# on development you can use "stream" to see logs in the console
-log_handlers: [stream, rotating_file]  # [ "stream", "file", "rotating_file"]
+log_handlers: 
+  - stream
 
 # cookie settings. These settings are reasonable defaults
 cookie:
@@ -99,7 +99,10 @@ main_menu_sections:
 # The facets enabled in the search
 # These are the defaults: ["content_types", "subjects", "availability", "usability", "dates"]
 # The facets are loaded from 'settings_facets.py'
-facets_enabled: [content_types, events, dates]
+facets_enabled: 
+  - content_types
+  - events
+  - dates
 
 # CORS allow origins
 cors_allow_origins: []
