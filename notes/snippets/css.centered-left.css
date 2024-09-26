@@ -1,0 +1,31 @@
+/**
+ * Same as above container
+ * - full width 
+ */
+ .container-max {
+    padding: 20px 0px;
+    max-width: 100%;
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/**
+ * Should be used for the main content
+ * margin on the sides
+ */
+.container-main {
+    width: 100%;
+    margin: 0 20px;
+}
+
+.container-left {
+    min-width: 350px;
+    margin-left: 20px;
+}
+
+@media (max-width: 992px) {
+    .container-left {
+        display: none;
+    }
+}
