@@ -106,13 +106,13 @@ An easy way to add custom css and js is just to create a `static/assets/css/loca
 
 ## Settings
 
-There are quite a few settings. In order to view all base settings you can go to the [example-config-simple/settings.py](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/example-config-simple/settings.py) file. This file is quite well documented.
+There are quite a few settings. In order to view all base settings you can go to the [example-config-simple/settings.yml](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/example-config-simple/settings.yml) file. This file is quite well documented.
 
-If you prefer `YAML` you can use a [example-config-simple/settings.yml](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/example-config-simple/settings.yml) file. This file takes precedence over the `settings.py` file. These files are equivalent.
+Another settings file is [example-config-simple/facets.yml](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/example-config-simple/facets.yml). This file is used to define the facets that are shown on the search page. You may add, remove, or change the order of the facets. 
 
-Another settings file is [example-config-simple/settings_facets.py](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/example-config-simple/settings_facets.py). This file is used to define the facets that are shown on the search page. You may add, remove, or change the order of the facets. 
+If the `facets.yml` file does not exist, the default facets are used. 
 
-If the `settings_facets.py` file does not exist, the default facets are used. The default facets are defined in the [stadsarkiv_client/settings_facets.py](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadarkiv_client/settings_facets.py) file.
+<!--The default facets are defined in the [stadsarkiv_client/settings_facets.py](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadarkiv_client/settings_facets.py) file.-->
 
 In the settings.py file you can specify which of the default facets are enabled. In the `example-config-simple` it is `["content_types", "events", "dates"]`. If a local settings_facets.py file exists then these facets will override the default facets.
 
