@@ -151,7 +151,7 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
 
     if reload:
         cmd.append("--reload")
-        cmd.append("--reload-include='*.yml'")
+        cmd.append("--reload-include=*.yml")
         if reload_dirs:
             for dir in reload_dirs:
                 cmd.append(f"--reload-dir={dir}")
