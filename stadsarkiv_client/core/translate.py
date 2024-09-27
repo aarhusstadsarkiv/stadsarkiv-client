@@ -64,7 +64,7 @@ def _save_file_dict(lang) -> None:
     Save language files with new key
     But do not update and save language files in production
     """
-    if settings["environment"] == "production":
+    if not settings.get("update_translations"):
         return
 
     if lang == "en":
