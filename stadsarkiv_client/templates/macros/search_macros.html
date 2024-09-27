@@ -341,7 +341,7 @@
 {% endmacro %}
 
 {% macro parse_date_form (date_form_class) %}
-<div>
+<div class="search-date-form">
     <form class="{{ date_form_class }}">
         {% set ignore_keys = ['date_to', 'date_from'] %}
         {% for key, value in query_params if key not in ignore_keys %}

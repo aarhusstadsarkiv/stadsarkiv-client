@@ -29,6 +29,7 @@
   /* In order to control the max width on text */
   --text-max-width: 72ch;
   --svg-color: black;
+  --box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 
   /* can not be used in media queries - just to remember the settings */
   --breakpoint-small: 576px;

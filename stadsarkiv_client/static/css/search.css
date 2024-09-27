@@ -17,6 +17,12 @@
     background-color: var(--search-result-background-hover);
 }
 
+.facets details {
+    border-radius: 5px;
+    box-shadow: var(--box-shadow);
+    padding-left:10px;
+}
+
 .facets ul {
     font-size: 1.05rem;
     list-style: none;
@@ -105,7 +111,6 @@ details>summary.inactive {
 
 .search-link {
     color: var(--search-link-text);
-    text-decoration: none;
     display: flex;
 }
 
@@ -128,6 +133,9 @@ details>summary.inactive {
 
 .search-details {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .search-summary {
@@ -137,7 +145,6 @@ details>summary.inactive {
 
 .search-summary:first-of-type {
     font-weight: 600;
-    margin-bottom: 0.2rem;
 }
 
 /**
@@ -258,4 +265,8 @@ a.search-link-gallery {
     width: 100%;
     height: auto;
     display: block;
+}
+
+.search-date-form {
+    padding: 20px 20px;
 }
