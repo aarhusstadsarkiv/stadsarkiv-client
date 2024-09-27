@@ -68,7 +68,7 @@
     word-wrap: break-word;
     width: 15em;
     font-weight: 500;
-    font-size: 0.9rem;
+    /* font-size: 0.9rem; */
     line-height: 1.45rem;
 }
 
@@ -86,7 +86,7 @@
 
 .record-content>.content>p {
     margin: 0;
-    padding-bottom: 5px;
+    /* padding-bottom: 5px; */
     word-break: break-word;
     min-width: 100%;
 }
