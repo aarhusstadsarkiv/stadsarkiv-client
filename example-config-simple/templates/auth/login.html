@@ -9,7 +9,7 @@
 {% if not is_logged_in %}
 
 <form method="post" action="{{ post_url  }}">
-    <input type="text" name="username" placeholder="{{ translate('Email') }}" aria-label="Login" autocomplete="email"
+    <input type="text" name="email" placeholder="{{ translate('Email') }}" aria-label="Login" autocomplete="email"
         required>
     <input type="password" name="password" placeholder="{{ translate('Password') }}" aria-label="Password"
         autocomplete="current-password" required>
