@@ -72,10 +72,6 @@ def _save_file_dict(lang) -> None:
             yaml.dump(en, file, allow_unicode=True, sort_keys=True)
 
     if lang == "da":
-        file_contents_da = f"{lang} = {json.dumps(da, indent=4, sort_keys=True, ensure_ascii=False)}"
-        with open("stadsarkiv_client/locales/da.py", "w") as f:
-            f.write(file_contents_da)
-
         with open("stadsarkiv_client/locales/da.yml", "w", encoding="utf8") as file:
             yaml.dump(da, file, allow_unicode=True, sort_keys=True)
 
