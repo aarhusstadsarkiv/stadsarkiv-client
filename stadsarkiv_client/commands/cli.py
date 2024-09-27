@@ -138,6 +138,8 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
         else:
             reload_dirs = [config_dir]
 
+    # reload when yml and py files change
+
     cmd = [
         "uvicorn",
         "stadsarkiv_client.app:app",
@@ -149,6 +151,7 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
 
     if reload:
         cmd.append("--reload")
+        cmd.append("--reload-include='*.yml'")
         if reload_dirs:
             for dir in reload_dirs:
                 cmd.append(f"--reload-dir={dir}")
