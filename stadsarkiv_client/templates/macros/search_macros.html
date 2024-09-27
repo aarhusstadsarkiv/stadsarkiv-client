@@ -327,11 +327,12 @@
                 {{ common_macros.parse_string('content_type', result.content_type, translate('label_content_type')) }}
                 {% endif %}
 
-                <div class="search-thumbnail">
-                    {% if result.thumbnail %}
-                    <img src="{{ result.thumbnail }}" alt="{{ result.label }}">
-                    {% endif %}
-                </div>
+                
+            </div>
+            <div class="search-thumbnail">
+                {% if result.thumbnail %}
+                <img src="{{ result.thumbnail }}" alt="{{ result.label }}">
+                {% endif %}
             </div>
         </a>
     </div>
