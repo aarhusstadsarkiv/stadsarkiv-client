@@ -19,7 +19,6 @@
     }
 }
 
-
 .record-representation img {
     box-shadow: 5px 5px 10px var(--record-representation-box-shadow);
     text-align: center;
@@ -57,10 +56,9 @@
 
 .record-content {
     display: flex;
-    margin-bottom: 1rem;
     gap: 10px;
+    margin-bottom: 1rem;
 }
-
 
 .record-content>.label {
     text-transform: uppercase;
@@ -68,8 +66,6 @@
     word-wrap: break-word;
     width: 15em;
     font-weight: 500;
-    /* font-size: 0.9rem; */
-    line-height: 1.45rem;
 }
 
 @media (max-width: 576px) {
@@ -86,9 +82,9 @@
 
 .record-content>.content>p {
     margin: 0;
-    /* padding-bottom: 5px; */
     word-break: break-word;
     min-width: 100%;
+    max-width: var(--text-max-width);
 }
 
 .record-content>.content>p.spacing {

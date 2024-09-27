@@ -112,7 +112,9 @@ details>summary.inactive {
 
 .search-thumbnail {
     margin-right: 10px;
+    margin-top: 10px;
 }
+
 
 .search-thumbnail img {
     min-width: 120px;
@@ -132,21 +134,20 @@ details>summary.inactive {
 
 .search-summary:first-of-type {
     font-weight: 600;
-    margin-bottom: 0.2em;
+    margin-bottom: 0.2rem;
 }
-
 
 /**
  * Override of the general record.css 
  */
 .search-results .record-content {
-    padding-top: 0.2em;
-    margin-bottom: 0.2em
+    margin-bottom: unset;
+    font-size: 0.97rem;
 }
 
 .search-results .record-content>.label {
-    width: 8em;
-    min-width: 8em;
+    width: 8rem;
+    min-width: 8rem;
 }
 
 /**
