@@ -9,7 +9,7 @@
     --text-main: #cfcfcf;
     --text-bright: #ffffff;
     --text-muted: #6c757d;
-    --links: deepskyblue;
+    --links: whitesmoke;
     --focus: #1a73e8ab;
     --border: #3a3a3a;
     --code: #cfcfcf;
@@ -43,10 +43,10 @@
     --navigation-background-rgb: 90, 90, 90;
     --navigation-background-hover: #ffffff22;
   
-    --flash-color: #e0e0e0;  /* Light grey for general flash messages, offers good contrast */
-    --flash-success-color: mediumaquamarine; /* Bright green, more vibrant and noticeable */
-    --flash-notice-color: #2196F3;  /* Blue, stands out well against black */
-    --flash-error-color: indianred;  /* Red, slightly adjusted for better visibility */
+    --flash-color: white;
+    --flash-success-color: forestgreen;
+    --flash-notice-color: #1b1f23;
+    --flash-error-color: crimson;
   
     --main-menu: white;
     --main-menu-hover: #ffffff22;
