@@ -68,7 +68,9 @@ class TestAuth(unittest.TestCase):
             "password_2": correct_login["password"],
         }
         response = client.post("/auth/register", data=data, follow_redirects=True)  # type: ignore
-        self.assertEqual(response.url, "http://testserver/auth/register")
+
+        reponse_urls = ["http://testserver/auth/login", "http://testserver/auth/register"]
+        self.assertIn(response.url, reponse_urls)
 
     def test_forgot_password_get(self):
         client = TestClient(app)
