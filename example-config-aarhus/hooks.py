@@ -79,7 +79,7 @@ class Hooks(HooksSpec):
         form = await request.form()
         username = str(form.get("email"))
         if _user_mail_exists(username):
-            raise OpenAwsException(401, "Brugeren er tilknyttet det gamle system. Vi er overgået til et nyt system. Du skal derfor oprette en ny bruger.")
+            raise OpenAwsException(401, "Kære bruger. Du er tilknyttet det gamle system. Men da vi er overgået til et nyt system, skal du oprette en ny bruger. Hvis du bruger samme email vil systemet ved første login forsøge at importere data fra det gamle system.")
         return response
 
     async def before_get_auto_complete(self, query_params: list) -> list:
@@ -103,7 +103,6 @@ class Hooks(HooksSpec):
         Alter the search query params. Before the search is executed.
         This example removes all curators from the query params and adds Aarhus Teater as curator (4).
         """
-
         return query_params
 
     async def after_get_search(self, query_params: list) -> list:
