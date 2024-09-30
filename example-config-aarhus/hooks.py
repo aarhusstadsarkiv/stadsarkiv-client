@@ -15,7 +15,7 @@ log = get_log()
 current_path = os.path.abspath(__file__)
 base_dir = os.path.dirname(os.path.abspath(__file__))
 bookmarks_file = os.path.join(base_dir, "..", "data", "bookmarks_with_emails.csv")
-users_files = os.path.join(base_dir, "..", "data", "emails.csv")
+users_emails = os.path.join(base_dir, "..", "data", "users_emails.csv")
 
 
 def _get_bookmarks_by_email(email):
@@ -36,7 +36,7 @@ def _user_mail_exists(email):
     """
     Check if email exists in user file
     """
-    file = users_files
+    file = users_emails
     with open(file, "r") as file:
         reader = csv.DictReader(file)
         for row in reader:
@@ -79,7 +79,7 @@ class Hooks(HooksSpec):
         form = await request.form()
         username = str(form.get("email"))
         if _user_mail_exists(username):
-            raise OpenAwsException(401, "Brugeren tilknyttet det gamle system. Vi er overgået til et nyt system. Du skal derfor oprette en ny bruger.")
+            raise OpenAwsException(401, "Brugeren er tilknyttet det gamle system. Vi er overgået til et nyt system. Du skal derfor oprette en ny bruger.")
         return response
 
     async def before_get_auto_complete(self, query_params: list) -> list:
