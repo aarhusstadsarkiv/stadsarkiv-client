@@ -17,4 +17,14 @@ def generate_import_map(base_dir):
 
 base_directory = "stadsarkiv_client/static/js"
 import_map = generate_import_map(base_directory)
-print(import_map)
+
+
+import_map = f"""<script type="importmap">
+{import_map}
+</script>
+"""
+# print(import_map)
+# save to ./stadsarkiv_client/templates/includes/importmap.html
+
+with open("stadsarkiv_client/templates/includes/importmap.html", "w") as f:
+    f.write(import_map)

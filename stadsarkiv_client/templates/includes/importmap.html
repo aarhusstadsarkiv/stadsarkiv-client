@@ -1,28 +1,31 @@
 <script type="importmap">
-    {
-      "imports": {
-          "{{ url_for('static', path='/js/flash.js') }}": " {{ url_for('static', path='/js/flash.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/upload.js') }}": " {{ url_for('static', path='/js/upload.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/table-of-contents.js') }}": " {{ url_for('static', path='/js/table-of-contents.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/local.js') }}": " {{ url_for('static', path='/js/local.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/error.js') }}": " {{ url_for('static', path='/js/error.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/jsoneditor-utils.js') }}": " {{ url_for('static', path='/js/jsoneditor-utils.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/record.js') }}": " {{ url_for('static', path='/js/record.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/lit-html.js') }}": " {{ url_for('static', path='/js/lit-html.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/slideshow.js') }}": " {{ url_for('static', path='/js/slideshow.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/events.js') }}": " {{ url_for('static', path='/js/events.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/main-events.js') }}": " {{ url_for('static', path='/js/main-events.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/common-utils.js') }}": " {{ url_for('static', path='/js/common-utils.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/auto-complete-instance.js') }}": " {{ url_for('static', path='/js/auto-complete-instance.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/overlay.js') }}": " {{ url_for('static', path='/js/overlay.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/search.js') }}": " {{ url_for('static', path='/js/search.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/jsoneditor.min.js') }}": " {{ url_for('static', path='/js/jsoneditor.min.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/relations-edit.js') }}": " {{ url_for('static', path='/js/relations-edit.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/local-storage-ttl.js') }}": " {{ url_for('static', path='/js/local-storage-ttl.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/auto-complete.js') }}": " {{ url_for('static', path='/js/auto-complete.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/requests.js') }}": " {{ url_for('static', path='/js/requests.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/lit-core.min.js') }}": " {{ url_for('static', path='/js/lit-core.min.js') }}?v={{ get_setting('version') }}",
-          "{{ url_for('static', path='/js/record-series.js') }}": " {{ url_for('static', path='/js/record-series.js') }}?v={{ get_setting('version') }}"
-      }
-  }
-  </script>
+{
+    "imports": {
+        "{{ url_for('static', path='/js/flash.js') }}": " {{ url_for('static', path='/js/flash.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/upload.js') }}": " {{ url_for('static', path='/js/upload.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/bookmarks-record.js') }}": " {{ url_for('static', path='/js/bookmarks-record.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/table-of-contents.js') }}": " {{ url_for('static', path='/js/table-of-contents.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/local.js') }}": " {{ url_for('static', path='/js/local.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/error.js') }}": " {{ url_for('static', path='/js/error.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/jsoneditor-utils.js') }}": " {{ url_for('static', path='/js/jsoneditor-utils.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/bookmarks-user.js') }}": " {{ url_for('static', path='/js/bookmarks-user.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/record.js') }}": " {{ url_for('static', path='/js/record.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/lit-html.js') }}": " {{ url_for('static', path='/js/lit-html.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/slideshow.js') }}": " {{ url_for('static', path='/js/slideshow.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/events.js') }}": " {{ url_for('static', path='/js/events.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/main-events.js') }}": " {{ url_for('static', path='/js/main-events.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/common-utils.js') }}": " {{ url_for('static', path='/js/common-utils.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/auto-complete-instance.js') }}": " {{ url_for('static', path='/js/auto-complete-instance.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/overlay.js') }}": " {{ url_for('static', path='/js/overlay.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/truncate-text.js') }}": " {{ url_for('static', path='/js/truncate-text.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/search.js') }}": " {{ url_for('static', path='/js/search.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/jsoneditor.min.js') }}": " {{ url_for('static', path='/js/jsoneditor.min.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/relations-edit.js') }}": " {{ url_for('static', path='/js/relations-edit.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/local-storage-ttl.js') }}": " {{ url_for('static', path='/js/local-storage-ttl.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/auto-complete.js') }}": " {{ url_for('static', path='/js/auto-complete.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/requests.js') }}": " {{ url_for('static', path='/js/requests.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/lit-core.min.js') }}": " {{ url_for('static', path='/js/lit-core.min.js') }}?v={{ get_setting('version') }}",
+        "{{ url_for('static', path='/js/record-series.js') }}": " {{ url_for('static', path='/js/record-series.js') }}?v={{ get_setting('version') }}"
+    }
+}
+</script>
