@@ -1,6 +1,7 @@
 import { Events } from '/static/js/events.js';
 import { Flash } from '/static/js/flash.js';
 import { asyncLogError } from '/static/js/error.js';
+import { truncateText } from '/static/js/truncate-text.js';
 
 /**
  * Utility function to save the state of details elements from a given container
@@ -221,14 +222,17 @@ function searchEvents() {
             if ((lastWindowWidth <= 992 && currentWindowWidth > 992) || (lastWindowWidth > 992 && currentWindowWidth <= 992)) {
                 console.log("Resize event crossed the 992px boundary")
                 expandTree();
+                truncateText(document.querySelectorAll(".search-summary"), 80, true);
             }
 
             if (currentWindowWidth > 992) {
                 hideFacetsElement();
+                truncateText(document.querySelectorAll(".search-summary"), 80, false);
             }
 
             if (currentWindowWidth <= 992) {
                 initFacetsElements();
+                truncateText(document.querySelectorAll(".search-summary"), 80, true);
             }
 
             // Update the last window width for the next resize event
