@@ -54,7 +54,7 @@ You may generate a new secret using the following command:
 stadsarkiv-client server-secret
 ```
 
-## language.py
+## language.yml
 
 In `language.yml` you may override translations:
 
@@ -107,8 +107,6 @@ There are quite a few settings. In order to view all base settings you can go to
 Another settings file is [example-config-simple/facets.yml](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/example-config-simple/facets.yml). This file is used to define the facets that are shown on the search page. You may add, remove, or change the order of the facets. 
 
 If the `facets.yml` file does not exist, the default facets are used. 
-
-<!--The default facets are defined in the [stadsarkiv_client/settings_facets.py](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadarkiv_client/settings_facets.py) file.-->
 
 In the settings.yml file you can specify which of the default facets are enabled. In the `example-config-simple` it is `[content_types, events, dates]`. If a local facets.yml file exists then these facets will override the default facets.
 
