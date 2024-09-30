@@ -108,6 +108,7 @@ async def auth_jwt_login_post(request: Request):
     POST an email and password to the api in order to login
     """
 
+    hooks = get_hooks(request=request)
     form = await request.form()
     username = str(form.get("email"))  # email is used as username
     password = str(form.get("password"))
@@ -124,11 +125,10 @@ async def auth_jwt_login_post(request: Request):
             access_token = json_response["access_token"]
             token_type = json_response["token_type"]
             user.set_user_jwt(request, access_token, token_type)
-
-            hooks = get_hooks(request=request)
-            await hooks.after_login(json_response)
+            await hooks.after_login_success(json_response)
         else:
             json_response = response.json()
+            await hooks.after_login_failure(json_response)
             raise_openaws_exception(response.status_code, json_response)
 
 

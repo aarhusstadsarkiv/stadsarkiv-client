@@ -78,7 +78,7 @@ class Hooks(HooksSpec):
 
         return routes
 
-    async def after_login(self, response: dict) -> dict:
+    async def after_login_success(self, response: dict) -> dict:
         """
         After a successful login.
         """

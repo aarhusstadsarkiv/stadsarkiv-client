@@ -1,5 +1,6 @@
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
+from stadsarkiv_client.core.api_error import OpenAwsException
 from stadsarkiv_client.records import record_utils
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.core import api
@@ -14,9 +15,10 @@ log = get_log()
 current_path = os.path.abspath(__file__)
 base_dir = os.path.dirname(os.path.abspath(__file__))
 bookmarks_file = os.path.join(base_dir, "..", "data", "bookmarks_with_emails.csv")
+users_files = os.path.join(base_dir, "..", "data", "emails.csv")
 
 
-def get_bookmarks_by_email(email):
+def _get_bookmarks_by_email(email):
     """ "
     Get bookmarks by email from csv file
     """
@@ -30,11 +32,24 @@ def get_bookmarks_by_email(email):
     return resource_ids
 
 
+def _user_mail_exists(email):
+    """
+    Check if email exists in user file
+    """
+    file = users_files
+    with open(file, "r") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            if row["email"] == email:
+                return True
+    return False
+
+
 class Hooks(HooksSpec):
     def __init__(self, request):
         super().__init__(request)
 
-    async def after_login(self, response: dict) -> dict:
+    async def after_login_success(self, response: dict) -> dict:
         """
         After a successful login.
         """
@@ -44,7 +59,7 @@ class Hooks(HooksSpec):
 
         custom_data = UserData(me)
         if not custom_data.get_custom_data("bookmarks_imported"):
-            bookmarks = get_bookmarks_by_email(email)
+            bookmarks = _get_bookmarks_by_email(email)
 
             for bookmark in bookmarks:
                 custom_data.append_bookmark(bookmark)
@@ -54,6 +69,17 @@ class Hooks(HooksSpec):
             data = custom_data.get_data()
             response = await api.users_data_post(self.request, id=id, data=data)
 
+        return response
+
+    async def after_login_failure(self, response: dict) -> dict:
+        """
+        After a login failure
+        """
+        request = self.request
+        form = await request.form()
+        username = str(form.get("email"))
+        if _user_mail_exists(username):
+            raise OpenAwsException(401, "Brugeren tilknyttet det gamle system. Vi er overgået til et nyt system. Du skal derfor oprette en ny bruger.")
         return response
 
     async def before_get_auto_complete(self, query_params: list) -> list:

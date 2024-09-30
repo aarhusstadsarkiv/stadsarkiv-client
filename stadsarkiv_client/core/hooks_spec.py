@@ -26,9 +26,15 @@ class HooksSpec:
         """
         return response
 
-    async def after_login(self, response: dict) -> dict:
+    async def after_login_success(self, response: dict) -> dict:
         """
         Alter the response after a successful login.
+        """
+        return response
+
+    async def after_login_failure(self, response: dict) -> dict:
+        """
+        Alter the response after a login failure
         """
         return response
 
