@@ -26,12 +26,12 @@ if not len(log.handlers):
 
     if "file" in settings["log_handlers"]:  # type: ignore
         log.debug("Logging to file enabled")
-        fh = logging_handlers.get_file_handler(level)
+        fh = logging_handlers.get_file_handler(level, file_name="logs/main.log")
         log.addHandler(fh)
 
     if "rotating_file" in settings["log_handlers"]:  # type: ignore
         log.debug("Logging to rotating file enabled")
-        fh = logging_handlers.get_rotating_file_handler(level)
+        fh = logging_handlers.get_rotating_file_handler(level, file_name="logs/main.log")
         log.addHandler(fh)
 
     if "stream" in settings["log_handlers"]:  # type: ignore
