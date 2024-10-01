@@ -100,7 +100,6 @@ def server_prod(port: int, workers: int, host: str, config_dir: str):
         f"--workers={workers}",
         f"--bind={host}:{port}",
         "--worker-class=uvicorn.workers.UvicornWorker",
-        "--access-logfile=./logs/access.log",
         "--log-level=info",
     ]
 
