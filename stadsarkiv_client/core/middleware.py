@@ -89,12 +89,22 @@ class BeforeResponseMiddleware(BaseHTTPMiddleware):
 
 class AccessLogMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
-        # Get the access logger
-        access_log = get_access_log()
 
         # Log request details
         method = request.method
         path = request.url.path
+        query_string = request.url.query  # Extract the query string
+        if query_string:
+            query_string = f"?{query_string}"
+
+        # Handle cases where request.client might be None
+        if request.client:
+            client_ip = request.client.host
+            client_port = request.client.port
+        else:
+            client_ip = "unknown"
+            client_port = "unknown"
+
         start_time = time()
 
         # Process the request and get the response
@@ -104,8 +114,8 @@ class AccessLogMiddleware(BaseHTTPMiddleware):
         status_code = response.status_code
         duration = time() - start_time
 
-        # Log the access information to access.log
-        access_log.debug(f"{method} {path} {status_code} {duration:.4f}s")
+        # Log the access information to access.log, including client IP and port
+        access_log.info(f'{client_ip}:{client_port} - "{method} {path}{query_string}" {status_code} {duration:.4f}s')
 
         return response
 
