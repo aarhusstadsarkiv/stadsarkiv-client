@@ -33,6 +33,7 @@
     padding-bottom: 0.2rem;
     width: 100%;
     font-size: 1.5rem;
+    text-transform: uppercase;
 }
 
 .record-icon {
@@ -85,6 +86,8 @@
     word-break: break-word;
     min-width: 100%;
     max-width: var(--text-max-width);
+    margin-bottom: 0.25rem;
+
 }
 
 .record-content>.content>p.spacing {
