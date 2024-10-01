@@ -20,8 +20,8 @@ def generate_log_dir():
     os.makedirs(dir, exist_ok=True)
 
 
-def get_file_handler(level: Any):
-    fh = logging.FileHandler("logs/main.log")
+def get_file_handler(level: Any, file_name: str = "logs/main.log"):
+    fh = logging.FileHandler(file_name)
     fh.setLevel(level)
     fh.setFormatter(formatter)
     return fh
