@@ -9,7 +9,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.gzip import GZipMiddleware
 from starlette.requests import Request
 from stadsarkiv_client.core.dynamic_settings import settings
-from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core.logging import get_log, get_access_log
 from stadsarkiv_client.core import api
 import os
 import json
@@ -18,6 +18,7 @@ from stadsarkiv_client.core.hooks import get_hooks
 
 
 log = get_log()
+access_log = get_access_log()
 
 
 class RequestBeginMiddleware(BaseHTTPMiddleware):
@@ -86,6 +87,29 @@ class BeforeResponseMiddleware(BaseHTTPMiddleware):
         return response
 
 
+class AccessLogMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        # Get the access logger
+        access_log = get_access_log()
+
+        # Log request details
+        method = request.method
+        path = request.url.path
+        start_time = time()
+
+        # Process the request and get the response
+        response = await call_next(request)
+
+        # Log response details after it's processed
+        status_code = response.status_code
+        duration = time() - start_time
+
+        # Log the access information to access.log
+        access_log.debug(f"{method} {path} {status_code} {duration:.4f}s")
+
+        return response
+
+
 # Variables for cookie handling
 secret_key = str(os.getenv("SECRET_KEY"))
 session_store: CookieStore = CookieStore(secret_key=secret_key)
@@ -100,5 +124,6 @@ middleware = [
     Middleware(BeforeResponseMiddleware),
     Middleware(RequestEndMiddleware),
     Middleware(NoCacheMiddleware),
+    Middleware(AccessLogMiddleware),
     Middleware(GZipMiddleware, minimum_size=1),
 ]
