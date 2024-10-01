@@ -68,3 +68,31 @@ Run it like this: `./bin/upgrade.sh`
 Then restart the service.
 
     sudo systemctl restart stadsarkiv-client.service
+
+## Multiple services
+
+In the case of multiple services (or a just a single one), you can create a script that upgrades and restarts all services.
+
+E.g.:
+
+```bash
+#!/bin/sh
+cd stadsarkiv-client-demo
+./bin/upgrade.sh
+cp -rf ./example-config-demo/* local/
+sudo service stadsarkiv-client-demo restart
+
+cd stadarkiv-client-demo-2
+./bin/upgrade.sh
+cp -rf ./example-config-demo-2/* local/
+sudo service stadsarkiv-client-demo-2 restart
+
+```
+
+# Logs
+
+You can see the logs of the service with:
+
+    sudo journalctl -u stadsarkiv-client.service
+
+```
