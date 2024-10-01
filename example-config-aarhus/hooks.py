@@ -79,7 +79,10 @@ class Hooks(HooksSpec):
         form = await request.form()
         username = str(form.get("email"))
         if _user_mail_exists(username):
-            raise OpenAwsException(401, "Kære bruger. Du er tilknyttet det gamle system. Men da vi er overgået til et nyt system, skal du oprette en ny bruger. Hvis du bruger samme email vil systemet ved første login forsøge at importere data fra det gamle system.")
+            raise OpenAwsException(
+                401,
+                "Kære bruger. Du er tilknyttet det gamle system. Men da vi er overgået til et nyt system, skal du oprette en ny bruger. Hvis du bruger samme email vil systemet ved første login forsøge at importere data fra det gamle system.",
+            )
         return response
 
     async def before_get_auto_complete(self, query_params: list) -> list:
