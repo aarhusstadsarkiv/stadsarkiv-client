@@ -44,8 +44,5 @@ git checkout $install_tag
 # Activate virtual environment and install requirements
 ./venv/bin/pip install -r requirements.txt
 
-# Restart the service named after the directory
-sudo service $DIR restart
-
 echo "If no errors occurred, the module has been successfully upgraded to the latest tag."
 echo "If no errors the service is also restarted"
