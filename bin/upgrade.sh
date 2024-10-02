@@ -45,4 +45,3 @@ git checkout $install_tag
 ./venv/bin/pip install -r requirements.txt
 
 echo "If no errors occurred, the module has been successfully upgraded to the latest tag."
-echo "If no errors the service is also restarted"
