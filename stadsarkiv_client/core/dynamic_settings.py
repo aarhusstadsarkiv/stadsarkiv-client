@@ -98,3 +98,11 @@ def get_setting(key):
     Get a setting by key
     """
     return settings.get(key, None)
+
+
+def init_settings():
+    """
+    Initialize settings
+    Duummy function to indicate that settings are loaded
+    """
+    pass
