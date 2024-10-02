@@ -62,6 +62,15 @@ class ConfigDirValidator:
         return self.error_message
 
 
+def _get_config_dir(config_dir):
+    config_dir = config_dir.rstrip("/\\")
+    config_dir_validator = ConfigDirValidator(config_dir)
+    if not config_dir_validator.validate():
+        logger.info(config_dir_validator.get_error_message())
+        exit(1)
+
+    return config_dir
+
 @click.group()
 @click.version_option(version=__version__, prog_name=__program__)
 def cli():
@@ -78,14 +87,10 @@ def cli():
 @click.option("--port", default=5555, help="Server port.")
 @click.option("--workers", default=3, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
-@click.option("-c", "--config-dir", default="local", help="Specify a local config directory.", required=False)
+@click.option("-c", "--config-dir", default="local", help="Specify a path to a config directory.", required=False)
 def server_prod(port: int, workers: int, host: str, config_dir: str):
 
-    config_dir = config_dir.rstrip("/\\")
-    config_dir_validator = ConfigDirValidator(config_dir)
-    if not config_dir_validator.validate():
-        logger.info(config_dir_validator.get_error_message())
-        exit(1)
+    config_dir = _get_config_dir(config_dir)
 
     os.environ["CONFIG_DIR"] = config_dir
 
@@ -115,14 +120,10 @@ def server_prod(port: int, workers: int, host: str, config_dir: str):
 @click.option("--port", default=5555, help="Server port.")
 @click.option("--workers", default=1, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
-@click.option("-c", "--config-dir", default="local", help="Specify a local config directory.", required=False)
+@click.option("-c", "--config-dir", default="local", help="Specify a path to a config directory.", required=False)
 def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True):
 
-    config_dir = config_dir.rstrip("/\\")
-    config_dir_validator = ConfigDirValidator(config_dir)
-    if not config_dir_validator.validate():
-        logger.info(config_dir_validator.get_error_message())
-        exit(1)
+    config_dir = _get_config_dir(config_dir)
 
     os.environ["CONFIG_DIR"] = config_dir
 
@@ -161,6 +162,28 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
         subprocess.run(cmd, check=True)
     except subprocess.CalledProcessError as e:
         logger.error(f"Uvicorn failed to start: {e}")
+        exit(1)
+
+
+@cli.command(help="Execute a script within a config context.")
+@click.option("-s", "--script", help="Path to the script to execute.", required=True)
+@click.option("-c", "--config-dir", default="local", help="Specify a path to a config directory.", required=False)
+def exec(config_dir: str, script: str):
+
+    config_dir = _get_config_dir(config_dir)
+
+    os.environ["CONFIG_DIR"] = config_dir
+
+    python_executable = sys.executable
+    cmd = [
+        python_executable,
+        script,
+    ]
+
+    try:
+        subprocess.run(cmd, check=True)
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Script failed to start: {e}")
         exit(1)
 
 
