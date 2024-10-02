@@ -183,7 +183,7 @@ def exec(config_dir: str, script: str):
     try:
         subprocess.run(cmd, check=True)
     except subprocess.CalledProcessError as e:
-        logger.error(f"Script failed to start: {e}")
+        logger.error(f"Script failed: {e}")
         exit(1)
 
 
