@@ -46,10 +46,26 @@ create_searches_index_query = """
 CREATE INDEX idx_searches_user_id ON searches (user_id);
 """
 
+create_cache_query = """
+CREATE TABLE IF NOT EXISTS cache (
+    id INTEGER PRIMARY KEY,
+    key VARCHAR(128),
+    value TEXT,
+    unix_timestamp INTEGER DEFAULT 0
+);
+"""
+
+create_cache_index_query = """
+-- Generate index on key
+CREATE INDEX idx_cache_key ON cache (key);
+"""
+
 sql_statements.append(create_booksmarks_query)
 sql_statements.append(create_booksmarks_index_query)
 sql_statements.append(create_searches_query)
 sql_statements.append(create_searches_index_query)
+sql_statements.append(create_cache_query)
+sql_statements.append(create_cache_index_query)
 
 
 # Create the table

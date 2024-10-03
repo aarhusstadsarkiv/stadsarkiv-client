@@ -15,12 +15,7 @@ const spinner = document.querySelector('.loadingspinner');
 const initialize = async () => {
     let bookmarks_json = await Requests.asyncGetJson('/auth/bookmarks_json', 'GET');
 
-    // Check if bookmark is set
-    function bookmark_isset(bookmarks, recordId) {
-        return bookmarks.some(bookmark => bookmark.record_id === recordId);
-    }
-
-    if (bookmark_isset(bookmarks_json, recordId)) {
+    if (bookmarks_json.includes(recordId)) {
         bookmarkAddElem.innerHTML = 'Fjern bogmærke';
         action = 'remove';
         bookmarkAddElem.setAttribute('data-action', action);

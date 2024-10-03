@@ -8,47 +8,37 @@ from starlette.responses import JSONResponse
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.templates import templates
-import sqlite3
-import os
-import typing
-
-
-DATABASE_URL = str(os.getenv("DATABASE_URL"))
-
+from stadsarkiv_client.core import database
+import random
 
 log = get_log()
 
 
-async def get_db_connection() -> sqlite3.Connection:
-    connection = sqlite3.connect(DATABASE_URL)
-    connection.row_factory = sqlite3.Row
-    connection.execute("PRAGMA journal_mode=WAL;")
-    return connection
-
-
 async def test_get(request: Request):
 
-    await insert_bookmark("Test note", "UUID-1234")
-    return JSONResponse({"message": "Test note inserted"})
+    # await database.bookmarks_insert("Test note", "UUID-1234")
+    insert_value = None
+    # Get a result that is max 10 seconds old
+    cache_expire = 10
+    has_result = False
+    result = await database.cache_get("test", cache_expire)
 
+    if not result:
+        # Set a new cache value
+        insert_value = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+        await database.cache_set("test", {"random": insert_value})
+    else:
+        has_result = True
 
-async def insert_bookmark(bookmark, user_id) -> typing.Any:
-
-    connection = await get_db_connection()
-    cursor = connection.cursor()
-
-    try:
-
-        values = {"user_id": user_id, "bookmark": "bookmark"}
-        query = "INSERT INTO bookmarks (user_id, bookmark) VALUES (:user_id, :bookmark)"
-        cursor.execute(query, values)
-        connection.commit()
-
-    except sqlite3.Error as e:
-        log.error(f"Failed to insert note: {e}")
-        connection.rollback()
-    finally:
-        cursor.close()
+    return JSONResponse(
+        {
+            "message": "Test note inserted",
+            "result": result,
+            "has_result": has_result,
+            "expire": cache_expire,
+            "inserted_value": insert_value,
+        }
+    )
 
 
 async def test_page(request: Request):

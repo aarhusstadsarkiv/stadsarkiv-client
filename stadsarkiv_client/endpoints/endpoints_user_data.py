@@ -9,12 +9,12 @@ from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.auth import is_authenticated, is_authenticated_json
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
-from stadsarkiv_client.core.user_data import UserData
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.records import normalize_dates
+from stadsarkiv_client.core import database
 
 
 log = get_log()
@@ -28,9 +28,9 @@ async def auth_bookmarks_get(request: Request):
     await is_authenticated(request)
     try:
         me = await api.me_get(request)
-        user_data = UserData(me)
-        bookmarks = user_data.get_bookmarks_list()
 
+        bookmarks_db = await database.bookmarks_get(me["id"])
+        bookmarks = [bookmark["bookmark"] for bookmark in bookmarks_db]
         records = await api.proxies_resolve(request, bookmarks)
 
         bookmarks_data = []
@@ -81,9 +81,9 @@ async def auth_bookmarks_json(request: Request):
     """
     try:
         me = await api.me_get(request)
-        user_data = UserData(me)
-        bookmarks = user_data.get_bookmarks()
-
+        user_id = me["id"]
+        bookmarks = await database.bookmarks_get(user_id)
+        bookmarks = [bookmark["bookmark"] for bookmark in bookmarks]
         return JSONResponse(bookmarks, status_code=200)
     except OpenAwsException as e:
         log.exception(e)
@@ -102,17 +102,13 @@ async def auth_bookmarks_post(request: Request):
     try:
 
         me = await api.users_me_get(request)
-        id = me["id"]
+        user_id = me["id"]
+
         json_data = await request.json()
-
-        user_data = UserData(me)
         if json_data["action"] == "remove":
-            user_data.remove_bookmark(json_data["record_id"])
+            await database.bookmarks_delete(user_id, json_data["record_id"])
         else:
-            user_data.append_bookmark(json_data["record_id"])
-
-        data = user_data.get_data()
-        await api.users_data_post(request, id=id, data=data)
+            await database.bookmarks_insert(user_id, json_data["record_id"])
 
     except OpenAwsException as e:
         log.exception(e)

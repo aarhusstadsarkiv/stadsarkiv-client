@@ -6,7 +6,7 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.records import record_utils
 from stadsarkiv_client.records import record_alter
-from stadsarkiv_client.core.user_data import UserData
+from stadsarkiv_client.core import database
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.context import get_context
 import json
@@ -21,13 +21,13 @@ base_dir = os.path.dirname(os.path.abspath(__file__))
 bookmarks_file = os.path.join(base_dir, "..", "data", "bookmarks_with_emails.csv")
 
 
-def get_bookmarks_by_email(email):
+def _get_bookmarks_by_email(email):
     """ "
     Get bookmarks by email from csv file
     """
-    # file = bookmarks_file
+    file = bookmarks_file
     resource_ids = []
-    with open(bookmarks_file, "r") as file:
+    with open(file, "r") as file:
         reader = csv.DictReader(file)
         for row in reader:
             if row["email"] == email:
@@ -83,20 +83,19 @@ class Hooks(HooksSpec):
         After a successful login.
         """
         me = await api.me_get(self.request)
-        id = me["id"]
+        user_id = me["id"]
         email = me["email"]
 
-        custom_data = UserData(me)
-        if not custom_data.get_custom_data("bookmarks_imported"):
-            bookmarks = get_bookmarks_by_email(email)
+        cache_key = f"bookmarks_imported_{user_id}"
+        result = await database.cache_get(cache_key)
+
+        if not result:
+            bookmarks = _get_bookmarks_by_email(email)
 
             for bookmark in bookmarks:
-                custom_data.append_bookmark(bookmark)
+                await database.bookmarks_insert(user_id, bookmark)
 
-            # This needs to be fixed in the webservice
-            # custom_data.set_key_value("bookmarks_imported", True)
-            data = custom_data.get_data()
-            response = await api.users_data_post(self.request, id=id, data=data)
+            await database.cache_set(cache_key, True)
 
         return response
 

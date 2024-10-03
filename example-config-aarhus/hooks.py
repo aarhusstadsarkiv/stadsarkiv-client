@@ -4,10 +4,10 @@ from stadsarkiv_client.core.api_error import OpenAwsException
 from stadsarkiv_client.records import record_utils
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.core import api
-from stadsarkiv_client.core.user_data import UserData
 import json
 import csv
 import os
+from stadsarkiv_client.core import database
 
 
 log = get_log()
@@ -54,20 +54,19 @@ class Hooks(HooksSpec):
         After a successful login.
         """
         me = await api.me_get(self.request)
-        id = me["id"]
+        user_id = me["id"]
         email = me["email"]
 
-        custom_data = UserData(me)
-        if not custom_data.get_custom_data("bookmarks_imported"):
+        cache_key = f"bookmarks_imported_{user_id}"
+        result = await database.cache_get(cache_key)
+
+        if not result:
             bookmarks = _get_bookmarks_by_email(email)
 
             for bookmark in bookmarks:
-                custom_data.append_bookmark(bookmark)
+                await database.bookmarks_insert(user_id, bookmark)
 
-            # This needs to be fixed in the webservice
-            custom_data.set_custom_value("bookmarks_imported", True)
-            data = custom_data.get_data()
-            response = await api.users_data_post(self.request, id=id, data=data)
+            await database.cache_set(cache_key, True)
 
         return response
 
