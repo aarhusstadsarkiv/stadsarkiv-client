@@ -78,6 +78,7 @@ async def bookmarks_delete(user_id, bookmark_id) -> typing.Any:
         cursor.close()
         connection.close()
 
+
 """
 
 # Simple sqlite3 cache implementation

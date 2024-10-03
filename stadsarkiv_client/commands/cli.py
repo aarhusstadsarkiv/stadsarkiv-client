@@ -71,6 +71,7 @@ def _get_config_dir(config_dir):
 
     return config_dir
 
+
 @click.group()
 @click.version_option(version=__version__, prog_name=__program__)
 def cli():

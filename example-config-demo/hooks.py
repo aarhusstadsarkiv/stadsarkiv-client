@@ -12,6 +12,7 @@ from stadsarkiv_client.core.context import get_context
 import json
 import os
 import csv
+from stadsarkiv_client.core.api_error import OpenAwsException
 
 
 log = get_log()
@@ -19,6 +20,7 @@ log = get_log()
 current_path = os.path.abspath(__file__)
 base_dir = os.path.dirname(os.path.abspath(__file__))
 bookmarks_file = os.path.join(base_dir, "..", "data", "bookmarks_with_emails.csv")
+users_emails = os.path.join(base_dir, "..", "data", "users_emails.csv")
 
 
 def _get_bookmarks_by_email(email):
@@ -33,6 +35,19 @@ def _get_bookmarks_by_email(email):
             if row["email"] == email:
                 resource_ids.append(row["resource_id"])
     return resource_ids
+
+
+def _user_mail_exists(email):
+    """
+    Check if email exists in user file
+    """
+    file = users_emails
+    with open(file, "r") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            if row["email"] == email:
+                return True
+    return False
 
 
 async def docs_endpoint(request: Request):
@@ -99,6 +114,20 @@ class Hooks(HooksSpec):
 
             await database.cache_set(cache_key, True)
 
+        return response
+
+    async def after_login_failure(self, response: dict) -> dict:
+        """
+        After a login failure
+        """
+        request = self.request
+        form = await request.form()
+        username = str(form.get("email"))
+        if _user_mail_exists(username):
+            raise OpenAwsException(
+                401,
+                "Kære bruger. Du er tilknyttet det gamle system. Men da vi er overgået til et nyt system, skal du oprette en ny bruger. Hvis du bruger samme email vil systemet ved første login forsøge at importere data fra det gamle system.",
+            )
         return response
 
     async def before_get_auto_complete(self, query_params: list) -> list:
