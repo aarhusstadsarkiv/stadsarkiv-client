@@ -6,6 +6,7 @@ query_params is a list of tuples. Example: [("collection", 1), ("series", 2)]
 from starlette.requests import Request
 from starlette.responses import Response
 from stadsarkiv_client.core.logging import get_log
+import contextlib
 
 log = get_log()
 
@@ -86,3 +87,13 @@ class HooksSpec:
         Alter the json returned from the proxies api.
         """
         return resource
+
+    @staticmethod
+    @contextlib.asynccontextmanager
+    async def lifespan(app):
+
+        try:
+            log.info("App lifecycle started")
+            yield
+        finally:
+            log.info("App lifecycle ended")

@@ -155,8 +155,4 @@ routes.append(
 
 
 def get_routes():
-
-    hooks = get_hooks()
-    altered_routes = hooks.after_routes_init(routes)
-
-    return altered_routes
+    return routes
