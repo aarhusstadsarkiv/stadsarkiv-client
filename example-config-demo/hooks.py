@@ -90,6 +90,8 @@ class Hooks(HooksSpec):
         result = await database.cache_get(cache_key)
 
         if not result:
+
+            log.info(f"Importing bookmarks for user: {email}")
             bookmarks = _get_bookmarks_by_email(email)
 
             for bookmark in bookmarks:
