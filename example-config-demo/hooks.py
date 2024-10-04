@@ -1,7 +1,3 @@
-from starlette.routing import Route
-from starlette.requests import Request
-from starlette.exceptions import HTTPException
-from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.records import record_utils
@@ -9,7 +5,6 @@ from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.core.database import bookmarks
 from stadsarkiv_client.core.database import cache
 from stadsarkiv_client.core import api
-from stadsarkiv_client.core.context import get_context
 import json
 import os
 import csv
