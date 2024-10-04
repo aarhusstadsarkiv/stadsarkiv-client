@@ -10,9 +10,11 @@ import os
 def load_module_from_file(module_name: str, file_path: str):
     """
     Loads a module from a file
+    module_name is a unique name for the module. And a internal reference to the module.
+    the module is executed when loaded
     """
     if not os.path.exists(file_path):
-        raise FileNotFoundError(f"Settings file not found: {file_path}")
+        raise FileNotFoundError(f"File path not found: {file_path}")
 
     spec = importlib.util.spec_from_file_location(module_name, file_path)
     if spec is None:
@@ -30,6 +32,9 @@ def load_module_from_file(module_name: str, file_path: str):
 def load_submodule_from_file(module_name: str, submodule_name: str, file_path: str):
     """
     Loads a submodule from a file
+    module_name is a unique name for the module. And a internal reference to the module.
+    submodule_name is the name of the submodule that should be loaded from the module
+    e.g. a function or a class inside the file
     """
     module = load_module_from_file(module_name, file_path)
     submodule = getattr(module, submodule_name)

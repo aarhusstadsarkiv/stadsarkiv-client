@@ -44,7 +44,7 @@ def _load_py_settings(file_name):
     if os.path.exists(get_local_config_dir(file_name)):
         # load from .py file
         try:
-            settings_config = load_submodule_from_file("settings", "settings", get_local_config_dir(file_name))
+            settings_config = load_submodule_from_file("settings_config", "settings", get_local_config_dir(file_name))
             settings.update(settings_config)
             log.debug(f"Local {file_name} loaded: {get_local_config_dir(file_name)}")
         except Exception:
@@ -77,7 +77,7 @@ if os.path.exists(get_local_config_dir("facets.yml")):
 
 elif os.path.exists(get_local_config_dir("facets.py")):
     try:
-        settings_facets_local = load_submodule_from_file("settings_facets", "settings_facets", get_local_config_dir("facets.py"))
+        settings_facets_local = load_submodule_from_file("settings_facets_local", "settings_facets", get_local_config_dir("facets.py"))
         settings_facets.update(settings_facets_local)
         log.debug(f"Local facets.py loaded: {get_local_config_dir('facets.py')}")
 
