@@ -97,22 +97,24 @@ class Hooks(HooksSpec):
         """
         After a successful login.
         """
-        me = await api.me_get(self.request)
-        user_id = me["id"]
-        email = me["email"]
+        try:
+            me = await api.me_get(self.request)
+            user_id = me["id"]
+            email = me["email"]
 
-        cache_key = f"bookmarks_imported_{user_id}"
-        result = await cache.cache_get(cache_key)
+            cache_key = f"bookmarks_imported_{user_id}"
+            result = await cache.cache_get(cache_key)
 
-        if not result:
+            if not result:
 
-            log.info(f"Importing bookmarks for user: {email}")
-            bookmarks_from_file = _get_bookmarks_by_email(email)
+                log.info(f"Importing bookmarks for user: {email}")
+                bookmarks_from_file = _get_bookmarks_by_email(email)
 
-            for bookmark_from_file in bookmarks_from_file:
-                await bookmarks.bookmarks_insert(user_id, bookmark_from_file)
-
-            await cache.cache_set(cache_key, True)
+                await bookmarks.bookmarks_insert_many(user_id, bookmarks_from_file)
+                await cache.cache_set(cache_key, True)
+        except Exception as e:
+            log.exception(e)
+            raise OpenAwsException(500, "Error importing bookmarks")
 
         return response
 
