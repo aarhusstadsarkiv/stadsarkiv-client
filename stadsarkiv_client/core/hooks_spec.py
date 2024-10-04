@@ -17,7 +17,8 @@ class HooksSpec:
 
     def after_routes_init(self, routes: list) -> list:
         """
-        Alter the routes after have been initialized.
+        Alter the routes after the base routes have been initialized.
+        You may add or remove routes here.
         """
         return routes
 
