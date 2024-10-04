@@ -19,6 +19,12 @@ async def _get_db_connection() -> sqlite3.Connection:
 
 @asynccontextmanager
 async def transaction_scope():
+    """
+    Use transaction_scope to create a transaction.
+
+    Usage example:
+    See stadsarkiv_client/core/database/cache.py
+    """
     connection = await _get_db_connection()
     try:
 
