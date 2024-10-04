@@ -6,7 +6,8 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.records import record_utils
 from stadsarkiv_client.records import record_alter
-from stadsarkiv_client.core import database
+from stadsarkiv_client.core.database import bookmarks
+from stadsarkiv_client.core.database import cache
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.context import get_context
 import json
@@ -19,18 +20,17 @@ log = get_log()
 
 current_path = os.path.abspath(__file__)
 base_dir = os.path.dirname(os.path.abspath(__file__))
-bookmarks_file = os.path.join(base_dir, "..", "data", "bookmarks_with_emails.csv")
-users_emails = os.path.join(base_dir, "..", "data", "users_emails.csv")
 
 
 def _get_bookmarks_by_email(email):
     """ "
     Get bookmarks by email from csv file
     """
-    file = bookmarks_file
+
+    bookmarks_file = os.path.join(base_dir, "..", "data", "bookmarks_with_emails.csv")
     resource_ids = []
-    with open(file, "r") as file:
-        reader = csv.DictReader(file)
+    with open(bookmarks_file, "r") as bookmarks_file:
+        reader = csv.DictReader(bookmarks_file)
         for row in reader:
             if row["email"] == email:
                 resource_ids.append(row["resource_id"])
@@ -41,9 +41,9 @@ def _user_mail_exists(email):
     """
     Check if email exists in user file
     """
-    file = users_emails
-    with open(file, "r") as file:
-        reader = csv.DictReader(file)
+    users_emails_file = os.path.join(base_dir, "..", "data", "users_emails.csv")
+    with open(users_emails_file, "r") as users_emails_file:
+        reader = csv.DictReader(users_emails_file)
         for row in reader:
             if row["email"] == email:
                 return True
@@ -102,17 +102,17 @@ class Hooks(HooksSpec):
         email = me["email"]
 
         cache_key = f"bookmarks_imported_{user_id}"
-        result = await database.cache_get(cache_key)
+        result = await cache.cache_get(cache_key)
 
         if not result:
 
             log.info(f"Importing bookmarks for user: {email}")
-            bookmarks = _get_bookmarks_by_email(email)
+            bookmarks_from_file = _get_bookmarks_by_email(email)
 
-            for bookmark in bookmarks:
-                await database.bookmarks_insert(user_id, bookmark)
+            for bookmark_from_file in bookmarks_from_file:
+                await bookmarks.bookmarks_insert(user_id, bookmark_from_file)
 
-            await database.cache_set(cache_key, True)
+            await cache.cache_set(cache_key, True)
 
         return response
 

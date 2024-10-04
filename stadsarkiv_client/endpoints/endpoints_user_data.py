@@ -14,7 +14,7 @@ from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.records import normalize_dates
-from stadsarkiv_client.core import database
+from stadsarkiv_client.core.database import bookmarks
 
 
 log = get_log()
@@ -29,9 +29,9 @@ async def auth_bookmarks_get(request: Request):
     try:
         me = await api.me_get(request)
 
-        bookmarks_db = await database.bookmarks_get(me["id"])
-        bookmarks = [bookmark["bookmark"] for bookmark in bookmarks_db]
-        records = await api.proxies_resolve(request, bookmarks)
+        bookmarks_db = await bookmarks.bookmarks_get(me["id"])
+        bookmarks_list = [bookmark["bookmark"] for bookmark in bookmarks_db]
+        records = await api.proxies_resolve(request, bookmarks_list)
 
         bookmarks_data = []
 
@@ -82,9 +82,9 @@ async def auth_bookmarks_json(request: Request):
     try:
         me = await api.me_get(request)
         user_id = me["id"]
-        bookmarks = await database.bookmarks_get(user_id)
-        bookmarks = [bookmark["bookmark"] for bookmark in bookmarks]
-        return JSONResponse(bookmarks, status_code=200)
+        bookmarks_db = await bookmarks.bookmarks_get(user_id)
+        bookmarks_list = [bookmark["bookmark"] for bookmark in bookmarks_db]
+        return JSONResponse(bookmarks_list, status_code=200)
     except OpenAwsException as e:
         log.exception(e)
         json_data = {"message": str(e), "error": True}
@@ -106,9 +106,9 @@ async def auth_bookmarks_post(request: Request):
 
         json_data = await request.json()
         if json_data["action"] == "remove":
-            await database.bookmarks_delete(user_id, json_data["record_id"])
+            await bookmarks.bookmarks_delete(user_id, json_data["record_id"])
         else:
-            await database.bookmarks_insert(user_id, json_data["record_id"])
+            await bookmarks.bookmarks_insert(user_id, json_data["record_id"])
 
     except OpenAwsException as e:
         log.exception(e)

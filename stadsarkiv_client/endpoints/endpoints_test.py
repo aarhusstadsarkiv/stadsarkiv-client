@@ -8,7 +8,7 @@ from starlette.responses import JSONResponse
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.templates import templates
-from stadsarkiv_client.core import database
+from stadsarkiv_client.core.database import cache
 import random
 
 log = get_log()
@@ -21,12 +21,12 @@ async def test_get(request: Request):
     # Get a result that is max 10 seconds old
     cache_expire = 10
     has_result = False
-    result = await database.cache_get("test", cache_expire)
+    result = await cache.cache_get("test", cache_expire)
 
     if not result:
         # Set a new cache value
         insert_value = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        await database.cache_set("test", {"random": insert_value})
+        await cache.cache_set("test", {"random": insert_value})
     else:
         has_result = True
 
