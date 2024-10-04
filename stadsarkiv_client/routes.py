@@ -24,7 +24,7 @@ from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.multi_static import MultiStaticFiles
 from stadsarkiv_client.core.args import get_local_config_dir
 from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.core.hooks import get_hooks
+from stadsarkiv_client.core.module_loader import load_submodule_from_file
 from typing import Any
 
 log = get_log()
@@ -154,5 +154,32 @@ routes.append(
 )
 
 
-def get_routes():
-    return routes
+def init_module_routes(default_routes: list):
+    module_dir = get_local_config_dir("mods")
+    if os.path.exists(module_dir):
+
+        files = os.listdir(module_dir)
+        for file_name in files:
+            if ".mod" not in file_name:
+                continue
+
+            module_path = os.path.join("mods", file_name)
+            try:
+                module_name = os.path.splitext(file_name)[0]
+                get_routes = load_submodule_from_file(module_name, "get_routes", get_local_config_dir(module_path))
+
+                if callable(get_routes):
+
+                    log.info(f"Loading module {file_name}")
+                    module_routes = get_routes()
+                    default_routes = module_routes + default_routes
+
+            except Exception:
+                log.exception(f"Could not load module {file_name}")
+
+    return default_routes
+
+
+def get_app_routes():
+    app_routes = init_module_routes(routes)
+    return app_routes
