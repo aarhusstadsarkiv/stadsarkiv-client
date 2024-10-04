@@ -50,48 +50,9 @@ def _user_mail_exists(email):
     return False
 
 
-async def docs_endpoint(request: Request):
-
-    docs_folder = str(os.path.join(base_dir, "..", "docs"))
-
-    docs_data = [
-        {"title": "stadsarkiv-client", "file": "README.md", "path": "/"},
-        {"title": "Create client", "file": "README.client.md", "path": "/docs/README.client.md"},
-        {"title": "Run on server", "file": "README.server.md", "path": "/docs/README.server.md"},
-    ]
-
-    url_path = request.url.path
-
-    for doc in docs_data:
-        if doc["path"] != url_path:
-            continue
-        # open file and read it.
-        file_path = os.path.join(docs_folder, doc.get("file", ""))
-        with open(file_path, "r") as file:
-            content = file.read()
-
-        context_values = {"title": "Documentation", "doc_data": docs_data, "content": content}
-        context = await get_context(request, context_values=context_values)
-        return templates.TemplateResponse(request, "docs/docs.html", context)
-
-    raise HTTPException(404, detail="type not found", headers=None)
-
-
 class Hooks(HooksSpec):
     def __init__(self, request):
         super().__init__(request)
-
-    def after_routes_init(self, routes: list) -> list:
-        log.info("Hooks. After routes init")
-
-        routes_test = [
-            Route("/", endpoint=docs_endpoint, name="homepage", methods=["GET"]),
-            Route("/docs/{page:str}", endpoint=docs_endpoint, name="docs", methods=["GET"]),
-        ]
-
-        routes = routes_test + routes
-
-        return routes
 
     async def after_login_success(self, response: dict) -> dict:
         """
