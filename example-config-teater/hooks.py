@@ -19,8 +19,8 @@ def _alter_people(context: dict) -> dict:
         people_id = people_id.lstrip("0")
         context["query_str_display"] = "people=" + people_id
 
-    except KeyError as e:
-        log.exception(e)
+    except KeyError:
+        log.exception("KeyError")
 
     return context
 
@@ -37,8 +37,8 @@ def _alter_events(context: dict) -> dict:
         event_id = event_id.lstrip("0")
         context["query_str_display"] = "events=" + event_id
 
-    except KeyError as e:
-        log.exception(e)
+    except KeyError:
+        log.exception("KeyError")
 
     return context
 

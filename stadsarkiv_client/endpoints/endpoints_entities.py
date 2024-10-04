@@ -27,7 +27,7 @@ async def entities_create(request: Request):
         return templates.TemplateResponse(request, "entities/entities_create.html", context)
 
     except Exception as e:
-        log.exception(e)
+        log.exception("Error in entities_create")
         raise HTTPException(500, detail=str(e), headers=None)
 
 
@@ -92,7 +92,7 @@ async def entities_delete(request: Request):
         return templates.TemplateResponse(request, "entities/entities_delete_soft.html", context)
 
     except Exception as e:
-        log.exception(e)
+        log.exception("Error in entities_delete")
         raise HTTPException(500, detail=str(e), headers=None)
 
 
@@ -127,7 +127,7 @@ async def entities_get_list(request: Request):
         return templates.TemplateResponse(request, "entities/entities_list.html", context)
 
     except Exception as e:
-        log.exception(e)
+        log.exception("Error in entities_get_list")
         raise HTTPException(500, detail=str(e), headers=None)
 
 

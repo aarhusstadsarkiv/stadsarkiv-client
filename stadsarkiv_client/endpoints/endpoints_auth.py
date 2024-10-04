@@ -53,7 +53,7 @@ async def auth_login_post(request: Request):
         flash.set_message(request, str(e), type="error")
 
     except Exception as e:
-        log.exception(e)
+        log.exception("Error in auth_login_post")
         flash.set_message(request, str(e), type="error", use_settings=True)
 
     if next_url:
@@ -80,7 +80,7 @@ async def auth_logout_post(request: Request):
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
     except Exception as e:
-        log.exception(e)
+        log.exception("Error in auth_logout_post")
         flash.set_message(request, str(e), type="error")
 
     return RedirectResponse(url="/auth/login", status_code=302)
@@ -130,7 +130,7 @@ async def auth_register_post(request: Request):
     except OpenAwsException as e:
         return JSONResponse({"message": str(e), "error": True})
     except Exception as e:
-        log.exception(e)
+        log.exception("Error in auth_register_post")
         return JSONResponse({"message": str(e), "error": True})
 
 
@@ -147,7 +147,7 @@ async def auth_verify(request: Request):
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
     except Exception as e:
-        log.exception(e)
+        log.exception("Error in auth_verify")
         flash.set_message(request, str(e), type="error", use_settings=True)
 
     return RedirectResponse(url="/auth/login", status_code=302)
@@ -178,7 +178,7 @@ async def auth_me_get(request: Request):
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
     except Exception as e:
-        log.exception(e)
+        log.exception("Error in auth_me_get")
         flash.set_message(request, str(e), type="error")
         return RedirectResponse(url="/auth/login", status_code=302)
 
@@ -194,7 +194,7 @@ async def auth_orders(request: Request):
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
     except Exception as e:
-        log.exception(e)
+        log.exception("Error in auth_orders")
         flash.set_message(request, str(e), type="error")
         return RedirectResponse(url="/auth/login", status_code=302)
 
@@ -210,7 +210,7 @@ async def auth_search_results(request: Request):
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
     except Exception as e:
-        log.exception(e)
+        log.exception("Error in auth_search_results")
         flash.set_message(request, str(e), type="error")
         return RedirectResponse(url="/auth/login", status_code=302)
 
@@ -232,7 +232,7 @@ async def auth_forgot_password_post(request: Request):
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
     except Exception as e:
-        log.exception(e)
+        log.exception("Error in auth_forgot_password_post")
         flash.set_message(request, str(e), type="error", use_settings=True)
 
     return RedirectResponse(url="/auth/forgot-password", status_code=302)
@@ -258,7 +258,7 @@ async def auth_reset_password_post(request: Request):
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
     except Exception as e:
-        log.exception(e)
+        log.exception("Error in auth_reset_password_post")
         flash.set_message(request, str(e), type="error", use_settings=True)
 
     token = request.path_params["token"]
@@ -277,7 +277,7 @@ async def auth_send_verify_email(request: Request):
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
     except Exception as e:
-        log.exception(e)
+        log.exception("Error in auth_send_verify_email")
         flash.set_message(request, str(e), type="error", use_settings=True)
 
     return RedirectResponse(url="/auth/me", status_code=302)

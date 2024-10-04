@@ -112,8 +112,8 @@ class Hooks(HooksSpec):
 
                 await bookmarks.bookmarks_insert_many(user_id, bookmarks_from_file)
                 await cache.cache_set(cache_key, True)
-        except Exception as e:
-            log.exception(e)
+        except Exception:
+            log.exception("Error importing bookmarks")
             raise OpenAwsException(500, "Error importing bookmarks")
 
         return response
@@ -126,9 +126,12 @@ class Hooks(HooksSpec):
         form = await request.form()
         username = str(form.get("email"))
         if _user_mail_exists(username):
+            user_message = """Kære bruger. Du er tilknyttet det gamle system.
+    Men da vi er overgået til et nyt system, skal du oprette en ny bruger.
+    Hvis du bruger samme email vil systemet ved første login forsøge at importere data fra det gamle system."""
             raise OpenAwsException(
                 401,
-                "Kære bruger. Du er tilknyttet det gamle system. Men da vi er overgået til et nyt system, skal du oprette en ny bruger. Hvis du bruger samme email vil systemet ved første login forsøge at importere data fra det gamle system.",
+                user_message,
             )
         return response
 

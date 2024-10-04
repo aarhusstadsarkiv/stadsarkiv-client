@@ -17,11 +17,11 @@ async def relations_post(request: Request):
         return JSONResponse({"error": False, "message": "Relation er oprettet"})
 
     except OpenAwsException as e:
-        log.exception(e)
+        log.exception("Error in relations_post")
         return JSONResponse({"error": True, "message": e.message})
 
-    except Exception as e:
-        log.exception(e)
+    except Exception:
+        log.exception("Error in relations_post")
         return JSONResponse({"error": True, "message": "Internal Server Error"})
 
 
@@ -38,11 +38,11 @@ async def relations_get(request: Request):
         return JSONResponse(relations_formatted)
 
     except OpenAwsException as e:
-        log.exception(e)
+        log.exception("Error in relations_get")
         return JSONResponse({"error": True, "message": e.message})
 
-    except Exception as e:
-        log.exception(e)
+    except Exception:
+        log.exception("Error in relations_get")
         return JSONResponse({"error": True, "message": "Internal Server Error"})
 
 
@@ -53,9 +53,9 @@ async def relations_delete(request: Request):
         return JSONResponse({"error": False, "message": "Relation er slettet"})
 
     except OpenAwsException as e:
-        log.exception(e)
+        log.exception("Error in relations_delete")
         return JSONResponse({"error": True, "message": e.message})
 
-    except Exception as e:
-        log.exception(e)
+    except Exception:
+        log.exception("Error in relations_delete")
         return JSONResponse({"error": True, "message": "Internal Server Error"})

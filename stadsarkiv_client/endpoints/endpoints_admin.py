@@ -57,8 +57,8 @@ async def admin_users_patch(request: Request):
         flash.set_message(request, translate("User has been updated"), type="success")
         return RedirectResponse(url=redirect_url, status_code=302)
 
-    except Exception as e:
-        log.exception(e)
+    except Exception:
+        log.exception("Error in admin_users_patch")
         flash.set_message(request, translate("User could not be updated."), type="error")
         return RedirectResponse(url=redirect_url, status_code=302)
 

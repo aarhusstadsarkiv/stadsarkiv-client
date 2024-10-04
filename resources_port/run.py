@@ -72,8 +72,8 @@ async def main():
             resource = await api_port.proxies_get_resource(type=resource_type, id=str(id))
             resource = utf8_fix(resource)
             save_resource(id, resource)
-        except Exception as e:
-            log.exception(e)
+        except Exception:
+            log.exception("Error getting resource")
             id = id + iteration_add
             continue
 

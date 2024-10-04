@@ -48,7 +48,7 @@ async def schemas_post(request: Request):
     except JSONDecodeError:
         flash.set_message(request, translate("Invalid JSON in data."), type="error")
     except OpenAwsException as e:
-        log.exception(e)
+        log.exception("Error in schemas_post")
         flash.set_message(request, str(e), type="error")
 
     return RedirectResponse(url="/schemas", status_code=302)

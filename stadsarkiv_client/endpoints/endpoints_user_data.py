@@ -70,7 +70,7 @@ async def auth_bookmarks_get(request: Request):
     except OpenAwsException as e:
         flash.set_message(request, str(e), type="error")
     except Exception as e:
-        log.exception(e)
+        log.exception("Error in auth_bookmarks_get")
         flash.set_message(request, str(e), type="error")
         return RedirectResponse(url="/auth/login", status_code=302)
 
@@ -86,7 +86,7 @@ async def auth_bookmarks_json(request: Request):
         bookmarks_list = [bookmark["bookmark"] for bookmark in bookmarks_db]
         return JSONResponse(bookmarks_list, status_code=200)
     except OpenAwsException as e:
-        log.exception(e)
+        log.exception("Error in auth_bookmarks_json")
         json_data = {"message": str(e), "error": True}
         return JSONResponse(json_data, status_code=400)
 
@@ -111,12 +111,12 @@ async def auth_bookmarks_post(request: Request):
             await bookmarks.bookmarks_insert(user_id, json_data["record_id"])
 
     except OpenAwsException as e:
-        log.exception(e)
+        log.exception("Error in auth_bookmarks_post")
         json_data = {"message": str(e), "error": True}
         return JSONResponse(json_data, status_code=400)
 
     except Exception as e:
-        log.exception(e)
+        log.exception("Error in auth_bookmarks_post")
         json_data = {"message": str(e), "error": True}
         return JSONResponse(json_data, status_code=400)
 

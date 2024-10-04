@@ -32,8 +32,8 @@ def date_format(date_string: str) -> str:
         date = datetime.strptime(date_string, date_format)
         formatted_date = format_datetime(date, format="d. MMMM y HH:mm", locale="da_DK")
         return formatted_date
-    except Exception as e:
-        log.exception(e)
+    except Exception:
+        log.exception("Error in date_format")
         return date_string
 
 
@@ -44,6 +44,6 @@ def date_format_day(date_string: str) -> str:
         date = datetime.strptime(date_string, date_format)
         formatted_date = format_date(date, format="d. MMMM y", locale="da_DK")
         return formatted_date
-    except Exception as e:
-        log.exception(e)
+    except Exception:
+        log.exception("Error in date_format_day")
         return date_string
