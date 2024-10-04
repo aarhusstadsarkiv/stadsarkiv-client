@@ -15,6 +15,19 @@ async def bookmarks_insert(user_id, bookmark):
             raise
 
 
+async def bookmarks_insert_many(user_id, bookmarks):
+
+    async with transaction_scope() as connection:
+        try:
+            for bookmark in bookmarks:
+                values = {"user_id": user_id, "bookmark": bookmark}
+                query = "INSERT INTO bookmarks (user_id, bookmark) VALUES (:user_id, :bookmark)"
+                connection.execute(query, values)
+
+        except sqlite3.Error:
+            raise
+
+
 async def bookmarks_get(user_id) -> typing.Any:
     async with transaction_scope() as connection:
         try:
