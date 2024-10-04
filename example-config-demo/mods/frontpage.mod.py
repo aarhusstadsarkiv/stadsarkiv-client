@@ -20,8 +20,6 @@ def get_routes() -> list:
         Route("/docs/{page:str}", endpoint=docs_endpoint, name="docs", methods=["GET"]),
     ]
 
-    log.debug(f"Routes: {routes}")
-
     return routes
 
 
