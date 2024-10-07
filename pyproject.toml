@@ -8,11 +8,11 @@ exclude = [ "venv", ".venv", "generate_openaws_client", "tests", "example-config
 version_file = "stadsarkiv_client/__init__.py"
 
 [tool.bump_version.replace_patterns.pip]
-file = "docs/README.md"
+file = "example-config-demo/docs/README.md"
 search = "<!-- LATEST-VERSION-PIP -->"
 replace = "\tpip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}\n"
 
 [tool.bump_version.replace_patterns.pipx]
-file = "docs/README.md"
+file = "example-config-demo/docs/README.md"
 search = "<!-- LATEST-VERSION-PIPX -->"
 replace = "\tpipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}\n"
