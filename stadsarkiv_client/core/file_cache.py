@@ -8,7 +8,7 @@ from stadsarkiv_client.core.logging import get_log
 log = get_log()
 
 
-CACHE_DIR = os.path.join(os.getcwd(), "cache")
+CACHE_DIR = os.path.join(os.getcwd(), "data", "cache")
 
 if not os.path.exists(CACHE_DIR):
     os.makedirs(CACHE_DIR)

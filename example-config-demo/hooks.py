@@ -6,43 +6,11 @@ from stadsarkiv_client.database import bookmarks
 from stadsarkiv_client.database import cache
 from stadsarkiv_client.core import api
 import json
-import os
-import csv
 from stadsarkiv_client.core.api_error import OpenAwsException
+from stadsarkiv_client.core.csv_utils import get_bookmarks_by_email, user_mail_exists
 
 
 log = get_log()
-
-current_path = os.path.abspath(__file__)
-base_dir = os.path.dirname(os.path.abspath(__file__))
-
-
-def _get_bookmarks_by_email(email):
-    """ "
-    Get bookmarks by email from csv file
-    """
-
-    bookmarks_file = os.path.join(base_dir, "..", "data", "bookmarks_with_emails.csv")
-    resource_ids = []
-    with open(bookmarks_file, "r") as bookmarks_file:
-        reader = csv.DictReader(bookmarks_file)
-        for row in reader:
-            if row["email"] == email:
-                resource_ids.append(row["resource_id"])
-    return resource_ids
-
-
-def _user_mail_exists(email):
-    """
-    Check if email exists in user file
-    """
-    users_emails_file = os.path.join(base_dir, "..", "data", "users_emails.csv")
-    with open(users_emails_file, "r") as users_emails_file:
-        reader = csv.DictReader(users_emails_file)
-        for row in reader:
-            if row["email"] == email:
-                return True
-    return False
 
 
 class Hooks(HooksSpec):
@@ -64,7 +32,7 @@ class Hooks(HooksSpec):
             if not result:
 
                 log.info(f"Importing bookmarks for user: {email}")
-                bookmarks_from_file = _get_bookmarks_by_email(email)
+                bookmarks_from_file = get_bookmarks_by_email(email)
 
                 await bookmarks.bookmarks_insert_many(user_id, bookmarks_from_file)
                 await cache.cache_set(cache_key, True)
@@ -81,7 +49,7 @@ class Hooks(HooksSpec):
         request = self.request
         form = await request.form()
         username = str(form.get("email"))
-        if _user_mail_exists(username):
+        if user_mail_exists(username):
             user_message = """Kære bruger. Du er tilknyttet det gamle system.
     Men da vi er overgået til et nyt system, skal du oprette en ny bruger.
     Hvis du bruger samme email vil systemet ved første login forsøge at importere data fra det gamle system."""
