@@ -8,15 +8,13 @@ from stadsarkiv_client.core.logging import get_log
 log = get_log()
 
 
-# Generate cache dir from app base path
-BASE_PATH = os.path.dirname(os.path.abspath(__file__ + "/../../"))
-CACHE_DIR = os.path.join(BASE_PATH, "cache")
+CACHE_DIR = os.path.join(os.getcwd(), "cache")
 
 if not os.path.exists(CACHE_DIR):
     os.makedirs(CACHE_DIR)
 
 
-def get_cache(ttl: int, cache_name_from: list):
+def file_cache_get(ttl: int, cache_name_from: list):
     """
     Attempts to retrieve data from cache based on a unique identifier and TTL (time-to-live).
     """
@@ -32,7 +30,7 @@ def get_cache(ttl: int, cache_name_from: list):
     return None
 
 
-def set_cache(data, cache_name_from: list):
+def file_cache_set(data, cache_name_from: list):
     """
     Updates or creates a new cache entry with the specified data.
     """

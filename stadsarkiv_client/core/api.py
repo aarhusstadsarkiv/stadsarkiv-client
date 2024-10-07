@@ -9,7 +9,7 @@ from stadsarkiv_client.core import user
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import query
-from stadsarkiv_client.core.cache import set_cache, get_cache
+from stadsarkiv_client.core.cache import file_cache_set, file_cache_get
 from stadsarkiv_client.core.hooks import get_hooks
 from urllib.parse import quote
 import json
@@ -492,8 +492,8 @@ async def schema_get_by_name_version(request: Request, schema_name: str, schema_
     """
     GET schema by name and version from the api
     """
-    if get_cache(ONE_YEAR, [schema_name, schema_version]):
-        return get_cache(ONE_YEAR, [schema_name, schema_version])
+    if file_cache_get(ONE_YEAR, [schema_name, schema_version]):
+        return file_cache_get(ONE_YEAR, [schema_name, schema_version])
 
     async with _get_async_client() as client:
         url = base_url + "/schemas/" + schema_name + "?version=" + str(schema_version)
@@ -502,7 +502,7 @@ async def schema_get_by_name_version(request: Request, schema_name: str, schema_
 
         if response.is_success:
             result = response.json()
-            set_cache(result, [schema_name, schema_version])
+            file_cache_set(result, [schema_name, schema_version])
             return result
         else:
             response.raise_for_status()
