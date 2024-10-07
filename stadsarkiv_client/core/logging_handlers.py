@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 from logging.handlers import RotatingFileHandler
 import warnings
+from stadsarkiv_client.core.args import get_data_dir
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
@@ -16,15 +17,8 @@ formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(messag
 
 
 def generate_log_dir():
-    dir = "./logs"
-    os.makedirs(dir, exist_ok=True)
-
-
-def get_file_handler(level: Any, file_name: str = "logs/main.log"):
-    fh = logging.FileHandler(file_name)
-    fh.setLevel(level)
-    fh.setFormatter(formatter)
-    return fh
+    log_dir = get_data_dir("logs")
+    os.makedirs(log_dir, exist_ok=True)
 
 
 def get_stream_handler(level: Any):
@@ -34,7 +28,7 @@ def get_stream_handler(level: Any):
     return ch
 
 
-def get_rotating_file_handler(level: Any, file_name: str = "logs/main.log"):
+def get_rotating_file_handler(level: Any, file_name):
     Path(file_name).touch()
     handler = RotatingFileHandler(file_name, maxBytes=10 * 1024 * 1024, backupCount=10)
     handler.setLevel(level)

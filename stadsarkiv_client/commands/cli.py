@@ -16,9 +16,7 @@ from stadsarkiv_client import __version__, __program__
 logging_handlers.generate_log_dir()
 logging.basicConfig(level=logging.INFO)
 logger: logging.Logger = logging.getLogger(__name__)
-rotating_file_handler = logging_handlers.get_rotating_file_handler(logging.INFO, "logs/server.log")
 stream_handler = logging_handlers.get_stream_handler(logging.INFO)
-logger.addHandler(rotating_file_handler)
 logger.addHandler(stream_handler)
 
 
@@ -84,16 +82,18 @@ def cli():
     pass
 
 
-@cli.command(help="Start the production gunicorn server. If running exit and restart.")
+@cli.command(help="Start the production gunicorn server.")
 @click.option("--port", default=5555, help="Server port.")
 @click.option("--workers", default=3, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
+@click.option("-d", "--data-dir", default="data", help="Set a path to a data directory.", required=False)
 @click.option("-c", "--config-dir", default="local", help="Specify a path to a config directory.", required=False)
-def server_prod(port: int, workers: int, host: str, config_dir: str):
+def server_prod(port: int, workers: int, host: str, data_dir: str, config_dir: str):
 
     config_dir = _get_config_dir(config_dir)
 
     os.environ["CONFIG_DIR"] = config_dir
+    os.environ["DATA_DIR"] = data_dir
 
     if os.name == "nt":
         logger.info("Gunicorn does not work on Windows. Use server-dev instead.")
@@ -121,12 +121,14 @@ def server_prod(port: int, workers: int, host: str, config_dir: str):
 @click.option("--port", default=5555, help="Server port.")
 @click.option("--workers", default=1, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
+@click.option("-d", "--data-dir", default="data", help="Set a path to a data directory.", required=False)
 @click.option("-c", "--config-dir", default="local", help="Specify a path to a config directory.", required=False)
-def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True):
+def server_dev(port: int, workers: int, host: str, data_dir: str, config_dir: str, reload=True):
 
     config_dir = _get_config_dir(config_dir)
 
     os.environ["CONFIG_DIR"] = config_dir
+    os.environ["DATA_DIR"] = data_dir
 
     reload = True
     reload_dirs = ["."]

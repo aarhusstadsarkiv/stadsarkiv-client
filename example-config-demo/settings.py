@@ -5,7 +5,7 @@ settings: dict[str, typing.Any] = {
     "client_name": "development",
     "client_url": "https://demo.openaws.dk",
     "language": "da",
-    "log_handlers": ["rotating_file"],  # [ "stream", "file"]
+    "log_handlers": ["rotating_file"],
     # "cors_allow_origins": ['https://demo.openaws.dk'],
     "cookie": {
         "name": "session",
