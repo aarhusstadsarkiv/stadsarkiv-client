@@ -9,7 +9,7 @@ from stadsarkiv_client.core import user
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import query
-from stadsarkiv_client.core.cache import file_cache_set, file_cache_get
+from stadsarkiv_client.core.file_cache import file_cache_set, file_cache_get
 from stadsarkiv_client.core.hooks import get_hooks
 from urllib.parse import quote
 import json
