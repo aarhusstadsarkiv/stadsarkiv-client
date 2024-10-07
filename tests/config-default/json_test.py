@@ -17,7 +17,6 @@ class TestJSON(unittest.TestCase):
         url = "/records/000309478/json/meta_data"
         response = client.get(url)
         json_response = response.json()
-
         json_expected = r"""
 {
   "id": "000309478",

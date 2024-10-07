@@ -24,9 +24,6 @@ class TestJSON(unittest.TestCase):
 
         response = client.get(url)
         response_json = response.json()
-
-        print(response_json)
-
         json_expected = r"""
 {
     "id": "000109399",
