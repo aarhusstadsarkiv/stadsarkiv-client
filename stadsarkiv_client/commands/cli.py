@@ -13,7 +13,6 @@ from stadsarkiv_client.core import logging_handlers
 from stadsarkiv_client import __version__, __program__
 
 
-logging_handlers.generate_log_dir()
 logging.basicConfig(level=logging.INFO)
 logger: logging.Logger = logging.getLogger(__name__)
 stream_handler = logging_handlers.get_stream_handler(logging.INFO)
@@ -188,6 +187,16 @@ def exec(config_dir: str, script: str):
     except subprocess.CalledProcessError as e:
         logger.error(f"Script failed: {e}")
         exit(1)
+
+
+@cli.command(help="Set correct permissions of data dir.")
+@click.option("-u", "--user", default="www-data", help="Set a user.", required=False)
+@click.option("-g", "--group", default="www-data", help="Set a group.", required=False)
+@click.option("-d", "--data-dir", default="data", help="Set a path to a data directory.", required=False)
+def set_perms(user: str, group: str, data_dir: str):
+    os.system(f"chown -R {user}:{group} {data_dir}")
+    os.system(f"find {data_dir} -type d -exec chmod 770 {{}} \;")
+    os.system(f"find {data_dir} -type f -exec chmod 660 {{}} \;")
 
 
 @cli.command(help="Generate a session secret.")
