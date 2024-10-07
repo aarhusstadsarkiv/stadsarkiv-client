@@ -39,12 +39,12 @@ class ConfigDirValidator:
             self.error_message = f"Config directory '{self.config_dir}' does not exist."
             return False
 
-        if not self._is_single_directory():
-            self.error_message = f"Config directory '{self.config_dir}' should not contain subdirectories."
+        if not self._is_current_dir():
+            self.error_message = f"Config directory '{self.config_dir}' can not be the current working directory. "
             return False
 
         if not self._is_within_current_dir():
-            self.error_message = f"Config directory '{self.config_dir}' is not in the current working directory."
+            self.error_message = f"Config directory '{self.config_dir}' shall be within the current working directory."
             return False
 
         return True
@@ -52,7 +52,7 @@ class ConfigDirValidator:
     def _exists(self) -> bool:
         return os.path.exists(self.config_dir_abs)
 
-    def _is_single_directory(self) -> bool:
+    def _is_current_dir(self) -> bool:
         return os.path.dirname(self.config_dir_abs) == self.current_dir
 
     def _is_within_current_dir(self) -> bool:
