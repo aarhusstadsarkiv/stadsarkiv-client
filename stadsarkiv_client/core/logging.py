@@ -11,7 +11,6 @@ import warnings
 
 
 logging_handlers.generate_log_dir()
-
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
 # remove uvicorn noise in debug mode
