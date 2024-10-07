@@ -7,8 +7,8 @@ from stadsarkiv_client.core import api
 import json
 import csv
 import os
-from stadsarkiv_client.core.database import bookmarks
-from stadsarkiv_client.core.database import cache
+from stadsarkiv_client.database import bookmarks
+from stadsarkiv_client.database import cache
 
 
 log = get_log()

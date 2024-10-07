@@ -1,6 +1,6 @@
 import sqlite3
 import typing
-from stadsarkiv_client.core.database.utils import transaction_scope
+from stadsarkiv_client.database.utils import transaction_scope
 
 
 async def bookmarks_insert(user_id, bookmark):

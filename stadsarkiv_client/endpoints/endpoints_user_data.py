@@ -14,7 +14,7 @@ from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.records import normalize_dates
-from stadsarkiv_client.core.database import bookmarks
+from stadsarkiv_client.database import bookmarks
 
 
 log = get_log()

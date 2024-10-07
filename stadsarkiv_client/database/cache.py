@@ -2,7 +2,7 @@ import sqlite3
 import json
 import time
 from typing import Any
-from stadsarkiv_client.core.database.utils import transaction_scope
+from stadsarkiv_client.database.utils import transaction_scope
 
 
 """

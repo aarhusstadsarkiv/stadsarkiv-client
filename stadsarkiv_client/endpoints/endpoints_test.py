@@ -8,7 +8,7 @@ from starlette.responses import JSONResponse
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.templates import templates
-from stadsarkiv_client.core.database import cache
+from stadsarkiv_client.database import cache
 import random
 
 log = get_log()

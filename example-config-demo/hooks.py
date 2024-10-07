@@ -2,8 +2,8 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.records import record_utils
 from stadsarkiv_client.records import record_alter
-from stadsarkiv_client.core.database import bookmarks
-from stadsarkiv_client.core.database import cache
+from stadsarkiv_client.database import bookmarks
+from stadsarkiv_client.database import cache
 from stadsarkiv_client.core import api
 import json
 import os
