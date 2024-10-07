@@ -3,21 +3,27 @@ Main application file for the stadsarkiv_client application.
 """
 
 from stadsarkiv_client.core.dynamic_settings import settings
+from stadsarkiv_client.core.logging import get_log
 from starlette.applications import Starlette
 from stadsarkiv_client.routes import get_app_routes
 from stadsarkiv_client.core.middleware import middleware
 from stadsarkiv_client.core.exception_handlers import exception_handlers
-from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.sentry import enable_sentry
 from stadsarkiv_client.core.hooks import get_hooks
+from stadsarkiv_client.core.args import get_data_dir
 import os
 import json
 import sys
 
-# from stadsarkiv_client.core.lifespan import lifespan
 
 sys.path.append(".")
 log = get_log()
+
+
+data_dir = get_data_dir()
+if not os.path.exists(data_dir):
+    log.info(f"Creating data directory: {data_dir}")
+    os.makedirs(data_dir)
 
 log.debug("Environment: " + str(os.getenv("ENVIRONMENT")))
 log.debug(json.dumps(settings, sort_keys=True, indent=4, ensure_ascii=False))
