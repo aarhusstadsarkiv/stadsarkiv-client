@@ -1,3 +1,7 @@
+"""
+stadsarkiv-client exec -c example-config-aarhus -s bin/create_db_tables.py
+"""
+
 from stadsarkiv_client.core.dynamic_settings import init_settings
 import sqlite3
 import os
@@ -6,7 +10,11 @@ from stadsarkiv_client.core.logging import get_log
 init_settings()
 log = get_log()
 
-DATABASE_URL = str(os.getenv("DATABASE_URL"))
+DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL is not set")
+
+
 conn = sqlite3.connect(DATABASE_URL)
 cursor = conn.cursor()
 
