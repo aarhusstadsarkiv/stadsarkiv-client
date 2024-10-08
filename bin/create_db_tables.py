@@ -10,14 +10,17 @@ import sqlite3
 from stadsarkiv_client.core.logging import get_log
 import os
 
+log = get_log()
 init_settings()
 
-DATABASE_URL = os.environ.get("DATABASE_URL")
-if not DATABASE_URL:
-    raise ValueError("DATABASE_URL is not set")
+DATABASE_URL = os.getenv("DATABASE_URL")
+try:
+    if not DATABASE_URL:
+        raise ValueError("DATABASE_URL is not set")
+except ValueError:
+    log.error("DATABASE_URL is not set in ENV")
+    exit(1)
 
-
-log = get_log()
 
 conn = sqlite3.connect(DATABASE_URL)
 cursor = conn.cursor()
