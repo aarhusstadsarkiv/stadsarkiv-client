@@ -32,7 +32,7 @@ def check_migrations_table_exists():
 def create_migrations_table_if_not_exists():
     if not check_migrations_table_exists():
         create_migrations_table = """
-        CREATE TABLE IF NOT EXISTS migrations (
+        CREATE TABLE migrations (
             id INTEGER PRIMARY KEY,
             migration_key VARCHAR(128),
             applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -49,7 +49,7 @@ create_migrations_table_if_not_exists()
 
 
 create_booksmarks_query = """
-CREATE TABLE IF NOT EXISTS bookmarks (
+CREATE TABLE bookmarks (
     id INTEGER PRIMARY KEY,
     bookmark VARCHAR(128),
     user_id VARCHAR(128),
@@ -58,11 +58,11 @@ CREATE TABLE IF NOT EXISTS bookmarks (
 """
 
 create_booksmarks_index_query = """
-CREATE INDEX IF NOT EXISTS idx_bookmarks_user_id ON bookmarks (user_id);
+CREATE INDEX idx_bookmarks_user_id ON bookmarks (user_id);
 """
 
 create_searches_query = """
-CREATE TABLE IF NOT EXISTS searches (
+CREATE TABLE searches (
     id INTEGER PRIMARY KEY,
     search VARCHAR(1024),
     title VARCHAR(256),
@@ -72,11 +72,11 @@ CREATE TABLE IF NOT EXISTS searches (
 """
 
 create_searches_index_query = """
-CREATE INDEX IF NOT EXISTS idx_searches_user_id ON searches (user_id);
+CREATE INDEX idx_searches_user_id ON searches (user_id);
 """
 
 create_cache_query = """
-CREATE TABLE IF NOT EXISTS cache (
+CREATE TABLE cache (
     id INTEGER PRIMARY KEY,
     key VARCHAR(128),
     value TEXT,
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS cache (
 """
 
 create_cache_index_query = """
-CREATE INDEX IF NOT EXISTS idx_cache_key ON cache (key);
+CREATE INDEX idx_cache_key ON cache (key);
 """
 
 # List of migrations with keys
