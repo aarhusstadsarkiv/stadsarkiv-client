@@ -1,19 +1,23 @@
+#!/usr/bin/env python
 """
-stadsarkiv-client exec -c example-config-aarhus -s bin/create_db_tables.py
+# Set a config dir as environment variable and run this script to create the database tables.
+export CONFIG_DIR=example-config-aarhus
+./bin/create_db_tables.py
 """
 
 from stadsarkiv_client.core.dynamic_settings import init_settings
 import sqlite3
-import os
 from stadsarkiv_client.core.logging import get_log
+import os
 
 init_settings()
-log = get_log()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.environ.get("DATABASE_URL")
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL is not set")
 
+
+log = get_log()
 
 conn = sqlite3.connect(DATABASE_URL)
 cursor = conn.cursor()
@@ -30,7 +34,7 @@ CREATE TABLE IF NOT EXISTS migrations (
 def create_migrations_table_if_not_exists():
     cursor.execute(create_migrations_table)
     conn.commit()
-    log.debug("Migrations table created (if not exists)")
+    log.info("Migrations table created (if not exists)")
 
 
 create_migrations_table_if_not_exists()
@@ -95,10 +99,10 @@ def apply_migration(migration_key, sql):
     if not has_migration_been_applied(migration_key):
         cursor.execute(sql)
         conn.commit()
-        log.debug(f"SQL for {migration_key} executed")
+        log.info(f"SQL for {migration_key} executed")
         cursor.execute("INSERT INTO migrations (migration_key) VALUES (?)", (migration_key,))
         conn.commit()
-        log.debug(f"Migration {migration_key} recorded")
+        log.info(f"Migration {migration_key} recorded")
 
 
 def create_tables():
