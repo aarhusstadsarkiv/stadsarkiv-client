@@ -22,22 +22,31 @@ log = get_log()
 conn = sqlite3.connect(DATABASE_URL)
 cursor = conn.cursor()
 
-create_migrations_table = """
-CREATE TABLE IF NOT EXISTS migrations (
-    id INTEGER PRIMARY KEY,
-    migration_key VARCHAR(128),
-    applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-"""
+
+def check_migrations_table_exists():
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='migrations';")
+    result = cursor.fetchone()
+    return result is not None
 
 
 def create_migrations_table_if_not_exists():
-    cursor.execute(create_migrations_table)
-    conn.commit()
-    log.info("Migrations table created (if not exists)")
+    if not check_migrations_table_exists():
+        create_migrations_table = """
+        CREATE TABLE IF NOT EXISTS migrations (
+            id INTEGER PRIMARY KEY,
+            migration_key VARCHAR(128),
+            applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        """
+        cursor.execute(create_migrations_table)
+        conn.commit()
+        log.info("Migrations table created.")
+    else:
+        log.info("Migrations table already exists.")
 
 
 create_migrations_table_if_not_exists()
+
 
 create_booksmarks_query = """
 CREATE TABLE IF NOT EXISTS bookmarks (
