@@ -19,7 +19,7 @@ DATA=$3
 chown -R $USER:$GROUP data
 
 # Change all dirs to 770
-find $DATA -type d -exec chmod 770 {} \;
+find $DATA -type d -exec chmod 775 {} \;
 
 # Change all files to 660
-find $DATA -type f -exec chmod 660 {} \;
+find $DATA -type f -exec chmod 664 {} \;
