@@ -1,8 +1,13 @@
 <div class="action-links">
     <a href="/auth/me">Profil</a>
+    {% if get_setting('allow_online_ordering') %}
     <a href="/auth/orders">Bestillinger</a>
+    {% endif %}
     {% if get_setting('allow_save_bookmarks') %}
         <a href="/auth/bookmarks">Bogmærker</a>
     {% endif %}
+    {% if get_setting('allow_save_search') %}
     <a href="/auth/search-results">Søgninger</a>
+    {% endif %}
+
 </div>

@@ -75,6 +75,7 @@ settings: dict[str, typing.Any] = {
     "robots_allow": False,
     "allow_user_registration": True,
     "allow_user_management": True,
-    "allow_online_ordering": False,
     "allow_save_bookmarks": True,
+    "allow_save_search": False,
+    "allow_online_ordering": False,
 }
