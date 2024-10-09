@@ -1,4 +1,6 @@
 """"
+Generate a new CSV file with bookmarks and emails.
+
 Usage:
 
     python bin/generate_bookmarks_csv.py
@@ -17,11 +19,11 @@ import csv
 import os
 
 # get base path as the directory of the current file
-base_dir = os.path.dirname(os.path.abspath(__file__))
+# base_dir = os.path.dirname(os.path.abspath(__file__))
 
-bookmarks_csv = os.path.join(base_dir, "..", "data", "bookmarks.csv")
-users_csv = os.path.join(base_dir, "..", "data", "users.csv")
-bookmarks_with_emails_csv = os.path.join(base_dir, "..", "data", "bookmarks_with_emails.csv")
+bookmarks_csv = os.path.join("data", "csv", "bookmarks.csv")
+users_csv = os.path.join("data", "csv", "users.csv")
+bookmarks_with_emails_csv = os.path.join("data", "csv", "bookmarks_with_emails.csv")
 
 
 def read_resource_ids_by_email(file, email):
@@ -86,9 +88,14 @@ print("Exporting bookmarks")
 add_email_to_bookmarks(bookmarks_csv, users_csv, bookmarks_with_emails_csv)
 
 # example usage. Find by email
-bookmarks = read_resource_ids_by_email(bookmarks_with_emails_csv, "dennis.iversen+test@gmail.com")
+bookmarks = read_resource_ids_by_email(bookmarks_with_emails_csv, "dennis.iversen@gmail.com")
 print("Test to find bookmarks by email")
 print(bookmarks)
 
 print("Count unique emails:")
 print(count_unique_emails(bookmarks_with_emails_csv))
+
+# count all bookmarks
+bookmarks_with_emails = sum(1 for row in csv.reader(open(bookmarks_with_emails_csv)))
+
+print(f"Num bookmarks {bookmarks_with_emails}")
