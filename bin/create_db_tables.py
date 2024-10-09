@@ -37,9 +37,9 @@ def create_migrations_table_if_not_exists():
         create_migrations_table = """
         CREATE TABLE migrations (
             id INTEGER PRIMARY KEY,
-            migration_key VARCHAR(128),
-            applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
+            migration_key TEXT NOT NULL,
+            applied_at TEXT DEFAULT CURRENT_TIMESTAMP
+        ) STRICT;
         """
         cursor.execute(create_migrations_table)
         conn.commit()
@@ -54,10 +54,10 @@ create_migrations_table_if_not_exists()
 create_booksmarks_query = """
 CREATE TABLE bookmarks (
     id INTEGER PRIMARY KEY,
-    bookmark VARCHAR(128),
-    user_id VARCHAR(128),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    bookmark TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+) STRICT;
 """
 
 create_booksmarks_index_query = """
@@ -67,11 +67,11 @@ CREATE INDEX idx_bookmarks_user_id ON bookmarks (user_id);
 create_searches_query = """
 CREATE TABLE searches (
     id INTEGER PRIMARY KEY,
-    search VARCHAR(1024),
-    title VARCHAR(256),
-    user_id VARCHAR(128),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    search TEXT NOT NULL,
+    title TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+) STRICT;
 """
 
 create_searches_index_query = """
@@ -81,10 +81,10 @@ CREATE INDEX idx_searches_user_id ON searches (user_id);
 create_cache_query = """
 CREATE TABLE cache (
     id INTEGER PRIMARY KEY,
-    key VARCHAR(128),
+    key TEXT NOT NULL,
     value TEXT,
     unix_timestamp INTEGER DEFAULT 0
-);
+) STRICT;
 """
 
 create_cache_index_query = """

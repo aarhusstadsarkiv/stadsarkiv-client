@@ -11,6 +11,11 @@ log = get_log()
 
 
 async def _get_db_connection() -> sqlite3.Connection:
+
+    """
+    https://kerkour.com/sqlite-for-servers
+    """
+
     connection = sqlite3.connect(DATABASE_URL)
     connection.row_factory = sqlite3.Row
     connection.execute("PRAGMA journal_mode=WAL;")
@@ -28,7 +33,7 @@ async def transaction_scope():
     connection = await _get_db_connection()
     try:
 
-        connection.execute("BEGIN")
+        connection.execute("BEGIN IMMEDIATE")
         yield connection
 
         connection.commit()
