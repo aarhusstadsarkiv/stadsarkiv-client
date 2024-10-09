@@ -23,7 +23,7 @@ def user_mail_exists(email):
     """
     Check if email exists in user file
     """
-    users_emails_file = os.path.join(CWD, "data", "csv", "users_emails.csv")
+    users_emails_file = os.path.join(CWD, "data", "csv", "emails.csv")
     with open(users_emails_file, "r") as users_emails_file:
         reader = csv.DictReader(users_emails_file)
         for row in reader:
