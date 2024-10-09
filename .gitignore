@@ -170,3 +170,4 @@ uvicorn_process.pid
 /local
 /resources
 settings_local.py
+data
