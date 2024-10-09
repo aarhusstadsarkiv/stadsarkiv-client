@@ -72,7 +72,7 @@ settings: dict[str, typing.Any] = {
             ],
         },
     ],
-    "robots_allow": False,
+    "robots_allow": True,
     "allow_user_registration": True,
     "allow_user_management": True,
     "allow_save_bookmarks": True,
