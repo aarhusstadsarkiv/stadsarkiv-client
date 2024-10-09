@@ -3,7 +3,7 @@ import typing
 
 settings: dict[str, typing.Any] = {
     "client_name": "aarhusarkivet",
-    "client_url": "https://aarhusarkivet.openaws.dk",
+    "client_url": "https://www.aarhusarkivet.dk",
     "language": "da",
     "log_handlers": ["rotating_file"],
     "cookie": {"name": "session", "lifetime": 3600, "httponly": True, "secure": True, "samesite": "lax"},
