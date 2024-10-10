@@ -3,6 +3,7 @@ All api calls to the webservice API is defined here.
 """
 
 from starlette.requests import Request
+from starlette.exceptions import HTTPException
 from stadsarkiv_client.core.api_error import OpenAwsException, validate_passwords, validate_display_name, raise_openaws_exception
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import user
@@ -646,6 +647,10 @@ async def proxies_record_get_by_id(request: Request, record_id: str) -> typing.A
         if response.is_success:
             return response.json()
         else:
+
+            if response.status_code == 404:
+                raise HTTPException(404)
+
             response.raise_for_status()
 
 
