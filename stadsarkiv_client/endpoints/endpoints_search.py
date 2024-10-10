@@ -16,9 +16,15 @@ from stadsarkiv_client.records.normalize_facets import NormalizeFacets
 from stadsarkiv_client.core import query
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.records import normalize_dates
+from stadsarkiv_client.settings_query_params import settings_query_params
 
 
 log = get_log()
+
+remove_keys = []
+for key, value in settings_query_params.items():
+    if not value.get("search_filter"):
+        remove_keys.append(key)
 
 
 def _get_search_pagination_data(request: Request, size: int, total: int):
@@ -216,7 +222,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
 
     query_params_before_search = query.get_list(
         request,
-        remove_keys=["start", "size", "sort", "direction", "view", "utm_source"],
+        remove_keys=remove_keys,
         default_query_params=default_query_params,
     )
 
@@ -240,7 +246,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
     # Remove pagination params from query params. In order to get a query string that can be used in e.g. facet links
     query_str_display = query.get_str_from_list(
         query_params_after_search,
-        remove_keys=["start", "size", "sort", "direction", "view", "utm_source"],
+        remove_keys=remove_keys,
     )
 
     # Get facets and filters
