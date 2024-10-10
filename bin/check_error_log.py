@@ -3,9 +3,7 @@ import httpx
 # allow to sleep
 import time
 
-
 urls_file = "data/logs/error_urls.txt"
-
 
 # read the urls from the file
 with open(urls_file, "r") as f:
