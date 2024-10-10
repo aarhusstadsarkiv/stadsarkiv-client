@@ -216,7 +216,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
 
     query_params_before_search = query.get_list(
         request,
-        remove_keys=["start", "size", "sort", "direction", "view"],
+        remove_keys=["start", "size", "sort", "direction", "view", "utm_source"],
         default_query_params=default_query_params,
     )
 
@@ -238,7 +238,10 @@ async def get_search_context_values(request: Request, extra_query_params: list =
     query_params_after_search = await hooks.after_get_search(query_params=query_params_before_search)
 
     # Remove pagination params from query params. In order to get a query string that can be used in e.g. facet links
-    query_str_display = query.get_str_from_list(query_params_after_search, remove_keys=["start", "size", "sort", "direction", "view"])
+    query_str_display = query.get_str_from_list(
+        query_params_after_search,
+        remove_keys=["start", "size", "sort", "direction", "view", "utm_source"],
+    )
 
     # Get facets and filters
     facets, facets_filters = _get_facets_and_filters(
