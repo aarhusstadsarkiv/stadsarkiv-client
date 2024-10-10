@@ -67,7 +67,7 @@ async def _get_record_pagination(request: Request) -> typing.Optional[RecordPagi
             search_params = [("start", str(next_page - 1))]
             next_query_params.extend(search_params)
             records = await api.proxies_records_from_list(request, next_query_params)
-            id = int(records["result"][0]["id"])
+            id = records["result"][0]["id"]
             return id
         else:
             return 0
@@ -78,7 +78,7 @@ async def _get_record_pagination(request: Request) -> typing.Optional[RecordPagi
             search_params = [("start", str(prev_page - 1))]
             prev_query_params.extend(search_params)
             records = await api.proxies_records_from_list(request, prev_query_params)
-            id = int(records["result"][0]["id"])
+            id = records["result"][0]["id"]
             return id
         else:
             return 0
