@@ -11,7 +11,6 @@ log = get_log()
 
 
 async def _get_db_connection() -> sqlite3.Connection:
-
     """
     https://kerkour.com/sqlite-for-servers
     """
