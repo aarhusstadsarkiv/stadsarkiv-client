@@ -7,7 +7,7 @@ from stadsarkiv_client.core import api
 import json
 from stadsarkiv_client.database import bookmarks
 from stadsarkiv_client.database import cache
-from stadsarkiv_client.core.csv_utils import get_bookmarks_by_email, user_mail_exists
+from stadsarkiv_client.core import csv_utils
 
 
 log = get_log()
@@ -26,19 +26,33 @@ class Hooks(HooksSpec):
             user_id = me["id"]
             email = me["email"]
 
-            cache_key = f"bookmarks_imported_{user_id}"
-            result = await cache.cache_get(cache_key)
-
+            bookmarks_imported_key = f"bookmarks_imported_{user_id}"
+            result = await cache.cache_get(bookmarks_imported_key)
+            
+            # Check if bookmarks have been imported
             if not result:
 
                 log.info(f"Importing bookmarks for user: {email}")
-                bookmarks_from_file = get_bookmarks_by_email(email)
+                bookmarks_from_file = csv_utils.bookmarks_by_email(email)
 
+                # Insert bookmarks into database
                 await bookmarks.bookmarks_insert_many(user_id, bookmarks_from_file)
-                await cache.cache_set(cache_key, True)
+                await cache.cache_set(bookmarks_imported_key, True)
+
+            # if successful login then user is added to new system
+            email_exists_key = f"email_exists_{email}"
+            email_exists = await cache.cache_get(email_exists_key)
+
+            # Check if email exists in user file
+            if not email_exists:
+                await cache.cache_set(email_exists_key, True)
+
         except Exception:
             log.exception("Error importing bookmarks")
             raise OpenAwsException(500, "Error importing bookmarks")
+
+
+
 
         return response
 
@@ -48,8 +62,10 @@ class Hooks(HooksSpec):
         """
         request = self.request
         form = await request.form()
-        username = str(form.get("email"))
-        if user_mail_exists(username):
+        email = str(form.get("email"))
+
+        email_exists = await cache.cache_get(f"email_exists_{email}")
+        if csv_utils.email_exists(email) and not email_exists:
             user_message = """Kære bruger. Du er tilknyttet det gamle system.
     Men da vi er overgået til et nyt system, skal du oprette en ny bruger.
     Hvis du bruger samme email vil systemet ved første login forsøge at importere data fra det gamle system."""

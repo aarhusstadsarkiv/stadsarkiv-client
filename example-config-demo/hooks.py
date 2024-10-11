@@ -7,7 +7,7 @@ from stadsarkiv_client.database import cache
 from stadsarkiv_client.core import api
 import json
 from stadsarkiv_client.core.api_error import OpenAwsException
-from stadsarkiv_client.core.csv_utils import get_bookmarks_by_email, user_mail_exists
+from stadsarkiv_client.core import csv_utils
 
 
 log = get_log()
@@ -32,7 +32,7 @@ class Hooks(HooksSpec):
             if not result:
 
                 log.info(f"Importing bookmarks for user: {email}")
-                bookmarks_from_file = get_bookmarks_by_email(email)
+                bookmarks_from_file = csv_utils.bookmarks_by_email(email)
 
                 await bookmarks.bookmarks_insert_many(user_id, bookmarks_from_file)
                 await cache.cache_set(cache_key, True)
@@ -49,7 +49,7 @@ class Hooks(HooksSpec):
         request = self.request
         form = await request.form()
         username = str(form.get("email"))
-        if user_mail_exists(username):
+        if csv_utils.email_exists(username):
             user_message = """Kære bruger. Du er tilknyttet det gamle system.
     Men da vi er overgået til et nyt system, skal du oprette en ny bruger.
     Hvis du bruger samme email vil systemet ved første login forsøge at importere data fra det gamle system."""

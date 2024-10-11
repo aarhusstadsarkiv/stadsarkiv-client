@@ -5,7 +5,7 @@ import os
 CWD = os.getcwd()
 
 
-def get_bookmarks_by_email(email):
+def bookmarks_by_email(email):
     """ "
     Get bookmarks by email from csv file
     """
@@ -19,7 +19,7 @@ def get_bookmarks_by_email(email):
     return resource_ids
 
 
-def user_mail_exists(email):
+def email_exists(email):
     """
     Check if email exists in user file
     """
