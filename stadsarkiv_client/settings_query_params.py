@@ -45,7 +45,7 @@ settings_query_params = {
         "repeatable": False,
         "type": "string",
         "negatable": False,
-        "search_filter": False,
+        "search_filter": True,
     },
     "date_from": {
         "label": "Tidligste dato",
