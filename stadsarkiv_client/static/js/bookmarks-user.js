@@ -20,11 +20,12 @@ bookmarkElems.forEach((elem) => {
         try {
             e.preventDefault();
             const data = get_data();
+
             res = await Requests.asyncPostJson('/auth/bookmarks', data, 'POST');
             if (res.error) {
                 Flash.setMessage(res.message, 'error');
             } else {
-                elem.closest('.record-section').remove();
+                elem.closest('.search-result').remove();
                 Flash.setMessage(res.message, 'success');
             }
         } catch (error) {

@@ -5,6 +5,7 @@
 {% block body_class %}page-auth-bookmarks{% endblock %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/search.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/table.css') }}?v={{ get_setting('version') }}">
 <style>
     .record-header > a {
@@ -25,66 +26,62 @@
 
 {% else %}
 
+<h3>{{ bookmarks_data|length }} bogmærker</h3>
 
+<div class="search-results">
 {% for bookmark in bookmarks_data %}
-<div class="record-section">
-    <div class="record-main">
-        <h3 class="record-header"><a href="{{ bookmark.record_link }}">{{ sub_string(bookmark.title, 75)}}</a></h3>
 
-        <div class="record-content">
-            <div class="label">Titel</div>
-            <div class="content">
-                <p>
-                    {{ bookmark.title }}
-                </p>
+    <div class="search-result">
+        <a class="search-link" href="{{ bookmark.record_link }}">
+            <div class="search-details">
+                <div class="search-summary">{{ sub_string(bookmark.title, 75) }}</div>
+                <div class="search-summary">{{ bookmark.description }}</div>
+
+                <div class="record-content">
+                    <div class="label">Datering</div>
+                    <div class="content">
+                        <p>{{ bookmark.date_normalized }}</p>
+                    </div>
+                </div>
+
+                {% if bookmark.collection_label %}
+                <div class="record-content">
+                    <div class="label">Arkivskaber</div>
+                    <div class="content">
+                        <p>{{ bookmark.collection_label }}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="record-content">
+                    <div class="label">Type</div>
+                    <div class="content">
+                        <p>{{ bookmark.content_types }}</p>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="record-content">
-            <div class="label">Datering</div>
-            <div class="content">
-                <p>
-                    {{ bookmark.date_normalized }}
-                </p>
+            {% if bookmark.portrait %}
+
+            <div class="search-thumbnail">
+                <img src="{{ bookmark.portrait }}" alt="Thumbnail">
             </div>
-        </div>
 
-        {% if bookmark.collection_label %}
-
-        <div class="record-content">
-            <div class="label">Arkivskaber</div>
-            <div class="content">
-                <p>
-                    {{ bookmark.collection_label }}
-                </p>
-            </div>
-        </div>
-
-        {% endif %}
-
-        <div class="record-content">
-            <div class="label">Indholdstype</div>
-            <div class="content">
-                <p>
-                    {{ bookmark.content_types }}
-                </p>
-            </div>
-        </div>
+            {% endif %}
+            
+        </a>
 
         <div class="record-content">
             <div class="content">
                 <div class="action-links">
-                    <a class="bookmark-delete" data-id="{{ bookmark.record_id }}" href="#">Slet</a>
+                    <a class="bookmark-delete" data-id="{{ bookmark.record_id }}" href="#">Fjern bogmærke</a>
                 </div>
             </div>
-        </div>
-        <hr>
+        </div>  
     </div>
-</div>
-
 {% endfor %}
+</div>
 {% endif %}
-
 
 <div class="loadingspinner hidden"></div>
 <script type="module">

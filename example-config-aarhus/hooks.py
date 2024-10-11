@@ -28,7 +28,7 @@ class Hooks(HooksSpec):
 
             bookmarks_imported_key = f"bookmarks_imported_{user_id}"
             result = await cache.cache_get(bookmarks_imported_key)
-            
+
             # Check if bookmarks have been imported
             if not result:
 
@@ -50,9 +50,6 @@ class Hooks(HooksSpec):
         except Exception:
             log.exception("Error importing bookmarks")
             raise OpenAwsException(500, "Error importing bookmarks")
-
-
-
 
         return response
 

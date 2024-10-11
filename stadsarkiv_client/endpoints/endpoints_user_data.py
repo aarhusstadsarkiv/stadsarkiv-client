@@ -48,6 +48,7 @@ async def auth_bookmarks_get(request: Request):
                 date_normalized = record.get("date_normalized")
                 collection_label = record.get("collection", {}).get("label", "")
                 content_types_label = meta_data.get("content_types_label")
+                portrait = meta_data.get("portrait")
 
                 bookmark_data = {
                     "record_id": record_id,
@@ -56,9 +57,12 @@ async def auth_bookmarks_get(request: Request):
                     "date_normalized": date_normalized,
                     "collection_label": collection_label,
                     "content_types": content_types_label,
+                    "portrait": portrait,
+
                 }
-            except KeyError:
+            except Exception:
                 # Some record_id might not exist in the database
+                log.exception("Error in auth_bookmarks_get")
                 continue
 
             bookmarks_data.append(bookmark_data)
