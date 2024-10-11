@@ -684,6 +684,10 @@ async def proxies_get_resource(request, type: str, id: str) -> typing.Any:
             return json
 
         else:
+
+            if response.status_code == 404:
+                raise HTTPException(404)
+
             response.raise_for_status()
 
 
