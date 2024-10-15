@@ -839,6 +839,7 @@ async def proxies_resolve(request: Request, ids=[]) -> typing.Any:
 async def proxies_view_ids(request: Request) -> typing.Any:
     """
     Endpoint for getting ids from the api
+    E.g. http://localhost:5555/search?content_types=100&view=ids&size=1000
     """
     items = request.query_params.multi_items()
 
