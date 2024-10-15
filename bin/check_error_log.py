@@ -1,27 +1,35 @@
+import sqlite3
 import httpx
-
-# allow to sleep
 import time
 
-urls_file = "data/logs/error_urls.txt"
+db_file_path = "data/logs/errors.db"
 
-# read the urls from the file
-with open(urls_file, "r") as f:
-    urls = f.readlines()
 
-# print number of urls
-num_urls = len(urls)
-print(f"Found {num_urls} urls")
+def get_unresolved_urls():
+    """Fetch all unresolved errors from the database."""
+    conn = sqlite3.connect(db_file_path)
+    cursor = conn.cursor()
 
-# remove duplicates
-urls = list(set(urls))
+    cursor.execute("SELECT id, url FROM error_logs WHERE resolved = 0")
+    unresolved_errors = cursor.fetchall()
 
-# print number of unique urls
-num_unique_urls = len(urls)
-print(f"Found {num_unique_urls} unique urls")
+    conn.close()
+    return unresolved_errors
+
+
+def mark_url_resolved(error_id):
+    """Mark the URL as resolved in the database."""
+    conn = sqlite3.connect(db_file_path)
+    cursor = conn.cursor()
+
+    cursor.execute("UPDATE error_logs SET resolved = 1 WHERE id = ?", (error_id,))
+    conn.commit()
+
+    conn.close()
 
 
 def check_url(url):
+    """Check the status of a URL."""
     try:
         response = httpx.get(url)
         return response.status_code
@@ -31,9 +39,26 @@ def check_url(url):
         return "HTTP status error"
 
 
-# check each url
-for url in urls:
+# Fetch unresolved URLs from the database
+unresolved_errors = get_unresolved_urls()
+
+# Print the number of unresolved URLs
+num_unresolved = len(unresolved_errors)
+print(f"Found {num_unresolved} unresolved URLs")
+
+# Check the status of each unresolved URL
+for error_id, url in unresolved_errors:
     url = url.strip()
     status = check_url(url)
-    print(f"{url} - {status}")
+
+    print(status)
+
+    # If the URL is working (status code 200), mark it as resolved
+    if status == 200:
+        mark_url_resolved(error_id)
+        print(f"{url} marked as resolved.")
+    else:
+        print(f"{url} is still unresolved.")
+
+    # Sleep to avoid overwhelming the server
     time.sleep(2)
