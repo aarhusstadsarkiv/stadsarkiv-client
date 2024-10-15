@@ -28,13 +28,13 @@
 {% set keys = types_and_values.keys() %}
 {{ common_macros.parse_block_common('Data', keys, types_and_values) }}
 
-{% set urls = [
+{% set meta_links = [
     {'label': 'JSON. Entity', 'url': url_for('entities_get_single_json', uuid=entity.uuid, type='entity') | string},
     {'label': 'JSON. Entity Types and Values', 'url': url_for('entities_get_single_json', uuid=entity.uuid, type='types_and_values') | string},
     {'label': 'JSON. Entity Schema', 'url': url_for('entities_get_single_json', uuid=entity.uuid, type='schema') | string}
 ] %}
 
-{{ common_macros.parse_meta_block(urls) }}
+{{ common_macros.parse_meta_block(meta_links, permissions_list) }}
 {{ slideshow_macros.parse_slideshow_import() }}
 
 {% endblock content %}
