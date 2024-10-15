@@ -810,7 +810,7 @@ async def proxies_auto_complete(request: Request, query_params: list = []) -> ty
 
 
 async def proxies_resolve(request: Request, ids=[]) -> typing.Any:
-    """ "
+    """
     Resolve directly from a proxy endpoint
     """
 
@@ -832,5 +832,26 @@ async def proxies_resolve(request: Request, ids=[]) -> typing.Any:
                 return []
 
             return result_json["result"]
+        else:
+            response.raise_for_status()
+
+
+async def proxies_view_ids(request: Request) -> typing.Any:
+    """
+    Endpoint for getting ids from the api
+    """
+    items = request.query_params.multi_items()
+
+    # generate search string
+    search_str = "https://aarhusarkivet.herokuapp.com/search?"
+    for key, value in items:
+        search_str += f"{key}={value}&"
+
+    async with _get_async_client() as client:
+        url = search_str
+        response = await client.get(url)
+
+        if response.is_success:
+            return response.json()
         else:
             response.raise_for_status()

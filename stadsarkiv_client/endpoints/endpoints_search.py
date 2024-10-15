@@ -242,9 +242,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
     query_params_before_search = [(key, value) for key, value in query_params_before_search if key in settings_query_params]
 
     # Alter query params before search
-    #
-    # Example usage:
-    # You may want to remove all collections and add single one before search results are obtained
+    # E.g. You may want to remove all collections and add single one before search results are obtained
     query_params_before_search = await hooks.before_get_search(query_params=query_params_before_search)
 
     # Call api
@@ -293,6 +291,14 @@ async def get_search_context_values(request: Request, extra_query_params: list =
 
 
 async def search_get(request: Request):
+
+    items = request.query_params.multi_items()
+
+    # check if tuple ('view', 'ids') is in items as this is a special case
+    if ("view", "ids") in items:
+        view_ids_json = await api.proxies_view_ids(request)
+        return JSONResponse(view_ids_json)
+
     context_values = await get_search_context_values(request)
     context = await get_context(request, context_values=context_values)
 
