@@ -51,14 +51,13 @@ for error_id, url in unresolved_errors:
     url = url.strip()
     status = check_url(url)
 
-    print(status)
-
     # If the URL is working (status code 200), mark it as resolved
-    if status == 200:
+    resolved_statuses = [200, 301, 302, 404]
+    if status in resolved_statuses:
         mark_url_resolved(error_id)
-        print(f"{url} marked as resolved.")
+        print(f"{url} marked as resolved. Status code: {status}")
     else:
-        print(f"{url} is still unresolved.")
+        print(f"{url} is still unresolved. Status code: {status}")
 
     # Sleep to avoid overwhelming the server
     time.sleep(2)
