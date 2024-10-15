@@ -125,6 +125,31 @@ def _check_series(query_params: list) -> list:
     return query_params
 
 
+def _clean_amp(query_params_before_search: list) -> list:
+    """
+    Remove amp; from query params
+    """
+
+    for i, (key, value) in enumerate(query_params_before_search):
+        query_params_before_search[i] = (key.replace("amp;", ""), value)
+
+    query_params_before_search = [(key, value) for key, value in query_params_before_search if value]
+    return query_params_before_search
+
+
+def _clean_query_params(query_params: list) -> list:
+    query_params = _check_series(query_params)
+    query_params = _clean_amp(query_params)
+
+    # Any keys should be in settings_query_params before sending to api
+    query_params = [(key, value) for key, value in query_params if key in settings_query_params]
+
+    # If key equalts collection then then remove left padded zeros
+    query_params = [(key, value.lstrip("0")) if key == "collection" else (key, value) for key, value in query_params]
+
+    return query_params
+
+
 def _get_facets_and_filters(request: Request, search_result: dict, query_params=[], query_str=""):
 
     normalized_facets = NormalizeFacets(
@@ -206,15 +231,6 @@ def _normalize_search_result(records: dict):
     return records
 
 
-def _clean_amp(query_params_before_search: list) -> list:
-
-    for i, (key, value) in enumerate(query_params_before_search):
-        query_params_before_search[i] = (key.replace("amp;", ""), value)
-
-    query_params_before_search = [(key, value) for key, value in query_params_before_search if value]
-    return query_params_before_search
-
-
 async def get_search_context_values(request: Request, extra_query_params: list = []) -> dict:
     """
     Get all context values used on the search page
@@ -235,11 +251,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
         default_query_params=default_query_params,
     )
 
-    query_params_before_search = _check_series(query_params_before_search)
-    query_params_before_search = _clean_amp(query_params_before_search)
-
-    # Any keys should be in settings_query_params before sending to api
-    query_params_before_search = [(key, value) for key, value in query_params_before_search if key in settings_query_params]
+    query_params_before_search = _clean_query_params(query_params_before_search)
 
     # Alter query params before search
     # E.g. You may want to remove all collections and add single one before search results are obtained
