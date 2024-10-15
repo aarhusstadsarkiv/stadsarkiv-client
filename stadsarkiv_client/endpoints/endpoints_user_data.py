@@ -58,7 +58,6 @@ async def auth_bookmarks_get(request: Request):
                     "collection_label": collection_label,
                     "content_types": content_types_label,
                     "portrait": portrait,
-
                 }
             except Exception:
                 # Some record_id might not exist in the database
