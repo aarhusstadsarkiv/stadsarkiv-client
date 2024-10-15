@@ -75,7 +75,7 @@ def get_size_sort_view(request: Request):
     """
     size = request.query_params.get("size", request.cookies.get("size", "20"))
 
-    accept_size = ["10", "20", "50", "100"]
+    accept_size = ["20", "50", "100"]
     if size not in accept_size:
         size = "20"
 
