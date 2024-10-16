@@ -124,9 +124,14 @@ class Hooks(HooksSpec):
             agenda_items = record.get("admin_data", {}).get("agendaItems")
 
             if agenda_items:
-                agenda_items = json.loads(agenda_items)
-                agenda_items = _convert_agenda_items_to_link_list(agenda_items)
-                record_alter.set_record_and_type(record_and_types, "agenda_items", agenda_items, "link_list")
+                try:
+                    agenda_items = json.loads(agenda_items)
+                    agenda_items = _convert_agenda_items_to_link_list(agenda_items)
+                    record_alter.set_record_and_type(record_and_types, "agenda_items", agenda_items, "link_list")
+                except json.JSONDecodeError:
+                    record_id = record.get("id")
+                    assert isinstance(record_id, str)
+                    log.exception(f"Agenda Items: {record_utils.get_record_url(record_id)}")
 
             original_id = record.get("original_id")
             if original_id:
