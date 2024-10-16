@@ -10,7 +10,7 @@ def get_unresolved_urls():
     conn = sqlite3.connect(db_file_path)
     cursor = conn.cursor()
 
-    cursor.execute("SELECT id, url FROM error_logs WHERE resolved = 0")
+    cursor.execute("SELECT id, url, error FROM error_logs WHERE resolved = 0")
     unresolved_errors = cursor.fetchall()
 
     conn.close()
@@ -47,17 +47,23 @@ num_unresolved = len(unresolved_errors)
 print(f"Found {num_unresolved} unresolved URLs")
 
 # Check the status of each unresolved URL
-for error_id, url in unresolved_errors:
-    url = url.strip()
-    status = check_url(url)
+for error_id, url, error in unresolved_errors:
 
-    # If the URL is working (status code 200), mark it as resolved
-    resolved_statuses = [200, 301, 302, 400, 404]
-    if status in resolved_statuses:
-        mark_url_resolved(error_id)
-        print(f"{url} marked as resolved. Status code: {status}")
+    if error == "500 Error":
+        print(f"Checking {error}")
+
+        url = url.strip()
+        status = check_url(url)
+
+        # If the URL is working (status code 200), mark it as resolved
+        resolved_statuses = [200, 301, 302, 400, 404]
+        if status in resolved_statuses:
+            mark_url_resolved(error_id)
+            print(f"{url} marked as resolved. Status code: {status}")
+        else:
+            print(f"{url} is still unresolved. Status code: {status}")
+
+        # Sleep to avoid overwhelming the server
+        time.sleep(1)
     else:
-        print(f"{url} is still unresolved. Status code: {status}")
-
-    # Sleep to avoid overwhelming the server
-    time.sleep(2)
+        print(f"Skipping internal error with correct status code {error}")
