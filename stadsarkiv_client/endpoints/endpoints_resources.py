@@ -68,6 +68,12 @@ async def get_resource(request: Request):
     if resource_type not in resource_templates:
         raise HTTPException(status_code=404, detail="Resource type not found")
 
+    id = request.path_params["id"]
+
+    # check if id is a number
+    if not id.isdigit():
+        raise HTTPException(status_code=404, detail="Resource id not found")
+
     context = await _get_resource_context(request)
     template_path = resource_templates[resource_type]
     response = templates.TemplateResponse(request, template_path, context)
