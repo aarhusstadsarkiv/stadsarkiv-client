@@ -15,8 +15,8 @@ logging_handlers.generate_log_dir()
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
 # remove uvicorn noise in debug mode
-if settings["environment"] == "development":
-    logging.getLogger("uvicorn.error").setLevel(logging.CRITICAL)
+# if settings["environment"] == "development":
+logging.getLogger("uvicorn.error").setLevel(logging.CRITICAL)
 
 log = logging.getLogger("main")
 level: Any = settings["log_level"]
