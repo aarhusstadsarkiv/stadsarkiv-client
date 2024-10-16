@@ -52,7 +52,7 @@ for error_id, url in unresolved_errors:
     status = check_url(url)
 
     # If the URL is working (status code 200), mark it as resolved
-    resolved_statuses = [200, 301, 302, 404]
+    resolved_statuses = [200, 301, 302, 400, 404]
     if status in resolved_statuses:
         mark_url_resolved(error_id)
         print(f"{url} marked as resolved. Status code: {status}")
