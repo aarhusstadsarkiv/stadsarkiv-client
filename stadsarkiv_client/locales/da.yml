@@ -1,9 +1,6 @@
 100 per page: 100 per side
 20 per page: 20 per side
-403 Forbidden Error: 403 Adgang nægtet
-404 Not Found: 404 Siden blev ikke fundet
 50 per page: 50 per side
-500 Server Error: 500 Server Error
 A verify link has been sent to your email. You may verify your account now by clicking the link.: Et
   verifikations-link er blevet sendt til din e-mail. Du kan nu verificere din konto
   ved at klikke på linket.
@@ -41,6 +38,10 @@ Email or password is incorrect. Or your user has not been activated.: Email elle
 Email or password is not correct.: Email eller password er ikke korrekt.
 Enter new password: Indtast nyt password
 Entity: Entity
+Error. Not Found: Siden eksisterer ikke.
+Error. Request Error: Der var et problem med din forespørgsel.
+Error. Server Error: Der skete en system fejl.
+Error. Forbidden Error: Du har ikke adgang til siden.
 Failed to get schemas: Det var ikke muligt at hente skemaer
 First page: Første
 Forgot your password: Glemt password

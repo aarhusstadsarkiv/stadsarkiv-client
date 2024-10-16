@@ -42,6 +42,9 @@ Email or password is incorrect. Or your user has not been activated.: Email or p
 Email or password is not correct.: Email or password is not correct.
 Enter new password: Enter new password
 Entity: Entity
+Error. Not Found: Error. Not Found
+Error. Request Error: Error. Request Error
+Error. Server Error: Error. Server Error
 Failed to get schemas: Failed to get schemas
 First page: First page
 Forgot your password: Forgot your password

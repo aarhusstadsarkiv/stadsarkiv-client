@@ -23,38 +23,63 @@ log = get_log()
 
 
 async def not_found(request: Request, exc: HTTPException):
-    context_values = {"title": translate("404 Not Found")}
+    context_values = {
+        "title": f"404 {translate('Error. Not Found')}",
+        "status_code": 404,
+    }
 
     # No need to log full exception. It's a 404
-    log.error(f"404 Not Found: {request.url}")
+    log.warning(f"404 Not Found: {request.url}")
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse(request, "errors/default.html", context, status_code=404)
+
+
+async def http_status_error(request: Request, exc: HTTPStatusError):
+
+    exc_traceback = traceback.format_exc()
+    title = f"{exc.response.status_code}. {translate('Error. Request Error')}"
+    context_values = {
+        "title": title,
+        "status_code": exc.response.status_code,
+        "exc": exc,
+        "exc_traceback": exc_traceback,
+    }
+
+    log.exception(f"{exc.response.status_code} Error: {request.url}")
+    context = await get_context(request, context_values=context_values)
+    return templates.TemplateResponse(request, "errors/default.html", context, status_code=exc.response.status_code)
 
 
 async def server_error(request: Request, exc: Exception):
 
     exc_traceback = traceback.format_exc()
     context_values = {
-        "title": translate("500 Server Error"),
+        "title": f"500 {translate('Error. Server Error')}",
+        "status_code": 500,
         "exc": exc,
         "exc_traceback": exc_traceback,
     }
 
-    log.exception(f"500 Error: {request.url}", exc_info=exc)
+    log.exception(f"500 Error: {request.url}")
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse(request, "errors/default.html", context, status_code=500)
 
 
 async def forbidden_error(request: Request, exc: HTTPException):
-    context_values = {"title": translate("403 Forbidden Error")}
+    context_values = {
+        "title": translate("Error. Forbidden Error"),
+        "status_code": 403,
+    }
 
-    log.error(f"403 Forbidden: {request.url}", exc_info=exc)
+    log.exception(f"403 Forbidden: {request.url}")
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse(request, "errors/default.html", context, status_code=403)
 
 
 async def auth_exception_handler(request: Request, exc: AuthException):
     flash.set_message(request, exc.message, type="error")
+    log.exception(f"403 Forbidden: {request.url}")
+    log.info(f"AuthException Redirect to: {exc.redirect_url}")
     return RedirectResponse(url=exc.redirect_url, status_code=302)
 
 
@@ -66,7 +91,7 @@ exception_handlers = {
     403: forbidden_error,
     404: not_found,
     500: server_error,
-    HTTPStatusError: server_error,
+    HTTPStatusError: http_status_error,
     AuthException: auth_exception_handler,
     AuthExceptionJSON: auth_exception_json_handler,
 }
