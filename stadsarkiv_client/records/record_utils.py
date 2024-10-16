@@ -1,3 +1,6 @@
+from stadsarkiv_client.core.dynamic_settings import settings
+
+
 def is_collection(record_dict: dict, collection_id: int):
     """
     Check if the record belongs to a collection.
@@ -59,3 +62,10 @@ def meaningful_substring(s: str, max_length: int) -> str:
 
     # Return substring that ends at the last space within the limit
     return s[:space_index] + "..."
+
+
+def get_record_url(record_id: str) -> str:
+    """
+    Return the url of the record.
+    """
+    return f"{settings.get('client_url')}/records/{record_id}"
