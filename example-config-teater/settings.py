@@ -40,7 +40,7 @@ settings: dict[str, typing.Any] = {
     # Allow robots
     #
     "show_version": True,
-    "robots_allow": False,
+    "allow_robots": False,
     "facets_enabled": ["events"],
     "allow_user_registration": False,
     "allow_user_management": True,

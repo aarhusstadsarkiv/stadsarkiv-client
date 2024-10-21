@@ -3,6 +3,8 @@ Define routes for the application.
 """
 
 from starlette.routing import Route, Mount
+from starlette.responses import PlainTextResponse
+from starlette.requests import Request
 from stadsarkiv_client.endpoints import (
     endpoints_admin,
     endpoints_auth,
@@ -51,9 +53,24 @@ def _get_static_dirs() -> list:
     return static_dir_list
 
 
+async def robots_txt(request: Request):
+
+    if settings["allow_robots"]:
+        content = """User-agent: *
+Allow: /
+        """
+        return PlainTextResponse(content)
+    else:
+        content = """User-agent: *
+Disallow: /
+        """
+    return PlainTextResponse(content)
+
+
 # Add basic routes
 routes = [
     Mount("/static", MultiStaticFiles(directories=_get_static_dirs()), name="static"),
+    Route("/robots.txt", robots_txt),
     Route("/admin/users", endpoint=endpoints_admin.admin_users_get, name="admin_users_get"),
     Route("/admin/users/{uuid}/update", endpoint=endpoints_admin.admin_users_get_single, name="admin_users_get_single"),
     Route("/admin/users/{uuid}/permissions", endpoint=endpoints_admin.admin_users_patch, name="admin_users_patch", methods=["POST"]),

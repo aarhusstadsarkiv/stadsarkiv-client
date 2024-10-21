@@ -29,10 +29,10 @@ settings: dict[str, typing.Any] = {
         {"name": "entities_get_list", "title": "Entiteter"},
     ],
     "search_base_url": "/search",
-    "robots_allow": False,
     "show_version": True,
     "allow_user_registration": True,
     "allow_user_management": True,
     "allow_online_ordering": True,
     "allow_save_bookmarks": True,
+    "allow_robots": False,
 }

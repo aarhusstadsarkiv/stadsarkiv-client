@@ -9,7 +9,7 @@ client_name: development
 client_url: https://demo.openaws.dk
 
 # If you are running in production, you may set this to True in order to allow robots to index the site
-robots_allow: false
+allow_robots: false
 
 # show the version of the stadarkiv-client
 show_version: true
