@@ -45,25 +45,30 @@ unresolved_errors = get_unresolved_urls()
 # Print the number of unresolved URLs
 num_unresolved = len(unresolved_errors)
 print(f"Found {num_unresolved} unresolved URLs")
+print("Checking...")
+print("-" * 50)
 
 # Check the status of each unresolved URL
 for error_id, url, error in unresolved_errors:
+    print(url)
+    print(f"Error: {error}")
+
+    url = url.strip()
+    http_status_code = check_url(url)
+
+    print(f"Current status code: {http_status_code}")
 
     if error == "500 Error":
-        print(f"Checking {error}")
-
-        url = url.strip()
-        status = check_url(url)
 
         # If the URL is working (status code 200), mark it as resolved
         resolved_statuses = [200, 301, 302, 400, 404]
-        if status in resolved_statuses:
+        if http_status_code in resolved_statuses:
             mark_url_resolved(error_id)
-            print(f"{url} marked as resolved. Status code: {status}")
+            print("URL is now marked as resolved")
         else:
-            print(f"{url} is still unresolved. Status code: {status}")
-
-        # Sleep to avoid overwhelming the server
-        time.sleep(1)
+            print("URL is still unresolved")
     else:
-        print(f"Skipping internal error with correct status code {error}")
+        print("URL is still unresolved - but status code is not 500")
+
+    print("-" * 50)
+    time.sleep(1)
