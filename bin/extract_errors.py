@@ -7,7 +7,7 @@ import glob
 import sqlite3
 
 log_file_pattern = "./data/logs/main*"
-db_file_path = "data/logs/errors.db"
+db_file_path = "./data/logs/errors.db"
 change_host = "http://localhost:5555"
 
 # Updated pattern to capture any error message after "main - ERROR -"

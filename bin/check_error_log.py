@@ -50,6 +50,14 @@ print("-" * 50)
 
 # Check the status of each unresolved URL
 for error_id, url, error in unresolved_errors:
+
+    if error == "404 Not Found":
+        print("404 Not Found")
+        mark_url_resolved(error_id)
+        print("URL is now marked as resolved")
+        print("-" * 50)
+        continue
+
     print(url)
     print(f"Error: {error}")
 
@@ -58,17 +66,21 @@ for error_id, url, error in unresolved_errors:
 
     print(f"Current status code: {http_status_code}")
 
-    if error == "500 Error":
+    # get error code from error message
+    error_code = error.split(" ")[0]
 
-        # If the URL is working (status code 200), mark it as resolved
+    # check if error code is 5xx
+    if error_code.startswith("5") or error_code.startswith("4"):
+
+        # If the URL has an accepted status - mark it as resolved
         resolved_statuses = [200, 301, 302, 400, 404]
         if http_status_code in resolved_statuses:
             mark_url_resolved(error_id)
             print("URL is now marked as resolved")
         else:
-            print("URL is still unresolved")
+            print("URL is still unresolved")    
     else:
-        print("URL is still unresolved - but status code is not 500")
+        print("URL is still unresolved. Error is not a 500 Error")
 
     print("-" * 50)
     time.sleep(1)
