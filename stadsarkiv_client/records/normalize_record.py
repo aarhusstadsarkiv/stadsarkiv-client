@@ -24,6 +24,7 @@ class RecordNormalizer:
         """
         Normalize record data to a more sane data structure.
         """
+
         self.search_query_params = cookie.get_search_query_params(request)
 
         record = self._normalize_dict_data(record)
@@ -74,7 +75,7 @@ class RecordNormalizer:
     def _normalize_representations(self, record: dict, meta_data: dict):
         if "representations" in record:
             # Check if the record type is not "web_document" or "image"
-            is_invalid_type = record["representations"].get("record_type") not in ["web_document", "image"]
+            is_invalid_type = record["representations"]["record_type"] not in ["web_document", "image"]
 
             # Check if the meta_data indicates it's not downloadable
             is_not_downloadable = not meta_data["is_downloadable"]

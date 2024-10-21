@@ -14,6 +14,7 @@ from stadsarkiv_client.core import cookie
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.core.dataclasses import RecordPagination
+from stadsarkiv_client.records import record_utils
 import asyncio
 import json
 import typing
@@ -111,6 +112,10 @@ async def records_get(request: Request):
 
     permissions = await api.me_permissions(request)
     record_pagination, record = await asyncio.gather(_get_record_pagination(request), api.proxies_record_get_by_id(request, record_id))
+
+    if "representations" in record and "record_type" not in record["representations"]:
+        log.error(f"Record {record['id']} has representations but no record_type: {record_utils.get_record_url(record['id'])}")
+        del record["representations"]
 
     meta_data = get_record_meta_data(request, record, permissions)
     record, meta_data = await hooks.after_get_record(record, meta_data)
