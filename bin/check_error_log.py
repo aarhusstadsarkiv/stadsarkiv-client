@@ -78,7 +78,7 @@ for error_id, url, error in unresolved_errors:
             mark_url_resolved(error_id)
             print("URL is now marked as resolved")
         else:
-            print("URL is still unresolved")    
+            print("URL is still unresolved")
     else:
         print("URL is still unresolved. Error is not a 500 Error")
 
