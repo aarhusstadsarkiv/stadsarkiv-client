@@ -2,11 +2,7 @@
 Format relations obtained from the proxies api.
 """
 
-from stadsarkiv_client.core.logging import get_log
 import re
-
-
-log = get_log()
 
 
 def format_relations(type: str, relations: list):

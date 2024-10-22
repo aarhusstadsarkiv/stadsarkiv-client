@@ -7,10 +7,6 @@ from starlette.requests import Request
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.dynamic_settings import settings
-from stadsarkiv_client.core.logging import get_log
-
-
-log = get_log()
 
 
 async def _get_page(request: Request) -> dict:

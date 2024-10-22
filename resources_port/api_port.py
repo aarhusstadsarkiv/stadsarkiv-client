@@ -1,13 +1,8 @@
 import os
 import httpx
 from stadsarkiv_client.core.dynamic_settings import settings
-from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.core import api
-
 import typing
 
-
-log = get_log()
 base_url = str(settings["api_base_url"])
 
 

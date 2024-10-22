@@ -5,7 +5,6 @@ All api calls to the webservice API is defined here.
 from starlette.requests import Request
 from starlette.exceptions import HTTPException
 from stadsarkiv_client.core.api_error import OpenAwsException, validate_passwords, validate_display_name, raise_openaws_exception
-from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core import user
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.dynamic_settings import settings
@@ -17,9 +16,6 @@ import json
 import httpx
 import typing
 from time import time
-
-
-log = get_log()
 
 
 base_url = str(settings["api_base_url"])

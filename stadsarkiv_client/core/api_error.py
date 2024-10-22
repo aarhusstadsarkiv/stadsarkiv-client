@@ -4,10 +4,6 @@ A couple of helpers to raise exceptions and validate passwords.
 
 from starlette.requests import Request
 from stadsarkiv_client.core.translate import translate
-from stadsarkiv_client.core.logging import get_log
-
-
-log = get_log()
 
 
 class OpenAwsException(Exception):

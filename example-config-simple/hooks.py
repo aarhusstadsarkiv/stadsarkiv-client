@@ -1,8 +1,5 @@
-from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.records.record_utils import is_curator, is_collection
-
-log = get_log()
 
 
 class Hooks(HooksSpec):

@@ -1,10 +1,7 @@
 import json
 from starlette.requests import Request
 from stadsarkiv_client.core.dynamic_settings import settings
-from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.dataclasses import SearchCookie
-
-log = get_log()
 
 
 def get_search_cookie(request: Request) -> SearchCookie:

@@ -8,7 +8,6 @@ Exposes a translate function that is used in the jinja2 template engine and in p
 
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.args import get_local_config_dir
-import json
 from stadsarkiv_client.core.logging import get_log
 import yaml
 from pathlib import Path

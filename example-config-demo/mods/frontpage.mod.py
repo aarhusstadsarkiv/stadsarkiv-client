@@ -4,10 +4,6 @@ from starlette.exceptions import HTTPException
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 import os
-from stadsarkiv_client.core.logging import get_log
-
-log = get_log()
-
 
 current_path = os.path.abspath(__file__)
 base_dir = os.path.dirname(os.path.abspath(__file__))

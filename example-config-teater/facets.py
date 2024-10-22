@@ -1,10 +1,7 @@
-from stadsarkiv_client.core.logging import get_log
 import typing
 import json
 from pathlib import Path
 import os
-
-log = get_log()
 
 
 def load_facets():

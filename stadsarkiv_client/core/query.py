@@ -3,11 +3,7 @@ Some query utils that can be used to get query params from request and return it
 """
 
 from starlette.requests import Request
-from stadsarkiv_client.core.logging import get_log
 from urllib.parse import quote_plus
-
-
-log = get_log()
 
 
 def get_list(request: Request, remove_keys: list = [], default_query_params: list = []) -> list:

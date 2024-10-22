@@ -3,10 +3,7 @@ User functions.
 """
 
 from starlette.requests import Request
-from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.translate import translate
-
-log = get_log()
 
 
 def set_user_jwt(request: Request, access_token: str, token_type: str):
