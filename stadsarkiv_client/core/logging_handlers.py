@@ -9,16 +9,54 @@ from pathlib import Path
 from logging.handlers import RotatingFileHandler
 import warnings
 from stadsarkiv_client.core.args import get_data_dir
+import json
 
+MAX_LOG_SIZE = 100 * 1024 * 1024
+BACKUP_COUNT = 3
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 
+class JsonFormatter(logging.Formatter):
+    def format(self, record):
+
+        log_record = {
+            "time": self.formatTime(record, self.datefmt),
+            "name": record.name,
+            "level": record.levelname,
+            "message": record.getMessage(),
+        }
+
+        # If exception information is present, add it to the log record
+        if record.exc_info:
+            log_record["exception"] = self.formatException(record.exc_info)
+
+        # Add extra fields to the log record
+        if getattr(record, "error_code", ""):
+            log_record["error_code"] = getattr(record, "error_code", "")
+
+        if getattr(record, "error_type", ""):
+            log_record["error_type"] = getattr(record, "error_type", "")
+
+        if getattr(record, "error_url", ""):
+            log_record["request_url"] = str(getattr(record, "error_url", ""))
+
+        return json.dumps(log_record)
+
+
 def generate_log_dir():
     log_dir = get_data_dir("logs")
     os.makedirs(log_dir, exist_ok=True)
+
+
+def get_rotating_json_file_handler(level: Any, file_name):
+    Path(file_name).touch()
+    handler = RotatingFileHandler(file_name, maxBytes=MAX_LOG_SIZE, backupCount=BACKUP_COUNT)
+    handler.setLevel(level)
+    handler.setFormatter(JsonFormatter())
+    return handler
 
 
 def get_stream_handler(level: Any):
@@ -30,7 +68,7 @@ def get_stream_handler(level: Any):
 
 def get_rotating_file_handler(level: Any, file_name):
     Path(file_name).touch()
-    handler = RotatingFileHandler(file_name, maxBytes=10 * 1024 * 1024, backupCount=10)
+    handler = RotatingFileHandler(file_name, maxBytes=MAX_LOG_SIZE, backupCount=BACKUP_COUNT)
     handler.setLevel(level)
     handler.setFormatter(formatter)
     return handler

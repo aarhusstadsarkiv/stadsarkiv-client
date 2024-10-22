@@ -27,7 +27,7 @@ if not len(log.handlers):
     if "rotating_file" in settings["log_handlers"]:
         log.debug("Logging to rotating file enabled")
         main_file_name = get_data_dir("logs", "main.log")
-        fh = logging_handlers.get_rotating_file_handler(level, file_name=main_file_name)
+        fh = logging_handlers.get_rotating_json_file_handler(level, file_name=main_file_name)
         log.addHandler(fh)
 
     if "stream" in settings["log_handlers"]:
