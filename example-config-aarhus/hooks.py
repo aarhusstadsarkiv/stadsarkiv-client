@@ -131,7 +131,8 @@ class Hooks(HooksSpec):
                 except json.JSONDecodeError:
                     record_id = record.get("id")
                     assert isinstance(record_id, str)
-                    log.exception(f"JSON Error in Agenda Items: {record_utils.get_record_url(record_id)}")
+                    extra = {"error_code": 500, "error_url": record_utils.get_record_url(record_id)}
+                    log.exception("JSON Error in Agenda Items", extra=extra)
 
             original_id = record.get("original_id")
             if original_id:
