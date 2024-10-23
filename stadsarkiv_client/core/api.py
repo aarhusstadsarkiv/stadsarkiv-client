@@ -832,46 +832,46 @@ async def proxies_resolve(request: Request, ids=[]) -> typing.Any:
             response.raise_for_status()
 
 
-# async def proxies_view_ids(request: Request) -> typing.Any:
-#     """
-#     Endpoint for getting ids from the api
-#     E.g. http://localhost:5555/search?content_types=100&view=ids&size=1000
-#     """
-#     items = request.query_params.multi_items()
-#     query_str = ""
-#     for key, value in items:
-#         query_str += f"{key}={value}&"
-
-#     query_str = quote(query_str)
-
-#     async with _get_async_client() as client:
-#         url = base_url + "/proxy/records?params=" + query_str
-#         response = await client.get(url)
-
-#         if response.is_success:
-#             records = response.json()
-#             return records
-#         else:
-#             response.raise_for_status()
-
-
 async def proxies_view_ids(request: Request) -> typing.Any:
     """
     Endpoint for getting ids from the api
     E.g. http://localhost:5555/search?content_types=100&view=ids&size=1000
     """
     items = request.query_params.multi_items()
-
-    # generate search string
-    search_str = "https://aarhusarkivet.herokuapp.com/search?"
+    query_str = ""
     for key, value in items:
-        search_str += f"{key}={value}&"
+        query_str += f"{key}={value}&"
+
+    query_str = quote(query_str)
 
     async with _get_async_client() as client:
-        url = search_str
+        url = base_url + "/proxy/records?params=" + query_str
         response = await client.get(url)
 
         if response.is_success:
-            return response.json()
+            records = response.json()
+            return records
         else:
             response.raise_for_status()
+
+
+# async def proxies_view_ids(request: Request) -> typing.Any:
+#     """
+#     Endpoint for getting ids from the api
+#     E.g. http://localhost:5555/search?content_types=100&view=ids&size=1000
+#     """
+#     items = request.query_params.multi_items()
+
+#     # generate search string
+#     search_str = "https://aarhusarkivet.herokuapp.com/search?"
+#     for key, value in items:
+#         search_str += f"{key}={value}&"
+
+#     async with _get_async_client() as client:
+#         url = search_str
+#         response = await client.get(url)
+
+#         if response.is_success:
+#             return response.json()
+#         else:
+#             response.raise_for_status()
