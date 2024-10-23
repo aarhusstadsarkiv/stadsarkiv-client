@@ -838,6 +838,13 @@ async def proxies_view_ids(request: Request) -> typing.Any:
     E.g. http://localhost:5555/search?content_types=100&view=ids&size=1000
     """
     items = request.query_params.multi_items()
+    return await proxies_view_ids_from_list(items)
+
+
+async def proxies_view_ids_from_list(items: list) -> typing.Any:
+    """
+    Get all ids from the api
+    """
     query_str = ""
     for key, value in items:
         query_str += f"{key}={value}&"
@@ -853,25 +860,3 @@ async def proxies_view_ids(request: Request) -> typing.Any:
             return records
         else:
             response.raise_for_status()
-
-
-# async def proxies_view_ids(request: Request) -> typing.Any:
-#     """
-#     Endpoint for getting ids from the api
-#     E.g. http://localhost:5555/search?content_types=100&view=ids&size=1000
-#     """
-#     items = request.query_params.multi_items()
-
-#     # generate search string
-#     search_str = "https://aarhusarkivet.herokuapp.com/search?"
-#     for key, value in items:
-#         search_str += f"{key}={value}&"
-
-#     async with _get_async_client() as client:
-#         url = search_str
-#         response = await client.get(url)
-
-#         if response.is_success:
-#             return response.json()
-#         else:
-#             response.raise_for_status()
