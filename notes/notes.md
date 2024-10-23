@@ -137,4 +137,23 @@ PDF:
 
 records/000186693
 
+## representations but no record_type
+
+http://localhost:5555/records/000149892
+http://localhost:5555/records/000149892
+http://localhost:5555/records/000149864
+http://localhost:5555/records/000149840
+http://localhost:5555/records/000149846
+http://localhost:5555/records/000149882
+http://localhost:5555/records/000149861
+http://localhost:5555/records/000149848
+http://localhost:5555/records/000149845
+http://localhost:5555/records/000149851
+http://localhost:5555/records/000149862
+http://localhost:5555/records/000149887
+http://localhost:5555/records/000149877
+http://localhost:5555/records/000149878
+http://localhost:5555/records/000149854
+http://localhost:5555/records/000149866
+
 
