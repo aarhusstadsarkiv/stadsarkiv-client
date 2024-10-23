@@ -30,7 +30,14 @@ async def _get_record_pagination(request: Request) -> typing.Optional[RecordPagi
 
     # 'search' as a 'get' param indicates that we came from a search.
     # It is used as the current page number in the pagination
-    current_page = int(request.query_params.get("search", 0))
+    current_page = request.query_params.get("search", 0)
+
+    # ensure that the current_page is an integer
+    try:
+        current_page = int(current_page)
+    except ValueError:
+        current_page = 0
+
     if not current_page:
         return None
 
@@ -114,7 +121,8 @@ async def records_get(request: Request):
     record_pagination, record = await asyncio.gather(_get_record_pagination(request), api.proxies_record_get_by_id(request, record_id))
 
     if "representations" in record and "record_type" not in record["representations"]:
-        log.error(f"Record {record['id']} has representations but no record_type: {record_utils.get_record_url(record['id'])}")
+        extra = {"error_code": 500, "error_url": request.url}
+        log.error(f"Record {record['id']}. Representations but no record_type", extra=extra)
         del record["representations"]
 
     meta_data = get_record_meta_data(request, record, permissions)
