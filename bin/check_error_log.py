@@ -59,23 +59,23 @@ for row in unresolved_errors:
         try:
             http_status_code = check_url(url)
             current_status_code = f"{http_status_code}"
-        except Exception:
-            # Ignore httpx exceptions
+        except Exception as e:
+            print(e)
             continue
 
         # Check if the error is resolvable
-        if http_status_code >= 400 and http_status_code < 600:
-            resolved_statuses = [200, 301, 302, 400, 404]
-            if http_status_code in resolved_statuses:
-                mark_url_resolved(error_id)
-                resolution = "Resolved"
+        # if http_status_code >= 400 and http_status_code < 600:
+        resolved_statuses = [200, 301, 302, 400, 404, 422]
+        if http_status_code in resolved_statuses:
+            mark_url_resolved(error_id)
+            resolution = "Resolved"
 
     # Print information for the current URL, with URL on one line
     print(f"ID: {error_id}")
     print(f"URL: {url}")
     print(f"Error Message: {error}")
     print(f"Error Code: {error_code}")
-    print(f"Status: {current_status_code}")
+    print(f"Current status Status: {current_status_code}")
     print(f"Resolution: {resolution}")
     print("-" * 50)
 
