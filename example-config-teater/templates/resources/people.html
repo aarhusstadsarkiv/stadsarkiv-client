@@ -29,6 +29,8 @@
 {% set keys = ["firstnames", "lastnames", "gender", "date_of_birth", "place_of_birth", "date_of_death", "place_of_death", "occupation"] %}
 {{ common_macros.parse_image_block('', keys, resource, options) }}
 
+{{ relations_macros.parse_relations('events', resource) }}
+
 {{ resource_macros.parse_search_pagination(resource.search_result, meta, 'people') }}
 
 {% set ignore_fields = ['collection'] %}
@@ -46,9 +48,7 @@
 {{ common_macros.parse_block_common('Kilder', keys, resource) }}
 
 {% set keys = ["ext_data"] %}
-{{ common_macros.parse_block_common('Udvidet data', keys, resource) }}
-
-{{ relations_macros.parse_relations('events', resource) }}
+{#{ common_macros.parse_block_common('Udvidet data', keys, resource) }#}
 
 {% set meta_links = [
     {"url": "/people/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
