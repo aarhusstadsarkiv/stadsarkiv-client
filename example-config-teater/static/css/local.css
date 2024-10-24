@@ -105,3 +105,19 @@
     align-items: unset;
     gap: 0px;
 }
+
+.search-details {
+    order: 2;
+}
+
+.search-thumbnail {
+    order: 1;
+}
+
+.search-thumbnail img {
+    min-width: 120px;
+    height: auto;
+    width: 120px;
+    max-height: 120px;
+    object-fit: contain;
+}
