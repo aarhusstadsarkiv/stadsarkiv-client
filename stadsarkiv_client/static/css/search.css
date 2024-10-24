@@ -127,7 +127,8 @@ details>summary.inactive {
     min-width: 120px;
     height: auto;
     width: 120px;
-
+    max-height: 120px;
+    object-fit: contain;
 }
 
 .search-details {
