@@ -11,11 +11,15 @@ from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import query
 from stadsarkiv_client.core.file_cache import file_cache_set, file_cache_get
 from stadsarkiv_client.core.hooks import get_hooks
+from stadsarkiv_client.core.logging import get_log
 from urllib.parse import quote
 import json
 import httpx
 import typing
 from time import time
+
+
+log = get_log()
 
 
 base_url = str(settings["api_base_url"])

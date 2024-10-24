@@ -1,0 +1,69 @@
+{% import "macros/common_macros.html" as common_macros with context %}
+{% import "macros/record_macros.html" as record_macros with context %}
+
+{% extends "base.html" %}
+
+{% block body_class %}page-records-view{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
+<script type="module">
+    import { } from "/static/js/record.js";
+    import { activateOverlay } from "/static/js/overlay.js";
+    activateOverlay();
+</script>
+{% endblock head %}
+
+{% block content %}
+
+{{ record_macros.parse_record_pagination(record_pagination) }}
+
+{% set keys = ["collectors", "content_types", "creators", "date_normalized", "curators", "id", "original_id",
+"agenda_items", "bookmarks"] %}
+{{ record_macros.parse_block_first(keys, meta_data, record_and_types) }}
+
+{% set keys = ["title", "heading", "summary", "desc_notes",
+"locations", "organisations", "events", "people", "objects"
+"collection", "series", "collection_tags", "subjects", "representations", ] %}
+{{ common_macros.parse_block_common('Beskrivelse', keys, record_and_types) }}
+
+{% set keys = [
+    "copyright_status_normalized", 
+    "contractual_status_normalized", "other_legal_restrictions_normalized"] %}
+{{ common_macros.parse_block_common('Ophavsret', keys, record_and_types) }}
+
+{% set keys = ["desc_data"] %}
+{{ common_macros.parse_block_common('Beskrivelsesdata', keys, record_and_types) }}
+
+{% set keys = ["rights_notes"] %}
+{{ common_macros.parse_block_common('Rettighedsnoter', keys, record_and_types) }}
+
+{% set keys = ["contractual_status_normalized", "other_legal_restrictions_normalized"] %}
+{#{ common_macros.parse_block_common('Anden juridisk beskyttelse', keys, record_and_types) }#}
+
+{% set keys = ["availability_normalized"] %}
+{{ common_macros.parse_block_common('Tilgængelighed', keys, record_and_types) }}
+
+{% set keys = ["ordering_normalized"] %}
+{{ common_macros.parse_block_common('Bestilling', keys, record_and_types) }}
+
+{% set keys = ["admin_notes", "admin_data", "registration_id", "created_by", "created", "last_updated_by",
+"last_updated"] %}
+{% if is_employee %}
+{{ common_macros.parse_block_common('Administration', keys, record_and_types) }}
+{% set keys = ["resources"] %}
+{{ common_macros.parse_block_common('Resourcer', keys, record_and_types) }}
+{% endif %}
+
+
+{% set meta_links = [
+{'label': 'JSON. Record fra API efter hooks', 'url': url_for('records_get_json', record_id=meta_data.id, type='record')
+| string},
+{'label': 'JSON. Metadata', 'url': url_for('records_get_json', record_id=meta_data.id, type='meta_data') | string},
+{'label': 'JSON. Typer og værdier', 'url': url_for('records_get_json', record_id=meta_data.id, type='record_and_types')
+| string}
+] %}
+
+{{ common_macros.parse_meta_block(meta_links, permissions_list) }}
+
+{% endblock content %}

@@ -13,8 +13,9 @@
     <a href="/search?events={{ meta['id_real'] }}">{{ translate('Show all results in the collection') }}</a>
 </p>
 
+{% set options = {'icon': 'event', 'icon_label': 'Begivenhed'} %}
 {% set keys = ["date_from", "event_type", "addr_nr", "zipcode", "latitude_longitude_normalized", "parish", "rotation", "local_area"] %}
-{{ common_macros.parse_block_common('Stamdata', keys, resource) }}
+{{ common_macros.parse_image_block('', keys, resource, options) }}
 
 {% set keys = [ "description"] %}
 {{ common_macros.parse_block_common('Beskrivelse', keys, resource) }}

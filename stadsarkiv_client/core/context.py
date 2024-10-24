@@ -72,7 +72,7 @@ def _generate_menu_urls(request: Request, menu_items: list, query_str_display: s
         if menu_item["name"] == "search_get":
             menu_item["url"] = f"{url}?{query_str_display}"
         elif menu_item["name"] == "auth_login_get" and current_path:
-            menu_item["url"] = f"{ url }?next={current_path}"
+            menu_item["url"] = f"{url}?next={current_path}"
         else:
             menu_item["url"] = url
 
