@@ -117,6 +117,10 @@ async def records_get(request: Request):
 
     record_id = request.path_params["record_id"]
 
+    # simple check to see if the record is number-like
+    if not record_id.isdigit():
+        raise HTTPException(404)
+
     permissions = await api.me_permissions(request)
     record_pagination, record = await asyncio.gather(_get_record_pagination(request), api.proxies_record_get_by_id(request, record_id))
 
