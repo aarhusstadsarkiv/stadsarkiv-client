@@ -4,6 +4,10 @@ A couple of helpers to raise exceptions and validate passwords.
 
 from starlette.requests import Request
 from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core.logging import get_log
+
+
+log = get_log()
 
 
 class OpenAwsException(Exception):
@@ -95,6 +99,12 @@ def _extract_validation_error(error_dict: dict) -> str:
     except (KeyError, IndexError):
         pass
 
+    try:
+        error_detail = error_dict["detail"]
+        return error_detail
+    except KeyError:
+        pass
+
     return "value_error.unknown_error"
 
 
@@ -138,6 +148,9 @@ def _get_error_string(error: str) -> str:
         return translate("The token is not valid. You need to request a new mail with a new token.")
     if error == "RESET_PASSWORD_INVALID_PASSWORD":
         return translate("Password should be at least 8 characters long")
+
+    if error == "Invalid domain url":
+        return translate("Invalid settings: Invalid domain url")
 
     # unknow errors
     if error == "value_error.unknown_error":
