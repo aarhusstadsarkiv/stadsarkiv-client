@@ -24,6 +24,8 @@
 
 {% block content %}
 
+{% set schema = meta.schema %} 
+
 {% include "includes/main_title.html" %}
 
 {% set keys = [
@@ -32,8 +34,8 @@
 "ext_data_translater", "ext_data_arkiv_id", "ext_data_number_of_performances",
 ] %}
 
-{% set options = {'icon': 'event', 'icon_label': 'Forestilling'} %}
-{{ common_macros.parse_image_block('Stamdata', keys, resource, options) }}
+{% set options = {'icon': schema, 'icon_label': 'Forestilling'} %}
+{{ common_macros.parse_image_block('', keys, resource, options) }}
 
 {{ relations.parse_relations('people', resource) }}
 
