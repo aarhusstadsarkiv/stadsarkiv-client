@@ -116,8 +116,6 @@ async def records_get(request: Request):
     hooks = get_hooks(request)
 
     record_id = request.path_params["record_id"]
-
-    # simple check to see if the record is number-like
     if not record_id.isdigit():
         raise HTTPException(404)
 
