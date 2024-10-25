@@ -19,7 +19,7 @@ with open("./data/records_all.json", "r") as f:
 def get_record(record_id):
     try:
         url = f"{HOST}/records/{record_id}"
-        log.debug(f"Visiting record: {url}")
+        print(f"Visiting record: {url}")
         response = httpx.get(url)
         return response
     except httpx.ConnectError:
@@ -48,8 +48,8 @@ with open(current_id_file, "r") as f:
 for record_id in records_all[current_id:]:
     response = get_record(record_id)
     if response is None:
-        log.debug("Connection error. Exiting.")
-        break
+        print("Connection error. Exiting.")
+        sleep(10)
 
     sleep(0.5)
 
