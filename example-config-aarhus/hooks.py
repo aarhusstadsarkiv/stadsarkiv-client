@@ -109,8 +109,14 @@ class Hooks(HooksSpec):
         if record_utils.is_collection(record, 1):
             meta_data["title"] = ""
             meta_data["record_type"] = "sejrs_sedler"
-            meta_data["representation_text"] = record["summary"]
-            del record["summary"]
+            meta_data["representation_text"] = record.get("summary", "")
+            if record.get("summary"):
+                del record["summary"]
+            else:
+                record_id = record.get("id")
+                assert isinstance(record_id, str)
+                extra = {"error_code": 500, "error_url": record_utils.get_record_url(record_id)}
+                log.error("Sejrs sedler should have a summary", extra=extra)
 
         # teater arkivet
         if record_utils.is_curator(record, 4):
@@ -132,7 +138,7 @@ class Hooks(HooksSpec):
                     record_id = record.get("id")
                     assert isinstance(record_id, str)
                     extra = {"error_code": 500, "error_url": record_utils.get_record_url(record_id)}
-                    log.exception("JSON Error in Agenda Items", extra=extra)
+                    log.error("JSON Error in Agenda Items", extra=extra)
 
             original_id = record.get("original_id")
             if original_id:
