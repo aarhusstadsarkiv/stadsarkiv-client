@@ -3,7 +3,7 @@ import glob
 import sqlite3
 import json
 
-log_file_pattern = "./data/logs/main.log"
+log_file_pattern = "/home/dennis/logs/main.log"
 db_file_path = "./data/logs/errors.db"
 change_host = "http://localhost:5555"
 
