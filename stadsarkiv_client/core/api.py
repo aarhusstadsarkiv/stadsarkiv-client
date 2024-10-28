@@ -889,6 +889,7 @@ async def proxies_view_ids_from_list(items: list) -> typing.Any:
 
         if response.is_success:
             records = response.json()
+            records["status_code"] = 0
             return records
         else:
             response.raise_for_status()
