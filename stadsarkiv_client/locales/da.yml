@@ -80,7 +80,6 @@ Password: Password
 Password should be at least 8 characters long: Password skal være mindst 8 tegn langt
 Passwords do not match.: Passwords er ikke ens
 Permission admin: Administrator
-Permission basic: Bruger (ikke verificeret)
 Permission create: Permission create
 Permission employee: Medarbejder
 Permission guest: Gæst
@@ -89,7 +88,7 @@ Permission researcher: Forsker
 Permission root: Super
 Permission soft_delete: Permission soft_delete
 Permission update: Permission update
-Permission user: Bruger (verificeret)
+Permission user: Bruger
 Previous: Forrige
 Profile: Profil
 Register: Opret
@@ -152,6 +151,7 @@ Update entity: Update entity
 User already exists. Try to login instead.: En bruger med denne email findes allerede.
   Prøv at logge ind i stedet.
 User could not be updated.: Brugeren kunne ikke opdateres.
+User has been deleted: User has been deleted
 User has been updated: Brugeren er opdateret.
 User information could not be found.: Information omkring bruger kunne ikke findes.
 User is already verified.: Brugerens email er allerede verificeret.

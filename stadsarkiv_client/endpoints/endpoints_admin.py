@@ -15,6 +15,12 @@ log = get_log()
 
 
 async def admin_users_get(request: Request):
+    """
+    http://localhost:5555/admin/users?limit=10&descending=true&order=email&is_active=true
+    http://localhost:5555/admin/users?limit=10&descending=true&order=email&is_active=true
+    http://localhost:5555/admin/users?limit=10&descending=true&order=timestamp&is_active=true
+    """
+
     await is_authenticated(request, permissions=["admin"])
 
     users = await api.users_get(request)
@@ -61,6 +67,25 @@ async def admin_users_patch(request: Request):
         log.exception("Error in admin_users_patch")
         flash.set_message(request, translate("User could not be updated."), type="error")
         return RedirectResponse(url=redirect_url, status_code=302)
+
+
+async def admin_users_delete(request: Request):
+    await is_authenticated(request, permissions=["admin"])
+
+    try:
+        await api.users_delete(request)
+        flash.set_message(request, translate("User has been deleted"), type="success")
+        json_message = {"message": "User has been deleted."}
+        return JSONResponse(json_message)
+    except Exception:
+        log.exception("Error in admin_users_delete")
+
+        error = {
+            "error": True,
+            "message": "User could not be deleted.",
+        }
+
+        return JSONResponse(error)
 
 
 async def admin_test(request: Request):

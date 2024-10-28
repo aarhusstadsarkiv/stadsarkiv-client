@@ -237,12 +237,16 @@ async def users_data_post(request: Request, id: str, data: dict):
 
 async def users_get(request: Request) -> dict:
     """
-    GET all users from the api
+    GET all users from the api:
     """
 
     headers = _get_jwt_headers(request, {"Accept": "application/json"})
-    url = base_url + "/users/?limit=1000"
 
+    # get query parameters as string from the request
+    query_params = request.query_params.multi_items()
+    query_str = query.get_str_from_list(query_params)
+
+    url = f"{base_url}/users/?{query_str}"
     async with _get_async_client() as client:
         response = await client.get(
             url=url,
@@ -344,6 +348,23 @@ async def users_patch_permissions(request: Request) -> typing.Any:
             headers=headers,
             json=user_permission,
         )
+
+        if response.is_success:
+            return response.json()
+        else:
+            response.raise_for_status()
+
+
+async def users_delete(request: Request) -> typing.Any:
+    """
+    DELETE a user from the api
+    """
+    uuid = request.path_params["uuid"]
+
+    async with _get_async_client() as client:
+        url = base_url + "/users/" + uuid
+        headers = _get_jwt_headers(request, {"Accept": "application/json"})
+        response = await client.delete(url, headers=headers)
 
         if response.is_success:
             return response.json()

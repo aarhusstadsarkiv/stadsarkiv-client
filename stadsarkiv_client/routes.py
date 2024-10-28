@@ -74,6 +74,7 @@ routes = [
     Route("/admin/users", endpoint=endpoints_admin.admin_users_get, name="admin_users_get"),
     Route("/admin/users/{uuid}/update", endpoint=endpoints_admin.admin_users_get_single, name="admin_users_get_single"),
     Route("/admin/users/{uuid}/permissions", endpoint=endpoints_admin.admin_users_patch, name="admin_users_patch", methods=["POST"]),
+    Route("/admin/users/{uuid}/delete", endpoint=endpoints_admin.admin_users_delete, name="admin_users_delete", methods=["POST"]),
     Route("/admin/users/{uuid}/json", endpoint=endpoints_admin.admin_users_get_json, name="admin_users_get_json"),
     Route("/admin/test", endpoint=endpoints_admin.admin_test, name="admin_test"),
     Route("/admin/config", endpoint=endpoints_admin.admin_config_get, name="admin_config_get"),
