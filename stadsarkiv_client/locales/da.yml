@@ -11,6 +11,7 @@ An email has been sent to you with instructions on how to reset your password.: 
 Are you sure: Er du sikker på at du vil logge ud?
 Bookmark has been added.: Bogmærke er blevet tilføjet.
 Bookmark has been removed.: Bogmærke er blevet fjernet.
+Captcha is not correct: Captcha er ikke korrekt
 Change your password: Ændr dit password
 Click in order to listen to the audio.: Klik for at lytte til lydfilen.
 Click on the image to open the PDF document.: Klik på billedet for at hente pdf-dokumentet.
@@ -38,10 +39,10 @@ Email or password is incorrect. Or your user has not been activated.: Email elle
 Email or password is not correct.: Email eller password er ikke korrekt.
 Enter new password: Indtast nyt password
 Entity: Entity
+Error. Forbidden Error: Du har ikke adgang til siden.
 Error. Not Found: Siden eksisterer ikke.
 Error. Request Error: Der var et problem med din forespørgsel.
 Error. Server Error: Der skete en system fejl.
-Error. Forbidden Error: Du har ikke adgang til siden.
 Failed to get schemas: Det var ikke muligt at hente skemaer
 First page: Første
 Forgot your password: Glemt password

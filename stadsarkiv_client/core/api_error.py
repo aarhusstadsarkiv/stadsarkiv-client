@@ -89,6 +89,21 @@ async def validate_display_name(request: Request):
         )
 
 
+async def validate_captcha(request: Request):
+    """
+    Validate that the captcha is correct.
+    """
+
+    form = await request.form()
+    captcha = str(form.get("captcha"))
+
+    if captcha != "8000":
+        raise OpenAwsException(
+            400,
+            translate("Captcha is not correct"),
+        )
+
+
 def _extract_validation_error(error_dict: dict) -> str:
     try:
         error_detail = error_dict["detail"]
