@@ -241,7 +241,7 @@ async def users_get(request: Request) -> dict:
     """
 
     headers = _get_jwt_headers(request, {"Accept": "application/json"})
-    url = base_url + "/users/"
+    url = base_url + "/users/?limit=1000"
 
     async with _get_async_client() as client:
         response = await client.get(

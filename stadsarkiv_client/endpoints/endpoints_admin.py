@@ -16,8 +16,8 @@ log = get_log()
 
 async def admin_users_get(request: Request):
     await is_authenticated(request, permissions=["admin"])
-    users = await api.users_get(request)
 
+    users = await api.users_get(request)
     for user_ in users:
         permissions = user.permissions_as_list(user_["permissions"])
         permission_translated = user.permission_translated(permissions)
