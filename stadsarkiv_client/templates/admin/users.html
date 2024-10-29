@@ -43,15 +43,28 @@
             
             <td>{{ user.permission_translated }}</td>
             <td>
-
                 <a href="{{ url_for('admin_users_get_single', uuid=user.id) }}">Rediger</a> |
-                <a class="delete-user" data-uuid="{{ user.id }}" href="#">Slet</a>
-
-                
+                <a class="delete-user" data-uuid="{{ user.id }}" href="#">Slet</a>   
             </td>
         </tr>
     {% endfor %}
+
 </table>
+<div class="action-links">
+    {% if has_previous %}
+    <a href="/admin/users/?offset={{prev_offset}}">Forrige</a>
+    {% else %}
+    <span class="disabled">Forrige</span>
+    {% endif %}
+
+    {% if has_next %}
+    <a href="/admin/users/?offset={{next_offset}}">Næste</a>
+    {% else %}
+    <span class="disabled">Næste</span>
+    {% endif %}
+</div>
+
+
 <div class="loadingspinner hidden"></div>
 
 <script type="module">
@@ -66,6 +79,12 @@
     // loop through all delete-user elements and add event listener
     userDeleteElems.forEach(function(elem) {
         elem.addEventListener('click', async function(event) {
+
+            const confirmRes = confirm('Er du sikker på at du vil slette denne bruger?');
+            if (!confirmRes) {
+                return;
+            }
+
             event.preventDefault();
             Flash.clearMessages();
             spinner.classList.toggle('hidden');

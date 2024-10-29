@@ -9,9 +9,19 @@ from stadsarkiv_client.core import user
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core import query
 import asyncio
 
 log = get_log()
+
+
+def _get_pagination(request: Request):
+    limit = "50"
+    offset = int(request.query_params.get("offset", "0"))
+    next_offset = str(offset + int(limit))
+    prev_offset = str(max(offset - int(limit), 0))
+
+    return limit, str(offset), next_offset, prev_offset
 
 
 async def admin_users_get(request: Request):
@@ -20,16 +30,46 @@ async def admin_users_get(request: Request):
     http://localhost:5555/admin/users?limit=10&descending=true&order=email&is_active=true
     http://localhost:5555/admin/users?limit=10&descending=true&order=timestamp&is_active=true
     """
-
     await is_authenticated(request, permissions=["admin"])
 
-    users = await api.users_get(request)
+    limit, offset, next_offset, prev_offset = _get_pagination(request)
+
+    query_params = [
+        ("limit", limit),
+        ("offset", offset),
+        ("descending", "true"),
+        ("order", "timestamp"),
+        ("is_active", "true"),
+    ]
+    query_params_next = [
+        ("limit", limit),
+        ("offset", next_offset),
+        ("descending", "true"),
+        ("order", "timestamp"),
+        ("is_active", "true"),
+    ]
+
+    query_str = query.get_str_from_list(query_params)
+    query_str_next = query.get_str_from_list(query_params_next)
+
+    users, users_next = await asyncio.gather(api.users_get(request, query_str=query_str), api.users_get(request, query_str=query_str_next))
+
+    has_next = bool(users_next)
+    has_previous = int(offset) > 0
+
     for user_ in users:
         permissions = user.permissions_as_list(user_["permissions"])
-        permission_translated = user.permission_translated(permissions)
-        user_["permission_translated"] = permission_translated
+        user_["permission_translated"] = user.permission_translated(permissions)
 
-    context_values = {"title": "Brugere", "users": users}
+    context_values = {
+        "title": "Brugere",
+        "users": users,
+        "has_next": has_next,
+        "next_offset": next_offset,
+        "has_previous": has_previous,
+        "prev_offset": prev_offset,
+    }
+
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse(request, "admin/users.html", context)
 

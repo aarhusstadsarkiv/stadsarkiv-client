@@ -235,16 +235,12 @@ async def users_data_post(request: Request, id: str, data: dict):
         return response.json()
 
 
-async def users_get(request: Request) -> dict:
+async def users_get(request: Request, query_str: str) -> dict:
     """
     GET all users from the api:
     """
 
     headers = _get_jwt_headers(request, {"Accept": "application/json"})
-
-    # get query parameters as string from the request
-    query_params = request.query_params.multi_items()
-    query_str = query.get_str_from_list(query_params)
 
     url = f"{base_url}/users/?{query_str}"
     async with _get_async_client() as client:
