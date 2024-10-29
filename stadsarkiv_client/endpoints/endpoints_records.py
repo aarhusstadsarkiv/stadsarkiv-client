@@ -98,8 +98,7 @@ async def _get_record_pagination(request: Request) -> typing.Optional[RecordPagi
         This can happen if the user uses two tabs and the search result is updated in one tab.
         """
         next_record, prev_record = await asyncio.gather(get_next_record(), get_prev_record())
-    except Exception:
-        log.exception("Error in _get_record_pagination")
+    except IndexError:
         return None
 
     # Add the next and previous record to the record pagination dict
