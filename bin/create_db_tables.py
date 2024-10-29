@@ -5,50 +5,12 @@ export CONFIG_DIR=example-config-aarhus
 ./bin/create_db_tables.py
 """
 
-from stadsarkiv_client.core.dynamic_settings import init_settings
-import sqlite3
+from stadsarkiv_client.core.dynamic_settings import settings
+from stadsarkiv_client.core.migration import Migration
 from stadsarkiv_client.core.logging import get_log
-import os
+
 
 log = get_log()
-init_settings()
-
-DATABASE_URL = os.getenv("DATABASE_URL")
-try:
-    if not DATABASE_URL:
-        raise ValueError("DATABASE_URL is not set")
-except ValueError:
-    log.error("DATABASE_URL is not set in ENV")
-    exit(1)
-
-
-conn = sqlite3.connect(DATABASE_URL)
-cursor = conn.cursor()
-
-
-def check_migrations_table_exists():
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='migrations';")
-    result = cursor.fetchone()
-    return result is not None
-
-
-def create_migrations_table_if_not_exists():
-    if not check_migrations_table_exists():
-        create_migrations_table = """
-        CREATE TABLE migrations (
-            id INTEGER PRIMARY KEY,
-            migration_key TEXT NOT NULL,
-            applied_at TEXT DEFAULT CURRENT_TIMESTAMP
-        ) STRICT;
-        """
-        cursor.execute(create_migrations_table)
-        conn.commit()
-        log.info("Migrations table created.")
-    else:
-        log.info("Migrations table already exists.")
-
-
-create_migrations_table_if_not_exists()
 
 
 create_booksmarks_query = """
@@ -91,6 +53,18 @@ create_cache_index_query = """
 CREATE INDEX idx_cache_key ON cache (key);
 """
 
+create_error_logs = """
+CREATE TABLE error_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    url TEXT,
+    error TEXT,
+    error_code INTEGER,
+    exception TEXT,
+    resolved BOOLEAN DEFAULT 0,
+    UNIQUE(url, error)
+)
+"""
+
 # List of migrations with keys
 migrations = {
     "create_bookmarks": create_booksmarks_query,
@@ -99,28 +73,16 @@ migrations = {
     "create_searches_index": create_searches_index_query,
     "create_cache": create_cache_query,
     "create_cache_index": create_cache_index_query,
+    "create_error_logs": create_error_logs,
 }
 
 
-def has_migration_been_applied(migration_key):
-    cursor.execute("SELECT 1 FROM migrations WHERE migration_key = ?", (migration_key,))
-    return cursor.fetchone() is not None
+try:
+    db_path = settings["sqlite3"]["default"]
+except KeyError:
+    log.error("No database URL found in settings")
+    exit(1)
 
-
-def apply_migration(migration_key, sql):
-    if not has_migration_been_applied(migration_key):
-        cursor.execute(sql)
-        conn.commit()
-        log.info(f"SQL for {migration_key} executed")
-        cursor.execute("INSERT INTO migrations (migration_key) VALUES (?)", (migration_key,))
-        conn.commit()
-        log.info(f"Migration {migration_key} recorded")
-
-
-def create_tables():
-    for migration_key, sql in migrations.items():
-        apply_migration(migration_key, sql)
-
-
-create_tables()
-conn.close()
+migration_manager = Migration(db_path, migrations)
+migration_manager.run_migrations()
+migration_manager.close()
