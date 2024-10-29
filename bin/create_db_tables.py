@@ -56,13 +56,20 @@ CREATE INDEX idx_cache_key ON cache (key);
 create_error_logs = """
 CREATE TABLE error_logs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    url TEXT,
-    error TEXT,
-    error_code INTEGER,
+    time TEXT,
+    name TEXT,
+    level TEXT,
+    message TEXT,
     exception TEXT,
-    resolved BOOLEAN DEFAULT 0,
-    UNIQUE(url, error)
-)
+    url TEXT,
+    error_code INTEGER,
+    resolved INTEGER DEFAULT 0,
+    UNIQUE(url, message, time)
+) STRICT;
+"""
+
+create_error_logs_index = """
+CREATE INDEX idx_time ON error_logs (time);
 """
 
 # List of migrations with keys
@@ -74,6 +81,7 @@ migrations = {
     "create_cache": create_cache_query,
     "create_cache_index": create_cache_index_query,
     "create_error_logs": create_error_logs,
+    "create_error_logs_index": create_error_logs_index,
 }
 
 

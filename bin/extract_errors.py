@@ -1,31 +1,22 @@
-import re
+from stadsarkiv_client.core.dynamic_settings import settings
+from stadsarkiv_client.core.logging import get_log
 import glob
 import sqlite3
 import json
 
-log_file_pattern = "/home/dennis/logs/main.log"
-db_file_path = "./data/logs/errors.db"
-change_host = "http://localhost:5555"
+
+log_file_pattern = "data/logs/main.log"
+log = get_log()
+
+try:
+    db_path = settings["sqlite3"]["default"]
+except KeyError:
+    log.error("No database URL found in settings")
+    exit(1)
 
 # Connect to the SQLite database
-conn = sqlite3.connect(db_file_path)
+conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
-
-# Create the table if it doesn't exist
-cursor.execute(
-    """
-    CREATE TABLE IF NOT EXISTS error_logs (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        url TEXT,
-        error TEXT,
-        error_code INTEGER,
-        exception TEXT,
-        resolved BOOLEAN DEFAULT 0,
-        UNIQUE(url, error)
-    )
-"""
-)
-conn.commit()
 
 # Find all files matching the pattern
 log_files = glob.glob(log_file_pattern)
@@ -34,24 +25,28 @@ log_files = glob.glob(log_file_pattern)
 def parse_line(line: str):
     log_data = json.loads(line)
 
-    # Check if the log line is an error log
+    # Only proceed if the log line is an error log
     if log_data.get("level") == "ERROR":
+        time = log_data.get("time")
+        name = log_data.get("name")
+        level = log_data.get("level")
         error_message = log_data.get("message")
-        error_code = log_data.get("error_code")
-        original_url = log_data.get("request_url", "")
+        error_code = log_data.get("error_code", 0)
+        request_url = log_data.get("request_url", "")
         exception = log_data.get("exception", "")
 
-        new_url = re.sub(r"https?://[^/]+", change_host, original_url)
-
         # Check if combination exists
-        cursor.execute("SELECT 1 FROM error_logs WHERE url = ? AND error = ?", (new_url, error_message))
+        cursor.execute("SELECT 1 FROM error_logs WHERE url = ? AND message = ? AND time = ?", (request_url, error_message, time))
         result = cursor.fetchone()
 
         # Insert the error into the database if it doesn't exist
         if result is None:
             cursor.execute(
-                "INSERT INTO error_logs (url, error, error_code, exception, resolved) VALUES (?, ?, ?, ?, ?)",
-                (new_url, error_message, error_code, exception, False),
+                """
+                INSERT INTO error_logs (time, name, level, message, exception, url, error_code, resolved)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (time, name, level, error_message, exception, request_url, error_code, False),
             )
             conn.commit()
 
@@ -62,8 +57,9 @@ def parse_log_file(log_file_path: str):
             parse_line(line)
 
 
+# Process each log file
 for log_file_path in log_files:
     parse_log_file(log_file_path)
 
-
+# Close the connection
 conn.close()

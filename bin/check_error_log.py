@@ -1,32 +1,41 @@
 import sqlite3
 import httpx
 import time
+from stadsarkiv_client.database.utils import transaction_scope_sync
 
 db_file_path = "data/logs/errors.db"
 
+should_not_resolve = [
+    "Representations but no record_type",
+    "JSON Error in Agenda Item",
+    "Sejrs sedler should have a summary",
+]
+
 
 def get_unresolved_urls():
-    conn = sqlite3.connect(db_file_path)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM error_logs WHERE resolved = 0")
-    unresolved_errors = cursor.fetchall()
-
-    conn.close()
-
-    return unresolved_errors
+    with transaction_scope_sync() as connection:
+        cursor = connection.execute("SELECT * FROM error_logs WHERE resolved = 0 AND error_code >= 500")
+        unresolved_errors = cursor.fetchall()
+        return unresolved_errors
 
 
 def mark_url_resolved(error_id):
     """Mark the URL as resolved in the database."""
-    conn = sqlite3.connect(db_file_path)
-    cursor = conn.cursor()
 
-    cursor.execute("UPDATE error_logs SET resolved = 1 WHERE id = ?", (error_id,))
-    conn.commit()
+    with transaction_scope_sync() as connection:
+        connection.execute("UPDATE error_logs SET resolved = 1 WHERE id = ?", (error_id,))
+        connection.commit()
 
-    conn.close()
+
+def ignore_error_by_message(message):
+    """
+    Check if part of the message matches any of the strings in should_not_resolve.
+    """
+    for string in should_not_resolve:
+        if string in message:
+            return True
+    return False
 
 
 def check_url(url):
@@ -42,9 +51,10 @@ print("-" * 50)
 
 # Iterate over each row as a dictionary-like object
 for row in unresolved_errors:
+
     error_id = row["id"]
     url = row["url"]
-    error = row["error"]
+    message = row["message"]
     error_code = row["error_code"]
 
     url = url.strip()
@@ -55,6 +65,13 @@ for row in unresolved_errors:
         current_status_code = "404"
         mark_url_resolved(error_id)
         resolution = "Resolved"
+
+    elif not url:
+        mark_url_resolved(error_id)
+
+    elif ignore_error_by_message(message):
+        resolution = "Ignored"
+
     else:
         try:
             http_status_code = check_url(url)
@@ -73,7 +90,7 @@ for row in unresolved_errors:
     # Print information for the current URL, with URL on one line
     print(f"ID: {error_id}")
     print(f"URL: {url}")
-    print(f"Error Message: {error}")
+    print(f"Error Message: {message}")
     print(f"Error Code: {error_code}")
     print(f"Current status Status: {current_status_code}")
     print(f"Resolution: {resolution}")
