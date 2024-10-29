@@ -157,12 +157,16 @@ function onSearchDateEvent(dateFormClass) {
         // Redirect to new url and add date_from and date_to to url
         const url = window.location.href;
         const urlParams = new URLSearchParams(window.location.search);
+        
         if (isValidDate(fromDate)) {
             urlParams.set('date_from', `${fromYear}${fromMonth}${fromDay}`);
         }
         if (isValidDate(toDate)) {
             urlParams.set('date_to', `${toYear}${toMonth}${toDay}`);
         }
+
+        // Reset start parameter
+        urlParams.delete('start');
 
         window.location.href = url.split('?')[0] + '?' + urlParams.toString();
     });
