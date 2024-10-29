@@ -4,6 +4,15 @@ import logging
 log = logging.getLogger(__name__)
 
 
+MIGRATION_TABLE_SQL = """
+CREATE TABLE migrations (
+    id INTEGER PRIMARY KEY,
+    migration_key TEXT NOT NULL,
+    applied_at TEXT DEFAULT CURRENT_TIMESTAMP
+) STRICT;
+"""
+
+
 class Migration:
     def __init__(self, db_path, migrations):
 
@@ -20,14 +29,7 @@ class Migration:
 
     def _create_migrations_table_if_not_exists(self):
         if not self._check_migrations_table_exists():
-            create_migrations_table = """
-            CREATE TABLE migrations (
-                id INTEGER PRIMARY KEY,
-                migration_key TEXT NOT NULL,
-                applied_at TEXT DEFAULT CURRENT_TIMESTAMP
-            ) STRICT;
-            """
-            self.cursor.execute(create_migrations_table)
+            self.cursor.execute(MIGRATION_TABLE_SQL)
             self.conn.commit()
             log.info("Migrations table created.")
         else:
