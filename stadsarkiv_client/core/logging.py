@@ -13,9 +13,6 @@ from stadsarkiv_client.core.args import get_data_dir
 
 logging_handlers.generate_log_dir()
 warnings.simplefilter(action="ignore", category=FutureWarning)
-
-# remove uvicorn noise in debug mode
-# if settings["environment"] == "development":
 logging.getLogger("uvicorn.error").setLevel(logging.CRITICAL)
 
 log = logging.getLogger("main")
