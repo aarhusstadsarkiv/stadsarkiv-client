@@ -1,4 +1,8 @@
-import sqlite3
+"""
+Check the error log added to the database for unresolved errors.
+export CONFIG_DIR=example-config-aarhus
+"""
+
 import httpx
 import time
 from stadsarkiv_client.database.utils import transaction_scope_sync
@@ -11,11 +15,15 @@ should_not_resolve = [
     "Sejrs sedler should have a summary",
 ]
 
+should_resolve = [
+    "Error in _get_record_pagination",
+]
+
 
 def get_unresolved_urls():
 
     with transaction_scope_sync() as connection:
-        cursor = connection.execute("SELECT * FROM error_logs WHERE resolved = 0 AND error_code >= 500")
+        cursor = connection.execute("SELECT * FROM error_logs WHERE resolved = 0")
         unresolved_errors = cursor.fetchall()
         return unresolved_errors
 
@@ -33,6 +41,16 @@ def ignore_error_by_message(message):
     Check if part of the message matches any of the strings in should_not_resolve.
     """
     for string in should_not_resolve:
+        if string in message:
+            return True
+    return False
+
+
+def resolve_error_by_message(message):
+    """
+    Check if part of the message matches any of the strings in should_resolve.
+    """
+    for string in should_resolve:
         if string in message:
             return True
     return False
@@ -61,18 +79,14 @@ for row in unresolved_errors:
     current_status_code = ""
     resolution = "Unresolved"
 
-    if error_code == "404":
-        current_status_code = "404"
+    if ignore_error_by_message(message):
+        resolution = "Ignored"
+
+    elif resolve_error_by_message(message):
         mark_url_resolved(error_id)
         resolution = "Resolved"
 
-    elif not url:
-        mark_url_resolved(error_id)
-
-    elif ignore_error_by_message(message):
-        resolution = "Ignored"
-
-    else:
+    elif url:
         try:
             http_status_code = check_url(url)
             current_status_code = f"{http_status_code}"
@@ -87,12 +101,15 @@ for row in unresolved_errors:
             mark_url_resolved(error_id)
             resolution = "Resolved"
 
+    else:
+        resolution = "Ignored. No URL"
+
     # Print information for the current URL, with URL on one line
     print(f"ID: {error_id}")
     print(f"URL: {url}")
     print(f"Error Message: {message}")
     print(f"Error Code: {error_code}")
-    print(f"Current status Status: {current_status_code}")
+    print(f"Current Status: {current_status_code}")
     print(f"Resolution: {resolution}")
     print("-" * 50)
 

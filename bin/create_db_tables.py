@@ -64,7 +64,7 @@ CREATE TABLE error_logs (
     url TEXT,
     error_code INTEGER,
     resolved INTEGER DEFAULT 0,
-    UNIQUE(url, message, time)
+    UNIQUE(url, message)
 ) STRICT;
 """
 

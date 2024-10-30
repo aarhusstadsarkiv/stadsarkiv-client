@@ -8,6 +8,7 @@ import json
 log_file_pattern = "data/logs/main.log"
 log = get_log()
 
+
 try:
     db_path = settings["sqlite3"]["default"]
 except KeyError:
@@ -36,7 +37,7 @@ def parse_line(line: str):
         exception = log_data.get("exception", "")
 
         # Check if combination exists
-        cursor.execute("SELECT 1 FROM error_logs WHERE url = ? AND message = ? AND time = ?", (request_url, error_message, time))
+        cursor.execute("SELECT 1 FROM error_logs WHERE url = ? AND message = ?", (request_url, error_message))
         result = cursor.fetchone()
 
         # Insert the error into the database if it doesn't exist
