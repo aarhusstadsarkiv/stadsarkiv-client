@@ -29,6 +29,9 @@ async def admin_users_get(request: Request):
     http://localhost:5555/admin/users?limit=10&descending=true&order=email&is_active=true
     http://localhost:5555/admin/users?limit=10&descending=true&order=email&is_active=true
     http://localhost:5555/admin/users?limit=10&descending=true&order=timestamp&is_active=true
+
+    order: id, email, timestamp
+
     """
     await is_authenticated(request, permissions=["admin"])
 
@@ -40,6 +43,7 @@ async def admin_users_get(request: Request):
         ("descending", "true"),
         ("order", "timestamp"),
         ("is_active", "true"),
+        # ("pattern", "gmail"),
     ]
     query_params_next = [
         ("limit", limit),
@@ -47,6 +51,7 @@ async def admin_users_get(request: Request):
         ("descending", "true"),
         ("order", "timestamp"),
         ("is_active", "true"),
+        # ("pattern", "gmail"),
     ]
 
     query_str = query.get_str_from_list(query_params)
