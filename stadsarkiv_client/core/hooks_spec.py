@@ -1,6 +1,5 @@
 """
 Default hooks specification.
-query_params is a list of tuples. Example: [("collection", 1), ("series", 2)]
 """
 
 from starlette.requests import Request
