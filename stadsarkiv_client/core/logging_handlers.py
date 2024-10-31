@@ -6,13 +6,13 @@ from typing import Any
 import logging
 import os
 from pathlib import Path
-from logging.handlers import RotatingFileHandler
+from concurrent_log_handler import ConcurrentRotatingFileHandler
 import warnings
 from stadsarkiv_client.core.args import get_data_dir
 import json
 
 MAX_LOG_SIZE = 100 * 1024 * 1024
-BACKUP_COUNT = 3
+BACKUP_COUNT = 5
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
@@ -53,7 +53,7 @@ def generate_log_dir():
 
 def get_rotating_json_file_handler(level: Any, file_name):
     Path(file_name).touch()
-    handler = RotatingFileHandler(file_name, maxBytes=MAX_LOG_SIZE, backupCount=BACKUP_COUNT)
+    handler = ConcurrentRotatingFileHandler(file_name, maxBytes=MAX_LOG_SIZE, backupCount=BACKUP_COUNT)
     handler.setLevel(level)
     handler.setFormatter(JsonFormatter())
     return handler
@@ -68,7 +68,7 @@ def get_stream_handler(level: Any):
 
 def get_rotating_file_handler(level: Any, file_name):
     Path(file_name).touch()
-    handler = RotatingFileHandler(file_name, maxBytes=MAX_LOG_SIZE, backupCount=BACKUP_COUNT)
+    handler = ConcurrentRotatingFileHandler(file_name, maxBytes=MAX_LOG_SIZE, backupCount=BACKUP_COUNT)
     handler.setLevel(level)
     handler.setFormatter(formatter)
     return handler
