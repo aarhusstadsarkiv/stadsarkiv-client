@@ -122,7 +122,7 @@ async def records_get(request: Request):
     record_pagination, record = await asyncio.gather(_get_record_pagination(request), api.proxies_record_get_by_id(request, record_id))
 
     if "representations" in record and "record_type" not in record["representations"]:
-        extra = {"error_code": 500, "error_url": request.url}
+        extra = {"error_code": 499, "error_url": request.url}
         log.error(f"Record {record['id']}. Representations but no record_type", extra=extra)
         del record["representations"]
 
