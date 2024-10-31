@@ -80,6 +80,6 @@ settings: dict[str, typing.Any] = {
     "allow_online_ordering": False,
     "sqlite3": {
         "default": "data/database.db",
-        "errors": "data/errors.db",
+        "orders": "data/orders.db",
     },
 }

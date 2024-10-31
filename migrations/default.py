@@ -1,8 +1,22 @@
 #!/usr/bin/env python
 """
-# Set a config dir as environment variable and run this script to create the database tables.
+
+The system will work fine without database tables, but some features will not be available.
+
+- Bookmarks
+- Searches
+- Cache
+- Import logs
+- Error logs in DB format
+
+Install:
+
+Set a config dir as environment variable and run this script to create the database tables.
+
+E.g.:
+
 export CONFIG_DIR=example-config-aarhus
-./bin/create_db_tables.py
+./bin/default.py
 """
 
 from stadsarkiv_client.core.dynamic_settings import settings
