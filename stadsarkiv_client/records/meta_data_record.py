@@ -79,10 +79,11 @@ def get_record_meta_data(request: Request, record: dict, user_permissions=[]) ->
     meta_data["collection_id"] = record.get("collection", {}).get("id")
     meta_data["content_types_label"] = _get_content_type_label(record)
 
-    # This should be altered to record_represenation_type
+    meta_data = _set_order_info(meta_data, record)
     meta_data = _set_representations(meta_data, record)
 
     meta_data["is_downloadable"] = _is_downloadable(meta_data)
+
     return meta_data
 
 
@@ -181,3 +182,48 @@ def _get_meta_title(record: dict):
         meta_title = record_utils.meaningful_substring(record.get("summary", ""), 60)
 
     return meta_title
+
+
+def _set_order_info(meta_data: dict, record: dict):
+    """
+    Get info describing if the record can be ordered
+
+    http://localhost:5555/records/000503354
+    identifikation: "51648293"
+
+    http://localhost:5555/records/000504168
+    storage_id: ['91+01390-2']
+
+    000429798
+
+    (None, '8038476141', 'Reol 106/fag 2/hylde 1')
+
+    000506083
+
+    (['91+01418-1'], None, None)
+
+    """
+
+    try:
+        storage_id = record["resources"][0]["storage_id"]
+    except KeyError:
+        storage_id = None
+
+    try:
+        barcode = record["resources"][0]["barcode"]
+    except KeyError:
+        barcode = None
+
+    try:
+        location = record["resources"][0]["location"]
+        orderable = True
+    except KeyError:
+        location = None
+        orderable = False
+
+    meta_data["storage_id"] = storage_id
+    meta_data["barcode"] = barcode
+    meta_data["location"] = location
+    meta_data["orderable"] = orderable
+
+    return meta_data
