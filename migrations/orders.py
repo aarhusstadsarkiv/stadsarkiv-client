@@ -12,21 +12,18 @@ from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.migration import Migration
 from stadsarkiv_client.core.logging import get_log
 
-
 log = get_log()
-
 
 create_orders_query = """
 CREATE TABLE orders (
     id INTEGER PRIMARY KEY,
     record_id TEXT NOT NULL,
     user_id TEXT NOT NULL,
-    -- identifier TEXT NOT NULL,                        -- Barcode/box_id
-    -- location TEXT,                                   -- Building-level location
+    identifier TEXT NOT NULL,                        -- "resources[].barcode" eller "resources[].storage_id[]
+    location TEXT,                                   -- "resources[].location"
     created TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    -- label TEXT,                                      -- Label for the order
+    label TEXT,                                      -- Label for the order
     deadline TEXT,
-    client_id TEXT,
     status_modified TEXT,
     status_updated_by TEXT,
     status TEXT CHECK(status IN (
@@ -42,12 +39,20 @@ CREATE TABLE orders (
 ) STRICT;
 """
 
+create_user_index_query = """
+CREATE INDEX idx_orders_user_id ON orders (user_id);
+"""
+
+create_status_index_query = """
+CREATE INDEX idx_orders_status ON orders (status);
+"""
 
 # List of migrations with keys
 migrations = {
     "create_orders": create_orders_query,
+    "create_user_index": create_user_index_query,
+    "create_status_index": create_status_index_query,
 }
-
 
 try:
     db_path = settings["sqlite3"]["orders"]
