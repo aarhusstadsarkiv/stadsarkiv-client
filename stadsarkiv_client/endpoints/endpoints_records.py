@@ -148,7 +148,7 @@ async def records_get(request: Request):
     return templates.TemplateResponse(request, "records/record.html", context)
 
 
-async def get_json(request: Request):
+async def records_get_json(request: Request):
     try:
         hooks = get_hooks(request)
 

@@ -124,7 +124,7 @@ routes = [
     Route("/auto_complete_relations", endpoint=endpoints_search.records_auto_complete_relations, name="records_auto_complete_relations"),
     Route("/search/json", endpoint=endpoints_search.search_get_json, name="search_get_json"),
     Route("/records/{record_id:str}", endpoint=endpoints_records.records_get, name="records_get"),
-    Route("/records/{record_id:str}/json/{type:str}", endpoint=endpoints_records.get_json, name="records_get_json"),
+    Route("/records/{record_id:str}/json/{type:str}", endpoint=endpoints_records.records_get_json, name="records_get_json"),
     Route("/order/{record_id:str}", endpoint=endpoints_order.records_get_json, name="records_get_json"),
     Route("/relations", endpoint=endpoints_relations.relations_post, name="relations_post", methods=["POST"]),
     Route("/relations/{rel_id:str}", endpoint=endpoints_relations.relations_delete, name="relations_delete", methods=["DELETE"]),
