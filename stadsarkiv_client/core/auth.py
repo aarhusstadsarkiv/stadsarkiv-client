@@ -10,10 +10,9 @@ log = get_log()
 def _get_redirect_url(request: Request):
     """
     Create a redirect url with the current url as the next parameter.
-    The currect url is the url the user is trying to access - where the user needs to be authenticated.
     """
-    current_url = request.url.path
-    redirect_url = f"/auth/login?next={current_url}"
+    next_url = request.url.path
+    redirect_url = f"/auth/login?next={next_url}"
     return redirect_url
 
 
@@ -36,8 +35,9 @@ class AuthExceptionJSON(Exception):
         super().__init__(self.message)
 
 
-async def is_authenticated(request: Request, permissions=[], message=None):
+async def is_authenticated(request: Request, permissions=[], message=None, verified=False):
     is_logged_in = await api.is_logged_in(request)
+    users_me_get = await api.users_me_get(request)
 
     if not message:
         message = translate("You need to be logged in to view this page.")
@@ -50,6 +50,15 @@ async def is_authenticated(request: Request, permissions=[], message=None):
             redirect_url=_get_redirect_url(request),
         )
 
+    if verified:
+        if not users_me_get["is_verified"]:
+            log.error(f"403 Forbidden: {request.url}. User {users_me_get['email']}. User is not verified")
+            raise AuthException(
+                request,
+                message=translate("You need to verify your email address to view this page."),
+                redirect_url="/auth/me",
+            )
+
     if permissions:
         user_permissions_list = await api.me_permissions(request)
 
@@ -57,7 +66,6 @@ async def is_authenticated(request: Request, permissions=[], message=None):
         permission_granted = any(permission in user_permissions_list for permission in permissions)
 
         if not permission_granted:
-            users_me_get = await api.users_me_get(request)
             log.error(f"403 Forbidden: {request.url}. User {users_me_get}. Missing required permissions")
             raise AuthException(
                 request,
