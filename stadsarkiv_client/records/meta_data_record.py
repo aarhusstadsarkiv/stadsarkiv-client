@@ -187,21 +187,6 @@ def _get_meta_title(record: dict):
 def _set_order_info(meta_data: dict, record: dict):
     """
     Get info describing if the record can be ordered
-
-    http://localhost:5555/records/000503354
-    identifikation: "51648293"
-
-    http://localhost:5555/records/000504168
-    storage_id: ['91+01390-2']
-
-    000429798
-
-    (None, '8038476141', 'Reol 106/fag 2/hylde 1')
-
-    000506083
-
-    (['91+01418-1'], None, None)
-
     """
 
     try:
