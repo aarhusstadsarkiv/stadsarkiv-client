@@ -19,25 +19,29 @@ class TestJSON(unittest.TestCase):
         json_response = response.json()
         json_expected = r"""
 {
-  "id": "000309478",
-  "real_id": "309478",
-  "allowed_by_ip": false,
-  "title": "Aarhus Vejviser 1997",
-  "meta_title": "Aarhus Vejviser 1997",
-  "meta_description": "",
-  "icon": {
-    "icon": "description",
-    "label": "Andet materiale"
-  },
-  "copyright_id": 7,
-  "legal_id": 1,
-  "contractual_id": 5,
-  "availability_id": 3,
-  "usability_id": 4,
-  "collection_id": 204,
-  "content_types_label": "",
-  "is_representations_online": false,
-  "is_downloadable": false
+    "id": "000309478",
+    "real_id": "309478",
+    "allowed_by_ip": false,
+    "title": "Aarhus Vejviser 1997",
+    "meta_title": "Aarhus Vejviser 1997",
+    "meta_description": "",
+    "icon": {
+        "icon": "description",
+        "label": "Andet materiale"
+    },
+    "copyright_id": 7,
+    "legal_id": 1,
+    "contractual_id": 5,
+    "availability_id": 3,
+    "usability_id": 4,
+    "collection_id": 204,
+    "content_types_label": "",
+    "storage_id": null,
+    "barcode": null,
+    "location": null,
+    "orderable": false,
+    "is_representations_online": false,
+    "is_downloadable": false
 }
     """
         # parse json
@@ -52,33 +56,39 @@ class TestJSON(unittest.TestCase):
 
         json_expected = r"""
 {
-  "id": "000182391",
-  "real_id": "182391",
-  "allowed_by_ip": false,
-  "title": "Salgsbrochure for kampagne Byg og bo i Aarhus.",
-  "meta_title": "Salgsbrochure for kampagne Byg og bo i Aarhus.",
-  "meta_description": "",
-  "icon": {
-    "icon": "description",
-    "label": "Andet materiale"
-  },
-  "copyright_id": 4,
-  "legal_id": 1,
-  "contractual_id": 4,
-  "availability_id": 4,
-  "usability_id": 2,
-  "collection_id": 194,
-  "content_types_label": "",
-  "is_representations_online": true,
-  "record_type": "web_document",
-  "representations": {
+    "id": "000182391",
+    "real_id": "182391",
+    "allowed_by_ip": false,
+    "title": "Salgsbrochure for kampagne Byg og bo i Aarhus.",
+    "meta_title": "Salgsbrochure for kampagne Byg og bo i Aarhus.",
+    "meta_description": "",
+    "icon": {
+        "icon": "description",
+        "label": "Andet materiale"
+    },
+    "copyright_id": 4,
+    "legal_id": 1,
+    "contractual_id": 4,
+    "availability_id": 4,
+    "usability_id": 2,
+    "collection_id": 194,
+    "content_types_label": "",
+    "storage_id": [
+        "91+00239-1"
+    ],
+    "barcode": null,
+    "location": null,
+    "orderable": false,
+    "is_representations_online": true,
     "record_type": "web_document",
-    "web_document_url": "https://acastorage.blob.core.windows.net/sam-access/000182391/000182391_c.pdf",
-    "record_image": "https://acastorage.blob.core.windows.net/sam-access/000182391/000182391_m.jpg",
-    "large_image": "https://acastorage.blob.core.windows.net/sam-access/000182391/000182391_m.jpg"
-  },
-  "portrait": "https://acastorage.blob.core.windows.net/sam-access/000182391/000182391_m.jpg",
-  "is_downloadable": true
+    "representations": {
+        "record_type": "web_document",
+        "web_document_url": "https://acastorage.blob.core.windows.net/sam-access/000182391/000182391_c.pdf",
+        "record_image": "https://acastorage.blob.core.windows.net/sam-access/000182391/000182391_m.jpg",
+        "large_image": "https://acastorage.blob.core.windows.net/sam-access/000182391/000182391_m.jpg"
+    },
+    "portrait": "https://acastorage.blob.core.windows.net/sam-access/000182391/000182391_m.jpg",
+    "is_downloadable": true
 }
 """
 
@@ -112,6 +122,10 @@ class TestJSON(unittest.TestCase):
     "usability_id": 1,
     "collection_id": null,
     "content_types_label": "",
+    "storage_id": null,
+    "barcode": null,
+    "location": null,
+    "orderable": false,
     "is_representations_online": true,
     "record_type": "video",
     "representations": {
