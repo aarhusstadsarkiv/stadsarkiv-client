@@ -130,11 +130,18 @@
         {% for item in value %}
         <p>{{ item }}</p>
         {% endfor %}
-        {% if get_setting('allow_online_ordering') and has_permission('user', permissions_list) %}
-        <div class="action-links">
-            <a data-id="{{ record_and_types.id.value }}" href="/order/{{ record_and_types.id.value }}">{{ translate('Order online') }}</a>
-        </div>
+        {% if get_setting('allow_online_ordering') %}
+            {% if  has_permission('user', permissions_list) %} 
+                <div class="action-links">
+                    <a data-id="{{ record_and_types.id.value }}" href="/order/{{ record_and_types.id.value }}">{{ translate('Order online') }}</a>
+                </div>
+            {% else %}
+                <div class="action-links">
+                    <a href="/auth/login?next=/records/{{ record_and_types.id.value }}">{{ translate('Login to order online') }}</a>
+                </div>
+            {% endif %}
         {% endif %}
+
     </div>
 </div>
 {% endmacro %}
