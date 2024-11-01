@@ -21,14 +21,22 @@ async def orders_insert(order_details: dict):
             raise e
 
 
-async def orders_get_by_user_id(user_id: str) -> typing.List[dict]:
+async def orders_select(filters: dict):
     async with transaction_scope(DATABASE_ORDERS) as connection:
         try:
-            query = "SELECT * FROM orders WHERE user_id = :user_id"
-            result = connection.execute(query, {"user_id": user_id})
-            return result.fetchall()
-        except sqlite3.Error:
-            raise
+            # Constructing the WHERE clause dynamically
+            where_clause = " AND ".join([f"{key} = :{key}" for key in filters.keys()])
+
+            query = "SELECT * FROM orders"
+            if where_clause:
+                query += f" WHERE {where_clause}"
+
+            result = connection.execute(query, filters)
+            rows = result.fetchall()
+
+            return rows
+        except sqlite3.Error as e:
+            raise e
 
 
 async def orders_update(order_id: int, update_values: dict):
