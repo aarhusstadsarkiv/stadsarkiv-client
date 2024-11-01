@@ -50,39 +50,3 @@ async def orders_delete(order_id: int):
             connection.execute(query, {"order_id": order_id})
         except sqlite3.Error:
             raise
-
-
-def get_info_from_record(record: dict):
-    """
-    http://localhost:5555/records/000503354
-    identifikation: "51648293"
-
-    http://localhost:5555/records/000504168
-    storage_id: ['91+01390-2']
-
-    000429798
-
-    (None, '8038476141', 'Reol 106/fag 2/hylde 1')
-
-    000506083
-
-    (['91+01418-1'], None, None)
-
-    """
-
-    try:
-        storage_id = record["resources"][0]["storage_id"]
-    except KeyError:
-        storage_id = None
-
-    try:
-        barcode = record["resources"][0]["barcode"]
-    except KeyError:
-        barcode = None
-
-    try:
-        location = record["resources"][0]["location"]
-    except KeyError:
-        location = None
-
-    return storage_id, barcode, location
