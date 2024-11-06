@@ -5,6 +5,14 @@
 
 {% block body_class %}page-resources-events{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
+<script type="module">
+    import { activateOverlay } from "/static/js/overlay.js";
+    activateOverlay();
+</script>
+{% endblock head %}
+
 {% block content %}
 
 {% include "includes/main_title.html" %}
