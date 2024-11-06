@@ -37,7 +37,6 @@ class AuthExceptionJSON(Exception):
 
 async def is_authenticated(request: Request, permissions=[], message=None, verified=False):
     is_logged_in = await api.is_logged_in(request)
-    users_me_get = await api.users_me_get(request)
 
     if not message:
         message = translate("You need to be logged in to view this page.")
@@ -50,6 +49,7 @@ async def is_authenticated(request: Request, permissions=[], message=None, verif
             redirect_url=_get_redirect_url(request),
         )
 
+    users_me_get = await api.users_me_get(request)
     if verified:
         if not users_me_get["is_verified"]:
             log.error(f"403 Forbidden: {request.url}. User {users_me_get['email']}. User is not verified")
