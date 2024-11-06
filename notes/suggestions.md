@@ -207,3 +207,13 @@ Janne
 
 ---
 
+Hej Janne,
+
+"Tidligere kunne man selv bestemme, hvor mange hits/visninger/resultater pr side man ville have i sin søgning, ved at ændre tallet oppe i URL’en."  Det er korrekt. Det er fjernet. Mest fordi man kan overbelaste serveren.
+
+"Derudover kunne der være rart hvis der kunne stå, hvor mange resultater den viser på den pågældende side. FX: på følgende søgeresultatet står der 4973 resultater. Der kunne det være rart af der stod *antallet af visninger på pågældende side*/4973" 
+
+Janne
+
+---
+
