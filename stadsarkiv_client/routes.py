@@ -100,9 +100,6 @@ routes = [
     # send verify email again
     Route("/auth/send-verify-email", endpoint=endpoints_auth.auth_send_verify_email, name="auth_send_verify_email"),
     Route("/auth/user-info", endpoint=endpoints_auth.auth_user_info, name="auth_user_info", methods=["POST"]),
-    Route("/auth/bookmarks", endpoint=endpoints_user_data.auth_bookmarks_get, name="auth_bookmarks_get"),
-    Route("/auth/bookmarks", endpoint=endpoints_user_data.auth_bookmarks_post, name="auth_bookmarks_post", methods=["POST"]),
-    Route("/auth/bookmarks_json", endpoint=endpoints_user_data.auth_bookmarks_json, name="auth_bookmarks_json"),
     Route("/schemas/{schema_type:str}", endpoint=endpoints_schemas.schemas_get_single, name="schemas_get_single"),
     Route("/schemas", endpoint=endpoints_schemas.schemas_get_list, name="schemas_get_list"),
     Route("/schemas", endpoint=endpoints_schemas.schemas_post, name="schemas_post", methods=["POST"]),
@@ -125,8 +122,6 @@ routes = [
     Route("/search/json", endpoint=endpoints_search.search_get_json, name="search_get_json"),
     Route("/records/{record_id:str}", endpoint=endpoints_records.records_get, name="records_get"),
     Route("/records/{record_id:str}/json/{type:str}", endpoint=endpoints_records.records_get_json, name="records_get_json"),
-    Route("/order/{record_id:str}", endpoint=endpoints_order.orders_get_order, name="orders_get_order"),
-    Route("/order/{record_id:str}", endpoint=endpoints_order.orders_post, name="orders_post_order", methods=["POST"]),
     Route("/relations", endpoint=endpoints_relations.relations_post, name="relations_post", methods=["POST"]),
     Route("/relations/{rel_id:str}", endpoint=endpoints_relations.relations_delete, name="relations_delete", methods=["DELETE"]),
     Route("/relations/{type:str}/{id:str}", endpoint=endpoints_relations.relations_get, name="relations_get"),
@@ -134,7 +129,22 @@ routes = [
     Route("/upload", endpoint=endpoints_upload.upload, name="upload", methods=["POST"]),
 ]
 
-# Add registration routes if allowed
+
+if settings["allow_online_ordering"]:
+    online_ordering = [
+        Route("/order/{record_id:str}", endpoint=endpoints_order.orders_get_order, name="orders_get_order"),
+        Route("/order/{record_id:str}", endpoint=endpoints_order.orders_post, name="orders_post_order", methods=["POST"]),
+    ]
+    routes.extend(online_ordering)
+
+if settings["allow_save_bookmarks"]:
+    routes_bookmarks = [
+        Route("/auth/bookmarks", endpoint=endpoints_user_data.auth_bookmarks_get, name="auth_bookmarks_get"),
+        Route("/auth/bookmarks", endpoint=endpoints_user_data.auth_bookmarks_post, name="auth_bookmarks_post", methods=["POST"]),
+        Route("/auth/bookmarks_json", endpoint=endpoints_user_data.auth_bookmarks_json, name="auth_bookmarks_json"),
+    ]
+    routes.extend(routes_bookmarks)
+
 if settings["allow_user_registration"]:
     routes_registration = [
         Route("/auth/register", endpoint=endpoints_auth.auth_register_get, name="auth_register_get"),
@@ -142,7 +152,6 @@ if settings["allow_user_registration"]:
     ]
     routes.extend(routes_registration)
 
-# Add test route if in development
 if settings["environment"] == "development":
     routes_test = [
         Route("/test", endpoint=endpoints_test.test_get, name="test_get"),
