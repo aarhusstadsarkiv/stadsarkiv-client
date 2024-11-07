@@ -26,7 +26,7 @@ def format_relations(type: str, relations: list):
 
     return [
         {"label": "Sceneroller", "data": onstage},
-        {"label": "Produktionshold", "data": offstage},
+        {"label": "Produktion", "data": offstage},
     ]
 
 
