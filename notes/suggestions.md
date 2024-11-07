@@ -217,3 +217,33 @@ Janne
 
 ---
 
+Her kommer lige et gammelt ønske, men som tilsyneladende stadig ikke kan lade sig gøre.
+
+Jeg har ofte brug for at sende et søgeresultatet, der indeholder billeder der har enten har licensen ”I offentlig eje” eller ”CC Navngivelse”.
+
+Det ser ud til, at man på det nye site kun kan vælge ét licensfilter.
+
+I forhold til at servicere borgerne er det et meget stort ønske at kunne sætte to licensfiltre på.
+
+På det gamle site kunne jeg lave en mellemløsning, hvor jeg valgte ”Alle rettigheder forbeholdes” som negativt filter. Der fik jeg så også ”CC Navngivelse-ikke kommercielt”, som jeg så måtte bede borgerne om at se bort fra. Så den løsning var heller ikke optimal.
+
+På det nye site, synes jeg umiddelbart ikke, at jeg kan lave negativt filter?
+
+Janne
+
+---
+
+Når man bruger gallerivisningen på AarhusArkivet bliver de vist efter datering spaltevis.
+
+Det giver mening hvis de vises efter datering vandret.
+
+Som eksempel ses her to søgninger på Vestergade. Den første er fra AarhusArkivet, hvor de sorteres spaltevis lodret. Den næste er fra Aarhusbilleder, hvor de sorteres vandret.
+
+https://www.aarhusarkivet.dk/search?locations=2670&content_types=61&
+
+https://aarhusbilleder.dk/main/thumbnailview/main-quicksearch=Vestergade
+
+ 
+
+På Aarhusbilleder har man desuden mulighed for at vælge mellem forskellige visningsformer – her i blandt en kvadratisk visning, eller en visning med billedet ”rigtige” dimensioner. Det kunne man måske også overveje.
+
