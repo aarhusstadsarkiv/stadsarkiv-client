@@ -74,7 +74,7 @@ async def is_authenticated(request: Request, permissions=[], message=None, verif
             )
 
 
-async def is_authenticated_json(request: Request, permissions=[], message=None):
+async def is_authenticated_json(request: Request, permissions=[], message=None, verified=False):
     is_logged_in = await api.is_logged_in(request)
 
     if not message:
@@ -84,6 +84,12 @@ async def is_authenticated_json(request: Request, permissions=[], message=None):
         log.error(f"401 Unauthorized: {request.url}")
         raise AuthExceptionJSON(message=message)
 
+    users_me_get = await api.users_me_get(request)
+    if verified:
+        if not users_me_get["is_verified"]:
+            log.error(f"403 Forbidden: {request.url}. User {users_me_get['email']}. User is not verified")
+            raise AuthExceptionJSON(message=translate("You need to verify your email address to view this page."))
+
     if permissions:
         user_permissions_list = await api.me_permissions(request)
 
@@ -91,6 +97,5 @@ async def is_authenticated_json(request: Request, permissions=[], message=None):
         permission_granted = any(permission in user_permissions_list for permission in permissions)
 
         if not permission_granted:
-            users_me_get = await api.users_me_get(request)
             log.error(f"403 Forbidden: {request.url}. User {users_me_get}. Missing required permissions")
             raise AuthExceptionJSON(message=translate("You do not have the required permissions to view the page."))
