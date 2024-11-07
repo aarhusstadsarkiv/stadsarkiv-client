@@ -24,11 +24,11 @@ CREATE TABLE orders (
     storage_id TEXT,                                 -- "resources[].storage_id"
     location TEXT,                                   -- "resources[].location"
     created TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    label TEXT,                                      -- Label for the order
+    label TEXT NOT NULL,                             -- Label for the order
     deadline TEXT,
     status_modified TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
     status_updated_by TEXT,
-    status TEXT CHECK(status IN (
+    status TEXT DEFAULT 'Ordered' CHECK(status IN (
         'Ordered',
         'Packed for reading room',
         'Available in the reading room',
