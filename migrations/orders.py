@@ -26,7 +26,7 @@ CREATE TABLE orders (
     created TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
     label TEXT,                                      -- Label for the order
     deadline TEXT,
-    status_modified TEXT,
+    status_modified TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
     status_updated_by TEXT,
     status TEXT CHECK(status IN (
         'Ordered',
