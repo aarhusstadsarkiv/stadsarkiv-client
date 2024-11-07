@@ -39,6 +39,13 @@ async def orders_select(filters: dict):
             raise e
 
 
+async def orders_exists(filters: dict):
+    rows = await orders_select(filters)
+    if not rows:
+        return False
+    return True
+
+
 async def orders_update(order_id: int, update_values: dict):
     async with transaction_scope(DATABASE_ORDERS) as connection:
         try:
