@@ -28,6 +28,7 @@ CREATE TABLE orders (
     deadline TEXT,
     status_modified TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
     status_updated_by TEXT,
+    resources TEXT,                                  -- JSON array of resources
     status TEXT DEFAULT 'Ordered' CHECK(status IN (
         'Ordered',
         'Packed for reading room',
