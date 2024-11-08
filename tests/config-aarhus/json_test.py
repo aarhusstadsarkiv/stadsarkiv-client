@@ -30,7 +30,7 @@ class TestJSON(unittest.TestCase):
     "real_id": "109399",
     "allowed_by_ip": false,
     "permission_granted": false,
-    "title": "[om Badstuegade og Badstuerne under Kong Hans, i hvis Regnskabsbøger staaer anført i 1487: \"28 Skilling for det tyske Øl, der var uddrukken i Badstuen i Aar., da Kongen badede der\" og lidt senere...]",
+    "title": "",
     "meta_title": "om Badstuegade og Badstuerne under Kong Hans, i hvis...",
     "meta_description": "om Badstuegade og Badstuerne under Kong Hans, i hvis Regnskabsbøger staaer anført i 1487: \"28 Skilling for det tyske...",
     "icon": {
@@ -48,7 +48,8 @@ class TestJSON(unittest.TestCase):
     "resources": {},
     "is_representations_online": true,
     "record_type": "sejrs_sedler",
-    "is_downloadable": false
+    "is_downloadable": false,
+    "representation_text": "om Badstuegade og Badstuerne under Kong Hans, i hvis Regnskabsbøger staaer anført i 1487: \"28 Skilling for det tyske Øl, der var uddrukken i Badstuen i Aar., da Kongen badede der\" og lidt senere \"Eiler Brydske har udlagt 3 Mark i Badstuen til Kongens Behag\" - Badstuerne blev helt ophævede i Danmark i 16. Aarhundrede fordi Gejstligheden mente de befordrede Epidemi."
 }
 """
 
