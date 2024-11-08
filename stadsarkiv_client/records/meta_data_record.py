@@ -35,8 +35,8 @@ def _get_icon(record: dict):
     content-types is in this format: [{'id': [10], 'label': ['Forskrifter og vedtægter']}]
     """
     try:
-        content_type = record["content_types"][0]
-        content_type_id = str(content_type["id"][0])
+        content_type = record["content_types"][0][0]
+        content_type_id = str(content_type["id"])
         return ICONS[content_type_id]
     except (KeyError, IndexError, TypeError):
         return ICONS["99"]
@@ -67,6 +67,7 @@ def get_record_meta_data(request: Request, record: dict, user_permissions=[]) ->
     meta_data["id"] = record["id"]
     meta_data["real_id"] = _strip_pre_zeroes(record["id"])
     meta_data["allowed_by_ip"] = _is_allowed_by_ip(request) or permssion_granted
+    meta_data["permission_granted"] = permssion_granted
     meta_data["title"] = title
     meta_data["meta_title"] = _get_meta_title(record)
     meta_data["meta_description"] = record_utils.meaningful_substring(record.get("summary", ""), 120)
@@ -95,7 +96,7 @@ def _set_representations(meta_data: dict, record: dict):
     meta_data["is_representations_online"] = False
 
     if meta_data["legal_id"] == 1 and meta_data["contractual_id"] > 2:
-        if meta_data["availability_id"] == 4 or meta_data["allowed_by_ip"]:
+        if meta_data["availability_id"] == 4 or meta_data["permission_granted"] or meta_data["allowed_by_ip"]:
             if "representations" in record:
                 meta_data["record_type"] = record["representations"].get("record_type")
 
@@ -106,6 +107,9 @@ def _set_representations(meta_data: dict, record: dict):
                     meta_data["representations"]["large_image"] = meta_data["representations"].get("record_image")
 
                 meta_data["portrait"] = record.get("portrait")
+    else:
+        meta_data["record_type"] = "icon"
+        meta_data["is_representations_online"] = True
 
     collection_id = record.get("collection", {}).get("id")
     if collection_id == 1:
@@ -188,27 +192,17 @@ def _set_order_info(meta_data: dict, record: dict):
     """
     Get info describing if the record can be ordered
     """
-
     try:
-        storage_id = record["resources"][0]["storage_id"]
+        resources = record["resources"][0]
     except KeyError:
-        storage_id = None
+        resources = {}
 
-    try:
-        barcode = record["resources"][0]["barcode"]
-    except KeyError:
-        barcode = None
-
-    try:
-        location = record["resources"][0]["location"]
+    orderable = False
+    availability_id = meta_data["availability_id"]
+    if availability_id in [1, 2]:
         orderable = True
-    except KeyError:
-        location = None
-        orderable = False
 
-    meta_data["storage_id"] = storage_id
-    meta_data["barcode"] = barcode
-    meta_data["location"] = location
     meta_data["orderable"] = orderable
+    meta_data["resources"] = resources
 
     return meta_data
