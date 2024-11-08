@@ -81,6 +81,11 @@
 {% if meta_data["record_type"] == 'sejrs_sedler' %}
 <div class="record-sejrs-sedler">{{ meta_data['representation_text']|trim }}</div>
 {% endif %}
+
+{% if meta_data["record_type"] == 'icon' %}
+{{ common_macros.parse_icon(meta_data["icon"]["icon"], meta_data["icon"]["label"]) }}
+{% endif %}
+
 {% endmacro %}
 
 {% macro _parse_representations_block(meta_data) %}
