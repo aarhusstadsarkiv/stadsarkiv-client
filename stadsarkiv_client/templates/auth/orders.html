@@ -25,13 +25,13 @@
         <div class="record-content">
             <div class="label">Materiale</div>
             <div class="content">
-                <a href="/records/{{ order.material_id}}">{{ order.title }}</a>
+                <a href="/records/{{ order.record_id}}">{{ order.label }}</a>
             </div>
         </div>
 
         <div class="record-content">
             <div class="label">Materiale ID </div>
-            <div class="content">{{ order.material_id }}</div>
+            <div class="content">{{ order.record_id}}</div>
         </div>
 
         <div class="record-content">
@@ -41,12 +41,12 @@
 
         <div class="record-content">
             <div class="label">Oprettet</div>
-            <div class="content">{{ order.created_at }}</div>
+            <div class="content">{{ order.created }}</div>
         </div>
 
         <div class="record-content">
             <div class="label">Opdateret</div>
-            <div class="content">{{ order.updated_at }}</div>
+            <div class="content">{{ order.status_modified }}</div>
         </div>
         <hr>
 

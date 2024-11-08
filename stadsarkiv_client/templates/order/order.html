@@ -9,7 +9,7 @@
 <h3>{{ title }}</h3>
 
 {% if is_ordered %}
-<p style="color:green">Materialet er allerede bestilt</p>
+<p style="color: var(--flash-success-color)">Materialet er bestilt</p>
 {% else %}
 
 <form method="post" action="/order/{{ meta_data.id }}">
@@ -20,6 +20,10 @@
 
 {% set keys = ["collectors", "content_types", "creators", "date_normalized", "curators", "id"] %}
 {{ common_macros.parse_block_common('Stamdata', keys, record_and_types) }}
+
+<hr>
+
+<p><a href="/auth/orders">Se alle eksisterende bestillinger</a></p>
 
 <script type="module">
     import { asyncLogError } from "/static/js/error.js";
@@ -48,7 +52,7 @@
                     console.log(res.message);
                     Flash.setMessage(res.message, 'error');
                 } else {
-                    window.location.href = '/auth/orders';
+                    window.location.href = url;
                 }
 
             } catch (e) {

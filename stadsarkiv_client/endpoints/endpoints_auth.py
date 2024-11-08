@@ -14,6 +14,7 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from stadsarkiv_client.endpoints import auth_data
+from stadsarkiv_client.database import orders
 
 log = get_log()
 
@@ -186,8 +187,11 @@ async def auth_me_get(request: Request):
 async def auth_orders(request: Request):
     await is_authenticated(request)
     try:
+
         me = await api.users_me_get(request)
-        context_values = {"title": translate("Your orders"), "me": me, "orders": auth_data.api_orders}
+        orders_me = await orders.orders_select({"user_id": me["id"]})
+
+        context_values = {"title": translate("Your orders"), "me": me, "orders": orders_me}
         context = await get_context(request, context_values=context_values)
 
         return templates.TemplateResponse(request, "auth/orders.html", context)

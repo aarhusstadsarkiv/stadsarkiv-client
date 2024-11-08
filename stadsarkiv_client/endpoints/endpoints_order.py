@@ -10,10 +10,7 @@ from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.database import orders
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.flash import set_message
-
-# from stadsarkiv_client.core import api
-# import asyncio
-
+import json
 
 log = get_log()
 
@@ -50,13 +47,15 @@ async def orders_get_order(request: Request):
     return templates.TemplateResponse(request, "order/order.html", context)
 
 
-def _get_data(meta_data: dict, me: dict):
+def _get_insert_data(meta_data: dict, me: dict):
     return {
         "user_id": me["id"],
         "record_id": meta_data["id"],
-        "barcode": meta_data["barcode"],
-        "storage_id": meta_data["storage_id"],
-        "location": meta_data["location"],
+        "resources": json.dumps(meta_data["resources"]),
+        # "barcode": meta_data["barcode"],
+        # "storage_id": meta_data["storage_id"],
+        # "location": meta_data["location"],
+        "label": meta_data["title"],
     }
 
 
@@ -77,12 +76,12 @@ async def orders_post(request: Request):
     }
 
     if not await orders.orders_exists(filters):
-        data = _get_data(meta_data, me)
+        data = _get_insert_data(meta_data, me)
         await orders.orders_insert(data)
-        set_message(request, "Ordre oprettet", "success")
-        return JSONResponse({"message": "Ordre oprettet", "error": False})
+        set_message(request, "Din bestilling er blevet oprettet", "success")
+        return JSONResponse({"message": "Din bestilling er blevet oprettet", "error": False})
     else:
-        return JSONResponse({"message": "Ordre eksisterer allerede", "error": True})
+        return JSONResponse({"message": "Bestilling på dette materiale eksisterer allerede", "error": True})
 
 
 """
