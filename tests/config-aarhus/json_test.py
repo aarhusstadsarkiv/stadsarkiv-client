@@ -29,12 +29,13 @@ class TestJSON(unittest.TestCase):
     "id": "000109399",
     "real_id": "109399",
     "allowed_by_ip": false,
-    "title": "",
+    "permission_granted": false,
+    "title": "[om Badstuegade og Badstuerne under Kong Hans, i hvis Regnskabsbøger staaer anført i 1487: \"28 Skilling for det tyske Øl, der var uddrukken i Badstuen i Aar., da Kongen badede der\" og lidt senere...]",
     "meta_title": "om Badstuegade og Badstuerne under Kong Hans, i hvis...",
     "meta_description": "om Badstuegade og Badstuerne under Kong Hans, i hvis Regnskabsbøger staaer anført i 1487: \"28 Skilling for det tyske...",
     "icon": {
         "icon": "description",
-        "label": "Andet materiale"
+        "label": "Manuskripter"
     },
     "copyright_id": 1,
     "legal_id": 1,
@@ -43,14 +44,11 @@ class TestJSON(unittest.TestCase):
     "usability_id": 1,
     "collection_id": 1,
     "content_types_label": "",
-    "storage_id": null,
-    "barcode": null,
-    "location": null,
     "orderable": false,
+    "resources": {},
     "is_representations_online": true,
     "record_type": "sejrs_sedler",
-    "is_downloadable": false,
-    "representation_text": "om Badstuegade og Badstuerne under Kong Hans, i hvis Regnskabsbøger staaer anført i 1487: \"28 Skilling for det tyske Øl, der var uddrukken i Badstuen i Aar., da Kongen badede der\" og lidt senere \"Eiler Brydske har udlagt 3 Mark i Badstuen til Kongens Behag\" - Badstuerne blev helt ophævede i Danmark i 16. Aarhundrede fordi Gejstligheden mente de befordrede Epidemi."
+    "is_downloadable": false
 }
 """
 

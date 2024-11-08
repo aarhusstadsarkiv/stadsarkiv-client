@@ -22,12 +22,13 @@ class TestJSON(unittest.TestCase):
     "id": "000309478",
     "real_id": "309478",
     "allowed_by_ip": false,
+    "permission_granted": false,
     "title": "Aarhus Vejviser 1997",
     "meta_title": "Aarhus Vejviser 1997",
     "meta_description": "",
     "icon": {
-        "icon": "description",
-        "label": "Andet materiale"
+        "icon": "article",
+        "label": "Publikationer"
     },
     "copyright_id": 7,
     "legal_id": 1,
@@ -36,10 +37,17 @@ class TestJSON(unittest.TestCase):
     "usability_id": 4,
     "collection_id": 204,
     "content_types_label": "",
-    "storage_id": null,
-    "barcode": null,
-    "location": null,
     "orderable": false,
+    "resources": {
+        "digital_size": "8469.218 MB",
+        "mimetype": "application/zip",
+        "checksum_algorithm": "MD5",
+        "filename": "000309478.zip",
+        "original_filename": "Aarhus Vejviser 1997.zip",
+        "checksum": "3479d47c09595cb5854233681bc39ce7",
+        "last_checksum_date": "2019-02-25 07:41:27",
+        "type": "digital"
+    },
     "is_representations_online": false,
     "is_downloadable": false
 }
@@ -59,6 +67,7 @@ class TestJSON(unittest.TestCase):
     "id": "000182391",
     "real_id": "182391",
     "allowed_by_ip": false,
+    "permission_granted": false,
     "title": "Salgsbrochure for kampagne Byg og bo i Aarhus.",
     "meta_title": "Salgsbrochure for kampagne Byg og bo i Aarhus.",
     "meta_description": "",
@@ -73,12 +82,14 @@ class TestJSON(unittest.TestCase):
     "usability_id": 2,
     "collection_id": 194,
     "content_types_label": "",
-    "storage_id": [
-        "91+00239-1"
-    ],
-    "barcode": null,
-    "location": null,
     "orderable": false,
+    "resources": {
+        "Fysisk omfang": "1",
+        "type": "analog",
+        "storage_id": [
+            "91+00239-1"
+        ]
+    },
     "is_representations_online": true,
     "record_type": "web_document",
     "representations": {
@@ -108,12 +119,13 @@ class TestJSON(unittest.TestCase):
     "id": "000313141",
     "real_id": "313141",
     "allowed_by_ip": false,
+    "permission_granted": false,
     "title": "En køretur med sporvogn",
     "meta_title": "En køretur med sporvogn",
     "meta_description": "Filmens første 38 sekunder er fra Clemens Bro i 1902 \n\nDen 7. juli 1904 blev den første sporvognsrute indviet i Aarhus....",
     "icon": {
-        "icon": "description",
-        "label": "Andet materiale"
+        "icon": "movie",
+        "label": "Medieproduktioner"
     },
     "copyright_id": 2,
     "legal_id": 1,
@@ -122,10 +134,16 @@ class TestJSON(unittest.TestCase):
     "usability_id": 1,
     "collection_id": null,
     "content_types_label": "",
-    "storage_id": null,
-    "barcode": null,
-    "location": null,
     "orderable": false,
+    "resources": {
+        "digital_size": "45.107 MB",
+        "checksum_algorithm": "MD5",
+        "filename": "000313141.mp4",
+        "original_filename": "Århus med sporvogn 1904 I.mp4",
+        "checksum": "15ac7fb0aed0dff914221ff71c988303",
+        "last_checksum_date": "2019-01-30 10:17:10",
+        "type": "digital"
+    },
     "is_representations_online": true,
     "record_type": "video",
     "representations": {
