@@ -252,8 +252,6 @@ h6 {
 .container-left {
     min-width: 350px;
     margin-left: 20px;
-    transform: translateZ(0);
-    
 }
 
 @media (max-width: 992px) {
@@ -274,7 +272,6 @@ h6 {
  */
  @media (max-width: 992px) {
     .container-main-facets {
-        transform: translateZ(0);
         display: block;
         margin: 10px 0;
     }
