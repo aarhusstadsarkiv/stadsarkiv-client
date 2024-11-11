@@ -32,16 +32,13 @@ details>summary.inactive {
     cursor: unset;
 }
 
-summary {
-    font-size: 14px;
-}
-
 .facets details {
     border-radius: 5px;
     box-shadow: var(--box-shadow);
 }
 
 .facets ul {
+    font-size: 1.05rem;
     list-style: none;
     padding-left: 0;
     margin-top: 0;
