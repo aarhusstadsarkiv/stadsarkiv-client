@@ -1,7 +1,7 @@
 import sqlite3
-import typing
 from stadsarkiv_client.database.utils import transaction_scope
 from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.database.sql_builder import SQLBuilder
 
 
 log = get_log()
@@ -12,10 +12,8 @@ async def orders_insert(order_details: dict):
     async with transaction_scope(DATABASE_ORDERS) as connection:
         try:
 
-            columns = ", ".join(order_details.keys())
-            placeholders = ", ".join([f":{key}" for key in order_details.keys()])
-
-            query = f"INSERT INTO orders ({columns}) VALUES ({placeholders})"
+            sql_builder = SQLBuilder("orders")
+            query = sql_builder.build_insert(order_details)
             connection.execute(query, order_details)
         except sqlite3.Error as e:
             raise e
@@ -24,12 +22,9 @@ async def orders_insert(order_details: dict):
 async def orders_select(filters: dict):
     async with transaction_scope(DATABASE_ORDERS) as connection:
         try:
-            # Constructing the WHERE clause dynamically
-            where_clause = " AND ".join([f"{key} = :{key}" for key in filters.keys()])
 
-            query = "SELECT * FROM orders"
-            if where_clause:
-                query += f" WHERE {where_clause}"
+            sql_builder = SQLBuilder("orders")
+            query = sql_builder.build_select(filters)
 
             result = connection.execute(query, filters)
             rows = result.fetchall()
@@ -49,10 +44,8 @@ async def orders_exists(filters: dict):
 async def orders_update(order_id: int, update_values: dict):
     async with transaction_scope(DATABASE_ORDERS) as connection:
         try:
-            set_clause = ", ".join([f"{key} = :{key}" for key in update_values.keys()])
-            query = f"UPDATE orders SET {set_clause} WHERE id = :order_id"
-
-            update_values["order_id"] = order_id
+            sql_builder = SQLBuilder("orders")
+            query = sql_builder.build_update(update_values, {"id": order_id})
             connection.execute(query, update_values)
         except sqlite3.Error:
             raise
@@ -61,7 +54,8 @@ async def orders_update(order_id: int, update_values: dict):
 async def orders_delete(order_id: int):
     async with transaction_scope(DATABASE_ORDERS) as connection:
         try:
-            query = "DELETE FROM orders WHERE id = :order_id"
+            sql_builder = SQLBuilder("orders")
+            query = sql_builder.build_delete({"id": order_id})
             connection.execute(query, {"order_id": order_id})
         except sqlite3.Error:
             raise

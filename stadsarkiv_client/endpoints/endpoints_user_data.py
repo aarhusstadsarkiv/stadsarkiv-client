@@ -29,7 +29,8 @@ async def auth_bookmarks_get(request: Request):
     try:
         me = await api.me_get(request)
 
-        bookmarks_db = await bookmarks.bookmarks_get(me["id"])
+        values = {"user_id": me["id"]}
+        bookmarks_db = await bookmarks.bookmarks_get(values)
         bookmarks_list = [bookmark["bookmark"] for bookmark in bookmarks_db]
         records = await api.proxies_resolve(request, bookmarks_list)
 
@@ -84,8 +85,9 @@ async def auth_bookmarks_json(request: Request):
     """
     try:
         me = await api.me_get(request)
-        user_id = me["id"]
-        bookmarks_db = await bookmarks.bookmarks_get(user_id)
+        values = {"user_id": me["id"]}
+
+        bookmarks_db = await bookmarks.bookmarks_get(values)
         bookmarks_list = [bookmark["bookmark"] for bookmark in bookmarks_db]
         return JSONResponse(bookmarks_list, status_code=200)
     except OpenAwsException as e:
@@ -109,9 +111,11 @@ async def auth_bookmarks_post(request: Request):
 
         json_data = await request.json()
         if json_data["action"] == "remove":
-            await bookmarks.bookmarks_delete(user_id, json_data["record_id"])
+            values = {"user_id": user_id, "bookmark": json_data["record_id"]}
+            await bookmarks.bookmarks_delete(values)
         else:
-            await bookmarks.bookmarks_insert(user_id, json_data["record_id"])
+            values = {"user_id": user_id, "bookmark": json_data["record_id"]}
+            await bookmarks.bookmarks_insert(values)
 
     except OpenAwsException as e:
         log.exception("Error in auth_bookmarks_post")

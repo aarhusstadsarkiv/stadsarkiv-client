@@ -1,17 +1,10 @@
-import sqlite3
-import json
-import time
-from typing import Any
-from stadsarkiv_client.database.utils import transaction_scope
-
-
 """
+Simple sqlite3 cache implementation
+Example usage:
 
-# Simple sqlite3 cache implementation
-# Example usage:
-
-```py
+```
 insert_value = None
+
 # Get a result that is max 10 seconds old
 cache_expire = 10
 has_result = False
@@ -34,8 +27,13 @@ return JSONResponse(
     }
 )
 ```
-
 """
+
+import sqlite3
+import json
+import time
+from typing import Any
+from stadsarkiv_client.database.utils import transaction_scope
 
 
 async def cache_set(key: str, data: Any) -> bool:

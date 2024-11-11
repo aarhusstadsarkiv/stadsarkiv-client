@@ -1,38 +1,42 @@
 import sqlite3
 import typing
 from stadsarkiv_client.database.utils import transaction_scope
+from stadsarkiv_client.database.sql_builder import SQLBuilder
 
 
-async def bookmarks_insert(user_id, bookmark):
+async def bookmarks_insert(values: dict):
 
     async with transaction_scope() as connection:
         try:
-            values = {"user_id": user_id, "bookmark": bookmark}
-            query = "INSERT INTO bookmarks (user_id, bookmark) VALUES (:user_id, :bookmark)"
+            sql_builder = SQLBuilder("bookmarks")
+            query = sql_builder.build_insert(values)
             connection.execute(query, values)
 
         except sqlite3.Error:
             raise
 
 
-async def bookmarks_insert_many(user_id, bookmarks):
+async def bookmarks_insert_many(user_id: str, bookmarks: list):
 
     async with transaction_scope() as connection:
         try:
             for bookmark in bookmarks:
                 values = {"user_id": user_id, "bookmark": bookmark}
-                query = "INSERT INTO bookmarks (user_id, bookmark) VALUES (:user_id, :bookmark)"
+                sql_builder = SQLBuilder("bookmarks")
+                query = sql_builder.build_insert(values)
                 connection.execute(query, values)
 
         except sqlite3.Error:
             raise
 
 
-async def bookmarks_get(user_id) -> typing.Any:
+async def bookmarks_get(values: dict) -> typing.Any:
     async with transaction_scope() as connection:
         try:
-            values = {"user_id": user_id}
-            query = "SELECT * FROM bookmarks WHERE user_id = :user_id"
+
+            sql_builder = SQLBuilder("bookmarks")
+            query = sql_builder.build_select(values)
+
             cursor = connection.execute(query, values)
             result = cursor.fetchall()
             return result
@@ -41,11 +45,11 @@ async def bookmarks_get(user_id) -> typing.Any:
             raise
 
 
-async def bookmarks_delete(user_id, bookmark_id) -> typing.Any:
+async def bookmarks_delete(values: dict) -> typing.Any:
     async with transaction_scope() as connection:
         try:
-            values = {"bookmark": bookmark_id, "user_id": user_id}
-            query = "DELETE FROM bookmarks WHERE bookmark = :bookmark AND user_id = :user_id"
+            sql_builder = SQLBuilder("bookmarks")
+            query = sql_builder.build_delete(values)
             connection.execute(query, values)
 
         except sqlite3.Error:
