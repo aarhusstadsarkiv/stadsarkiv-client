@@ -745,7 +745,6 @@ async def proxies_post_relations(request: Request):
             return response.json()
         else:
             json_response = response.json()
-
             raise_openaws_exception(response.status_code, json_response)
 
 
