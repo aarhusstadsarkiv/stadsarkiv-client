@@ -7,7 +7,7 @@
 
 {% extends "base.html" %}
 
-{% block body_class %}page-resources-people{% endblock %}
+{% block body_class %}page-resources-people resources-relations{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
@@ -49,6 +49,18 @@
 
 {% set keys = ["ext_data"] %}
 {#{ common_macros.parse_block_common('Udvidet data', keys, resource) }#}
+
+{% if has_permission( "employee", permissions_list) %}
+<div class="relations-edit-app"></div>
+<script type="module">
+
+    import { initRelationsEdit } from '/static/js/relations-edit.js';
+
+    const resource = {{ to_json(resource) | safe }};
+    initRelationsEdit(resource.relations, resource.resource_orginal)
+
+</script>
+{% endif %}
 
 {% set meta_links = [
     {"url": "/people/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },

@@ -33,7 +33,7 @@
     scroll-margin-top: var(--main-menu-top);
 }
 
-.resources-events .search-suggestions {
+.resources-relations .search-suggestions {
     position: absolute;
     background-color: whitesmoke;
     display: none;
@@ -43,25 +43,25 @@
     overflow-y: auto;
 }
 
-.resources-events .search-suggestion-item,
-.resources-events .search-suggestion-info {
+.resources-relations .search-suggestion-item,
+.resources-relations .search-suggestion-info {
     flex: 2;
     padding: 5px;
     border-bottom: 1px solid #ccc;
 }
 
-.resources-events .search-suggestion-focus {
+.resources-relations .search-suggestion-focus {
     background-color: white;
 }
 
-.resources-events .relations-delete {
+.resources-relations .relations-delete {
     cursor: pointer;
     color: var(--links);
     min-width: 25px;
     display: inline-block;
 }
 
-.resources-events .relations-toggle {
+.resources-relations .relations-toggle {
     cursor: pointer;
     color: var(--links);
     min-width: 25px;
@@ -69,7 +69,7 @@
 
 }
 
-.resources-events .relations, .resources-events .relations-edit {
+.resources-relations .relations, .resources-relations .relations-edit {
     scroll-margin-top: var(--main-menu-top);
 }
 
