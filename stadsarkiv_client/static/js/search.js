@@ -125,8 +125,8 @@ function onSearchDateEvent(dateFormClass) {
         return;
     }
 
-    searchDateElem.addEventListener('submit', function (event) {
-        event.preventDefault();
+    searchDateElem.addEventListener('submit', function (e) {
+        e.preventDefault();
 
         const fromYear = document.querySelector(`${dateFormClass} .from-year`).value;
         const fromMonth = document.querySelector(`${dateFormClass} .from-month`).value || '01';
@@ -268,8 +268,8 @@ function searchEvents() {
 
         // Also add event listener to search form with id 'search-date'
         const searchElem = document.getElementById('q');
-        searchElem.addEventListener('submit', function (event) {
-            event.preventDefault();
+        searchElem.addEventListener('submit', function (e) {
+            e.preventDefault();
             searchElem.submit();
         })
 
@@ -280,7 +280,6 @@ function searchEvents() {
 
         const selectView = document.querySelector('.select-view');
         selectView.addEventListener('change', function () {
-            console.log("TEST")
             document.getElementById('view').submit();
         });
 
