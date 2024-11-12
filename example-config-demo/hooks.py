@@ -2,13 +2,7 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.records import record_utils
 from stadsarkiv_client.records import record_alter
-from stadsarkiv_client.database.bookmarks import bookmarks_crud
-from stadsarkiv_client.database import cache
-from stadsarkiv_client.core import api
 import json
-from stadsarkiv_client.core.api_error import OpenAwsException
-from stadsarkiv_client.core import csv_utils
-
 
 log = get_log()
 
@@ -16,52 +10,6 @@ log = get_log()
 class Hooks(HooksSpec):
     def __init__(self, request):
         super().__init__(request)
-
-    async def after_login_success(self, response: dict) -> dict:
-        """
-        After a successful login.
-        """
-        try:
-            me = await api.me_get(self.request)
-            user_id = me["id"]
-            email = me["email"]
-
-            cache_key = f"bookmarks_imported_{user_id}"
-            result = await cache.cache_get(cache_key)
-
-            if not result:
-
-                log.info(f"Importing bookmarks for user: {email}")
-                bookmarks_from_file = csv_utils.bookmarks_by_email(email)
-
-                insert_values = []
-                for bookmark in bookmarks_from_file:
-                    insert_values.append({"user_id": user_id, "bookmark": bookmark})
-
-                await bookmarks_crud.insert_many(insert_values)
-                await cache.cache_set(cache_key, True)
-        except Exception:
-            log.exception("Error importing bookmarks")
-            raise OpenAwsException(500, "Error importing bookmarks")
-
-        return response
-
-    async def after_login_failure(self, response: dict) -> dict:
-        """
-        After a login failure
-        """
-        request = self.request
-        form = await request.form()
-        username = str(form.get("email"))
-        if csv_utils.email_exists(username):
-            user_message = """Kære bruger. Du er tilknyttet det gamle system.
-    Men da vi er overgået til et nyt system, skal du oprette en ny bruger.
-    Hvis du bruger samme email vil systemet ved første login forsøge at importere data fra det gamle system."""
-            raise OpenAwsException(
-                401,
-                user_message,
-            )
-        return response
 
     async def before_get_auto_complete(self, query_params: list) -> list:
         query_params.append(("limit", "10"))
@@ -75,7 +23,7 @@ class Hooks(HooksSpec):
         """
         Alter the context dictionary. Before the context is returned to the template.
         """
-        context["meta_title"] = context["meta_title"] + " | AarhusArkivet"
+        context["meta_title"] = context["meta_title"] + " | Demo Client"
 
         return context
 
