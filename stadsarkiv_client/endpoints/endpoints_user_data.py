@@ -14,7 +14,7 @@ from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.records import normalize_dates
-from stadsarkiv_client.database import bookmarks
+from stadsarkiv_client.database.bookmarks import bookmarks_crud
 
 
 log = get_log()
@@ -30,7 +30,7 @@ async def auth_bookmarks_get(request: Request):
         me = await api.me_get(request)
 
         values = {"user_id": me["id"]}
-        bookmarks_db = await bookmarks.bookmarks_get(values)
+        bookmarks_db = await bookmarks_crud.select(values)
         bookmarks_list = [bookmark["bookmark"] for bookmark in bookmarks_db]
         records = await api.proxies_resolve(request, bookmarks_list)
 
@@ -87,8 +87,9 @@ async def auth_bookmarks_json(request: Request):
         me = await api.me_get(request)
         values = {"user_id": me["id"]}
 
-        bookmarks_db = await bookmarks.bookmarks_get(values)
-        bookmarks_list = [bookmark["bookmark"] for bookmark in bookmarks_db]
+        bookmarks_db = await bookmarks_crud.select(values)
+        bookmarks_list = [dict(row) for row in bookmarks_db]
+
         return JSONResponse(bookmarks_list, status_code=200)
     except OpenAwsException as e:
         log.exception("Error in auth_bookmarks_json")
@@ -108,14 +109,14 @@ async def auth_bookmarks_post(request: Request):
 
         me = await api.users_me_get(request)
         user_id = me["id"]
-
         json_data = await request.json()
-        if json_data["action"] == "remove":
-            values = {"user_id": user_id, "bookmark": json_data["record_id"]}
-            await bookmarks.bookmarks_delete(values)
-        else:
-            values = {"user_id": user_id, "bookmark": json_data["record_id"]}
-            await bookmarks.bookmarks_insert(values)
+        values = {"user_id": user_id, "bookmark": json_data["record_id"]}
+
+        exists = await bookmarks_crud.exists(values)
+        if json_data["action"] == "remove" and exists:
+            await bookmarks_crud.delete(values)
+        elif json_data["action"] == "add" and not exists:
+            await bookmarks_crud.insert(values)
 
     except OpenAwsException as e:
         log.exception("Error in auth_bookmarks_post")

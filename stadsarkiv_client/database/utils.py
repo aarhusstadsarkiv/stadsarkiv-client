@@ -1,7 +1,10 @@
-# from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.dynamic_settings import settings
 import sqlite3
 from contextlib import asynccontextmanager, contextmanager
+
+
+log = get_log()
 
 
 def get_db_connection_sync(database_url: str) -> sqlite3.Connection:

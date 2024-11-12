@@ -5,7 +5,7 @@ from stadsarkiv_client.records import record_utils
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.core import api
 import json
-from stadsarkiv_client.database import bookmarks
+from stadsarkiv_client.database.bookmarks import bookmarks_crud
 from stadsarkiv_client.database import cache
 from stadsarkiv_client.core import csv_utils
 
@@ -26,27 +26,20 @@ class Hooks(HooksSpec):
             user_id = me["id"]
             email = me["email"]
 
-            bookmarks_imported_key = f"bookmarks_imported_{user_id}"
-            result = await cache.cache_get(bookmarks_imported_key)
+            cache_key = f"bookmarks_imported_{user_id}"
+            result = await cache.cache_get(cache_key)
 
-            # Check if bookmarks have been imported
             if not result:
 
                 log.info(f"Importing bookmarks for user: {email}")
                 bookmarks_from_file = csv_utils.bookmarks_by_email(email)
 
-                # Insert bookmarks into database
-                await bookmarks.bookmarks_insert_many(user_id, bookmarks_from_file)
-                await cache.cache_set(bookmarks_imported_key, True)
+                insert_values = []
+                for bookmark in bookmarks_from_file:
+                    insert_values.append({"user_id": user_id, "bookmark": bookmark})
 
-            # if successful login then user is added to new system
-            email_exists_key = f"email_exists_{email}"
-            email_exists = await cache.cache_get(email_exists_key)
-
-            # Check if email exists in user file
-            if not email_exists:
-                await cache.cache_set(email_exists_key, True)
-
+                await bookmarks_crud.insert_many(insert_values)
+                await cache.cache_set(cache_key, True)
         except Exception:
             log.exception("Error importing bookmarks")
             raise OpenAwsException(500, "Error importing bookmarks")
