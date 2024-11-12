@@ -60,7 +60,6 @@ class CRUD:
         async with transaction_scope(self.database) as connection:
             try:
                 query = self.sql_builder.build_delete(filters)
-                log.debug(f"query: {query}")
                 connection.execute(query, filters)
             except sqlite3.Error as e:
                 raise e
