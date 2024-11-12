@@ -1,3 +1,40 @@
+"""
+Small CRUD class to handle basic database operations.
+
+```
+from stadsarkiv_client.database.crud import CRUD
+
+DATABASE_ORDERS = "orders"
+orders_crud = CRUD(DATABASE_ORDERS, "orders")
+
+async def example():
+    await orders_crud.insert({"order_id": 1, "order_name": "order1"})
+    await orders_crud.insert({"order_id": 2, "order_name": "order2"})
+
+    many_orders = [
+        {"order_id": 3, "order_name": "test"},
+        {"order_id": 4, "order_name": "test"},
+    ]
+    await orders_crud.insert_many(many_orders)
+
+    await orders_crud.select(
+        columns=["order_id"],
+        filters={"order_name": "test"},
+        order_by=[("order_id", "ASC")],
+        limit_offset=(2, 0),
+    )
+
+    await orders_crud.exists({"order_name": "test"})
+    await orders_crud.update({"order_name": "new test"}, {"order_id": 3})
+    await orders_crud.delete({"order_id": 4})
+
+class OrdersCRUD(CRUD):
+    # Or extend CRUD with specific methods for orders.
+    pass
+
+```
+"""
+
 import sqlite3
 from stadsarkiv_client.database.utils import transaction_scope
 from stadsarkiv_client.core.logging import get_log
