@@ -854,7 +854,13 @@ async def proxies_resolve(request: Request, ids=[]) -> typing.Any:
             if "result" not in result_json:
                 return []
 
-            return result_json["result"]
+            result = result_json["result"]
+
+            # The result is not sorted by the order of the initial given ids
+            # Sort the result by the order of the initial given ids
+            # This does not fail if the id is not found in the result
+            result = sorted(result, key=lambda x: ids.index(x["id"]))
+            return result
         else:
             response.raise_for_status()
 
