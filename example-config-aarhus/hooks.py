@@ -34,11 +34,11 @@ class Hooks(HooksSpec):
                 log.info(f"Importing bookmarks for user: {email}")
                 bookmarks_from_file = csv_utils.bookmarks_by_email(email)
 
-                insert_values = []
+                insert_values_many = []
                 for bookmark in bookmarks_from_file:
-                    insert_values.append({"user_id": user_id, "bookmark": bookmark})
+                    insert_values_many.append({"user_id": user_id, "bookmark": bookmark})
 
-                await bookmarks_crud.insert_many(insert_values)
+                await bookmarks_crud.insert_many(insert_values_many)
                 await cache.cache_set(cache_key, True)
         except Exception:
             log.exception("Error importing bookmarks")
