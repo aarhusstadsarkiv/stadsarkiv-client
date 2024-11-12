@@ -189,7 +189,10 @@ async def auth_orders(request: Request):
     try:
 
         me = await api.users_me_get(request)
-        orders_me = await orders_crud.select({"user_id": me["id"]})
+        orders_me = await orders_crud.select(
+            filters={"user_id": me["id"]},
+            order_by=[("created", "DESC")],
+        )
 
         context_values = {"title": translate("Your orders"), "me": me, "orders": orders_me}
         context = await get_context(request, context_values=context_values)

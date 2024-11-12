@@ -28,14 +28,18 @@ async def auth_bookmarks_get(request: Request):
     await is_authenticated(request)
     try:
         me = await api.me_get(request)
+        filters = {"user_id": me["id"]}
+        bookmarks_db = await bookmarks_crud.select(
+            columns=["bookmark"],
+            filters=filters,
+            order_by=[("created_at", "DESC")],
+            limit_offset=(100, 0),
+        )
 
-        values = {"user_id": me["id"]}
-        bookmarks_db = await bookmarks_crud.select(values)
         bookmarks_list = [bookmark["bookmark"] for bookmark in bookmarks_db]
         records = await api.proxies_resolve(request, bookmarks_list)
 
         bookmarks_data = []
-
         for record in records:
 
             try:
@@ -61,7 +65,6 @@ async def auth_bookmarks_get(request: Request):
                     "portrait": portrait,
                 }
             except Exception:
-                # Some record_id might not exist in the database
                 log.exception("Error in auth_bookmarks_get")
                 continue
 
@@ -87,7 +90,7 @@ async def auth_bookmarks_json(request: Request):
         me = await api.me_get(request)
         values = {"user_id": me["id"]}
 
-        bookmarks_db = await bookmarks_crud.select(values)
+        bookmarks_db = await bookmarks_crud.select(filters=values, order_by=[("created_at", "DESC")])
         bookmarks_list = [dict(row) for row in bookmarks_db]
 
         return JSONResponse(bookmarks_list, status_code=200)
