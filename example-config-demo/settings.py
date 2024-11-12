@@ -32,11 +32,4 @@ settings: dict[str, typing.Any] = {
     "show_version": True,
     "allow_user_registration": True,
     "allow_user_management": True,
-    "allow_online_ordering": True,
-    "allow_save_bookmarks": True,
-    "allow_robots": False,
-    "sqlite3": {
-        "default": "data/database.db",
-        "errors": "data/errors.db",
-    },
 }
