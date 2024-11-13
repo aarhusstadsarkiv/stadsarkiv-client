@@ -3,11 +3,14 @@ Check the error log added to the database for unresolved errors.
 export CONFIG_DIR=example-config-aarhus
 """
 
+from stadsarkiv_client.core.dynamic_settings import settings
 import httpx
 import time
-from stadsarkiv_client.database.utils import transaction_scope_sync
+from stadsarkiv_client.database.utils import DatabaseTransaction
 
-db_file_path = "data/logs/errors.db"
+database_url = settings["sqlite3"]["default"]
+database_transation = DatabaseTransaction(database_url)
+transaction_scope_sync = database_transation.transaction_scope_sync
 
 should_not_resolve = [
     "Representations but no record_type",

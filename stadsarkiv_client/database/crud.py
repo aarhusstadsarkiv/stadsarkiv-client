@@ -1,11 +1,11 @@
 """
-Small CRUD class to handle basic database operations.
+Small CRUD class to handle basic database operations using sqlite3.
 
 ```
 from stadsarkiv_client.database.crud import CRUD
 
-DATABASE_ORDERS = "orders"
-orders_crud = CRUD(DATABASE_ORDERS, "orders")
+database_url = settings["sqlite3"]["default"]
+orders_crud = CRUD(database_url=database_url, table="orders")
 
 async def example():
     await orders_crud.insert({"order_id": 1, "order_name": "order1"})
@@ -36,7 +36,7 @@ class OrdersCRUD(CRUD):
 """
 
 import sqlite3
-from stadsarkiv_client.database.utils import transaction_scope
+from stadsarkiv_client.database.utils import DatabaseTransaction
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.database.sql_builder import SQLBuilder
 
@@ -44,13 +44,14 @@ log = get_log()
 
 
 class CRUD:
-    def __init__(self, database: str, table: str):
-        self.database = database
+    def __init__(self, database_url: str, table: str):
         self.table = table
         self.sql_builder = SQLBuilder(self.table)
+        database_transation = DatabaseTransaction(database_url)
+        self.transaction_scope = database_transation.transaction_scope
 
     async def insert(self, insert_values: dict):
-        async with transaction_scope(self.database) as connection:
+        async with self.transaction_scope() as connection:
             try:
                 query = self.sql_builder.build_insert(insert_values)
                 connection.execute(query, insert_values)
@@ -58,7 +59,7 @@ class CRUD:
                 raise e
 
     async def insert_many(self, insert_values_many: list):
-        async with transaction_scope(self.database) as connection:
+        async with self.transaction_scope() as connection:
             try:
                 for single_data in insert_values_many:
                     query = self.sql_builder.build_insert(single_data)
@@ -67,7 +68,7 @@ class CRUD:
                 raise e
 
     async def select(self, columns: list = [], filters: dict = {}, order_by: list = [], limit_offset: tuple = ()):
-        async with transaction_scope(self.database) as connection:
+        async with self.transaction_scope() as connection:
             try:
                 query = self.sql_builder.build_select(
                     columns=columns,
@@ -86,7 +87,7 @@ class CRUD:
         return bool(rows)
 
     async def update(self, update_values: dict, filters: dict):
-        async with transaction_scope(self.database) as connection:
+        async with self.transaction_scope() as connection:
             try:
                 query = self.sql_builder.build_update(update_values, filters)
                 connection.execute(query, update_values)
@@ -94,7 +95,7 @@ class CRUD:
                 raise e
 
     async def delete(self, filters: dict):
-        async with transaction_scope(self.database) as connection:
+        async with self.transaction_scope() as connection:
             try:
                 query = self.sql_builder.build_delete(filters)
                 connection.execute(query, filters)

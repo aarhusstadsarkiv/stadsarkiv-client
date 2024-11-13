@@ -29,11 +29,16 @@ return JSONResponse(
 ```
 """
 
+from stadsarkiv_client.core.dynamic_settings import settings
 import sqlite3
 import json
 import time
 from typing import Any
-from stadsarkiv_client.database.utils import transaction_scope
+from stadsarkiv_client.database.utils import DatabaseTransaction
+
+database_url = settings["sqlite3"]["default"]
+database_transation = DatabaseTransaction(database_url)
+transaction_scope = database_transation.transaction_scope
 
 
 async def cache_set(key: str, data: Any) -> bool:
