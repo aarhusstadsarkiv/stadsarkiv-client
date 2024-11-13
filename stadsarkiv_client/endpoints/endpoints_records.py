@@ -14,7 +14,6 @@ from stadsarkiv_client.core import cookie
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.core.dataclasses import RecordPagination
-from stadsarkiv_client.records import record_utils
 import asyncio
 import json
 import typing
