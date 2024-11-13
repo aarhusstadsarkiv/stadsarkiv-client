@@ -55,6 +55,11 @@ def get_record_meta_data(request: Request, record: dict, user_permissions=[]) ->
     """
     meta_data = {}
 
+    if "representations" in record and "record_type" not in record["representations"]:
+        extra = {"error_code": 499, "error_url": request.url}
+        log.error(f"Record {record['id']}. Representations but no record_type", extra=extra)
+        del record["representations"]
+
     title = _get_record_title(record)
     if not title:
         quote_title = record_utils.meaningful_substring(record.get("summary", ""), 200)

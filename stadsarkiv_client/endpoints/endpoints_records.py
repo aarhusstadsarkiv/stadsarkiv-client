@@ -121,11 +121,6 @@ async def records_get(request: Request):
     permissions = await api.me_permissions(request)
     record_pagination, record = await asyncio.gather(_get_record_pagination(request), api.proxies_record_get_by_id(request, record_id))
 
-    if "representations" in record and "record_type" not in record["representations"]:
-        extra = {"error_code": 499, "error_url": request.url}
-        log.error(f"Record {record['id']}. Representations but no record_type", extra=extra)
-        del record["representations"]
-
     meta_data = get_record_meta_data(request, record, permissions)
     record, meta_data = await hooks.after_get_record(record, meta_data)
 
@@ -156,8 +151,8 @@ async def records_get_json(request: Request):
         type = request.path_params["type"]
 
         permissions = await api.me_permissions(request)
-
         record = await api.proxies_record_get_by_id(request, record_id)
+
         meta_data = get_record_meta_data(request, record, permissions)
         record, meta_data = await hooks.after_get_record(record, meta_data)
 
