@@ -1,7 +1,7 @@
-from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.dynamic_settings import settings
 import sqlite3
 from contextlib import asynccontextmanager, contextmanager
+from stadsarkiv_client.core.logging import get_log
 
 
 log = get_log()
