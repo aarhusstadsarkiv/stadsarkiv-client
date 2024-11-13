@@ -30,14 +30,14 @@ async def auth_bookmarks_get(request: Request):
         me = await api.me_get(request)
         filters = {"user_id": me["id"]}
         bookmarks_db = await bookmarks_crud.select(
-            columns=["bookmark"],
+            columns=["record_id"],
             filters=filters,
             order_by=[("created_at", "DESC")],
             limit_offset=(100, 0),
         )
 
-        bookmarks_list = [bookmark["bookmark"] for bookmark in bookmarks_db]
-        records = await api.proxies_resolve(request, bookmarks_list)
+        record_list = [bookmark["record_id"] for bookmark in bookmarks_db]
+        records = await api.proxies_resolve(request, record_list)
 
         bookmarks_data = []
         for record in records:
@@ -84,11 +84,16 @@ async def auth_bookmarks_get(request: Request):
 
 async def auth_bookmarks_json(request: Request):
     """
-    Get user bookmarks as JSON
+    Get user bookmarks as JSON. Used for /records/{record_id} page.
+    In /static/js/bookmarks-record.js
     """
     try:
+
+        # get query param record_id
+        record_id = request.query_params.get("record_id")
+
         me = await api.me_get(request)
-        values = {"user_id": me["id"]}
+        values = {"user_id": me["id"], "record_id": record_id}
 
         bookmarks_db = await bookmarks_crud.select(filters=values, order_by=[("created_at", "DESC")])
         bookmarks_list = [dict(row) for row in bookmarks_db]
@@ -113,7 +118,7 @@ async def auth_bookmarks_post(request: Request):
         me = await api.users_me_get(request)
         user_id = me["id"]
         json_data = await request.json()
-        values = {"user_id": user_id, "bookmark": json_data["record_id"]}
+        values = {"user_id": user_id, "record_id": json_data["record_id"]}
 
         exists = await bookmarks_crud.exists(values)
         if json_data["action"] == "remove" and exists:

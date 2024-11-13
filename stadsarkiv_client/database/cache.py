@@ -36,7 +36,11 @@ import time
 from typing import Any
 from stadsarkiv_client.database.utils import DatabaseTransaction
 
-database_url = settings["sqlite3"]["default"]
+try:
+    database_url = settings["sqlite3"]["default"]
+except KeyError:
+    database_url = ""
+
 database_transation = DatabaseTransaction(database_url)
 transaction_scope = database_transation.transaction_scope
 

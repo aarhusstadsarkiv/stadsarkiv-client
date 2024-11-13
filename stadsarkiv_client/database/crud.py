@@ -45,8 +45,7 @@ log = get_log()
 
 class CRUD:
     def __init__(self, database_url: str, table: str):
-        self.table = table
-        self.sql_builder = SQLBuilder(self.table)
+        self.sql_builder = SQLBuilder(table)
         database_transation = DatabaseTransaction(database_url)
         self.transaction_scope = database_transation.transaction_scope
 

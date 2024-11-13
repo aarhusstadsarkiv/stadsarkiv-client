@@ -51,6 +51,9 @@ class DatabaseTransaction:
         """
         Synchronous transaction scope context manager.
         """
+        if not self.database_url:
+            raise ValueError("Database URL was not set")
+
         connection = self.get_db_connection_sync()
         try:
             connection.execute("BEGIN IMMEDIATE")
@@ -66,6 +69,9 @@ class DatabaseTransaction:
         """
         Create an asynchronous database connection.
         """
+        if not self.database_url:
+            raise ValueError("Database URL was not set")
+
         connection = sqlite3.connect(self.database_url)
         connection.row_factory = sqlite3.Row
         connection.execute("PRAGMA journal_mode=WAL;")

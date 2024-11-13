@@ -4,5 +4,10 @@ from stadsarkiv_client.core.logging import get_log
 
 
 log = get_log()
-database_url = settings["sqlite3"]["default"]
+
+try:
+    database_url = settings["sqlite3"]["default"]
+except KeyError:
+    database_url = ""
+
 bookmarks_crud = CRUD(database_url=database_url, table="bookmarks")

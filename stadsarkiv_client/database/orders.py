@@ -7,7 +7,6 @@ log = get_log()
 try:
     database_url = settings["sqlite3"]["orders"]
 except KeyError:
-    pass
+    database_url = ""
 
-if database_url:
-    orders_crud = CRUD(database_url=database_url, table="orders")
+orders_crud = CRUD(database_url=database_url, table="orders")

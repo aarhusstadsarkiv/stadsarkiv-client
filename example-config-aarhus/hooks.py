@@ -35,8 +35,8 @@ class Hooks(HooksSpec):
                 bookmarks_from_file = csv_utils.bookmarks_by_email(email)
 
                 insert_values_many = []
-                for bookmark in bookmarks_from_file:
-                    insert_values_many.append({"user_id": user_id, "bookmark": bookmark})
+                for record_id in bookmarks_from_file:
+                    insert_values_many.append({"user_id": user_id, "record_id": record_id})
 
                 await bookmarks_crud.insert_many(insert_values_many)
                 await cache.cache_set(cache_key, True)

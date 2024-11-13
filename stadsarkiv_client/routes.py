@@ -8,6 +8,7 @@ from starlette.requests import Request
 from stadsarkiv_client.endpoints import (
     endpoints_admin,
     endpoints_auth,
+    endpoints_bookmarks,
     endpoints_entities,
     endpoints_error,
     endpoints_order,
@@ -19,7 +20,6 @@ from stadsarkiv_client.endpoints import (
     endpoints_search,
     endpoints_test,
     endpoints_upload,
-    endpoints_user_data,
 )
 import os
 from stadsarkiv_client.core.dynamic_settings import settings
@@ -93,7 +93,6 @@ routes = [
     ),
     Route("/auth/me", endpoint=endpoints_auth.auth_me_get, name="auth_me_get"),
     Route("/auth/cookie", endpoint=endpoints_auth.auth_set_cooke, name="auth_set_cooke", methods=["POST"]),
-    Route("/auth/orders", endpoint=endpoints_auth.auth_orders, name="auth_orders"),
     Route("/auth/search-results", endpoint=endpoints_auth.auth_search_results, name="auth_search_results"),
     # verify request token sent by email
     Route("/auth/verify/{token:str}", endpoint=endpoints_auth.auth_verify, name="auth_verify"),
@@ -132,6 +131,7 @@ routes = [
 
 if settings["allow_online_ordering"]:
     online_ordering = [
+        Route("/auth/orders", endpoint=endpoints_auth.auth_orders, name="auth_orders"),
         Route("/order/{record_id:str}", endpoint=endpoints_order.orders_get_order, name="orders_get_order"),
         Route("/order/{record_id:str}", endpoint=endpoints_order.orders_post, name="orders_post_order", methods=["POST"]),
     ]
@@ -139,9 +139,9 @@ if settings["allow_online_ordering"]:
 
 if settings["allow_save_bookmarks"]:
     routes_bookmarks = [
-        Route("/auth/bookmarks", endpoint=endpoints_user_data.auth_bookmarks_get, name="auth_bookmarks_get"),
-        Route("/auth/bookmarks", endpoint=endpoints_user_data.auth_bookmarks_post, name="auth_bookmarks_post", methods=["POST"]),
-        Route("/auth/bookmarks_json", endpoint=endpoints_user_data.auth_bookmarks_json, name="auth_bookmarks_json"),
+        Route("/auth/bookmarks", endpoint=endpoints_bookmarks.auth_bookmarks_get, name="auth_bookmarks_get"),
+        Route("/auth/bookmarks", endpoint=endpoints_bookmarks.auth_bookmarks_post, name="auth_bookmarks_post", methods=["POST"]),
+        Route("/auth/bookmarks/json", endpoint=endpoints_bookmarks.auth_bookmarks_json, name="auth_bookmarks_json"),
     ]
     routes.extend(routes_bookmarks)
 
@@ -194,7 +194,7 @@ def init_module_routes(default_routes: list):
             module_path = os.path.join("mods", file_name)
             try:
                 module_name = os.path.splitext(file_name)[0]
-                get_routes = load_submodule_from_file(module_name, "get_routes", get_local_config_dir(module_path))
+                get_routes: list = load_submodule_from_file(module_name, "get_routes", get_local_config_dir(module_path))
 
                 if callable(get_routes):
 
