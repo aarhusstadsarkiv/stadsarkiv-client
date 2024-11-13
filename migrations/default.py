@@ -22,6 +22,13 @@ export CONFIG_DIR=example-config-aarhus
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.migration import Migration
 from stadsarkiv_client.core.logging import get_log
+import os
+
+# Check if the environment variable CONFIG_DIR is set
+if "CONFIG_DIR" not in os.environ:
+    print("Environment variable CONFIG_DIR is not set. E.g. set it like this:")
+    print("export CONFIG_DIR=example-config-aarhus")
+    exit(1)
 
 
 log = get_log()
@@ -86,6 +93,11 @@ create_error_logs_index = """
 CREATE INDEX idx_time ON error_logs (time);
 """
 
+# alter bookmarks table bookmark column name to record_id
+alter_bookmarks_table = """
+ALTER TABLE bookmarks RENAME COLUMN bookmark TO record_id;
+"""
+
 # List of migrations with keys
 migrations = {
     "create_bookmarks": create_booksmarks_query,
@@ -96,6 +108,7 @@ migrations = {
     "create_cache_index": create_cache_index_query,
     "create_error_logs": create_error_logs,
     "create_error_logs_index": create_error_logs_index,
+    "alter_bookmarks_table": alter_bookmarks_table,
 }
 
 
