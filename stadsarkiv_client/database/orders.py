@@ -3,5 +3,11 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.database.crud import CRUD
 
 log = get_log()
-database_url = settings["sqlite3"]["orders"]
-orders_crud = CRUD(database_url=database_url, table="orders")
+
+try:
+    database_url = settings["sqlite3"]["orders"]
+except KeyError:
+    pass
+
+if database_url:
+    orders_crud = CRUD(database_url=database_url, table="orders")
