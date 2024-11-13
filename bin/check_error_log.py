@@ -6,7 +6,17 @@ export CONFIG_DIR=example-config-aarhus
 from stadsarkiv_client.core.dynamic_settings import settings
 import httpx
 import time
+import os
 from stadsarkiv_client.database.utils import DatabaseTransaction
+
+# Check if the environment variable CONFIG_DIR is set
+if "CONFIG_DIR" not in os.environ:
+    print("Environment variable CONFIG_DIR is not set. E.g. set it like this:")
+    print("export CONFIG_DIR=example-config-aarhus")
+    exit(1)
+
+# check if environment variable CONFIG_DIR is set
+
 
 database_url = settings["sqlite3"]["default"]
 database_transation = DatabaseTransaction(database_url)
