@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """"
 Generate a new CSV file with bookmarks and emails.
 

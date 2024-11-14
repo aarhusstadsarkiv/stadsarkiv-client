@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.logging import get_log
 import glob

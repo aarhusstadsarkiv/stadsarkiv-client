@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # export CONFIG_DIR=example-config-aarhus
 
 from stadsarkiv_client.core import api

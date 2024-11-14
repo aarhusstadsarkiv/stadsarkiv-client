@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 Check the error log added to the database for unresolved errors.
 export CONFIG_DIR=example-config-aarhus

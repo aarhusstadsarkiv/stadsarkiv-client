@@ -34,8 +34,6 @@ echo "Upgrading to the latest tag: $install_tag"
 # get last part of current working directory
 DIR=${PWD##*/}
 
-sudo service $DIR stop
-
 # Upgrade the repo and checkout the latest tag
 git checkout main
 git pull

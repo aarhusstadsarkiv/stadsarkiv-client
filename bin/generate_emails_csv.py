@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 Extract email from the csv file and save it to a new file named data/csv/emails.csv
 This csv files contains a single column with the header "email"

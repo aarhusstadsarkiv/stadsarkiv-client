@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # convert a dict symbol from .py to yml
 import yaml
 
