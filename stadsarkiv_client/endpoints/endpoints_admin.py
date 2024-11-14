@@ -10,6 +10,7 @@ from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core import query
+from stadsarkiv_client.database.orders import crud_orders
 import asyncio
 
 log = get_log()
@@ -131,6 +132,11 @@ async def admin_users_delete(request: Request):
         }
 
         return JSONResponse(error)
+
+
+async def admin_orders(request: Request):
+    await is_authenticated(request, permissions=["empolyee"])
+    pass
 
 
 async def admin_test(request: Request):

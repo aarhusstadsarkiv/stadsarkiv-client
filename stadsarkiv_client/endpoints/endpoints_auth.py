@@ -14,7 +14,7 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from stadsarkiv_client.endpoints import auth_data
-from stadsarkiv_client.database.orders import orders_crud
+from stadsarkiv_client.database.orders import crud_orders
 
 log = get_log()
 
@@ -189,7 +189,7 @@ async def auth_orders(request: Request):
     try:
 
         me = await api.users_me_get(request)
-        orders_me = await orders_crud.select(
+        orders_me = await crud_orders.select(
             filters={"user_id": me["id"]},
             order_by=[("created", "DESC")],
         )

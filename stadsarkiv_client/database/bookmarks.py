@@ -10,4 +10,4 @@ try:
 except KeyError:
     database_url = ""
 
-bookmarks_crud = CRUD(database_url=database_url, table="bookmarks")
+crud_bookmarks = CRUD(database_url=database_url, table="bookmarks")

@@ -14,7 +14,7 @@ from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.records import normalize_dates
-from stadsarkiv_client.database.bookmarks import bookmarks_crud
+from stadsarkiv_client.database.bookmarks import crud_bookmarks
 
 
 log = get_log()
@@ -29,7 +29,7 @@ async def auth_bookmarks_get(request: Request):
     try:
         me = await api.me_get(request)
         filters = {"user_id": me["id"]}
-        bookmarks_db = await bookmarks_crud.select(
+        bookmarks_db = await crud_bookmarks.select(
             columns=["record_id"],
             filters=filters,
             order_by=[("created_at", "DESC")],
@@ -95,7 +95,7 @@ async def auth_bookmarks_json(request: Request):
         me = await api.me_get(request)
         values = {"user_id": me["id"], "record_id": record_id}
 
-        bookmarks_db = await bookmarks_crud.select(filters=values, order_by=[("created_at", "DESC")])
+        bookmarks_db = await crud_bookmarks.select(filters=values, order_by=[("created_at", "DESC")])
         bookmarks_list = [dict(row) for row in bookmarks_db]
 
         return JSONResponse(bookmarks_list, status_code=200)
@@ -120,11 +120,11 @@ async def auth_bookmarks_post(request: Request):
         json_data = await request.json()
         values = {"user_id": user_id, "record_id": json_data["record_id"]}
 
-        exists = await bookmarks_crud.exists(values)
+        exists = await crud_bookmarks.exists(values)
         if json_data["action"] == "remove" and exists:
-            await bookmarks_crud.delete(values)
+            await crud_bookmarks.delete(values)
         elif json_data["action"] == "add" and not exists:
-            await bookmarks_crud.insert(values)
+            await crud_bookmarks.insert(values)
 
     except OpenAwsException as e:
         log.exception("Error in auth_bookmarks_post")

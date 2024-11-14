@@ -9,4 +9,4 @@ try:
 except KeyError:
     database_url = ""
 
-orders_crud = CRUD(database_url=database_url, table="orders")
+crud_orders = CRUD(database_url=database_url, table="orders")

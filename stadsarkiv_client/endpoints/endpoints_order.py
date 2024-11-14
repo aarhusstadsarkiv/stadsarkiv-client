@@ -9,7 +9,7 @@ from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.flash import set_message
-from stadsarkiv_client.database.orders import orders_crud
+from stadsarkiv_client.database.orders import crud_orders
 import json
 
 log = get_log()
@@ -39,7 +39,7 @@ async def orders_get_order(request: Request):
         "meta_title": "Bestil: " + meta_data["meta_title"],
         "meta_data": meta_data,
         "record_and_types": record_and_types,
-        "is_ordered": await orders_crud.exists(filters),
+        "is_ordered": await crud_orders.exists(filters),
     }
 
     context = await get_context(request, context_values=context_variables)
@@ -75,9 +75,9 @@ async def orders_post(request: Request):
         "record_id": meta_data["id"],
     }
 
-    if not await orders_crud.exists(filters):
+    if not await crud_orders.exists(filters):
         data = _get_insert_data(meta_data, me)
-        await orders_crud.insert(data)
+        await crud_orders.insert(data)
         set_message(request, "Din bestilling er blevet oprettet", "success")
         return JSONResponse({"message": "Din bestilling er blevet oprettet", "error": False})
     else:
