@@ -76,8 +76,6 @@
             <td>{{ order.status_modified }}</td>
             <td>{{ order.resources.storage_id }}</td>
         </tr>
-        
-    
         {% endfor %}
     </tbody>
 </table>
@@ -89,6 +87,10 @@
         text-overflow: ellipsis;
         display: inline-block;
         max-width: 200px; /* Adjust width to fit your design */
+    }
+
+    .container-medium {
+        width: unset;
     }
 </style>
 
