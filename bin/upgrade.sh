@@ -31,9 +31,6 @@ fi
 
 echo "Upgrading to the latest tag: $install_tag"
 
-# get last part of current working directory
-DIR=${PWD##*/}
-
 # Upgrade the repo and checkout the latest tag
 git checkout main
 git pull
@@ -42,4 +39,4 @@ git checkout $install_tag
 # Activate virtual environment and install requirements
 ./venv/bin/pip install -r requirements.txt
 
-echo "If no errors occurred, the module has been successfully upgraded to the latest tag."
+echo "The module has been successfully upgraded to the latest tag."
