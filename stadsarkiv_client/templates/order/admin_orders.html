@@ -1,0 +1,99 @@
+{% import "macros/admin_macros.html" as admin_macros %}
+{% import "macros/basic_macros.html" as basic_macros %}
+
+{% extends "base.html" %}
+
+{% block body_class %}page-auth-admin-users{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/table.css') }}?v={{ get_setting('version') }}">
+{% endblock head %}
+
+{% block content %}
+
+{% include "admin/menu.html" %}
+
+{{ basic_macros.page_title(title) }}
+
+{# [
+    {
+        "id": 1,
+        "record_id": "000502652",
+        "user_id": "019265e5-3fd4-7734-990c-7c7660d1ca64",
+        "barcode": null,
+        "storage_id": null,
+        "location": null,
+        "created": "2024-11-08 08:56:46",
+        "label": "Århus Bymuseum: Årsprogram",
+        "deadline": null,
+        "status_modified": "2024-11-08 08:56:46",
+        "status_updated_by": null,
+        "resources": {},
+        "status": "Ordered",
+        "comment": null
+    },
+    {
+        "id": 2,
+        "record_id": "000495123",
+        "user_id": "019265e5-3fd4-7734-990c-7c7660d1ca64",
+        "barcode": null,
+        "storage_id": null,
+        "location": null,
+        "created": "2024-11-08 12:07:08",
+        "label": "Venskabsforeningen for Ældre Danskere og indvandrere - Åbningskort",
+        "deadline": null,
+        "status_modified": "2024-11-08 12:07:08",
+        "status_updated_by": null,
+        "resources": {
+            "type": "analog",
+            "storage_id": [
+                "91+01373-17"
+            ]
+        },
+        "status": "Ordered",
+        "comment": null
+    },
+] #}
+
+<table>
+    <thead>
+        <tr>
+            <th>URL</th>
+            <th>Status</th>
+            <th>Oprettet</th>
+            <th>Opdateret</th>
+            <th>Placering</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>
+                <a title="{{ order.label }}" href="/records/{{order.record_id}}">{{ order.label }}</a>
+            </td>
+            <td>{{ order.status }}</td>
+            <td>{{ order.created }}</td>
+            <td>{{ order.status_modified }}</td>
+            <td>{{ order.resources.storage_id }}</td>
+        </tr>
+        
+    
+        {% endfor %}
+    </tbody>
+</table>
+<style>
+
+    td a {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        max-width: 200px; /* Adjust width to fit your design */
+    }
+</style>
+
+
+<pre>{{ to_json(orders)}}</pre>
+
+
+{% endblock content %}

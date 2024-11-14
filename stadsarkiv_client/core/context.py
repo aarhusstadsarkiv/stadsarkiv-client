@@ -12,8 +12,7 @@ from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core import cookie
 from stadsarkiv_client.core.logging import get_log
 
-log = get_log() 
-
+log = get_log()
 
 
 async def get_context(request: Request, context_values: dict = {}, identifier: str = "") -> dict:
@@ -95,6 +94,10 @@ def _get_main_menu_system(logged_in: bool, permissions_list: list) -> list:
 
     if not logged_in:
         excluded_items = {"auth_logout_get", "auth_me_get"}
+        main_menu_system = [item for item in main_menu_system if item["name"] not in excluded_items]
+
+    if "employee" not in permissions_list:
+        excluded_items = {"admin_orders_get"}
         main_menu_system = [item for item in main_menu_system if item["name"] not in excluded_items]
 
     if "root" not in permissions_list and "admin" not in permissions_list:

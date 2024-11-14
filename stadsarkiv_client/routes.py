@@ -134,6 +134,7 @@ if settings["allow_online_ordering"]:
         Route("/auth/orders", endpoint=endpoints_auth.auth_orders, name="auth_orders"),
         Route("/order/{record_id:str}", endpoint=endpoints_order.orders_get_order, name="orders_get_order"),
         Route("/order/{record_id:str}", endpoint=endpoints_order.orders_post, name="orders_post_order", methods=["POST"]),
+        Route("/admin/orders", endpoint=endpoints_admin.admin_orders_get, name="admin_orders_get"),
     ]
     routes.extend(online_ordering)
 

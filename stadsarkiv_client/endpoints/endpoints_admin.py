@@ -11,6 +11,7 @@ from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core import query
 from stadsarkiv_client.database.orders import crud_orders
+import json
 import asyncio
 
 log = get_log()
@@ -134,9 +135,22 @@ async def admin_users_delete(request: Request):
         return JSONResponse(error)
 
 
-async def admin_orders(request: Request):
-    await is_authenticated(request, permissions=["empolyee"])
-    pass
+async def admin_orders_get(request: Request):
+    await is_authenticated(request, permissions=["employee"])
+
+    orders = await crud_orders.select(order_by=[("id", "DESC")])
+    orders = [dict(order) for order in orders]
+
+    # (bestilt, pakket_til_læsesal, tilgængelig på læsesalen, læsesal, færdigbehandlet på læsesal, returneres til magasin, færdigbehandlet)
+
+    # extract all resources from the orders. They are stored as a json string in the database.
+    for order in orders:
+        order["resources"] = json.loads(order["resources"])
+
+    context_values = {"title": "Bestillinger", "orders": orders}
+    context = await get_context(request, context_values=context_values)
+
+    return templates.TemplateResponse(request, "order/admin_orders.html", context)
 
 
 async def admin_test(request: Request):
