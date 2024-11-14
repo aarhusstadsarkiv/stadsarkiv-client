@@ -10,6 +10,10 @@ from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core import cookie
+from stadsarkiv_client.core.logging import get_log
+
+log = get_log() 
+
 
 
 async def get_context(request: Request, context_values: dict = {}, identifier: str = "") -> dict:
