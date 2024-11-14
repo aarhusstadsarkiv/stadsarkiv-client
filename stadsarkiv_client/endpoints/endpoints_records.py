@@ -151,6 +151,7 @@ async def records_get_json(request: Request):
 
         permissions = await api.me_permissions(request)
         record = await api.proxies_record_get_by_id(request, record_id)
+        record_original = record.copy()
 
         meta_data = get_record_meta_data(request, record, permissions)
         record, meta_data = await hooks.after_get_record(record, meta_data)
@@ -160,7 +161,11 @@ async def records_get_json(request: Request):
 
         record, record_and_types = await hooks.after_get_record_and_types(record, record_and_types)
 
-        if type == "record":
+        if type == "record_original":
+            record_original_json = json.dumps(record_original, indent=4, ensure_ascii=False)
+            return PlainTextResponse(record_original_json)
+
+        elif type == "record":
             record_json = json.dumps(record, indent=4, ensure_ascii=False)
             return PlainTextResponse(record_json)
 
