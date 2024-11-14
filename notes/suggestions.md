@@ -247,3 +247,14 @@ https://aarhusbilleder.dk/main/thumbnailview/main-quicksearch=Vestergade
 
 På Aarhusbilleder har man desuden mulighed for at vælge mellem forskellige visningsformer – her i blandt en kvadratisk visning, eller en visning med billedet ”rigtige” dimensioner. Det kunne man måske også overveje.
 
+---
+
+AarhusArkivet sender en tilbage til forsiden, når man logger ind.
+
+Også selvom man havde gang i forskellige søgefiltre.
+
+Det må den godt holde op med.
+
+Janne Marie
+
+---
