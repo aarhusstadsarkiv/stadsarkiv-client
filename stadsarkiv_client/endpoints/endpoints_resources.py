@@ -95,4 +95,4 @@ async def get_resource_json(request: Request):
         return PlainTextResponse(resource_json)
 
     else:
-        return HTTPException(status_code=404, detail="Type not found")
+        raise HTTPException(status_code=404, detail="Type not found")
