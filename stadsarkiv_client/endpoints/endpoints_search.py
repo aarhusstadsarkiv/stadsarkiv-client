@@ -18,13 +18,19 @@ from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.records import normalize_dates
 from stadsarkiv_client.settings_query_params import settings_query_params
 
-
 log = get_log()
 
-remove_keys = []
-for key, value in settings_query_params.items():
-    if not value.get("search_filter"):
-        remove_keys.append(key)
+
+def get_api_acceptable_query_params() -> list:
+    api_accept_query_params = []
+    for key, value in settings_query_params.items():
+        if value.get("search_filter"):
+            api_accept_query_params.append(key)
+
+        if value.get("negatable"):
+            api_accept_query_params.append(f"-{key}")
+
+    return api_accept_query_params
 
 
 def _get_search_pagination_data(request: Request, size: int, total: int):
@@ -245,6 +251,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
 
     q = query.get_search(request)
     size, sort, view = get_size_sort_view(request)
+    api_accept_query_params = get_api_acceptable_query_params()
 
     # date_to, date_from, created_at, start, direction are read from query params
     default_query_params = _get_default_query_params(request)
@@ -252,7 +259,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
 
     query_params_before_search = query.get_list(
         request,
-        remove_keys=remove_keys,
+        accept_keys=api_accept_query_params,
         default_query_params=default_query_params,
     )
 
@@ -272,10 +279,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
     query_params_after_search = await hooks.after_get_search(query_params=query_params_before_search)
 
     # Remove pagination params from query params. In order to get a query string that can be used in e.g. facet links
-    query_str_display = query.get_str_from_list(
-        query_params_after_search,
-        remove_keys=remove_keys,
-    )
+    query_str_display = query.get_str_from_list(query_params_after_search)
 
     # Get facets and filters
     facets, facets_filters = _get_facets_and_filters(
