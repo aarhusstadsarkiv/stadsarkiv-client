@@ -24,7 +24,6 @@ async def auth_bookmarks_get(request: Request):
     """
     User bookmarks page.
     """
-
     await is_authenticated(request)
     try:
         me = await api.me_get(request)
