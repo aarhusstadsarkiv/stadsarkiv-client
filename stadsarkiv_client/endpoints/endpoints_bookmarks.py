@@ -91,6 +91,8 @@ async def auth_bookmarks_json(request: Request):
 
         # get query param record_id
         record_id = request.query_params.get("record_id")
+        if not record_id:
+            return JSONResponse({"message": "No record_id provided", "error": True}, status_code=400)
 
         me = await api.me_get(request)
         values = {"user_id": me["id"], "record_id": record_id}
