@@ -288,6 +288,13 @@ async def user_get(request: Request) -> dict:
     """
 
     uuid = request.path_params["uuid"]
+    return await user_get_by_uuid(request, uuid)
+
+
+async def user_get_by_uuid(request: Request, uuid: str) -> dict:
+    """
+    GET single user from the api by uuid
+    """
 
     headers = _get_jwt_headers(request, {"Accept": "application/json"})
     url = base_url + "/users/" + uuid
