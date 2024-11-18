@@ -26,15 +26,11 @@ CREATE TABLE orders (
     id INTEGER PRIMARY KEY,
     record_id TEXT NOT NULL,
     user_id TEXT NOT NULL,
-    -- identifier TEXT NOT NULL,                     -- "resources[].barcode" eller "resources[].storage_id[]
-    barcode TEXT,                                    -- "resources[].barcode"
-    storage_id TEXT,                                 -- "resources[].storage_id"
-    location TEXT,                                   -- "resources[].location"
-    created TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
     label TEXT NOT NULL,                             -- Label for the order
     deadline TEXT,
-    status_modified TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    status_updated_by TEXT,
+    modified_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_by TEXT,
     resources TEXT,                                  -- JSON array of resources
     status TEXT DEFAULT 'Ordered' CHECK(status IN (
         'Ordered',

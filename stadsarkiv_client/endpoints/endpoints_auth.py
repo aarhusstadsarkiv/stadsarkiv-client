@@ -14,7 +14,6 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from stadsarkiv_client.endpoints import auth_data
-from stadsarkiv_client.database.orders import crud_orders
 
 log = get_log()
 
@@ -180,28 +179,6 @@ async def auth_me_get(request: Request):
         flash.set_message(request, str(e), type="error")
     except Exception as e:
         log.exception("Error in auth_me_get")
-        flash.set_message(request, str(e), type="error")
-        return RedirectResponse(url="/auth/login", status_code=302)
-
-
-async def auth_orders(request: Request):
-    await is_authenticated(request)
-    try:
-
-        me = await api.users_me_get(request)
-        orders_me = await crud_orders.select(
-            filters={"user_id": me["id"]},
-            order_by=[("created", "DESC")],
-        )
-
-        context_values = {"title": translate("Your orders"), "me": me, "orders": orders_me}
-        context = await get_context(request, context_values=context_values)
-
-        return templates.TemplateResponse(request, "auth/orders.html", context)
-    except OpenAwsException as e:
-        flash.set_message(request, str(e), type="error")
-    except Exception as e:
-        log.exception("Error in auth_orders")
         flash.set_message(request, str(e), type="error")
         return RedirectResponse(url="/auth/login", status_code=302)
 

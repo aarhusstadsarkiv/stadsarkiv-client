@@ -1,5 +1,5 @@
 from starlette.requests import Request
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, RedirectResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core import api
@@ -10,6 +10,10 @@ from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.flash import set_message
 from stadsarkiv_client.database.orders import crud_orders
+from stadsarkiv_client.core import flash
+from stadsarkiv_client.core.translate import translate
+from stadsarkiv_client.core.api import OpenAwsException
+
 import json
 
 log = get_log()
@@ -52,9 +56,6 @@ def _get_insert_data(meta_data: dict, me: dict):
         "user_id": me["id"],
         "record_id": meta_data["id"],
         "resources": json.dumps(meta_data["resources"]),
-        # "barcode": meta_data["barcode"],
-        # "storage_id": meta_data["storage_id"],
-        # "location": meta_data["location"],
         "label": meta_data["title"],
     }
 
@@ -82,6 +83,43 @@ async def orders_post(request: Request):
         return JSONResponse({"message": "Din bestilling er blevet oprettet", "error": False})
     else:
         return JSONResponse({"message": "Bestilling på dette materiale eksisterer allerede", "error": True})
+
+
+async def admin_orders_get(request: Request):
+    await is_authenticated(request, permissions=["employee"])
+
+    orders = await crud_orders.select(order_by=[("id", "DESC")])
+    orders = [dict(order) for order in orders]
+
+    for order in orders:
+        order["resources"] = json.loads(order["resources"])
+
+    context_values = {"title": "Bestillinger", "orders": orders}
+    context = await get_context(request, context_values=context_values)
+
+    return templates.TemplateResponse(request, "order/admin_orders.html", context)
+
+
+async def auth_orders(request: Request):
+    await is_authenticated(request)
+    try:
+
+        me = await api.users_me_get(request)
+        orders_me = await crud_orders.select(
+            filters={"user_id": me["id"]},
+            order_by=[("created_at", "DESC")],
+        )
+
+        context_values = {"title": translate("Your orders"), "me": me, "orders": orders_me}
+        context = await get_context(request, context_values=context_values)
+
+        return templates.TemplateResponse(request, "auth/orders.html", context)
+    except OpenAwsException as e:
+        flash.set_message(request, str(e), type="error")
+    except Exception as e:
+        log.exception("Error in auth_orders")
+        flash.set_message(request, str(e), type="error")
+        return RedirectResponse(url="/auth/login", status_code=302)
 
 
 """

@@ -141,9 +141,6 @@ async def admin_orders_get(request: Request):
     orders = await crud_orders.select(order_by=[("id", "DESC")])
     orders = [dict(order) for order in orders]
 
-    # (bestilt, pakket_til_læsesal, tilgængelig på læsesalen, læsesal, færdigbehandlet på læsesal, returneres til magasin, færdigbehandlet)
-
-    # extract all resources from the orders. They are stored as a json string in the database.
     for order in orders:
         order["resources"] = json.loads(order["resources"])
 
@@ -155,32 +152,6 @@ async def admin_orders_get(request: Request):
 
 async def admin_test(request: Request):
     pass
-    # await is_authenticated(request, permissions=["admin"])
-
-    # me = await api.me_get(request)
-
-    # log.debug("me")
-    # log.debug(me)
-
-    # users = await api.users_get(request)
-    # for user_ in users:
-    #     id = user_["id"]
-    #     email = user_["email"]
-    #     log.debug(email)
-
-    #     custom_data = UserData(user_)
-    #     custom_data.set_custom_value("test", "test")
-
-    #     custom_data.append_bookmark("111111222")
-    #     data = custom_data.get_data()
-    #     log.debug(data)
-
-    #     new_data = await api.users_data_post(request, id=id, data=data)
-    #     log.debug(new_data)
-    # await api.users_patch_permissions(request)
-
-    # log.debug(users)
-    # return JSONResponse(users)
 
 
 async def admin_users_get_json(request: Request):
