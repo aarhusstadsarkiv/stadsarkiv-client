@@ -89,8 +89,6 @@ async def admin_orders_get(request: Request):
     await is_authenticated(request, permissions=["employee"])
 
     orders = await crud_orders.select(order_by=[("id", "DESC")])
-    orders = [dict(order) for order in orders]
-
     for order in orders:
         order["resources"] = json.loads(order["resources"])
 
@@ -98,6 +96,17 @@ async def admin_orders_get(request: Request):
     context = await get_context(request, context_values=context_values)
 
     return templates.TemplateResponse(request, "order/admin_orders.html", context)
+
+
+async def admin_orders_edit(request: Request):
+    await is_authenticated(request, permissions=["employee"])
+
+    order_id = request.path_params["order_id"]
+    order = await crud_orders.select_one(filters={"id": order_id})
+    user = await api.user_get_by_uuid(request, order["user_id"])
+    log.debug(user["display_name"])
+
+    return JSONResponse({"message": "Not implemented yet", "error": True, "order_id": order_id, "user": user})
 
 
 async def auth_orders(request: Request):

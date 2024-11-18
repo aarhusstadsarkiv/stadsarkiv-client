@@ -36,6 +36,7 @@ class OrdersCRUD(CRUD):
 """
 
 import sqlite3
+import typing
 from stadsarkiv_client.database.utils import DatabaseTransaction
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.database.sql_builder import SQLBuilder
@@ -66,7 +67,7 @@ class CRUD:
             except sqlite3.Error as e:
                 raise e
 
-    async def select(self, columns: list = [], filters: dict = {}, order_by: list = [], limit_offset: tuple = ()):
+    async def select(self, columns: list = [], filters: dict = {}, order_by: list = [], limit_offset: tuple = ()) -> list:
         async with self.transaction_scope() as connection:
             try:
                 query = self.sql_builder.build_select(
@@ -77,9 +78,16 @@ class CRUD:
                 )
                 result = connection.execute(query, filters)
                 rows = result.fetchall()
+                rows = [dict(row) for row in rows]
                 return rows
             except sqlite3.Error as e:
                 raise e
+
+    async def select_one(self, columns: list = [], filters: dict = {}, order_by: list = []) -> dict:
+        rows = await self.select(columns=columns, filters=filters, order_by=order_by, limit_offset=(1, 0))
+        if rows:
+            return dict(rows[0])
+        return {}
 
     async def exists(self, filters: dict):
         rows = await self.select(filters=filters)

@@ -94,10 +94,8 @@ async def auth_bookmarks_json(request: Request):
             return JSONResponse({"message": "No record_id provided", "error": True}, status_code=400)
 
         me = await api.me_get(request)
-        values = {"user_id": me["id"], "record_id": record_id}
-
-        bookmarks_db = await crud_bookmarks.select(filters=values, order_by=[("created_at", "DESC")])
-        bookmarks_list = [dict(row) for row in bookmarks_db]
+        filters = {"user_id": me["id"], "record_id": record_id}
+        bookmarks_list = await crud_bookmarks.select_one(filters=filters, order_by=[("created_at", "DESC")])
 
         return JSONResponse(bookmarks_list, status_code=200)
     except OpenAwsException as e:

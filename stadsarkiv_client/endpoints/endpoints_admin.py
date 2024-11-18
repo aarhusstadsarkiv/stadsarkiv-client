@@ -139,8 +139,6 @@ async def admin_orders_get(request: Request):
     await is_authenticated(request, permissions=["employee"])
 
     orders = await crud_orders.select(order_by=[("id", "DESC")])
-    orders = [dict(order) for order in orders]
-
     for order in orders:
         order["resources"] = json.loads(order["resources"])
 
