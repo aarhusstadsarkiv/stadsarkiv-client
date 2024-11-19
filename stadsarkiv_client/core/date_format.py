@@ -1,9 +1,10 @@
 """
-Date related functions
+Format a date string to a Danish format
 """
 
 from datetime import datetime
 from babel.dates import format_datetime, format_date
+
 from stadsarkiv_client.core.logging import get_log
 from zoneinfo import ZoneInfo
 
