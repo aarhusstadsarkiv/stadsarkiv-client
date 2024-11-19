@@ -135,19 +135,6 @@ async def admin_users_delete(request: Request):
         return JSONResponse(error)
 
 
-async def admin_orders_get(request: Request):
-    await is_authenticated(request, permissions=["employee"])
-
-    orders = await crud_orders.select(order_by=[("id", "DESC")])
-    for order in orders:
-        order["resources"] = json.loads(order["resources"])
-
-    context_values = {"title": "Bestillinger", "orders": orders}
-    context = await get_context(request, context_values=context_values)
-
-    return templates.TemplateResponse(request, "order/admin_orders.html", context)
-
-
 async def admin_test(request: Request):
     pass
 
