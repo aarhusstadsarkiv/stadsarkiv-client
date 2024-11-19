@@ -25,6 +25,8 @@ create_orders_query = """
 CREATE TABLE orders (
     id INTEGER PRIMARY KEY,
     record_id TEXT NOT NULL,
+    user_email TEXT NOT NULL,
+    user_display_name TEXT NOT NULL,
     user_id TEXT NOT NULL,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
     label TEXT NOT NULL,                             -- Label for the order
