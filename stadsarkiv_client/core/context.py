@@ -97,7 +97,7 @@ def _get_main_menu_system(logged_in: bool, permissions_list: list) -> list:
         main_menu_system = [item for item in main_menu_system if item["name"] not in excluded_items]
 
     if "employee" not in permissions_list:
-        excluded_items = {"admin_orders_get"}
+        excluded_items = {"orders_admin_get"}
         main_menu_system = [item for item in main_menu_system if item["name"] not in excluded_items]
 
     if "root" not in permissions_list and "admin" not in permissions_list:

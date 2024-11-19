@@ -13,13 +13,17 @@ from stadsarkiv_client.database.orders import crud_orders
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.api import OpenAwsException
-
+from stadsarkiv_client.core import date_format
 import json
 
 log = get_log()
 
 
 async def orders_get_order(request: Request):
+    """
+    GET page when user wants to order a record
+    User needs to be authenticated and verified
+    """
     await is_authenticated(request, verified=True)
     me = await api.users_me_get(request)
 
@@ -51,17 +55,37 @@ async def orders_get_order(request: Request):
     return templates.TemplateResponse(request, "order/order.html", context)
 
 
-def _get_insert_data(meta_data: dict, me: dict):
-    return {
-        "user_id": me["id"],
-        "record_id": meta_data["id"],
-        "resources": json.dumps(meta_data["resources"]),
-        "label": meta_data["title"],
-    }
+async def orders_get_orders(request: Request):
+    """
+    GET endpoint for displaying all orders for authenticated user
+    """
+    await is_authenticated(request, permissions=["employee"])
+    try:
+
+        me = await api.users_me_get(request)
+        orders_me = await crud_orders.select(
+            filters={"user_id": me["id"]},
+            order_by=[("created_at", "DESC")],
+        )
+
+        context_values = {"title": translate("Your orders"), "me": me, "orders": orders_me}
+        context = await get_context(request, context_values=context_values)
+
+        return templates.TemplateResponse(request, "order/orders_user.html", context)
+    except OpenAwsException as e:
+        flash.set_message(request, str(e), type="error")
+    except Exception as e:
+        log.exception("Error in auth_orders")
+        flash.set_message(request, str(e), type="error")
+        return RedirectResponse(url="/auth/login", status_code=302)
 
 
 async def orders_post(request: Request):
+    """
+    POST endpoint for creating an order
+    """
     await is_authenticated_json(request, verified=True)
+
     me = await api.users_me_get(request)
 
     hooks = get_hooks(request)
@@ -85,50 +109,65 @@ async def orders_post(request: Request):
         return JSONResponse({"message": "Bestilling på dette materiale eksisterer allerede", "error": True})
 
 
-async def admin_orders_get(request: Request):
+async def orders_admin_get(request: Request):
+    """
+    GET endpoint for displaying all orders
+    """
     await is_authenticated(request, permissions=["employee"])
 
     orders = await crud_orders.select(order_by=[("id", "DESC")])
     for order in orders:
         order["resources"] = json.loads(order["resources"])
+        order = _date_format_order(order)
 
-    context_values = {"title": "Bestillinger", "orders": orders}
+    user = await api.user_get_by_uuid(request, order["user_id"])
+
+    context_values = {"title": "Bestillinger", "orders": orders, "user": user}
     context = await get_context(request, context_values=context_values)
 
     return templates.TemplateResponse(request, "order/admin_orders.html", context)
 
 
-async def admin_orders_edit(request: Request):
+async def orders_admin_get_edit(request: Request):
+    """
+    GET endpoint for displaying a single order for editing
+    """
     await is_authenticated(request, permissions=["employee"])
 
     order_id = request.path_params["order_id"]
     order = await crud_orders.select_one(filters={"id": order_id})
-    user = await api.user_get_by_uuid(request, order["user_id"])
-    log.debug(user["display_name"])
+    order["resources"] = json.loads(order["resources"])
+    order = _date_format_order(order)
 
-    return JSONResponse({"message": "Not implemented yet", "error": True, "order_id": order_id, "user": user})
+    context_values = {"order": order}
+    context = await get_context(request, context_values=context_values)
+
+    return templates.TemplateResponse(request, "order/order_edit.html", context)
 
 
-async def auth_orders(request: Request):
-    await is_authenticated(request)
-    try:
+def _get_insert_data(meta_data: dict, me: dict):
+    """
+    Generate data for inserting into orders table
+    """
+    return {
+        "user_id": me["id"],
+        "user_email": me["email"],
+        "user_display_name": me["display_name"],
+        "record_id": meta_data["id"],
+        "resources": json.dumps(meta_data["resources"]),
+        "label": meta_data["title"],
+    }
 
-        me = await api.users_me_get(request)
-        orders_me = await crud_orders.select(
-            filters={"user_id": me["id"]},
-            order_by=[("created_at", "DESC")],
-        )
 
-        context_values = {"title": translate("Your orders"), "me": me, "orders": orders_me}
-        context = await get_context(request, context_values=context_values)
-
-        return templates.TemplateResponse(request, "auth/orders.html", context)
-    except OpenAwsException as e:
-        flash.set_message(request, str(e), type="error")
-    except Exception as e:
-        log.exception("Error in auth_orders")
-        flash.set_message(request, str(e), type="error")
-        return RedirectResponse(url="/auth/login", status_code=302)
+def _date_format_order(order: dict):
+    """
+    Format dates in order for display. Change from UTC to Europe/Copenhagen
+    """
+    order["created_at"] = date_format.timezone_alter(order["created_at"])
+    order["modified_at"] = date_format.timezone_alter(order["modified_at"])
+    if order["deadline"]:
+        order["deadline"] = date_format.timezone_alter(order["deadline"])
+    return order
 
 
 """

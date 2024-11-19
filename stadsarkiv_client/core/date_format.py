@@ -4,14 +4,13 @@ Format a date string to a Danish format
 
 from datetime import datetime
 from babel.dates import format_datetime, format_date
-
 from stadsarkiv_client.core.logging import get_log
 from zoneinfo import ZoneInfo
 
 log = get_log()
 
 
-def convert_utc_to_timezone(utc_timestamp: str, target_timezone: str = "Europe/Copenhagen") -> datetime:
+def timezone_alter(utc_timestamp: str, target_timezone: str = "Europe/Copenhagen") -> str:
     """
     Convert utc timestamp to a target timezone
     E.g. convert a sql timestamp like '2024-11-19 11:25:58' to 'Europe/Copenhagen' and get e.g. '2024-11-19 12:25:58'
@@ -19,18 +18,8 @@ def convert_utc_to_timezone(utc_timestamp: str, target_timezone: str = "Europe/C
     utc_dt = datetime.strptime(utc_timestamp, "%Y-%m-%d %H:%M:%S")
     utc_dt = utc_dt.replace(tzinfo=ZoneInfo("UTC"))
     target_dt = utc_dt.astimezone(ZoneInfo(target_timezone))
-    return target_dt
 
-
-def _sanitize_date_string(date_string: str) -> str:
-    """
-    remove microseconds from date string
-    so that it can be parsed by datetime.strptime as "%Y-%m-%dT%H:%M:%S"
-    Some dates comes as the format "%Y-%m-%dT%H:%M:%S.%f"
-    """
-    if "." in date_string:
-        return date_string.split(".")[0]
-    return date_string
+    return str(target_dt.replace(tzinfo=None))
 
 
 def date_format(date_string: str) -> str:
@@ -60,3 +49,14 @@ def date_format_day(date_string: str) -> str:
     except Exception:
         log.exception("Error in date_format_day")
         return date_string
+
+
+def _sanitize_date_string(date_string: str) -> str:
+    """
+    remove microseconds from date string
+    so that it can be parsed by datetime.strptime as "%Y-%m-%dT%H:%M:%S"
+    Some dates comes as the format "%Y-%m-%dT%H:%M:%S.%f"
+    """
+    if "." in date_string:
+        return date_string.split(".")[0]
+    return date_string
