@@ -89,7 +89,7 @@ class CRUD:
         return {}
 
     async def exists(self, filters: dict):
-        rows = await self.select(filters=filters)
+        rows = await self.select_one(filters=filters)
         return bool(rows)
 
     async def update(self, update_values: dict, filters: dict):
