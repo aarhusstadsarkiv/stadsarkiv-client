@@ -32,16 +32,16 @@ CREATE TABLE orders (
     modified_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_by TEXT,
     resources TEXT,                                  -- JSON array of resources
-    status TEXT DEFAULT 'Ordered' CHECK(status IN (
-        'Ordered',
-        'Packed for reading room',
-        'Available in the reading room',
-        'Reading room',
-        'Completed in the reading room',
-        'To be returned to storage',
-        'Completed'
+    status TEXT DEFAULT 'ORDERED' CHECK(status IN (
+        'ORDERED',
+        'PACKED_FOR_READING_ROOM',
+        'AVAILABLE_IN_READING_ROOM',
+        'COMPLETED_IN_READING_ROOM',
+        'RETURN_TO_STORAGE',
+        'COMPLETED'
     )),
-    comment TEXT
+    comment TEXT,
+    done INTEGER DEFAULT 0 CHECK(done IN (0, 1))
 ) STRICT;
 """
 
