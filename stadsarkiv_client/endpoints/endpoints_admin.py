@@ -10,8 +10,6 @@ from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core import query
-from stadsarkiv_client.database.orders import crud_orders
-import json
 import asyncio
 
 log = get_log()
