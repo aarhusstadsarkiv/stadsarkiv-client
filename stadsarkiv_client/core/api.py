@@ -685,10 +685,37 @@ async def proxies_record_get_by_id(request: Request, record_id: str) -> typing.A
             response.raise_for_status()
 
 
-async def proxies_records(request: Request, query_str: str) -> typing.Any:
+def _check_query_params(query_params_before_search: list) -> list:
+    # get size and start from query_params_before_search, e.g.  [("size", "100"), ("start", "1000")]
+    # it is only possible make search results that takes up 10000 records.
+    # So if start + size exceeds 10000 then minimize size to 10000 - start
+
+    size = [value for key, value in query_params_before_search if key == "size"]
+    start = [value for key, value in query_params_before_search if key == "start"]
+
+    max_size = None
+    if size and start:
+        size_val = size[0]
+        start_val = start[0]
+
+        if int(size_val) + int(start_val) > 10000:
+            max_size = 10000 - int(start_val)
+
+    if max_size:
+        query_params_before_search = [(key, value) for key, value in query_params_before_search if key != "size"]
+        query_params_before_search.append(("size", str(max_size)))
+
+    return query_params_before_search
+
+
+async def proxies_records(request: Request, query_params_before_search: list = []) -> typing.Any:
     """
     GET search results from the api
+
     """
+    query_params_before_search = _check_query_params(query_params_before_search)
+
+    query_str = query.get_str_from_list(query_params_before_search)
     query_str = quote(query_str)
 
     async with _get_async_client() as client:

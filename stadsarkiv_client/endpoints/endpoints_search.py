@@ -33,8 +33,9 @@ def get_api_acceptable_query_params() -> list:
     return api_accept_query_params
 
 
-def _get_search_pagination_data(request: Request, size: int, total: int):
+def _get_search_pagination_data(request: Request, query_str_pagination, size: int, total: int):
     result = {}
+    result["query_str"] = query_str_pagination
 
     if total > 10000:
         total = 10000
@@ -81,9 +82,15 @@ def get_size_sort_view(request: Request):
     """
     size = request.query_params.get("size", request.cookies.get("size", "20"))
 
-    accept_size = ["20", "50", "100", "1000"]
-    if size not in accept_size:
+    # only accept size between 1 and 1000
+    if not size.isdigit():
         size = "20"
+
+    if int(size) < 1:
+        size = "1"
+
+    if int(size) > 1000:
+        size = "1000"
 
     sort = request.query_params.get("sort", request.cookies.get("sort", "date_from"))
     view = request.query_params.get("view", request.cookies.get("view", "list"))
@@ -111,7 +118,6 @@ def _get_default_query_params(request: Request):
     if direction:
         add_list_items.append(("direction", direction))
 
-    # add start
     start = request.query_params.get("start", None)
     if start:
         add_list_items.append(("start", start))
@@ -251,6 +257,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
 
     q = query.get_search(request)
     size, sort, view = get_size_sort_view(request)
+
     api_accept_query_params = get_api_acceptable_query_params()
 
     # date_to, date_from, created_at, start, direction are read from query params
@@ -266,20 +273,18 @@ async def get_search_context_values(request: Request, extra_query_params: list =
     query_params_before_search = _clean_query_params(query_params_before_search)
 
     # Alter query params before search
-    # E.g. You may want to remove all collections and add single one before search results are obtained
+    # E.g. You may want to remove all collections and add a single collection before search
     query_params_before_search = await hooks.before_get_search(query_params=query_params_before_search)
-
-    # Call api
     query_str_search = query.get_str_from_list(query_params_before_search)
-    search_result = await api.proxies_records(request, query_str_search)
+
+    # Call api and get search results
+    search_result = await api.proxies_records(request, query_params_before_search)
     search_result = _normalize_search_result(search_result)
 
     # Alter query params after search
     # You may want to remove all curators except one after search results are obtained
     query_params_after_search = await hooks.after_get_search(query_params=query_params_before_search)
-
-    # Remove pagination params from query params. In order to get a query string that can be used in e.g. facet links
-    query_str_display = query.get_str_from_list(query_params_after_search)
+    query_str_display = query.get_str_from_list(query_params_after_search, remove_keys=["start"])
 
     # Get facets and filters
     facets, facets_filters = _get_facets_and_filters(
@@ -289,7 +294,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
         query_str=query_str_display,
     )
 
-    pagination_data = _get_search_pagination_data(request, search_result["size"], search_result["total"])
+    pagination_data = _get_search_pagination_data(request, query_str_display, search_result["size"], search_result["total"])
 
     context_values = {
         "q": q,

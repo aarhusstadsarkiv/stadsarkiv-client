@@ -91,6 +91,7 @@ Password needs to be at least 8 characters long.: Password needs to be at least 
 Password should be at least 8 characters long: Password should be at least 8 characters
   long
 Passwords do not match.: Passwords do not match.
+Per page: Per page
 Permission admin: Permission admin
 Permission basic: Permission basic
 Permission create: Permission create
@@ -143,6 +144,7 @@ See all records this person has created: See all records this person has created
 Selected: Selected
 Send verification email: Send verification email
 Show all results in the collection: Show all results in the collection
+Showing page: Showing page
 Slet en resource: Slet en resource
 Something went wrong. Please try again.: Something went wrong. Please try again.
 Submit: Submit
@@ -382,6 +384,7 @@ legal_restrictions_id_3: Materialet er utilgængeligt ifølge arkivlovgivningen.
 legal_restrictions_id_4: Materialet er utilgængeligt som følge af særlige juridiske
   forhold.
 no results: no results
+of: of
 ordering_aarhus_teatret: Materialet kan ses på Aarhus Teaters Arkiv.
 ordering_by_mail: Du kan bestille materialet ved at sende en mail til stadsarkiv@aarhus.dk,
   hvori du angiver materialets arkiv-ID, som kan ses øverst på siden.

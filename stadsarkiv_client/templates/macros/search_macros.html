@@ -248,7 +248,14 @@
 {% endmacro %}
 
 {% macro parse_pagination_total(pagination_data) %}
+
 {% set total = pagination_data["total"] %}
+{% set size = pagination_data["size"] %}
+{% set start = pagination_data["start"] %}
+{% set total_pages = pagination_data["total_pages"] %}
+{% set current_page = pagination_data["current_page"] %}
+{% set query_str = pagination_data["query_str"] %}
+
 <div class="pagination-total">
     {% if total == 0 %}
     {{ translate('No search results') }}
@@ -259,33 +266,41 @@
     {% else %}
     {{ total }} {{ translate('Search results') }}
     {% endif %}
+
+</div>
+<div class="pagination-info">
+    {% if total > 0 %}
+    {{ translate('Showing page') }} {{ current_page }} {{ translate('of') }} {{ total_pages }} ({{ translate('Per page')}} {{ size }})
+    {% endif %}
 </div>
 {% endmacro %}
 
 {% macro parse_pagination (pagination_data) %}
+
 {% set size = pagination_data["size"] %}
 {% set start = pagination_data["start"] %}
 {% set total_pages = pagination_data["total_pages"] %}
 {% set current_page = pagination_data["current_page"] %}
+{% set query_str = pagination_data["query_str"] %}
 
 {% if pagination_data["total"] > 0 %}
 
 <div class="action-links">
     {% if current_page > 1 %}
-    <a href="{{ search_base_url }}?{{ query_str_display }}start=0">{{ translate('First page') }}</a>
-    <a href="{{ search_base_url }}?{{ query_str_display }}start={{ start - size }}">{{ translate('Previous')
+    <a href="{{ search_base_url }}?{{ query_str }}start=0">{{ translate('First page') }}</a>
+    <a href="{{ search_base_url }}?{{ query_str }}start={{ start - size }}">{{ translate('Previous')
         }}</a>
     {% else %}
     <span class="disabled">{{ translate('First page') }}</span>
     <span class="disabled">{{ translate('Previous') }}</span>
     {% endif %}
     {% if current_page < total_pages %} 
-        <a href="{{ search_base_url }}?{{ query_str_display }}start={{ start + size }}">{{ translate('Next')}} </a>
-        <a href="{{ search_base_url }}?{{ query_str_display }}start={{ (total_pages - 1) * size }}">{{ translate('Last page') }}</a>
-        {% else %}
-        <span class="disabled">{{ translate('Next') }}</span>
-        <span class="disabled">{{ translate('Last page') }}</span>
-        {% endif %}
+    <a href="{{ search_base_url }}?{{ query_str }}start={{ start + size }}">{{ translate('Next')}} </a>
+    <a href="{{ search_base_url }}?{{ query_str }}start={{ (total_pages - 1) * size }}">{{ translate('Last page') }}</a>
+    {% else %}
+    <span class="disabled">{{ translate('Next') }}</span>
+    <span class="disabled">{{ translate('Last page') }}</span>
+    {% endif %}
 </div>
 {% endif %}
 
