@@ -262,15 +262,11 @@
     {% elif total == 1 %}
     {{ total }} {{ translate('Search result') }}
     {% elif total == 10000 %}
-    {{ translate('More than 10.000 search results') }}
+    <div>{{ translate('More than 10.000 search results') }}</div>
+    <div>{{ size }} {{ translate('Per page')}}. {{ translate('Showing page') }} {{ current_page }} {{ translate('of') }} {{ total_pages }}.</div>    
     {% else %}
-    {{ total }} {{ translate('Search results') }}
-    {% endif %}
-
-</div>
-<div class="pagination-info">
-    {% if total > 0 %}
-    {{ translate('Showing page') }} {{ current_page }} {{ translate('of') }} {{ total_pages }} ({{ translate('Per page')}} {{ size }})
+    <div>{{ total }} {{ translate('Search results') }}.</div>
+    <div>{{ size }} {{ translate('Per page')}}. {{ translate('Showing page') }} {{ current_page }} {{ translate('of') }} {{ total_pages }}.</div>
     {% endif %}
 </div>
 {% endmacro %}
