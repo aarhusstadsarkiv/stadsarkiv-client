@@ -55,13 +55,11 @@
 {{ common_macros.parse_block_common('Resourcer', keys, record_and_types) }}
 {% endif %}
 
-
 {% set meta_links = [
-{'label': 'JSON. Record fra API efter hooks', 'url': url_for('records_get_json', record_id=meta_data.id, type='record')
-| string},
-{'label': 'JSON. Metadata', 'url': url_for('records_get_json', record_id=meta_data.id, type='meta_data') | string},
-{'label': 'JSON. Typer og værdier', 'url': url_for('records_get_json', record_id=meta_data.id, type='record_and_types')
-| string}
+    {'label': 'JSON. Original record fra API', 'url': url_for('records_get_json', record_id=meta_data.id, type='record_original') | string},
+    {'label': 'JSON. Record fra API efter hooks', 'url': url_for('records_get_json', record_id=meta_data.id, type='record') | string},
+    {'label': 'JSON. Metadata', 'url': url_for('records_get_json', record_id=meta_data.id, type='meta_data') | string},
+    {'label': 'JSON. Typer og værdier', 'url': url_for('records_get_json', record_id=meta_data.id, type='record_and_types') | string}
 ] %}
 
 {{ common_macros.parse_meta_block(meta_links, permissions_list) }}
