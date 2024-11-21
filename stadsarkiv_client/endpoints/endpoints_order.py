@@ -117,11 +117,6 @@ async def orders_patch(request: Request):
     me = await api.users_me_get(request)
     order_id = request.path_params["order_id"]
 
-    filters = {
-        "user_id": me["id"],
-        "id": order_id,
-    }
-
     is_owner = await crud_orders.owns(id=order_id, user_id=me["id"])
     if not is_owner:
         return JSONResponse(
