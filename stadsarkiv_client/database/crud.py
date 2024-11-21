@@ -45,6 +45,9 @@ log = get_log()
 
 class CRUD:
     def __init__(self, database_url: str, table: str):
+        """
+        Initialize CRUD with database URL table name.
+        """
         self.sql_builder = SQLBuilder(table)
         database_transation = DatabaseTransaction(database_url)
         self.transaction_scope = database_transation.transaction_scope
@@ -88,11 +91,10 @@ class CRUD:
             return dict(rows[0])
         return {}
 
-    async def exists(self, filters: dict):
-        rows = await self.select_one(filters=filters)
-        return bool(rows)
-
     async def update(self, update_values: dict, filters: dict):
+        """
+        Update rows by update_values and filters
+        """
         async with self.transaction_scope() as connection:
             try:
                 query = self.sql_builder.build_update(update_values, filters)
@@ -101,9 +103,28 @@ class CRUD:
                 raise e
 
     async def delete(self, filters: dict):
+        """
+        Delete rows by filters
+        """
         async with self.transaction_scope() as connection:
             try:
                 query = self.sql_builder.build_delete(filters)
                 connection.execute(query, filters)
             except sqlite3.Error as e:
                 raise e
+
+    async def exists(self, filters: dict):
+        rows = await self.select_one(filters=filters)
+        return bool(rows)
+
+    async def owns(self, id, user_id):
+        """
+        Simple check if user owns a row by id and user_id
+        The table must have an id and a user_id column
+        """
+        filters = {
+            "id": id,
+            "user_id": user_id,
+        }
+        rows = await self.select_one(filters=filters)
+        return bool(rows)
