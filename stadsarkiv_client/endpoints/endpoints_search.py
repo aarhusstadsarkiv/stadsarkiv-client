@@ -33,8 +33,14 @@ def get_api_acceptable_query_params() -> list:
     return api_accept_query_params
 
 
-def _get_search_pagination_data(request: Request, query_str_pagination, size: int, total: int):
+def _get_search_pagination_data(request: Request, query_str_pagination, total: int):
+
     result = {}
+
+    size, _, _ = get_size_sort_view(request)
+    size = int(str(size))
+    result["size"] = size
+
     result["query_str"] = query_str_pagination
 
     if total > 10000:
@@ -44,9 +50,6 @@ def _get_search_pagination_data(request: Request, query_str_pagination, size: in
 
     start = int(request.query_params.get("start", 0))
     result["start"] = start
-
-    size = int(request.query_params.get("size", size))
-    result["size"] = size
 
     total_pages = (total // size) + (1 if total % size != 0 else 0)
     result["total_pages"] = total_pages
@@ -294,7 +297,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
         query_str=query_str_display,
     )
 
-    pagination_data = _get_search_pagination_data(request, query_str_display, search_result["size"], search_result["total"])
+    pagination_data = _get_search_pagination_data(request, query_str_display, search_result["total"])
 
     context_values = {
         "q": q,
