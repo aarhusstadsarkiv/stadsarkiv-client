@@ -1,13 +1,16 @@
 class SQLBuilder:
     def __init__(self, table_name: str):
         self.table_name = table_name
+        self.values: dict = {}
 
     def build_insert(self, insert_values: dict) -> str:
+        self.values = insert_values
         columns = ", ".join(insert_values.keys())
         placeholders = ", ".join([f":{key}" for key in insert_values.keys()])
         return f"INSERT INTO {self.table_name} ({columns}) VALUES ({placeholders})"
 
     def build_select(self, columns: list = [], filters: dict = {}, order_by: list = [], limit_offset: tuple = ()) -> str:
+        self.values = filters
 
         columns_part = ", ".join(columns) if columns else "*"
         query = f"SELECT {columns_part} FROM {self.table_name}"
@@ -27,10 +30,12 @@ class SQLBuilder:
         return query
 
     def build_update(self, update_values: dict, filters: dict) -> str:
+        self.values = {**update_values, **filters}
         set_clause = ", ".join([f"{key} = :{key}" for key in update_values.keys()])
         where_clause = " AND ".join([f"{key} = :{key}" for key in filters.keys()])
         return f"UPDATE {self.table_name} SET {set_clause} WHERE {where_clause}"
 
     def build_delete(self, filters: dict) -> str:
+        self.values = filters
         where_clause = " AND ".join([f"{key} = :{key}" for key in filters.keys()])
         return f"DELETE FROM {self.table_name} WHERE {where_clause}"
