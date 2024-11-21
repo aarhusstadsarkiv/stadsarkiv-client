@@ -1,2 +1,2 @@
-__version__ = "1.3.644"
+__version__ = "1.3.645"
 __program__ = "stadsarkiv-client"
