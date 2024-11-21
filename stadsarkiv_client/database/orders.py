@@ -24,7 +24,7 @@ class OrdersCRUD(CRUD):
                 connection.execute(query, sql_builder.values)
 
             except sqlite3.Error as e:
-                raise e            
+                raise e
 
 
 crud_orders = OrdersCRUD(database_url=database_url, table="orders")
