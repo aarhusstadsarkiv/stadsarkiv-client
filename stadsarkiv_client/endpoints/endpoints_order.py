@@ -64,7 +64,7 @@ async def orders_get_orders(request: Request):
 
         me = await api.users_me_get(request)
         orders_me = await crud_orders.select(
-            filters={"user_id": me["id"]},
+            filters={"user_id": me["id"], "done": 0},
             order_by=[("created_at", "DESC")],
         )
 
@@ -85,7 +85,6 @@ async def orders_post(request: Request):
     POST endpoint for creating an order
     """
     await is_authenticated_json(request, verified=True)
-
     me = await api.users_me_get(request)
 
     hooks = get_hooks(request)
@@ -107,6 +106,41 @@ async def orders_post(request: Request):
         return JSONResponse({"message": "Din bestilling er blevet oprettet", "error": False})
     else:
         return JSONResponse({"message": "Bestilling på dette materiale eksisterer allerede", "error": True})
+
+
+async def orders_patch(request: Request):
+    """
+    User can only cancel their own orders
+    """
+
+    await is_authenticated_json(request, verified=True)
+    me = await api.users_me_get(request)
+    order_id = request.path_params["order_id"]
+
+    filters = {
+        "user_id": me["id"],
+        "id": order_id,
+    }
+
+    is_owner = await crud_orders.owns(id=order_id, user_id=me["id"])
+    if not is_owner:
+        return JSONResponse(
+            {
+                "message": "Du har ikke rettigheder til at annullere denne bestilling",
+                "error": True,
+            }
+        )
+
+    filters = {"id": order_id}
+    update_values = {"done": 1, "status": "ORDERED"}
+
+    await crud_orders.order_patch_user(update_values=update_values, filters=filters)
+    return JSONResponse(
+        {
+            "message": "Din bestilling er blevet annuleret",
+            "error": False,
+        }
+    )
 
 
 async def orders_admin_get(request: Request):
