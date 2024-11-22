@@ -40,6 +40,7 @@ async def orders_get_order(request: Request):
     filters = {
         "user_id": me["id"],
         "record_id": meta_data["id"],
+        "done": 0,
     }
 
     context_variables = {
@@ -60,6 +61,8 @@ async def orders_get_orders(request: Request):
     GET endpoint for displaying all orders for authenticated user
     """
     await is_authenticated(request, permissions=["employee"])
+
+    await database_orders.order_patch_by_admin(record_id="000417166")
     try:
 
         me = await api.users_me_get(request)
@@ -98,9 +101,10 @@ async def orders_post(request: Request):
     filters = {
         "user_id": me["id"],
         "record_id": meta_data["id"],
+        "done": 0,
     }
 
-    if not await database_orders.exists(table="orders", filters=filters):
+    if await database_orders.count(table="orders", filters=filters) == 0:
         insert_values = _get_insert_data(meta_data, me)
         await database_orders.insert(table="orders", insert_values=insert_values)
         set_message(request, "Din bestilling er blevet oprettet", "success")
@@ -116,10 +120,11 @@ async def is_order_owner(request: Request, order_id: int):
     """
     await is_authenticated_json(request, verified=True)
     me = await api.users_me_get(request)
-    is_owner = await database_orders.owns(
+
+    filters = {"id": order_id, "user_id": me["id"]}
+    is_owner = await database_orders.exists(
         table="orders",
-        id=order_id,
-        user_id=me["id"],
+        filters=filters,
     )
     return is_owner
 
@@ -159,14 +164,18 @@ async def orders_admin_get(request: Request):
     """
     await is_authenticated(request, permissions=["employee"])
 
-    orders = await database_orders.select(table="orders", order_by=[("id", "DESC")])
+    filters = {"done": 0}
+    orders = await database_orders.select(
+        table="orders",
+        filters=filters,
+        order_by=[("id", "DESC")],
+    )
+
     for order in orders:
         order["resources"] = json.loads(order["resources"])
         order = _date_format_order(order)
 
-    user = await api.user_get_by_uuid(request, order["user_id"])
-
-    context_values = {"title": "Bestillinger", "orders": orders, "user": user}
+    context_values = {"title": "Bestillinger", "orders": orders}
     context = await get_context(request, context_values=context_values)
 
     return templates.TemplateResponse(request, "order/admin_orders.html", context)

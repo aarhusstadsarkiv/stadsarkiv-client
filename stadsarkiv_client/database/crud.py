@@ -5,32 +5,46 @@ Small CRUD class to handle basic database operations using sqlite3.
 from stadsarkiv_client.database.crud import CRUD
 
 database_url = settings["sqlite3"]["default"]
-orders_crud = CRUD(database_url=database_url, table="orders")
+crud_example = CRUD(database_url=database_url)
 
 async def example():
-    await orders_crud.insert({"order_id": 1, "order_name": "order1"})
-    await orders_crud.insert({"order_id": 2, "order_name": "order2"})
+    await crud_example.insert("orders", {"order_id": 1, "order_name": "order1"})
+    await crud_example.insert("orders", {"order_id": 2, "order_name": "order2"})
 
     many_orders = [
         {"order_id": 3, "order_name": "test"},
         {"order_id": 4, "order_name": "test"},
     ]
-    await orders_crud.insert_many(many_orders)
+    await crud_example.insert_many("orders", many_orders)
 
-    await orders_crud.select(
+    await crud_example.select(
+        "orders",
         columns=["order_id"],
         filters={"order_name": "test"},
         order_by=[("order_id", "ASC")],
         limit_offset=(2, 0),
     )
 
-    await orders_crud.exists({"order_name": "test"})
-    await orders_crud.update({"order_name": "new test"}, {"order_id": 3})
-    await orders_crud.delete({"order_id": 4})
+    await curd_example.select_one("orders", columns=["order_id"], filters={"order_name": "test"})
+
+    await crud_example.exists("orders", {"order_name": "test"})
+    await crud_example.update("orders", {"order_name": "new test"}, {"order_id": 3})
+    await crud_example.delete("orders", {"order_id": 4})
 
 class OrdersCRUD(CRUD):
-    # Or extend CRUD with specific methods for orders.
-    pass
+    def __init__(self, database_url: str):
+        super().__init__(database_url)
+
+    async def new_method(self):
+
+        async with self.transaction_scope() as connection:
+            try:
+                sql_builder = SQLBuilder(table)
+                query = sql_builder.build_update(update_values=update_values, filters=filters)
+                connection.execute(query, sql_builder.get_execute_values())
+
+            except sqlite3.Error as e:
+                raise e
 
 ```
 """
@@ -134,14 +148,13 @@ class CRUD:
         rows = await self.select_one(table=table, filters=filters)
         return bool(rows)
 
-    async def owns(self, table, id, user_id):
-        """
-        Simple check if user owns a row by id and user_id
-        The table must have an id and a user_id column
-        """
-        filters = {
-            "id": id,
-            "user_id": user_id,
-        }
-        rows = await self.select_one(table=table, filters=filters)
-        return bool(rows)
+    async def count(self, table: str, filters: dict, column: str = "*") -> int:
+        async with self.transaction_scope() as connection:
+            try:
+                sql_builder = SQLBuilder(table)
+                query = sql_builder.build_select(columns=[f"COUNT({column}) as num_rows"], filters=filters)
+                result = connection.execute(query, filters)
+                row = result.fetchone()
+                return row["num_rows"]
+            except sqlite3.Error as e:
+                raise e

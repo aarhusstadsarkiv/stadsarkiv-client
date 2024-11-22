@@ -1,9 +1,7 @@
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.database.crud import CRUD
 from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.database.sql_builder import SQLBuilder
 import sqlite3
-
 
 log = get_log()
 
@@ -22,17 +20,21 @@ class OrdersCRUD(CRUD):
     def __init__(self, database_url: str):
         super().__init__(database_url)
 
-    async def order_patch_by_admin(self, table: str, update_values: dict, filters: dict):
+    async def order_patch_by_admin(self, record_id: str):
 
         async with self.transaction_scope() as connection:
             try:
-                sql_builder = SQLBuilder(table)
-                query = sql_builder.build_update(update_values=update_values, filters=filters)
-                connection.execute(query, sql_builder.get_execute_values())
+
+                # Only get orders that are not done
+                query = "SELECT id FROM orders WHERE record_id = :record_id and done = 0"
+                cursor = connection.execute(query, {"record_id": record_id, "done": 0})
+                rows = cursor.fetchall()
+                rows = [dict(row) for row in rows]
+                log.debug(f"result: {rows}")
 
             except sqlite3.Error as e:
                 raise e
 
 
-database_default = CRUD(database_url=default_url)
-database_orders = OrdersCRUD(database_url=orders_url)
+database_default = CRUD(default_url)
+database_orders = OrdersCRUD(orders_url)
