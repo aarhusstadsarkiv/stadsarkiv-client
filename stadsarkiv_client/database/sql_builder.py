@@ -1,7 +1,10 @@
 class SQLBuilder:
-    def __init__(self, table_name: str):
+    def __init__(self, table_name: str = ""):
         self.table_name = table_name
         self.values: dict = {}
+
+        if not self.table_name:
+            raise ValueError("Table name is not set")
 
     def build_insert(self, insert_values: dict) -> str:
         self.values = insert_values

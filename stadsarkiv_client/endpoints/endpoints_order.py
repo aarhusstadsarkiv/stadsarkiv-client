@@ -9,7 +9,7 @@ from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.flash import set_message
-from stadsarkiv_client.database.orders import crud_orders
+from stadsarkiv_client.database.connections import database_orders
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.api import OpenAwsException
@@ -47,7 +47,7 @@ async def orders_get_order(request: Request):
         "meta_title": "Bestil: " + meta_data["meta_title"],
         "meta_data": meta_data,
         "record_and_types": record_and_types,
-        "is_ordered": await crud_orders.exists(filters),
+        "is_ordered": await database_orders.exists(table="orders", filters=filters),
     }
 
     context = await get_context(request, context_values=context_variables)
@@ -63,7 +63,8 @@ async def orders_get_orders(request: Request):
     try:
 
         me = await api.users_me_get(request)
-        orders_me = await crud_orders.select(
+        orders_me = await database_orders.select(
+            table="orders",
             filters={"user_id": me["id"], "done": 0},
             order_by=[("created_at", "DESC")],
         )
@@ -99,26 +100,36 @@ async def orders_post(request: Request):
         "record_id": meta_data["id"],
     }
 
-    if not await crud_orders.exists(filters):
-        data = _get_insert_data(meta_data, me)
-        await crud_orders.insert(data)
+    if not await database_orders.exists(table="orders", filters=filters):
+        insert_values = _get_insert_data(meta_data, me)
+        await database_orders.insert(table="orders", insert_values=insert_values)
         set_message(request, "Din bestilling er blevet oprettet", "success")
         return JSONResponse({"message": "Din bestilling er blevet oprettet", "error": False})
     else:
         return JSONResponse({"message": "Bestilling på dette materiale eksisterer allerede", "error": True})
 
 
+async def is_order_owner(request: Request, order_id: int):
+    """
+    Check if user authenticated and verified
+    Check if user is owner of order
+    """
+    await is_authenticated_json(request, verified=True)
+    me = await api.users_me_get(request)
+    is_owner = await database_orders.owns(
+        table="orders",
+        id=order_id,
+        user_id=me["id"],
+    )
+    return is_owner
+
+
 async def orders_patch(request: Request):
     """
     User can only cancel their own orders
     """
-
-    await is_authenticated_json(request, verified=True)
-    me = await api.users_me_get(request)
     order_id = request.path_params["order_id"]
-
-    is_owner = await crud_orders.owns(id=order_id, user_id=me["id"])
-    if not is_owner:
+    if not await is_order_owner(request, order_id):
         return JSONResponse(
             {
                 "message": "Du har ikke rettigheder til at annullere denne bestilling",
@@ -129,7 +140,11 @@ async def orders_patch(request: Request):
     filters = {"id": order_id}
     update_values = {"done": 1, "status": "ORDERED"}
 
-    await crud_orders.order_patch_user(update_values=update_values, filters=filters)
+    await database_orders.order_patch_user(
+        table="orders",
+        update_values=update_values,
+        filters=filters,
+    )
     return JSONResponse(
         {
             "message": "Din bestilling er blevet annuleret",
@@ -144,7 +159,7 @@ async def orders_admin_get(request: Request):
     """
     await is_authenticated(request, permissions=["employee"])
 
-    orders = await crud_orders.select(order_by=[("id", "DESC")])
+    orders = await database_orders.select(table="orders", order_by=[("id", "DESC")])
     for order in orders:
         order["resources"] = json.loads(order["resources"])
         order = _date_format_order(order)
@@ -164,7 +179,7 @@ async def orders_admin_get_edit(request: Request):
     await is_authenticated(request, permissions=["employee"])
 
     order_id = request.path_params["order_id"]
-    order = await crud_orders.select_one(filters={"id": order_id})
+    order = await database_orders.select_one(table="orders", filters={"id": order_id})
     order["resources"] = json.loads(order["resources"])
     order = _date_format_order(order)
 

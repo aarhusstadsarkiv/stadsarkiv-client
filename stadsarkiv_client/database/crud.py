@@ -44,35 +44,50 @@ log = get_log()
 
 
 class CRUD:
-    def __init__(self, database_url: str, table: str):
+    def __init__(self, database_url: str):
         """
         Initialize CRUD with database URL table name.
         """
-        self.sql_builder = SQLBuilder(table)
         database_transation = DatabaseTransaction(database_url)
         self.transaction_scope = database_transation.transaction_scope
 
-    async def insert(self, insert_values: dict):
+    def set_table(self, table: str):
+        """
+        Change the current table you are working with.
+        """
+        self.table = table
+
+    async def insert(self, table: str, insert_values: dict):
         async with self.transaction_scope() as connection:
             try:
-                query = self.sql_builder.build_insert(insert_values)
+                sql_builder = SQLBuilder(table)
+                query = sql_builder.build_insert(insert_values)
                 connection.execute(query, insert_values)
             except sqlite3.Error as e:
                 raise e
 
-    async def insert_many(self, insert_values_many: list):
+    async def insert_many(self, table: str, insert_values_many: list):
         async with self.transaction_scope() as connection:
             try:
                 for single_data in insert_values_many:
-                    query = self.sql_builder.build_insert(single_data)
+                    sql_builder = SQLBuilder(table)
+                    query = sql_builder.build_insert(single_data)
                     connection.execute(query, single_data)
             except sqlite3.Error as e:
                 raise e
 
-    async def select(self, columns: list = [], filters: dict = {}, order_by: list = [], limit_offset: tuple = ()) -> list:
+    async def select(
+        self,
+        table: str,
+        columns: list = [],
+        filters: dict = {},
+        order_by: list = [],
+        limit_offset: tuple = (),
+    ) -> list:
         async with self.transaction_scope() as connection:
             try:
-                query = self.sql_builder.build_select(
+                sql_builder = SQLBuilder(table)
+                query = sql_builder.build_select(
                     columns=columns,
                     filters=filters,
                     order_by=order_by,
@@ -85,39 +100,41 @@ class CRUD:
             except sqlite3.Error as e:
                 raise e
 
-    async def select_one(self, columns: list = [], filters: dict = {}) -> dict:
-        rows = await self.select(columns=columns, filters=filters, limit_offset=(1, 0))
+    async def select_one(self, table: str, columns: list = [], filters: dict = {}) -> dict:
+        rows = await self.select(table=table, columns=columns, filters=filters, limit_offset=(1, 0))
         if rows:
             return dict(rows[0])
         return {}
 
-    async def update(self, update_values: dict, filters: dict):
+    async def update(self, table, update_values: dict, filters: dict):
         """
         Update rows by update_values and filters
         """
         async with self.transaction_scope() as connection:
             try:
-                query = self.sql_builder.build_update(update_values, filters)
+                sql_builder = SQLBuilder(table)
+                query = sql_builder.build_update(update_values, filters)
                 connection.execute(query, update_values)
             except sqlite3.Error as e:
                 raise e
 
-    async def delete(self, filters: dict):
+    async def delete(self, table: str, filters: dict):
         """
         Delete rows by filters
         """
         async with self.transaction_scope() as connection:
             try:
-                query = self.sql_builder.build_delete(filters)
+                sql_builder = SQLBuilder(table)
+                query = sql_builder.build_delete(filters)
                 connection.execute(query, filters)
             except sqlite3.Error as e:
                 raise e
 
-    async def exists(self, filters: dict):
-        rows = await self.select_one(filters=filters)
+    async def exists(self, table, filters: dict):
+        rows = await self.select_one(table=table, filters=filters)
         return bool(rows)
 
-    async def owns(self, id, user_id):
+    async def owns(self, table, id, user_id):
         """
         Simple check if user owns a row by id and user_id
         The table must have an id and a user_id column
@@ -126,5 +143,5 @@ class CRUD:
             "id": id,
             "user_id": user_id,
         }
-        rows = await self.select_one(filters=filters)
+        rows = await self.select_one(table=table, filters=filters)
         return bool(rows)

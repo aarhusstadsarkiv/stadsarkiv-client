@@ -14,7 +14,7 @@ from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.records import normalize_dates
-from stadsarkiv_client.database.bookmarks import crud_bookmarks
+from stadsarkiv_client.database.connections import database_default
 
 
 log = get_log()
@@ -28,7 +28,8 @@ async def auth_bookmarks_get(request: Request):
     try:
         me = await api.me_get(request)
         filters = {"user_id": me["id"]}
-        bookmarks_db = await crud_bookmarks.select(
+        bookmarks_db = await database_default.select(
+            table="bookmarks",
             columns=["record_id"],
             filters=filters,
             order_by=[("created_at", "DESC")],
@@ -95,7 +96,7 @@ async def auth_bookmarks_json(request: Request):
 
         me = await api.me_get(request)
         filters = {"user_id": me["id"], "record_id": record_id}
-        bookmarks_list = await crud_bookmarks.select_one(filters=filters)
+        bookmarks_list = await database_default.select_one(table="bookmarks", filters=filters)
 
         return JSONResponse(bookmarks_list, status_code=200)
     except OpenAwsException as e:
@@ -117,13 +118,14 @@ async def auth_bookmarks_post(request: Request):
         me = await api.users_me_get(request)
         user_id = me["id"]
         json_data = await request.json()
-        values = {"user_id": user_id, "record_id": json_data["record_id"]}
+        filters = {"user_id": user_id, "record_id": json_data["record_id"]}
+        insert_values = filters.copy()
 
-        exists = await crud_bookmarks.exists(values)
+        exists = await database_default.exists(table="bookmarks", filters=filters)
         if json_data["action"] == "remove" and exists:
-            await crud_bookmarks.delete(values)
+            await database_default.delete(table="bookmarks", filters=filters)
         elif json_data["action"] == "add" and not exists:
-            await crud_bookmarks.insert(values)
+            await database_default.insert(table="bookmarks", insert_values=insert_values)
 
     except OpenAwsException as e:
         log.exception("Error in auth_bookmarks_post")

@@ -5,7 +5,7 @@ from stadsarkiv_client.records import record_utils
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.core import api
 import json
-from stadsarkiv_client.database.bookmarks import crud_bookmarks
+from stadsarkiv_client.database.connections import database_default
 from stadsarkiv_client.database import cache
 from stadsarkiv_client.core import csv_utils
 
@@ -38,7 +38,7 @@ class Hooks(HooksSpec):
                 for record_id in bookmarks_from_file:
                     insert_values_many.append({"user_id": user_id, "record_id": record_id})
 
-                await crud_bookmarks.insert_many(insert_values_many)
+                await database_default.insert_many(table="bookmarks", insert_values_many=insert_values_many)
                 await cache.cache_set(cache_key, True)
         except Exception:
             log.exception("Error importing bookmarks")
