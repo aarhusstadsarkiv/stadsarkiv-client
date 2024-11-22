@@ -140,7 +140,7 @@ async def orders_patch(request: Request):
     filters = {"id": order_id}
     update_values = {"done": 1, "status": "ORDERED"}
 
-    await database_orders.order_patch_user(
+    await database_orders.update(
         table="orders",
         update_values=update_values,
         filters=filters,

@@ -114,7 +114,7 @@ class CRUD:
             try:
                 sql_builder = SQLBuilder(table)
                 query = sql_builder.build_update(update_values, filters)
-                connection.execute(query, update_values)
+                connection.execute(query, sql_builder.get_execute_values())
             except sqlite3.Error as e:
                 raise e
 

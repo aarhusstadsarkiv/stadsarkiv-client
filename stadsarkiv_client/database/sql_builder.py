@@ -42,3 +42,6 @@ class SQLBuilder:
         self.values = filters
         where_clause = " AND ".join([f"{key} = :{key}" for key in filters.keys()])
         return f"DELETE FROM {self.table_name} WHERE {where_clause}"
+
+    def get_execute_values(self):
+        return self.values

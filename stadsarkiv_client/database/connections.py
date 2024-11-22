@@ -22,13 +22,13 @@ class OrdersCRUD(CRUD):
     def __init__(self, database_url: str):
         super().__init__(database_url)
 
-    async def order_patch_user(self, table: str, update_values: dict, filters: dict):
+    async def order_patch_by_admin(self, table: str, update_values: dict, filters: dict):
 
         async with self.transaction_scope() as connection:
             try:
                 sql_builder = SQLBuilder(table)
                 query = sql_builder.build_update(update_values=update_values, filters=filters)
-                connection.execute(query, sql_builder.values)
+                connection.execute(query, sql_builder.get_execute_values())
 
             except sqlite3.Error as e:
                 raise e
