@@ -25,7 +25,7 @@ class TestJSON(unittest.TestCase):
     "permission_granted": false,
     "title": "Aarhus Vejviser 1997",
     "meta_title": "Aarhus Vejviser 1997",
-    "meta_description": "",
+    "meta_description": "Aarhus Vejviser 1997",
     "icon": {
         "icon": "article",
         "label": "Publikationer"
@@ -70,7 +70,7 @@ class TestJSON(unittest.TestCase):
     "permission_granted": false,
     "title": "Salgsbrochure for kampagne Byg og bo i Aarhus.",
     "meta_title": "Salgsbrochure for kampagne Byg og bo i Aarhus.",
-    "meta_description": "",
+    "meta_description": "Salgsbrochure for kampagne Byg og bo i Aarhus.",
     "icon": {
         "icon": "description",
         "label": "Andet materiale"
