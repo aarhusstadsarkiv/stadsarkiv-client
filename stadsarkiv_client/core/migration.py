@@ -15,7 +15,6 @@ CREATE TABLE migrations (
 
 class Migration:
     def __init__(self, db_path, migrations):
-
         self.migrations = migrations
         self.db_path = db_path
         self.conn = sqlite3.connect(self.db_path)
@@ -40,9 +39,15 @@ class Migration:
         return self.cursor.fetchone() is not None
 
     def _apply_migration(self, migration_key, sql):
+
+        # Get all statements from the sql string
+        sql_statements = sql.split(";")
+
         if not self._has_migration_been_applied(migration_key):
-            self.cursor.execute(sql)
-            self.conn.commit()
+            for statement in sql_statements:
+                self.cursor.execute(statement)
+                self.conn.commit()
+
             log.info(f"SQL for {migration_key} executed")
             self.cursor.execute("INSERT INTO migrations (migration_key) VALUES (?)", (migration_key,))
             self.conn.commit()
