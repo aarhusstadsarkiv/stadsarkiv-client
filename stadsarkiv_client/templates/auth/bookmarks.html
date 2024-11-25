@@ -74,7 +74,7 @@
         <div class="record-content">
             <div class="content">
                 <div class="action-links">
-                    <a class="bookmark-delete" data-id="{{ bookmark.record_id }}" href="#">Fjern bogmærke</a>
+                    <a class="bookmark-delete" data-id="{{ bookmark.record_id }}" href="#">Slet bogmærke</a>
                 </div>
             </div>
         </div>  
@@ -82,6 +82,12 @@
 {% endfor %}
 </div>
 {% endif %}
+
+<style>
+.action-links > .bookmark-delete {
+    background-color: var(--flash-error-color);
+}
+</style>
 
 <div class="loadingspinner hidden"></div>
 <script type="module">
