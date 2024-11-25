@@ -15,14 +15,41 @@
 
 {{ basic_macros.page_title(title) }}
 
-{# [{'id': '99c648f7-f739-4667-a495-b107669e1c0b', 'email': 'dennis.iversen@gmail.com', 'is_active': True,
-'is_verified': False, 'data': {}, 'permissions': [{'name': 'user', 'grant_id': 6, 'entity_id': None}],
-'permission_translated': 'Permission user'}] #}
+{# [{
+        "id": "0192e7ce-cf55-79cb-b9eb-f6708a35fd31",
+        "email": "dennis.iversen+bcd@gmail.com",
+        "is_active": true,
+        "is_verified": false,
+        "client_id": "development",
+        "display_name": "tester",
+        "permissions": [
+            {
+                "name": "user",
+                "grant_id": 6,
+                "entity_id": null
+            },
+            {
+                "name": "read",
+                "grant_id": 9,
+                "entity_id": null
+            },
+            {
+                "name": "guest",
+                "grant_id": 8,
+                "entity_id": null
+            }
+        ],
+        "permission_translated": "Bruger"
+    }] 
+#}
+
+<pre>{{ to_json(users) }}</pre>
 
 <table>
     <thead>
         <tr>
             <th>E-mail</th>
+            <th>Navn</th>
             <th>Verificeret</th>
             <th>Rettighed</th>
             <th>Handling</th>
@@ -33,6 +60,7 @@
 
         <tr>
             <td>{{ user.email }}</td>
+            <td>{{ user.display_name }}</td>
             <td>
             {% if user.is_verified %}
                 Ja
