@@ -76,6 +76,10 @@ def get_record_meta_data(request: Request, record: dict, user_permissions=[]) ->
     meta_data["title"] = title
     meta_data["meta_title"] = _get_meta_title(record)
     meta_data["meta_description"] = record_utils.meaningful_substring(record.get("summary", ""), 120)
+
+    if not meta_data["meta_description"]:
+        meta_data["meta_description"] = meta_data["meta_title"]
+
     meta_data["icon"] = _get_icon(record)
     meta_data["copyright_id"] = record["copyright_status"].get("id")
     meta_data["legal_id"] = record["other_legal_restrictions"].get("id")
