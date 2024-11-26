@@ -258,3 +258,17 @@ Det må den godt holde op med.
 Janne Marie
 
 ---
+
+Hej Dennis
+
+Er det muligt at lave søgninger, der har søgefiltre fra to forskellige kategorier fx en kreativskaber og en begivenhed på.
+
+Helt konkret vil jeg gerne have billedresultater med Leif Thomsen som Kreativ skaber og Jul som begivenhed.
+
+Jeg kan godt finde billederne ad omveje, men det ville være nemmere, hvis jeg kunne sætte dem på som filtre.
+
+MVH Dennis
+
+---
+
+ 
