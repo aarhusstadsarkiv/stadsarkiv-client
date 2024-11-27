@@ -133,8 +133,6 @@ class OrdersCRUD(CRUD):
             order = format_order_display(order)
 
         return orders
-        # filters = {"finished": finished}
-        # return await self.select(table="orders", filters=filters)
 
     async def get_order(self, order_id):
         order = await database_orders.select_one(table="orders", filters={"order_id": order_id})
