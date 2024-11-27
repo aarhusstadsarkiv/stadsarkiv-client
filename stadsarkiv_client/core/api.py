@@ -469,6 +469,14 @@ async def me_permissions(request: Request) -> list[str]:
         return []
 
 
+async def has_permission(request: Request, permission: str) -> bool:
+    """
+    Check if the current user has a specific permission.
+    """
+    user_permissions_list = await me_permissions(request)
+    return permission in user_permissions_list
+
+
 async def schemas(request: Request) -> typing.Any:
     """
     GET all schemas from the api
