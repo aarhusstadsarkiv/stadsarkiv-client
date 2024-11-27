@@ -8,7 +8,7 @@ from stadsarkiv_client.core.dynamic_settings import settings
 import httpx
 import time
 import os
-from stadsarkiv_client.database.utils import DatabaseTransaction
+from stadsarkiv_client.database.utils import DatabaseConnection
 
 # Check if the environment variable CONFIG_DIR is set
 if "CONFIG_DIR" not in os.environ:
@@ -20,7 +20,7 @@ if "CONFIG_DIR" not in os.environ:
 
 
 database_url = settings["sqlite3"]["default"]
-database_transation = DatabaseTransaction(database_url)
+database_transation = DatabaseConnection(database_url)
 transaction_scope_sync = database_transation.transaction_scope_sync
 
 should_not_resolve = [

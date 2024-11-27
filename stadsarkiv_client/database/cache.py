@@ -34,15 +34,15 @@ import sqlite3
 import json
 import time
 from typing import Any
-from stadsarkiv_client.database.utils import DatabaseTransaction
+from stadsarkiv_client.database.utils import DatabaseConnection
 
 try:
     database_url = settings["sqlite3"]["default"]
 except KeyError:
     database_url = ""
 
-database_transation = DatabaseTransaction(database_url)
-transaction_scope = database_transation.transaction_scope
+database_transation = DatabaseConnection(database_url)
+transaction_scope = database_transation.transaction_scope_async
 
 
 async def cache_set(key: str, data: Any) -> bool:

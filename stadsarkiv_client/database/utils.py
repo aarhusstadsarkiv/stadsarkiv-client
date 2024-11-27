@@ -33,7 +33,7 @@ from stadsarkiv_client.core.logging import get_log
 log = get_log()
 
 
-class DatabaseTransaction:
+class DatabaseConnection:
     def __init__(self, database_url):
         self.database_url = database_url
 
@@ -65,7 +65,7 @@ class DatabaseTransaction:
         finally:
             connection.close()
 
-    async def get_db_connection(self) -> sqlite3.Connection:
+    async def get_db_connection_async(self) -> sqlite3.Connection:
         """
         Create an asynchronous database connection.
         """
@@ -78,11 +78,11 @@ class DatabaseTransaction:
         return connection
 
     @asynccontextmanager
-    async def transaction_scope(self):
+    async def transaction_scope_async(self):
         """
         Asynchronous transaction scope context manager.
         """
-        connection = await self.get_db_connection()
+        connection = await self.get_db_connection_async()
         try:
             connection.execute("BEGIN IMMEDIATE")
             yield connection

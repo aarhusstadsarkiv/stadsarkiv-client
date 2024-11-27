@@ -23,43 +23,52 @@ log = get_log()
 
 create_orders_query = """
 CREATE TABLE orders (
-    id INTEGER PRIMARY KEY,
-    record_id TEXT NOT NULL,
+    order_id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_email TEXT NOT NULL,
     user_display_name TEXT NOT NULL,
     user_id TEXT NOT NULL,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    label TEXT NOT NULL,                             -- Label for the order
+    label TEXT NOT NULL,
+    resources TEXT,
+    record_id TEXT NOT NULL,
+    status INTEGER NOT NULL,
     deadline TEXT,
-    modified_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_by TEXT,
-    resources TEXT,                                  -- JSON array of resources
-    status TEXT DEFAULT 'ORDERED' CHECK(status IN (
-        'ORDERED',
-        'PACKED_FOR_READING_ROOM',
-        'AVAILABLE_IN_READING_ROOM',
-        'COMPLETED_IN_READING_ROOM',
-        'RETURN_TO_STORAGE',
-        'COMPLETED'
-    )),
-    comment TEXT,
-    done INTEGER DEFAULT 0 CHECK(done IN (0, 1))
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    finished INTEGER DEFAULT 0
 ) STRICT;
-"""
 
-create_user_index_query = """
-CREATE INDEX idx_orders_user_id ON orders (user_id);
-"""
+CREATE TABLE order_status_log (
+    log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_id INTEGER NOT NULL,
+    status  INTEGER NOT NULL,
+    changed_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    changed_by TEXT,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id)
+) STRICT;
 
-create_status_index_query = """
+-- Index for looking up orders by record_id
+CREATE INDEX idx_orders_record_id ON orders (record_id);
+
+-- Index for looking up orders by status
 CREATE INDEX idx_orders_status ON orders (status);
+
+-- Index for queries involving deadlines
+CREATE INDEX idx_orders_deadline ON orders (deadline);
+
+-- Index for looking up status logs by order_id
+CREATE INDEX idx_order_status_log_order_id ON order_status_log (order_id);
+
+-- Index for filtering logs by status
+CREATE INDEX idx_order_status_log_status ON order_status_log (status);
+
+-- Index for logs sorted by change timestamp
+CREATE INDEX idx_order_status_log_changed_at ON order_status_log (changed_at);
+
 """
 
 # List of migrations with keys
 migrations = {
     "create_orders": create_orders_query,
-    "create_user_index": create_user_index_query,
-    "create_status_index": create_status_index_query,
 }
 
 try:

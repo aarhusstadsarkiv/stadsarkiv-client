@@ -14,7 +14,8 @@ from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.records import normalize_dates
-from stadsarkiv_client.database.connections import database_default
+from stadsarkiv_client.database.crud_default import crud_default
+from sqlite3 import Connection
 
 
 log = get_log()
@@ -28,7 +29,7 @@ async def auth_bookmarks_get(request: Request):
     try:
         me = await api.me_get(request)
         filters = {"user_id": me["id"]}
-        bookmarks_db = await database_default.select(
+        bookmarks_db = await crud_default.select(
             table="bookmarks",
             columns=["record_id"],
             filters=filters,
@@ -96,7 +97,7 @@ async def auth_bookmarks_json(request: Request):
 
         me = await api.me_get(request)
         filters = {"user_id": me["id"], "record_id": record_id}
-        bookmarks_list = await database_default.select_one(table="bookmarks", filters=filters)
+        bookmarks_list = await crud_default.select_one(table="bookmarks", filters=filters)
 
         return JSONResponse(bookmarks_list, status_code=200)
     except OpenAwsException as e:
@@ -121,11 +122,12 @@ async def auth_bookmarks_post(request: Request):
         filters = {"user_id": user_id, "record_id": json_data["record_id"]}
         insert_values = filters.copy()
 
-        exists = await database_default.exists(table="bookmarks", filters=filters)
-        if json_data["action"] == "remove" and exists:
-            await database_default.delete(table="bookmarks", filters=filters)
-        elif json_data["action"] == "add" and not exists:
-            await database_default.insert(table="bookmarks", insert_values=insert_values)
+        async with crud_default.transaction_scope() as connection:
+            exists = await crud_default.exists(table="bookmarks", filters=filters, connection=connection)
+            if json_data["action"] == "remove" and exists:
+                await crud_default.delete(table="bookmarks", filters=filters, connection=connection)
+            elif json_data["action"] == "add" and not exists:
+                await crud_default.insert(table="bookmarks", insert_values=insert_values, connection=connection)
 
     except OpenAwsException as e:
         log.exception("Error in auth_bookmarks_post")

@@ -45,10 +45,10 @@
 
         <div class="record-content">
             <div class="label">Opdateret</div>
-            <div class="content">{{ order.modified_at }}</div>
+            <div class="content">{{ order.created_at }}</div>
         </div>
 
-        <div class="action-links delete-order"><a data-id="{{order.id}}" href="#">Slet bestilling</a></div>
+        <div class="action-links delete-order"><a data-id="{{order.order_id}}" href="#">Slet bestilling</a></div>
         <hr>
     </div>
 </div>
@@ -79,7 +79,7 @@
             spinner.classList.toggle('hidden');
 
             const formData = new FormData();
-            formData.append('done', 1);
+            formData.append('finished', 1);
 
             try {
                 const recordSection = element.closest('.record-section');

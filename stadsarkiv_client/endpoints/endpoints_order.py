@@ -9,7 +9,7 @@ from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.flash import set_message
-from stadsarkiv_client.database.connections import database_orders
+from stadsarkiv_client.database.crud_orders import database_orders, STATUSES_HUMAN, STATUSES_ORDER
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.api import OpenAwsException
@@ -19,10 +19,27 @@ import json
 log = get_log()
 
 
+async def _is_order_owner(request: Request, order_id: int) -> bool:
+    """
+    Check if user is authenticated and verified
+    Check if user is owner of order
+    """
+    # await is_authenticated_json(request, verified=True)
+    me = await api.users_me_get(request)
+    is_owner = await database_orders.is_owner(user_id=me["id"], order_id=order_id)
+    return is_owner
+
+
+async def _is_admin(request: Request) -> bool:
+    """
+    Check if user is authenticated and has required permissions to edit orders
+    """
+    return await api.has_permission(request, "employee")
+
+
 async def orders_get_order(request: Request):
     """
-    GET page when user wants to order a record
-    User needs to be authenticated and verified
+    GET Page where user can order a record
     """
     await is_authenticated(request, verified=True)
     me = await api.users_me_get(request)
@@ -37,22 +54,18 @@ async def orders_get_order(request: Request):
     record_altered = record_alter.record_alter(request, record, meta_data)
     record_and_types = record_alter.get_record_and_types(record_altered)
 
-    filters = {
-        "user_id": me["id"],
-        "record_id": meta_data["id"],
-        "done": 0,
-    }
-
     context_variables = {
         "title": "Bestil: " + meta_data["title"],
         "meta_title": "Bestil: " + meta_data["meta_title"],
         "meta_data": meta_data,
         "record_and_types": record_and_types,
-        "is_ordered": await database_orders.exists(table="orders", filters=filters),
+        "is_ordered": await database_orders.is_ordered(
+            user_id=me["id"],
+            record_id=meta_data["id"],
+        ),
     }
 
     context = await get_context(request, context_values=context_variables)
-
     return templates.TemplateResponse(request, "order/order.html", context)
 
 
@@ -60,19 +73,13 @@ async def orders_get_orders(request: Request):
     """
     GET endpoint for displaying all orders for authenticated user
     """
-    await is_authenticated(request, permissions=["employee"])
-
-    await database_orders.order_patch_by_admin(record_id="000417166")
+    await is_authenticated(request, verified=True)
     try:
 
         me = await api.users_me_get(request)
-        orders_me = await database_orders.select(
-            table="orders",
-            filters={"user_id": me["id"], "done": 0},
-            order_by=[("created_at", "DESC")],
-        )
+        orders = await database_orders.get_orders_by_user(user_id=me["id"], finished=0)
 
-        context_values = {"title": translate("Your orders"), "me": me, "orders": orders_me}
+        context_values = {"title": translate("Your orders"), "me": me, "orders": orders}
         context = await get_context(request, context_values=context_values)
 
         return templates.TemplateResponse(request, "order/orders_user.html", context)
@@ -98,58 +105,75 @@ async def orders_post(request: Request):
     meta_data = get_record_meta_data(request, record)
     record, meta_data = await hooks.after_get_record(record, meta_data)
 
-    filters = {
-        "user_id": me["id"],
-        "record_id": meta_data["id"],
-        "done": 0,
-    }
+    is_ordered = await database_orders.is_ordered(
+        user_id=me["id"],
+        record_id=meta_data["id"],
+    )
 
-    if await database_orders.count(table="orders", filters=filters) == 0:
-        insert_values = _get_insert_data(meta_data, me)
-        await database_orders.insert(table="orders", insert_values=insert_values)
+    if not is_ordered:
+        await database_orders.insert_order(meta_data, me)
         set_message(request, "Din bestilling er blevet oprettet", "success")
         return JSONResponse({"message": "Din bestilling er blevet oprettet", "error": False})
     else:
         return JSONResponse({"message": "Bestilling på dette materiale eksisterer allerede", "error": True})
 
 
-async def is_order_owner(request: Request, order_id: int):
+async def orders_user_patch(request: Request):
     """
-    Check if user authenticated and verified
-    Check if user is owner of order
+    User can only cancel their own order
+    Admin can patch any order
     """
     await is_authenticated_json(request, verified=True)
-    me = await api.users_me_get(request)
 
-    filters = {"id": order_id, "user_id": me["id"]}
-    is_owner = await database_orders.exists(
-        table="orders",
-        filters=filters,
-    )
-    return is_owner
-
-
-async def orders_patch(request: Request):
-    """
-    User can only cancel their own orders
-    """
     order_id = request.path_params["order_id"]
-    if not await is_order_owner(request, order_id):
+    is_owner = await _is_order_owner(request, order_id)
+
+    if not is_owner:
         return JSONResponse(
             {
-                "message": "Du har ikke rettigheder til at annullere denne bestilling",
+                "message": "Du har ikke rettigheder til at opdatere denne bestilling",
                 "error": True,
             }
         )
 
-    filters = {"id": order_id}
-    update_values = {"done": 1, "status": "ORDERED"}
+    filters = {"order_id": order_id}
+    form_data = await request.form()
+    update_values = {key: value for key, value in form_data.items()}
 
-    await database_orders.update(
-        table="orders",
-        update_values=update_values,
-        filters=filters,
+    await database_orders.update_order(update_values=update_values, filters=filters)
+
+    return JSONResponse(
+        {
+            "message": "Din bestilling er blevet annuleret",
+            "error": False,
+        }
     )
+
+
+async def orders_admin_patch(request: Request):
+    """
+    User can only cancel their own order
+    Admin can patch any order
+    """
+    await is_authenticated_json(request, verified=True)
+
+    is_admin = await _is_admin(request)
+
+    if not is_admin:
+        return JSONResponse(
+            {
+                "message": "Du har ikke rettigheder til at opdatere denne bestilling",
+                "error": True,
+            }
+        )
+
+    order_id = request.path_params["order_id"]
+    filters = {"order_id": order_id}
+    form_data = await request.form()
+    update_values = {key: value for key, value in form_data.items()}
+
+    await database_orders.update_order(update_values=update_values, filters=filters)
+
     return JSONResponse(
         {
             "message": "Din bestilling er blevet annuleret",
@@ -160,20 +184,20 @@ async def orders_patch(request: Request):
 
 async def orders_admin_get(request: Request):
     """
-    GET endpoint for displaying all orders
+    GET endpoint for displaying all orders for an employee
     """
     await is_authenticated(request, permissions=["employee"])
 
-    filters = {"done": 0}
+    filters = {"finished": 0}
     orders = await database_orders.select(
         table="orders",
         filters=filters,
-        order_by=[("id", "DESC")],
+        order_by=[("order_id", "DESC")],
     )
 
     for order in orders:
         order["resources"] = json.loads(order["resources"])
-        order = _date_format_order(order)
+        order = _format_order_display(order)
 
     context_values = {"title": "Bestillinger", "orders": orders}
     context = await get_context(request, context_values=context_values)
@@ -188,58 +212,24 @@ async def orders_admin_get_edit(request: Request):
     await is_authenticated(request, permissions=["employee"])
 
     order_id = request.path_params["order_id"]
-    order = await database_orders.select_one(table="orders", filters={"id": order_id})
+    order = await database_orders.select_one(table="orders", filters={"order_id": order_id})
     order["resources"] = json.loads(order["resources"])
-    order = _date_format_order(order)
+    order = _format_order_display(order)
 
-    context_values = {"order": order}
+    context_values = {"title": "Opdater bestilling", "order": order, "statuses": STATUSES_HUMAN}
     context = await get_context(request, context_values=context_values)
 
     return templates.TemplateResponse(request, "order/order_edit.html", context)
 
 
-def _get_insert_data(meta_data: dict, me: dict):
-    """
-    Generate data for inserting into orders table
-    """
-    return {
-        "user_id": me["id"],
-        "user_email": me["email"],
-        "user_display_name": me["display_name"],
-        "record_id": meta_data["id"],
-        "resources": json.dumps(meta_data["resources"]),
-        "label": meta_data["title"],
-    }
-
-
-def _date_format_order(order: dict):
+def _format_order_display(order: dict):
     """
     Format dates in order for display. Change from UTC to Europe/Copenhagen
     """
     order["created_at"] = date_format.timezone_alter(order["created_at"])
-    order["modified_at"] = date_format.timezone_alter(order["modified_at"])
+    order["updated_at"] = date_format.timezone_alter(order["updated_at"])
     if order["deadline"]:
         order["deadline"] = date_format.timezone_alter(order["deadline"])
+
+    order["status"] = STATUSES_HUMAN.get(order["status"])
     return order
-
-
-"""
-Proxy for search records endpoints
-
-
-http://localhost:5555/records/000503354
-identifikation: "51648293"
-
-http://localhost:5555/records/000504168
-storage_id: ['91+01390-2']
-
-000429798
-
-(None, '8038476141', 'Reol 106/fag 2/hylde 1')
-
-000506083
-
-(['91+01418-1'], None, None)
-
-
-"""

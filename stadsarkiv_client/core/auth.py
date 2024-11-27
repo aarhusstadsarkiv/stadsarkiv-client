@@ -36,6 +36,9 @@ class AuthExceptionJSON(Exception):
 
 
 async def is_authenticated(request: Request, permissions=[], message=None, verified=False):
+    """
+    Check if a user is authenticated. Optionally check for permissions and verified email.
+    """
     is_logged_in = await api.is_logged_in(request)
 
     if not message:

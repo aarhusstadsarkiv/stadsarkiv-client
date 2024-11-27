@@ -55,6 +55,11 @@
     },
 ] #}
 
+{{ statuses }}
+
+{% if orders|length == 0 %}
+<p>Der er ingen ordrer.</p>
+{% else %}
 <table>
     <thead>
         <tr>
@@ -74,13 +79,14 @@
             </td>
             <td>{{ order.status }}</td>
             <td>{{ order.created_at }}</td>
-            <td>{{ order.modified_at }}</td>
+            <td>{{ order.updated_at }}</td>
             <td>{{ order.resources }}</td>
-            <td><a href="/admin/orders/{{order.id}}/edit">Rediger</a></td>
+            <td><a href="/admin/orders/{{order.order_id}}/edit">Rediger</a></td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+{% endif %}
 <style>
 
     td a {
@@ -91,9 +97,11 @@
         max-width: 200px; /* Adjust width to fit your design */
     }
 
+    /*
     .container-medium {
         width: unset;
     }
+    */
 </style>
 
 

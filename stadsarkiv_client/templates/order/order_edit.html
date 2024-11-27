@@ -6,6 +6,7 @@
 {% block body_class %}page-admin-orders-edit{% endblock %}
 
 {% block head %}
+
 <link rel="stylesheet" href="{{ url_for('static', path='/css/table.css') }}?v={{ get_setting('version') }}">
 {% endblock head %}
 
@@ -57,7 +58,58 @@
         <hr>
     </div>
 </div>
+<div class="loadingspinner hidden"></div>
 
+<form method="post" action="/admin/orders/{{ order.order_id }}">
+    <select name="status" id="status">
+        {% for key, value in statuses.items() %}
+        <option value="{{ key }}" {% if order.status==key %}selected{% endif %}>{{ value }}</option>
+        {% endfor %}
+    </select>
+</form>
+<script type="module">
+    import { asyncLogError } from "/static/js/error.js";
+    import { Requests } from "/static/js/requests.js";
+    import { Flash } from "/static/js/flash.js";
+
+    const spinner = document.querySelector('.loadingspinner');
+    const statusElem = document.getElementById('status');
+
+    // on submit change status
+    statusElem.addEventListener("change", async function (event) {
+
+        alert('hello world');
+        return;
+
+        event.preventDefault();
+        Flash.clearMessages();
+        spinner.classList.toggle('hidden');
+
+        try {
+
+            // Get URL from form action
+            const form = document.querySelector('form');
+            const url = form.action;
+            const formData = new FormData(form);
+            const res = await Requests.asyncPost(url, formData);
+
+            if (res.error) {
+                console.log(res.message);
+                Flash.setMessage(res.message, 'error');
+            } else {
+                window.location.href = url;
+            }
+
+        } catch (e) {
+            Flash.setMessage(res.message, 'error');
+            await asyncLogError('/error/log', e.stack);
+        } finally {
+            spinner.classList.toggle('hidden');
+        }
+    });
+
+
+</script>
 
 <pre>{{ to_json(order) }}</pre>
 
