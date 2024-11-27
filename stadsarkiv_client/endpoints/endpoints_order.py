@@ -9,11 +9,10 @@ from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.flash import set_message
-from stadsarkiv_client.database.crud_orders import database_orders, STATUSES_HUMAN, STATUSES_ORDER
+from stadsarkiv_client.database.crud_orders import database_orders, STATUSES_HUMAN
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.api import OpenAwsException
-from stadsarkiv_client.core import date_format
 import json
 
 log = get_log()
@@ -77,7 +76,7 @@ async def orders_get_orders(request: Request):
     try:
 
         me = await api.users_me_get(request)
-        orders = await database_orders.get_orders_by_user(user_id=me["id"], finished=0)
+        orders = await database_orders.get_orders_user(user_id=me["id"], finished=0)
 
         context_values = {"title": translate("Your orders"), "me": me, "orders": orders}
         context = await get_context(request, context_values=context_values)
@@ -188,21 +187,12 @@ async def orders_admin_get(request: Request):
     """
     await is_authenticated(request, permissions=["employee"])
 
-    filters = {"finished": 0}
-    orders = await database_orders.select(
-        table="orders",
-        filters=filters,
-        order_by=[("order_id", "DESC")],
-    )
-
-    for order in orders:
-        order["resources"] = json.loads(order["resources"])
-        order = _format_order_display(order)
+    orders = await database_orders.get_orders_admin(finished=0)
 
     context_values = {"title": "Bestillinger", "orders": orders}
     context = await get_context(request, context_values=context_values)
 
-    return templates.TemplateResponse(request, "order/admin_orders.html", context)
+    return templates.TemplateResponse(request, "order/orders_admin.html", context)
 
 
 async def orders_admin_get_edit(request: Request):
@@ -212,24 +202,9 @@ async def orders_admin_get_edit(request: Request):
     await is_authenticated(request, permissions=["employee"])
 
     order_id = request.path_params["order_id"]
-    order = await database_orders.select_one(table="orders", filters={"order_id": order_id})
-    order["resources"] = json.loads(order["resources"])
-    order = _format_order_display(order)
+    order = await database_orders.get_order(order_id)
 
     context_values = {"title": "Opdater bestilling", "order": order, "statuses": STATUSES_HUMAN}
     context = await get_context(request, context_values=context_values)
 
-    return templates.TemplateResponse(request, "order/order_edit.html", context)
-
-
-def _format_order_display(order: dict):
-    """
-    Format dates in order for display. Change from UTC to Europe/Copenhagen
-    """
-    order["created_at"] = date_format.timezone_alter(order["created_at"])
-    order["updated_at"] = date_format.timezone_alter(order["updated_at"])
-    if order["deadline"]:
-        order["deadline"] = date_format.timezone_alter(order["deadline"])
-
-    order["status"] = STATUSES_HUMAN.get(order["status"])
-    return order
+    return templates.TemplateResponse(request, "order/order_admin_edit.html", context)

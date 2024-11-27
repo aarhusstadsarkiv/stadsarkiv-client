@@ -4,6 +4,7 @@ from stadsarkiv_client.core.logging import get_log
 import json
 import dataclasses
 import typing
+from stadsarkiv_client.core import date_format
 
 
 log = get_log()
@@ -59,6 +60,19 @@ def _get_order_insert_data(meta_data: dict, me: dict):
     return order_inser_data
 
 
+def format_order_display(order: dict):
+    """
+    Format dates in order for display. Change from UTC to Europe/Copenhagen
+    """
+    order["created_at"] = date_format.timezone_alter(order["created_at"])
+    order["updated_at"] = date_format.timezone_alter(order["updated_at"])
+    if order["deadline"]:
+        order["deadline"] = date_format.timezone_alter(order["deadline"])
+
+    order["status"] = STATUSES_HUMAN.get(order["status"])
+    return order
+
+
 class OrdersCRUD(CRUD):
     def __init__(self, database_url: str):
         super().__init__(database_url)
@@ -71,7 +85,7 @@ class OrdersCRUD(CRUD):
         filters = {"user_id": user_id, "record_id": record_id, "finished": 0}
         return await self.select_one(table="orders", filters=filters)
 
-    async def is_owner(self, user_id: str, order_id: str):
+    async def is_owner(self, user_id: str, order_id: int):
 
         filters = {"order_id": order_id, "user_id": user_id}
         is_owner = await database_orders.exists(
@@ -88,7 +102,7 @@ class OrdersCRUD(CRUD):
         order_data = _get_order_insert_data(meta_data, me)
         await self.insert("orders", order_data)
 
-    async def get_orders_by_user(self, user_id: str, finished: int = 0):
+    async def get_orders_user(self, user_id: str, finished: int = 0):
         """
         Get all orders for a user. Get finished orders if finished is set to 1.
         """
@@ -102,6 +116,32 @@ class OrdersCRUD(CRUD):
             update_values=update_values,
             filters=filters,
         )
+
+    async def get_orders_admin(self, finished: int = 0, status: int = 0):
+        """
+        Get all orders for a user. Get finished orders if finished is set to 1.
+        """
+        filters = {"finished": finished}
+        orders = await self.select(
+            table="orders",
+            filters=filters,
+            order_by=[("order_id", "DESC")],
+        )
+
+        for order in orders:
+            order["resources"] = json.loads(order["resources"])
+            order = format_order_display(order)
+
+        return orders
+        # filters = {"finished": finished}
+        # return await self.select(table="orders", filters=filters)
+
+    async def get_order(self, order_id):
+        order = await database_orders.select_one(table="orders", filters={"order_id": order_id})
+        order["resources"] = json.loads(order["resources"])
+        order = format_order_display(order)
+
+        return order
 
 
 database_orders = OrdersCRUD(orders_url)
