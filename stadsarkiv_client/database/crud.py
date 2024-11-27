@@ -147,3 +147,18 @@ class CRUD:
             return row["num_rows"]
         except sqlite3.Error as e:
             raise e
+
+    async def query(self, query: str, values: dict, connection=None):
+        """
+        Execute a custom query.
+        """
+        if connection is None:
+            async with self.transaction_scope() as connection:
+                return await self.query(query, values, connection=connection)
+        try:
+            cursor = connection.execute(query, values)
+            rows = cursor.fetchall()
+            rows = [dict(row) for row in rows]
+            return rows
+        except sqlite3.Error as e:
+            raise e
