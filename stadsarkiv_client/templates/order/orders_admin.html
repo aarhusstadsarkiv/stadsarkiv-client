@@ -64,6 +64,7 @@
     <thead>
         <tr>
             <th>URL</th>
+            <th>Navn</th>
             <th>Status</th>
             <th>Oprettet</th>
             <th>Opdateret</th>
@@ -77,6 +78,7 @@
             <td>
                 <a title="{{ order.label }}" href="/records/{{order.record_id}}">{{ order.label }}</a>
             </td>
+            <td>{{ order.user_display_name }}</td>
             <td>{{ order.status }}</td>
             <td>{{ order.created_at }}</td>
             <td>{{ order.updated_at }}</td>
@@ -97,11 +99,11 @@
         max-width: 200px; /* Adjust width to fit your design */
     }
 
-    /*
+    
     .container-medium {
         width: unset;
     }
-    */
+    
 </style>
 
 

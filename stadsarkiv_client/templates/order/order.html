@@ -45,9 +45,14 @@
                 // Get URL from form action
                 const form = document.querySelector('form');
                 const url = form.action;
-                const formData = new FormData(form);
-                const res = await Requests.asyncPost(url, formData);
 
+                const formData = new FormData(form);
+                const status  = parseInt(formData.get('status'));
+                const postJson = JSON.stringify({
+                    status : status
+                })
+                
+                const res = await Requests.asyncPost(url, postJson);
                 if (res.error) {
                     console.log(res.message);
                     Flash.setMessage(res.message, 'error');

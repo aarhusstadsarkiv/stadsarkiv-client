@@ -9,11 +9,10 @@ from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.flash import set_message
-from stadsarkiv_client.database.crud_orders import database_orders, STATUSES_HUMAN
+from stadsarkiv_client.database.crud_orders import database_orders, STATUSES_HUMAN, STATUSES_ORDER
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.api import OpenAwsException
-import json
 
 log = get_log()
 
@@ -76,7 +75,7 @@ async def orders_get_orders(request: Request):
     try:
 
         me = await api.users_me_get(request)
-        orders = await database_orders.get_orders_user(user_id=me["id"], finished=0)
+        orders = await database_orders.get_orders_user(user_id=me["id"], completed=0)
 
         context_values = {"title": translate("Your orders"), "me": me, "orders": orders}
         context = await get_context(request, context_values=context_values)
@@ -136,11 +135,9 @@ async def orders_user_patch(request: Request):
         )
 
     filters = {"order_id": order_id}
-    form_data = await request.form()
-    update_values = {key: value for key, value in form_data.items()}
+    update_values = {"status": STATUSES_ORDER.COMPLETED}
 
     await database_orders.update_order(update_values=update_values, filters=filters)
-
     return JSONResponse(
         {
             "message": "Din bestilling er blevet annuleret",
@@ -154,10 +151,9 @@ async def orders_admin_patch(request: Request):
     User can only cancel their own order
     Admin can patch any order
     """
-    await is_authenticated_json(request, verified=True)
+    await is_authenticated_json(request, verified=True, permissions=["employee"])
 
     is_admin = await _is_admin(request)
-
     if not is_admin:
         return JSONResponse(
             {
@@ -166,16 +162,14 @@ async def orders_admin_patch(request: Request):
             }
         )
 
-    order_id = request.path_params["order_id"]
-    filters = {"order_id": order_id}
-    form_data = await request.form()
-    update_values = {key: value for key, value in form_data.items()}
+    filters = {"order_id": request.path_params["order_id"]}
+    update_values = await request.json()
 
     await database_orders.update_order(update_values=update_values, filters=filters)
 
     return JSONResponse(
         {
-            "message": "Din bestilling er blevet annuleret",
+            "message": "Bestillingemn er blevet annuleret",
             "error": False,
         }
     )
@@ -187,7 +181,7 @@ async def orders_admin_get(request: Request):
     """
     await is_authenticated(request, permissions=["employee"])
 
-    orders = await database_orders.get_orders_admin(finished=0)
+    orders = await database_orders.get_orders_admin(completed=0)
 
     context_values = {"title": "Bestillinger", "orders": orders}
     context = await get_context(request, context_values=context_values)

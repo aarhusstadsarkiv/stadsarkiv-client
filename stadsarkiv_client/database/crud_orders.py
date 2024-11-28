@@ -3,6 +3,7 @@ from stadsarkiv_client.database.crud import CRUD
 from stadsarkiv_client.core.logging import get_log
 import json
 import dataclasses
+from dataclasses import asdict
 import typing
 from stadsarkiv_client.core import date_format
 
@@ -30,6 +31,7 @@ class OrderStatuses:
 
 
 STATUSES_ORDER = OrderStatuses()
+STATUSES_ORDER_DICT = asdict(STATUSES_ORDER)
 
 STATUSES_HUMAN = {
     1: "Bestilt",
@@ -82,7 +84,7 @@ class OrdersCRUD(CRUD):
         Check if a user has ordered this record. This is the case
         if the user does not have a order with:
         """
-        filters = {"user_id": user_id, "record_id": record_id, "finished": 0}
+        filters = {"user_id": user_id, "record_id": record_id, "status": STATUSES_ORDER.ORDERED}
         return await self.select_one(table="orders", filters=filters)
 
     async def is_owner(self, user_id: str, order_id: int):
@@ -102,37 +104,67 @@ class OrdersCRUD(CRUD):
         order_data = _get_order_insert_data(meta_data, me)
         await self.insert("orders", order_data)
 
-    async def get_orders_user(self, user_id: str, finished: int = 0):
+    async def get_orders_user(self, user_id: str, completed=0):
         """
-        Get all orders for a user. Get finished orders if finished is set to 1.
+        Get all orders for a user. Exclude orders with specific statuses.
         """
-        filters = {"user_id": user_id, "finished": finished}
-        return await self.select(table="orders", filters=filters)
+        async with self.transaction_scope() as connection:
+
+            if completed:
+                query = f"""
+                SELECT * FROM orders
+                WHERE user_id = :user_id
+                AND status = {STATUSES_ORDER.COMPLETED})
+                """
+            else:
+                query = f"""
+                SELECT * FROM orders
+                WHERE user_id = :user_id
+                AND status NOT IN ({STATUSES_ORDER.COMPLETED})
+                """
+
+            filters = {"user_id": user_id}
+
+            return await self.query(query, filters, connection=connection)
 
     async def update_order(self, update_values: dict, filters: dict):
-
+        """
+        Update an order with new values.
+        """
+        log.debug(f"Update order: {update_values}")
         await database_orders.update(
             table="orders",
             update_values=update_values,
             filters=filters,
         )
 
-    async def get_orders_admin(self, finished: int = 0, status: int = 0):
+    async def get_orders_admin(self, completed: int = 0, status: int = 0):
         """
-        Get all orders for a user. Get finished orders if finished is set to 1.
+        Get all orders for a user. Allow to set status and finished.
         """
-        filters = {"finished": finished}
-        orders = await self.select(
-            table="orders",
-            filters=filters,
-            order_by=[("order_id", "DESC")],
-        )
+        async with self.transaction_scope() as connection:
 
-        for order in orders:
-            order["resources"] = json.loads(order["resources"])
-            order = format_order_display(order)
+            # filters = {"finished": completed}
 
-        return orders
+            if completed:
+                query = f"""
+                SELECT * FROM orders
+                WHERE status = {STATUSES_ORDER.COMPLETED})
+                """
+            else:
+                query = f"""
+                SELECT * FROM orders
+                WHERE status NOT IN ({STATUSES_ORDER.COMPLETED})
+                """
+
+            query += " ORDER BY order_id ASC"
+
+            orders = await self.query(query, {}, connection=connection)
+            for order in orders:
+                order["resources"] = json.loads(order["resources"])
+                order = format_order_display(order)
+
+            return orders
 
     async def get_order(self, order_id):
         order = await database_orders.select_one(table="orders", filters={"order_id": order_id})

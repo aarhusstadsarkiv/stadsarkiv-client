@@ -60,7 +60,7 @@
 </div>
 <div class="loadingspinner hidden"></div>
 
-<form method="post" action="/admin/orders/{{ order.order_id }}">
+<form method="post" action="/admin/orders/patch/{{ order.order_id }}">
     <select name="status" id="status">
         {% for key, value in statuses.items() %}
         <option value="{{ key }}" {% if order.status==key %}selected{% endif %}>{{ value }}</option>
@@ -78,9 +78,6 @@
     // on submit change status
     statusElem.addEventListener("change", async function (event) {
 
-        alert('hello world');
-        return;
-
         event.preventDefault();
         Flash.clearMessages();
         spinner.classList.toggle('hidden');
@@ -90,14 +87,18 @@
             // Get URL from form action
             const form = document.querySelector('form');
             const url = form.action;
-            const formData = new FormData(form);
-            const res = await Requests.asyncPost(url, formData);
 
+            const formData = new FormData(form);
+            const status  = parseInt(formData.get('status'));
+            const postJson = JSON.stringify({
+                status : status
+            })
+
+            const res = await Requests.asyncPostJson(url, postJson);
             if (res.error) {
-                console.log(res.message);
                 Flash.setMessage(res.message, 'error');
             } else {
-                window.location.href = url;
+                window.location.href = '#';
             }
 
         } catch (e) {

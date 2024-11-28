@@ -138,7 +138,10 @@ if settings["allow_online_ordering"]:
         Route("/admin/orders/{order_id:str}/edit", endpoint=endpoints_order.orders_admin_get_edit, name="orders_admin_get_edit"),
         Route("/order/patch/{order_id:int}", endpoint=endpoints_order.orders_user_patch, name="orders_user_patch", methods=["POST"]),
         Route(
-            "/admin/orders/patch/{order_id:int}", endpoint=endpoints_order.orders_admin_patch, name="orders_admin_patch", methods=["POST"]
+            "/admin/orders/patch/{order_id:int}",
+            endpoint=endpoints_order.orders_admin_patch,
+            name="orders_admin_patch",
+            methods=["POST"],
         ),
     ]
     routes.extend(online_ordering)
