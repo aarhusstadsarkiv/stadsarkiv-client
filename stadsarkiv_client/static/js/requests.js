@@ -23,7 +23,7 @@ class Requests {
     /**
      * Post JSON async. Accepts JSON as response
      */
-    static async asyncPostJson(url, formData, method) {
+    static async asyncPostJson(url, jsonData, method) {
         if (!method) method = 'POST'
         const rawResponse = await fetch(url, {
             method: method,
@@ -31,7 +31,7 @@ class Requests {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: formData
+            body: jsonData
         }).then(function (response) {
             return response.json()
         }).then(function (response) {
