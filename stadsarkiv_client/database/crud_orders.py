@@ -138,13 +138,11 @@ class OrdersCRUD(CRUD):
             filters=filters,
         )
 
-    async def get_orders_admin(self, completed: int = 0, status: int = 0):
+    async def get_orders_admin(self, completed: int = 0):
         """
         Get all orders for a user. Allow to set status and finished.
         """
         async with self.transaction_scope() as connection:
-
-            # filters = {"finished": completed}
 
             if completed:
                 query = f"""

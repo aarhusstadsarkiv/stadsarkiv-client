@@ -45,24 +45,12 @@ CREATE TABLE order_status_log (
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
 ) STRICT;
 
--- Index for looking up orders by record_id
 CREATE INDEX idx_orders_record_id ON orders (record_id);
-
--- Index for looking up orders by status
 CREATE INDEX idx_orders_status ON orders (status);
-
--- Index for queries involving deadlines
 CREATE INDEX idx_orders_deadline ON orders (deadline);
-
--- Index for looking up status logs by order_id
 CREATE INDEX idx_order_status_log_order_id ON order_status_log (order_id);
-
--- Index for filtering logs by status
 CREATE INDEX idx_order_status_log_status ON order_status_log (status);
-
--- Index for logs sorted by change timestamp
 CREATE INDEX idx_order_status_log_changed_at ON order_status_log (changed_at);
-
 """
 
 # List of migrations with keys
