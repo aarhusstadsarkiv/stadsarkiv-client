@@ -43,7 +43,7 @@
 
         <div class="record-content">
             <div class="label">Status</div>
-            <div class="content">{{ order.status }}</div>
+            <div class="content">{{ order.status_human }}</div>
         </div>
 
         <div class="record-content">
@@ -66,6 +66,9 @@
         <option value="{{ key }}" {% if order.status==key %}selected{% endif %}>{{ value }}</option>
         {% endfor %}
     </select>
+    <textarea name="comment" placeholder="Kommentar">{{ order.comment }}</textarea>
+    <input type="date" name="deadline" value="{{ order.deadline }}">
+    <button id="submit" type="submit">Opdater</button>
 </form>
 <script type="module">
     import { asyncLogError } from "/static/js/error.js";
@@ -74,10 +77,9 @@
 
     const spinner = document.querySelector('.loadingspinner');
     const statusElem = document.getElementById('status');
+    const submitElem = document.getElementById('submit');
 
-    // on submit change status
-    statusElem.addEventListener("change", async function (event) {
-
+    async function onChangeSubmit(event) {
         event.preventDefault();
         Flash.clearMessages();
         spinner.classList.toggle('hidden');
@@ -87,14 +89,13 @@
             // Get URL from form action
             const form = document.querySelector('form');
             const url = form.action;
-
+            
+            // Get form data. Convert status to integer
             const formData = new FormData(form);
-            const status  = parseInt(formData.get('status'));
-            const postJson = JSON.stringify({
-                status : status
-            })
-
-            const res = await Requests.asyncPostJson(url, postJson);
+            const formValues = Object.fromEntries(formData)
+            formValues.status = parseInt(formValues.status)
+             
+            const res = await Requests.asyncPostJson(url, formValues);
             if (res.error) {
                 Flash.setMessage(res.message, 'error');
             } else {
@@ -107,6 +108,17 @@
         } finally {
             spinner.classList.toggle('hidden');
         }
+    }
+
+    // on submit change status
+    statusElem.addEventListener("change", async function (event) {
+        await onChangeSubmit(event);
+    });
+
+    // on submit
+
+    submitElem.addEventListener('click', async function (event) {
+        await onChangeSubmit(event);
     });
 
 

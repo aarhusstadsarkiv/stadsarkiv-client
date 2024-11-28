@@ -71,7 +71,7 @@ def format_order_display(order: dict):
     if order["deadline"]:
         order["deadline"] = date_format.timezone_alter(order["deadline"])
 
-    order["status"] = STATUSES_HUMAN.get(order["status"])
+    order["status_human"] = STATUSES_HUMAN.get(order["status"])
     return order
 
 
@@ -81,11 +81,18 @@ class OrdersCRUD(CRUD):
 
     async def is_ordered(self, user_id: str, record_id: str):
         """
-        Check if a user has ordered this record. This is the case
-        if the user does not have a order with:
+        Check if a user has ordered this record. That means he has a order with a status other than completed.
         """
-        filters = {"user_id": user_id, "record_id": record_id, "status": STATUSES_ORDER.ORDERED}
-        return await self.select_one(table="orders", filters=filters)
+
+        query = f"""
+        SELECT * FROM orders
+        WHERE user_id = :user_id
+        AND record_id = :record_id
+        AND status NOT IN ({STATUSES_ORDER.COMPLETED})
+        """
+
+        rows = await self.query(query, {"user_id": user_id, "record_id": record_id})
+        return len(rows) > 0
 
     async def is_owner(self, user_id: str, order_id: int):
 
@@ -125,13 +132,17 @@ class OrdersCRUD(CRUD):
 
             filters = {"user_id": user_id}
 
-            return await self.query(query, filters, connection=connection)
+            orders = await self.query(query, filters, connection=connection)
+            for order in orders:
+                order["resources"] = json.loads(order["resources"])
+                order = format_order_display(order)
+
+            return orders
 
     async def update_order(self, update_values: dict, filters: dict):
         """
         Update an order with new values.
         """
-        log.debug(f"Update order: {update_values}")
         await database_orders.update(
             table="orders",
             update_values=update_values,
