@@ -33,8 +33,7 @@ CREATE TABLE orders (
     status INTEGER NOT NULL,
     deadline TEXT,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    finished INTEGER DEFAULT 0
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 ) STRICT;
 
 CREATE TABLE order_status_log (
