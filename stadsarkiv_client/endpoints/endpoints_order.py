@@ -122,6 +122,8 @@ async def orders_user_patch(request: Request):
     Admin can patch any order
     """
     await is_authenticated_json(request, verified=True)
+    me = await api.users_me_get(request)
+    user_id = me["id"]
 
     order_id = request.path_params["order_id"]
     is_owner = await _is_order_owner(request, order_id)
@@ -137,7 +139,7 @@ async def orders_user_patch(request: Request):
     filters = {"order_id": order_id}
     update_values = {"status": STATUSES_ORDER.COMPLETED}
 
-    await database_orders.update_order(update_values=update_values, filters=filters)
+    await database_orders.update_order(update_values=update_values, filters=filters, user_id=user_id)
     return JSONResponse(
         {
             "message": "Din bestilling er blevet annuleret",
@@ -152,6 +154,7 @@ async def orders_admin_patch(request: Request):
     Admin can patch any order
     """
     await is_authenticated_json(request, verified=True, permissions=["employee"])
+    me = await api.users_me_get(request)
 
     is_admin = await _is_admin(request)
     if not is_admin:
@@ -165,7 +168,7 @@ async def orders_admin_patch(request: Request):
     filters = {"order_id": request.path_params["order_id"]}
     update_values = await request.json()
 
-    await database_orders.update_order(update_values=update_values, filters=filters)
+    await database_orders.update_order(update_values=update_values, filters=filters, user_id=me["id"])
 
     return JSONResponse(
         {

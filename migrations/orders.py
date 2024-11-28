@@ -37,7 +37,7 @@ CREATE TABLE orders (
     comment TEXT DEFAULT ""
 ) STRICT;
 
-CREATE TABLE order_status_log (
+CREATE TABLE orders_log (
     log_id INTEGER PRIMARY KEY AUTOINCREMENT,
     order_id INTEGER NOT NULL,
     status  INTEGER NOT NULL,
@@ -49,9 +49,9 @@ CREATE TABLE order_status_log (
 CREATE INDEX idx_orders_record_id ON orders (record_id);
 CREATE INDEX idx_orders_status ON orders (status);
 CREATE INDEX idx_orders_deadline ON orders (deadline);
-CREATE INDEX idx_order_status_log_order_id ON order_status_log (order_id);
-CREATE INDEX idx_order_status_log_status ON order_status_log (status);
-CREATE INDEX idx_order_status_log_changed_at ON order_status_log (changed_at);
+CREATE INDEX idx_orders_log_order_id ON orders_log (order_id);
+CREATE INDEX idx_orders_log_status ON orders_log (status);
+CREATE INDEX idx_orders_log_changed_at ON orders_log (changed_at);
 """
 
 # List of migrations with keys

@@ -75,9 +75,24 @@ def format_order_display(order: dict):
     return order
 
 
+def send_order_message(message: str, order: dict):
+    log.debug(f"Sending {message} about order: {order}")
+
+
 class OrdersCRUD(CRUD):
     def __init__(self, database_url: str):
         super().__init__(database_url)
+
+    async def insert_log_message(self, order_data, user_id, connection):
+        """
+        Insert a log message for an order.
+        """
+        log_message = {
+            "order_id": order_data["order_id"],
+            "status": order_data["status"],
+            "changed_by": user_id,
+        }
+        await self.insert("orders_log", log_message, connection=connection)
 
     async def is_ordered(self, user_id: str, record_id: str):
         """
@@ -106,10 +121,17 @@ class OrdersCRUD(CRUD):
 
     async def insert_order(self, meta_data: dict, me: dict):
         """
-        Insert a new order and associate the user who initiated it.
+        Insert a new order.
         """
-        order_data = _get_order_insert_data(meta_data, me)
-        await self.insert("orders", order_data)
+        async with self.transaction_scope() as connection:
+            order_data = _get_order_insert_data(meta_data, me)
+            await self.insert("orders", order_data, connection=connection)
+            last_order_id = await self.last_insert_id(connection=connection)
+
+            # Get the inserted order, send message, and insert log message 
+            inserted_order = await self.select_one('orders', filters={"order_id": last_order_id}, connection=connection)
+            send_order_message("Order created", inserted_order)
+            await self.insert_log_message(inserted_order, order_data["user_id"], connection=connection)
 
     async def get_orders_user(self, user_id: str, completed=0):
         """
@@ -139,15 +161,27 @@ class OrdersCRUD(CRUD):
 
             return orders
 
-    async def update_order(self, update_values: dict, filters: dict):
+    async def update_order(self, update_values: dict, filters: dict, user_id: str):
         """
         Update an order with new values.
         """
-        await database_orders.update(
-            table="orders",
-            update_values=update_values,
-            filters=filters,
-        )
+        async with self.transaction_scope() as connection:
+            await database_orders.update(
+                table="orders",
+                update_values=update_values,
+                filters=filters,
+                connection=connection,
+            )
+
+            # Get the updated order, send message, and insert log message
+            updated_order = await self.select_one('orders', filters=filters, connection=connection)
+            send_order_message("Order created", updated_order)
+            await self.insert_log_message(updated_order, user_id, connection=connection)
+        """
+        In case of a order changing to completed we must check if another order is waiting for the same record.
+        Select all orders with the same record_id and status ORDERED order by created_at ASC.
+        If so, we must update the status of that order to AVAILABLE_IN_READING_ROOM and send a message to the user.
+        """
 
     async def get_orders_admin(self, completed: int = 0):
         """
