@@ -21,9 +21,16 @@ class Requests {
     }
 
     /**
-     * Post JSON async. Accepts JSON as response
+     * Post JSON string or JS object that can be stringified. 
+     * Accepts JSON as response
      */
     static async asyncPostJson(url, jsonData, method) {
+
+        // If JSON it not stringified, do it
+        if (typeof jsonData !== 'string') {
+            jsonData = JSON.stringify(jsonData);
+        }
+
         if (!method) method = 'POST'
         const rawResponse = await fetch(url, {
             method: method,
