@@ -28,7 +28,7 @@ STATUSES_ORDER = OrderStatuses()
 STATUSES_ORDER_DICT = asdict(STATUSES_ORDER)
 
 STATUSES_HUMAN = {
-    1: "Bestilt",
+    1: "Bestilt til læsesalen",
     2: "Pakket til læsesalen",
     3: "Tilgængelig i læsesalen",
     4: "Afsluttet i læsesalen",

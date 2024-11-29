@@ -32,7 +32,7 @@ class OrdersCRUD(CRUD):
 
     async def is_record_active_by_user(self, user_id: str, record_id: str, connection=None):
         """
-        Check if s user is active on a record
+        Check if user is active on a record
         """
         query = f"""
         SELECT * FROM orders
@@ -133,8 +133,6 @@ class OrdersCRUD(CRUD):
         Update an order with new values.
         """
         async with self.transaction_scope() as connection:
-
-            log.debug(update_values)
 
             await database_orders.update(
                 table="orders",

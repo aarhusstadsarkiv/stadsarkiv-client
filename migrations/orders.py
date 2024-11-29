@@ -31,6 +31,7 @@ CREATE TABLE orders (
     resources TEXT,
     record_id TEXT NOT NULL,
     status INTEGER NOT NULL,
+    position INTEGER NOT NULL,
     deadline TEXT,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
