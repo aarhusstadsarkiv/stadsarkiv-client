@@ -34,7 +34,8 @@ CREATE TABLE orders (
     deadline TEXT,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    comment TEXT DEFAULT ""
+    comment TEXT DEFAULT "",
+    active INTEGER DEFAULT 1
 ) STRICT;
 
 CREATE TABLE orders_log (

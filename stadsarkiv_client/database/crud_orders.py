@@ -1,11 +1,8 @@
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.database.crud import CRUD
+from stadsarkiv_client.database import utils_orders as utils
 from stadsarkiv_client.core.logging import get_log
 import json
-import dataclasses
-from dataclasses import asdict
-import typing
-from stadsarkiv_client.core import date_format
 
 
 log = get_log()
@@ -15,68 +12,7 @@ try:
 except KeyError:
     orders_url = ""
 
-
-@dataclasses.dataclass
-class OrderStatuses:
-    """
-    Possible statuses for an order
-    """
-
-    ORDERED: int = 1
-    PACKED_FOR_READING_ROOM: int = 2
-    AVAILABLE_IN_READING_ROOM: int = 3
-    COMPLETED_IN_READING_ROOM: int = 4
-    RETURN_TO_STORAGE: int = 5
-    COMPLETED: int = 6
-
-
-STATUSES_ORDER = OrderStatuses()
-STATUSES_ORDER_DICT = asdict(STATUSES_ORDER)
-
-STATUSES_HUMAN = {
-    1: "Bestilt",
-    2: "Pakket til læsesalen",
-    3: "Tilgængelig i læsesalen",
-    4: "Afsluttet i læsesalen",
-    5: "Retur til magasin",
-    6: "Afsluttet",
-}
-
-
-def _get_order_insert_data(meta_data: dict, me: dict):
-    """
-    Generate data for inserting into orders table
-    """
-    order_inser_data = {
-        # record data
-        "record_id": meta_data["id"],
-        "label": meta_data["title"],
-        "resources": json.dumps(meta_data["resources"]),
-        # user data
-        "user_id": me["id"],
-        "user_email": me["email"],
-        "user_display_name": me["display_name"],
-        # status
-        "status": STATUSES_ORDER.ORDERED,
-    }
-    return order_inser_data
-
-
-def format_order_display(order: dict):
-    """
-    Format dates in order for display. Change from UTC to Europe/Copenhagen
-    """
-    order["created_at"] = date_format.timezone_alter(order["created_at"])
-    order["updated_at"] = date_format.timezone_alter(order["updated_at"])
-    if order["deadline"]:
-        order["deadline"] = date_format.timezone_alter(order["deadline"])
-
-    order["status_human"] = STATUSES_HUMAN.get(order["status"])
-    return order
-
-
-def send_order_message(message: str, order: dict):
-    log.debug(f"Sending {message} about order: {order}")
+STATUSES_ORDER = utils.STATUSES_ORDER
 
 
 class OrdersCRUD(CRUD):
@@ -94,22 +30,42 @@ class OrdersCRUD(CRUD):
         }
         await self.insert("orders_log", log_message, connection=connection)
 
-    async def is_ordered(self, user_id: str, record_id: str):
+    async def is_record_active_by_user(self, user_id: str, record_id: str, connection=None):
         """
-        Check if a user has ordered this record. That means he has a order with a status other than completed.
+        Check if s user is active on a record
         """
-
         query = f"""
         SELECT * FROM orders
         WHERE user_id = :user_id
         AND record_id = :record_id
-        AND status NOT IN ({STATUSES_ORDER.COMPLETED})
+        AND status IN ({utils.get_active_statuses_str()})
         """
 
-        rows = await self.query(query, {"user_id": user_id, "record_id": record_id})
+        rows = await self.query(query, {"user_id": user_id, "record_id": record_id}, connection=connection)
         return len(rows) > 0
 
-    async def is_owner(self, user_id: str, order_id: int):
+    async def is_active_by_num_users(self, record_id: str, connection=None):
+        rows = await self.get_active_record_users(record_id, connection=connection)
+        return len(rows)
+
+    async def get_active_record_users(self, record_id: str, connection):
+        """
+        Get rows of users that are active on a record
+        """
+        query = f"""
+        SELECT * FROM orders
+        WHERE record_id = :record_id
+        AND status IN ({utils.get_active_statuses_str()})
+        ORDER BY created_at ASC
+        """
+
+        order = await self.query(query, {"record_id": record_id}, connection=connection)
+        return order
+
+    async def is_owner_of_order(self, user_id: str, order_id: int):
+        """
+        Check if a user is the owner of an order
+        """
 
         filters = {"order_id": order_id, "user_id": user_id}
         is_owner = await database_orders.exists(
@@ -123,14 +79,25 @@ class OrdersCRUD(CRUD):
         """
         Insert a new order.
         """
+        is_active_by_user = await self.is_record_active_by_user(me["id"], meta_data["id"])
+        if is_active_by_user:
+            raise Exception("User is already active on this record")
+
         async with self.transaction_scope() as connection:
-            order_data = _get_order_insert_data(meta_data, me)
+
+            num_active_users = await self.is_active_by_num_users(meta_data["id"], connection=connection)
+            if num_active_users:
+                status = STATUSES_ORDER.QUEUED
+            else:
+                status = STATUSES_ORDER.ORDERED
+
+            order_data = utils.get_order_insert_data(meta_data, me, status)
             await self.insert("orders", order_data, connection=connection)
             last_order_id = await self.last_insert_id(connection=connection)
 
-            # Get the inserted order, send message, and insert log message 
-            inserted_order = await self.select_one('orders', filters={"order_id": last_order_id}, connection=connection)
-            send_order_message("Order created", inserted_order)
+            # Get the inserted order, send message, and insert log message
+            inserted_order = await self.select_one("orders", filters={"order_id": last_order_id}, connection=connection)
+            utils.send_order_message("Order created", inserted_order)
             await self.insert_log_message(inserted_order, order_data["user_id"], connection=connection)
 
     async def get_orders_user(self, user_id: str, completed=0):
@@ -143,13 +110,13 @@ class OrdersCRUD(CRUD):
                 query = f"""
                 SELECT * FROM orders
                 WHERE user_id = :user_id
-                AND status = {STATUSES_ORDER.COMPLETED})
+                AND status IN ({utils.get_inactive_statuses_str()})
                 """
             else:
                 query = f"""
                 SELECT * FROM orders
                 WHERE user_id = :user_id
-                AND status NOT IN ({STATUSES_ORDER.COMPLETED})
+                AND status IN ({utils.get_active_statuses_str()})
                 """
 
             filters = {"user_id": user_id}
@@ -157,7 +124,7 @@ class OrdersCRUD(CRUD):
             orders = await self.query(query, filters, connection=connection)
             for order in orders:
                 order["resources"] = json.loads(order["resources"])
-                order = format_order_display(order)
+                order = utils.format_order_display(order)
 
             return orders
 
@@ -166,6 +133,9 @@ class OrdersCRUD(CRUD):
         Update an order with new values.
         """
         async with self.transaction_scope() as connection:
+
+            log.debug(update_values)
+
             await database_orders.update(
                 table="orders",
                 update_values=update_values,
@@ -174,8 +144,8 @@ class OrdersCRUD(CRUD):
             )
 
             # Get the updated order, send message, and insert log message
-            updated_order = await self.select_one('orders', filters=filters, connection=connection)
-            send_order_message("Order created", updated_order)
+            updated_order = await self.select_one("orders", filters=filters, connection=connection)
+            utils.send_order_message("Order updated", updated_order)
             await self.insert_log_message(updated_order, user_id, connection=connection)
         """
         In case of a order changing to completed we must check if another order is waiting for the same record.
@@ -192,12 +162,13 @@ class OrdersCRUD(CRUD):
             if completed:
                 query = f"""
                 SELECT * FROM orders
-                WHERE status = {STATUSES_ORDER.COMPLETED})
+                WHERE status IN ({utils.get_inactive_statuses_str()})
                 """
             else:
+                # in admin view do not show orders that are queued
                 query = f"""
                 SELECT * FROM orders
-                WHERE status NOT IN ({STATUSES_ORDER.COMPLETED})
+                WHERE status IN ({utils.get_active_statuses_str(remove=[STATUSES_ORDER.QUEUED])})
                 """
 
             query += " ORDER BY order_id ASC"
@@ -205,14 +176,14 @@ class OrdersCRUD(CRUD):
             orders = await self.query(query, {}, connection=connection)
             for order in orders:
                 order["resources"] = json.loads(order["resources"])
-                order = format_order_display(order)
+                order = utils.format_order_display(order)
 
             return orders
 
     async def get_order(self, order_id):
         order = await database_orders.select_one(table="orders", filters={"order_id": order_id})
         order["resources"] = json.loads(order["resources"])
-        order = format_order_display(order)
+        order = utils.format_order_display(order)
 
         return order
 

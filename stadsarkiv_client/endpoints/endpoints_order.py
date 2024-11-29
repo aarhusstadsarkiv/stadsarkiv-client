@@ -9,7 +9,8 @@ from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.flash import set_message
-from stadsarkiv_client.database.crud_orders import database_orders, STATUSES_HUMAN, STATUSES_ORDER
+from stadsarkiv_client.database.crud_orders import database_orders
+from stadsarkiv_client.database.utils_orders import STATUSES_HUMAN, STATUSES_ORDER
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.api import OpenAwsException
@@ -24,7 +25,7 @@ async def _is_order_owner(request: Request, order_id: int) -> bool:
     """
     # await is_authenticated_json(request, verified=True)
     me = await api.users_me_get(request)
-    is_owner = await database_orders.is_owner(user_id=me["id"], order_id=order_id)
+    is_owner = await database_orders.is_owner_of_order(user_id=me["id"], order_id=order_id)
     return is_owner
 
 
@@ -57,7 +58,7 @@ async def orders_get_order(request: Request):
         "meta_title": "Bestil: " + meta_data["meta_title"],
         "meta_data": meta_data,
         "record_and_types": record_and_types,
-        "is_ordered": await database_orders.is_ordered(
+        "is_active_by_user": await database_orders.is_record_active_by_user(
             user_id=me["id"],
             record_id=meta_data["id"],
         ),
@@ -103,7 +104,7 @@ async def orders_post(request: Request):
     meta_data = get_record_meta_data(request, record)
     record, meta_data = await hooks.after_get_record(record, meta_data)
 
-    is_ordered = await database_orders.is_ordered(
+    is_ordered = await database_orders.is_record_active_by_user(
         user_id=me["id"],
         record_id=meta_data["id"],
     )

@@ -76,7 +76,6 @@
     import { Flash } from "/static/js/flash.js";
 
     const spinner = document.querySelector('.loadingspinner');
-    const statusElem = document.getElementById('status');
     const submitElem = document.getElementById('submit');
 
     async function onChangeSubmit(event) {
@@ -109,13 +108,6 @@
             spinner.classList.toggle('hidden');
         }
     }
-
-    // on submit change status
-    statusElem.addEventListener("change", async function (event) {
-        await onChangeSubmit(event);
-    });
-
-    // on submit
 
     submitElem.addEventListener('click', async function (event) {
         await onChangeSubmit(event);
