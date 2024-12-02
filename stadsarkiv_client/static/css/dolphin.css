@@ -236,7 +236,7 @@ textarea:disabled {
 }
 
 fieldset {
-    border: 1px var(--focus) solid;
+    border: 1px var(--border) solid;
     border-radius: 6px;
     margin: 0;
     margin-bottom: 12px;
