@@ -15,44 +15,6 @@
 
 {{ basic_macros.page_title(title) }}
 
-{# [
-    {
-        "order_id": 1,
-        "user_email": "dennis.iversen+test@gmail.com",
-        "user_display_name": "test",
-        "user_id": "019265e5-3fd4-7734-990c-7c7660d1ca64",
-        "label": "Urban consumption: tracing urbanity in the archaeological record of Aarhus c. AD 800-1800",
-        "resources": {},
-        "record_id": "000503366",
-        "status": 3,
-        "deadline": "",
-        "created_at": "2024-11-28 14:53:25",
-        "updated_at": "2024-11-28 14:53:25",
-        "comment": "",
-        "status_human": "Tilgængelig i læsesalen"
-    },
-    {
-        "order_id": 2,
-        "user_email": "dennis.iversen+test@gmail.com",
-        "user_display_name": "test",
-        "user_id": "019265e5-3fd4-7734-990c-7c7660d1ca64",
-        "label": "Manneken Pis",
-        "resources": {
-            "Farve F/G": "Gråtoner",
-            "Fysisk størrelse": "Kvartplade",
-            "Type": "Negativ glasplade",
-            "type": "analog"
-        },
-        "record_id": "000199175",
-        "status": 1,
-        "deadline": null,
-        "created_at": "2024-11-29 09:06:01",
-        "updated_at": "2024-11-29 09:06:01",
-        "comment": "",
-        "status_human": "Bestilt"
-    }
-]#}
-
 
 {% if orders|length == 0 %}
 <p>Der er ingen ordrer.</p>
@@ -60,8 +22,9 @@
 <table>
     <thead>
         <tr>
-            <th>URL</th>
+            <th>Materiale</th>
             <th>Navn</th>
+            <th>Lokation</th>
             <th>Status</th>
             <th>Oprettet</th>
             <th>Opdateret</th>
@@ -76,7 +39,8 @@
                 <a title="{{ order.label }}" href="/records/{{order.record_id}}">{{ order.label }}</a>
             </td>
             <td>{{ order.user_display_name }}</td>
-            <td>{{ order.status_human }}</td>
+            <td>{{ order.user_status_human }}</td>
+            <td>{{ order.location_human }}</td>
             <td>{{ order.created_at }}</td>
             <td>{{ order.updated_at }}</td>
             <td>{{ order.resources }}</td>

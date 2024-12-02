@@ -10,7 +10,7 @@ from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.flash import set_message
 from stadsarkiv_client.database.crud_orders import database_orders
-from stadsarkiv_client.database.utils_orders import STATUSES_HUMAN, STATUSES_ORDER
+from stadsarkiv_client.database import utils_orders as utils
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.api import OpenAwsException
@@ -138,7 +138,7 @@ async def orders_user_patch(request: Request):
         )
 
     filters = {"order_id": order_id}
-    update_values = {"status": STATUSES_ORDER.COMPLETED}
+    update_values = {"user_status": utils.STATUSES_USER.DELETED}
 
     await database_orders.update_order(update_values=update_values, filters=filters, user_id=user_id)
     return JSONResponse(
@@ -202,7 +202,12 @@ async def orders_admin_get_edit(request: Request):
     order_id = request.path_params["order_id"]
     order = await database_orders.get_order(order_id)
 
-    context_values = {"title": "Opdater bestilling", "order": order, "statuses": STATUSES_HUMAN}
+    context_values = {
+        "title": "Opdater bestilling",
+        "order": order,
+        "locations": utils.STATUSES_ADMIN_HUMAN,
+        "user_statuses": utils.STATUSES_USER_HUMAN,
+    }
     context = await get_context(request, context_values=context_values)
 
     return templates.TemplateResponse(request, "order/order_admin_edit.html", context)

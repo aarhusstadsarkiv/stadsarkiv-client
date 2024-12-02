@@ -12,7 +12,7 @@ try:
 except KeyError:
     orders_url = ""
 
-STATUSES_ORDER = utils.STATUSES_ORDER
+STATUSES_ORDER = utils.STATUSES_ADMIN
 
 
 class OrdersCRUD(CRUD):
@@ -20,42 +20,34 @@ class OrdersCRUD(CRUD):
         super().__init__(database_url)
 
     async def insert_log_message(self, order_data, user_id, connection):
-        """
-        Insert a log message for an order.
-        """
         log_message = {
             "order_id": order_data["order_id"],
-            "status": order_data["status"],
+            "location": order_data["location"],
+            "user_status": order_data["user_status"],
             "changed_by": user_id,
         }
         await self.insert("orders_log", log_message, connection=connection)
 
     async def is_record_active_by_user(self, user_id: str, record_id: str, connection=None):
-        """
-        Check if user is active on a record
-        """
         query = f"""
         SELECT * FROM orders
         WHERE user_id = :user_id
         AND record_id = :record_id
-        AND status IN ({utils.get_active_statuses_str()})
+        AND user_status NOT IN ({utils.STATUSES_USER.COMPLETED}, {utils.STATUSES_USER.DELETED})
         """
 
         rows = await self.query(query, {"user_id": user_id, "record_id": record_id}, connection=connection)
         return len(rows) > 0
 
-    async def is_active_by_num_users(self, record_id: str, connection=None):
-        rows = await self.get_active_record_users(record_id, connection=connection)
+    async def is_active_by_any_user(self, record_id: str, connection=None):
+        rows = await self.get_orders_by_record_id(record_id, connection=connection)
         return len(rows)
 
-    async def get_active_record_users(self, record_id: str, connection):
-        """
-        Get rows of users that are active on a record
-        """
+    async def get_orders_by_record_id(self, record_id: str, connection):
         query = f"""
         SELECT * FROM orders
         WHERE record_id = :record_id
-        AND status IN ({utils.get_active_statuses_str()})
+        AND user_status NOT IN ({utils.STATUSES_USER.COMPLETED}, {utils.STATUSES_USER.DELETED})
         ORDER BY created_at ASC
         """
 
@@ -63,9 +55,6 @@ class OrdersCRUD(CRUD):
         return order
 
     async def is_owner_of_order(self, user_id: str, order_id: int):
-        """
-        Check if a user is the owner of an order
-        """
 
         filters = {"order_id": order_id, "user_id": user_id}
         is_owner = await database_orders.exists(
@@ -76,22 +65,32 @@ class OrdersCRUD(CRUD):
         return is_owner
 
     async def insert_order(self, meta_data: dict, me: dict):
-        """
-        Insert a new order.
-        """
+
+        # Check if user is already active on this record
         is_active_by_user = await self.is_record_active_by_user(me["id"], meta_data["id"])
         if is_active_by_user:
             raise Exception("User is already active on this record")
 
         async with self.transaction_scope() as connection:
 
-            num_active_users = await self.is_active_by_num_users(meta_data["id"], connection=connection)
-            if num_active_users:
-                status = STATUSES_ORDER.QUEUED
-            else:
-                status = STATUSES_ORDER.ORDERED
+            """
+            Check if there are other active users on this record
+            If so, set status to QUEUED, otherwise set status to ORDERED
+            If status is QUEUED, set location to the location of the first active order
+            (all orders have the same location)
+            If status is ORDERED, location is None
+            """
 
-            order_data = utils.get_order_insert_data(meta_data, me, status)
+            num_active_users = await self.is_active_by_any_user(meta_data["id"], connection=connection)
+            if num_active_users:
+                user_status = utils.STATUSES_USER.QUEUED
+                rows = await self.get_orders_by_record_id(meta_data["id"], connection=connection)
+                location = rows[0]["location"]
+            else:
+                user_status = utils.STATUSES_USER.ORDERED
+                location = utils.STATUSES_ADMIN.WAITING
+
+            order_data = utils.get_order_insert_data(meta_data, me, location, user_status)
             await self.insert("orders", order_data, connection=connection)
             last_order_id = await self.last_insert_id(connection=connection)
 
@@ -110,13 +109,13 @@ class OrdersCRUD(CRUD):
                 query = f"""
                 SELECT * FROM orders
                 WHERE user_id = :user_id
-                AND status IN ({utils.get_inactive_statuses_str()})
+                AND user_status IN ({utils.STATUSES_USER.COMPLETED}, {utils.STATUSES_USER.DELETED})
                 """
             else:
                 query = f"""
                 SELECT * FROM orders
                 WHERE user_id = :user_id
-                AND status IN ({utils.get_active_statuses_str()})
+                AND user_status NOT IN ({utils.STATUSES_USER.COMPLETED}, {utils.STATUSES_USER.DELETED})
                 """
 
             filters = {"user_id": user_id}
@@ -129,9 +128,6 @@ class OrdersCRUD(CRUD):
             return orders
 
     async def update_order(self, update_values: dict, filters: dict, user_id: str):
-        """
-        Update an order with new values.
-        """
         async with self.transaction_scope() as connection:
 
             await database_orders.update(
@@ -157,16 +153,22 @@ class OrdersCRUD(CRUD):
         """
         async with self.transaction_scope() as connection:
 
+            statuses_hidden = [utils.STATUSES_USER.COMPLETED, utils.STATUSES_USER.DELETED]
+            completed_statuses_str = utils.get_sql_in_str(statuses_hidden)
+
+            statuses_hidden_with_queued = [utils.STATUSES_USER.COMPLETED, utils.STATUSES_USER.DELETED, utils.STATUSES_USER.QUEUED]
+            completed_statuses_str_with_queued = utils.get_sql_in_str(statuses_hidden_with_queued)
+
             if completed:
                 query = f"""
                 SELECT * FROM orders
-                WHERE status IN ({utils.get_inactive_statuses_str()})
+                WHERE user_status IN ({completed_statuses_str})
                 """
             else:
                 # in admin view do not show orders that are queued
                 query = f"""
                 SELECT * FROM orders
-                WHERE status IN ({utils.get_active_statuses_str(remove=[STATUSES_ORDER.QUEUED])})
+                WHERE user_status NOT IN ({completed_statuses_str_with_queued})
                 """
 
             query += " ORDER BY order_id ASC"
