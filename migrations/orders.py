@@ -30,8 +30,8 @@ CREATE TABLE orders (
     label TEXT NOT NULL,
     resources TEXT,
     record_id TEXT NOT NULL,
-    status INTEGER NOT NULL,
-    position INTEGER NOT NULL,
+    user_status INTEGER NOT NULL,
+    location INTEGER NOT NULL,
     deadline TEXT,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -42,18 +42,21 @@ CREATE TABLE orders (
 CREATE TABLE orders_log (
     log_id INTEGER PRIMARY KEY AUTOINCREMENT,
     order_id INTEGER NOT NULL,
-    status  INTEGER NOT NULL,
+    user_status INTEGER NOT NULL,
+    location INTEGER,
     changed_at TEXT DEFAULT CURRENT_TIMESTAMP,
     changed_by TEXT,
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
 ) STRICT;
 
 CREATE INDEX idx_orders_record_id ON orders (record_id);
-CREATE INDEX idx_orders_status ON orders (status);
+CREATE INDEX idx_orders_user_status ON orders (user_status);
+CREATE INDEX idx_location ON orders (location);
 CREATE INDEX idx_orders_deadline ON orders (deadline);
 CREATE INDEX idx_orders_log_order_id ON orders_log (order_id);
-CREATE INDEX idx_orders_log_status ON orders_log (status);
+CREATE INDEX idx_orders_log_user_status ON orders_log (user_status);
 CREATE INDEX idx_orders_log_changed_at ON orders_log (changed_at);
+CREATE INDEX idx_orders_log_position ON orders_log (location);
 """
 
 # List of migrations with keys
