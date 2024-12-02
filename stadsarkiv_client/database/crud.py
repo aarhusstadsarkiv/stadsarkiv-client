@@ -150,7 +150,7 @@ class CRUD:
 
     async def query(self, query: str, values: dict, connection=None):
         """
-        Execute a custom query.
+        Execute a custom query and return the rows.
         """
         if connection is None:
             async with self.transaction_scope() as connection:
@@ -160,5 +160,19 @@ class CRUD:
             rows = cursor.fetchall()
             rows = [dict(row) for row in rows]
             return rows
+        except sqlite3.Error as e:
+            raise e
+
+    async def queryOne(self, query: str, values: dict, connection=None):
+        """
+        Execute a custom query and return a single row.
+        """
+        if connection is None:
+            async with self.transaction_scope() as connection:
+                return await self.queryOne(query, values, connection=connection)
+        try:
+            cursor = connection.execute(query, values)
+            row = cursor.fetchone()
+            return row
         except sqlite3.Error as e:
             raise e
