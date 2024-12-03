@@ -82,41 +82,6 @@ def get_order_data(user_id: str, record_id: str, user_status: int) -> dict:
     }
 
 
-# def get_order_data(meta_data: dict, me: dict, location, user_status) -> dict:
-#     """
-#     Get order data for inserting into orders table
-#     """
-#     return {
-#         "record_id": meta_data["id"],
-#         "label": meta_data["title"],
-#         "resources": json.dumps(meta_data["resources"]),
-#         "user_id": me["id"],
-#         "user_email": me["email"],
-#         "user_display_name": me["display_name"],
-#         "location": location,
-#         "user_status": user_status,
-#     }
-
-def get_order_insert_data(meta_data: dict, me: dict, location, user_status) -> dict:
-    """
-    Generate data for inserting into orders table
-    """
-    order_inser_data = {
-        # record data
-        "record_id": meta_data["id"],
-        "label": meta_data["title"],
-        "resources": json.dumps(meta_data["resources"]),
-        # user data
-        "user_id": me["id"],
-        "user_email": me["email"],
-        "user_display_name": me["display_name"],
-        # status and location
-        "location": location,
-        "user_status": user_status,
-    }
-    return order_inser_data
-
-
 def get_sql_in_str(statuses: list) -> str:
     """
     Get all statuses as string for SQL IN clause

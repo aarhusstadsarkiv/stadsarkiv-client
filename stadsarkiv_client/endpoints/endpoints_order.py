@@ -173,8 +173,6 @@ async def orders_admin_patch(request: Request):
     filters = {"order_id": request.path_params["order_id"]}
     update_values = await request.json()
 
-    log.debug(update_values)
-
     await database_orders.update_admin_order(update_values=update_values, filters=filters, user_id=me["id"])
 
     return JSONResponse(

@@ -92,14 +92,12 @@ class OrdersCRUD(CRUD):
             if not user_data:
                 await self.insert("users", utils.get_insert_user_data(me), connection=connection)
                 user_data = await self.select_one("users", filters={"user_id": me["id"]}, connection=connection)
-                log.debug(f"User data: {user_data}")
 
             # get record
             record_data = await self.select_one("records", filters={"record_id": meta_data["id"]}, connection=connection)
             if not record_data:
                 await self.insert("records", utils.get_insert_record_data(meta_data), connection=connection)
                 record_data = await self.select_one("records", filters={"record_id": meta_data["id"]}, connection=connection)
-                log.debug(f"Record data: {record_data}")
 
             # Check if active order exists on record.
             # If so, set status to QUEUED, otherwise set status to ORDERED
@@ -218,7 +216,6 @@ class OrdersCRUD(CRUD):
         """
         async with self.transaction_scope() as connection:
 
-            log.debug(f"Updating order: {update_values} with filters: {filters}")
             await database_orders.update(
                 table="orders",
                 update_values=update_values,
@@ -269,8 +266,6 @@ class OrdersCRUD(CRUD):
                 """
 
             query += " ORDER BY o.order_id ASC"
-
-            log.debug(query)
 
             orders = await self.query(query, {}, connection=connection)
             for order in orders:
