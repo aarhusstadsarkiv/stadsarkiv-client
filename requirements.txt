@@ -31,7 +31,7 @@ pycparser==2.20
 pyflakes==3.0.1
 python-dateutil==2.9.0.post0
 python-dotenv==0.21.1
-python-multipart==0.0.7
+python-multipart==0.0.18
 PyYAML==6.0.2
 rfc3986==1.5.0
 sentry-sdk==2.14.0
