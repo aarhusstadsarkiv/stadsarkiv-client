@@ -8,7 +8,7 @@ log = get_log()
 
 
 @dataclasses.dataclass
-class StatusesAdmin:
+class StatusesLocation:
     """
     Possible admin statuses for an order
     """
@@ -20,8 +20,8 @@ class StatusesAdmin:
     RETURN_TO_STORAGE: int = 5
 
 
-STATUSES_ADMIN = StatusesAdmin()
-STATUSES_ADMIN_HUMAN = {
+STATUSES_LOCATION = StatusesLocation()
+STATUSES_LOCATION_HUMAN = {
     1: "Afventer",  # Initial status
     2: "Pakket til læsesalen",
     3: "Tilgængelig i læsesalen",
@@ -50,6 +50,52 @@ STATUSES_USER_HUMAN = {
     4: "Slettet",
 }
 
+
+def get_insert_user_data(me: dict) -> dict:
+    """
+    Get user data for inserting into users table
+    """
+    return {
+        "user_id": me["id"],
+        "user_email": me["email"],
+        "user_display_name": me["display_name"],
+    }
+
+
+def get_insert_record_data(meta_data: dict) -> dict:
+    """
+    Get material data for inserting into records table
+    """
+    return {
+        "record_id": meta_data["id"],
+        "label": meta_data["title"],
+        "resources": json.dumps(meta_data["resources"]),
+        "location": STATUSES_LOCATION.WAITING,
+    }
+
+
+def get_order_data(user_id: str, record_id: str, user_status: int) -> dict:
+    return {
+        "user_id": user_id,
+        "record_id": record_id,
+        "user_status": user_status,
+    }
+
+
+# def get_order_data(meta_data: dict, me: dict, location, user_status) -> dict:
+#     """
+#     Get order data for inserting into orders table
+#     """
+#     return {
+#         "record_id": meta_data["id"],
+#         "label": meta_data["title"],
+#         "resources": json.dumps(meta_data["resources"]),
+#         "user_id": me["id"],
+#         "user_email": me["email"],
+#         "user_display_name": me["display_name"],
+#         "location": location,
+#         "user_status": user_status,
+#     }
 
 def get_order_insert_data(meta_data: dict, me: dict, location, user_status) -> dict:
     """
@@ -88,7 +134,7 @@ def format_order_display(order: dict):
         order["deadline"] = date_format.timezone_alter(order["deadline"])
 
     order["user_status_human"] = STATUSES_USER_HUMAN.get(order["user_status"])
-    order["location_human"] = STATUSES_ADMIN_HUMAN.get(order["location"])
+    order["location_human"] = STATUSES_LOCATION_HUMAN.get(order["location"])
     return order
 
 

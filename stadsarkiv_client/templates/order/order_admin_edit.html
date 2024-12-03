@@ -28,11 +28,11 @@
             {% endfor %}
         </select>
         <label>Bruger status</label>
-        <select name="user_status" id="user_status">
+        <!-- <select name="user_status" id="user_status">
             {% for key, value in user_statuses.items() %}
             <option value="{{ key }}" {% if order.user_status==key %}selected{% endif %}>{{ value }}</option>
             {% endfor %}
-        </select>
+        </select> -->
         <label>Kommentar</label>
         <textarea name="comment" placeholder="Kommentar">{{ order.comment }}</textarea>
         <label>Deadline</label>

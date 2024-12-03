@@ -97,24 +97,28 @@ async def orders_post(request: Request):
     await is_authenticated_json(request, verified=True)
     me = await api.users_me_get(request)
 
-    hooks = get_hooks(request)
-    record_id = request.path_params["record_id"]
+    try:
+        hooks = get_hooks(request)
+        record_id = request.path_params["record_id"]
 
-    record = await api.proxies_record_get_by_id(request, record_id)
-    meta_data = get_record_meta_data(request, record)
-    record, meta_data = await hooks.after_get_record(record, meta_data)
+        record = await api.proxies_record_get_by_id(request, record_id)
+        meta_data = get_record_meta_data(request, record)
+        record, meta_data = await hooks.after_get_record(record, meta_data)
 
-    is_ordered = await database_orders.is_record_active_by_user(
-        user_id=me["id"],
-        record_id=meta_data["id"],
-    )
+        is_ordered = await database_orders.is_record_active_by_user(
+            user_id=me["id"],
+            record_id=meta_data["id"],
+        )
 
-    if not is_ordered:
-        await database_orders.insert_order(meta_data, me)
-        set_message(request, "Din bestilling er blevet oprettet", "success")
-        return JSONResponse({"message": "Din bestilling er blevet oprettet", "error": False})
-    else:
-        return JSONResponse({"message": "Bestilling på dette materiale eksisterer allerede", "error": True})
+        if not is_ordered:
+            await database_orders.insert_order(meta_data, me)
+            set_message(request, "Din bestilling er blevet oprettet", "success")
+            return JSONResponse({"message": "Din bestilling er blevet oprettet", "error": False})
+        else:
+            return JSONResponse({"message": "Bestilling på dette materiale eksisterer allerede", "error": True})
+    except Exception as e:
+        log.exception("Error in auth_orders_post")
+        return JSONResponse({"message": str(e), "error": True})
 
 
 async def orders_user_patch(request: Request):
@@ -140,7 +144,7 @@ async def orders_user_patch(request: Request):
     filters = {"order_id": order_id}
     update_values = {"user_status": utils.STATUSES_USER.DELETED}
 
-    await database_orders.update_order(update_values=update_values, filters=filters, user_id=user_id)
+    await database_orders.update_user_order(update_values=update_values, filters=filters, user_id=user_id)
     return JSONResponse(
         {
             "message": "Din bestilling er blevet annuleret",
@@ -169,7 +173,9 @@ async def orders_admin_patch(request: Request):
     filters = {"order_id": request.path_params["order_id"]}
     update_values = await request.json()
 
-    await database_orders.update_order(update_values=update_values, filters=filters, user_id=me["id"])
+    log.debug(update_values)
+
+    await database_orders.update_admin_order(update_values=update_values, filters=filters, user_id=me["id"])
 
     return JSONResponse(
         {
@@ -199,13 +205,14 @@ async def orders_admin_get_edit(request: Request):
     """
     await is_authenticated(request, permissions=["employee"])
 
-    order_id = request.path_params["order_id"]
-    order = await database_orders.get_order(order_id)
+    async with database_orders.transaction_scope() as connection:
+        order_id = request.path_params["order_id"]
+        order = await database_orders.get_order(order_id, connection=connection)
 
     context_values = {
         "title": "Opdater bestilling",
         "order": order,
-        "locations": utils.STATUSES_ADMIN_HUMAN,
+        "locations": utils.STATUSES_LOCATION_HUMAN,
         "user_statuses": utils.STATUSES_USER_HUMAN,
     }
     context = await get_context(request, context_values=context_values)
