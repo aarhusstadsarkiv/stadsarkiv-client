@@ -8,27 +8,36 @@ from starlette.responses import JSONResponse
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.templates import templates
-from stadsarkiv_client.database import cache
+from stadsarkiv_client.database.cache import DatabaseCache
+from stadsarkiv_client.core.dynamic_settings import settings
+from stadsarkiv_client.database.crud_default import crud_default
 import random
 
 log = get_log()
 
+try:
+    database_url = settings["sqlite3"]["default"]
+except KeyError:
+    database_url = ""
+
 
 async def test_get(request: Request):
 
-    # await database.bookmarks_insert("Test note", "UUID-1234")
     insert_value = None
     # Get a result that is max 10 seconds old
     cache_expire = 10
     has_result = False
-    result = await cache.cache_get("test", cache_expire)
 
-    if not result:
-        # Set a new cache value
-        insert_value = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
-        await cache.cache_set("test", {"random": insert_value})
-    else:
-        has_result = True
+    async with crud_default.transaction_scope() as connection:
+        cache = DatabaseCache(connection)
+        result = await cache.get("test", cache_expire)
+
+        if not result:
+            # Set a new cache value
+            insert_value = "".join(random.choices("abcdefghijklmnopqrstuvwxyz", k=10))
+            await cache.set("test", {"random": insert_value})
+        else:
+            has_result = True
 
     return JSONResponse(
         {

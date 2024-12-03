@@ -6,7 +6,7 @@ from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.core import api
 import json
 from stadsarkiv_client.database.crud_default import crud_default
-from stadsarkiv_client.database import cache
+from stadsarkiv_client.database.cache import DatabaseCache
 from stadsarkiv_client.core import csv_utils
 
 
@@ -22,24 +22,27 @@ class Hooks(HooksSpec):
         After a successful login.
         """
         try:
+
             me = await api.me_get(self.request)
             user_id = me["id"]
             email = me["email"]
 
-            cache_key = f"bookmarks_imported_{user_id}"
-            result = await cache.cache_get(cache_key)
+            async with crud_default.transaction_scope() as connection:
+                database_cache = DatabaseCache(connection)
 
-            if not result:
+                cache_key = f"bookmarks_imported_{user_id}"
+                result = await database_cache.get(cache_key)
 
-                log.info(f"Importing bookmarks for user: {email}")
-                bookmarks_from_file = csv_utils.bookmarks_by_email(email)
+                if not result:
+                    log.info(f"Importing bookmarks for user: {email}")
+                    bookmarks_from_file = csv_utils.bookmarks_by_email(email)
 
-                insert_values_many = []
-                for record_id in bookmarks_from_file:
-                    insert_values_many.append({"user_id": user_id, "record_id": record_id})
+                    insert_values_many = []
+                    for record_id in bookmarks_from_file:
+                        insert_values_many.append({"user_id": user_id, "record_id": record_id})
 
-                await crud_default.insert_many(table="bookmarks", insert_values_many=insert_values_many)
-                await cache.cache_set(cache_key, True)
+                    await crud_default.insert_many(table="bookmarks", insert_values_many=insert_values_many, connection=connection)
+                    await database_cache.set(cache_key, True)
         except Exception:
             log.exception("Error importing bookmarks")
             raise OpenAwsException(500, "Error importing bookmarks")
