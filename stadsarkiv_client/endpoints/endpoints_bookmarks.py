@@ -31,8 +31,8 @@ async def auth_bookmarks_get(request: Request):
         me = await api.me_get(request)
         filters = {"user_id": me["id"]}
 
-        database_transation = DatabaseConnection(database_url)
-        async with database_transation.transaction_scope_async() as connection:
+        database_connection = DatabaseConnection(database_url)
+        async with database_connection.transaction_scope_async() as connection:
             crud_default = CRUD(connection)
             bookmarks_db = await crud_default.select(
                 table="bookmarks",
@@ -103,8 +103,8 @@ async def auth_bookmarks_json(request: Request):
         me = await api.me_get(request)
         filters = {"user_id": me["id"], "record_id": record_id}
 
-        database_transation = DatabaseConnection(database_url)
-        async with database_transation.transaction_scope_async() as connection:
+        database_connection = DatabaseConnection(database_url)
+        async with database_connection.transaction_scope_async() as connection:
             crud_default = CRUD(connection)
             bookmarks_list = await crud_default.select_one(table="bookmarks", filters=filters)
 
@@ -131,8 +131,8 @@ async def auth_bookmarks_post(request: Request):
         filters = {"user_id": user_id, "record_id": json_data["record_id"]}
         insert_values = filters.copy()
 
-        database_transation = DatabaseConnection(database_url)
-        async with database_transation.transaction_scope_async() as connection:
+        database_connection = DatabaseConnection(database_url)
+        async with database_connection.transaction_scope_async() as connection:
             crud_default = CRUD(connection)
             exists = await crud_default.exists(table="bookmarks", filters=filters)
             if json_data["action"] == "remove" and exists:

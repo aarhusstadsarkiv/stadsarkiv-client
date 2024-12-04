@@ -29,8 +29,8 @@ class Hooks(HooksSpec):
             user_id = me["id"]
             email = me["email"]
 
-            database_transation = DatabaseConnection(database_url)
-            async with database_transation.transaction_scope_async() as connection:
+            database_connection = DatabaseConnection(database_url)
+            async with database_connection.transaction_scope_async() as connection:
                 crud_default = CRUD(connection)
                 database_cache = DatabaseCache(connection)
 
@@ -61,8 +61,8 @@ class Hooks(HooksSpec):
         form = await request.form()
         email = str(form.get("email"))
 
-        database_transation = DatabaseConnection(database_url)
-        async with database_transation.transaction_scope_async() as connection:
+        database_connection = DatabaseConnection(database_url)
+        async with database_connection.transaction_scope_async() as connection:
             database_cache = DatabaseCache(connection)
             email_exists = await database_cache.get(f"email_exists_{email}")
 

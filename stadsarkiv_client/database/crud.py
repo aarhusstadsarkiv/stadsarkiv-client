@@ -135,7 +135,7 @@ class CRUD:
         except sqlite3.Error as e:
             raise e
 
-    async def queryOne(self, query: str, values: dict):
+    async def query_one(self, query: str, values: dict):
         """
         Execute a custom query and return a single row.
         """

@@ -17,8 +17,8 @@ STATUSES_ORDER = utils_orders.STATUSES_LOCATION
 
 
 async def get_active_order(user_id: str, record_id: str, statuses=None):
-    database_transation = DatabaseConnection(orders_url)
-    async with database_transation.transaction_scope_async() as connection:
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
         query = f"""
         SELECT *
@@ -28,7 +28,7 @@ async def get_active_order(user_id: str, record_id: str, statuses=None):
         AND o.user_id = :user_id
         AND o.user_status NOT IN ({utils_orders.STATUSES_USER.COMPLETED}, {utils_orders.STATUSES_USER.DELETED});
         """
-        order = await crud.queryOne(query, {"user_id": user_id, "record_id": record_id})
+        order = await crud.query_one(query, {"user_id": user_id, "record_id": record_id})
         return order
 
 
@@ -39,8 +39,8 @@ async def is_record_active_by_user(user_id: str, record_id: str):
 
 async def is_owner_of_order(user_id: str, order_id: int):
 
-    database_transation = DatabaseConnection(orders_url)
-    async with database_transation.transaction_scope_async() as connection:
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
         filters = {"order_id": order_id, "user_id": user_id}
         is_owner = await crud.exists(
@@ -60,8 +60,8 @@ async def insert_order(meta_data: dict, me: dict):
         # In reality it will only happen if the user has two tabs open and POST the same order twice
         raise Exception("User is already active on this record")
 
-    database_transation = DatabaseConnection(orders_url)
-    async with database_transation.transaction_scope_async() as connection:
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
 
         """
@@ -114,8 +114,8 @@ async def get_orders_user(user_id: str, completed=0):
     """
     Get all orders for a user. Exclude orders with specific statuses.
     """
-    database_transation = DatabaseConnection(orders_url)
-    async with database_transation.transaction_scope_async() as connection:
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
 
         if completed:
@@ -147,8 +147,8 @@ async def update_user_order(update_values: dict, filters: dict, user_id: str):
     """
     Update order. User has to own the order or be an employee
     """
-    database_transation = DatabaseConnection(orders_url)
-    async with database_transation.transaction_scope_async() as connection:
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
 
         await crud.update(
@@ -178,8 +178,8 @@ async def update_admin_order(update_values: dict, filters: dict, user_id: str):
     """
     Update order. User has to own the order or be an employee
     """
-    database_transation = DatabaseConnection(orders_url)
-    async with database_transation.transaction_scope_async() as connection:
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
 
         await crud.update(
@@ -219,8 +219,8 @@ async def get_orders_admin(completed: int = 0):
     """
     Get all orders for a user. Allow to set status and finished.
     """
-    database_transation = DatabaseConnection(orders_url)
-    async with database_transation.transaction_scope_async() as connection:
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
 
         statuses_hidden = [utils_orders.STATUSES_USER.COMPLETED, utils_orders.STATUSES_USER.DELETED]
@@ -262,8 +262,8 @@ async def get_orders_admin(completed: int = 0):
 
 async def get_order(order_id):
 
-    database_transation = DatabaseConnection(orders_url)
-    async with database_transation.transaction_scope_async() as connection:
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
         crud_orders = CRUD(connection)
 
         query = """
@@ -273,7 +273,7 @@ async def get_order(order_id):
         WHERE o.order_id = :order_id
         """
 
-        order = await crud_orders.queryOne(query, {"order_id": order_id})
+        order = await crud_orders.query_one(query, {"order_id": order_id})
         order = dict(order)
         order["resources"] = json.loads(order["resources"])
         order = utils_orders.format_order_display(order)

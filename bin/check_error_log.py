@@ -20,8 +20,8 @@ if "CONFIG_DIR" not in os.environ:
 
 
 database_url = settings["sqlite3"]["default"]
-database_transation = DatabaseConnection(database_url)
-transaction_scope_sync = database_transation.transaction_scope_sync
+database_connection = DatabaseConnection(database_url)
+transaction_scope_sync = database_connection.transaction_scope_sync
 
 should_not_resolve = [
     "Representations but no record_type",
