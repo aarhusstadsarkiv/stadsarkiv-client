@@ -100,7 +100,7 @@ class CRUD:
         row = result.fetchone()
         return row["num_rows"]
 
-    async def query(self, query: str, values: list[dict]):
+    async def query(self, query: str, values: dict):
         """
         Execute a custom query and return the rows.
         """

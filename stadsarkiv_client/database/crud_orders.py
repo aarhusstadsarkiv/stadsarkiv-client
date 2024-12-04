@@ -1,3 +1,7 @@
+"""
+crud_orders.py: A collection of functions for performing CRUD operations on orders.
+"""
+
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.database.crud import CRUD
 from stadsarkiv_client.database import utils_orders
@@ -16,24 +20,8 @@ except KeyError:
 STATUSES_ORDER = utils_orders.STATUSES_LOCATION
 
 
-async def get_active_order(user_id: str, record_id: str, statuses=None):
-    database_connection = DatabaseConnection(orders_url)
-    async with database_connection.transaction_scope_async() as connection:
-        crud = CRUD(connection)
-        query = f"""
-        SELECT *
-        FROM orders o
-        LEFT JOIN records r ON o.record_id = r.record_id
-        WHERE r.record_id = :record_id
-        AND o.user_id = :user_id
-        AND o.user_status NOT IN ({utils_orders.STATUSES_USER.COMPLETED}, {utils_orders.STATUSES_USER.DELETED});
-        """
-        order = await crud.query_one(query, {"user_id": user_id, "record_id": record_id})
-        return order
-
-
 async def is_record_active_by_user(user_id: str, record_id: str):
-    row = await get_active_order(user_id, record_id)
+    row = await _get_active_order(user_id, record_id)
     return row is not None
 
 
@@ -101,7 +89,7 @@ async def insert_order(meta_data: dict, me: dict):
         utils_orders.send_order_message("Order created", order_data)
 
         # Insert log message
-        await insert_log_message(
+        await _insert_log_message(
             crud,
             order_id=order_data["order_id"],
             location=record_data["location"],
@@ -163,9 +151,7 @@ async def update_user_order(update_values: dict, filters: dict, user_id: str):
         utils_orders.send_order_message("Order updated", updated_order)
 
         # Insert log message
-
-        # self.set_connection(connection)
-        await insert_log_message(
+        await _insert_log_message(
             crud,
             order_id=updated_order["order_id"],
             location=updated_order["location"],
@@ -190,8 +176,6 @@ async def update_admin_order(update_values: dict, filters: dict, user_id: str):
 
         # updated_order = await self.get_order(filters["order_id"])
         updated_order = await crud.select_one("orders", filters=filters)
-
-        log.debug(f"updated_order: {updated_order}")
         await crud.update(
             table="records",
             update_values={"location": update_values["location"]},
@@ -206,7 +190,7 @@ async def update_admin_order(update_values: dict, filters: dict, user_id: str):
         utils_orders.send_order_message("Order updated", updated_record)
 
         # Insert log message
-        await insert_log_message(
+        await _insert_log_message(
             crud,
             order_id=updated_order["order_id"],
             location=updated_record["location"],
@@ -281,6 +265,22 @@ async def get_order(order_id):
         return order
 
 
+async def _get_active_order(user_id: str, record_id: str, statuses=None):
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
+        crud = CRUD(connection)
+        query = f"""
+        SELECT *
+        FROM orders o
+        LEFT JOIN records r ON o.record_id = r.record_id
+        WHERE r.record_id = :record_id
+        AND o.user_id = :user_id
+        AND o.user_status NOT IN ({utils_orders.STATUSES_USER.COMPLETED}, {utils_orders.STATUSES_USER.DELETED});
+        """
+        order = await crud.query_one(query, {"user_id": user_id, "record_id": record_id})
+        return order
+
+
 async def _get_active_orders_by_record_id(crud: "CRUD", record_id: str):
     """
     Get all active orders connected to a record
@@ -306,7 +306,7 @@ async def _count_active_users(crud: "CRUD", record_id: str):
     return num_rows
 
 
-async def insert_log_message(crud: "CRUD", order_id, location, user_status, changed_by):
+async def _insert_log_message(crud: "CRUD", order_id, location, user_status, changed_by):
     log_message = {
         "order_id": order_id,
         "location": location,

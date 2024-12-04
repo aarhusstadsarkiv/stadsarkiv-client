@@ -10,13 +10,12 @@ from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.flash import set_message
 from stadsarkiv_client.database import crud_orders
-from stadsarkiv_client.database import utils_orders as utils_orders
+from stadsarkiv_client.database import utils_orders
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.api import OpenAwsException
 
 log = get_log()
-orders_url = crud_orders.orders_url
 
 
 async def _is_order_owner(request: Request, order_id: int) -> bool:
