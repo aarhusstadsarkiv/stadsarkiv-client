@@ -6,7 +6,18 @@ Usage:
         crud = CRUD(connection)
         await crud.insert("table", {"column": "value"})
         await crud.update("table", {"column": "value"}, {"filter_column": "filter_value"})
-        rows = await crud.select("table", columns=["column"], filters={"filter_column": "filter_value"})
+        rows = await crud.select(
+            "table",
+            columns=["column"],
+            filters={"filter_column": "filter_value"},
+            order_by=["column"],
+            limit_offset=(10, 0),
+        )
+        row = await crud.select_one(
+            "table",
+            columns=["column"],
+            filters={"filter_column": "filter_value"},
+        )
         await crud.delete("table", {"filter_column": "filter_value"})
         exists = await crud.exists("table", {"filter_column": "filter_value"})
         count = await crud.count("table", {"filter_column": "filter_value"})

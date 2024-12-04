@@ -1,5 +1,5 @@
 """
-crud_orders.py: A collection of functions for performing CRUD operations on orders.
+A collection of functions for performing CRUD operations on orders.
 """
 
 from stadsarkiv_client.core.dynamic_settings import settings
