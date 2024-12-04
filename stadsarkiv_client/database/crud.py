@@ -16,35 +16,24 @@ class CRUD:
         """
         Get the last inserted row ID.
         """
-        try:
-            cursor = self.connection.execute("SELECT last_insert_rowid() as last_insert_id")
-            row = cursor.fetchone()
-            return row["last_insert_id"]
-        except sqlite3.Error as e:
-            raise e
+        cursor = self.connection.execute("SELECT last_insert_rowid() as last_insert_id")
+        row = cursor.fetchone()
+        return row["last_insert_id"]
 
     async def insert(self, table: str, insert_values: dict):
         """
         Insert a single row into the table.
         """
-        try:
-            sql_builder = SQLBuilder(table)
-            query = sql_builder.build_insert(insert_values)
-            self.connection.execute(query, insert_values)
-        except sqlite3.Error as e:
-            raise e
+        sql_builder = SQLBuilder(table)
+        query = sql_builder.build_insert(insert_values)
+        self.connection.execute(query, insert_values)
 
-    async def insert_many(self, table: str, insert_values_many: list):
+    async def insert_many(self, table: str, insert_values_many: list[dict]):
         """
         Insert multiple rows into the table.
         """
-        try:
-            for single_data in insert_values_many:
-                sql_builder = SQLBuilder(table)
-                query = sql_builder.build_insert(single_data)
-                self.connection.execute(query, single_data)
-        except sqlite3.Error as e:
-            raise e
+        for single_data in insert_values_many:
+            await self.insert(table, single_data)
 
     async def select(
         self,
@@ -57,20 +46,17 @@ class CRUD:
         """
         Select rows from the table.
         """
-        try:
-            sql_builder = SQLBuilder(table)
-            query = sql_builder.build_select(
-                columns=columns,
-                filters=filters,
-                order_by=order_by,
-                limit_offset=limit_offset,
-            )
-            result = self.connection.execute(query, filters)
-            rows = result.fetchall()
-            rows = [dict(row) for row in rows]
-            return rows
-        except sqlite3.Error as e:
-            raise e
+        sql_builder = SQLBuilder(table)
+        query = sql_builder.build_select(
+            columns=columns,
+            filters=filters,
+            order_by=order_by,
+            limit_offset=limit_offset,
+        )
+        result = self.connection.execute(query, filters)
+        rows = result.fetchall()
+        rows = [dict(row) for row in rows]
+        return rows
 
     async def select_one(self, table: str, columns: list = [], filters: dict = {}) -> dict:
         """
@@ -85,23 +71,17 @@ class CRUD:
         """
         Update rows in the table.
         """
-        try:
-            sql_builder = SQLBuilder(table)
-            query = sql_builder.build_update(update_values, filters)
-            self.connection.execute(query, sql_builder.get_execute_values())
-        except sqlite3.Error as e:
-            raise e
+        sql_builder = SQLBuilder(table)
+        query = sql_builder.build_update(update_values, filters)
+        self.connection.execute(query, sql_builder.get_execute_values())
 
     async def delete(self, table: str, filters: dict):
         """
         Delete rows from the table.
         """
-        try:
-            sql_builder = SQLBuilder(table)
-            query = sql_builder.build_delete(filters)
-            self.connection.execute(query, filters)
-        except sqlite3.Error as e:
-            raise e
+        sql_builder = SQLBuilder(table)
+        query = sql_builder.build_delete(filters)
+        self.connection.execute(query, filters)
 
     async def exists(self, table: str, filters: dict) -> bool:
         """
@@ -114,34 +94,25 @@ class CRUD:
         """
         Count rows in the table matching the filters.
         """
-        try:
-            sql_builder = SQLBuilder(table)
-            query = sql_builder.build_select(columns=[f"COUNT({column}) as num_rows"], filters=filters)
-            result = self.connection.execute(query, filters)
-            row = result.fetchone()
-            return row["num_rows"]
-        except sqlite3.Error as e:
-            raise e
+        sql_builder = SQLBuilder(table)
+        query = sql_builder.build_select(columns=[f"COUNT({column}) as num_rows"], filters=filters)
+        result = self.connection.execute(query, filters)
+        row = result.fetchone()
+        return row["num_rows"]
 
     async def query(self, query: str, values: dict):
         """
         Execute a custom query and return the rows.
         """
-        try:
-            cursor = self.connection.execute(query, values)
-            rows = cursor.fetchall()
-            rows = [dict(row) for row in rows]
-            return rows
-        except sqlite3.Error as e:
-            raise e
+        cursor = self.connection.execute(query, values)
+        rows = cursor.fetchall()
+        rows = [dict(row) for row in rows]
+        return rows
 
     async def query_one(self, query: str, values: dict):
         """
         Execute a custom query and return a single row.
         """
-        try:
-            cursor = self.connection.execute(query, values)
-            row = cursor.fetchone()
-            return row
-        except sqlite3.Error as e:
-            raise e
+        cursor = self.connection.execute(query, values)
+        row = cursor.fetchone()
+        return row
