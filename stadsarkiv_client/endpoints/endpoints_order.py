@@ -9,13 +9,14 @@ from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.flash import set_message
-from stadsarkiv_client.database.crud_orders import database_orders
-from stadsarkiv_client.database import utils_orders as utils
+from stadsarkiv_client.database import crud_orders
+from stadsarkiv_client.database import utils_orders as utils_orders
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.api import OpenAwsException
 
 log = get_log()
+orders_url = crud_orders.orders_url
 
 
 async def _is_order_owner(request: Request, order_id: int) -> bool:
@@ -23,9 +24,8 @@ async def _is_order_owner(request: Request, order_id: int) -> bool:
     Check if user is authenticated and verified
     Check if user is owner of order
     """
-    # await is_authenticated_json(request, verified=True)
     me = await api.users_me_get(request)
-    is_owner = await database_orders.is_owner_of_order(user_id=me["id"], order_id=order_id)
+    is_owner = await crud_orders.is_owner_of_order(user_id=me["id"], order_id=order_id)
     return is_owner
 
 
@@ -53,15 +53,17 @@ async def orders_get_order(request: Request):
     record_altered = record_alter.record_alter(request, record, meta_data)
     record_and_types = record_alter.get_record_and_types(record_altered)
 
+    is_active_by_user = await crud_orders.is_record_active_by_user(
+        user_id=me["id"],
+        record_id=meta_data["id"],
+    )
+
     context_variables = {
         "title": "Bestil: " + meta_data["title"],
         "meta_title": "Bestil: " + meta_data["meta_title"],
         "meta_data": meta_data,
         "record_and_types": record_and_types,
-        "is_active_by_user": await database_orders.is_record_active_by_user(
-            user_id=me["id"],
-            record_id=meta_data["id"],
-        ),
+        "is_active_by_user": is_active_by_user,
     }
 
     context = await get_context(request, context_values=context_variables)
@@ -76,7 +78,7 @@ async def orders_get_orders(request: Request):
     try:
 
         me = await api.users_me_get(request)
-        orders = await database_orders.get_orders_user(user_id=me["id"], completed=0)
+        orders = await crud_orders.get_orders_user(user_id=me["id"], completed=0)
 
         context_values = {"title": translate("Your orders"), "me": me, "orders": orders}
         context = await get_context(request, context_values=context_values)
@@ -105,13 +107,13 @@ async def orders_post(request: Request):
         meta_data = get_record_meta_data(request, record)
         record, meta_data = await hooks.after_get_record(record, meta_data)
 
-        is_ordered = await database_orders.is_record_active_by_user(
+        is_ordered = await crud_orders.is_record_active_by_user(
             user_id=me["id"],
             record_id=meta_data["id"],
         )
 
         if not is_ordered:
-            await database_orders.insert_order(meta_data, me)
+            await crud_orders.insert_order(meta_data, me)
             set_message(request, "Din bestilling er blevet oprettet", "success")
             return JSONResponse({"message": "Din bestilling er blevet oprettet", "error": False})
         else:
@@ -142,9 +144,9 @@ async def orders_user_patch(request: Request):
         )
 
     filters = {"order_id": order_id}
-    update_values = {"user_status": utils.STATUSES_USER.DELETED}
+    update_values = {"user_status": utils_orders.STATUSES_USER.DELETED}
 
-    await database_orders.update_user_order(update_values=update_values, filters=filters, user_id=user_id)
+    await crud_orders.update_user_order(update_values=update_values, filters=filters, user_id=user_id)
     return JSONResponse(
         {
             "message": "Din bestilling er blevet annuleret",
@@ -173,7 +175,9 @@ async def orders_admin_patch(request: Request):
     filters = {"order_id": request.path_params["order_id"]}
     update_values = await request.json()
 
-    await database_orders.update_admin_order(update_values=update_values, filters=filters, user_id=me["id"])
+    # async with database_orders.transaction_scope() as connection:
+    #     database_orders.set_connection(connection)
+    await crud_orders.update_admin_order(update_values=update_values, filters=filters, user_id=me["id"])
 
     return JSONResponse(
         {
@@ -189,7 +193,7 @@ async def orders_admin_get(request: Request):
     """
     await is_authenticated(request, permissions=["employee"])
 
-    orders = await database_orders.get_orders_admin(completed=0)
+    orders = await crud_orders.get_orders_admin(completed=0)
 
     context_values = {"title": "Bestillinger", "orders": orders}
     context = await get_context(request, context_values=context_values)
@@ -203,16 +207,14 @@ async def orders_admin_get_edit(request: Request):
     """
     await is_authenticated(request, permissions=["employee"])
 
-    async with database_orders.transaction_scope() as connection:
-        order_id = request.path_params["order_id"]
-        order = await database_orders.get_order(order_id, connection=connection)
+    order_id = request.path_params["order_id"]
+    order = await crud_orders.get_order(order_id)
 
     context_values = {
         "title": "Opdater bestilling",
         "order": order,
-        "locations": utils.STATUSES_LOCATION_HUMAN,
-        "user_statuses": utils.STATUSES_USER_HUMAN,
+        "locations": utils_orders.STATUSES_LOCATION_HUMAN,
+        "user_statuses": utils_orders.STATUSES_USER_HUMAN,
     }
     context = await get_context(request, context_values=context_values)
-
     return templates.TemplateResponse(request, "order/order_admin_edit.html", context)

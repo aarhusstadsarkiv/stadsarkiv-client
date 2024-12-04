@@ -5,7 +5,9 @@ from stadsarkiv_client.records import record_utils
 from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.core import api
 import json
-from stadsarkiv_client.database.crud_default import crud_default
+from stadsarkiv_client.database.crud_default import database_url
+from stadsarkiv_client.database.crud import CRUD
+from stadsarkiv_client.database.utils import DatabaseConnection
 from stadsarkiv_client.database.cache import DatabaseCache
 from stadsarkiv_client.core import csv_utils
 
@@ -27,7 +29,9 @@ class Hooks(HooksSpec):
             user_id = me["id"]
             email = me["email"]
 
-            async with crud_default.transaction_scope() as connection:
+            database_transation = DatabaseConnection(database_url)
+            async with database_transation.transaction_scope_async() as connection:
+                crud_default = CRUD(connection)
                 database_cache = DatabaseCache(connection)
 
                 cache_key = f"bookmarks_imported_{user_id}"
@@ -41,7 +45,7 @@ class Hooks(HooksSpec):
                     for record_id in bookmarks_from_file:
                         insert_values_many.append({"user_id": user_id, "record_id": record_id})
 
-                    await crud_default.insert_many(table="bookmarks", insert_values_many=insert_values_many, connection=connection)
+                    await crud_default.insert_many(table="bookmarks", insert_values_many=insert_values_many)
                     await database_cache.set(cache_key, True)
         except Exception:
             log.exception("Error importing bookmarks")
@@ -57,7 +61,11 @@ class Hooks(HooksSpec):
         form = await request.form()
         email = str(form.get("email"))
 
-        email_exists = await cache.cache_get(f"email_exists_{email}")
+        database_transation = DatabaseConnection(database_url)
+        async with database_transation.transaction_scope_async() as connection:
+            database_cache = DatabaseCache(connection)
+            email_exists = await database_cache.get(f"email_exists_{email}")
+
         if csv_utils.email_exists(email) and not email_exists:
             user_message = """Kære bruger. Du er tilknyttet det gamle system.
     Men da vi er overgået til et nyt system, skal du oprette en ny bruger.

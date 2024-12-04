@@ -9,16 +9,11 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.database.cache import DatabaseCache
-from stadsarkiv_client.core.dynamic_settings import settings
-from stadsarkiv_client.database.crud_default import crud_default
+from stadsarkiv_client.database.crud_default import database_url
+from stadsarkiv_client.database.utils import DatabaseConnection
 import random
 
 log = get_log()
-
-try:
-    database_url = settings["sqlite3"]["default"]
-except KeyError:
-    database_url = ""
 
 
 async def test_get(request: Request):
@@ -28,7 +23,8 @@ async def test_get(request: Request):
     cache_expire = 10
     has_result = False
 
-    async with crud_default.transaction_scope() as connection:
+    database_transation = DatabaseConnection(database_url)
+    async with database_transation.transaction_scope_async() as connection:
         cache = DatabaseCache(connection)
         result = await cache.get("test", cache_expire)
 
