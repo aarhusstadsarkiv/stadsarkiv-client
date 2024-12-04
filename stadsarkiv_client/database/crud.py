@@ -1,3 +1,19 @@
+"""
+Basic CRUD operations for the SQLite database
+
+Usage:
+    async with sqlite3.connect("database.db") as connection:
+        crud = CRUD(connection)
+        await crud.insert("table", {"column": "value"})
+        await crud.update("table", {"column": "value"}, {"filter_column": "filter_value"})
+        rows = await crud.select("table", columns=["column"], filters={"filter_column": "filter_value"})
+        await crud.delete("table", {"filter_column": "filter_value"})
+        exists = await crud.exists("table", {"filter_column": "filter_value"})
+        count = await crud.count("table", {"filter_column": "filter_value"})
+        rows = await crud.query("SELECT * FROM table WHERE column = :value", {"value": "value"})
+        row = await crud.query_one("SELECT * FROM table WHERE column = :value", {"value": "value"})
+"""
+
 import sqlite3
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.database.sql_builder import SQLBuilder
@@ -53,8 +69,8 @@ class CRUD:
             order_by=order_by,
             limit_offset=limit_offset,
         )
-        result = self.connection.execute(query, filters)
-        rows = result.fetchall()
+        cursor = self.connection.execute(query, filters)
+        rows = cursor.fetchall()
         rows = [dict(row) for row in rows]
         return rows
 
@@ -96,8 +112,8 @@ class CRUD:
         """
         sql_builder = SQLBuilder(table)
         query = sql_builder.build_select(columns=[f"COUNT({column}) as num_rows"], filters=filters)
-        result = self.connection.execute(query, filters)
-        row = result.fetchone()
+        cursor = self.connection.execute(query, filters)
+        row = cursor.fetchone()
         return row["num_rows"]
 
     async def query(self, query: str, values: dict):

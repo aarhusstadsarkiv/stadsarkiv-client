@@ -14,12 +14,12 @@ database_transation = DatabaseTransaction(database_url)
 transaction_scope = database_transation.transaction_scope
 
 async def delete_user(user_id: int):
-    async with transaction_scope() as connection:
+    async with transaction_scope_async() as connection:
         connection.execute("DELETE FROM users WHERE id = ?", (user_id,))
         connection.execute("INSERT INTO deleted_user_log (user_id, message) VALUES (?, ?)", (user_id, "User deleted"))
 
 async def get_user(user_id: int):
-    async with transaction_scope() as connection:
+    async with transaction_scope_async() as connection:
         cursor = connection.execute("SELECT * FROM users WHERE id = ?", (user_id,))
         user = cursor.fetchone()
         return user
