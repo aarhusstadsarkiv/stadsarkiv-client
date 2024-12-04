@@ -2,7 +2,7 @@
 Basic CRUD operations for the SQLite database
 
 Usage:
-    async with sqlite3.connect("database.db") as connection:
+    async with transaction_scope_async() as connection:
         crud = CRUD(connection)
         await crud.insert("table", {"column": "value"})
         await crud.update("table", {"column": "value"}, {"filter_column": "filter_value"})
