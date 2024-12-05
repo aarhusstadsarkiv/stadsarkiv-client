@@ -271,4 +271,10 @@ MVH Dennis
 
 ---
 
- 
+Når jeg søger på ”DA-NO” (med anførselstegn rundt om), får jeg over 3000 resultater.
+
+Jeg vil kun have resultater, hvor der specifikt står DA-NO (som var en færgelinje).
+
+Jeg tror, jeg har nævnt det før, men i tilfælde af, at det ikke er kommet med, kommer det her igen.
+
+Janne Marie 
