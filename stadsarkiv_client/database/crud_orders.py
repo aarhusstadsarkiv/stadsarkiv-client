@@ -145,7 +145,7 @@ async def update_user_order(update_values: dict, filters: dict, user_id: str):
             filters=filters,
         )
 
-        updated_order = await crud.select_one(table="orders", filters={"order_id": filters["order_id"]})
+        updated_order = await _get_joined_order(crud, filters["order_id"])
 
         # Send message to user
         utils_orders.send_order_message("Order updated", updated_order)
@@ -182,7 +182,7 @@ async def update_admin_order(update_values: dict, filters: dict, user_id: str):
             filters={"record_id": updated_order["record_id"]},
         )
 
-        updated_record = await crud.select_one("records", filters={"record_id": updated_order["record_id"]})
+        updated_record = await _get_joined_order(crud, updated_order["order_id"])
 
         # TODO: If location AVAILABLE_IN_READING_ROOM. Send message to user
 
@@ -244,25 +244,29 @@ async def get_orders_admin(completed: int = 0):
         return orders
 
 
+async def _get_joined_order(crud: "CRUD", order_id: int):
+    """
+    Get joined order data by order_id
+    """
+
+    query = """
+    SELECT * FROM orders o
+    LEFT JOIN records r ON o.record_id = r.record_id
+    LEFT JOIN users u ON o.user_id = u.user_id
+    WHERE o.order_id = :order_id
+    """
+    order = await crud.query_one(query, {"order_id": order_id})
+    order = dict(order)
+    order["resources"] = json.loads(order["resources"])
+    order = utils_orders.format_order_display(order)
+    return order
+
+
 async def get_order(order_id):
 
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
-        crud_orders = CRUD(connection)
-
-        query = """
-        SELECT * FROM orders o
-        LEFT JOIN records r ON o.record_id = r.record_id
-        LEFT JOIN users u ON o.user_id = u.user_id
-        WHERE o.order_id = :order_id
-        """
-
-        order = await crud_orders.query_one(query, {"order_id": order_id})
-        order = dict(order)
-        order["resources"] = json.loads(order["resources"])
-        order = utils_orders.format_order_display(order)
-
-        return order
+        return await _get_joined_order(CRUD(connection), order_id)
 
 
 async def _get_active_order(user_id: str, record_id: str, statuses=None):
