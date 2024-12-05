@@ -64,7 +64,7 @@
     import { Flash } from "/static/js/flash.js";
 
     const spinner = document.querySelector('.loadingspinner');
-    const deleteElements = document.querySelectorAll('.delete-order a');
+    const deleteElements = document.querySelectorAll('.delete-order > *');
 
     deleteElements.forEach(element => {
         element.addEventListener('click', async function (event) {
