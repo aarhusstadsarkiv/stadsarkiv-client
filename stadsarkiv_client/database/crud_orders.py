@@ -127,10 +127,11 @@ async def get_orders_user(user_id: str, completed=0):
         return orders
 
 
-async def update_user_order(update_values: dict, filters: dict, user_id: str):
+async def update_order(location: int, update_values: dict, filters: dict, user_id: str):
     """
-    Update order. User has to own the order or be an employee
+    Update order by order_id. Allow to set any values in the order and location of the record.
     """
+
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
@@ -141,56 +142,25 @@ async def update_user_order(update_values: dict, filters: dict, user_id: str):
             filters=filters,
         )
 
-        updated_order = await _get_joined_order(crud, filters["order_id"])
-
-        # Send message to user
-        utils_orders.send_order_message("Order updated", updated_order)
-
-        # Insert log message
-        await _insert_log_message(
-            crud,
-            order_id=updated_order["order_id"],
-            location=updated_order["location"],
-            user_status=updated_order["user_status"],
-            changed_by=user_id,
-        )
-
-
-async def update_admin_order(update_values: dict, filters: dict, user_id: str):
-    """
-    Update order. User has to own the order or be an employee
-    """
-    database_connection = DatabaseConnection(orders_url)
-    async with database_connection.transaction_scope_async() as connection:
-        crud = CRUD(connection)
-
-        await crud.update(
-            table="orders",
-            update_values={"deadline": update_values["deadline"], "comment": update_values["comment"]},
-            filters=filters,
-        )
-
-        # updated_order = await self.get_order(filters["order_id"])
-        updated_order = await crud.select_one("orders", filters=filters)
-        await crud.update(
-            table="records",
-            update_values={"location": update_values["location"]},
-            filters={"record_id": updated_order["record_id"]},
-        )
-
-        updated_record = await _get_joined_order(crud, updated_order["order_id"])
+        updated_joined_order = await _get_joined_order(crud, filters["order_id"])
+        if location:
+            await crud.update(
+                table="records",
+                update_values={"location": location},
+                filters={"record_id": updated_joined_order["record_id"]},
+            )
 
         # TODO: If location AVAILABLE_IN_READING_ROOM. Send message to user
 
         # Send message to user
-        utils_orders.send_order_message("Order updated", updated_record)
+        utils_orders.send_order_message("Order updated", updated_joined_order)
 
         # Insert log message
         await _insert_log_message(
             crud,
-            order_id=updated_order["order_id"],
-            location=updated_record["location"],
-            user_status=updated_order["user_status"],
+            order_id=updated_joined_order["order_id"],
+            location=updated_joined_order["location"],
+            user_status=updated_joined_order["user_status"],
             changed_by=user_id,
         )
 
@@ -259,7 +229,9 @@ async def _get_joined_order(crud: "CRUD", order_id: int):
 
 
 async def get_order(order_id):
-
+    """
+    Get joined order data by order_id
+    """
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         return await _get_joined_order(CRUD(connection), order_id)

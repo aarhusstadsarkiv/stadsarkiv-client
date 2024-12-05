@@ -28,13 +28,6 @@ async def _is_order_owner(request: Request, order_id: int) -> bool:
     return is_owner
 
 
-async def _is_admin(request: Request) -> bool:
-    """
-    Check if user is authenticated and has required permissions to edit orders
-    """
-    return await api.has_permission(request, "employee")
-
-
 async def orders_get_order(request: Request):
     """
     GET Page where user can order a record
@@ -145,13 +138,24 @@ async def orders_user_patch(request: Request):
     filters = {"order_id": order_id}
     update_values = {"user_status": utils_orders.STATUSES_USER.DELETED}
 
-    await crud_orders.update_user_order(update_values=update_values, filters=filters, user_id=user_id)
+    await crud_orders.update_order(location=0, update_values=update_values, filters=filters, user_id=user_id)
     return JSONResponse(
         {
             "message": "Din bestilling er blevet annuleret",
             "error": False,
         }
     )
+
+
+async def _get_location(update_values: dict) -> int:
+    """
+    Get location from a dict of update values and remove it from update_values
+    """
+    location = 0
+    if "location" in update_values:
+        location = update_values["location"]
+        update_values.pop("location")
+    return location
 
 
 async def orders_admin_patch(request: Request):
@@ -162,21 +166,16 @@ async def orders_admin_patch(request: Request):
     await is_authenticated_json(request, verified=True, permissions=["employee"])
     me = await api.users_me_get(request)
 
-    is_admin = await _is_admin(request)
-    if not is_admin:
-        return JSONResponse(
-            {
-                "message": "Du har ikke rettigheder til at opdatere denne bestilling",
-                "error": True,
-            }
-        )
-
     filters = {"order_id": request.path_params["order_id"]}
-    update_values = await request.json()
+    update_values: dict = await request.json()
+    location = await _get_location(update_values)
 
-    # async with database_orders.transaction_scope() as connection:
-    #     database_orders.set_connection(connection)
-    await crud_orders.update_admin_order(update_values=update_values, filters=filters, user_id=me["id"])
+    await crud_orders.update_order(
+        location=location,
+        update_values=update_values,
+        filters=filters,
+        user_id=me["id"],
+    )
 
     return JSONResponse(
         {
