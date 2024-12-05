@@ -55,6 +55,16 @@ class CRUD:
         query = sql_builder.build_insert(insert_values)
         self.connection.execute(query, insert_values)
 
+    async def replace(self, table: str, update_insert_values: dict, filters: dict):
+        """
+        Replace a single row into the table by using update or insert.
+        """
+        exists = await self.exists(table, filters)
+        if exists:
+            await self.update(table, update_insert_values, filters)
+        else:
+            await self.insert(table, update_insert_values)
+
     async def insert_many(self, table: str, insert_values_many: list[dict]):
         """
         Insert multiple rows into the table.
