@@ -57,17 +57,13 @@ async def insert_order(meta_data: dict, me: dict):
         If so, set status to QUEUED, otherwise set status to ORDERED
         """
 
-        # get user
-        user_data = await crud.select_one("users", filters={"user_id": me["id"]})
-        if not user_data:
-            await crud.insert("users", utils_orders.get_insert_user_data(me))
-            user_data = await crud.select_one("users", filters={"user_id": me["id"]})
+        # insert or update user
+        user_insert_update_values = utils_orders.get_insert_user_data(me)
+        await crud.replace("users", user_insert_update_values, {"user_id": me["id"]})
 
-        # get record
-        record_data = await crud.select_one("records", filters={"record_id": meta_data["id"]})
-        if not record_data:
-            await crud.insert("records", utils_orders.get_insert_record_data(meta_data))
-            record_data = await crud.select_one("records", filters={"record_id": meta_data["id"]})
+        # insert or update record
+        record_insert_update_values = utils_orders.get_insert_record_data(meta_data)
+        await crud.replace("records", record_insert_update_values, {"record_id": meta_data["id"]})
 
         # Check if active order exists on record.
         # If so, set status to QUEUED, otherwise set status to ORDERED
@@ -79,7 +75,7 @@ async def insert_order(meta_data: dict, me: dict):
 
         await crud.insert(
             "orders",
-            utils_orders.get_order_data(user_data["user_id"], record_data["record_id"], user_status),
+            utils_orders.get_order_data(user_insert_update_values["user_id"], record_insert_update_values["record_id"], user_status),
         )
 
         last_order_id = await crud.last_insert_id()
@@ -92,7 +88,7 @@ async def insert_order(meta_data: dict, me: dict):
         await _insert_log_message(
             crud,
             order_id=order_data["order_id"],
-            location=record_data["location"],
+            location=record_insert_update_values["location"],
             user_status=order_data["user_status"],
             changed_by=me["id"],
         )
