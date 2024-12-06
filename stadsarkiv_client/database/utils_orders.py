@@ -22,11 +22,12 @@ class StatusesLocation:
 
 STATUSES_LOCATION = StatusesLocation()
 STATUSES_LOCATION_HUMAN = {
-    1: "Afventer",  # Initial status
+    1: "På magasin",  # Initial status
     2: "Pakket til læsesalen",
-    3: "Tilgængelig i læsesalen",
-    4: "Afsluttet i læsesalen",
-    5: "Pakket til magasin",
+    3: "Depotrum på dokk1",
+    4: "På læsesalen",
+    # 5: "Afsluttet i læsesalen",
+    6: "Pakket til magasin",
 }
 
 
@@ -34,6 +35,7 @@ STATUSES_LOCATION_HUMAN = {
 class StatusesUser:
     """
     Possible user statuses for an order
+    NOTICE: In /static/js/orders.js the statuses are copied from here
     """
 
     ORDERED: int = 1

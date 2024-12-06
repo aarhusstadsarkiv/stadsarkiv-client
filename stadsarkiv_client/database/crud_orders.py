@@ -17,16 +17,23 @@ try:
 except KeyError:
     orders_url = ""
 
-STATUSES_ORDER = utils_orders.STATUSES_LOCATION
+
+async def has_order(user_id: str, record_id: str):
+    """
+    Check if user has an active order on a record
+    """
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
+        crud = CRUD(connection)
+        statuses = [utils_orders.STATUSES_USER.ORDERED, utils_orders.STATUSES_USER.QUEUED]
+        order = await _get_orders_one(crud, statuses, record_id, user_id)
+        return order
 
 
-async def is_record_active_by_user(user_id: str, record_id: str):
-    row = await _get_active_order(user_id, record_id)
-    return row is not None
-
-
-async def is_owner_of_order(user_id: str, order_id: int):
-
+async def is_owner(user_id: str, order_id: int):
+    """
+    Check if user is owner of order
+    """
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
@@ -40,9 +47,12 @@ async def is_owner_of_order(user_id: str, order_id: int):
 
 
 async def insert_order(meta_data: dict, me: dict):
+    """
+    Insert order into database
+    """
 
     # Check if user is already active on this record
-    is_active_by_user = await is_record_active_by_user(me["id"], meta_data["id"])
+    is_active_by_user = await has_order(me["id"], meta_data["id"])
     if is_active_by_user:
         # This may happen is user has already ordered the record
         # In reality it will only happen if the user has two tabs open and POST the same order twice
@@ -67,8 +77,8 @@ async def insert_order(meta_data: dict, me: dict):
 
         # Check if active order exists on record.
         # If so, set status to QUEUED, otherwise set status to ORDERED
-        num_active_orders = await _count_active_users(crud, meta_data["id"])
-        if num_active_orders > 0:
+        active_order = await _get_orders_one(crud, [utils_orders.STATUSES_USER.ORDERED], meta_data["id"])
+        if active_order:
             user_status = utils_orders.STATUSES_USER.QUEUED
         else:
             user_status = utils_orders.STATUSES_USER.ORDERED
@@ -94,39 +104,6 @@ async def insert_order(meta_data: dict, me: dict):
         )
 
 
-async def get_orders_user(user_id: str, completed=0):
-    """
-    Get all orders for a user. Exclude orders with specific statuses.
-    """
-    database_connection = DatabaseConnection(orders_url)
-    async with database_connection.transaction_scope_async() as connection:
-        crud = CRUD(connection)
-
-        if completed:
-            query = f"""
-            SELECT * FROM orders o
-            LEFT JOIN records r ON o.record_id = r.record_id
-            WHERE o.user_id = :user_id
-            AND o.user_status IN ({utils_orders.STATUSES_USER.COMPLETED}, {utils_orders.STATUSES_USER.DELETED})
-            """
-        else:
-            query = f"""
-            SELECT * FROM orders o
-            LEFT JOIN records r ON o.record_id = r.record_id
-            WHERE o.user_id = :user_id
-            AND o.user_status NOT IN ({utils_orders.STATUSES_USER.COMPLETED}, {utils_orders.STATUSES_USER.DELETED})
-            """
-
-        filters = {"user_id": user_id}
-
-        orders = await crud.query(query, filters)
-        for order in orders:
-            order["resources"] = json.loads(order["resources"])
-            order = utils_orders.format_order_display(order)
-
-        return orders
-
-
 async def update_order(location: int, update_values: dict, filters: dict, user_id: str):
     """
     Update order by order_id. Allow to set any values in the order and location of the record.
@@ -136,13 +113,15 @@ async def update_order(location: int, update_values: dict, filters: dict, user_i
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
 
-        await crud.update(
-            table="orders",
-            update_values=update_values,
-            filters=filters,
-        )
+        if update_values:
+            await crud.update(
+                table="orders",
+                update_values=update_values,
+                filters=filters,
+            )
 
-        updated_joined_order = await _get_joined_order(crud, filters["order_id"])
+        updated_joined_order = await _get_orders_one(crud, order_id=filters["order_id"])
+
         if location:
             await crud.update(
                 table="records",
@@ -165,6 +144,101 @@ async def update_order(location: int, update_values: dict, filters: dict, user_i
         )
 
 
+async def get_orders_user(user_id: str, completed=0):
+    """
+    Get all orders for a user. Exclude orders with specific statuses.
+    """
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
+        crud = CRUD(connection)
+
+        if completed:
+            orders = await _get_orders(
+                crud,
+                [utils_orders.STATUSES_USER.COMPLETED],
+                user_id=user_id,
+            )
+        else:
+            orders = await _get_orders(
+                crud,
+                [utils_orders.STATUSES_USER.ORDERED, utils_orders.STATUSES_USER.QUEUED],
+                user_id=user_id,
+            )
+
+        for order in orders:
+            order["resources"] = json.loads(order["resources"])
+            order = utils_orders.format_order_display(order)
+
+        return orders
+
+
+async def _get_orders_query_params(
+    statuses: list = [],
+    record_id: str = "",
+    user_id: str = "",
+    order_id: str = "",
+):
+    """
+    SELECT complete order data by statuses, record_id, user_id and order_id
+    """
+    where_clauses = []
+    params = {}
+
+    if statuses:
+        statuses_str = ", ".join([str(status) for status in statuses])
+        where_clauses.append(f"o.user_status IN ({statuses_str})")
+
+    if record_id:
+        where_clauses.append("r.record_id = :record_id")
+        params["record_id"] = record_id
+
+    if user_id:
+        where_clauses.append("o.user_id = :user_id")
+        params["user_id"] = user_id
+
+    if order_id:
+        where_clauses.append("o.order_id = :order_id")
+        params["order_id"] = order_id
+
+    query = """
+    SELECT * FROM orders o
+    LEFT JOIN records r ON o.record_id = r.record_id
+    LEFT JOIN users u ON o.user_id = u.user_id
+    """
+
+    if where_clauses:
+        query += "WHERE " + " AND ".join(where_clauses) + " "
+
+    query += "ORDER BY o.order_id ASC"
+    return query, params
+
+
+async def _get_orders(
+    crud: "CRUD",
+    statuses: list = [],
+    record_id: str = "",
+    user_id: str = "",
+    order_id: str = "",
+):
+    query, params = await _get_orders_query_params(statuses, record_id, user_id, order_id)
+    return await crud.query(query, params)
+
+
+async def _get_orders_one(
+    crud: "CRUD",
+    statuses: list = [],
+    record_id: str = "",
+    user_id: str = "",
+    order_id: str = "",
+):
+    """
+    Get orders by statuses, record_id, user_id and order_id
+    """
+    query, params = await _get_orders_query_params(statuses, record_id, user_id, order_id)
+    order = await crud.query_one(query, params)
+    return order
+
+
 async def get_orders_admin(completed: int = 0):
     """
     Get all orders for a user. Allow to set status and finished.
@@ -172,110 +246,28 @@ async def get_orders_admin(completed: int = 0):
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
-
-        statuses_hidden = [utils_orders.STATUSES_USER.COMPLETED, utils_orders.STATUSES_USER.DELETED]
-        completed_statuses_str = utils_orders.get_sql_in_str(statuses_hidden)
-
-        statuses_hidden_with_queued = [
-            utils_orders.STATUSES_USER.COMPLETED,
-            utils_orders.STATUSES_USER.DELETED,
-            utils_orders.STATUSES_USER.QUEUED,
-        ]
-        completed_statuses_str_with_queued = utils_orders.get_sql_in_str(statuses_hidden_with_queued)
-
         if completed:
-            query = f"""
-            SELECT * FROM orders o
-            LEFT JOIN records r ON o.record_id = r.record_id
-            LEFT JOIN users u ON o.user_id = u.user_id
-            WHERE o.user_status IN ({completed_statuses_str})
-            """
+            orders = await _get_orders(crud, [utils_orders.STATUSES_USER.COMPLETED])
         else:
-            # in admin view do not show orders that are queued
-            query = f"""
-            SELECT * FROM orders o
-            LEFT JOIN records r ON o.record_id = r.record_id
-            LEFT JOIN users u ON o.user_id = u.user_id
-            WHERE o.user_status NOT IN ({completed_statuses_str_with_queued})
-            """
+            orders = await _get_orders(crud, [utils_orders.STATUSES_USER.ORDERED])
 
-        query += " ORDER BY o.order_id ASC"
-
-        orders = await crud.query(query, {})
         for order in orders:
             order["resources"] = json.loads(order["resources"])
             order = utils_orders.format_order_display(order)
-            order["count"] = await _count_active_users(crud, order["record_id"])
+            queued_orders = await _get_orders(crud, [utils_orders.STATUSES_USER.QUEUED], order["record_id"])
+            order["count"] = len(queued_orders)
 
         return orders
 
 
-async def _get_joined_order(crud: "CRUD", order_id: int):
-    """
-    Get joined order data by order_id
-    """
-
-    query = """
-    SELECT * FROM orders o
-    LEFT JOIN records r ON o.record_id = r.record_id
-    LEFT JOIN users u ON o.user_id = u.user_id
-    WHERE o.order_id = :order_id
-    """
-    order = await crud.query_one(query, {"order_id": order_id})
-    order = dict(order)
-    order["resources"] = json.loads(order["resources"])
-    order = utils_orders.format_order_display(order)
-    return order
-
-
 async def get_order(order_id):
     """
-    Get joined order data by order_id
+    Get a single joined order by order_id
     """
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
-        return await _get_joined_order(CRUD(connection), order_id)
-
-
-async def _get_active_order(user_id: str, record_id: str, statuses=None):
-    database_connection = DatabaseConnection(orders_url)
-    async with database_connection.transaction_scope_async() as connection:
-        crud = CRUD(connection)
-        query = f"""
-        SELECT *
-        FROM orders o
-        LEFT JOIN records r ON o.record_id = r.record_id
-        WHERE r.record_id = :record_id
-        AND o.user_id = :user_id
-        AND o.user_status NOT IN ({utils_orders.STATUSES_USER.COMPLETED}, {utils_orders.STATUSES_USER.DELETED});
-        """
-        order = await crud.query_one(query, {"user_id": user_id, "record_id": record_id})
+        order = await _get_orders_one(CRUD(connection), order_id=order_id)
         return order
-
-
-async def _get_active_orders_by_record_id(crud: "CRUD", record_id: str):
-    """
-    Get all active orders connected to a record
-    """
-    query = f"""
-    SELECT *
-    FROM orders o
-    LEFT JOIN records r ON o.record_id = r.record_id
-    WHERE r.record_id = :record_id
-    AND o.user_status NOT IN ({utils_orders.STATUSES_USER.COMPLETED}, {utils_orders.STATUSES_USER.DELETED})
-    ORDER BY o.created_at ASC
-    """
-    orders = await crud.query(query, {"record_id": record_id})
-    return orders
-
-
-async def _count_active_users(crud: "CRUD", record_id: str):
-    """
-    Get count of active users on a record
-    """
-    rows = await _get_active_orders_by_record_id(crud, record_id)
-    num_rows = len(rows)
-    return num_rows
 
 
 async def _insert_log_message(crud: "CRUD", order_id, location, user_status, changed_by):

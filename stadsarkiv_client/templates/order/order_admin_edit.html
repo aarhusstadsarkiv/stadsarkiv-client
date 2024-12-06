@@ -18,6 +18,11 @@
 
 <div class="loadingspinner hidden"></div>
 
+<pre>
+    {{ to_json(order) }}
+</pre>
+
+
 <form method="post" action="/admin/orders/patch/{{ order.order_id }}">
     
     <fieldset>

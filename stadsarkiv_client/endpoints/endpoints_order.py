@@ -24,7 +24,7 @@ async def _is_order_owner(request: Request, order_id: int) -> bool:
     Check if user is owner of order
     """
     me = await api.users_me_get(request)
-    is_owner = await crud_orders.is_owner_of_order(user_id=me["id"], order_id=order_id)
+    is_owner = await crud_orders.is_owner(user_id=me["id"], order_id=order_id)
     return is_owner
 
 
@@ -45,7 +45,7 @@ async def orders_get_order(request: Request):
     record_altered = record_alter.record_alter(request, record, meta_data)
     record_and_types = record_alter.get_record_and_types(record_altered)
 
-    is_active_by_user = await crud_orders.is_record_active_by_user(
+    is_active_by_user = await crud_orders.has_order(
         user_id=me["id"],
         record_id=meta_data["id"],
     )
@@ -99,7 +99,7 @@ async def orders_post(request: Request):
         meta_data = get_record_meta_data(request, record)
         record, meta_data = await hooks.after_get_record(record, meta_data)
 
-        is_ordered = await crud_orders.is_record_active_by_user(
+        is_ordered = await crud_orders.has_order(
             user_id=me["id"],
             record_id=meta_data["id"],
         )
@@ -138,13 +138,10 @@ async def orders_user_patch(request: Request):
     filters = {"order_id": order_id}
     update_values = {"user_status": utils_orders.STATUSES_USER.DELETED}
 
+    flash.set_message(request, "Din bestilling er slettet", type="success")
+
     await crud_orders.update_order(location=0, update_values=update_values, filters=filters, user_id=user_id)
-    return JSONResponse(
-        {
-            "message": "Din bestilling er blevet annuleret",
-            "error": False,
-        }
-    )
+    return JSONResponse({"error": False})
 
 
 async def _get_location(update_values: dict) -> int:
@@ -163,26 +160,37 @@ async def orders_admin_patch(request: Request):
     User can only cancel their own order
     Admin can patch any order
     """
-    await is_authenticated_json(request, verified=True, permissions=["employee"])
-    me = await api.users_me_get(request)
+    try:
+        await is_authenticated_json(request, verified=True, permissions=["employee"])
+        me = await api.users_me_get(request)
 
-    filters = {"order_id": request.path_params["order_id"]}
-    update_values: dict = await request.json()
-    location = await _get_location(update_values)
+        filters = {"order_id": request.path_params["order_id"]}
+        update_values: dict = await request.json()
 
-    await crud_orders.update_order(
-        location=location,
-        update_values=update_values,
-        filters=filters,
-        user_id=me["id"],
-    )
+        location = await _get_location(update_values)
 
-    return JSONResponse(
-        {
-            "message": "Bestillingemn er blevet annuleret",
-            "error": False,
-        }
-    )
+        await crud_orders.update_order(
+            location=location,
+            update_values=update_values,
+            filters=filters,
+            user_id=me["id"],
+        )
+
+        if update_values.get("user_status") == utils_orders.STATUSES_USER.DELETED:
+            message = "Din bestilling er blevet slettet"
+        else:
+            message = "Bestillingen er blevet opdateret"
+
+        flash.set_message(request, message, type="success")
+        return JSONResponse(
+            {
+                "message": message,
+                "error": False,
+            }
+        )
+    except Exception as e:
+        log.exception("Error in orders_admin_patch")
+        return JSONResponse({"message": str(e), "error": True})
 
 
 async def orders_admin_get(request: Request):

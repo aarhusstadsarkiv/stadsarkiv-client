@@ -23,19 +23,18 @@
     <thead>
         <tr>
             <th>Materiale</th>
-            <th>Navn</th>
+            <th>Brugernavn</th>
+            <th>Bruger status</th>
             <th>Lokation</th>
-            <th>Status</th>
             <th>Oprettet</th>
-            <th title="Antal brugere som har bestilt dette materiale">Antal bestillinger</th>
-            <!--<th>Opdateret</th>-->
+            <th title="Antal brugere som står i kø">I Kø</th>
             <th>Placering</th>
             <th>Handling</th>
         </tr>
     </thead>
     <tbody>
         {% for order in orders %}
-        <tr>
+        <tr class="parent-container-delete">
             <td>
                 <a title="{{ order.label }}" href="/records/{{order.record_id}}">{{ order.label }}</a>
             </td>
@@ -44,12 +43,11 @@
             <td>{{ order.location_human }}</td>
             <td>{{ order.created_at }}</td>
             <td>{{ order.count }}</td>
-            <!--<td>{{ order.updated_at }}</td>-->
             <td>{{ order.resources }}</td>
             <td>
-                <span class="actions">
+                <span>
                     <a href="/admin/orders/{{order.order_id}}/edit">Rediger</a> |
-                    <a href="/admin/orders/{{order.order_id}}/edit">Slet</a>
+                    <span class="delete-order"><a data-id="{{order.order_id}}" href="#">Slet</a></span>
                 </span>
             </td>
         </tr>
@@ -58,7 +56,6 @@
 </table>
 {% endif %}
 <style>
-
     tbody tr:nth-child(even) {
         background-color: unset;
     }
@@ -68,18 +65,68 @@
         overflow: hidden;
         text-overflow: ellipsis;
         display: table-cell;
-        max-width: 200px; /* Adjust width to fit your design */
+        max-width: 200px;
+        /* Adjust width to fit your design */
     }
 
-    
+
     .container-medium {
         width: unset;
     }
-    
 </style>
+<div class="loadingspinner hidden"></div>
+<script type="module">
+    import { asyncLogError } from "/static/js/error.js";
+    import { Requests } from "/static/js/requests.js";
+    import { Flash } from "/static/js/flash.js";
+    import { StatusesUser } from '/static/js/orders.js';
+
+    const spinner = document.querySelector('.loadingspinner');
+
+    async function handleDeleteAdminClick(event) {
+        const res = confirm('Er du sikker på at du vil slette denne bestilling?');
+        if (!res) {
+            return;
+        }
+    
+        event.preventDefault();
+        Flash.clearMessages();
+        spinner.classList.toggle('hidden');
+    
+        try {
+        
+            const data = {
+                'user_status': StatusesUser.DELETED
+            }
+            const element = event.target;
+            const url = '/admin/orders/patch/' + element.dataset.id;
+            const res = await Requests.asyncPostJson(url, data);
+    
+            console.log(res)
+    
+            if (res.error) {
+                Flash.setMessage(res.message, 'error');
+            } else {
+                // window.location.reload();
+            }
+    
+        } catch (e) {
+            Flash.setMessage(res.message, 'error');
+            await asyncLogError('/error/log', e.stack);
+        } finally {
+            spinner.classList.toggle('hidden');
+        }
+    }
+
+    document.querySelectorAll('.delete-order > *').forEach(element => {
+        element.addEventListener('click', handleDeleteAdminClick);
+    });
+
+</script>
 
 
-{# <pre>{{ to_json(orders)}}</pre> #}
+{#
+<pre>{{ to_json(orders)}}</pre> #}
 
 
 {% endblock content %}
