@@ -2,6 +2,15 @@ class Requests {
 
     /**
      * Post formdata async. Accepts JSON as response
+     * 
+     * Example:
+     * 
+     * E.g. Get form data from an form element:
+     * 
+     * const formElem = document.getElementById('formElem');
+     * const formData = new FormData(formElem);
+     * 
+     * const res = await Requests.asyncPost('/url', formData);
      */
     static async asyncPost(url, formData, method) {
         if (!method) method = 'post'
@@ -21,8 +30,22 @@ class Requests {
     }
 
     /**
-     * Post JSON string or JS object that can be stringified. 
-     * Accepts JSON as response
+     * POST JSON async. 
+     * 
+     * Example:
+     * 
+     * With object: 
+     * 
+     * let formData = new FormData();
+     * formData.append('user_status', 'DELETED');
+     * 
+     * With JSON:
+     * 
+     * let formData = {
+     *    user_status: 'DELETED'
+     * }
+     * 
+     * const res = await Requests.asyncPostJson(url, formData);
      */
     static async asyncPostJson(url, jsonData, method) {
 
@@ -48,6 +71,13 @@ class Requests {
         return rawResponse;
     }
 
+    /**
+     * Get JSON async
+     * 
+     * Example:
+     * 
+     * const res = await Requests.asyncGetJson(url);
+     */
     static async asyncGetJson(url, method) {
         if (!method) method = 'GET'
         const rawResponse = await fetch(url, {
