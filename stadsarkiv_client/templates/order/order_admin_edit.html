@@ -19,7 +19,7 @@
 <div class="loadingspinner hidden"></div>
 
 <pre>
-    {{ to_json(order) }}
+    {# { to_json(order) } #}
 </pre>
 
 
@@ -32,12 +32,6 @@
             <option value="{{ key }}" {% if order.location==key %}selected{% endif %}>{{ value }}</option>
             {% endfor %}
         </select>
-        <label>Bruger status</label>
-        <!-- <select name="user_status" id="user_status">
-            {% for key, value in user_statuses.items() %}
-            <option value="{{ key }}" {% if order.user_status==key %}selected{% endif %}>{{ value }}</option>
-            {% endfor %}
-        </select> -->
         <label>Kommentar</label>
         <textarea name="comment" placeholder="Kommentar">{{ order.comment }}</textarea>
         <label>Deadline</label>
@@ -103,12 +97,12 @@
             const form = document.querySelector('form');
             const url = form.action;
             
-            // Get form data. Convert status to integer
+            // Extract form data and POST as JSON
             const formData = new FormData(form);
-            const formValues = Object.fromEntries(formData)
-            formValues.location = parseInt(formValues.location)
+            const data = Object.fromEntries(formData)
+            data.location = parseInt(data.location)
              
-            const res = await Requests.asyncPostJson(url, formValues);
+            const res = await Requests.asyncPostJson(url, data);
             if (res.error) {
                 Flash.setMessage(res.message, 'error');
             } else {
@@ -129,12 +123,5 @@
 
 
 </script>
-
-<pre>{{ to_json(order) }}</pre>
-
-<style>
-
-</style>
-
 
 {% endblock content %}

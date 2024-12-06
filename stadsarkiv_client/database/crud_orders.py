@@ -18,16 +18,24 @@ except KeyError:
     orders_url = ""
 
 
-async def has_order(user_id: str, record_id: str):
+async def _has_active_order(crud: "CRUD", user_id: str, record_id: str):
+    """
+    Check if user has an active order on a record
+    """
+    statuses = [utils_orders.STATUSES_USER.ORDERED, utils_orders.STATUSES_USER.QUEUED]
+    order = await _get_orders_one(crud, statuses, record_id, user_id)
+    return order
+
+
+async def has_active_order(user_id: str, record_id: str):
     """
     Check if user has an active order on a record
     """
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
-        statuses = [utils_orders.STATUSES_USER.ORDERED, utils_orders.STATUSES_USER.QUEUED]
-        order = await _get_orders_one(crud, statuses, record_id, user_id)
-        return order
+        is_active = await _has_active_order(crud, user_id, record_id)
+    return is_active
 
 
 async def is_owner(user_id: str, order_id: int):
@@ -50,22 +58,16 @@ async def insert_order(meta_data: dict, me: dict):
     """
     Insert order into database
     """
-
-    # Check if user is already active on this record
-    is_active_by_user = await has_order(me["id"], meta_data["id"])
-    if is_active_by_user:
-        # This may happen is user has already ordered the record
-        # In reality it will only happen if the user has two tabs open and POST the same order twice
-        raise Exception("User is already active on this record")
-
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
 
-        """
-        Check if there are other active users on this record that are orderable
-        If so, set status to QUEUED, otherwise set status to ORDERED
-        """
+        # Check if user is already active on this record
+        is_active_by_user = await _has_active_order(crud, me["id"], meta_data["id"])
+        if is_active_by_user:
+            # This may happen is user has already ordered the record
+            # In reality it will only happen if the user has two tabs open and POST the same order twice
+            raise Exception("User is already active on this record")
 
         # insert or update user
         user_insert_update_values = utils_orders.get_insert_user_data(me)
@@ -85,7 +87,11 @@ async def insert_order(meta_data: dict, me: dict):
 
         await crud.insert(
             "orders",
-            utils_orders.get_order_data(user_insert_update_values["user_id"], record_insert_update_values["record_id"], user_status),
+            utils_orders.get_order_data(
+                user_insert_update_values["user_id"],
+                record_insert_update_values["record_id"],
+                user_status,
+            ),
         )
 
         last_order_id = await crud.last_insert_id()
@@ -120,26 +126,24 @@ async def update_order(location: int, update_values: dict, filters: dict, user_i
                 filters=filters,
             )
 
-        updated_joined_order = await _get_orders_one(crud, order_id=filters["order_id"])
+        updated_order = await _get_orders_one(crud, order_id=filters["order_id"])
 
         if location:
             await crud.update(
                 table="records",
                 update_values={"location": location},
-                filters={"record_id": updated_joined_order["record_id"]},
+                filters={"record_id": updated_order["record_id"]},
             )
 
-        # TODO: If location AVAILABLE_IN_READING_ROOM. Send message to user
-
         # Send message to user
-        utils_orders.send_order_message("Order updated", updated_joined_order)
+        utils_orders.send_order_message("Order updated", updated_order)
 
         # Insert log message
         await _insert_log_message(
             crud,
-            order_id=updated_joined_order["order_id"],
-            location=updated_joined_order["location"],
-            user_status=updated_joined_order["user_status"],
+            order_id=updated_order["order_id"],
+            location=updated_order["location"],
+            user_status=updated_order["user_status"],
             changed_by=user_id,
         )
 
@@ -172,14 +176,10 @@ async def get_orders_user(user_id: str, completed=0):
         return orders
 
 
-async def _get_orders_query_params(
-    statuses: list = [],
-    record_id: str = "",
-    user_id: str = "",
-    order_id: str = "",
-):
+async def _get_orders_query_params(statuses: list = [], record_id: str = "", user_id: str = "", order_id: str = ""):
     """
     SELECT complete order data by statuses, record_id, user_id and order_id
+    Returns query and params
     """
     where_clauses = []
     params = {}

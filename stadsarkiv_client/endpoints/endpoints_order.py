@@ -45,7 +45,7 @@ async def orders_get_order(request: Request):
     record_altered = record_alter.record_alter(request, record, meta_data)
     record_and_types = record_alter.get_record_and_types(record_altered)
 
-    is_active_by_user = await crud_orders.has_order(
+    is_active_by_user = await crud_orders.has_active_order(
         user_id=me["id"],
         record_id=meta_data["id"],
     )
@@ -99,7 +99,7 @@ async def orders_post(request: Request):
         meta_data = get_record_meta_data(request, record)
         record, meta_data = await hooks.after_get_record(record, meta_data)
 
-        is_ordered = await crud_orders.has_order(
+        is_ordered = await crud_orders.has_active_order(
             user_id=me["id"],
             record_id=meta_data["id"],
         )
@@ -173,7 +173,7 @@ async def orders_admin_patch(request: Request):
             location=location,
             update_values=update_values,
             filters=filters,
-            user_id=me["id"],
+            user_id=me["id"]
         )
 
         if update_values.get("user_status") == utils_orders.STATUSES_USER.DELETED:
