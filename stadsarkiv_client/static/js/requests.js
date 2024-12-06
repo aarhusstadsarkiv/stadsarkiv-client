@@ -5,7 +5,7 @@ class Requests {
      * 
      * Example:
      * 
-     * E.g. Get form data from an form element:
+     * E.g. Get form data from a form element (or generate the form data manually):
      * 
      * const formElem = document.getElementById('formElem');
      * const formData = new FormData(formElem);
@@ -18,6 +18,7 @@ class Requests {
             method: method,
             headers: {
                 'Accept': 'application/json',
+                
             },
             body: formData
         }).then(function (response) {
@@ -30,24 +31,22 @@ class Requests {
     }
 
     /**
-     * POST JSON async. 
+     * POST JSON async. Send a JSON object or a JSON string.
      * 
      * Example:
      * 
-     * With object: 
-     * 
-     * let formData = new FormData();
-     * formData.append('user_status', 'DELETED');
-     * 
-     * With JSON:
-     * 
-     * let formData = {
+     * let jsonData = {
      *    user_status: 'DELETED'
      * }
      * 
-     * const res = await Requests.asyncPostJson(url, formData);
+     * const res = await Requests.asyncPostJson(url, jsonData);
      */
     static async asyncPostJson(url, jsonData, method) {
+
+        // If jsonData is not set or empty, set it to an empty object
+        if (!jsonData) {
+            jsonData = {};
+        }
 
         // If JSON it not stringified, do it
         if (typeof jsonData !== 'string') {
