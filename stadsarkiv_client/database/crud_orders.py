@@ -112,13 +112,14 @@ async def insert_order(meta_data: dict, me: dict):
 
 async def update_order(location: int, update_values: dict, filters: dict, user_id: str):
     """
-    Update order by order_id. Allow to set any values in the order and location of the record.
+    Update order by order_id. Allow to set values of order and record.
     """
 
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
 
+        current_order = await _get_orders_one(crud, order_id=filters["order_id"])
         if update_values:
             await crud.update(
                 table="orders",
@@ -127,13 +128,16 @@ async def update_order(location: int, update_values: dict, filters: dict, user_i
             )
 
         updated_order = await _get_orders_one(crud, order_id=filters["order_id"])
-
         if location:
             await crud.update(
                 table="records",
                 update_values={"location": location},
                 filters={"record_id": updated_order["record_id"]},
             )
+
+            # if location change
+            if current_order["location"] != location:
+                log.debug(f"Location changed from {current_order['location']} to {location}")
 
         # Send message to user
         utils_orders.send_order_message("Order updated", updated_order)
