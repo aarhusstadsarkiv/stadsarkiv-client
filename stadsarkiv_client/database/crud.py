@@ -152,4 +152,6 @@ class CRUD:
         """
         cursor = self.connection.execute(query, values)
         row = cursor.fetchone()
+        if row:
+            return dict(row)
         return row
