@@ -37,6 +37,7 @@ CREATE TABLE orders (
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     comment TEXT DEFAULT "",
+    message_sent INTEGER DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (record_id) REFERENCES records(record_id)
 ) STRICT;
