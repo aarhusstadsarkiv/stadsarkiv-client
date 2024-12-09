@@ -90,5 +90,8 @@ class DatabaseConnection:
         except sqlite3.Error:
             connection.rollback()
             raise
+        except Exception:
+            connection.rollback()
+            raise
         finally:
             connection.close()

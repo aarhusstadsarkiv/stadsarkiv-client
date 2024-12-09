@@ -102,12 +102,10 @@
             const url = '/admin/orders/patch/' + element.dataset.id;
             const res = await Requests.asyncPostJson(url, data);
     
-            console.log(res)
-    
             if (res.error) {
                 Flash.setMessage(res.message, 'error');
             } else {
-                // window.location.reload();
+                window.location.reload();
             }
     
         } catch (e) {
