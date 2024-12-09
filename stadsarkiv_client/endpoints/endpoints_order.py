@@ -124,6 +124,7 @@ async def orders_user_patch(request: Request):
     me = await api.users_me_get(request)
     user_id = me["id"]
 
+    # Check if user is owner of order
     order_id = request.path_params["order_id"]
     is_owner = await _is_order_owner(request, order_id)
 
@@ -135,12 +136,12 @@ async def orders_user_patch(request: Request):
             }
         )
 
-    filters = {"order_id": order_id}
     update_values = {"user_status": utils_orders.STATUSES_USER.DELETED}
 
+    # User can not alter location, only admin can, therefor location is set to 0
+    await crud_orders.update_order(location=0, update_values=update_values, order_id=order_id, user_id=user_id)
     flash.set_message(request, "Din bestilling er slettet", type="success")
 
-    await crud_orders.update_order(location=0, update_values=update_values, filters=filters, user_id=user_id)
     return JSONResponse({"error": False})
 
 
@@ -164,7 +165,7 @@ async def orders_admin_patch(request: Request):
         await is_authenticated_json(request, verified=True, permissions=["employee"])
         me = await api.users_me_get(request)
 
-        filters = {"order_id": request.path_params["order_id"]}
+        order_id = request.path_params["order_id"]
         update_values: dict = await request.json()
 
         location = await _get_location(update_values)
@@ -172,8 +173,8 @@ async def orders_admin_patch(request: Request):
         await crud_orders.update_order(
             location=location,
             update_values=update_values,
-            filters=filters,
-            user_id=me["id"]
+            order_id=order_id,
+            user_id=me["id"],
         )
 
         if update_values.get("user_status") == utils_orders.STATUSES_USER.DELETED:

@@ -2,6 +2,7 @@ from stadsarkiv_client.core.logging import get_log
 import json
 import dataclasses
 from stadsarkiv_client.core import date_format
+import arrow
 
 
 log = get_log()
@@ -13,21 +14,20 @@ class StatusesLocation:
     Possible admin statuses for an order
     """
 
-    WAITING: int = 1
-    PACKED_FOR_READING_ROOM: int = 2
-    AVAILABLE_IN_READING_ROOM: int = 3
-    COMPLETED_IN_READING_ROOM: int = 4
+    IN_STORAGE: int = 1
+    PACKED_STORAGE: int = 2
+    IN_STORAGE_DOKK1: int = 3
+    READING_ROOM: int = 4
     RETURN_TO_STORAGE: int = 5
 
 
 STATUSES_LOCATION = StatusesLocation()
 STATUSES_LOCATION_HUMAN = {
     1: "På magasin",  # Initial status
-    2: "Pakket til læsesalen",
+    2: "Pakket til læsesal",
     3: "Depotrum på dokk1",
     4: "På læsesalen",
-    # 5: "Afsluttet i læsesalen",
-    6: "Pakket til magasin",
+    5: "Pakket til magasin",
 }
 
 
@@ -64,15 +64,18 @@ def get_insert_user_data(me: dict) -> dict:
     }
 
 
-def get_insert_record_data(meta_data: dict) -> dict:
+def get_insert_record_data(meta_data: dict, location: int = 0) -> dict:
     """
     Get material data for inserting into records table
     """
+    if not location:
+        location = STATUSES_LOCATION.IN_STORAGE
+
     return {
         "record_id": meta_data["id"],
         "label": meta_data["title"],
         "resources": json.dumps(meta_data["resources"]),
-        "location": STATUSES_LOCATION.WAITING,
+        "location": location,
     }
 
 
@@ -98,11 +101,28 @@ def format_order_display(order: dict):
     order["created_at"] = date_format.timezone_alter(order["created_at"])
     order["updated_at"] = date_format.timezone_alter(order["updated_at"])
     if order["deadline"]:
-        order["deadline"] = date_format.timezone_alter(order["deadline"])
+        # deadline is in the format "YYYY-MM-DD HH:mm:ss"
+        deadline = date_format.timezone_alter(order["deadline"])
+
+        # convert to YYYY-MM-DD
+        deadline = arrow.get(deadline).format("YYYY-MM-DD")
+        order["deadline"] = deadline
+        log.debug(f"Deadline: {deadline}")
 
     order["user_status_human"] = STATUSES_USER_HUMAN.get(order["user_status"])
     order["location_human"] = STATUSES_LOCATION_HUMAN.get(order["location"])
     return order
+
+
+def get_deadline_date(days: int = 14) -> str:
+    # UTC now
+    utc_now = arrow.utcnow()
+
+    # Add days to now
+    deadline = utc_now.shift(days=days)
+
+    # Return deadline as datetime string (suitable for sqlite)
+    return deadline.format("YYYY-MM-DD HH:mm:ss")
 
 
 def send_order_message(message: str, order: dict):
