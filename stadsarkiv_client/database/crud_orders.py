@@ -366,7 +366,7 @@ async def get_orders_admin(status: str = "active"):
         crud = CRUD(connection)
 
         if status == "active":
-            orders = await _get_orders(crud, [utils_orders.STATUSES_USER.ORDERED, utils_orders.STATUSES_USER.QUEUED])
+            orders = await _get_orders(crud, [utils_orders.STATUSES_USER.ORDERED])
         elif status == "completed":
             orders = await _get_orders(crud, [utils_orders.STATUSES_USER.COMPLETED], group_by="o.record_id")
 
