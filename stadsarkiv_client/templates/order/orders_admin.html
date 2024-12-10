@@ -15,6 +15,21 @@
 
 {{ basic_macros.page_title(title) }}
 
+{# set drop down with completed or active orders #}
+<form method="GET" action="/admin/orders">
+    <select name="status" id="status">
+        <option value="completed" {% if status == 'completed' %}selected{% endif %}>Afsluttede</option>
+        <option value="active" {% if status == 'active' %}selected{% endif %}>Aktive</option>
+    </select>
+</form>
+
+<script type="module">
+    const status = document.getElementById('status');
+    status.addEventListener('change', function() {
+        window.location.href = '/admin/orders?status=' + status.value;
+    });
+
+</script>
 
 {% if orders|length == 0 %}
 <p>Der er ingen ordrer.</p>
@@ -52,15 +67,15 @@
             <td>{{ order.resources }}</td>
             <td>
                 <span>
-
-                    
-
                     <a href="/admin/orders/{{order.order_id}}/edit">Rediger</a>
-                    
+
                     {% if not order.actions_deactivated %}
-                    | 
+                    
+                    |
+                    
                     <span class="complete-order">
-                        <a data-id="{{order.order_id}}" data-action="completed" title="Brugeren er færdig med bestillingen" href="#">Afslut</a> |
+                        <a data-id="{{order.order_id}}" data-action="completed"
+                            title="Brugeren er færdig med bestillingen" href="#">Afslut</a> |
                     </span>
 
                     <span class="delete-order">
@@ -88,7 +103,7 @@
     }
 
     .container-medium {
-        width: unset;
+        width: 100%;
     }
 
     a[disabled] {
@@ -102,15 +117,13 @@
     import { Flash } from "/static/js/flash.js";
     import { StatusesUser } from '/static/js/orders.js';
 
-    // Get all
     const spinner = document.querySelector('.loadingspinner');
-
     async function handleDeleteAdminClick(event) {
-    
+
         event.preventDefault();
         Flash.clearMessages();
         spinner.classList.toggle('hidden');
-    
+
         try {
 
             const element = event.target;
@@ -125,7 +138,7 @@
                     return;
                 }
             }
-            
+
             let data = {};
             if (action === 'completed') {
                 data = {
@@ -136,16 +149,16 @@
                     'user_status': StatusesUser.DELETED
                 }
             }
-            
+
             const url = '/admin/orders/patch/' + element.dataset.id;
             const res = await Requests.asyncPostJson(url, data);
-    
+
             if (res.error) {
                 Flash.setMessage(res.message, 'error');
             } else {
                 window.location.reload();
             }
-    
+
         } catch (e) {
             Flash.setMessage(res.message, 'error');
             await asyncLogError('/error/log', e.stack);

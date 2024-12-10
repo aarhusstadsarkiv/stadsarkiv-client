@@ -282,7 +282,7 @@ async def _get_orders_query_params(
     user_id: str = "",
     order_id: str = "",
     location: int = 0,
-    group_by_record_id: bool = False,
+    group_by: str = "",
 ):
     """
     SELECT complete order data by statuses, record_id, user_id, order_id
@@ -320,10 +320,10 @@ async def _get_orders_query_params(
     if where_clauses:
         query += "WHERE " + " AND ".join(where_clauses) + " "
 
-    # query += "GROUP BY r.record_id "
+    if group_by:
+        query += f"GROUP BY {group_by} "
 
     query += "ORDER BY o.order_id DESC"
-    
     return query, params
 
 
@@ -334,8 +334,9 @@ async def _get_orders(
     user_id: str = "",
     order_id: str = "",
     location: int = 0,
+    group_by: str = "",
 ):
-    query, params = await _get_orders_query_params(statuses, record_id, user_id, order_id, location)
+    query, params = await _get_orders_query_params(statuses, record_id, user_id, order_id, location, group_by )
 
     return await crud.query(query, params)
 
@@ -356,7 +357,7 @@ async def _get_orders_one(
     return order
 
 
-async def get_orders_admin(completed: int = 0):
+async def get_orders_admin(status: str = "active"):
     """
     Get all orders for a user. Allow to set status and finished.
     """
@@ -364,8 +365,10 @@ async def get_orders_admin(completed: int = 0):
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
 
-        # Drop down at some point
-        orders = await _get_orders(crud, [utils_orders.STATUSES_USER.COMPLETED])
+        if status == "active":
+            orders = await _get_orders(crud, [utils_orders.STATUSES_USER.ORDERED, utils_orders.STATUSES_USER.QUEUED])
+        elif status == "completed":
+            orders = await _get_orders(crud, [utils_orders.STATUSES_USER.COMPLETED], group_by="o.record_id")
 
         for order in orders:
             order = utils_orders.format_order_display(order)

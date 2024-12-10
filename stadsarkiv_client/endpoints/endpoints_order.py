@@ -205,9 +205,18 @@ async def orders_admin_get(request: Request):
     """
     await is_authenticated(request, permissions=["employee"])
 
-    orders = await crud_orders.get_orders_admin(completed=0)
+    # get status from query params
+    status = request.query_params.get("status")
+    if not status:
+        status = "active"
 
-    context_values = {"title": "Bestillinger", "orders": orders}
+    orders = await crud_orders.get_orders_admin(status=status)
+
+    context_values = {
+        "title": "Bestillinger",
+        "orders": orders,
+        "status": status,
+    }
     context = await get_context(request, context_values=context_values)
 
     return templates.TemplateResponse(request, "order/orders_admin.html", context)
