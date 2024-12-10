@@ -122,4 +122,6 @@ def get_deadline_date(days: int = 14) -> str:
 
 
 def send_order_message(message: str, order: dict):
-    log.debug(f"{message} about order: {order}")
+    log.debug("Sending message to user:")
+    log.debug(f"{message}")
+    log.debug(f"Order: {order}")
