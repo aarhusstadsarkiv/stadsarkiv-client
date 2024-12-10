@@ -100,6 +100,7 @@ async def insert_order(meta_data: dict, me: dict):
             "orders",
             order_data,
         )
+
         log.debug(f"Order created: {order_data}")
 
         # Get last order_id and order data
@@ -289,6 +290,8 @@ async def _get_orders_query_params(
     order_id: int = 0,
     location: int = 0,
     group_by: str = "",
+    order_by: str = "o.order_id DESC",
+    limit: int = 0,
 ):
     """
     SELECT complete order data by statuses, record_id, user_id, order_id
@@ -329,7 +332,12 @@ async def _get_orders_query_params(
     if group_by:
         query += f"GROUP BY {group_by} "
 
-    query += "ORDER BY o.order_id DESC"
+    if order_by:
+        query += f"ORDER BY {order_by} "
+
+    if limit:
+        query += f"LIMIT {limit} "
+
     return query, params
 
 
@@ -341,8 +349,19 @@ async def _get_orders(
     order_id: int = 0,
     location: int = 0,
     group_by: str = "",
+    order_by: str = "o.order_id DESC",
+    limit: int = 100,
 ):
-    query, params = await _get_orders_query_params(statuses, record_id, user_id, order_id, location, group_by)
+    query, params = await _get_orders_query_params(
+        statuses,
+        record_id,
+        user_id,
+        order_id,
+        location,
+        group_by,
+        order_by,
+        limit,
+    )
 
     return await crud.query(query, params)
 
@@ -354,11 +373,23 @@ async def _get_orders_one(
     user_id: str = "",
     order_id: int = 0,
     location: int = 0,
+    group_by: str = "",
+    order_by: str = "o.order_id DESC",
+    limit: int = 1,
 ):
     """
-    Get orders by statuses, record_id, user_id and order_id
+    Get a single order
     """
-    query, params = await _get_orders_query_params(statuses, record_id, user_id, order_id, location)
+    query, params = await _get_orders_query_params(
+        statuses,
+        record_id,
+        user_id,
+        order_id,
+        location,
+        group_by,
+        order_by,
+        limit,
+    )
     order = await crud.query_one(query, params)
     return order
 
@@ -381,7 +412,7 @@ async def get_orders_admin(status: str = "active"):
 
             # Only if order has status ORDERED then check if there are queued orders
             if order["user_status"] == utils_orders.STATUSES_USER.ORDERED:
-                queued_orders = await _get_orders(crud, [utils_orders.STATUSES_USER.QUEUED], order["record_id"])
+                queued_orders = await _get_orders(crud, [utils_orders.STATUSES_USER.QUEUED], order_id=order["record_id"])
                 order["count"] = len(queued_orders)
             else:
                 order["count"] = 0
