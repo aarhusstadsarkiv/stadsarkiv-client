@@ -404,21 +404,22 @@ async def get_orders_admin(status: str = "active"):
 
         if status == "active":
             orders = await _get_orders(crud, [utils_orders.STATUSES_USER.ORDERED])
+            for order in orders:
+                order = utils_orders.format_order_display(order)
+                queued_orders = await _get_orders(crud, [utils_orders.STATUSES_USER.QUEUED], record_id=order["record_id"])
+                order["count"] = len(queued_orders)
+
         elif status == "completed":
             orders = await _get_orders(crud, [utils_orders.STATUSES_USER.COMPLETED], group_by="o.record_id")
-
-        for order in orders:
-            order = utils_orders.format_order_display(order)
-
-            # Only if order has status ORDERED then check if there are queued orders
-            if order["user_status"] == utils_orders.STATUSES_USER.ORDERED:
-                queued_orders = await _get_orders(crud, [utils_orders.STATUSES_USER.QUEUED], order_id=order["record_id"])
-                order["count"] = len(queued_orders)
-            else:
-                order["count"] = 0
-
-            if order["user_status"] == utils_orders.STATUSES_USER.COMPLETED:
+            for order in orders:
+                order = utils_orders.format_order_display(order)
                 order["actions_deactivated"] = True
+
+            # Remove orders that are in the active list
+            for order in orders:
+                active_order = await _get_orders_one(crud, [utils_orders.STATUSES_USER.ORDERED], record_id=order["record_id"])
+                if active_order:
+                    orders.remove(order)
 
         return orders
 
