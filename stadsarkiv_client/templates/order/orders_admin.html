@@ -18,8 +18,8 @@
 {# set drop down with completed or active orders #}
 <form method="GET" action="/admin/orders">
     <select name="status" id="status">
-        <option value="completed" {% if status == 'completed' %}selected{% endif %}>Afsluttede</option>
         <option value="active" {% if status == 'active' %}selected{% endif %}>Aktive</option>
+        <option value="completed" {% if status == 'completed' %}selected{% endif %}>Afsluttede</option>
     </select>
 </form>
 
