@@ -139,7 +139,12 @@ async def orders_user_patch(request: Request):
     update_values = {"user_status": utils_orders.STATUSES_USER.DELETED}
 
     # User can not alter location, only admin can, therefor location is set to 0
-    await crud_orders.update_order(location=0, update_values=update_values, order_id=order_id, user_id=user_id)
+    await crud_orders.update_order(
+        location=0,
+        update_values=update_values,
+        order_id=order_id,
+        user_id=user_id,
+    )
     flash.set_message(request, "Din bestilling er slettet", type="success")
 
     return JSONResponse({"error": False})

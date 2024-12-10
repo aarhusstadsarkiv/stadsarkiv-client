@@ -22,8 +22,18 @@
 <form method="post" action="/admin/orders/patch/{{ order.order_id }}">
     
     <fieldset>
-        <label>Materiale status</label>
-        <select name="location" id="location">
+        {{ allow_location_change}}
+        <label>Lokation</label>
+
+        {% if order.allow_location_change %}
+        {% set location_change_disabled = "" %}
+        {% set title = "" %}
+        {% else %}
+        {% set location_change_disabled = "disabled" %}
+        {% set title = "Du har ikke ændre lokation da materialet er i læsesal og en brugers har rettighed til at benytte det. Du må slette denne ordre eller afslutte den" %}
+        {% endif %}
+
+        <select {{ location_change_disabled }} name="location" id="location" title="{{ title }}">
             {% for key, value in locations.items() %}
             <option value="{{ key }}" {% if order.location==key %}selected{% endif %}>{{ value }}</option>
             {% endfor %}
@@ -31,7 +41,7 @@
         <label>Kommentar</label>
         <textarea name="comment" placeholder="Kommentar">{{ order.comment }}</textarea>
         <label>Deadline</label>
-        <input type="date" name="deadline" value="{{ order.deadline }}">
+        <input disabled type="date" name="deadline" value="{{ order.deadline }}">
         <button id="submit" type="submit">Opdater</button>
     </fieldset>
 </form>

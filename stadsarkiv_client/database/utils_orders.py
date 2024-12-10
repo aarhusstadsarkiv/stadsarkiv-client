@@ -101,13 +101,9 @@ def format_order_display(order: dict):
     order["created_at"] = date_format.timezone_alter(order["created_at"])
     order["updated_at"] = date_format.timezone_alter(order["updated_at"])
     if order["deadline"]:
-        # deadline is in the format "YYYY-MM-DD HH:mm:ss"
         deadline = date_format.timezone_alter(order["deadline"])
-
-        # convert to YYYY-MM-DD
         deadline = arrow.get(deadline).format("YYYY-MM-DD")
         order["deadline"] = deadline
-        log.debug(f"Deadline: {deadline}")
 
     order["user_status_human"] = STATUSES_USER_HUMAN.get(order["user_status"])
     order["location_human"] = STATUSES_LOCATION_HUMAN.get(order["location"])
