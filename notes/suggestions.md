@@ -278,3 +278,14 @@ Jeg vil kun have resultater, hvor der specifikt står DA-NO (som var en færgeli
 Jeg tror, jeg har nævnt det før, men i tilfælde af, at det ikke er kommet med, kommer det her igen.
 
 Janne Marie 
+
+---
+
+En meget brugbar ide kunne være en form for markering af utilgængelige materialer, så jeg ikke overser det ved bestilling/fremfinding.
+Hvis der f.eks. kunne stå ”OBS utilgængeligt materiale” med rød skrift under resurser (Hvor jeg kigger efter magasinplacering)
+Overskriften ”Aftaleforhold” eller ”Lovgivning” kunne tilsvarende også være rød når begrænsninger var valgt.
+
+Som en ekstra sikkerhed for arkivmedarbejderen.
+Det kan sikkert også tænkes ind i flowet i det nye bestillingssystem.
+
+---
