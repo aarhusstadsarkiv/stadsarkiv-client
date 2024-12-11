@@ -126,6 +126,4 @@ def get_current_date_time() -> str:
 
 
 def send_order_message(message: str, order: dict):
-    log.debug("Sending message to user:")
-    log.debug(f"{message}")
-    log.debug(f"Order: {order}")
+    log.debug(f"Mail message: {message} Order: {order}")

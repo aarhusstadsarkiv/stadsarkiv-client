@@ -117,8 +117,8 @@ async def insert_order(meta_data: dict, me: dict):
                 filters={"order_id": order_data["order_id"]},
             )
 
-            # Send notification message
-            utils_orders.send_order_message("Order available in reading room", order_data)
+            updated_order = await _get_orders_one(crud, order_id=order_data["order_id"])
+            utils_orders.send_order_message("Order available in reading room", updated_order)
 
 
 async def _update_user_status(crud: "CRUD", order_id: int, new_status: int):
@@ -133,7 +133,7 @@ async def _update_user_status(crud: "CRUD", order_id: int, new_status: int):
         next_queued_order = await _get_orders_one(crud, statuses=[utils_orders.STATUSES_USER.QUEUED], record_id=order["record_id"])
 
         if next_queued_order:
-            log.debug(f"Queued order {next_queued_order['order_id']} found. Updating to ORDERED.")
+            log.debug(f"Order {next_queued_order['order_id']} found. Updating from QUEUED to ORDERED.")
 
             await crud.update(
                 table="orders",
@@ -151,6 +151,7 @@ async def _update_user_status(crud: "CRUD", order_id: int, new_status: int):
                     filters={"order_id": next_queued_order["order_id"]},
                 )
 
+                next_queued_order = await _get_orders_one(crud, order_id=next_queued_order["order_id"])
                 utils_orders.send_order_message("Order available in reading room", next_queued_order)
 
 
@@ -183,7 +184,8 @@ async def _update_location(crud: "CRUD", order_id: int, new_location: int):
             )
 
             if not old_order.get("message_sent"):
-                utils_orders.send_order_message("Order available in reading room", {**old_order, "deadline": deadline_date})
+                updated_order = await _get_orders_one(crud, order_id=order_id)
+                utils_orders.send_order_message("Order available in reading room", updated_order)
 
 
 async def update_order(location: int, update_values: dict, order_id: int, user_id: str):
