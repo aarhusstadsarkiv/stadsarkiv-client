@@ -82,4 +82,5 @@ settings: dict[str, typing.Any] = {
         "default": "data/database.db",
         "orders": "data/orders.db",
     },
+    "log_api_calls": False,
 }
