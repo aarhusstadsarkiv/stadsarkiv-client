@@ -36,18 +36,16 @@ class RequestBeginMiddleware(BaseHTTPMiddleware):
         return response
 
 
-class RequestEndMiddleware(BaseHTTPMiddleware):
-    """
-    Used to calculate time used on request and log it
-    """
+class StaticPathSkippingMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        if request.url.path.startswith("/static"):
+            return await call_next(request)
+        return await call_next(request)
 
+
+class ResponseTimeLoggingMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         response = await call_next(request)
-
-        path = request.url.path
-        if path.startswith("/static"):
-            return response
-
         total_response_time = api.get_time_used(request)
         log.debug(json.dumps(total_response_time, indent=4, ensure_ascii=False))
         api.REQUEST_TIME_USED = {}
@@ -126,14 +124,18 @@ session_store: CookieStore = CookieStore(secret_key=secret_key)
 lifetime = settings["cookie"]["lifetime"]  # type: ignore
 cookie_httponly = settings["cookie"]["httponly"]  # type: ignore
 
-middleware = [
-    Middleware(CORSMiddleware, allow_origins=settings["cors_allow_origins"]),
-    Middleware(RequestBeginMiddleware),
-    Middleware(SessionMiddleware, store=session_store, cookie_https_only=cookie_httponly, lifetime=lifetime),
-    Middleware(SessionAutoloadMiddleware, paths=["/"]),
-    Middleware(BeforeResponseMiddleware),
-    Middleware(RequestEndMiddleware),
-    Middleware(NoCacheMiddleware),
-    Middleware(AccessLogMiddleware),
-    Middleware(GZipMiddleware, minimum_size=1),
-]
+
+middleware = []
+middleware.append(Middleware(CORSMiddleware, allow_origins=settings["cors_allow_origins"]))
+middleware.append(Middleware(RequestBeginMiddleware))
+middleware.append(Middleware(SessionMiddleware, store=session_store, cookie_https_only=cookie_httponly, lifetime=lifetime))
+middleware.append(Middleware(SessionAutoloadMiddleware, paths=["/"]))
+middleware.append(Middleware(BeforeResponseMiddleware))
+middleware.append(Middleware(StaticPathSkippingMiddleware))
+
+if settings["log_api_calls"]:
+    middleware.append(Middleware(ResponseTimeLoggingMiddleware))
+
+middleware.append(Middleware(NoCacheMiddleware))
+middleware.append(Middleware(AccessLogMiddleware))
+middleware.append(Middleware(GZipMiddleware, minimum_size=1))
