@@ -136,7 +136,9 @@ async def orders_user_patch(request: Request):
             }
         )
 
-    update_values = {"user_status": utils_orders.STATUSES_USER.DELETED}
+    update_values = {
+        "user_status": utils_orders.STATUSES_USER.DELETED,
+    }
 
     # User can not alter location, only admin can, therefor location is set to 0
     await crud_orders.update_order(

@@ -113,7 +113,7 @@ async def insert_order(meta_data: dict, me: dict):
             order_id=order_data["order_id"],
             location=record_insert_update_values["location"],
             user_status=order_data["user_status"],
-            changed_by=me["id"],
+            updated_by=me["id"],
         )
 
         # If location is reading room then send message to user
@@ -138,6 +138,8 @@ async def _on_user_status_change(crud: "CRUD", order_id: int, new_user_status: i
     """
     order = await _get_orders_one(crud, order_id=order_id)
     if new_user_status in [utils_orders.STATUSES_USER.COMPLETED, utils_orders.STATUSES_USER.DELETED]:
+
+        # status_human = utils_orders.STATUSES_USER_HUMAN[new_user_status]
         log.debug(f"Order with order_id: {order_id}. Changed user_status to COMPLETED or DELETED")
 
         next_queued_order = await _get_orders_one(crud, [utils_orders.STATUSES_USER.QUEUED], order["record_id"])
@@ -171,9 +173,16 @@ async def _on_location_change(crud: "CRUD", new_location: int, order_id: int):
         return
 
     old_order = await _get_orders_one(crud, order_id=order_id)
+
+    # May only happen if user has two tabs open and POST the same order twice
+    record_id = old_order["record_id"]
+    await _allow_location_change(crud, record_id, raise_exception=True)
+
     await crud.update(
         table="records",
-        update_values={"location": new_location},
+        update_values={
+            "location": new_location,
+        },
         filters={"record_id": old_order["record_id"]},
     )
 
@@ -206,23 +215,6 @@ async def _on_location_change(crud: "CRUD", new_location: int, order_id: int):
                 utils_orders.send_order_message("Order available in reading room", updated_order)
 
 
-async def _allow_location_change(crud: "CRUD", record_id: str):
-    """
-    Check if location can be changed
-    Get orders where location is READING_ROOM and user_status is ORDERED
-    If there are no orders then location can be changed
-    """
-    orders = await _get_orders(
-        crud,
-        [utils_orders.STATUSES_USER.ORDERED],
-        location=utils_orders.STATUSES_LOCATION.READING_ROOM,
-        record_id=record_id,
-    )
-    if orders:
-        return False
-    return True
-
-
 async def update_order(location: int, update_values: dict, order_id: int, user_id: str):
     """
     Update order by order_id. Allow to set values of order and record.
@@ -233,12 +225,14 @@ async def update_order(location: int, update_values: dict, order_id: int, user_i
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
         filters = {"order_id": order_id}
-        if update_values:
-            await crud.update(
-                table="orders",
-                update_values=update_values,
-                filters=filters,
-            )
+
+        update_values["updated_at"] = utils_orders.get_current_date_time()
+        await crud.update(
+            table="orders",
+            update_values=update_values,
+            filters=filters,
+        )
+        log.debug(f"Order with order_id: {order_id}. Updated with values: {update_values}")
 
         # Either location is changed or user_status is changed, not both
         await _on_location_change(crud, location, order_id)
@@ -252,7 +246,7 @@ async def update_order(location: int, update_values: dict, order_id: int, user_i
             order_id=order_id,
             location=updated_order["location"],
             user_status=updated_order["user_status"],
-            changed_by=user_id,
+            updated_by=user_id,
         )
 
 
@@ -281,64 +275,6 @@ async def get_orders_user(user_id: str, completed=0):
             order = format_order_for_display(order)
 
         return orders
-
-
-async def _get_orders_query_params(
-    statuses: list = [],
-    record_id: str = "",
-    user_id: str = "",
-    order_id: int = 0,
-    location: int = 0,
-    group_by: str = "",
-    order_by: str = "o.order_id DESC",
-    limit: int = 0,
-):
-    """
-    SELECT complete order data by statuses, record_id, user_id, order_id
-    Returns query and params
-    """
-    where_clauses = []
-    params: dict = {}
-
-    if statuses:
-        statuses_str = ", ".join([str(status) for status in statuses])
-        where_clauses.append(f"o.user_status IN ({statuses_str})")
-
-    if record_id:
-        where_clauses.append("r.record_id = :record_id")
-        params["record_id"] = record_id
-
-    if user_id:
-        where_clauses.append("o.user_id = :user_id")
-        params["user_id"] = user_id
-
-    if order_id:
-        where_clauses.append("o.order_id = :order_id")
-        params["order_id"] = order_id
-
-    if location:
-        where_clauses.append("r.location = :location")
-        params["location"] = location
-
-    query = """
-    SELECT * FROM orders o
-    LEFT JOIN records r ON o.record_id = r.record_id
-    LEFT JOIN users u ON o.user_id = u.user_id
-    """
-
-    if where_clauses:
-        query += "WHERE " + " AND ".join(where_clauses) + " "
-
-    if group_by:
-        query += f"GROUP BY {group_by} "
-
-    if order_by:
-        query += f"ORDER BY {order_by} "
-
-    if limit:
-        query += f"LIMIT {limit} "
-
-    return query, params
 
 
 async def _get_orders(
@@ -446,12 +382,89 @@ def format_order_for_display(order: dict):
     return order
 
 
-async def _insert_log_message(crud: "CRUD", order_id, location, user_status, changed_by):
+async def _get_orders_query_params(
+    statuses: list = [],
+    record_id: str = "",
+    user_id: str = "",
+    order_id: int = 0,
+    location: int = 0,
+    group_by: str = "",
+    order_by: str = "o.order_id DESC",
+    limit: int = 0,
+):
+    """
+    SELECT complete order data by statuses, record_id, user_id, order_id
+    Returns query and params
+    """
+    where_clauses = []
+    params: dict = {}
+
+    if statuses:
+        statuses_str = ", ".join([str(status) for status in statuses])
+        where_clauses.append(f"o.user_status IN ({statuses_str})")
+
+    if record_id:
+        where_clauses.append("r.record_id = :record_id")
+        params["record_id"] = record_id
+
+    if user_id:
+        where_clauses.append("o.user_id = :user_id")
+        params["user_id"] = user_id
+
+    if order_id:
+        where_clauses.append("o.order_id = :order_id")
+        params["order_id"] = order_id
+
+    if location:
+        where_clauses.append("r.location = :location")
+        params["location"] = location
+
+    query = """
+    SELECT * FROM orders o
+    LEFT JOIN records r ON o.record_id = r.record_id
+    LEFT JOIN users u ON o.user_id = u.user_id
+    """
+
+    if where_clauses:
+        query += "WHERE " + " AND ".join(where_clauses) + " "
+
+    if group_by:
+        query += f"GROUP BY {group_by} "
+
+    if order_by:
+        query += f"ORDER BY {order_by} "
+
+    if limit:
+        query += f"LIMIT {limit} "
+
+    return query, params
+
+
+async def _allow_location_change(crud: "CRUD", record_id: str, raise_exception=False):
+    """
+    Check if location can be changed
+    Get orders where location is READING_ROOM and user_status is ORDERED
+    If there are no orders then location can be changed
+    """
+    orders = await _get_orders(
+        crud,
+        [utils_orders.STATUSES_USER.ORDERED],
+        location=utils_orders.STATUSES_LOCATION.READING_ROOM,
+        record_id=record_id,
+    )
+    if orders:
+        if raise_exception:
+            raise Exception(f"Lokation kan ikke ændres. Der er allerede en bestilling med record_id {record_id} i læsesalen")
+        return False
+    return True
+
+
+async def _insert_log_message(crud: "CRUD", order_id, location, user_status, updated_by):
     log_message = {
         "order_id": order_id,
         "location": location,
         "user_status": user_status,
-        "changed_by": changed_by,
+        "updated_by": updated_by,
     }
 
     await crud.insert("orders_log", log_message)

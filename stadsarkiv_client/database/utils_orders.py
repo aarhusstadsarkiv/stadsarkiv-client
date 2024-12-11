@@ -84,6 +84,8 @@ def get_order_data(user_id: str, record_id: str, user_status: int) -> dict:
         "user_id": user_id,
         "record_id": record_id,
         "user_status": user_status,
+        "created_at": get_current_date_time(),
+        "updated_at": get_current_date_time(),
     }
 
 
@@ -111,14 +113,16 @@ def format_order_display(order: dict):
 
 
 def get_deadline_date(days: int = 14) -> str:
-    # UTC now
-    utc_now = arrow.utcnow()
 
-    # Add days to now
+    utc_now = arrow.utcnow()
     deadline = utc_now.shift(days=days)
 
     # Return deadline as datetime string (suitable for sqlite)
     return deadline.format("YYYY-MM-DD HH:mm:ss")
+
+
+def get_current_date_time() -> str:
+    return arrow.utcnow().format("YYYY-MM-DD HH:mm:ss")
 
 
 def send_order_message(message: str, order: dict):

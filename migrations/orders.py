@@ -54,8 +54,8 @@ CREATE TABLE orders_log (
     order_id INTEGER NOT NULL,
     user_status INTEGER,
     location INTEGER,
-    changed_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    changed_by TEXT NOT NULL,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_by TEXT NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
 ) STRICT;
 
@@ -69,7 +69,7 @@ CREATE INDEX idx_users_user_email ON users(user_email);
 CREATE INDEX idx_orders_user_status ON orders(user_status);
 CREATE INDEX idx_orders_deadline ON orders(deadline);
 CREATE INDEX idx_records_location ON records(location);
-CREATE INDEX idx_orders_log_changed_at ON orders_log(changed_at);
+CREATE INDEX idx_orders_log_updated_at ON orders_log(updated_at);
 """
 
 # List of migrations with keys
