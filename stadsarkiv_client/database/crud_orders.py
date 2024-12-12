@@ -292,6 +292,28 @@ def format_order_for_display(order: dict):
     return order
 
 
+async def cron_orders():
+    """
+    Deadline may look like this: 2024-12-25 09:23:52
+    Check if deadline has passed and update user status to COMPLETED
+    """
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
+        crud = CRUD(connection)
+
+        query = f"""
+        SELECT * FROM orders
+        WHERE deadline IS NOT NULL
+        AND deadline < :current_date
+        AND user_status = {utils_orders.STATUSES_USER.ORDERED}"""
+
+        params = {"current_date": utils_orders.get_current_date_time()}
+
+        orders = await crud.query(query, params)
+        for order in orders:
+            await _update_user_status(crud, order["order_id"], utils_orders.STATUSES_USER.COMPLETED)
+
+
 async def _get_orders(
     crud: "CRUD",
     statuses: list = [],
