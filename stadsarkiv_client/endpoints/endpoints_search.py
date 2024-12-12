@@ -164,7 +164,7 @@ def _clean_query_params(query_params: list) -> list:
     # Any keys should be in settings_query_params before sending to api
     query_params = [(key, value) for key, value in query_params if key in settings_query_params]
 
-    # If key equalts collection then then remove left padded zeros
+    # If key equals collection then remove left padded zeros
     query_params = [(key, value.lstrip("0")) if key == "collection" else (key, value) for key, value in query_params]
 
     return query_params
