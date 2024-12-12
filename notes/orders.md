@@ -1,5 +1,6 @@
-QUEUE as status. 
-deleted as flag
+Filtrere bestilling på status, lokalitet. 
+Tjekbokse hvor man kan skifte lokalitet for flere bestillinger
+Udfoldning af bestillinger i kø.
 
-warc
-
+print af en liste 
+print af en udskrift
