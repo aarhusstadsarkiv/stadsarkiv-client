@@ -77,7 +77,7 @@ settings: dict[str, typing.Any] = {
     "allow_user_management": True,
     "allow_save_bookmarks": True,
     "allow_save_search": False,
-    "allow_online_ordering": False,
+    "allow_online_ordering": True,
     "sqlite3": {
         "default": "data/database.db",
         "orders": "data/orders.db",
