@@ -23,6 +23,7 @@ if os.getenv("ENVIRONMENT") == "production":
     debug = False
 
 settings: dict[str, typing.Any] = {
+    "key": os.getenv("KEY"),
     "client_name": "development",
     "client_url": "https://demo.openaws.dk",
     "debug": debug,
