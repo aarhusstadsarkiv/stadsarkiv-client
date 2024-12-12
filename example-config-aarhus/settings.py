@@ -46,6 +46,7 @@ settings: dict[str, typing.Any] = {
         {"name": "auth_logout_get", "title": "Log ud"},
         {"name": "auth_register_get", "title": "Ny bruger"},
         {"name": "auth_me_get", "title": "Profil"},
+        {"name": "orders_admin_get", "title": "Bestillinger"},
         {"name": "admin_users_get", "title": "Brugere"},
         {"name": "schemas_get_list", "title": "Skemaer"},
         {"name": "entities_get_list", "title": "Entiteter"},
