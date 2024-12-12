@@ -5,6 +5,14 @@ from stadsarkiv_client.core.logging import get_log
 import glob
 import sqlite3
 import json
+import os
+
+
+# Check if the environment variable CONFIG_DIR is set
+if "CONFIG_DIR" not in os.environ:
+    print("Environment variable CONFIG_DIR is not set. E.g. set it like this:")
+    print("export CONFIG_DIR=example-config-aarhus")
+    exit(1)
 
 
 log_file_pattern = "data/logs/main.log"
