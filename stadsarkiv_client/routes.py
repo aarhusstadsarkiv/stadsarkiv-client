@@ -127,9 +127,9 @@ routes = [
     Route("/relations/{type:str}/{id:str}", endpoint=endpoints_relations.relations_get, name="relations_get"),
     Route("/error/log", endpoint=endpoints_error.error_log_post, name="error_log_post", methods=["POST"]),
     Route("/upload", endpoint=endpoints_upload.upload, name="upload", methods=["POST"]),
-    Route("/webhooks/mail/status", endpoint=endpoints_webhooks.mail_status, name="mail_status", methods=["GET", "POST"]),
-    Route("/webhooks/mail/verify/token", endpoint=endpoints_webhooks.mail_verify_token, name="mail_verify_token", methods=["GET", "POST"]),
-    Route("/webhooks/mail/reset/token", endpoint=endpoints_webhooks.mail_reset_token, name="mail_reset_token", methods=["GET", "POST"]),
+    Route("/webhook/mail/status", endpoint=endpoints_webhooks.mail_status, name="mail_status", methods=["GET", "POST"]),
+    Route("/webhook/mail/verify/token", endpoint=endpoints_webhooks.mail_verify_token, name="mail_verify_token", methods=["GET", "POST"]),
+    Route("/webhook/mail/reset/token", endpoint=endpoints_webhooks.mail_reset_token, name="mail_reset_token", methods=["GET", "POST"]),
 ]
 
 
