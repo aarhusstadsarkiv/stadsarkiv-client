@@ -20,7 +20,7 @@ async def mail_status(request: Request):
         data = await request.json()
         log.info(data)
     except Exception:
-        log.error("Error in mail_status")
+        log.exception("Error in mail_status")
 
     return JSONResponse({"status": "ok"})
 
@@ -35,7 +35,7 @@ async def mail_verify_token(request: Request):
         data = await request.json()
         log.info(data)
     except Exception:
-        log.error("Error in mail_status")
+        log.exception("Error in mail_status")
 
     return JSONResponse({"status": "ok"})
 
@@ -49,6 +49,6 @@ async def mail_reset_token(request: Request):
         data = await request.json()
         log.info(data)
     except Exception:
-        log.error("Error in mail_status")
+        log.exception("Error in mail_status")
 
     return JSONResponse({"status": "ok"})
