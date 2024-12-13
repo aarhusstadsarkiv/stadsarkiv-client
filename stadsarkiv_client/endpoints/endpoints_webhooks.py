@@ -16,7 +16,7 @@ async def mail_status(request: Request):
 
     # Get json data from request
     data = await request.json()
-    log.debug(data)
+    log.info(data)
 
     return JSONResponse({"status": "ok"})
 
@@ -28,7 +28,7 @@ async def mail_verify_token(request: Request):
 
     # Get json data from request
     data = await request.json()
-    log.debug(data)
+    log.info(data)
 
     return JSONResponse({"status": "ok"})
 
@@ -40,6 +40,6 @@ async def mail_reset_token(request: Request):
 
     # Get json data from request
     data = await request.json()
-    log.debug(data)
+    log.info(data)
 
     return JSONResponse({"status": "ok"})
