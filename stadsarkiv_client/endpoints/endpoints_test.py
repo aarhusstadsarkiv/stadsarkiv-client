@@ -11,6 +11,7 @@ from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.database.cache import DatabaseCache
 from stadsarkiv_client.database.crud_default import database_url
 from stadsarkiv_client.database.utils import DatabaseConnection
+from stadsarkiv_client.core import api
 import random
 
 log = get_log()
@@ -58,3 +59,36 @@ async def test_page(request: Request):
 async def test_post(request: Request):
     context = await get_context(request)
     return templates.TemplateResponse(request, "testing/thanks.html", context)
+
+
+# from stadsarkiv_client.core.dataclasses import Mail
+
+
+async def test_mail(request: Request):
+
+    context_values = {
+        "display_name": "Test User",
+        "CLIENT_EMAIL_VERIFY_DOMAIN_URL": "https://verify.openaws.dk",
+        "token": "123456",
+        "CLIENT_DOMAIN_URL": "https://demo.openaws.dk",
+        "CLIENT_NAME": "Demo",
+    }
+
+    context = await get_context(request, context_values=context_values)
+
+    # template_str = await get_template_content("mails/verify_email.html", context)
+
+    data_dict = {
+        "data": {
+            "user_id": "019265e5-3fd4-7734-990c-7c7660d1ca64",
+            "subject": "Test",
+            "sender": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
+            "reply_to": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
+            "html_content": "Test Test",
+            "text_content": "Test Test",
+        }
+    }
+
+    await api.mail_post(request, data_dict)
+
+    return templates.TemplateResponse(request, "mails/verify_email.html", context)
