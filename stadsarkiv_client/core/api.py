@@ -937,3 +937,18 @@ async def proxies_view_ids_from_list(items: list) -> typing.Any:
             return records
         else:
             response.raise_for_status()
+
+
+async def mail_post(request: Request, data: dict) -> typing.Any:
+    """
+    POST /v1/operations/mail
+    """
+    async with _get_async_client() as client:
+        url = base_url + "/operations/mail"
+        headers = _get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
+        response = await client.post(url, json=data, headers=headers)
+
+        if response.is_success:
+            return response.json()
+        else:
+            response.raise_for_status()
