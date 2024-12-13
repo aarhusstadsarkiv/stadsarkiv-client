@@ -1,7 +1,7 @@
 """
 Webhook endpoints
 """
-from starlette.responses import HTMLResponse, JSONResponse
+from starlette.responses import JSONResponse
 from starlette.requests import Request
 from stadsarkiv_client.core.logging import get_log
 

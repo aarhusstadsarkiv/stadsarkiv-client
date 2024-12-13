@@ -31,17 +31,21 @@ jobs:
 
       - name: Run default client tests
         run: python -m unittest tests/config-default/*.py
+        env:
+          KEY: ${{ secrets.KEY }}
         # env:
         # CONFIG_DIR: example-config-aarhus
 
       - name: Run teater client tests
         run: python -m unittest tests/config-teater/*.py
         env:
+          KEY: ${{ secrets.KEY }}
           CONFIG_DIR: example-config-teater
 
       - name: Run aarhus client tests
         run: python -m unittest tests/config-aarhus/*.py
         env:
+          KEY: ${{ secrets.KEY }}
           CONFIG_DIR: example-config-aarhus
         
       - name: Run mypy
