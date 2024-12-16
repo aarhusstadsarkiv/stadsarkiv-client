@@ -128,8 +128,8 @@ routes = [
     Route("/error/log", endpoint=endpoints_error.error_log_post, name="error_log_post", methods=["POST"]),
     Route("/upload", endpoint=endpoints_upload.upload, name="upload", methods=["POST"]),
     Route("/webhook/mail/status", endpoint=endpoints_webhooks.mail_status, name="mail_status", methods=["GET", "POST"]),
-    Route("/webhook/mail/verify/token", endpoint=endpoints_webhooks.mail_verify_token, name="mail_verify_token", methods=["GET", "POST"]),
-    Route("/webhook/mail/reset/token", endpoint=endpoints_webhooks.mail_reset_token, name="mail_reset_token", methods=["GET", "POST"]),
+    Route("/webhook/mail/token/verify", endpoint=endpoints_webhooks.mail_verify_token, name="mail_verify_token", methods=["GET", "POST"]),
+    Route("/webhook/mail/token/reset", endpoint=endpoints_webhooks.mail_reset_token, name="mail_reset_token", methods=["GET", "POST"]),
 ]
 
 
