@@ -32,4 +32,5 @@ settings: dict[str, typing.Any] = {
     "show_version": True,
     "allow_user_registration": True,
     "allow_user_management": True,
+    "allow_online_ordering": False,
 }
