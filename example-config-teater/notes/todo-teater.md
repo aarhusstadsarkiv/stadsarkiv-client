@@ -11,3 +11,6 @@ Vis arkivalier som bokse.
 Vend top billede og stamdata om. 
 
 Skift mail ud i kontakt. marianne philipsen
+
+Vil du ændre mailadressen på siden fra arkivar@aarhusteater.dk til marianne.philipsen@aarhusteater.dk?
+
