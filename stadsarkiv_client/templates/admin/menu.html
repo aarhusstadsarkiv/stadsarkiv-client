@@ -11,7 +11,7 @@
     <a href="/schemas">Skemaer</a>
     {% endif %}
 
-    {% if has_permission( "employee", permissions_list) %}
+    {% if get_setting('allow_online_ordering') and has_permission('employee', permissions_list) %}
     <a href="/admin/orders">Bestillinger</a>
     {% endif %}
 </div>
