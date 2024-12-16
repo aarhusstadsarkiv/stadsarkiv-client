@@ -169,5 +169,6 @@ uvicorn_process.pid
 /settings_facets.py
 /local
 /resources
+/bin-local
 settings_local.py
 data
