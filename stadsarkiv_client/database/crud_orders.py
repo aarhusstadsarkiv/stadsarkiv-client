@@ -242,7 +242,7 @@ async def get_orders_user(user_id: str, completed=0) -> list:
 
 async def get_orders_admin(status: str = "active"):
     """
-    Get all orders for a user. Allow to set status and finished.
+    Get all orders for a user.
     """
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
@@ -255,11 +255,19 @@ async def get_orders_admin(status: str = "active"):
                 queued_orders = await _get_orders(crud, [utils_orders.STATUSES_USER.QUEUED], record_id=order["record_id"])
                 order["count"] = len(queued_orders)
 
+                # if location is READING_ROOM set action_location_change to False
+                if order["location"] == utils_orders.STATUSES_LOCATION.READING_ROOM:
+                    order["location_change_deactivated"] = True
+
         elif status == "completed":
-            orders = await _get_orders(crud, [utils_orders.STATUSES_USER.COMPLETED], group_by="o.record_id")
+            orders = await _get_orders(
+                crud,
+                [utils_orders.STATUSES_USER.COMPLETED, utils_orders.STATUSES_USER.DELETED],
+                group_by="o.record_id",
+            )
             for order in orders:
                 order = utils_orders.format_order_display(order)
-                order["actions_deactivated"] = True
+                order["user_actions_deactivated"] = True
 
             # Remove orders that are in the active list
             for order in orders:

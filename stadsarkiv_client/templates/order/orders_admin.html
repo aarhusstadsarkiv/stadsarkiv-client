@@ -18,8 +18,8 @@
 {# set drop down with completed or active orders #}
 <form method="GET" action="/admin/orders">
     <select name="status" id="status">
-        <option value="active" {% if status == 'active' %}selected{% endif %}>Aktive</option>
-        <option value="completed" {% if status == 'completed' %}selected{% endif %}>Afsluttede</option>
+        <option value="active" {% if status == 'active' %}selected{% endif %}>Aktivt materiale</option>
+        <option value="completed" {% if status == 'completed' %}selected{% endif %}>Afsluttet materiale</option>
     </select>
 </form>
 
@@ -46,6 +46,9 @@
             <th title="Antal brugere som står i kø">I Kø</th>
             <th>Placering</th>
             <th>Handling</th>
+            <th>
+                <input type="checkbox" id="toggle-bulk" name="toggle-bulk"> Opdater lokation
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -67,22 +70,28 @@
             <td>{{ order.resources }}</td>
             <td>
                 <span>
+                    
                     <a href="/admin/orders/{{order.order_id}}/edit">Rediger</a>
-
-                    {% if not order.actions_deactivated %}
                     
-                    |
-                    
+                    {% if not order.user_actions_deactivated %}
                     <span class="complete-order">
                         <a data-id="{{order.order_id}}" data-action="completed"
-                            title="Brugeren er færdig med bestillingen" href="#">Afslut</a> |
+                            title="Brugeren er færdig med bestillingen" href="#">Afslut</a>
                     </span>
-
+                    
                     <span class="delete-order">
                         <a {{ disabled }} data-id="{{order.order_id}}" data-action="deleted" href="#">Slet</a>
                     </span>
                     {% endif %}
+
                 </span>
+            </td>
+            <td>
+                {% if not order.location_change_deactivated %}
+                <span>
+                    <input data-id="{{order.order_id}}" type="checkbox" id="bulk-item" name="bulk-item">
+                </span>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}
@@ -99,7 +108,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         display: table-cell;
-        max-width: 200px;
+        max-width: 180px;
     }
 
     .container-medium {
@@ -109,6 +118,8 @@
     a[disabled] {
         pointer-events: none;
     }
+
+
 </style>
 <div class="loadingspinner hidden"></div>
 <script type="module">
@@ -173,6 +184,15 @@
 
     document.querySelectorAll('.complete-order > *').forEach(element => {
         element.addEventListener('click', handleDeleteAdminClick);
+    });
+
+    // Bulk checkbox
+    const toggleBulk = document.getElementById('toggle-bulk');
+    toggleBulk.addEventListener('change', function() {
+        const actionsDeactivated = document.querySelectorAll('[name="bulk-item"]');
+        actionsDeactivated.forEach(element => {
+            element.checked = toggleBulk.checked;
+        });
     });
 
 </script>

@@ -168,7 +168,9 @@ def _clean_query_params(query_params: list) -> list:
 
 
 def _get_facets_and_filters(request: Request, search_result: dict, query_params=[], query_str=""):
-
+    """
+    Get facets and filters from a search result
+    """
     normalized_facets = NormalizeFacets(
         request=request,
         search_result=search_result,
