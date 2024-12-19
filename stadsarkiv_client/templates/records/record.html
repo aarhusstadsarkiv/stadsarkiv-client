@@ -66,8 +66,11 @@
 
 {{ common_macros.parse_meta_block(meta_links, permissions_list) }}
 
+<div class="loadingspinner hidden"></div>
+
 <script type="module">
     import { } from "/static/js/record-orders.js";
+    import "/static/js/bookmarks-record.js";
 </script>
 
 {% endblock content %}
