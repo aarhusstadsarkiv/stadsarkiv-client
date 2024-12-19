@@ -130,7 +130,6 @@ class Hooks(HooksSpec):
 
         # check if record is order by user
         me = await api.me_get(self.request)
-        meta_data["has_active_order"] = False
         if me:
             user_id = me["id"]
             has_active_order = await crud_orders.has_active_order(user_id=user_id, record_id=meta_data["id"])
