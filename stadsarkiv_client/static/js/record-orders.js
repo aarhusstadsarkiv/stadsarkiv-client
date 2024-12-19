@@ -13,18 +13,47 @@ if (orderElem) {
         event.preventDefault();
         Flash.clearMessages();
         spinner.classList.toggle('hidden');
+        let res;
         try {
 
             const recordId = orderElem.getAttribute('data-id');
-            const url = `/order/${recordId}`;            
-            const res = await Requests.asyncPostJson(url, {});
+            const action = orderElem.getAttribute('data-action');
+            
+            let url;
+            let data;
+            
+            if (action === 'create') {
+
+                url = `/order/${recordId}`;
+                data = {}
+            } else {
+                url = `/order/delete/${recordId}`;
+                data = {}
+
+                const confirmedDelete = confirm('Er du sikker på at du vil slette bestillingen?');
+                if (!confirmedDelete) {
+                    return;
+                }
+            }
+
+            res = await Requests.asyncPostJson(url, {});
+            
             if (res.error) {
                 console.log(res.message);
                 Flash.setMessage(res.message, 'error');
             } else {
-                Flash.setMessage(res.message, 'success');
-                orderElem.innerText = 'Materialet er bestilt';
-                orderElem.setAttribute('disabled', 'true'); 
+
+                if (action === 'delete') {
+                    Flash.setMessage(res.message, 'success');
+                    orderElem.innerText = 'Bestil til læsesal';
+                    orderElem.setAttribute('data-action', 'create');
+                }
+
+                if (action === 'create') {
+                    Flash.setMessage(res.message, 'success');
+                    orderElem.innerText = 'Slet bestilling';
+                    orderElem.setAttribute('data-action', 'delete');
+                }
             }
 
         } catch (e) {

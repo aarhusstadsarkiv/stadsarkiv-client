@@ -25,9 +25,7 @@ async def has_active_order(user_id: str, record_id: str):
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
-        is_active = await _has_active_order(crud, user_id, record_id)
-        is_active = bool(is_active)
-    return is_active
+        return await _has_active_order(crud, user_id, record_id)
 
 
 async def is_owner(user_id: str, order_id: int):
@@ -91,7 +89,6 @@ async def insert_order(meta_data: dict, me: dict):
             user_status,
         )
         await crud.insert("orders", order_data)
-        log.debug(f"Order created: {order_data}")
 
         # Retrieve the newly created order
         last_order_id = await crud.last_insert_id()
@@ -120,6 +117,8 @@ async def insert_order(meta_data: dict, me: dict):
 
             updated_order = await _get_orders_one(crud, order_id=order_data["order_id"])
             utils_orders.send_order_message("Order available in reading room", updated_order)
+
+        return order_data
 
 
 async def _update_user_status(crud: "CRUD", order_id: int, new_status: int):
@@ -204,7 +203,6 @@ async def update_order(location: int, update_values: dict, order_id: int, user_i
             update_values=update_values,
             filters={"order_id": order_id},
         )
-        log.debug(f"Order {order_id}: Updated with {update_values}.")
 
         # Handle location or user status updates
         await _update_location(crud, order_id, location)
@@ -219,6 +217,21 @@ async def update_order(location: int, update_values: dict, order_id: int, user_i
             user_status=updated_order["user_status"],
             updated_by=user_id,
         )
+
+
+async def delete_order(order_id: int, user_id: str):
+    """
+    Delete an order by setting the user status to DELETED.
+    """
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
+        crud = CRUD(connection)
+
+        # Update user status to DELETED
+        await _update_user_status(crud, order_id, utils_orders.STATUSES_USER.DELETED)
+
+        # Log the update
+        await _insert_log_message(crud, order_id, 0, utils_orders.STATUSES_USER.DELETED, user_id)
 
 
 async def get_orders_user(user_id: str, completed=0) -> list:
@@ -289,6 +302,16 @@ async def get_order(order_id):
         order = format_order_for_display(order)
         allow_location_change = await _allow_location_change(CRUD(connection), order["record_id"])
         order["allow_location_change"] = allow_location_change
+        return order
+
+
+async def get_order_by_record_id(user_id: str, record_id: str):
+    """
+    Get a single order by record_id
+    """
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
+        order = await _get_orders_one(CRUD(connection), user_id=user_id, record_id=record_id)
         return order
 
 

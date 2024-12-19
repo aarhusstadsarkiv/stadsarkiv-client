@@ -104,29 +104,37 @@ async def orders_post(request: Request):
             record_id=meta_data["id"],
         )
 
-        if not is_ordered:
+        if is_ordered:
+            return JSONResponse({"message": "Bestilling på dette materiale eksisterer allerede", "error": True})
+        else:
             await crud_orders.insert_order(meta_data, me)
             return JSONResponse({"message": "Din bestilling er blevet oprettet", "error": False})
-        else:
-            return JSONResponse({"message": "Bestilling på dette materiale eksisterer allerede", "error": True})
     except Exception as e:
         log.exception("Error in auth_orders_post")
         return JSONResponse({"message": str(e), "error": True})
 
 
-async def orders_user_patch(request: Request):
+async def _process_order_deletion(request: Request, id_key: str):
     """
-    User can only cancel their own order
-    Admin can patch any order
+    This mehtod is used to delete an order based on the provided key (e.g., "order_id" or "record_id")
+    There is two options because the user can delete an order based on the order_id or the record_id
     """
     await is_authenticated_json(request, verified=True)
     me = await api.users_me_get(request)
     user_id = me["id"]
 
-    # Check if user is owner of order
-    order_id = request.path_params["order_id"]
-    is_owner = await _is_order_owner(request, order_id)
+    # Extract the ID based on the provided key (e.g., "order_id" or "record_id")
+    target_id = request.path_params[id_key]
 
+    # Get order_id based on the context (if needed)
+    if id_key == "record_id":
+        order = await crud_orders.get_order_by_record_id(user_id, target_id)
+        order_id = order["order_id"]
+    else:
+        order_id = target_id
+
+    # Check if user is the owner of the order
+    is_owner = await _is_order_owner(request, order_id)
     if not is_owner:
         return JSONResponse(
             {
@@ -135,20 +143,27 @@ async def orders_user_patch(request: Request):
             }
         )
 
+    # Update the order with the status and reset location
     update_values = {
         "user_status": utils_orders.STATUSES_USER.DELETED,
     }
-
-    # User can not alter location, only admin can, therefor location is set to 0
     await crud_orders.update_order(
         location=0,
         update_values=update_values,
         order_id=order_id,
         user_id=user_id,
     )
-    flash.set_message(request, "Din bestilling er slettet", type="success")
 
-    return JSONResponse({"error": False})
+    flash.set_message(request, "Din bestilling er slettet", type="success")
+    return JSONResponse({"message": "Din bestilling er slettet", "error": False})
+
+
+async def orders_user_patch(request: Request):
+    return await _process_order_deletion(request, id_key="order_id")
+
+
+async def orders_user_delete(request: Request):
+    return await _process_order_deletion(request, id_key="record_id")
 
 
 async def _get_location(update_values: dict) -> int:

@@ -135,9 +135,15 @@
         {% if get_setting('allow_online_ordering') and has_permission('employee', permissions_list) %}
         <div class="action-links">
             {% if not meta_data['has_active_order'] %}
-            <a id="record-order" data-id="{{ record_and_types.id.value }}" href="/order/{{ record_and_types.id.value }}">{{ translate('Order online') }}</a>
+            <a  id="record-order" 
+                data-action="create" 
+                data-id="{{ record_and_types.id.value }}" 
+                href="/order/{{ record_and_types.id.value }}">{{ translate('Order online') }}</a>
             {% else %}
-            <a disabled data-id="{{ record_and_types.id.value }}" href="/order/{{ record_and_types.id.value }}">{{ translate('Record is ordered') }}</a>
+            <a id="record-order"
+                data-action="delete"
+                data-id="{{ record_and_types.id.value }}" 
+                href="/order/{{ record_and_types.id.value }}">{{ translate('Delete order') }}</a>
             {% endif %}
         </div>
         {% else %}
