@@ -106,7 +106,6 @@ async def orders_post(request: Request):
 
         if not is_ordered:
             await crud_orders.insert_order(meta_data, me)
-            set_message(request, "Din bestilling er blevet oprettet", "success")
             return JSONResponse({"message": "Din bestilling er blevet oprettet", "error": False})
         else:
             return JSONResponse({"message": "Bestilling på dette materiale eksisterer allerede", "error": True})
