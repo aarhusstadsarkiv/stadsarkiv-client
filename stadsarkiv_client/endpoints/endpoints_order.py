@@ -154,7 +154,6 @@ async def _process_order_deletion(request: Request, id_key: str):
         user_id=user_id,
     )
 
-    flash.set_message(request, "Din bestilling er slettet", type="success")
     return JSONResponse({"message": "Din bestilling er slettet", "error": False})
 
 

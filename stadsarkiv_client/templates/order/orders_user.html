@@ -86,7 +86,8 @@
             if (res.error) {
                 Flash.setMessage(res.message, 'error');
             } else {
-                window.location.reload();
+                Flash.setMessage(res.message, 'success');
+                element.closest('.parent-container-delete').remove();
             }
 
         } catch (e) {
