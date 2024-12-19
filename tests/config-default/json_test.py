@@ -118,8 +118,8 @@ class TestJSON(unittest.TestCase):
 {
     "id": "000313141",
     "real_id": "313141",
-    "allowed_by_ip": false,
-    "permission_granted": false,
+    "allowed_by_ip": true,
+    "permission_granted": true,
     "title": "En køretur med sporvogn",
     "meta_title": "En køretur med sporvogn",
     "meta_description": "Filmens første 38 sekunder er fra Clemens Bro i 1902 \n\nDen 7. juli 1904 blev den første sporvognsrute indviet i Aarhus....",
@@ -154,7 +154,8 @@ class TestJSON(unittest.TestCase):
         "large_image": "https://acastorage.blob.core.windows.net/sam-access/000313141/000313141_m.jpg"
     },
     "portrait": "https://acastorage.blob.core.windows.net/sam-access/000313141/000313141_m.jpg",
-    "is_downloadable": false
+    "is_downloadable": false,
+    "has_active_order": false
 }
         """
 
