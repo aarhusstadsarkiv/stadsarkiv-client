@@ -318,6 +318,14 @@ h6 {
     border-radius: 5px;
 }
 
+.action-links > a[disabled] {
+    background-color: var(--search-pagination-background-disabled);
+    color: var(--search-pagination-disabled);
+    border-radius: 5px;
+    cursor: not-allowed;
+    opacity: .5;
+}
+
 .loadingspinner {
     margin-top: 10px;
     pointer-events: none;
