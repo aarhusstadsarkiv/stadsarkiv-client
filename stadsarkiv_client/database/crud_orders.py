@@ -26,6 +26,7 @@ async def has_active_order(user_id: str, record_id: str):
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
         is_active = await _has_active_order(crud, user_id, record_id)
+        is_active = bool(is_active)
     return is_active
 
 
