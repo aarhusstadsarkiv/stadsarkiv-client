@@ -49,7 +49,8 @@ class TestJSON(unittest.TestCase):
         "type": "digital"
     },
     "is_representations_online": false,
-    "is_downloadable": false
+    "is_downloadable": false,
+    "has_active_order": false
 }
     """
         # parse json
@@ -99,7 +100,8 @@ class TestJSON(unittest.TestCase):
         "large_image": "https://acastorage.blob.core.windows.net/sam-access/000182391/000182391_m.jpg"
     },
     "portrait": "https://acastorage.blob.core.windows.net/sam-access/000182391/000182391_m.jpg",
-    "is_downloadable": true
+    "is_downloadable": true,
+    "has_active_order": false
 }
 """
 
