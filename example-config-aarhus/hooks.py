@@ -7,6 +7,7 @@ from stadsarkiv_client.core import api
 import json
 from stadsarkiv_client.database.crud_default import database_url
 from stadsarkiv_client.database.crud import CRUD
+from stadsarkiv_client.database import crud_orders
 from stadsarkiv_client.database.utils import DatabaseConnection
 from stadsarkiv_client.database.cache import DatabaseCache
 from stadsarkiv_client.core import csv_utils
@@ -126,6 +127,14 @@ class Hooks(HooksSpec):
         if record_utils.is_curator(record, 4):
             if record.get("summary"):
                 meta_data["title"] = f"[{record['summary']}]"
+
+        # check if record is order by user
+        me = await api.me_get(self.request)
+        meta_data["has_active_order"] = False
+        if me:
+            user_id = me["id"]
+            has_active_order = await crud_orders.has_active_order(user_id=user_id, record_id=meta_data["id"])
+            meta_data["has_active_order"] = has_active_order
 
         return record, meta_data
 
