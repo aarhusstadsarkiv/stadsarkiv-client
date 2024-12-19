@@ -28,8 +28,8 @@ class TestJSON(unittest.TestCase):
 {
     "id": "000109399",
     "real_id": "109399",
-    "allowed_by_ip": true,
-    "permission_granted": true,
+    "allowed_by_ip": false,
+    "permission_granted": false,
     "title": "",
     "meta_title": "om Badstuegade og Badstuerne under Kong Hans, i hvis...",
     "meta_description": "om Badstuegade og Badstuerne under Kong Hans, i hvis Regnskabsbøger staaer anført i 1487: \"28 Skilling for det tyske...",
