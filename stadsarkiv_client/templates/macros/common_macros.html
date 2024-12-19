@@ -124,6 +124,7 @@
 
 
 {% macro parse_ordering (key, value, record_and_types, label) %}
+
 <div class="record-content record_content_{{ key }}">
     {{ parse_record_label(label) }}
     <div class="content">
@@ -133,7 +134,11 @@
         
         {% if get_setting('allow_online_ordering') and has_permission('employee', permissions_list) %}
         <div class="action-links">
-            <a data-id="{{ record_and_types.id.value }}" href="/order/{{ record_and_types.id.value }}">{{ translate('Order online') }}</a>
+            {% if not meta_data['has_active_order'] %}
+            <a id="record-order" data-id="{{ record_and_types.id.value }}" href="/order/{{ record_and_types.id.value }}">{{ translate('Order online') }}</a>
+            {% else %}
+            <a disabled data-id="{{ record_and_types.id.value }}" href="/order/{{ record_and_types.id.value }}">{{ translate('Record is ordered') }}</a>
+            {% endif %}
         </div>
         {% else %}
             <!--
