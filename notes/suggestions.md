@@ -289,3 +289,13 @@ Som en ekstra sikkerhed for arkivmedarbejderen.
 Det kan sikkert også tænkes ind i flowet i det nye bestillingssystem.
 
 ---
+
+Hej Team AA
+
+https://www.aarhusarkivet.dk/collections/194
+
+Kommunearkivet (1841-2015) | AarhusArkivet
+
+På en side med meget tekst som denne, kunne det være meget brugervenligt, hvis man kunne lave overskrifter med fed skrift. Det flyder fuldstændig sammen som det ser ud nu. Og kan være svært at læse.
+
+Også mellemrum mellem afsnit vil hjælpe på læsbarheden.
