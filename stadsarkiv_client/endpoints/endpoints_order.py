@@ -121,38 +121,43 @@ async def _process_order_deletion(request: Request, id_key: str):
     """
     await is_authenticated_json(request, verified=True)
     me = await api.users_me_get(request)
-    user_id = me["id"]
 
-    # Extract the ID based on the provided key (e.g., "order_id" or "record_id")
-    target_id = request.path_params[id_key]
+    try:
+        user_id = me["id"]
 
-    # Get order_id based on the context (if needed)
-    if id_key == "record_id":
-        order = await crud_orders.get_order_by_record_id(user_id, target_id)
-        order_id = order["order_id"]
-    else:
-        order_id = target_id
+        # Get the order_id based on the provided key
+        target_id = request.path_params[id_key]
+        if id_key == "record_id":
+            order = await crud_orders.get_order_by_record_id(user_id, target_id)
+            order_id = order["order_id"]
+        else:
+            order_id = target_id
 
-    # Check if user is the owner of the order
-    is_owner = await _is_order_owner(request, order_id)
-    if not is_owner:
-        return JSONResponse(
-            {
-                "message": "Du har ikke rettigheder til at opdatere denne bestilling",
-                "error": True,
-            }
+        # Check if user is the owner of the order
+        is_owner = await _is_order_owner(request, order_id)
+        if not is_owner:
+            return JSONResponse(
+                {
+                    "message": "Du har ikke rettigheder til at opdatere denne bestilling",
+                    "error": True,
+                }
+            )
+
+        # Update the order with the status. Location is not altered, hence it is set to 0
+        update_values = {
+            "user_status": utils_orders.STATUSES_USER.DELETED,
+        }
+
+        await crud_orders.update_order(
+            location=0,
+            update_values=update_values,
+            order_id=order_id,
+            user_id=user_id,
         )
 
-    # Update the order with the status and reset location
-    update_values = {
-        "user_status": utils_orders.STATUSES_USER.DELETED,
-    }
-    await crud_orders.update_order(
-        location=0,
-        update_values=update_values,
-        order_id=order_id,
-        user_id=user_id,
-    )
+    except Exception:
+        log.exception("Error in orders_user_delete")
+        return JSONResponse({"message": "Der opstod en fejl. Bestilling kunne ikke slettes.", "error": True})
 
     return JSONResponse({"message": "Din bestilling er slettet", "error": False})
 
