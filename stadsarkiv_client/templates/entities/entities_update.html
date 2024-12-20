@@ -45,7 +45,7 @@
     import { showErrorMessages, getEditor } from "/static/js/jsoneditor-utils.js";
     import { setLocalStorage, getLocalStorage, removeLocalStorage } from '/static/js/local-storage-ttl.js'
 
-    const context = {{ to_json(_context) | safe }};
+    const context = {{ to_json(context) | safe }};
 
     // Current schema, version and editor
     let currentSchema = context.schema;

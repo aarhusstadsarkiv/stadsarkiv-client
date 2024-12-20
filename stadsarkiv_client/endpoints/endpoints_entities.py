@@ -54,7 +54,8 @@ async def entities_update(request: Request):
         "uuid": uuid,
     }
 
-    context = await get_context(request, context_values=context_values)
+    context = {"context": context_values}
+    context = await get_context(request, context_values=context)
 
     return templates.TemplateResponse(request, "entities/entities_update.html", context)
 
