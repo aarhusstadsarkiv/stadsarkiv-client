@@ -148,8 +148,8 @@
     }
 }
 
-.record-prev-next a,
-.record-prev-next span {
+.record-prev-next > a,
+.record-prev-next > span {
     display: inline-block;
     padding: 5px 15px;
     border: 1px solid var(--border);
@@ -161,19 +161,18 @@
     transition: background-color 0.3s ease;
 }
 
-.record-prev-next a:hover,
-a.active {
+.record-prev-next > a:hover, .record-prev-next > a.active {
     background-color: var(--record-prev-next-active-background);
     border-color: var(--record-prev-next-active-border);
 }
 
-.record-prev-next span.disabled {
+.record-prev-next > span.disabled {
     color: var(--record-prev-next-disabled);
     cursor: not-allowed;
     background-color: var(--record-prev-next-disabled-background);
 }
 
-.record-prev-next a,
-.record-prev-next span {
+.record-prev-next > a,
+.record-prev-next > span {
     min-width: 40px;
 }

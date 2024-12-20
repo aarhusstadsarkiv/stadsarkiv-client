@@ -39,3 +39,15 @@ window.addEventListener('pageshow', function (e) {
         hamburgerMenu.setAttribute('aria-expanded', 'false');
     }
 });
+
+/**
+ * Highlight the active link in action-links if the path matches the current page
+ */
+const actionLinks = document.querySelectorAll('.action-links > a');
+actionLinks.forEach(function (link) {
+    let path = link.getAttribute('data-path') || link.getAttribute('href');
+    if (window.location.pathname === path) {
+        link.classList.add('active');
+    }
+});
+

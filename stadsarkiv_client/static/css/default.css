@@ -12,12 +12,12 @@ h6 {
     justify-content: space-between;
     background-color: var(--navigation-background);
     height: var(--main-menu-top);
-    align-items: stretch; 
+    align-items: stretch;
 }
 
 .logo {
     margin-left: 10px;
-    display: flex; 
+    display: flex;
     align-items: flex-end;
 }
 
@@ -104,7 +104,7 @@ h6 {
 
 /**
  * main menu icons
- */ 
+ */
 .menu-icon svg {
     color: white;
     fill: white;
@@ -183,7 +183,7 @@ h6 {
  * Container-fluid but with no padding
  * Used for main menu
  */
- .container-fluid {
+.container-fluid {
     margin: 0 auto;
     min-width: 100%;
 }
@@ -191,7 +191,7 @@ h6 {
 /**
  * used for the main menu top bar
  */
- .sticky-top {
+.sticky-top {
     position: sticky;
     top: 0;
     z-index: 100;
@@ -270,7 +270,7 @@ h6 {
 /**
  * display the facets on the left side
  */
- @media (max-width: 992px) {
+@media (max-width: 992px) {
     .container-main-facets {
         display: block;
         margin: 10px 0;
@@ -311,14 +311,29 @@ h6 {
     background-color: rgba(var(--navigation-background-rgb), 0.75);
 }
 
-.action-links .disabled {
+.action-links>.disabled {
     padding: 5px 10px;
     background-color: var(--search-pagination-background-disabled);
     color: var(--search-pagination-disabled);
     border-radius: 5px;
+    pointer-events: none;
 }
 
-.action-links > a[disabled] {
+/** 
+ * The .active link is current the same as .disabled
+ */
+ .action-links>.active {
+    background-color: rgba(var(--navigation-background-rgb), 0.75);
+    color: white;
+
+    pointer-events: none;
+}
+
+
+/**
+ * The disabled attribute is used to disable the link
+ */
+.action-links>a[disabled] {
     background-color: var(--search-pagination-background-disabled);
     color: var(--search-pagination-disabled);
     border-radius: 5px;
