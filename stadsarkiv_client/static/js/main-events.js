@@ -46,7 +46,7 @@ window.addEventListener('pageshow', function (e) {
 const actionLinks = document.querySelectorAll('.action-links > a');
 actionLinks.forEach(function (link) {
     let path = link.getAttribute('data-path') || link.getAttribute('href');
-    if (window.location.pathname === path) {
+    if (window.location.pathname.startsWith(path)) {
         link.classList.add('active');
     }
 });
