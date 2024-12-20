@@ -325,8 +325,6 @@ h6 {
  .action-links>.active {
     background-color: rgba(var(--navigation-background-rgb), 0.75);
     color: white;
-
-    pointer-events: none;
 }
 
 
