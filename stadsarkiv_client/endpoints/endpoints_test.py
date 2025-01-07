@@ -12,6 +12,7 @@ from stadsarkiv_client.database.cache import DatabaseCache
 from stadsarkiv_client.database.crud_default import database_url
 from stadsarkiv_client.database.utils import DatabaseConnection
 from stadsarkiv_client.core import api
+from stadsarkiv_client.core.dynamic_settings import settings
 import random
 
 log = get_log()
@@ -65,13 +66,17 @@ async def test_post(request: Request):
 
 
 async def test_mail(request: Request):
+    """
+    /test/mail
+    """
 
+    # settings["client_name"]
+    token = "123456"
     context_values = {
         "display_name": "Test User",
-        "CLIENT_EMAIL_VERIFY_DOMAIN_URL": "https://verify.openaws.dk",
-        "token": "123456",
-        "CLIENT_DOMAIN_URL": "https://demo.openaws.dk",
-        "CLIENT_NAME": "Demo",
+        "client_verify_url": settings["client_url"] + "/auth/verify/" + token,
+        "client_domain_url": settings["client_url"],
+        "client_name": settings["client_name"],
     }
 
     context = await get_context(request, context_values=context_values)
