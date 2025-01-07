@@ -1,93 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>Aktivere din brugerkonto</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bekræft din brugerkonto</title>
 </head>
-
-<!--
-
-CLIENT_NAME
-display_name
-CLIENT_DOMAIN_URL
-CLIENT_EMAIL_VERIFY_DOMAIN_URL
-CLIENT_EMAIL_VERIFY_DOMAIN_URL
-token
-token
-CLIENT_DOMAIN_URL
-CLIENT_NAME
--->
 <body>
-  <span class="preheader">Velkommen til {{ CLIENT_NAME }}</span>
-  <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
-    <tr>
-      <td>&nbsp;</td>
-      <td class="container">
-        <div class="content">
-
-          <!-- START CENTERED WHITE CONTAINER -->
-          <table role="presentation" class="main">
-
-            <!-- START MAIN CONTENT AREA -->
-            <tr>
-              <td class="wrapper">
-                <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td>
-                      <p>Hej {{ display_name }},</p>
-
-                      <p>Du modtager denne mail fordi din email-adresse er blevet brugt til at oprette en brugerkonto på
-                        {{ CLIENT_DOMAIN_URL }}.</p>
-
-                      <p>For at aktivere denne brugerkonto, så du blandt andet kan begynde at bestille materialer hjem
-                        til
-                        læsesalen, skal du verificere din email-adresse. Dette gøres ved at klikke på følgende link:
-                      </p>
-
-                      <p><a href="{{ CLIENT_EMAIL_VERIFY_DOMAIN_URL }}/{{ token }}" target="_blank">
-                          {{ CLIENT_EMAIL_VERIFY_DOMAIN_URL }}/{{ token }}
-                        </a></p>
-
-                      <p>Linket er gyldigt i 1 time, hvorefter du skal logge på {{ CLIENT_DOMAIN_URL }} for at bede om et
-                        nyt
-                        verifikationslink.</p>
-
-                      <p>Hvis du mener, at du har modtaget denne email ved en fejl, skal du bare se bort fra denne
-                        besked.
-                      </p>
-
-                      <p>Med venlig hilsen</p>
-
-                      <p>{{ CLIENT_NAME }}</p>
-
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-
-            <!-- END MAIN CONTENT AREA -->
-          </table>
-          <!-- END CENTERED WHITE CONTAINER -->
-
-          <!-- START FOOTER -->
-          <div class="footer">
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-              <tr>
-                <td class="content-block">
-                </td>
-              </tr>
-            </table>
-          </div>
-          <!-- END FOOTER -->
-
-        </div>
-      </td>
-      <td>&nbsp;</td>
-    </tr>
-  </table>
+  <p>Hej {{ display_name }},</p>
+  <p>Du modtager denne mail, fordi din email-adresse er blevet brugt til at oprette en brugerkonto på {{ client_domain_url }}.</p>
+  <p>For at aktivere denne brugerkonto, så du blandt andet kan begynde at bestille materialer hjem til læsesalen, skal du verificere din email-adresse. Dette gøres ved at <a href="{{ client_verify_url }}" target="_blank">klikke på dette link</a>.</p>
+  <p>Linket er gyldigt i 1 time, hvorefter du skal logge på {{ client_domain_url }} for at bede om et nyt verifikationslink.</p>
+  <p>Hvis du mener, at du har modtaget denne email ved en fejl, skal du bare se bort fra denne besked.</p>
+  <p>Med venlig hilsen,<br>{{ client_name }}</p>
 </body>
-
-</html>
