@@ -2,6 +2,7 @@ import typing
 
 
 settings: dict[str, typing.Any] = {
+    "key": "development_e_0_development",
     "client_name": "development",
     "client_url": "https://demo.openaws.dk",
     "language": "da",
