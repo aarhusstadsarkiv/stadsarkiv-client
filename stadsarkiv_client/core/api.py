@@ -951,4 +951,7 @@ async def mail_post(request: Request, data: dict) -> typing.Any:
         if response.is_success:
             return response.json()
         else:
+
+            # TODO: Check for error message in response
+            log.error(response.json())
             response.raise_for_status()
