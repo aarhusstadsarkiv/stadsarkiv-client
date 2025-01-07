@@ -945,7 +945,7 @@ async def mail_post(request: Request, data: dict) -> typing.Any:
     """
     async with _get_async_client() as client:
         url = base_url + "/operations/mail"
-        headers = _get_jwt_headers(request, {"Content-Type": "application/json", "Accept": "application/json"})
+        headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = await client.post(url, json=data, headers=headers)
 
         if response.is_success:
