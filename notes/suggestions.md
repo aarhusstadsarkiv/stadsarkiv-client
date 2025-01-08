@@ -299,3 +299,29 @@ Kommunearkivet (1841-2015) | AarhusArkivet
 På en side med meget tekst som denne, kunne det være meget brugervenligt, hvis man kunne lave overskrifter med fed skrift. Det flyder fuldstændig sammen som det ser ud nu. Og kan være svært at læse.
 
 Også mellemrum mellem afsnit vil hjælpe på læsbarheden.
+
+---
+
+En lille rettelse til Aarhus Arkivet, jeg har opdaget.
+
+Slægtsforskning | AarhusArkivet
+
+Under afsnittet: BEGRAVELSER OG DØDSÅRSAGER
+
+Står der:
+
+Sådan bruger du dem
+
+Indgangen til samlingen er begravelsesregistrene, hvori du bliver henvist til en journal i begravelsesjournalerne (1891-1942) og/eller dødsanmeldelserne (1912-1983).
+
+Vi vil i løbet af foråret lægge de begravelsesregistre og dødsanmeldelser online på AarhusArkivet, som vi må jf. kravene til persondatabeskyttelse.
+
+Hvilket forår er der mon tale om? 😊
+
+De har faktisk ligget online et års tid. Så det må være foråret 2024.
+
+Her ligger de: 
+
+https://www.aarhusarkivet.dk/search?collection=194&series=Aarhus+Kommune%2FMagistratens+1.+afdeling%2FPark-+og+Kirkeg%C3%A5rdsforvaltningen%2FBegravelsesv%C3%A6senet%2FD%C3%B8dsanmeldelser%2FRegister+til+begravelsesjournal+%281891+-+1983%29&size=20&view=list&sort=date_from&direction=asc
+
+Vi I rette til ved lejlighed?
