@@ -166,12 +166,21 @@ async def me_permission_translated(request: Request):
 async def auth_me_get(request: Request):
     await is_authenticated(request)
     try:
+
+        # Check if "sent_mail" is in the query params
+        sent_mail = request.query_params.get("sent_mail")
+
         me = await api.users_me_get(request)
         me["token"] = request.session["access_token"]
         permissions = await api.me_permissions(request)
         permission_translated = user.permission_translated(permissions)
 
-        context_values = {"title": translate("Profile"), "me": me, "permission_translated": permission_translated}
+        context_values = {
+            "title": translate("Profile"),
+            "me": me,
+            "permission_translated": permission_translated,
+            "sent_mail": sent_mail,
+        }
         context = await get_context(request, context_values=context_values)
 
         return templates.TemplateResponse(request, "auth/me.html", context)
@@ -264,7 +273,7 @@ async def auth_send_verify_email(request: Request):
         log.exception("Error in auth_send_verify_email")
         flash.set_message(request, str(e), type="error", use_settings=True)
 
-    return RedirectResponse(url="/auth/me", status_code=302)
+    return RedirectResponse(url="/auth/me?sent_mail=1", status_code=302)
 
 
 async def auth_user_info(request: Request):

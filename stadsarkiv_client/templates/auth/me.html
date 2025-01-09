@@ -61,13 +61,26 @@
         {% endif %}
 
         {% if not me["is_verified"] %}
+            
+            <div class="record-content">
+                <div class="label">Verificer e-mail</div>
+                <div class="content">
+                    {% if not sent_mail %}
+                    <p><a href="/auth/send-verify-email">{{ translate("Send verification email") }}</a></p>
+                    {% else %}
+                    <p>E-mail er afsendt</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
         <div class="record-content">
-            <div class="label">Verfificer e-mail</div>
+            <div class="label">Verificer e-mail</div>
             <div class="content">
-                <p><a href="/auth/send-verify-email">{{ translate("Send verification email") }}</a></p>
+                <p>Din e-mail er verificeret</p>
             </div>
         </div>
         {% endif %}
+
         <div class="record-content">
             <div class="label">Mørkt tema</div>
             <div class="content">
