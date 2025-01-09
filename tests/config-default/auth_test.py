@@ -17,7 +17,6 @@ correct_login = {
 }
 incorrect_login = {"username": invalid_user, "password": invalid_password}
 
-
 """
 User already exists. At some point we should test with a user that does not exist.
 Before that is possible we should be allowed to delete a user from the database.
