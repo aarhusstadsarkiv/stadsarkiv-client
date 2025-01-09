@@ -31,10 +31,97 @@ async def mail_status(request: Request):
 
 async def mail_verify_token(request: Request):
     """
-    Mail status endpoint
+    Webhook after user has registered
     """
 
-    # Test data
+    # Get json data from request
+    try:
+        data = await request.json()
+
+        token = data["token"]
+        user = data["to_user"]
+        display_name = user["display_name"]
+        title = "Bekræft din konto"
+
+        template_values = {
+            "title": title,
+            "display_name": display_name,
+            "client_verify_url": settings["client_url"] + "/auth/verify/" + token,
+            "client_domain_url": settings["client_url"],
+            "client_name": settings["client_name"],
+        }
+
+        html_content = await get_template_content("mails/verify_email.html", template_values)
+
+        user_id = user["id"]
+        mail_dict = {
+            "data": {
+                "user_id": user_id,
+                "subject": title,
+                "sender": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
+                "reply_to": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
+                "html_content": html_content,
+                "text_content": html_content,
+            }
+        }
+
+        await api.mail_post(request, mail_dict)
+        log.info(f"Verify email sent to: {user['email']}")
+    except Exception:
+        data = "Error in mail_status"
+        log.exception("Error in sending verify email to user")
+
+    return JSONResponse({"status": "ok", "data": data})
+
+
+async def mail_reset_token(request: Request):
+    """
+    Webhook after user has requested a password reset
+    """
+    # Get json data from request
+    try:
+        data = await request.json()
+
+        token = data["token"]
+        user = data["to_user"]
+        display_name = user["display_name"]
+        title = "Glemt adgangskode"
+
+        template_values = {
+            "title": title,
+            "display_name": display_name,
+            "client_reset_url": settings["client_url"] + "/auth/verify/" + token,
+            "client_domain_url": settings["client_url"],
+            "client_name": settings["client_name"],
+        }
+
+        html_content = await get_template_content("mails/reset_password.html", template_values)
+
+        user_id = user["id"]
+        mail_dict = {
+            "data": {
+                "user_id": user_id,
+                "subject": title,
+                "sender": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
+                "reply_to": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
+                "html_content": html_content,
+                "text_content": html_content,
+            }
+        }
+
+        await api.mail_post(request, mail_dict)
+        log.info(f"Reset email sent to: {user['email']}")
+    except Exception:
+        data = "Error in mail_status"
+        log.exception("Error in sending reset email to user")
+
+    return JSONResponse({"status": "ok", "data": data})
+
+
+"""
+
+# Test data. This ID will not work if sending to the real API
+
     data: dict = {
         "nonce": "ya_X5caNnPNNV8I1DRjogmHzO3xoKBn2OffA5M1we4c",
         "context": {},
@@ -61,56 +148,4 @@ async def mail_verify_token(request: Request):
         },
     }
 
-    # Get json data from request
-    try:
-        if request.method != "GET":
-            data = await request.json()
-
-        token = data["token"]
-        user = data["to_user"]
-        display_name = user["display_name"]
-
-        template_values = {
-            "display_name": display_name,
-            "client_verify_url": settings["client_url"] + "/auth/verify/" + token,
-            "client_domain_url": settings["client_url"],
-            "client_name": settings["client_name"],
-        }
-
-        html_content = await get_template_content("mails/verify_email.html", template_values)
-
-        user_id = user["id"]
-
-        mail_dict = {
-            "data": {
-                "user_id": user_id,
-                "subject": "Bekræft din konto",
-                "sender": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
-                "reply_to": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
-                "html_content": html_content,
-                "text_content": html_content,
-            }
-        }
-
-        await api.mail_post(request, mail_dict)
-        log.info(f"Verify email sent to: {user['email']}")
-    except Exception:
-        data = "Error in mail_status"
-        log.exception("Error in sending verify email to user")
-
-    return JSONResponse({"status": "ok", "data": data})
-
-
-async def mail_reset_token(request: Request):
-    """
-    Mail status endpoint
-    """
-    # Get json data from request
-    try:
-        data = await request.json()
-        log.info(data)
-    except Exception:
-        data = "Error in mail_status"
-        log.exception("Error in mail_status")
-
-    return JSONResponse({"status": "ok", "data": data})
+"""
