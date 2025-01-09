@@ -85,7 +85,7 @@ async def test_mail(request: Request):
 
     data_dict = {
         "data": {
-            "user_id": "019265e5-3fd4-7734-990c-7c7660d1ca64",
+            "user_id": "01944542-2d7b-72bc-82bf-34e735b383cb",
             "subject": "Test",
             "sender": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
             "reply_to": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
@@ -94,6 +94,6 @@ async def test_mail(request: Request):
         }
     }
 
-    await api.mail_post(request, data_dict)
+    # await api.mail_post(request, data_dict)
 
     return templates.TemplateResponse(request, "mails/verify_email.html", context)
