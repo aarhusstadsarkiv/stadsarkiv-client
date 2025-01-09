@@ -244,6 +244,12 @@ def _normalize_search_result(records: dict):
             record["collection"] = facets_resolved["collection"].get(record["collection_id"]).get("display_label", None)
 
         if "content_types" in record:
+
+            if not record["content_types"]:
+                # Log in order to set a content-type as this is required
+                log.error(f"Content types is empty for record: {record['id']}")
+                continue
+
             content_type = record["content_types"][-1]
             record["content_type"] = facets_resolved["content_types"].get(content_type).get("display_label", None)
 
