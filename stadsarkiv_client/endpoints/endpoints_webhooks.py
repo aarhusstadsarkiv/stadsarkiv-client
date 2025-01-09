@@ -46,7 +46,7 @@ async def mail_verify_token(request: Request):
         template_values = {
             "title": title,
             "display_name": display_name,
-            "client_verify_url": settings["client_url"] + "/auth/verify/" + token,
+            "client_verify_url": f"{settings['client_url']}/auth/verify/{token}",
             "client_domain_url": settings["client_url"],
             "client_name": settings["client_name"],
         }
@@ -90,7 +90,7 @@ async def mail_reset_token(request: Request):
         template_values = {
             "title": title,
             "display_name": display_name,
-            "client_reset_url": settings["client_url"] + "/auth/verify/" + token,
+            "client_reset_url": f"{settings['client_url']}/auth/reset-password/{token}",
             "client_domain_url": settings["client_url"],
             "client_name": settings["client_name"],
         }
