@@ -5,7 +5,7 @@ import unittest
 
 log = get_log()
 
-valid_user = "dennis.iversen+test@gmail.com"
+valid_user = "dennis.iversen+h@gmail.com"
 valid_password = "testtest"
 
 invalid_user = "bad.mail@test.com"
