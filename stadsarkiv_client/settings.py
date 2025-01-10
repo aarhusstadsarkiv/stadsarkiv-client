@@ -23,14 +23,15 @@ if os.getenv("ENVIRONMENT") == "production":
     debug = False
 
 settings: dict[str, typing.Any] = {
-    "key": os.getenv("KEY"),
+    "api_key": os.getenv("API_KEY"),
+    "session_secret": os.getenv("SESSION_SECRET"),
+    "environment": os.getenv("ENVIRONMENT"),
     "client_name": "development",
     "client_url": "https://demo.openaws.dk",
     "debug": debug,
     "version": stadsarkiv_client.__version__,
     "show_version": True,
     "language": "da",
-    "environment": os.getenv("ENVIRONMENT"),
     "log_level": log_level,
     "log_handlers": ["stream", "rotating_file"],
     "log_api_calls": False,

@@ -119,7 +119,7 @@ class AccessLogMiddleware(BaseHTTPMiddleware):
 
 
 # Variables for cookie handling
-secret_key = str(os.getenv("SECRET_KEY"))
+secret_key = str(os.getenv("SECRET"))
 session_store: CookieStore = CookieStore(secret_key=secret_key)
 lifetime = settings["cookie"]["lifetime"]  # type: ignore
 cookie_httponly = settings["cookie"]["httponly"]  # type: ignore
