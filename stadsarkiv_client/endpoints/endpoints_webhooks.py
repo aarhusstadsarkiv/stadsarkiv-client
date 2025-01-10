@@ -2,7 +2,7 @@
 Webhook endpoints
 """
 
-from starlette.responses import JSONResponse, HTMLResponse
+from starlette.responses import JSONResponse
 from starlette.requests import Request
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.mail import get_template_content
@@ -116,36 +116,3 @@ async def mail_reset_token(request: Request):
         log.exception("Error in sending reset email to user")
 
     return JSONResponse({"status": "ok", "data": data})
-
-
-"""
-
-# Test data. This ID will not work if sending to the real API
-
-    data: dict = {
-        "nonce": "ya_X5caNnPNNV8I1DRjogmHzO3xoKBn2OffA5M1we4c",
-        "context": {},
-        "original_request_id": "09c74815a76841d98da1268fdcb3b3e6",
-        "error": None,
-        "timestamp": 1736240547.001911,
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTk0NDAwMC00NDlhLTc0M2EtYjU4My0yNDJkMjNjMmNjZjgiLCJlbWFpbCI6IjAxOTQ0MDAwNDQ5NjcxMmVhODhiZmFlZjM2ODQ5MTY5QGludGVybmFsLmxvY2FsIiwiYXVkIjoiZmFzdGFwaS11c2Vyczp2ZXJpZnkiLCJleHAiOjE3MzYyNDQxNDZ9.dFuissS8vA7ZESmwPvH-aQy_Hn5zsY0Z4SJUhom9iY0",
-        "to_user": {
-            "id": "019265e5-3fd4-7734-990c-7c7660d1ca64",
-            "email": "dennis.iversen+x@gmail.com",
-            "is_active": True,
-            "is_verified": False,
-            "client_id": "demo",
-            "display_name": "diversen",
-            "data": {"bookmarks": [], "custom": {"updated": 1736240547, "data": {}}},
-            "timestamp": 1736240546,
-            "updated": 1736240546,
-            "last_login": 1736240546,
-            "permissions": [
-                {"name": "user", "grant_id": 6, "entity_id": None},
-                {"name": "guest", "grant_id": 8, "entity_id": None},
-                {"name": "read", "grant_id": 9, "entity_id": None},
-            ],
-        },
-    }
-
-"""

@@ -11,7 +11,6 @@ from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.database.cache import DatabaseCache
 from stadsarkiv_client.database.crud_default import database_url
 from stadsarkiv_client.database.utils import DatabaseConnection
-from stadsarkiv_client.core import api
 from stadsarkiv_client.core.dynamic_settings import settings
 import random
 
@@ -83,16 +82,16 @@ async def test_mail(request: Request):
 
     # template_str = await get_template_content("mails/verify_email.html", context)
 
-    data_dict = {
-        "data": {
-            "user_id": "01944542-2d7b-72bc-82bf-34e735b383cb",
-            "subject": "Test",
-            "sender": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
-            "reply_to": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
-            "html_content": "Test Test",
-            "text_content": "Test Test",
-        }
-    }
+    # data_dict = {
+    #     "data": {
+    #         "user_id": "01944542-2d7b-72bc-82bf-34e735b383cb",
+    #         "subject": "Test",
+    #         "sender": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
+    #         "reply_to": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
+    #         "html_content": "Test Test",
+    #         "text_content": "Test Test",
+    #     }
+    # }
 
     # await api.mail_post(request, data_dict)
 

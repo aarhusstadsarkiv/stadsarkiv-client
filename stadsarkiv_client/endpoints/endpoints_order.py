@@ -8,7 +8,6 @@ from stadsarkiv_client.records import record_alter
 from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.core.flash import set_message
 from stadsarkiv_client.database import crud_orders
 from stadsarkiv_client.database import utils_orders
 from stadsarkiv_client.core import flash
