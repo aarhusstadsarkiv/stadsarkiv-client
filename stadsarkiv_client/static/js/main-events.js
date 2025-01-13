@@ -40,14 +40,16 @@ window.addEventListener('pageshow', function (e) {
     }
 });
 
-/**
- * Highlight the active link in action-links if the path matches the current page
- */
 const actionLinks = document.querySelectorAll('.action-links > a');
-actionLinks.forEach(function (link) {
-    let path = link.getAttribute('data-path') || link.getAttribute('href');
-    if (window.location.pathname.startsWith(path)) {
+let activeLinkSet = false;
+
+actionLinks.forEach(link => {
+    const path = link.getAttribute('data-path') || link.getAttribute('href');
+    const isExactMatch = path === window.location.pathname;
+    const isPartialMatch = path !== '/' && window.location.pathname.startsWith(path);
+
+    if (isExactMatch || isPartialMatch) {
         link.classList.add('active');
+        activeLinkSet = true;
     }
 });
-
