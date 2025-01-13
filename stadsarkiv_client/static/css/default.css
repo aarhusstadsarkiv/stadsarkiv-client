@@ -322,9 +322,9 @@ h6 {
 /** 
  * The .active link is current the same as .disabled
  */
- .action-links>.active {
+.action-links>.active {
     background-color: rgba(var(--navigation-background-rgb), 0.75);
-    color: white;
+    color: var(--background-alt);
 }
 
 
