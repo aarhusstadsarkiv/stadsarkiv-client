@@ -18,8 +18,8 @@
 {# set drop down with completed or active orders #}
 <form method="GET" action="/admin/orders">
     <select name="status" id="status">
-        <option value="active" {% if status == 'active' %}selected{% endif %}>Aktivt materiale</option>
-        <option value="completed" {% if status == 'completed' %}selected{% endif %}>Afsluttet materiale</option>
+        <option value="active" {% if status == 'active' %}selected{% endif %}>Aktive bestillinger</option>
+        <option value="completed" {% if status == 'completed' %}selected{% endif %}>Historik</option>
     </select>
 </form>
 
@@ -59,7 +59,22 @@
             </td>
             <td>{{ order.user_display_name }}</td>
             <td>{{ order.user_status_human }}</td>
-            <td>{{ order.location_human }}</td>
+            <td>
+                {% if order.allow_location_change %}
+                {% set location_change_disabled = "" %}
+                {% set title = "" %}
+                {% else %}
+                {% set location_change_disabled = "disabled" %}
+                {% set title = "Du har ikke ændre lokation, da materialet er i Læsesalen og en bruger har rettighed til at benytte det. Du må først slette eller afslutte den aktive bestilling, før du kan ændre lokation." %}
+                {% endif %}
+
+                <select {{ location_change_disabled }} name="location" class="location" data-id="{{ order.order_id }}" title="{{ title }}">
+                    {% for key, value in locations.items() %}
+                    <option value="{{ key }}" {% if order.location==key %}selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
+            
+            </td>
             <td>{{ order.created_at }}</td>
             {% if order.deadline %}
             <td>{{ order.deadline }}</td>
@@ -119,6 +134,26 @@
         pointer-events: none;
     }
 
+    input, button, textarea, select {
+        color: var(--form-text);
+        background-color: var(--background);
+        margin-right: 6px;
+        margin-bottom: 6px;
+        /* padding: 10px; */
+        /* border: none; */
+        /* border-radius: 6px; */
+        /* outline: none; */
+        /* font-family: inherit; */
+        /* font-size: inherit; */
+
+        padding: unset;
+        border: unset;
+        border-radius: unset;
+        outline: unset;
+        font-family: unset;
+        font-size: inherit;
+    }
+
 
 </style>
 <div class="loadingspinner hidden"></div>
@@ -129,6 +164,10 @@
     import { StatusesUser } from '/static/js/orders.js';
 
     const spinner = document.querySelector('.loadingspinner');
+    
+    /**
+     * Handle DONE and DELETE click
+     */
     async function handleDeleteAdminClick(event) {
 
         event.preventDefault();
@@ -186,12 +225,42 @@
         element.addEventListener('click', handleDeleteAdminClick);
     });
 
+    /*
     // Bulk checkbox
     const toggleBulk = document.getElementById('toggle-bulk');
     toggleBulk.addEventListener('change', function() {
         const actionsDeactivated = document.querySelectorAll('[name="bulk-item"]');
         actionsDeactivated.forEach(element => {
             element.checked = toggleBulk.checked;
+        });
+    });
+    */
+
+    document.querySelectorAll('.location').forEach(element => {
+        element.addEventListener('change', async function() {
+            const order_id = element.dataset.id;
+            const location = element.value;
+            const url = '/admin/orders/patch/' + order_id;
+            const data = {
+                'location': location
+            }
+
+            spinner.classList.toggle('hidden');
+
+            try {
+                const res = await Requests.asyncPostJson(url, data);
+                if (res.error) {
+                    Flash.setMessage(res.message, 'error');
+                } else {
+                    Flash.setMessage(res.message, 'success');
+                    // window.location.reload();
+                }
+            } catch (e) {
+                Flash.setMessage(res.message, 'error');
+                await asyncLogError('/error/log', e.stack);
+            } finally {
+                spinner.classList.toggle('hidden');
+            }
         });
     });
 

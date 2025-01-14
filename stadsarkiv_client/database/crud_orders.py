@@ -248,7 +248,7 @@ async def get_orders_user(user_id: str, completed=0) -> list:
         )
 
         # Fetch the orders based on statuses
-        orders = await _get_orders(crud, statuses, user_id=user_id)
+        orders = await _get_orders(crud, statuses=statuses, user_id=user_id)
 
         # Format each order for display
         return [format_order_for_display(order) for order in orders]
@@ -263,31 +263,32 @@ async def get_orders_admin(status: str = "active"):
         crud = CRUD(connection)
 
         if status == "active":
-            orders = await _get_orders(crud, [utils_orders.STATUSES_USER.ORDERED])
+            orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.ORDERED])
             for order in orders:
                 order = utils_orders.format_order_display(order)
-                queued_orders = await _get_orders(crud, [utils_orders.STATUSES_USER.QUEUED], record_id=order["record_id"])
+                queued_orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.QUEUED], record_id=order["record_id"])
                 order["count"] = len(queued_orders)
 
+                # Only the first order in the list is 'ORDERED' and can be changed
                 # if location is READING_ROOM set action_location_change to False
-                if order["location"] == utils_orders.STATUSES_LOCATION.READING_ROOM:
-                    order["location_change_deactivated"] = True
+                if order["location"] != utils_orders.STATUSES_LOCATION.READING_ROOM:
+                    order["allow_location_change"] = True
 
-        elif status == "completed":
+        if status == "completed":
+
+            having = f"""
+            SUM(CASE WHEN o.user_status IN ('{utils_orders.STATUSES_USER.COMPLETED}', '{utils_orders.STATUSES_USER.DELETED}') THEN 1 ELSE 0 END) = COUNT(o.record_id)"""
+
             orders = await _get_orders(
                 crud,
-                [utils_orders.STATUSES_USER.COMPLETED, utils_orders.STATUSES_USER.DELETED],
+                # statuses=[utils_orders.STATUSES_USER.COMPLETED, utils_orders.STATUSES_USER.DELETED],
                 group_by="o.record_id",
+                having=having,
             )
             for order in orders:
                 order = utils_orders.format_order_display(order)
                 order["user_actions_deactivated"] = True
-
-            # Remove orders that are in the active list
-            for order in orders:
-                active_order = await _get_orders_one(crud, [utils_orders.STATUSES_USER.ORDERED], record_id=order["record_id"])
-                if active_order:
-                    orders.remove(order)
+                order["allow_location_change"] = True
 
         return orders
 
@@ -354,6 +355,7 @@ async def _get_orders(
     order_id: int = 0,
     location: int = 0,
     group_by: str = "",
+    having: str = "",
     order_by: str = "o.order_id DESC",
     limit: int = 100,
 ):
@@ -364,6 +366,7 @@ async def _get_orders(
         order_id,
         location,
         group_by,
+        having,
         order_by,
         limit,
     )
@@ -379,6 +382,7 @@ async def _get_orders_one(
     order_id: int = 0,
     location: int = 0,
     group_by: str = "",
+    having: str = "",
     order_by: str = "o.order_id DESC",
     limit: int = 1,
 ):
@@ -392,6 +396,7 @@ async def _get_orders_one(
         order_id,
         location,
         group_by,
+        having,
         order_by,
         limit,
     )
@@ -406,6 +411,7 @@ async def _get_orders_query_params(
     order_id: int = 0,
     location: int = 0,
     group_by: str = "",
+    having: str = "",
     order_by: str = "o.order_id DESC",
     limit: int = 0,
 ):
@@ -448,6 +454,9 @@ async def _get_orders_query_params(
     if group_by:
         query += f"GROUP BY {group_by} "
 
+    if having:
+        query += f"HAVING {having} "
+
     if order_by:
         query += f"ORDER BY {order_by} "
 
@@ -465,7 +474,7 @@ async def _allow_location_change(crud: "CRUD", record_id: str, raise_exception=F
     """
     orders = await _get_orders(
         crud,
-        [utils_orders.STATUSES_USER.ORDERED],
+        statuses=[utils_orders.STATUSES_USER.ORDERED],
         location=utils_orders.STATUSES_LOCATION.READING_ROOM,
         record_id=record_id,
     )

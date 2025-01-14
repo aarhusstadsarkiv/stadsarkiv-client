@@ -206,7 +206,7 @@ async def orders_admin_patch(request: Request):
         else:
             message = "Bestillingen er blevet opdateret"
 
-        flash.set_message(request, message, type="success")
+        # flash.set_message(request, message, type="success")
         return JSONResponse(
             {
                 "message": message,
@@ -235,6 +235,7 @@ async def orders_admin_get(request: Request):
         "title": "Bestillinger",
         "orders": orders,
         "status": status,
+        "locations": utils_orders.STATUSES_LOCATION_HUMAN,
     }
     context = await get_context(request, context_values=context_values)
 
