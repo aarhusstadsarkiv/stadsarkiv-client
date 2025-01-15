@@ -90,6 +90,7 @@ class CRUD:
             order_by=order_by,
             limit_offset=limit_offset,
         )
+
         cursor = self.connection.execute(query, filters)
         rows = cursor.fetchall()
         rows = [dict(row) for row in rows]

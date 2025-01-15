@@ -105,6 +105,8 @@ async def insert_order(meta_data: dict, me: dict):
 
         # Handle special cases for orders already in the reading room and ordered
         if record_data["location"] == utils_orders.STATUSES_LOCATION.READING_ROOM and user_status == utils_orders.STATUSES_USER.ORDERED:
+            log.debug(f"Order {order_data['order_id']} moved to READING_ROOM. Setting deadline and sending message.")
+
             deadline_date = utils_orders.get_deadline_date()
             order_data["deadline"] = deadline_date
 
@@ -131,7 +133,6 @@ async def _update_user_status(crud: "CRUD", order_id: int, new_status: int):
         log.debug(f"Order {order_id}: Status changed to COMPLETED or DELETED.")
 
         next_queued_order = await _get_orders_one(crud, statuses=[utils_orders.STATUSES_USER.QUEUED], record_id=order["record_id"])
-
         if next_queued_order:
             log.debug(f"Order {next_queued_order['order_id']} found. Updating from QUEUED to ORDERED.")
 
@@ -162,8 +163,8 @@ async def _update_location(crud: "CRUD", order_id: int, new_location: int):
     if not new_location:
         return
 
-    old_order = await _get_orders_one(crud, order_id=order_id)
-    record_id = old_order["record_id"]
+    order = await _get_orders_one(crud, order_id=order_id)
+    record_id = order["record_id"]
 
     await _allow_location_change(crud, record_id, raise_exception=True)
     await crud.update(
@@ -172,8 +173,10 @@ async def _update_location(crud: "CRUD", order_id: int, new_location: int):
         filters={"record_id": record_id},
     )
 
-    if old_order["location"] != new_location:
-        log.debug(f"Order {order_id}: Location changed from {old_order['location']} to {new_location}.")
+    if order["location"] != new_location:
+        log.debug(f"Order {order_id}: Location changed from {order['location']} to {new_location}.")
+
+        # Log type of new_location and user_status
 
         if new_location == utils_orders.STATUSES_LOCATION.READING_ROOM:
             deadline_date = utils_orders.get_deadline_date()
@@ -183,7 +186,7 @@ async def _update_location(crud: "CRUD", order_id: int, new_location: int):
                 filters={"order_id": order_id},
             )
 
-            if not old_order.get("message_sent"):
+            if not order.get("message_sent"):
                 updated_order = await _get_orders_one(crud, order_id=order_id)
                 utils_orders.send_order_message("Order available in reading room", updated_order)
 
@@ -275,20 +278,47 @@ async def get_orders_admin(status: str = "active"):
                     order["allow_location_change"] = True
 
         if status == "completed":
+            query = f"""
+WITH LatestOrders AS (
+    SELECT
+        o.record_id,
+        MAX(o.updated_at) AS latest_updated_at
+    FROM
+        orders o
+    GROUP BY
+        o.record_id
+)
+SELECT
+    o.*, r.*, u.*
+FROM
+    orders o
+    LEFT JOIN records r ON o.record_id = r.record_id
+    LEFT JOIN users u ON o.user_id = u.user_id
+    INNER JOIN LatestOrders lo
+        ON o.record_id = lo.record_id AND o.updated_at = lo.latest_updated_at
+WHERE
+    o.user_status IN ({utils_orders.STATUSES_USER.DELETED}, {utils_orders.STATUSES_USER.COMPLETED})
+    AND
+    r.location != {utils_orders.STATUSES_LOCATION.IN_STORAGE}
 
-            having = f"""
-            SUM(CASE WHEN o.user_status IN ('{utils_orders.STATUSES_USER.COMPLETED}', '{utils_orders.STATUSES_USER.DELETED}') THEN 1 ELSE 0 END) = COUNT(o.record_id)"""
+ORDER BY
+    o.updated_at ASC
+LIMIT 100;
+"""
+            orders = await crud.query(query, {})
 
-            orders = await _get_orders(
-                crud,
-                # statuses=[utils_orders.STATUSES_USER.COMPLETED, utils_orders.STATUSES_USER.DELETED],
-                group_by="o.record_id",
-                having=having,
-            )
             for order in orders:
                 order = utils_orders.format_order_display(order)
                 order["user_actions_deactivated"] = True
                 order["allow_location_change"] = True
+
+        if status == "order_history":
+            # Get all orders with status COMPLETED
+            orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.COMPLETED], limit=100)
+            for order in orders:
+                order = utils_orders.format_order_display(order)
+                order["user_actions_deactivated"] = True
+                order["allow_location_change"] = False
 
         return orders
 
@@ -354,8 +384,6 @@ async def _get_orders(
     user_id: str = "",
     order_id: int = 0,
     location: int = 0,
-    group_by: str = "",
-    having: str = "",
     order_by: str = "o.order_id DESC",
     limit: int = 100,
 ):
@@ -365,13 +393,12 @@ async def _get_orders(
         user_id,
         order_id,
         location,
-        group_by,
-        having,
         order_by,
         limit,
     )
 
-    return await crud.query(query, params)
+    result = await crud.query(query, params)
+    return result
 
 
 async def _get_orders_one(
@@ -381,8 +408,6 @@ async def _get_orders_one(
     user_id: str = "",
     order_id: int = 0,
     location: int = 0,
-    group_by: str = "",
-    having: str = "",
     order_by: str = "o.order_id DESC",
     limit: int = 1,
 ):
@@ -395,8 +420,6 @@ async def _get_orders_one(
         user_id,
         order_id,
         location,
-        group_by,
-        having,
         order_by,
         limit,
     )
@@ -410,8 +433,6 @@ async def _get_orders_query_params(
     user_id: str = "",
     order_id: int = 0,
     location: int = 0,
-    group_by: str = "",
-    having: str = "",
     order_by: str = "o.order_id DESC",
     limit: int = 0,
 ):
@@ -450,12 +471,6 @@ async def _get_orders_query_params(
 
     if where_clauses:
         query += "WHERE " + " AND ".join(where_clauses) + " "
-
-    if group_by:
-        query += f"GROUP BY {group_by} "
-
-    if having:
-        query += f"HAVING {having} "
 
     if order_by:
         query += f"ORDER BY {order_by} "

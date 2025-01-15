@@ -18,21 +18,15 @@
 {# set drop down with completed or active orders #}
 <form method="GET" action="/admin/orders">
     <select name="status" id="status">
-        <option value="active" {% if status == 'active' %}selected{% endif %}>Aktive bestillinger</option>
-        <option value="completed" {% if status == 'completed' %}selected{% endif %}>Historik</option>
+        <option title="Aktive bestillinger" value="active" {% if status == 'active' %}selected{% endif %}>Aktive bestillinger</option>
+        <option title="Materiale som er afsluttet, men som ikke er i magasin" value="completed" {% if status == 'completed' %}selected{% endif %}>Afsluttet materiale</option>
+        <option title="Alle afsluttede bestillinger" value="order_history" {% if status == 'order_history' %}selected{% endif %}>Afsluttede bestillinger</option>
     </select>
 </form>
 
-<script type="module">
-    const status = document.getElementById('status');
-    status.addEventListener('change', function() {
-        window.location.href = '/admin/orders?status=' + status.value;
-    });
-
-</script>
 
 {% if orders|length == 0 %}
-<p>Der er ingen ordrer.</p>
+<p>Der er ingen bestillinger at vise</p>
 {% else %}
 <table>
     <thead>
@@ -42,13 +36,10 @@
             <th>Bruger status</th>
             <th>Lokation</th>
             <th>Oprettet</th>
-            <th>Deadline</th>
-            <th title="Antal brugere som står i kø">I Kø</th>
+            <th class="td-deadline">Deadline</th>
+            <th class="td-queue" title="Antal brugere som står i kø">I Kø</th>
             <th>Placering</th>
             <th>Handling</th>
-            <th>
-                <input type="checkbox" id="toggle-bulk" name="toggle-bulk"> Opdater lokation
-            </th>
         </tr>
     </thead>
     <tbody>
@@ -77,11 +68,11 @@
             </td>
             <td>{{ order.created_at }}</td>
             {% if order.deadline %}
-            <td>{{ order.deadline }}</td>
+            <td class="td-deadline">{{ order.deadline }}</td>
             {% else %}
             <td>Ikke angivet</td>
             {% endif %}
-            <td>{{ order.count }}</td>
+            <td class="td-queue">{{ order.count }}</td>
             <td>{{ order.resources }}</td>
             <td>
                 <span>
@@ -93,20 +84,14 @@
                         <a data-id="{{order.order_id}}" data-action="completed"
                             title="Brugeren er færdig med bestillingen" href="#">Afslut</a>
                     </span>
-                    
+                    <!---
                     <span class="delete-order">
                         <a {{ disabled }} data-id="{{order.order_id}}" data-action="deleted" href="#">Slet</a>
                     </span>
+                    -->
                     {% endif %}
 
                 </span>
-            </td>
-            <td>
-                {% if not order.location_change_deactivated %}
-                <span>
-                    <input data-id="{{order.order_id}}" type="checkbox" id="bulk-item" name="bulk-item">
-                </span>
-                {% endif %}
             </td>
         </tr>
         {% endfor %}
@@ -154,6 +139,23 @@
         font-size: inherit;
     }
 
+    /** 7th column (td and th should only be 60px)
+     * This column should align to the left
+    */
+    /*
+    .td-queue, .td-deadline {
+
+        width: 100px;
+        text-align: left;
+    }
+    */
+
+    td, th {
+        max-width: 60px; 
+    }
+
+
+
 
 </style>
 <div class="loadingspinner hidden"></div>
@@ -166,9 +168,9 @@
     const spinner = document.querySelector('.loadingspinner');
     
     /**
-     * Handle DONE and DELETE click
+     * Handle FINISHED (afsluttet) and DELETED (slettet) clicks
      */
-    async function handleDeleteAdminClick(event) {
+    async function handleUserStatusClick(event) {
 
         event.preventDefault();
         Flash.clearMessages();
@@ -180,11 +182,11 @@
             const action = element.dataset.action;
 
             if (action == 'completed') {
-                if (!confirm('Er du sikker på at brugeren har afsluttet denne ordre?')) {
+                if (!confirm('Er du sikker på at brugeren har afsluttet denne bestilling?')) {
                     return;
                 }
             } else {
-                if (!confirm('Er du sikker på at du vil slette denne ordre?')) {
+                if (!confirm('Er du sikker på at du vil slette denne bestilling?')) {
                     return;
                 }
             }
@@ -217,12 +219,14 @@
         }
     }
 
+    /*
     document.querySelectorAll('.delete-order > *').forEach(element => {
-        element.addEventListener('click', handleDeleteAdminClick);
+        element.addEventListener('click', handleUserStatusClick);
     });
+    */
 
     document.querySelectorAll('.complete-order > *').forEach(element => {
-        element.addEventListener('click', handleDeleteAdminClick);
+        element.addEventListener('click', handleUserStatusClick);
     });
 
     /*
@@ -263,6 +267,19 @@
             }
         });
     });
+
+    /**
+     * handles drop down to select "Aktive bestillinger", "Afsluttet materialer"
+    */
+    const status = document.getElementById('status');
+    status.addEventListener('change', function() {
+        window.location.href = '/admin/orders?status=' + status.value;
+    });
+
+</script>
+
+
+<script type="module">
 
 </script>
 

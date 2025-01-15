@@ -175,7 +175,7 @@ async def _get_location(update_values: dict) -> int:
     """
     location = 0
     if "location" in update_values:
-        location = update_values["location"]
+        location = int(update_values["location"])
         update_values.pop("location")
     return location
 
