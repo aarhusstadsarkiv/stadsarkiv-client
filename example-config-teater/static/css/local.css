@@ -69,6 +69,15 @@
 
 }
 
+
+.page-resources-events .record_content_description > .label {
+    display: none;
+}
+
+.page-resources-people .record_content_description > .label {
+    display: none;
+}
+
 .resources-relations .relations, .resources-relations .relations-edit {
     scroll-margin-top: var(--main-menu-top);
 }

@@ -7,7 +7,7 @@
 
 {% extends "base.html" %}
 
-{% block body_class %}resources-events resources-relations{% endblock %}
+{% block body_class %}page-resources-events resources-relations{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/overlay.css') }}?v={{ get_setting('version') }}">
@@ -31,11 +31,14 @@
 {% set keys = [
 "id", "ext_data_season", "ext_data_stagename", "date_from_premier", "ext_data_playwright",
 "ext_data_production", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area",
-"ext_data_translater", "ext_data_arkiv_id", "ext_data_number_of_performances",
+"ext_data_translater",  "ext_data_number_of_performances"
 ] %}
 
 {% set options = {'icon': schema, 'icon_label': 'Forestilling'} %}
 {{ common_macros.parse_image_block('', keys, resource, options) }}
+
+{% set keys = [ "description"] %}
+{{ common_macros.parse_block_common('Beskrivelse', keys, resource) }}
 
 {{ relations.parse_relations('people', resource) }}
 
