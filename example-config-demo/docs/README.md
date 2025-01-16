@@ -35,13 +35,19 @@ Show all commands:
 
     stadsarkiv-client
 
-Run dev server:
-
-    stadsarkiv-client server-dev
-
-With some config dir `example-config-aarhus`: 
+Run dev server with a config dir `example-config-aarhus`: 
 
     stadsarkiv-client server-dev -c example-config-aarhus
+
+In order to perform api-calls you will need a valid `API_KEY` which you can get from aarhus stadsarkiv.
+
+E.g. create a folder like `local` and add a `.env` file with the following content:
+
+    API_KEY=your-api-key
+
+Then you can run the server with the following command:
+
+    stadsarkiv-client server-dev -c local
 
 ### Fix code
 
