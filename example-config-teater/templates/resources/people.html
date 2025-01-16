@@ -26,7 +26,8 @@
 {% include "includes/main_title.html" %}
 
 {% set options = {'icon': 'person', 'icon_label': 'Person'} %}
-{% set keys = ["firstnames", "lastnames", "gender", "date_of_birth", "place_of_birth", "date_of_death", "place_of_death", "occupation", "description"] %}
+{% set keys = ["firstnames", "lastnames", "gender", "date_of_birth", "place_of_birth", "date_of_death",
+"place_of_death", "occupation", "description"] %}
 {{ common_macros.parse_image_block('', keys, resource, options) }}
 
 {#
@@ -52,8 +53,10 @@
 {% set keys = ["sources_normalized"] %}
 {{ common_macros.parse_block_common('Kilder', keys, resource) }}
 
+{#
 {% set keys = ["ext_data"] %}
-{#{ common_macros.parse_block_common('Udvidet data', keys, resource) }#}
+{ common_macros.parse_block_common('Udvidet data', keys, resource) }
+#}
 
 {% if has_permission( "employee", permissions_list) %}
 <div class="relations-edit-app"></div>
@@ -68,8 +71,8 @@
 {% endif %}
 
 {% set meta_links = [
-    {"url": "/people/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
-    {"url": "/people/" + meta['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
+{"url": "/people/" + meta['id_real'] + "/json/api", "label": "JSON. Resource fra API" },
+{"url": "/people/" + meta['id_real'] + "/json/resource_and_types", "label": "JSON. Typer og værdier" }
 ] %}
 {{ common_macros.parse_meta_block(meta_links, permissions_list) }}
 
