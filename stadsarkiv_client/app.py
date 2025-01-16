@@ -25,6 +25,10 @@ if not os.path.exists(data_dir):
     log.info(f"Creating data directory: {data_dir}")
     os.makedirs(data_dir)
 
+api_key = os.getenv("API_KEY")
+if api_key == "api_key":
+    log.error("API_KEY environment variable is not set")
+
 log.debug("Environment: " + str(os.getenv("ENVIRONMENT")))
 log.debug(json.dumps(settings, sort_keys=True, indent=4, ensure_ascii=False))
 
