@@ -31,14 +31,16 @@
 {% set keys = [
 "id", "ext_data_season", "ext_data_stagename", "date_from_premier", "ext_data_playwright",
 "ext_data_production", "addr_nr", "zipcode", "latitude_longitude", "parish", "rotation", "local_area",
-"ext_data_translater",  "ext_data_number_of_performances"
+"ext_data_translater",  "ext_data_number_of_performances", "description",
 ] %}
 
 {% set options = {'icon': schema, 'icon_label': 'Forestilling'} %}
 {{ common_macros.parse_image_block('', keys, resource, options) }}
 
+{#
 {% set keys = [ "description"] %}
 {{ common_macros.parse_block_common('Beskrivelse', keys, resource) }}
+#}
 
 {{ relations.parse_relations('people', resource) }}
 
@@ -52,9 +54,12 @@
 {{ search_macros.parse_search_result(resource.search_result, ignore_fields) }}
 {% endif %}
 
+{#
+
 {% set keys = ["sources_normalized"] %}
 {{ common_macros.parse_block_common('Kilder', keys, resource) }}
 
+#}
 {% if has_permission( "employee", permissions_list) %}
 <div class="relations-edit-app"></div>
 <script type="module">

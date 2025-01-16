@@ -10,20 +10,20 @@ Vis arkivalier som bokse.
 
 Vend top billede og stamdata om. 
 
-Skift mail ud i kontakt. marianne philipsen
+x Skift mail ud i kontakt. marianne philipsen
 
-Ændre mailadressen på siden fra arkivar@aarhusteater.dk til marianne.philipsen@aarhusteater.dk
+x Ændre mailadressen på kontakt siden fra arkivar@aarhusteater.dk til marianne.philipsen@aarhusteater.dk
 
-Fjern "kilder" under events.
+x Fjern "kilder" under events.
 
 --- 
 
 
 VIGTIGT:
 
-På personer og forestillinger: 
-Fjern arkiv-id, fx: Arkiv-ID 58-A
+X På personer og forestillinger. Fjern arkiv-id, fx: Arkiv-ID 58-A
+x Opret beskrivelses-data (description) på personer og forestillinger.
+Se fx: https://teater.openaws.dk/events/155131
 
----
-
-Opret beskrivelses-data (description)
+x Fjern "kilder" under events.
+x Ændre mailadressen på kontakt siden fra arkivar@aarhusteater.dk til marianne.philipsen@aarhusteater.dk
