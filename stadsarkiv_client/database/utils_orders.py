@@ -16,7 +16,7 @@ class StatusesLocation:
 
     IN_STORAGE: int = 1
     PACKED_STORAGE: int = 2
-    IN_STORAGE_DOKK1: int = 3
+    # IN_STORAGE_DOKK1: int = 3
     READING_ROOM: int = 4
     RETURN_TO_STORAGE: int = 5
 
@@ -25,9 +25,10 @@ STATUSES_LOCATION = StatusesLocation()
 STATUSES_LOCATION_HUMAN = {
     1: "På magasin",  # Initial status
     2: "Pakket til læsesal",
-    3: "Depotrum på dokk1",
+    # 3: "Depotrum på dokk1",
     4: "På læsesalen",
     5: "Pakket til magasin",
+    # 6: "Tilbage på magasin",
 }
 
 

@@ -15,19 +15,28 @@
 
 {{ basic_macros.page_title(title) }}
 
-{# set drop down with completed or active orders #}
+{# Select active, completed, order_history #}
 <form method="GET" action="/admin/orders">
     <select name="status" id="status">
-        <option title="Aktive bestillinger" value="active" {% if status == 'active' %}selected{% endif %}>Aktive bestillinger</option>
-        <option title="Materiale som er afsluttet, men som ikke er i magasin" value="completed" {% if status == 'completed' %}selected{% endif %}>Afsluttet materiale</option>
-        <option title="Alle afsluttede bestillinger" value="order_history" {% if status == 'order_history' %}selected{% endif %}>Afsluttede bestillinger</option>
+        <option title="Aktive bestillinger" value="active" {% if status=='active' %}selected{% endif %}>Aktive
+            bestillinger</option>
+        <option title="Materiale som er afsluttet, men som ikke er i magasin" value="completed" {% if
+            status=='completed' %}selected{% endif %}>Afsluttet materiale</option>
+        <option title="Historik over afsluttede bestillinger" value="order_history" {% if status=='order_history' %}selected{%
+            endif %}>Historik</option>
     </select>
 </form>
 
-
 {% if orders|length == 0 %}
-<p>Der er ingen bestillinger at vise</p>
+    {% if status == 'active' %}
+        <p>Der er ingen bestillinger at vise</p>
+    {% elif status == 'completed' %}
+        <p>Der er ingen afsluttede bestillinger at vise</p>
+    {% elif status == 'order_history' %}
+        <p>Der er ingen historik at vise</p>
+    {% endif %}
 {% else %}
+
 <table>
     <thead>
         <tr>
@@ -35,7 +44,7 @@
             <th>Brugernavn</th>
             <th>Bruger status</th>
             <th>Lokation</th>
-            <th>Oprettet</th>
+            <th>Opdateret</th>
             <th class="td-deadline">Deadline</th>
             <th class="td-queue" title="Antal brugere som står i kø">I Kø</th>
             <th>Placering</th>
@@ -56,17 +65,19 @@
                 {% set title = "" %}
                 {% else %}
                 {% set location_change_disabled = "disabled" %}
-                {% set title = "Du har ikke ændre lokation, da materialet er i Læsesalen og en bruger har rettighed til at benytte det. Du må først slette eller afslutte den aktive bestilling, før du kan ændre lokation." %}
+                {% set title = "Du har ikke ændre lokation, da materialet er i Læsesalen og en bruger har rettighed til
+at benytte det. Du må først slette eller afslutte den aktive bestilling, før du kan ændre lokation." %}
                 {% endif %}
 
-                <select {{ location_change_disabled }} name="location" class="location" data-id="{{ order.order_id }}" title="{{ title }}">
+                <select {{ location_change_disabled }} name="location" class="location" data-id="{{ order.order_id }}"
+                    title="{{ title }}">
                     {% for key, value in locations.items() %}
                     <option value="{{ key }}" {% if order.location==key %}selected{% endif %}>{{ value }}</option>
                     {% endfor %}
                 </select>
-            
+
             </td>
-            <td>{{ order.created_at }}</td>
+            <td>{{ order.updated_at }}</td>
             {% if order.deadline %}
             <td class="td-deadline">{{ order.deadline }}</td>
             {% else %}
@@ -76,19 +87,14 @@
             <td>{{ order.resources }}</td>
             <td>
                 <span>
-                    
+
                     <a href="/admin/orders/{{order.order_id}}/edit">Rediger</a>
-                    
+
                     {% if not order.user_actions_deactivated %}
                     <span class="complete-order">
                         <a data-id="{{order.order_id}}" data-action="completed"
                             title="Brugeren er færdig med bestillingen" href="#">Afslut</a>
                     </span>
-                    <!---
-                    <span class="delete-order">
-                        <a {{ disabled }} data-id="{{order.order_id}}" data-action="deleted" href="#">Slet</a>
-                    </span>
-                    -->
                     {% endif %}
 
                 </span>
@@ -97,6 +103,17 @@
         {% endfor %}
     </tbody>
 </table>
+
+{# if status is active or completed allow to update location on multiple orders #}
+{#
+{% if status == 'active' or status == 'completed' %}
+<div class="container-medium">
+    <button id="update-location" class="button">Opdater lokation</button>
+</div>
+{% endif %}
+#}
+
+
 {% endif %}
 <style>
     tbody tr:nth-child(even) {
@@ -119,18 +136,16 @@
         pointer-events: none;
     }
 
-    input, button, textarea, select {
+    /*
+    input,
+    button,
+    textarea,
+    */
+    select {
         color: var(--form-text);
         background-color: var(--background);
         margin-right: 6px;
         margin-bottom: 6px;
-        /* padding: 10px; */
-        /* border: none; */
-        /* border-radius: 6px; */
-        /* outline: none; */
-        /* font-family: inherit; */
-        /* font-size: inherit; */
-
         padding: unset;
         border: unset;
         border-radius: unset;
@@ -139,24 +154,10 @@
         font-size: inherit;
     }
 
-    /** 7th column (td and th should only be 60px)
-     * This column should align to the left
-    */
-    /*
-    .td-queue, .td-deadline {
-
-        width: 100px;
-        text-align: left;
+    td,
+    th {
+        max-width: 60px;
     }
-    */
-
-    td, th {
-        max-width: 60px; 
-    }
-
-
-
-
 </style>
 <div class="loadingspinner hidden"></div>
 <script type="module">
@@ -166,7 +167,7 @@
     import { StatusesUser } from '/static/js/orders.js';
 
     const spinner = document.querySelector('.loadingspinner');
-    
+
     /**
      * Handle FINISHED (afsluttet) and DELETED (slettet) clicks
      */
@@ -219,29 +220,18 @@
         }
     }
 
-    /*
-    document.querySelectorAll('.delete-order > *').forEach(element => {
-        element.addEventListener('click', handleUserStatusClick);
-    });
-    */
-
+    /**
+     * eventListener on handleUserStatusClick on ".complete-order"
+     */
     document.querySelectorAll('.complete-order > *').forEach(element => {
         element.addEventListener('click', handleUserStatusClick);
     });
 
-    /*
-    // Bulk checkbox
-    const toggleBulk = document.getElementById('toggle-bulk');
-    toggleBulk.addEventListener('change', function() {
-        const actionsDeactivated = document.querySelectorAll('[name="bulk-item"]');
-        actionsDeactivated.forEach(element => {
-            element.checked = toggleBulk.checked;
-        });
-    });
-    */
-
+    /**
+     * eventListener on change location
+     */
     document.querySelectorAll('.location').forEach(element => {
-        element.addEventListener('change', async function() {
+        element.addEventListener('change', async function () {
             const order_id = element.dataset.id;
             const location = element.value;
             const url = '/admin/orders/patch/' + order_id;
@@ -257,7 +247,6 @@
                     Flash.setMessage(res.message, 'error');
                 } else {
                     Flash.setMessage(res.message, 'success');
-                    // window.location.reload();
                 }
             } catch (e) {
                 Flash.setMessage(res.message, 'error');
@@ -272,7 +261,7 @@
      * handles drop down to select "Aktive bestillinger", "Afsluttet materialer"
     */
     const status = document.getElementById('status');
-    status.addEventListener('change', function() {
+    status.addEventListener('change', function () {
         window.location.href = '/admin/orders?status=' + status.value;
     });
 
