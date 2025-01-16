@@ -100,7 +100,7 @@ def server_prod(port: int, workers: int, host: str, data_dir: str, config_dir: s
 
     cmd = [
         # Notice that this can not just be "gunicorn" as it is a new subprocess being started
-        "./venv/bin/gunicorn",
+        sys.executable, "-m", "gunicorn",
         "stadsarkiv_client.app:app",
         f"--workers={workers}",
         f"--bind={host}:{port}",
