@@ -49,6 +49,11 @@ Then you can run the server with the following command:
 
     stadsarkiv-client server-dev -c local
 
+You may also just export the `API_KEY`:
+
+    export API_KEY=your-api-key
+    stadsarkiv-client server-dev
+
 ### Fix code
 
 Run black, mypy and flake8:
