@@ -144,7 +144,7 @@ def server_dev(port: int, workers: int, host: str, data_dir: str, config_dir: st
     # reload when yml and py files change
 
     cmd = [
-        "uvicorn",
+        sys.executable, "-m", "uvicorn",
         "stadsarkiv_client.app:app",
         f"--host={host}",
         f"--port={port}",
