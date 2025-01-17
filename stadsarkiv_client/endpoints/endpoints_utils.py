@@ -1,5 +1,5 @@
 """
-Utils for endpoints. 
+Utils for endpoints.
 """
 
 from starlette.requests import Request

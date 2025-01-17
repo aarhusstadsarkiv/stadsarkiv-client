@@ -22,27 +22,6 @@
 <form method="post" action="/admin/orders/patch/{{ order.order_id }}">
     
     <fieldset>
-        {#
-        {{ allow_location_change}}
-        <label>Lokation</label>
-
-        {% if order.allow_location_change %}
-        {% set location_change_disabled = "" %}
-        {% set title = "" %}
-        {% else %}
-        {% set location_change_disabled = "disabled" %}
-        {% set title = "Du har ikke ændre lokation, da materialet er i Læsesalen og en bruger har rettighed til at benytte det. 
-Du må først slette eller afslutte den aktive bestilling, før du kan ændre lokation." 
-        
-        %}
-        {% endif %}
-
-        <select {{ location_change_disabled }} name="location" id="location" title="{{ title }}">
-            {% for key, value in locations.items() %}
-            <option value="{{ key }}" {% if order.location==key %}selected{% endif %}>{{ value }}</option>
-            {% endfor %}
-        </select>
-        #}
         <label>Kommentar</label>
         <textarea name="comment" placeholder="Kommentar">{{ order.comment }}</textarea>
         <label>Deadline</label>
@@ -132,15 +111,5 @@ Du må først slette eller afslutte den aktive bestilling, før du kan ændre lo
         await onChangeSubmit(event);
     });
 
-
 </script>
-<style>
-    /*
-    .container-medium {
-        width: 100%;
-    }
-    */
-
-</style>
-
 {% endblock content %}

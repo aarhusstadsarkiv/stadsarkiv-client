@@ -49,9 +49,7 @@
             <th>Bruger status</th>
             <th>Opdateret</th>
             <th class="td-deadline">Deadline</th>
-            <th class="td-queue" title="Antal brugere som står i kø">I Kø</th>
-            
-            
+            <th class="td-queue" title="Antal brugere som står i kø">I Kø</th>  
         </tr>
     </thead>
     <tbody>
@@ -121,17 +119,6 @@ at benytte det. Du må først slette eller afslutte den aktive bestilling, før 
     </tbody>
 </table>
 </div>
-
-{# if status is active or completed allow to update location on multiple orders #}
-{#
-{% if status == 'active' or status == 'completed' %}
-<div class="container-medium">
-    <button id="update-location" class="button">Opdater lokation</button>
-</div>
-{% endif %}
-#}
-
-
 {% endif %}
 <style>
 
@@ -305,10 +292,4 @@ at benytte det. Du må først slette eller afslutte den aktive bestilling, før 
     });
 
 </script>
-
-
-<script type="module">
-
-</script>
-
 {% endblock content %}

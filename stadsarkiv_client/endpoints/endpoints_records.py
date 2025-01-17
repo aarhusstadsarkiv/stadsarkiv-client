@@ -8,11 +8,8 @@ from starlette.responses import PlainTextResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.logging import get_log
-# from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core import cookie
-# from stadsarkiv_client.records import record_alter
-# from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.core.dataclasses import RecordPagination
 import asyncio
 import json
