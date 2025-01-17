@@ -136,7 +136,7 @@ routes = [
 if settings["allow_online_ordering"]:
     online_ordering = [
         Route("/auth/orders", endpoint=endpoints_order.orders_get_orders, name="orders_get_orders"),
-        Route("/order/{record_id:str}", endpoint=endpoints_order.orders_get_order, name="orders_get_order"),
+        # Route("/order/{record_id:str}", endpoint=endpoints_order.orders_get_order, name="orders_get_order"),
         Route("/order/{record_id:str}", endpoint=endpoints_order.orders_post, name="orders_post_order", methods=["POST"]),
         Route("/admin/orders", endpoint=endpoints_order.orders_admin_get, name="orders_admin_get"),
         Route("/admin/orders/{order_id:str}/edit", endpoint=endpoints_order.orders_admin_get_edit, name="orders_admin_get_edit"),
@@ -144,8 +144,15 @@ if settings["allow_online_ordering"]:
         Route("/order/delete/{record_id:str}", endpoint=endpoints_order.orders_user_delete, name="orders_user_patch", methods=["POST"]),
         Route(
             "/admin/orders/patch/{order_id:int}",
+            endpoint=endpoints_order.orders_admin_patch_single,
+            name="orders_admin_patch_single",
+            methods=["POST"],
+        ),
+
+        Route(
+            "/admin/orders/patch",
             endpoint=endpoints_order.orders_admin_patch,
-            name="orders_admin_patch",
+            name="orders_admin_patch_multiple",
             methods=["POST"],
         ),
     ]

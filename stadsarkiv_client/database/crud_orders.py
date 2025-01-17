@@ -7,7 +7,6 @@ from stadsarkiv_client.database.crud import CRUD
 from stadsarkiv_client.database import utils_orders
 from stadsarkiv_client.database.utils import DatabaseConnection
 from stadsarkiv_client.core.logging import get_log
-import json
 
 
 log = get_log()
@@ -350,7 +349,6 @@ def format_order_for_display(order: dict):
     """
     Format order for display
     """
-    order["resources"] = json.loads(order["resources"])
     order = utils_orders.format_order_display(order)
     return order
 

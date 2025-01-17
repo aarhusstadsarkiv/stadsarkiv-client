@@ -103,6 +103,7 @@ def format_order_display(order: dict):
     """
     order["created_at"] = date_format.timezone_alter(order["created_at"])
     order["updated_at"] = date_format.timezone_alter(order["updated_at"])
+    order["resources_str"] = _resources_to_str(order["resources"])
     if order["deadline"]:
         deadline = date_format.timezone_alter(order["deadline"])
         deadline = arrow.get(deadline).format("YYYY-MM-DD")
@@ -111,6 +112,19 @@ def format_order_display(order: dict):
     order["user_status_human"] = STATUSES_USER_HUMAN.get(order["user_status"])
     order["location_human"] = STATUSES_LOCATION_HUMAN.get(order["location"])
     return order
+
+
+def _resources_to_str(resources: str) -> str:
+    """
+    Convert list of resources to a string
+    """
+    resources_data: dict = json.loads(resources)
+    resources_str = ""
+    for key, value in resources_data.items():
+        if isinstance(value, list):
+            value = ", ".join(value)
+        resources_str += f'{key.capitalize()}: "{value}", '
+    return resources_str[:-2]
 
 
 def get_deadline_date(days: int = 14) -> str:

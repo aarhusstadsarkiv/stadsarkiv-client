@@ -8,15 +8,16 @@ from starlette.responses import PlainTextResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.core.hooks import get_hooks
+# from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core import cookie
-from stadsarkiv_client.records import record_alter
-from stadsarkiv_client.records.meta_data_record import get_record_meta_data
+# from stadsarkiv_client.records import record_alter
+# from stadsarkiv_client.records.meta_data_record import get_record_meta_data
 from stadsarkiv_client.core.dataclasses import RecordPagination
 import asyncio
 import json
 import typing
+from stadsarkiv_client.endpoints.endpoints_utils import get_record_data
 
 
 log = get_log()
@@ -111,22 +112,14 @@ async def _get_record_pagination(request: Request) -> typing.Optional[RecordPagi
 
 
 async def records_get(request: Request):
-    hooks = get_hooks(request)
 
     record_id = request.path_params["record_id"]
     if not record_id.isdigit():
         raise HTTPException(404)
 
     permissions = await api.me_permissions(request)
-    record_pagination, record = await asyncio.gather(_get_record_pagination(request), api.proxies_record_get_by_id(request, record_id))
-
-    meta_data = get_record_meta_data(request, record, permissions)
-    record, meta_data = await hooks.after_get_record(record, meta_data)
-
-    record_altered = record_alter.record_alter(request, record, meta_data)
-    record_and_types = record_alter.get_record_and_types(record_altered)
-
-    record, record_and_types = await hooks.after_get_record_and_types(record, record_and_types)
+    record_pagination, record = await asyncio.gather(_get_record_pagination(request), api.proxies_record_get_by_id(record_id))
+    record, meta_data, record_and_types = await get_record_data(request, record, permissions)
 
     context_variables = {
         "is_employee": "employee" in permissions,
@@ -144,22 +137,15 @@ async def records_get(request: Request):
 
 async def records_get_json(request: Request):
     try:
-        hooks = get_hooks(request)
 
         record_id = request.path_params["record_id"]
         type = request.path_params["type"]
 
         permissions = await api.me_permissions(request)
-        record = await api.proxies_record_get_by_id(request, record_id)
+        record = await api.proxies_record_get_by_id(record_id)
         record_original = record.copy()
 
-        meta_data = get_record_meta_data(request, record, permissions)
-        record, meta_data = await hooks.after_get_record(record, meta_data)
-
-        record_altered = record_alter.record_alter(request, record, meta_data)
-        record_and_types = record_alter.get_record_and_types(record_altered)
-
-        record, record_and_types = await hooks.after_get_record_and_types(record, record_and_types)
+        record, meta_data, record_and_types = await get_record_data(request, record, permissions)
 
         if type == "record_original":
             record_original_json = json.dumps(record_original, indent=4, ensure_ascii=False)

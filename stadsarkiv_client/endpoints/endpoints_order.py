@@ -13,6 +13,8 @@ from stadsarkiv_client.database import utils_orders
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.api import OpenAwsException
+from stadsarkiv_client.endpoints.endpoints_utils import get_record_data
+
 
 log = get_log()
 
@@ -25,40 +27,6 @@ async def _is_order_owner(request: Request, order_id: int) -> bool:
     me = await api.users_me_get(request)
     is_owner = await crud_orders.is_owner(user_id=me["id"], order_id=order_id)
     return is_owner
-
-
-async def orders_get_order(request: Request):
-    """
-    GET Page where user can order a record
-    """
-    await is_authenticated(request, verified=True)
-    me = await api.users_me_get(request)
-
-    hooks = get_hooks(request)
-    record_id = request.path_params["record_id"]
-
-    record = await api.proxies_record_get_by_id(request, record_id)
-    meta_data = get_record_meta_data(request, record)
-    record, meta_data = await hooks.after_get_record(record, meta_data)
-
-    record_altered = record_alter.record_alter(request, record, meta_data)
-    record_and_types = record_alter.get_record_and_types(record_altered)
-
-    is_active_by_user = await crud_orders.has_active_order(
-        user_id=me["id"],
-        record_id=meta_data["id"],
-    )
-
-    context_variables = {
-        "title": "Bestil: " + meta_data["title"],
-        "meta_title": "Bestil: " + meta_data["meta_title"],
-        "meta_data": meta_data,
-        "record_and_types": record_and_types,
-        "is_active_by_user": is_active_by_user,
-    }
-
-    context = await get_context(request, context_values=context_variables)
-    return templates.TemplateResponse(request, "order/order.html", context)
 
 
 async def orders_get_orders(request: Request):
@@ -94,7 +62,7 @@ async def orders_post(request: Request):
         hooks = get_hooks(request)
         record_id = request.path_params["record_id"]
 
-        record = await api.proxies_record_get_by_id(request, record_id)
+        record = await api.proxies_record_get_by_id(record_id)
         meta_data = get_record_meta_data(request, record)
         record, meta_data = await hooks.after_get_record(record, meta_data)
 
@@ -182,6 +150,40 @@ async def _get_location(update_values: dict) -> int:
 
 async def orders_admin_patch(request: Request):
     """
+    Patch multiple orders at once
+    """
+    try:
+        await is_authenticated_json(request, verified=True, permissions=["employee"])
+        me = await api.users_me_get(request)
+
+        # Mutiple orders can be updated at once
+        update_values: list = await request.json()
+        num_orders = len(update_values)
+        for update_value in update_values:
+            order_id = update_value["order_id"]
+            location = await _get_location(update_value)
+            await crud_orders.update_order(
+                location=location,
+                update_values=update_value,
+                order_id=order_id,
+                user_id=me["id"],
+            )
+
+        if len(update_values) == 1:
+            flash.set_message(request, "1 bestilling er blevet opdateret", type="success")
+        elif len(update_values) > 1:
+            flash.set_message(request, f"{num_orders} bestillinger er blevet opdateret", type="success")
+        else:
+            flash.set_message(request, "Ingen lokationer blev opdateret", type="success")
+        return JSONResponse({"error": False})
+    except Exception as e:
+        flash.set_message(request, str(e), type="error")
+        log.exception("Error in orders_admin_patch_location")
+        return JSONResponse({"error": True})
+
+
+async def orders_admin_patch_single(request: Request):
+    """
     User can only cancel their own order
     Admin can patch any order
     """
@@ -250,6 +252,8 @@ async def orders_admin_get_edit(request: Request):
 
     order_id = request.path_params["order_id"]
     order = await crud_orders.get_order(order_id)
+
+    log.debug(order)
 
     context_values = {
         "title": "Opdater bestilling",

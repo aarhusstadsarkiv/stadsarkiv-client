@@ -675,7 +675,7 @@ async def entity_get(request: Request) -> typing.Any:
             response.raise_for_status()
 
 
-async def proxies_record_get_by_id(request: Request, record_id: str) -> typing.Any:
+async def proxies_record_get_by_id(record_id: str) -> typing.Any:
     """
     GET a record from the api
     """
