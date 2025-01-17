@@ -100,7 +100,9 @@ def server_prod(port: int, workers: int, host: str, data_dir: str, config_dir: s
 
     cmd = [
         # Notice that this can not just be "gunicorn" as it is a new subprocess being started
-        sys.executable, "-m", "gunicorn",
+        sys.executable,
+        "-m",
+        "gunicorn",
         "stadsarkiv_client.app:app",
         f"--workers={workers}",
         f"--bind={host}:{port}",
@@ -144,7 +146,9 @@ def server_dev(port: int, workers: int, host: str, data_dir: str, config_dir: st
     # reload when yml and py files change
 
     cmd = [
-        sys.executable, "-m", "uvicorn",
+        sys.executable,
+        "-m",
+        "uvicorn",
         "stadsarkiv_client.app:app",
         f"--host={host}",
         f"--port={port}",

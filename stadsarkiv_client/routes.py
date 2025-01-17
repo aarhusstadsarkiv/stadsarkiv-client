@@ -147,7 +147,6 @@ if settings["allow_online_ordering"]:
             name="orders_admin_patch_single",
             methods=["POST"],
         ),
-
         Route(
             "/admin/orders/patch",
             endpoint=endpoints_order.orders_admin_patch,

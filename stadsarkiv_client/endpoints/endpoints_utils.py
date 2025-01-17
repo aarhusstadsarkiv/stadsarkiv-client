@@ -15,7 +15,6 @@ log = get_log()
 
 
 async def get_record_data(request: Request, record, permissions) -> typing.Tuple[dict, dict, dict]:
-
     """
     A mutated record is returned. In order to keep the original record make a copy before using this function.
     """
