@@ -65,19 +65,23 @@ def get_insert_user_data(me: dict) -> dict:
     }
 
 
-def get_insert_record_data(meta_data: dict, location: int = 0) -> dict:
+def get_insert_record_data(meta_data: dict, record_and_types: dict, location: int = 0) -> dict:
     """
     Get material data for inserting into records table
     """
     if not location:
         location = STATUSES_LOCATION.IN_STORAGE
 
-    return {
+    #  arkivskaber, samling, serie og datering til hver bestilling.
+    data = {
+        # "date_normalized": record_and_types["date_normalized"].get("value"),
         "record_id": meta_data["id"],
         "label": meta_data["title"],
         "resources": json.dumps(meta_data["resources"]),
         "location": location,
     }
+    log.debug(data)
+    return data
 
 
 def get_order_data(user_id: str, record_id: str, user_status: int) -> dict:

@@ -12,6 +12,7 @@ from stadsarkiv_client.database import utils_orders
 from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.api import OpenAwsException
+from stadsarkiv_client.endpoints.endpoints_utils import get_record_data
 
 
 log = get_log()
@@ -55,14 +56,13 @@ async def orders_post(request: Request):
     """
     await is_authenticated_json(request, verified=True)
     me = await api.users_me_get(request)
+    permissions = await api.me_permissions(request)
 
     try:
-        hooks = get_hooks(request)
         record_id = request.path_params["record_id"]
 
         record = await api.proxies_record_get_by_id(record_id)
-        meta_data = get_record_meta_data(request, record)
-        record, meta_data = await hooks.after_get_record(record, meta_data)
+        record, meta_data, record_and_types = await get_record_data(request, record, permissions)
 
         is_ordered = await crud_orders.has_active_order(
             user_id=me["id"],
@@ -72,7 +72,7 @@ async def orders_post(request: Request):
         if is_ordered:
             return JSONResponse({"message": "Bestilling på dette materiale eksisterer allerede", "error": True})
         else:
-            await crud_orders.insert_order(meta_data, me)
+            await crud_orders.insert_order(meta_data, record_and_types, me)
             return JSONResponse({"message": "Din bestilling er blevet oprettet", "error": False})
     except Exception as e:
         log.exception("Error in auth_orders_post")
@@ -206,16 +206,19 @@ async def orders_admin_patch_single(request: Request):
         else:
             message = "Bestillingen er blevet opdateret"
 
-        # flash.set_message(request, message, type="success")
+        flash.set_message(request, message, type="success")
         return JSONResponse(
             {
-                "message": message,
                 "error": False,
             }
         )
-    except Exception as e:
+    except Exception:
         log.exception("Error in orders_admin_patch")
-        return JSONResponse({"message": str(e), "error": True})
+        return JSONResponse(
+            {
+                "error": True,
+            }
+        )
 
 
 async def orders_admin_get(request: Request):

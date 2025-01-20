@@ -52,7 +52,7 @@ async def _has_active_order(crud: "CRUD", user_id: str, record_id: str):
     return order
 
 
-async def insert_order(meta_data: dict, me: dict):
+async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
     """
     Insert an order into the database with proper validations and updates.
     """
@@ -69,11 +69,11 @@ async def insert_order(meta_data: dict, me: dict):
         await crud.replace("users", user_data, {"user_id": me["id"]})
 
         # Fetch or prepare record data
-        record = await crud.select_one("records", filters={"record_id": meta_data["id"]})
-        if record:
-            record_data = utils_orders.get_insert_record_data(meta_data, record["location"])
+        record_db = await crud.select_one("records", filters={"record_id": meta_data["id"]})
+        if record_db:
+            record_data = utils_orders.get_insert_record_data(meta_data, record_and_types, record_db["location"])
         else:
-            record_data = utils_orders.get_insert_record_data(meta_data)
+            record_data = utils_orders.get_insert_record_data(meta_data, record_and_types)
 
         await crud.replace("records", record_data, {"record_id": meta_data["id"]})
 
