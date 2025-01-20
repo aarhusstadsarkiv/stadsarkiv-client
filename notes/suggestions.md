@@ -327,3 +327,20 @@ https://www.aarhusarkivet.dk/search?collection=194&series=Aarhus+Kommune%2FMagis
 Vi I rette til ved lejlighed?
 
 ---
+
+Denne søgning: http://localhost:5555/search/json?size=10&sort=created_at&view=list&direction=desc&start=30&
+
+I søgning ser record '000508251' sådan her ud: 
+
+"date_from": "1984-10-31",
+"date_to": "1984-10-31"
+
+Men på http://localhost:5555/records/000508251
+
+Ser det sådan her ud: 1984-10
+
+Pointen er at vi får to forskellige resultater. 
+
+Søgemaskine giver en den indtastede værdi, mens record siden giver den (indtaste) forkortede værdi. 
+
+---
