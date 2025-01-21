@@ -341,6 +341,6 @@ Ser det sådan her ud: 1984-10
 
 Pointen er at vi får to forskellige resultater. 
 
-Søgemaskine giver en den indtastede værdi, mens record siden giver den (indtaste) forkortede værdi. 
+Søgemaskine giver en den indtastede (men også tilføjet dage - gættet), mens record siden giver den (indtastede) forkortede værdi. 
 
 ---
