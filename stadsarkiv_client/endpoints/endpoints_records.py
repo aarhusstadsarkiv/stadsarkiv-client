@@ -15,6 +15,7 @@ import asyncio
 import json
 import typing
 from stadsarkiv_client.endpoints.endpoints_utils import get_record_data
+from stadsarkiv_client.core import utils_core
 
 
 log = get_log()
@@ -159,6 +160,13 @@ async def records_get_json(request: Request):
         elif type == "record_and_types":
             record_and_types_json = json.dumps(record_and_types, indent=4, ensure_ascii=False)
             return PlainTextResponse(record_and_types_json)
+
+        elif type == "record_and_types_parsed":
+            all_keys = list(record_and_types.keys())
+            html = utils_core.get_parsed_data_as_html(record_and_types, all_keys)
+            context_variables = {"html": html, "title": "Parsed data"}
+            context = await get_context(request, context_variables, "record")
+            return templates.TemplateResponse(request, "records/record_simple.html", context)
         else:
             raise HTTPException(404, detail="type not found", headers=None)
 

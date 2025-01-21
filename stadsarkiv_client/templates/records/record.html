@@ -62,7 +62,7 @@
     {'label': 'JSON. Record fra API efter hooks', 'url': url_for('records_get_json', record_id=meta_data.id, type='record') | string},
     {'label': 'JSON. Metadata', 'url': url_for('records_get_json', record_id=meta_data.id, type='meta_data') | string},
     {'label': 'JSON. Typer og værdier', 'url': url_for('records_get_json', record_id=meta_data.id, type='record_and_types') | string},
-    {'label': 'JSON. Typer og værdier. HTML', 'url': url_for('records_get_json', record_id=meta_data.id, type='record_and_types_parsed') | string}
+    {'label': 'HTML. Enkelt visning', 'url': url_for('records_get_json', record_id=meta_data.id, type='record_and_types_parsed') | string}
 
 ] %}
 
