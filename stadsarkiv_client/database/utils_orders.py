@@ -3,6 +3,8 @@ import json
 import dataclasses
 from stadsarkiv_client.core import date_format
 import arrow
+from stadsarkiv_client.core import utils_core
+from stadsarkiv_client.core.translate import translate
 
 
 log = get_log()
@@ -72,15 +74,14 @@ def get_insert_record_data(meta_data: dict, record_and_types: dict, location: in
     if not location:
         location = STATUSES_LOCATION.IN_STORAGE
 
-    #  arkivskaber, samling, serie og datering til hver bestilling.
     data = {
-        # "date_normalized": record_and_types["date_normalized"].get("value"),
         "record_id": meta_data["id"],
-        "label": meta_data["title"],
-        "resources": json.dumps(meta_data["resources"]),
+        "label": meta_data["meta_title"],
+        "meta_data": json.dumps(meta_data),
+        "record_and_types": json.dumps(record_and_types),
         "location": location,
     }
-    log.debug(data)
+
     return data
 
 
@@ -94,37 +95,56 @@ def get_order_data(user_id: str, record_id: str, user_status: int) -> dict:
     }
 
 
-def get_sql_in_str(statuses: list) -> str:
-    """
-    Get all statuses as string for SQL IN clause
-    """
-    return ",".join([str(status) for status in statuses])
-
-
 def format_order_display(order: dict):
     """
     Format dates in order for display. Change from UTC to Europe/Copenhagen
     """
     order["created_at"] = date_format.timezone_alter(order["created_at"])
     order["updated_at"] = date_format.timezone_alter(order["updated_at"])
-    order["resources_str"] = _resources_to_str(order["resources"])
+
+    # Load json data
+    order["record_and_types"] = json.loads(order["record_and_types"])
+    order["meta_data_dict"] = json.loads(order["meta_data"])
+
+    # Convert record_and_types to string
+    record_and_types = order["record_and_types"]
+    order["record_and_types_str"] = _record_and_types_to_str(record_and_types)
+
+    # Convert resources to string
+    resources = order["meta_data_dict"]["resources"]
+    order["resources_str"] = _resources_to_str(resources)
+
+    # Convert deadline to date string
     if order["deadline"]:
         deadline = date_format.timezone_alter(order["deadline"])
         deadline = arrow.get(deadline).format("YYYY-MM-DD")
         order["deadline"] = deadline
 
+    # Convert statuses to human readable
     order["user_status_human"] = STATUSES_USER_HUMAN.get(order["user_status"])
     order["location_human"] = STATUSES_LOCATION_HUMAN.get(order["location"])
     return order
 
 
-def _resources_to_str(resources: str) -> str:
+def _record_and_types_to_str(record_and_types: dict):
+    used_keys = list(record_and_types.keys())
+    # used_keys = ["date_normalized", "series", "collection"]
+    parsed_data = utils_core.get_record_and_types_as_strings(record_and_types, used_keys)
+
+    html = ""
+    for key, value in parsed_data.items():
+        key_translated = translate("label_" + key)
+        html += f"<span><b>{key}: {key_translated}</b>: {value}</span>"
+    return html
+
+
+def _resources_to_str(resources: dict) -> str:
     """
     Convert list of resources to a string
     """
-    resources_data: dict = json.loads(resources)
+    # resources_data: dict = json.loads(resources)
     resources_str = ""
-    for key, value in resources_data.items():
+    for key, value in resources.items():
         if isinstance(value, list):
             value = ", ".join(value)
         resources_str += f'{key.capitalize()}: "{value}", '

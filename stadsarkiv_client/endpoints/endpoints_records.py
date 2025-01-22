@@ -163,7 +163,7 @@ async def records_get_json(request: Request):
 
         elif type == "record_and_types_parsed":
             all_keys = list(record_and_types.keys())
-            html = utils_core.get_parsed_data_as_html(record_and_types, all_keys)
+            html = utils_core.get_parsed_data_as_str(record_and_types, all_keys)
             context_variables = {"html": html, "title": "Parsed data"}
             context = await get_context(request, context_variables, "record")
             return templates.TemplateResponse(request, "records/record_simple.html", context)

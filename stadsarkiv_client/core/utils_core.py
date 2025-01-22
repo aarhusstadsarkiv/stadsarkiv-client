@@ -2,7 +2,7 @@ from typing import Dict, List, Any
 from stadsarkiv_client.core.translate import translate
 
 
-def parse_json_data(data: Dict[str, Any], keys_to_parse: List[str], section_tag: str = "p") -> Dict[str, str]:
+def get_record_and_types_as_html(data: Dict[str, Any], keys_to_parse: List[str], section_tag: str = "p") -> Dict[str, str]:
     """
     Parses specific keys in a JSON dictionary according a data-type and .
     """
@@ -59,7 +59,7 @@ def parse_json_data(data: Dict[str, Any], keys_to_parse: List[str], section_tag:
     return parsed_data
 
 
-def parse_json_data_pure_text(data: Dict[str, Any], keys_to_parse: List[str], section_tag: str = "p") -> Dict[str, str]:
+def get_record_and_types_as_strings(data: Dict[str, Any], keys_to_parse: List[str], section_tag: str = "p") -> Dict[str, str]:
     """
     Parses specific keys in a JSON dictionary into plain text, removing hyperlinks but keeping structure.
     """
@@ -112,7 +112,7 @@ def get_parsed_data_as_str(data: Dict[str, Any], keys_to_parse: List[str]) -> st
     Parses specific keys and returns the data as a single formatted string.
     """
     section_tag = "div"
-    parsed_data = parse_json_data_pure_text(data, keys_to_parse, "p")
+    parsed_data = get_record_and_types_as_strings(data, keys_to_parse, "p")
 
     html = ""
 
@@ -126,7 +126,7 @@ def get_parsed_data_as_html(data: Dict[str, Any], keys_to_parse: List[str], sect
     """
     Parses specific keys and returns the data as a single html string.
     """
-    parsed_data = parse_json_data(data, keys_to_parse, section_tag)
+    parsed_data = get_record_and_types_as_html(data, keys_to_parse, section_tag)
     for key, value in parsed_data.items():
         key_translated = translate("label_" + key)
         parsed_data[key] = f"<div><b>{key_translated}</b>: {value}</div>"

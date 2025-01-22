@@ -45,7 +45,8 @@ CREATE TABLE orders (
 CREATE TABLE records (
     record_id TEXT PRIMARY KEY,
     label TEXT NOT NULL,
-    resources TEXT,
+    meta_data TEXT,
+    record_and_types TEXT,
     location INTEGER NOT NULL
 ) STRICT;
 

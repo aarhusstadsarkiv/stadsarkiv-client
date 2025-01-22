@@ -1,5 +1,6 @@
 {% import "macros/admin_macros.html" as admin_macros %}
 {% import "macros/basic_macros.html" as basic_macros %}
+{% import "macros/common_macros.html" as common_macros %}
 
 {% extends "base.html" %}
 
@@ -104,6 +105,9 @@ at benytte det. Du må først slette eller afslutte den aktive bestilling, før 
             <td class="resources" colspan="8">{{ order.resources_str }}</td> 
         </tr>
         {% endif %}
+        <tr>
+            <td class="record_and_types" colspan="8">{{ order.record_and_types_str | safe }}</td>
+        </tr>
         {% endfor %}
         <tr>
             <td></td>
@@ -282,7 +286,6 @@ at benytte det. Du må først slette eller afslutte den aktive bestilling, før 
         });
     }
     
-
     /**
      * handles drop down to select "Aktive bestillinger", "Afsluttet materialer"
     */
