@@ -59,7 +59,7 @@ def get_record_and_types_as_html(data: Dict[str, Any], keys_to_parse: List[str],
     return parsed_data
 
 
-def get_record_and_types_as_strings(data: Dict[str, Any], keys_to_parse: List[str], section_tag: str = "p") -> Dict[str, str]:
+def get_record_and_types_as_strings(data: Dict[str, Any], keys_to_parse: List[str]) -> Dict[str, str]:
     """
     Parses specific keys in a JSON dictionary into plain text, removing hyperlinks but keeping structure.
     """
@@ -112,13 +112,13 @@ def get_parsed_data_as_str(data: Dict[str, Any], keys_to_parse: List[str]) -> st
     Parses specific keys and returns the data as a single formatted string.
     """
     section_tag = "div"
-    parsed_data = get_record_and_types_as_strings(data, keys_to_parse, "p")
+    parsed_data = get_record_and_types_as_strings(data, keys_to_parse)
 
     html = ""
 
     for key, value in parsed_data.items():
         key_translated = translate("label_" + key)
-        html += f"<{section_tag}><b>{key_translated}</b>: {value}</{section_tag}>"
+        html += f"<{section_tag}><b>{key_translated} ({key})</b>: {value}</{section_tag}>"
     return html
 
 
