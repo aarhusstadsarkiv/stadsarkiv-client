@@ -52,13 +52,14 @@
     <thead>
         <tr>
             <th>Materiale</th>
-            <th class="collectors">Arkivskaber</th>
+            <th>Arkivskaber</th>
+            <th>Titel</th>
             <th>E-mail</th>
             <th>Brugernavn</th>
-            <th>Bruger status</th>
+            <th class="width-100">Status</th>
             <th>Opdateret</th>
-            <th class="td-deadline">Deadline</th>
-            <th class="td-queue" title="Antal brugere som står i kø">I Kø</th>
+            <th>Deadline</th>
+            <th class="td-50" title="Antal brugere som står i kø">I Kø</th>
             <th>Lokation</th>
             <th>Handling</th> 
         </tr>
@@ -69,17 +70,18 @@
             <td class="record-link">
                 <a title="{{ order.record_and_types_title }}" href="/records/{{order.record_id}}">{{order.record_id}}</a>
             </td>
-            <td class="collectors">{{ order.collectors }} </td>
+            <td title="{{ order.collectors }}" class="width-200">{{ order.collectors }} </td>
+            <td title="{{ order.label }}" class="width-200">{{ order.label }} </td>
             <td>{{ order.user_email }}</td>
             <td>{{ order.user_display_name }}</td>
-            <td>{{ order.user_status_human }}</td>
+            <td class="width-100">{{ order.user_status_human }}</td>
             <td>{{ order.updated_at }}</td>
             {% if order.deadline %}
-            <td class="td-deadline">{{ order.deadline }}</td>
+            <td>{{ order.deadline }}</td>
             {% else %}
             <td>Ikke angivet</td>
             {% endif %}
-            <td class="td-queue">{{ order.count }}</td>
+            <td class="width-100">{{ order.count }}</td>
             <td>
                 {% if order.allow_location_change %}
                 {% set location_change_disabled = "" %}
@@ -113,6 +115,7 @@ at benytte det. Du må først slette eller afslutte den aktive bestilling, før 
 
         {% endfor %}
         <tr>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>

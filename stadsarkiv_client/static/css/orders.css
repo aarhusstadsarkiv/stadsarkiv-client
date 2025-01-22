@@ -19,7 +19,6 @@ table {
     border-collapse: collapse;
     margin-bottom: 10px;
     min-width: 100%;
-    min-width: 1000px;
     table-layout: unset;
     overflow-x: unset;
 
@@ -64,11 +63,19 @@ tbody tr {
     border-top: 1px solid #e0e0e0;
 }
 
-td, th {
+td, th { 
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     display: table-cell;
+}
+
+.width-200 {
+    max-width: 200px;
+}
+
+.width-50 {
+    max-width: 100px;
 }
 
 
