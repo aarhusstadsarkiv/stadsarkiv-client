@@ -8,6 +8,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/table.css') }}?v={{ get_setting('version') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/orders.css') }}?v={{ get_setting('version') }}">
 {% endblock head %}
 
 {% block content %}
@@ -17,15 +18,23 @@
 {{ basic_macros.page_title(title) }}
 
 {# Select active, completed, order_history #}
-<form method="GET" action="/admin/orders">
-    <select name="status" id="status">
-        <option title="Aktive bestillinger" value="active" {% if status=='active' %}selected{% endif %}>Aktive
+<form class="filters" method="GET" action="/admin/orders">
+    <select name="filter_status" id="filter_status">
+        <option title="Aktive bestillinger" value="active" {% if filter_status=='active' %}selected{% endif %}>Aktive
             bestillinger</option>
         <option title="Materiale som er afsluttet, men som ikke er i magasin" value="completed" {% if
-            status=='completed' %}selected{% endif %}>Afsluttet materiale</option>
-        <option title="Historik over afsluttede bestillinger" value="order_history" {% if status=='order_history' %}selected{%
+            filter_status=='completed' %}selected{% endif %}>Afsluttet materiale</option>
+        <option title="Historik over afsluttede bestillinger" value="order_history" {% if filter_status=='order_history' %}selected{%
             endif %}>Historik</option>
     </select>
+    <select name="filter_location" id="filter_location">
+        <option value="all" {% if filter_location=='all' %}selected{% endif %}>Alle lokationer</option>
+        {% for key, value in locations.items() %}
+        <option value="{{ key }}" {% if filter_location==key|string %}selected{% endif %}>{{ value }}</option>
+        {% endfor %}
+    </select>
+    <input type="text" name="filter_email" placeholder="E-mail" value="{{ filter_email }}">
+    <input type="text" name="filter_user" placeholder="Brugernavn" value="{{ filter_user }}">
 </form>
 
 {% if orders|length == 0 %}
@@ -38,27 +47,39 @@
     {% endif %}
 {% else %}
 
-<div class="table-wrapper">
+<div class="container-table">
 <table>
     <thead>
         <tr>
             <th>Materiale</th>
-            <th>Lokation</th>
-            <th>Handling</th>
+            <th class="collectors">Arkivskaber</th>
             <th>E-mail</th>
             <th>Brugernavn</th>
             <th>Bruger status</th>
             <th>Opdateret</th>
             <th class="td-deadline">Deadline</th>
-            <th class="td-queue" title="Antal brugere som står i kø">I Kø</th>  
+            <th class="td-queue" title="Antal brugere som står i kø">I Kø</th>
+            <th>Lokation</th>
+            <th>Handling</th> 
         </tr>
     </thead>
     <tbody>
         {% for order in orders %}
         <tr>
-            <td>
-                <a title="{{ order.label }}" href="/records/{{order.record_id}}">{{ order.label }}</a>
+            <td class="record-link">
+                <a title="{{ order.record_and_types_title }}" href="/records/{{order.record_id}}">{{order.record_id}}</a>
             </td>
+            <td class="collectors">{{ order.collectors }} </td>
+            <td>{{ order.user_email }}</td>
+            <td>{{ order.user_display_name }}</td>
+            <td>{{ order.user_status_human }}</td>
+            <td>{{ order.updated_at }}</td>
+            {% if order.deadline %}
+            <td class="td-deadline">{{ order.deadline }}</td>
+            {% else %}
+            <td>Ikke angivet</td>
+            {% endif %}
+            <td class="td-queue">{{ order.count }}</td>
             <td>
                 {% if order.allow_location_change %}
                 {% set location_change_disabled = "" %}
@@ -80,7 +101,7 @@ at benytte det. Du må først slette eller afslutte den aktive bestilling, før 
                 <span>
                     <a href="/admin/orders/{{order.order_id}}/edit">Rediger</a>
 
-                    {% if not order.user_actions_deactivated %}
+                    {% if not order.user_actions_deactivated %} |
                     <span class="complete-order">
                         <a data-id="{{order.order_id}}" data-action="completed"
                             title="Brugeren er færdig med bestillingen" href="#">Afslut</a>
@@ -88,95 +109,27 @@ at benytte det. Du må først slette eller afslutte den aktive bestilling, før 
                     {% endif %}
                 </span>
             </td>
-            <td>{{ order.user_email }}</td>
-            <td>{{ order.user_display_name }}</td>
-            <td>{{ order.user_status_human }}</td>
+        </tr>
 
-            <td>{{ order.updated_at }}</td>
-            {% if order.deadline %}
-            <td class="td-deadline">{{ order.deadline }}</td>
-            {% else %}
-            <td>Ikke angivet</td>
-            {% endif %}
-            <td class="td-queue">{{ order.count }}</td>
-        </tr>
-        {% if order.resources_str %}
-        <tr>
-            <td class="resources" colspan="8">{{ order.resources_str }}</td> 
-        </tr>
-        {% endif %}
-        <tr>
-            <td class="record_and_types" colspan="8">{{ order.record_and_types_str | safe }}</td>
-        </tr>
         {% endfor %}
         <tr>
             <td></td>
-            <td><a href="#" class="update-locations">Opdatér</a></td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
+            <td></td>
+            <td><span class="action-links"><a href="#" class="update-locations">Opdatér</a></span></td>
             <td></td>
         </tr>
     </tbody>
 </table>
 </div>
 {% endif %}
-<style>
-
-    .container-medium {
-        width: 100%;
-    }
-
-    a[disabled] {
-        pointer-events: none;
-    }
-
-    /*
-    input,
-    button,
-    textarea,
-    */
-
-    select {
-        color: var(--form-text);
-        background-color: var(--background);
-        margin-right: 6px;
-        margin-bottom: 6px;
-        padding: 2px;
-        border: unset;
-        border-radius: unset;
-        outline: unset;
-        font-family: unset;
-        font-size: inherit;
-    }
-
-
-    tbody tr:nth-child(even) {
-        background-color: unset;
-    }
-
-    td a {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: table-cell;
-        max-width: 180px;
-    }
-
-    td,
-    th {
-        max-width: 60px;
-    }
-
-    td.resources {
-        background-color: #fbfbfb;
-        font-size: 0.9em;
-    }
-</style>
 <div class="loadingspinner hidden"></div>
+
 <script type="module">
     import { asyncLogError } from "/static/js/error.js";
     import { Requests } from "/static/js/requests.js";
@@ -285,14 +238,32 @@ at benytte det. Du må først slette eller afslutte den aktive bestilling, før 
             }
         });
     }
-    
-    /**
-     * handles drop down to select "Aktive bestillinger", "Afsluttet materialer"
-    */
-    const status = document.getElementById('status');
-    status.addEventListener('change', function () {
-        window.location.href = '/admin/orders?status=' + status.value;
+
+    // submit all current filters
+    const filterForm = document.querySelector('form');
+    filterForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const url = '/admin/orders?' + new URLSearchParams(new FormData(filterForm)).toString();
+        window.location.href = url;
     });
+
+    // On select filers change submit form
+    document.querySelectorAll('.filters > select').forEach(select => {
+        select.addEventListener('change', function () {
+            filterForm.submit();
+        });
+    });
+
+    // On key return submit form
+    document.querySelectorAll('.filters > input').forEach(input => {
+        input.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                filterForm.submit();
+            }
+        });
+    });
+
+
 
 </script>
 {% endblock content %}

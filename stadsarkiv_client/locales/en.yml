@@ -371,6 +371,7 @@ label_sources_links: label_sources_links
 label_sources_normalized: label_sources_normalized
 label_sources_texts: label_sources_texts
 label_stedsangivelse: label_stedsangivelse
+label_storage_id: label_storage_id
 label_subjects: Subjects
 label_subjects_normalized: label_subjects_normalized
 label_summary: Summary

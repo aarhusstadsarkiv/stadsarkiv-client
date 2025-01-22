@@ -335,6 +335,7 @@ label_series_normalized: Serie
 label_sources_links: Internet kilder
 label_sources_normalized: Kilder
 label_sources_texts: Tekst kilder
+label_storage_id: label_storage_id
 label_subjects: Emner
 label_subjects_normalized: Emner
 label_summary: Abstrakt

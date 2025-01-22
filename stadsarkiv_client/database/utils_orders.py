@@ -108,11 +108,13 @@ def format_order_display(order: dict):
 
     # Convert record_and_types to string
     record_and_types = order["record_and_types"]
-    order["record_and_types_str"] = _record_and_types_to_str(record_and_types)
-
-    # Convert resources to string
     resources = order["meta_data_dict"]["resources"]
-    order["resources_str"] = _resources_to_str(resources)
+
+    used_keys = ["date_normalized", "series", "collection", "collectors"]
+    record_and_types_strings = utils_core.get_record_and_types_as_strings(record_and_types, used_keys)
+    record_and_types_strings.update(resources)
+
+    order["collectors"] = record_and_types_strings.get("collectors", "")
 
     # Convert deadline to date string
     if order["deadline"]:
@@ -124,31 +126,6 @@ def format_order_display(order: dict):
     order["user_status_human"] = STATUSES_USER_HUMAN.get(order["user_status"])
     order["location_human"] = STATUSES_LOCATION_HUMAN.get(order["location"])
     return order
-
-
-def _record_and_types_to_str(record_and_types: dict):
-    used_keys = list(record_and_types.keys())
-    # used_keys = ["date_normalized", "series", "collection"]
-    parsed_data = utils_core.get_record_and_types_as_strings(record_and_types, used_keys)
-
-    html = ""
-    for key, value in parsed_data.items():
-        key_translated = translate("label_" + key)
-        html += f"<span><b>{key}: {key_translated}</b>: {value}</span>"
-    return html
-
-
-def _resources_to_str(resources: dict) -> str:
-    """
-    Convert list of resources to a string
-    """
-    # resources_data: dict = json.loads(resources)
-    resources_str = ""
-    for key, value in resources.items():
-        if isinstance(value, list):
-            value = ", ".join(value)
-        resources_str += f'{key.capitalize()}: "{value}", '
-    return resources_str[:-2]
 
 
 def get_deadline_date(days: int = 14) -> str:

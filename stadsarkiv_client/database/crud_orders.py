@@ -256,7 +256,7 @@ async def get_orders_user(user_id: str, completed=0) -> list:
         return [format_order_for_display(order) for order in orders]
 
 
-async def get_orders_admin(status: str = "active"):
+async def get_orders_admin(filter_status: str = "active", filter_location: int = 0) -> list:
     """
     Get all orders for a user.
     """
@@ -264,7 +264,7 @@ async def get_orders_admin(status: str = "active"):
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
 
-        if status == "active":
+        if filter_status == "active":
             orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.ORDERED], order_by="o.order_id DESC")
             for order in orders:
                 order = utils_orders.format_order_display(order)
@@ -276,7 +276,7 @@ async def get_orders_admin(status: str = "active"):
                 if order["location"] != utils_orders.STATUSES_LOCATION.READING_ROOM:
                     order["allow_location_change"] = True
 
-        if status == "completed":
+        if filter_status == "completed":
             query = f"""
 WITH LatestOrders AS (
     SELECT
@@ -311,7 +311,7 @@ LIMIT 100;
                 order["user_actions_deactivated"] = True
                 order["allow_location_change"] = True
 
-        if status == "order_history":
+        if filter_status == "order_history":
             # Get all orders with status COMPLETED
             orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.COMPLETED], limit=100)
             for order in orders:

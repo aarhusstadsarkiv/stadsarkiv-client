@@ -1,0 +1,91 @@
+.container-medium {
+    width: 100%;
+    overflow-x: auto;
+   
+}
+
+a[disabled] {
+    pointer-events: none;
+}
+
+table {
+    /*
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    width: 100%;
+    table-layout: unset;
+    overflow-x: scroll
+    */
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    min-width: 100%;
+    min-width: 1000px;
+    table-layout: unset;
+    overflow-x: unset;
+
+}
+
+/*
+input,
+button,
+textarea,
+*/
+
+input, select {
+    height: 25px; /* Adjust as needed */
+    padding: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+
+select, input {
+    color: var(--form-text);
+    background-color: var(--background);
+    margin-right: 6px;
+    margin-bottom: 6px;
+    padding: 2px;
+    border: unset;
+    border-radius: unset;
+    outline: unset;
+    font-family: unset;
+    font-size: inherit;
+}
+
+select, input {
+    display: inline-block;
+}
+
+
+tbody tr:nth-child(even) {
+    background-color: unset;
+}
+
+tbody tr {
+    border-top: 1px solid #e0e0e0;
+}
+
+td, th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: table-cell;
+}
+
+
+td.resources, td.record_and_types {
+    background-color: #fbfbfb;
+    font-size: 0.9em;
+}
+
+td.resources .label, td.record_and_types .label {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+td.record-link {
+    width: 50px;
+}
+
+td.collectors {
+    width: 50px;
+}
