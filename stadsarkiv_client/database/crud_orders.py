@@ -278,15 +278,23 @@ async def get_orders_admin(
         search_filters.append("u.user_display_name LIKE :user_filter")
         search_values.append(filter_user)
 
+    search_filters_as_str = ""
+    if search_filters:
+        # add search filters to query
+        search_filters_as_str = " AND " + " AND ".join(search_filters)
+        log.debug(search_filters_as_str)
+
+    placeholder_values = {}
+    if search_filters:
+        placeholder_values = {
+            "location_filter": filter_location,
+            "email_filter": f"{filter_email}%",
+            "user_filter": f"{filter_user}%",
+        }
+
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
-
-        search_filters_as_str = ""
-        if search_filters:
-            # add search filters to query
-            search_filters_as_str = " AND " + " AND ".join(search_filters)
-            log.debug(search_filters_as_str)
 
         if filter_status == "active":
             query = f"""
@@ -295,13 +303,6 @@ SELECT * FROM orders o
     LEFT JOIN users u ON o.user_id = u.user_id
     WHERE o.user_status IN ({utils_orders.STATUSES_USER.ORDERED}) {search_filters_as_str} ORDER BY o.order_id DESC LIMIT 100
 """
-            placeholder_values = {}
-            if search_filters:
-                placeholder_values = {
-                    "location_filter": filter_location,
-                    "email_filter": f"{filter_email}%",
-                    "user_filter": f"{filter_user}%",
-                }
 
             orders = await crud.query(query, placeholder_values)
             # log.debug(orders)
@@ -339,12 +340,13 @@ WHERE
     o.user_status IN ({utils_orders.STATUSES_USER.DELETED}, {utils_orders.STATUSES_USER.COMPLETED})
     AND
     r.location != {utils_orders.STATUSES_LOCATION.IN_STORAGE}
+    {search_filters_as_str}
 
 ORDER BY
     o.updated_at ASC
 LIMIT 100;
 """
-            orders = await crud.query(query, {})
+            orders = await crud.query(query, placeholder_values)
 
             for order in orders:
                 order = utils_orders.format_order_display(order)
@@ -357,11 +359,12 @@ SELECT * FROM orders o
     LEFT JOIN records r ON o.record_id = r.record_id
     LEFT JOIN users u ON o.user_id = u.user_id
     WHERE o.user_status IN ({utils_orders.STATUSES_USER.DELETED}, {utils_orders.STATUSES_USER.COMPLETED})
+    {search_filters_as_str}
     ORDER BY o.updated_at DESC LIMIT 100
 """
             # Get all orders with status COMPLETED
             # orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.COMPLETED], limit=100)
-            orders = await crud.query(query, {})       
+            orders = await crud.query(query, placeholder_values)
             for order in orders:
                 order = utils_orders.format_order_display(order)
                 order["user_actions_deactivated"] = True
