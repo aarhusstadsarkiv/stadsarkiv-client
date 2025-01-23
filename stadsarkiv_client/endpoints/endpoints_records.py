@@ -133,7 +133,12 @@ async def records_get(request: Request):
     return templates.TemplateResponse(request, "records/record.html", context)
 
 
-async def records_get_json(request: Request):
+async def records_get_misc(request: Request):
+    """
+    Miscellaneous presentations of the record data.
+    Mostly JSON for debugging.
+    Also some simple HTML rendering.
+    """
     try:
 
         record_id = request.path_params["record_id"]
