@@ -122,6 +122,25 @@ def get_parsed_data_as_str(data: Dict[str, Any], keys_to_parse: List[str]) -> st
     return html
 
 
+def get_parsed_data_as_table(data: Dict[str, Any], keys_to_parse: List[str], debug: bool = False) -> str:
+    """
+    Parses specific keys and returns the data as a single formatted string.
+    """
+    parsed_data = get_record_and_types_as_strings(data, keys_to_parse)
+
+    table_html = "<table>"
+    for key, value in parsed_data.items():
+
+        display_key = translate("label_" + key)
+        if debug:
+            display_key = f"{display_key} ({key})"
+
+        # key_translated = translate("label_" + key)
+        table_html += f"<tr><td class='width-50'>{display_key}</td><td>{value}</td></tr>"
+    table_html += "</table>"
+    return table_html
+
+
 def get_parsed_data_as_html(data: Dict[str, Any], keys_to_parse: List[str], section_tag: str = "p") -> str:
     """
     Parses specific keys and returns the data as a single html string.
