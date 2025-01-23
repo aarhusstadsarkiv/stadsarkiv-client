@@ -1,0 +1,60 @@
+{% import "macros/basic_macros.html" as basic_macros with context %}
+
+{% extends "base.html" %}
+
+{% block body_class %}page-records-view{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/table.css') }}?v={{ get_setting('version') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/orders.css') }}?v={{ get_setting('version') }}">
+{% endblock head %}
+
+{% block content %}
+
+{% include "admin/menu.html" %}
+
+{{ basic_macros.page_title(title) }}
+
+<pre>
+    {{ to_json(logs) }}
+</pre>
+
+{# 
+
+User columns in logs:
+
+order_id, record_id, updated_location, updated_user_status, updated_at
+
+generate simple table from these columns
+
+#}
+
+{% if logs|length == 0 %}
+    <div class="alert alert-info">No logs found</div>
+{% else %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>User ID</th>
+            <th>Record ID</th>
+            <th>Updated Location</th>
+            <th>Updated User Status</th>
+            <th>Updated At</th>
+        </tr>
+    </thead>
+    {% for log in logs %}
+    <tr>
+        <td>{{ log.order_id }}</td>
+        <td>{{ log.user_id }}</td>
+        <td>{{ log.record_id }}</td>
+        <td>{{ log.updated_location }}</td>
+        <td>{{ log.updated_user_status }}</td>
+        <td>{{ log.updated_at }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% endblock content %}
+

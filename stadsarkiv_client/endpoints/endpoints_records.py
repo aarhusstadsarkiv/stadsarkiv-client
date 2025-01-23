@@ -166,12 +166,6 @@ async def records_get_misc(request: Request):
             record_and_types_json = json.dumps(record_and_types, indent=4, ensure_ascii=False)
             return PlainTextResponse(record_and_types_json)
 
-        elif type == "record_and_types_parsed":
-            all_keys = list(record_and_types.keys())
-            html = utils_core.get_parsed_data_as_str(record_and_types, all_keys)
-            context_variables = {"html": html, "title": "Parsed data"}
-            context = await get_context(request, context_variables, "record")
-            return templates.TemplateResponse(request, "records/record_simple.html", context)
         else:
             raise HTTPException(404, detail="type not found", headers=None)
 

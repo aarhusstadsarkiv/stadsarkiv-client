@@ -1,0 +1,23 @@
+{% import "macros/basic_macros.html" as basic_macros with context %}
+
+{% extends "base.html" %}
+
+{% block body_class %}page-records-view{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/table.css') }}?v={{ get_setting('version') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/orders.css') }}?v={{ get_setting('version') }}">
+{% endblock head %}
+
+{% block content %}
+
+{% include "admin/menu.html" %}
+
+{{ basic_macros.page_title(title) }}
+
+{{ html | safe }}
+
+<a href="/records/{{ record_id }}" class="btn btn-primary">{{ title }} - fuld visning</a>
+
+{% endblock content %}
+

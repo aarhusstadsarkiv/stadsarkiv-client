@@ -17,6 +17,8 @@
 
 {{ basic_macros.page_title(title) }}
 
+<p><a href="/admin/orders/logs">Se Logs</a></p>
+
 {# Select active, completed, order_history #}
 <form class="filters" method="GET" action="/admin/orders">
     <select name="filter_status" id="filter_status">
@@ -69,7 +71,7 @@
         {% for order in orders %}
         <tr>
             <td class="record-link">
-                <a title="{{ order.record_and_types_title }}" href="/records/{{order.record_id}}">{{order.record_id}}</a>
+                <a title="{{ order.record_and_types_title }}" href="/admin/orders/{{order.record_id}}/html">{{order.record_id}}</a>
             </td>
             <td title="{{ order.collectors }}" class="width-200">{{ order.collectors }} </td>
             <td title="{{ order.label }}" class="width-200">{{ order.label }} </td>

@@ -43,6 +43,17 @@ async def is_owner(user_id: str, order_id: int):
     return is_owner
 
 
+async def replace_employee(me: dict):
+    """
+    Insert or update employee details
+    """
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
+        crud = CRUD(connection)
+        user_data = utils_orders.get_insert_user_data(me)
+        await crud.replace("users", user_data, {"user_id": me["id"]})
+
+
 async def _has_active_order(crud: "CRUD", user_id: str, record_id: str):
     """
     Check if user has an active order on a record
@@ -96,10 +107,11 @@ async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
         # Insert a log entry for the new order
         await _insert_log_message(
             crud,
+            user_id=order_data["user_id"],
             order_id=order_data["order_id"],
+            record_id=record_data["record_id"],
             location=record_data["location"],
             user_status=order_data["user_status"],
-            updated_by=me["id"],
         )
 
         # Handle special cases for orders already in the reading room and ordered
@@ -214,10 +226,11 @@ async def update_order(location: int, update_values: dict, order_id: int, user_i
         # Log the update
         await _insert_log_message(
             crud,
+            user_id=user_id,
             order_id=order_id,
+            record_id=updated_order["record_id"],
             location=updated_order["location"],
             user_status=updated_order["user_status"],
-            updated_by=user_id,
         )
 
 
@@ -232,8 +245,17 @@ async def delete_order(order_id: int, user_id: str):
         # Update user status to DELETED
         await _update_user_status(crud, order_id, utils_orders.STATUSES_USER.DELETED)
 
+        order = await _get_orders_one(crud, order_id=order_id)
+
         # Log the update
-        await _insert_log_message(crud, order_id, 0, utils_orders.STATUSES_USER.DELETED, user_id)
+        await _insert_log_message(
+            crud,
+            user_id=user_id,
+            order_id=order_id,
+            record_id=order["record_id"],
+            location=order["location"],
+            user_status=order["user_status"],
+        )
 
 
 async def get_orders_user(user_id: str, completed=0) -> list:
@@ -384,6 +406,33 @@ async def get_order(order_id):
         allow_location_change = await _allow_location_change(CRUD(connection), order["record_id"])
         order["allow_location_change"] = allow_location_change
         return order
+
+
+async def get_logs():
+    """
+    Get a single joined order by order_id for display on the admin edit order page
+    """
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
+        crud = CRUD(connection)
+        query = """
+SELECT * FROM orders_log l
+JOIN orders o ON l.order_id = o.order_id
+JOIN users u ON l.user_id = u.user_id
+JOIN records r ON l.record_id = r.record_id
+ORDER BY l.updated_at DESC
+LIMIT 100
+"""
+        logs = await crud.query(query, {})
+        for single_log in logs:
+            updated_location = utils_orders.STATUSES_LOCATION_HUMAN.get(single_log["updated_location"], "")
+            update_user_status = utils_orders.STATUSES_USER_HUMAN.get(single_log["updated_user_status"], "")
+            single_log["updated_location"] = updated_location
+            single_log["updated_user_status"] = update_user_status
+            # updated_user_status INTEGER NOT NULL,
+
+        log.debug(logs)
+        return logs
 
 
 async def get_order_by_record_id(user_id: str, record_id: str):
@@ -550,12 +599,20 @@ async def _allow_location_change(crud: "CRUD", record_id: str, raise_exception=F
     return True
 
 
-async def _insert_log_message(crud: "CRUD", order_id, location, user_status, updated_by):
+async def _insert_log_message(
+    crud: "CRUD",
+    user_id,
+    order_id,
+    record_id,
+    location,
+    user_status,
+):
     log_message = {
+        "user_id": user_id,
         "order_id": order_id,
-        "location": location,
-        "user_status": user_status,
-        "updated_by": updated_by,
+        "record_id": record_id,
+        "updated_location": location,
+        "updated_user_status": user_status,
     }
 
     await crud.insert("orders_log", log_message)

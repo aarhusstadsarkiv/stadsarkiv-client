@@ -8,6 +8,7 @@
 {% block head %}
 
 <link rel="stylesheet" href="{{ url_for('static', path='/css/table.css') }}?v={{ get_setting('version') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/orders.css') }}?v={{ get_setting('version') }}">
 {% endblock head %}
 
 {% block content %}
@@ -29,46 +30,6 @@
         <button id="submit" type="submit">Opdater</button>
     </fieldset>
 </form>
-
-<!--
-<div class="record-section">
-    <div class="record-main">
-
-        <div class="record-content">
-            <div class="label">E-mail</div>
-            <div class="content">{{ order.user_email}}</div>
-        </div>
-
-        <div class="record-content">
-            <div class="label">Navn</div>
-            <div class="content">{{ order.user_display_name}}</div>
-        </div>
-
-        <div class="record-content">
-            <div class="label">Materiale</div>
-            <div class="content">
-                <a href="/records/{{ order.record_id}}">{{ order.label }}</a>
-            </div>
-        </div>
-
-        <div class="record-content">
-            <div class="label">Materiale ID </div>
-            <div class="content">{{ order.record_id}}</div>
-        </div>
-
-        <div class="record-content">
-            <div class="label">Oprettet</div>
-            <div class="content">{{ order.created_at }}</div>
-        </div>
-
-        <div class="record-content">
-            <div class="label">Opdateret</div>
-            <div class="content">{{ order.updated_at }}</div>
-        </div>
-    </div>
-</div>
--->
-
 
 <script type="module">
     import { asyncLogError } from "/static/js/error.js";

@@ -12,6 +12,16 @@ from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.endpoints.endpoints_utils import get_record_data
 
+from starlette.requests import Request
+
+from stadsarkiv_client.core.templates import templates
+from stadsarkiv_client.core.context import get_context
+from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core import api
+from stadsarkiv_client.endpoints.endpoints_utils import get_record_data
+from stadsarkiv_client.core import utils_core
+
+
 
 log = get_log()
 
@@ -224,6 +234,8 @@ async def orders_admin_get(request: Request):
     GET endpoint for displaying all orders for an employee
     """
     await is_authenticated(request, permissions=["employee"])
+    me = await api.users_me_get(request)
+    await crud_orders.replace_employee(me)
 
     # get status from query params
     filter_status = request.query_params.get("filter_status", "active")
@@ -273,3 +285,43 @@ async def orders_admin_get_edit(request: Request):
     }
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse(request, "order/order_admin_edit.html", context)
+
+
+async def orders_record_get(request: Request):
+    """
+    Simple display of a record
+    """
+    await is_authenticated(request, permissions=["employee"])
+
+    record_id = request.path_params["record_id"]
+    permissions = await api.me_permissions(request)
+    record = await api.proxies_record_get_by_id(record_id)
+
+    record, meta_data, record_and_types = await get_record_data(request, record, permissions)    
+    all_keys = list(record_and_types.keys())
+    all_keys = ["collectors", "resources", "subjects", "date_normalized", "desc_notes"]
+    html = utils_core.get_parsed_data_as_table(record_and_types, all_keys, debug=True)
+    context_variables = {
+        "html": html,
+        "title": meta_data["title"],
+        "meta_title": meta_data["meta_title"],
+        "meta_description": meta_data["meta_description"],
+        "record_id": record_id,
+    }
+
+    context = await get_context(request, context_variables, "record")
+    return templates.TemplateResponse(request, "order/orders_record.html", context)
+
+
+async def orders_logs(request: Request):
+    await is_authenticated(request, permissions=["employee"])
+
+    logs = await crud_orders.get_logs()
+    context_variables = {
+        "logs": logs,
+        "title": "Order Logs",
+        "meta_title": "Order Logs",
+    }
+
+    context = await get_context(request, context_variables, "record")
+    return templates.TemplateResponse(request, "order/orders_logs.html", context)
