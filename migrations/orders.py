@@ -65,12 +65,18 @@ CREATE INDEX idx_orders_user_id ON orders(user_id);
 CREATE INDEX idx_orders_record_id ON orders(record_id);
 CREATE INDEX idx_orders_log_order_id ON orders_log(order_id);
 
--- Indexes other
+-- Indexes for users
+CREATE INDEX idx_users_user_display_name ON users(user_display_name);
 CREATE INDEX idx_users_user_email ON users(user_email);
+
+-- Indexes for orders
 CREATE INDEX idx_orders_user_status ON orders(user_status);
+CREATE INDEX idx_orders_log_updated_at ON orders_log(updated_at);
+CREATE INDEX idx_orders_updated_at ON orders(updated_at);
+
+-- Indexes for records
 CREATE INDEX idx_orders_deadline ON orders(deadline);
 CREATE INDEX idx_records_location ON records(location);
-CREATE INDEX idx_orders_log_updated_at ON orders_log(updated_at);
 """
 
 # List of migrations with keys
