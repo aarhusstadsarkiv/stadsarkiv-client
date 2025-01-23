@@ -52,24 +52,22 @@ CREATE TABLE records (
 
 CREATE TABLE orders_log (
     log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id TEXT NOT NULL,
     order_id INTEGER NOT NULL,
-    user_status INTEGER,
-    location INTEGER,
+    record_id TEXT NOT NULL,
+    updated_location INTEGER NOT NULL,
+    updated_user_status INTEGER NOT NULL,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    updated_by TEXT NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
 ) STRICT;
-
--- Indexes for foreign keys
-CREATE INDEX idx_orders_user_id ON orders(user_id);
-CREATE INDEX idx_orders_record_id ON orders(record_id);
-CREATE INDEX idx_orders_log_order_id ON orders_log(order_id);
 
 -- Indexes for users
 CREATE INDEX idx_users_user_display_name ON users(user_display_name);
 CREATE INDEX idx_users_user_email ON users(user_email);
 
 -- Indexes for orders
+CREATE INDEX idx_orders_user_id ON orders(user_id);
+CREATE INDEX idx_orders_record_id ON orders(record_id);
 CREATE INDEX idx_orders_user_status ON orders(user_status);
 CREATE INDEX idx_orders_log_updated_at ON orders_log(updated_at);
 CREATE INDEX idx_orders_updated_at ON orders(updated_at);
@@ -77,6 +75,12 @@ CREATE INDEX idx_orders_updated_at ON orders(updated_at);
 -- Indexes for records
 CREATE INDEX idx_orders_deadline ON orders(deadline);
 CREATE INDEX idx_records_location ON records(location);
+
+-- Indexes for orders_log
+CREATE INDEX idx_orders_log_order_id ON orders_log(order_id);
+CREATE INDEX idx_orders_log_user_id ON orders_log(user_id);
+CREATE INDEX idx_orders_log_record_id ON orders_log(record_id);
+
 """
 
 # List of migrations with keys
