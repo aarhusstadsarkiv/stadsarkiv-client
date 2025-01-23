@@ -35,6 +35,7 @@
     </select>
     <input type="text" name="filter_email" placeholder="E-mail" value="{{ filter_email }}">
     <input type="text" name="filter_user" placeholder="Brugernavn" value="{{ filter_user }}">
+    <a href="#" class="clear-search-filters">Ryd filtre</a>
 </form>
 
 {% if orders|length == 0 %}
@@ -264,6 +265,20 @@ at benytte det. Du må først slette eller afslutte den aktive bestilling, før 
                 filterForm.submit();
             }
         });
+    });
+
+    // Clear search filters
+    document.querySelector('.clear-search-filters').addEventListener('click', function (event) {
+        event.preventDefault();
+        
+        // Remove all search filters except filter_status and submit form
+        filterForm.querySelectorAll('input').forEach(input => {
+            if (input.name !== 'filter_status') {
+                input.value = '';
+            }
+        }); 
+        filterForm.submit();
+        
     });
 
 
