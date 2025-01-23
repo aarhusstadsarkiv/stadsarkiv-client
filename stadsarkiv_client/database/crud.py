@@ -142,6 +142,7 @@ class CRUD:
         """
         Execute a custom query and return the rows.
         """
+        log.debug(f"Query: {query} - Values: {values}")
         cursor = self.connection.execute(query, values)
         rows = cursor.fetchall()
         rows = [dict(row) for row in rows]

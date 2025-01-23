@@ -265,18 +265,45 @@ async def get_orders_admin(
     """
     Get all orders for a user.
     """
+
+    search_values = []
+    search_filters = []
+    if filter_location:
+        search_filters.append("r.location =:location_filter")
+        search_values.append(filter_location)
+    if filter_email:
+        search_filters.append("u.user_email LIKE :email_filter")
+        search_values.append(filter_email)
+    if filter_user:
+        search_filters.append("u.user_display_name LIKE :user_filter")
+        search_values.append(filter_user)
+
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
+
+        search_filters_as_str = ""
+        if search_filters:
+            # add search filters to query
+            search_filters_as_str = " AND " + " AND ".join(search_filters)
+            log.debug(search_filters_as_str)
 
         if filter_status == "active":
             query = f"""
 SELECT * FROM orders o
     LEFT JOIN records r ON o.record_id = r.record_id
     LEFT JOIN users u ON o.user_id = u.user_id
-    WHERE o.user_status IN ({utils_orders.STATUSES_USER.ORDERED}) ORDER BY o.order_id DESC LIMIT 100
+    WHERE o.user_status IN ({utils_orders.STATUSES_USER.ORDERED}) {search_filters_as_str} ORDER BY o.order_id DESC LIMIT 100
 """
-            orders = await crud.query(query, {})
+            placeholder_values = {}
+            if search_filters:
+                placeholder_values = {
+                    "location_filter": filter_location,
+                    "email_filter": f"{filter_email}%",
+                    "user_filter": f"{filter_user}%",
+                }
+
+            orders = await crud.query(query, placeholder_values)
             # log.debug(orders)
             # orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.ORDERED], order_by="o.order_id DESC")
             for order in orders:

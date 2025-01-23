@@ -228,6 +228,8 @@ async def orders_admin_get(request: Request):
     # get status from query params
     filter_status = request.query_params.get("filter_status", "active")
     filter_location = request.query_params.get("filter_location", "all")
+    if filter_location == "all":
+        filter_location = ""
     filter_email = request.query_params.get("filter_email", "")
     filter_user = request.query_params.get("filter_user", "")
 
