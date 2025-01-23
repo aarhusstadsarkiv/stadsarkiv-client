@@ -256,7 +256,12 @@ async def get_orders_user(user_id: str, completed=0) -> list:
         return [format_order_for_display(order) for order in orders]
 
 
-async def get_orders_admin(filter_status: str = "active", filter_location: int = 0) -> list:
+async def get_orders_admin(
+    filter_status: str,
+    filter_location: str,
+    filter_email: str,
+    filter_user: str,
+) -> list:
     """
     Get all orders for a user.
     """
@@ -265,7 +270,15 @@ async def get_orders_admin(filter_status: str = "active", filter_location: int =
         crud = CRUD(connection)
 
         if filter_status == "active":
-            orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.ORDERED], order_by="o.order_id DESC")
+            query = f"""
+SELECT * FROM orders o
+    LEFT JOIN records r ON o.record_id = r.record_id
+    LEFT JOIN users u ON o.user_id = u.user_id
+    WHERE o.user_status IN ({utils_orders.STATUSES_USER.ORDERED}) ORDER BY o.order_id DESC LIMIT 100
+"""
+            orders = await crud.query(query, {})
+            # log.debug(orders)
+            # orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.ORDERED], order_by="o.order_id DESC")
             for order in orders:
                 order = utils_orders.format_order_display(order)
                 queued_orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.QUEUED], record_id=order["record_id"])
@@ -312,8 +325,16 @@ LIMIT 100;
                 order["allow_location_change"] = True
 
         if filter_status == "order_history":
+            query = f"""
+SELECT * FROM orders o
+    LEFT JOIN records r ON o.record_id = r.record_id
+    LEFT JOIN users u ON o.user_id = u.user_id
+    WHERE o.user_status IN ({utils_orders.STATUSES_USER.DELETED}, {utils_orders.STATUSES_USER.COMPLETED})
+    ORDER BY o.updated_at DESC LIMIT 100
+"""
             # Get all orders with status COMPLETED
-            orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.COMPLETED], limit=100)
+            # orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.COMPLETED], limit=100)
+            orders = await crud.query(query, {})       
             for order in orders:
                 order = utils_orders.format_order_display(order)
                 order["user_actions_deactivated"] = True
@@ -395,6 +416,7 @@ async def _get_orders(
         limit,
     )
 
+    log.debug(query)
     result = await crud.query(query, params)
     return result
 

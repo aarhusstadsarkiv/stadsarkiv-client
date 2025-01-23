@@ -226,21 +226,17 @@ async def orders_admin_get(request: Request):
     await is_authenticated(request, permissions=["employee"])
 
     # get status from query params
-    filter_status = request.query_params.get("filter_status")
-    if not filter_status:
-        filter_status = "active"
+    filter_status = request.query_params.get("filter_status", "active")
+    filter_location = request.query_params.get("filter_location", "all")
+    filter_email = request.query_params.get("filter_email", "")
+    filter_user = request.query_params.get("filter_user", "")
 
-    filter_location = request.query_params.get("filter_location")
-    if not filter_location:
-        filter_location = "all"
-
-    filter_email = request.query_params.get("filter_email")
-    if not filter_email:
-        filter_email = ""
-
-    log.debug(f"filter_status: {filter_status}, filter_location: {filter_location}")
-
-    orders = await crud_orders.get_orders_admin(filter_status=filter_status)
+    orders = await crud_orders.get_orders_admin(
+        filter_status=filter_status,
+        filter_location=filter_location,
+        filter_email=filter_email,
+        filter_user=filter_user,
+    )
 
     context_values = {
         "title": "Bestillinger",
@@ -248,6 +244,7 @@ async def orders_admin_get(request: Request):
         "filter_status": filter_status,
         "filter_location": filter_location,
         "filter_email": filter_email,
+        "filter_user": filter_user,
         "locations": utils_orders.STATUSES_LOCATION_HUMAN,
     }
     context = await get_context(request, context_values=context_values)
