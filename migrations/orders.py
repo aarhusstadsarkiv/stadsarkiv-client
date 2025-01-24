@@ -24,8 +24,9 @@ log = get_log()
 create_orders_query = """
 CREATE TABLE users (
     user_id TEXT PRIMARY KEY,
-    user_email TEXT NOT NULL UNIQUE,
-    user_display_name TEXT NOT NULL
+    user_email TEXT NOT NULL,
+    user_display_name TEXT NOT NULL,
+    UNIQUE (user_email, user_id)
 ) STRICT;
 
 CREATE TABLE orders (
