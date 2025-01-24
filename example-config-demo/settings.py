@@ -28,9 +28,15 @@ settings: dict[str, typing.Any] = {
         {"name": "schemas_get_list", "title": "Skemaer"},
         {"name": "entities_get_list", "title": "Entiteter"},
     ],
+    "sqlite3": {
+        "default": "data/database.db",
+        "orders": "data/orders.db",
+    },
     "search_base_url": "/search",
     "show_version": True,
     "allow_user_registration": True,
     "allow_user_management": True,
-    "allow_online_ordering": False,
+    "allow_save_bookmarks": False,
+    "allow_save_search": False,
+    "allow_online_ordering": True,
 }
