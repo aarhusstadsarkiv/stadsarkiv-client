@@ -46,7 +46,7 @@ generate simple table from these columns
     {% for log in logs %}
     <tr>
         <td>{{ log.order_id }}</td>
-        <td>{{ log.user_id }}</td>
+        <td>{{ log.user_display_name }}</td>
         <td>{{ log.record_id }}</td>
         <td>{{ log.updated_location }}</td>
         <td>{{ log.updated_user_status }}</td>

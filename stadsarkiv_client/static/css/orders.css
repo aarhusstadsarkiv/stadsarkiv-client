@@ -1,3 +1,8 @@
+.page-orders-record-html td {
+    white-space: unset;
+
+}
+
 .container-medium {
     width: 100%;
     overflow-x: auto;
@@ -74,12 +79,30 @@ td, th {
     display: table-cell;
 }
 
+.width-400 {
+    max-width: 400px;
+    width: 400px;
+}
+
+
+.width-300 {
+    max-width: 300px;
+    width: 300px;
+}
+
 .width-200 {
     max-width: 200px;
+    width: 200px;
+}
+
+.width-100 {
+    max-width: 100px;
+    width: 100px;
 }
 
 .width-50 {
-    max-width: 100px;
+    max-width: 50px;
+    width: 50px;
 }
 
 
