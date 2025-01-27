@@ -134,9 +134,7 @@ def get_parsed_data_as_table(data: Dict[str, Any], keys_to_parse: List[str], deb
         display_key = translate("label_" + key)
         if debug:
             display_key = f"{display_key} ({key})"
-
-        # key_translated = translate("label_" + key)
-        table_html += f"<tr><td class='width-50'>{display_key}</td><td>{value}</td></tr>"
+        table_html += f"<tr><td class='width-200'>{display_key}</td><td>{value}</td></tr>"
     table_html += "</table>"
     return table_html
 

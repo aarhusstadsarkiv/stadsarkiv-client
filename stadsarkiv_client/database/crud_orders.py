@@ -327,8 +327,6 @@ SELECT * FROM orders o
 """
 
             orders = await crud.query(query, placeholder_values)
-            # log.debug(orders)
-            # orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.ORDERED], order_by="o.order_id DESC")
             for order in orders:
                 order = utils_orders.format_order_display(order)
                 queued_orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.QUEUED], record_id=order["record_id"])
@@ -429,9 +427,6 @@ LIMIT 100
             update_user_status = utils_orders.STATUSES_USER_HUMAN.get(single_log["updated_user_status"], "")
             single_log["updated_location"] = updated_location
             single_log["updated_user_status"] = update_user_status
-            # updated_user_status INTEGER NOT NULL,
-
-        log.debug(logs)
         return logs
 
 
@@ -495,7 +490,6 @@ async def _get_orders(
         limit,
     )
 
-    log.debug(query)
     result = await crud.query(query, params)
     return result
 
