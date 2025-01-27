@@ -46,7 +46,7 @@
         try {
             const userInfo = await Requests.asyncPostJson('/auth/user-info');
             if (!userInfo.is_logged_in) {
-                Flash.setMessage("{{ 'Du skal være logget ind for at oprette en entitet' }}", 'error', true)
+                Flash.setMessage("{{ 'Du skal være logget ind for at oprette en entitet' }}", 'error')
                 return;
             }
         } catch (e) {
@@ -68,7 +68,7 @@
                 const url = `{{ url_for('entities_post')}}`;
                 const res = await Requests.asyncPostJson(url, postJson);
                 if (res.error) {
-                    Flash.setMessage(res.message, 'error', true)
+                    Flash.setMessage(res.message, 'error')
                 }
                 else {
                     window.location = `{{ url_for('entities_get_list') }}`;

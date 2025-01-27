@@ -10,49 +10,66 @@ Very basic flash messages for server-side and javascript.
 // Remove flash messages on page load
 <script type="module">
     import { Flash } from "/static/js/flash.js";
-    Flash.clearMessages(5); 
+
+	// Allow multiple messages to be displayed at the same time (default is false)
+	Flash.singleMessage = false
+	
+	// Default is to keep messages until user clicks on them
+	// Clean messages after 5 seconds - default is null 
+	Flash.removeAfterSecs = 5;
+
+	// Clear messages visible on page load
+    Flash.clearMessages();
 	// Comment out if you want to keep the messages until user clicks on them
 
 	// Set a flash message
-	Flash.setMessage('This is a flash message', 'success', 5);
+	Flash.setMessage('This is a flash message', 'success');
 
 	// Will add a div to "flash-messages" 
 	// With the classes "flash flash-success random_..." and remove it after 5 seconds
 
 	// Flash.setMessage('This is a flash message', 'success');
-	// Will add a div to "flash-messages" with the classes "flash flash-success" and keep it until removed
-	// or user clicks on it
+	// Will add a div to "flash-messages" with the classes "flash flash-success"
 </script>
 
 */
 
 class Flash {
 
+	/**
+	 * If true, clear the message element before adding a new message
+	 * This means only one message can be displayed at a time
+	 */
+	static singleMessage = true;
 
-    /**
-     * Set a flash message
-     * @param {str} The message to display
-     * @param {type}  'info', 'success', 'warning', 'error' or any other you may use in your app. 
-     * @param {removeAfterSecs} remove
-     */
-    static setMessage(message, type, removeAfterSecs = null) {
+	/**
+	 * 
+	 */
+    static removeAfterSecs = null;
+	/**
+	 * Set a flash message in the DOM
+	 */
+    static setMessage(message, type) {
         const messageElem = document.querySelector(".flash-messages");
         messageElem.focus();
-        messageElem.innerHTML = '';
+
+		if (this.singleMessage) {
+        	messageElem.innerHTML = '';
+		}
 
         if (!type) {
             type = 'notice';
         }
 
-        let class_random = '';
-        if (removeAfterSecs) {
+        let class_random = 'random_' + (Math.random() + 1).toString(36).substring(2);
+        if (this.removeAfterSecs) {
             class_random = 'random_' + (Math.random() + 1).toString(36).substring(2);
             setTimeout(function () {
                 let elem = document.querySelector('.' + class_random)
                 if (elem) {
                     elem.remove();
                 }
-            }, removeAfterSecs * 1000)
+            }, this.removeAfterSecs * 1000)
         }
 
         const html = `<div class="flash flash-${type} ${class_random}">${message}</div>`;
@@ -60,16 +77,18 @@ class Flash {
     }
 
     /**
-     * Remove all flash messages after page load
+     * Remove all flash messages
+	 * E.g. right after page load
      */
-    static clearMessages(removeAfterSecs) {
-
-        setTimeout(function () {
-            let elems = document.querySelectorAll('.flash-remove')
-            elems.forEach(function (elem) {
-                elem.remove();
-            })
-        }, removeAfterSecs * 1000)
+    static clearMessages() {
+		if (this.removeAfterSecs) {
+			setTimeout(function () {
+				let elems = document.querySelectorAll('.flash')
+				elems.forEach(function (elem) {
+					elem.remove();
+				})
+			}, this.removeAfterSecs * 1000)
+		}
     }
 }
 

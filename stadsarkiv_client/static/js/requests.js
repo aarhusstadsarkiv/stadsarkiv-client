@@ -1,7 +1,13 @@
+/**
+ * Simple Requests module for 
+ * Posting a FormData object or a JSON object
+ * Or getting JSON from a URL
+ */
+
 class Requests {
 
     /**
-     * Post formdata async. Accepts JSON as response
+     * Post FormData async. Accepts JSON as response
      * 
      * Example (use in try catch block):
      * 
@@ -9,6 +15,7 @@ class Requests {
      * const formData = new FormData(formElem);
      * 
      * const res = await Requests.asyncPost('/url', formData);
+     * 
      */
     static async asyncPost(url, formData, method = 'POST') {
         const response = await fetch(url, {
@@ -23,7 +30,7 @@ class Requests {
             throw new Error(`POST request failed: ${response.status} ${response.statusText}`);
         }
 
-        return response.json(); // Allow errors to propagate naturally
+        return response.json();
     }
 
     /**
@@ -33,6 +40,7 @@ class Requests {
      * 
      * let jsonData = { user_status: 'DELETED' };
      * const res = await Requests.asyncPostJson(url, jsonData);
+     * 
      */
     static async asyncPostJson(url, jsonData = {}, method = 'POST') {
         if (typeof jsonData !== 'string') {
@@ -52,7 +60,7 @@ class Requests {
             throw new Error(`POST request failed: ${response.status} ${response.statusText}`);
         }
 
-        return response.json(); // Allow errors to propagate naturally
+        return response.json();
     }
 
     /**
@@ -74,7 +82,7 @@ class Requests {
             throw new Error(`GET request failed: ${response.status} ${response.statusText}`);
         }
 
-        return response.json(); // Allow errors to propagate naturally
+        return response.json();
     }
 }
 

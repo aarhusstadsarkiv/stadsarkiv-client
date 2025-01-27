@@ -37,7 +37,7 @@
             const url = window.location.pathname; // POST to current URL
             const res = await Requests.asyncPostJson(url, data, "DELETE");
             if (res.error) {
-                Flash.setMessage(res.message, 'error', true)
+                Flash.setMessage(res.message, 'error')
             }
             else {
                 window.location = `{{ url_for('entities_get_list') }}`;

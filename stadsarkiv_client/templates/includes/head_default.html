@@ -24,7 +24,9 @@
 
 <script type="module">
     import { Flash } from "/static/js/flash.js";
-    // Flash.clearMessages(5);
+    Flash.singleMessage = false;
+    Flash.removeAfterSecs = 2;
+    Flash.clearMessages();
     import "/static/js/main-events.js";
     import "/static/js/local.js";
 </script>

@@ -11,7 +11,6 @@ console.log(orderElem)
 if (orderElem) {
     orderElem.addEventListener('click', async function (event) {
         event.preventDefault();
-        Flash.clearMessages();
         spinner.classList.toggle('hidden');
         let res;
         try {

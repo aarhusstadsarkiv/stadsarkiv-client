@@ -70,7 +70,7 @@
         schemaName = context.schema_latest.name;
         currentSchema = context.schema_latest;
         context.is_lastest_schema = true;
-        Flash.setMessage(`Editor benytter nu version ${context.schema_latest.version}`, 'success', true)
+        Flash.setMessage(`Editor benytter nu version ${context.schema_latest.version}`, 'success')
 
         // Render template
         renderUpdateTemplate(context)
@@ -135,7 +135,7 @@
             if (!userInfo.is_logged_in) {
                 const MINUTES_30 = 30 * 60;
                 setLocalStorage(uuid, data, MINUTES_30);
-                Flash.setMessage("{{ 'Du skal være logget ind for at opdatere en entitet. Ikke gemte ændringer kan loades de næste 30 minutter' }}", 'error', true)
+                Flash.setMessage("{{ 'Du skal være logget ind for at opdatere en entitet. Ikke gemte ændringer kan loades de næste 30 minutter' }}", 'error')
                 return;
             }
         } catch (e) {
@@ -160,7 +160,7 @@
                 const url = `/entities/${context.uuid}`;
                 const res = await Requests.asyncPostJson(url, postJson, 'PATCH');
                 if (res.error) {
-                    Flash.setMessage(res.message, 'error', true)
+                    Flash.setMessage(res.message, 'error')
                 }
                 else {
                     window.location = `{{ url_for('entities_get_list') }}`;
