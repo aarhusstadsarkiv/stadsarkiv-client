@@ -13,6 +13,7 @@ from stadsarkiv_client.database.crud_default import database_url
 from stadsarkiv_client.database.utils import DatabaseConnection
 from stadsarkiv_client.core.dynamic_settings import settings
 import random
+import asyncio
 
 log = get_log()
 
@@ -96,3 +97,10 @@ async def test_mail(request: Request):
     # await api.mail_post(request, data_dict)
 
     return templates.TemplateResponse(request, "mails/verify_email.html", context)
+
+
+async def infinite_wait(request):
+    """
+    Endpoint that never responds (simulates infinite wait)
+    """
+    await asyncio.Event().wait()

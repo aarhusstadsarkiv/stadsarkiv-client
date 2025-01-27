@@ -180,6 +180,7 @@ if settings["environment"] == "development":
         Route("/test/mail", endpoint=endpoints_test.test_mail, name="test_mail"),
         Route("/test", endpoint=endpoints_test.test_post, name="test_post", methods=["POST"]),
         Route("/test/{page:str}", endpoint=endpoints_test.test_page, name="test_page", methods=["GET", "POST"]),
+        Route("/infinite-wait", endpoint=endpoints_test.infinite_wait, name="infinite_wait"),
     ]
     routes.extend(routes_test)
 
