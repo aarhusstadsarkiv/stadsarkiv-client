@@ -161,9 +161,19 @@ h6 {
 
 .flash {
     padding: 25px;
-    opacity: 0.9;
+    opacity: 0;
     cursor: pointer;
-    margin: 2px;
+    margin: 2px 0;
+    animation: fadeIn 1s ease-in forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0.5;
+    }
+    to {
+        opacity: 0.9;
+    }
 }
 
 .flash-success {
