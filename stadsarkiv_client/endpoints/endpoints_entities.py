@@ -64,7 +64,7 @@ async def entities_patch(request: Request):
     await is_authenticated(request, permissions=["employee"])
     try:
         await api.entity_patch(request)
-        flash.set_message(request, "Entitet opdateret", type="success", remove=True)
+        flash.set_message(request, "Entitet opdateret", type="success")
         return JSONResponse({"message": "Entitet opdateret", "error": False})
 
     except Exception:
@@ -78,7 +78,7 @@ async def entities_delete(request: Request):
         delete_type = request.path_params["delete_type"]
         try:
             await api.entity_delete(request, "hard")
-            flash.set_message(request, f"Entitet er slettet '{delete_type}'", type="success", remove=True)
+            flash.set_message(request, f"Entitet er slettet '{delete_type}'", type="success")
             return JSONResponse({"message": f"Entitet er slettet '{delete_type}", "error": False})
 
         except Exception:
@@ -101,7 +101,7 @@ async def entities_post(request: Request):
     await is_authenticated(request, permissions=["employee"])
     try:
         await api.entity_post(request)
-        flash.set_message(request, "Entitet oprettet", type="success", remove=True)
+        flash.set_message(request, "Entitet oprettet", type="success")
         return JSONResponse({"message": "Entitet oprettet", "error": False})
 
     except Exception:

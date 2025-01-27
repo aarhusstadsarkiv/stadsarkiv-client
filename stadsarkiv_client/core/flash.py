@@ -7,7 +7,7 @@ from starlette.requests import Request
 from stadsarkiv_client.core.dynamic_settings import settings
 
 
-def set_message(request: Request, message: str, type="notice", remove=True, use_settings=False) -> None:
+def set_message(request: Request, message: str, type="notice", use_settings=False) -> None:
     """Set a flash message to be displayed to the user.
     Args:
         request: The request object.
@@ -21,7 +21,7 @@ def set_message(request: Request, message: str, type="notice", remove=True, use_
     if use_settings:
         message = settings["custom_error"]
 
-    request.session.setdefault("flash", []).append({"type": type, "message": message, "remove": remove})
+    request.session.setdefault("flash", []).append({"type": type, "message": message})
 
 
 def get_messages(request) -> typing.List:
