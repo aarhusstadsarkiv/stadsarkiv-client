@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Zoom</title>
+</head>
+
+<body>
+    <h1>Test wait</h1>
+</body>
+<script type="module">
+    import { Requests } from "/static/js/requests.js";
+
+    Requests.REQUEST_TIMEOUT = 2
+
+    try {
+        const res = await Requests.asyncGetJson('/infinite-wait');
+        console.log(res);
+    } catch (e) {
+        alert('Error ' + e.message );
+        console.error(e);
+    }
+
+</script>
+
+</html>

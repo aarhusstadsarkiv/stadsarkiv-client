@@ -1,53 +1,60 @@
 /**
- * Simple Requests module for 
- * Posting a FormData object or a JSON object
- * Or getting JSON from a URL
+ * Simple Requests module for making async requests: 
+ * Posting a FormData object
+ * Posting a JSON object
+ * Getting JSON from a URL
  */
 
 class Requests {
+    
+    static REQUEST_TIMEOUT = 10;
 
     /**
-     * Post FormData async. Accepts JSON as response
-     * 
-     * Example (use in try catch block):
-     * 
-     * const formElem = document.getElementById('formElem');
-     * const formData = new FormData(formElem);
-     * 
-     * const res = await Requests.asyncPost('/url', formData);
-     * 
+     * Helper function to fetch with timeout
+     */
+    static async _fetchWithTimeout(url, options) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), Requests.REQUEST_TIMEOUT * 1000);
+        options.signal = controller.signal;
+
+        try {
+            const response = await fetch(url, options);
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+                throw new Error(`${options.method} request failed: ${response.status} ${response.statusText}`);
+            }
+            return response.json();
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                throw new Error(`${options.method} request aborted due to timeout`);
+            }
+            throw error;
+        }
+    }
+
+    /**
+     * Post FormData async. Accepts JSON as response.
      */
     static async asyncPost(url, formData, method = 'POST') {
-        const response = await fetch(url, {
+        return Requests._fetchWithTimeout(url, {
             method: method,
             headers: {
                 'Accept': 'application/json',
             },
             body: formData
         });
-
-        if (!response.ok) {
-            throw new Error(`POST request failed: ${response.status} ${response.statusText}`);
-        }
-
-        return response.json();
     }
 
     /**
      * POST JSON async. Send a JSON object or a JSON string.
-     * 
-     * Example (use in try catch block):
-     * 
-     * let jsonData = { user_status: 'DELETED' };
-     * const res = await Requests.asyncPostJson(url, jsonData);
-     * 
      */
     static async asyncPostJson(url, jsonData = {}, method = 'POST') {
         if (typeof jsonData !== 'string') {
             jsonData = JSON.stringify(jsonData);
         }
 
-        const response = await fetch(url, {
+        return Requests._fetchWithTimeout(url, {
             method: method,
             headers: {
                 'Accept': 'application/json',
@@ -55,35 +62,19 @@ class Requests {
             },
             body: jsonData
         });
-
-        if (!response.ok) {
-            throw new Error(`POST request failed: ${response.status} ${response.statusText}`);
-        }
-
-        return response.json();
     }
 
     /**
      * Get JSON async.
-
-     * Example (use in try catch block):
-     *
-     * const res = await Requests.asyncGetJson(url);
      */
-    static async asyncGetJson(url, method='GET') {
-        const response = await fetch(url, {
+    static async asyncGetJson(url, method = 'GET') {
+        return Requests._fetchWithTimeout(url, {
             method: method,
             headers: {
                 'Accept': 'application/json',
             }
         });
-
-        if (!response.ok) {
-            throw new Error(`GET request failed: ${response.status} ${response.statusText}`);
-        }
-
-        return response.json();
     }
 }
 
-export { Requests }
+export { Requests };
