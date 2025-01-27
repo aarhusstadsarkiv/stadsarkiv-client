@@ -46,8 +46,10 @@ class Flash {
 	 * 
 	 */
     static removeAfterSecs = null;
+
 	/**
-	 * Set a flash message in the DOM
+	 * Set a flash message in the DOM. Based on singleMessage, it will either clear the message element or not
+	 * Based on removeAfterSecs, it will remove the message after a set amount of seconds
 	 */
     static setMessage(message, type) {
         const messageElem = document.querySelector(".flash-messages");
@@ -78,7 +80,7 @@ class Flash {
 
     /**
      * Remove all flash messages
-	 * E.g. right after page load
+	 * This is meant for removing messages on page load, set by server-side languages 
      */
     static clearMessages() {
 		if (this.removeAfterSecs) {
