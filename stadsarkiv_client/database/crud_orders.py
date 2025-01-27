@@ -329,6 +329,8 @@ SELECT * FROM orders o
             orders = await crud.query(query, placeholder_values)
             for order in orders:
                 order = utils_orders.format_order_display(order)
+
+                # This should be moved to main query
                 queued_orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.QUEUED], record_id=order["record_id"])
                 order["count"] = len(queued_orders)
 
