@@ -7,14 +7,32 @@ from stadsarkiv_client.database.crud import CRUD
 from stadsarkiv_client.database import utils_orders
 from stadsarkiv_client.database.utils import DatabaseConnection
 from stadsarkiv_client.core.logging import get_log
+from dataclasses import dataclass
+from typing import Optional
 
 
 log = get_log()
+
 
 try:
     orders_url = settings["sqlite3"]["orders"]
 except KeyError:
     orders_url = ""
+
+
+@dataclass
+class OrderFilter:
+    filter_status: str = "active"
+    filter_location: Optional[str] = "all"
+    filter_email: Optional[str] = ""
+    filter_user: Optional[str] = ""
+    filter_show_queued: Optional[str] = ""
+    filter_offset: int = 0
+
+    def normalize(self):
+        """Normalize filter values for querying."""
+        if self.filter_location == "all":
+            self.filter_location = ""
 
 
 async def has_active_order(user_id: str, record_id: str):
@@ -258,6 +276,28 @@ async def delete_order(order_id: int, user_id: str):
         )
 
 
+async def _get_queued_orders_length(crud: "CRUD", orders: list[dict]) -> dict:
+    """
+    Get the number of queued orders for a list of orders
+    """
+    records_ids = [order["record_id"] for order in orders]
+    list_of_record_ids = ", ".join([f"'{record_id}'" for record_id in records_ids])
+
+    # query for getting count of queued orders for any record in the list
+    query = f"""
+SELECT record_id, COUNT(*) AS queued_count
+FROM orders
+WHERE user_status IN ({utils_orders.STATUSES_USER.QUEUED})
+AND record_id IN ({list_of_record_ids})
+GROUP BY record_id
+ORDER BY queued_count DESC;
+"""
+    queued_orders = await crud.query(query, {})
+    queued_orders = {order["record_id"]: order["queued_count"] for order in queued_orders}
+
+    return queued_orders
+
+
 async def get_orders_user(user_id: str, completed=0) -> list:
     """
     Get all orders for a user. Exclude orders with specific statuses.
@@ -279,10 +319,13 @@ async def get_orders_user(user_id: str, completed=0) -> list:
 
 
 async def get_orders_admin(
-    filter_status: str,
-    filter_location: str,
-    filter_email: str,
-    filter_user: str,
+    # filter_status: str,
+    # filter_location: str,
+    # filter_email: str,
+    # filter_user: str,
+    # filter_show_queued:str,
+    # offset: int,
+    filters: OrderFilter,
 ) -> list:
     """
     Get all orders for a user.
@@ -290,82 +333,99 @@ async def get_orders_admin(
 
     search_values = []
     search_filters = []
-    if filter_location:
+    if filters.filter_location:
         search_filters.append("r.location =:location_filter")
-        search_values.append(filter_location)
-    if filter_email:
+        search_values.append(filters.filter_location)
+    if filters.filter_email:
         search_filters.append("u.user_email LIKE :email_filter")
-        search_values.append(filter_email)
-    if filter_user:
+        search_values.append(filters.filter_email)
+    if filters.filter_user:
         search_filters.append("u.user_display_name LIKE :user_filter")
-        search_values.append(filter_user)
+        search_values.append(filters.filter_user)
 
     search_filters_as_str = ""
     if search_filters:
         # add search filters to query
         search_filters_as_str = " AND " + " AND ".join(search_filters)
-        log.debug(search_filters_as_str)
 
     placeholder_values = {}
     if search_filters:
         placeholder_values = {
-            "location_filter": filter_location,
-            "email_filter": f"{filter_email}%",
-            "user_filter": f"{filter_user}%",
+            "location_filter": filters.filter_location,
+            "email_filter": f"{filters.filter_email}%",
+            "user_filter": f"{filters.filter_user}%",
         }
 
+    SQL_LIMIT = 2
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
 
-        if filter_status == "active":
+        if filters.filter_show_queued:
+            user_statuses = f"{utils_orders.STATUSES_USER.ORDERED}, {utils_orders.STATUSES_USER.QUEUED}"
+        else:
+            user_statuses = f"{utils_orders.STATUSES_USER.ORDERED}"
+
+        if filters.filter_status == "active":
             query = f"""
-SELECT * FROM orders o
+SELECT o.*, r.*, u.*
+FROM orders o
     LEFT JOIN records r ON o.record_id = r.record_id
     LEFT JOIN users u ON o.user_id = u.user_id
-    WHERE o.user_status IN ({utils_orders.STATUSES_USER.ORDERED}) {search_filters_as_str} ORDER BY o.order_id DESC LIMIT 100
+WHERE o.user_status IN ({user_statuses})
+    {search_filters_as_str}
+ORDER BY o.order_id DESC
+LIMIT {SQL_LIMIT} OFFSET {filters.filter_offset}
 """
 
             orders = await crud.query(query, placeholder_values)
+            queued_orders = await _get_queued_orders_length(crud, orders)
+
             for order in orders:
                 order = utils_orders.format_order_display(order)
 
-                queued_orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.QUEUED], record_id=order["record_id"])
-                order["count"] = len(queued_orders)
+                record_id = order["record_id"]
+                order["count"] = queued_orders.get(record_id, 0)
 
                 # Only the first order in the list is 'ORDERED' and can be changed
                 # if location is READING_ROOM set action_location_change to False
                 if order["location"] != utils_orders.STATUSES_LOCATION.READING_ROOM:
                     order["allow_location_change"] = True
 
-        if filter_status == "completed":
+        if filters.filter_status == "completed":
             query = f"""
-WITH LatestOrders AS (
-    SELECT
-        o.record_id,
-        MAX(o.updated_at) AS latest_updated_at
-    FROM
-        orders o
-    GROUP BY
-        o.record_id
-)
-SELECT
-    o.*, r.*, u.*
-FROM
-    orders o
-    LEFT JOIN records r ON o.record_id = r.record_id
-    LEFT JOIN users u ON o.user_id = u.user_id
-    INNER JOIN LatestOrders lo
-        ON o.record_id = lo.record_id AND o.updated_at = lo.latest_updated_at
+SELECT o.*, r.*, u.*
+FROM orders o
+LEFT JOIN records r ON o.record_id = r.record_id
+LEFT JOIN users u ON o.user_id = u.user_id
 WHERE
-    o.user_status IN ({utils_orders.STATUSES_USER.DELETED}, {utils_orders.STATUSES_USER.COMPLETED})
-    AND
-    r.location != {utils_orders.STATUSES_LOCATION.IN_STORAGE}
+    -- Only COMPLETED orders
+    o.user_status = {utils_orders.STATUSES_USER.COMPLETED}
+
+    -- Make sure we pick the most recent COMPLETED order for each record
+    AND o.updated_at = (
+        SELECT MAX(o2.updated_at)
+        FROM orders o2
+        WHERE o2.record_id = o.record_id
+          AND o2.user_status = {utils_orders.STATUSES_USER.COMPLETED}
+    )
+
+    -- Exclude records that have an ORDERED status
+    AND o.record_id NOT IN (
+        SELECT record_id
+        FROM orders
+        WHERE user_status = {utils_orders.STATUSES_USER.ORDERED}
+    )
+
+    -- Also exclude records with location = IN_STORAGE
+    AND r.location <> {utils_orders.STATUSES_LOCATION.IN_STORAGE}
+
+    -- Search filters
     {search_filters_as_str}
 
-ORDER BY
-    o.updated_at ASC
-LIMIT 100;
+    ORDER BY o.updated_at DESC
+    LIMIT {SQL_LIMIT}
+
 """
             orders = await crud.query(query, placeholder_values)
 
@@ -374,17 +434,16 @@ LIMIT 100;
                 order["user_actions_deactivated"] = True
                 order["allow_location_change"] = True
 
-        if filter_status == "order_history":
+        if filters.filter_status == "order_history":
             query = f"""
 SELECT * FROM orders o
     LEFT JOIN records r ON o.record_id = r.record_id
     LEFT JOIN users u ON o.user_id = u.user_id
     WHERE o.user_status IN ({utils_orders.STATUSES_USER.DELETED}, {utils_orders.STATUSES_USER.COMPLETED})
     {search_filters_as_str}
-    ORDER BY o.updated_at DESC LIMIT 100
+    ORDER BY o.updated_at DESC 
+    LIMIT {SQL_LIMIT}
 """
-            # Get all orders with status COMPLETED
-            # orders = await _get_orders(crud, statuses=[utils_orders.STATUSES_USER.COMPLETED], limit=100)
             orders = await crud.query(query, placeholder_values)
             for order in orders:
                 order = utils_orders.format_order_display(order)
@@ -420,7 +479,7 @@ JOIN orders o ON l.order_id = o.order_id
 JOIN users u ON l.user_id = u.user_id
 JOIN records r ON l.record_id = r.record_id
 ORDER BY l.updated_at DESC
-LIMIT 100
+LIMIT {SQL_LIMIT}
 """
         logs = await crud.query(query, {})
         for single_log in logs:

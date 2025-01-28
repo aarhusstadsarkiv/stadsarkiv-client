@@ -11,14 +11,6 @@ from stadsarkiv_client.core import flash
 from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.endpoints.endpoints_utils import get_record_data
-
-from starlette.requests import Request
-
-from stadsarkiv_client.core.templates import templates
-from stadsarkiv_client.core.context import get_context
-from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.core import api
-from stadsarkiv_client.endpoints.endpoints_utils import get_record_data
 from stadsarkiv_client.core import utils_core
 
 
@@ -237,28 +229,25 @@ async def orders_admin_get(request: Request):
     me = await api.users_me_get(request)
     await crud_orders.replace_employee(me)
 
-    # get status from query params
-    filter_status = request.query_params.get("filter_status", "active")
-    filter_location = request.query_params.get("filter_location", "all")
-    if filter_location == "all":
-        filter_location = ""
-    filter_email = request.query_params.get("filter_email", "")
-    filter_user = request.query_params.get("filter_user", "")
+    filters = crud_orders.OrderFilter(
+        filter_status=request.query_params.get("filter_status", "active"),
+        filter_location=request.query_params.get("filter_location", "all"),
+        filter_email=request.query_params.get("filter_email", ""),
+        filter_user=request.query_params.get("filter_user", ""),
+        filter_show_queued=request.query_params.get("filter_show_queued", ""),
+        filter_offset=0,
+    )
+
+    filters.normalize()
 
     orders = await crud_orders.get_orders_admin(
-        filter_status=filter_status,
-        filter_location=filter_location,
-        filter_email=filter_email,
-        filter_user=filter_user,
+        filters=filters,
     )
 
     context_values = {
         "title": "Bestillinger",
         "orders": orders,
-        "filter_status": filter_status,
-        "filter_location": filter_location,
-        "filter_email": filter_email,
-        "filter_user": filter_user,
+        "filters": filters,
         "locations": utils_orders.STATUSES_LOCATION_HUMAN,
     }
     context = await get_context(request, context_values=context_values)

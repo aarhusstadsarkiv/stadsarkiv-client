@@ -22,22 +22,27 @@
 {# Select active, completed, order_history #}
 <form class="filters" method="GET" action="/admin/orders">
     <select name="filter_status" id="filter_status">
-        <option title="Aktive bestillinger" value="active" {% if filter_status=='active' %}selected{% endif %}>Aktive
+        <option title="Aktive bestillinger" value="active" {% if filters.filter_status=='active' %}selected{% endif %}>Aktive
             bestillinger</option>
         <option title="Materiale som er afsluttet, men som ikke er i magasin" value="completed" {% if
-            filter_status=='completed' %}selected{% endif %}>Afsluttet materiale</option>
-        <option title="Historik over afsluttede bestillinger" value="order_history" {% if filter_status=='order_history' %}selected{%
+            filters.filter_status=='completed' %}selected{% endif %}>Afsluttet materiale</option>
+        <option title="Historik over afsluttede bestillinger" value="order_history" {% if filters.filter_status=='order_history' %}selected{%
             endif %}>Historik</option>
     </select>
     <select name="filter_location" id="filter_location">
-        <option value="all" {% if filter_location=='all' %}selected{% endif %}>Alle lokationer</option>
+        <option value="all" {% if filters.filter_location=='all' %}selected{% endif %}>Alle lokationer</option>
         {% for key, value in locations.items() %}
         <option value="{{ key }}" {% if filter_location==key|string %}selected{% endif %}>{{ value }}</option>
         {% endfor %}
     </select>
-    <input type="text" name="filter_email" placeholder="E-mail" value="{{ filter_email }}">
-    <input type="text" name="filter_user" placeholder="Brugernavn" value="{{ filter_user }}">
+    <input type="text" name="filter_email" placeholder="E-mail" value="{{ filters.filter_email }}">
+    <input type="text" name="filter_user" placeholder="Brugernavn" value="{{ filters.filter_user }}">
+    {% if filters.filter_status == 'active' %}
+    Vis bestillinger i kø: <input type="checkbox" name="filter_show_queued" id="filter_show_queued" {% if filters.filter_show_queued %}checked{% endif %}>
+    {% endif %}
     <a href="#" class="clear-search-filters">Ryd filtre</a>
+    <br>
+    
 </form>
 
 {% if orders|length == 0 %}
@@ -69,7 +74,14 @@
     </thead>
     <tbody>
         {% for order in orders %}
-        <tr>
+        
+        
+        {% if order.queued %}
+        {% set queued = 'faded-row' %}
+        {% else %}
+        {% set queued = '' %}
+        {% endif %}
+        <tr class="{{ queued }}">
             <td class="record-link">
                 <a title="{{ order.record_and_types_title }}" href="/admin/orders/{{order.record_id}}/html">{{order.record_id}}</a>
             </td>
@@ -279,10 +291,11 @@ at benytte det. Du må først slette eller afslutte den aktive bestilling, før 
             }
         }); 
         filterForm.submit();
-        
     });
 
-
+    document.querySelector('#filter_show_queued').addEventListener('change', function () {
+        filterForm.submit();
+    });
 
 </script>
 {% endblock content %}

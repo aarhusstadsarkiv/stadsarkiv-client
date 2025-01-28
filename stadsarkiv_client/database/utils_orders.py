@@ -124,6 +124,11 @@ def format_order_display(order: dict):
 
     # Convert statuses to human readable
     order["user_status_human"] = STATUSES_USER_HUMAN.get(order["user_status"])
+
+    # Check if queued 
+    if order["user_status"] == STATUSES_USER.QUEUED:
+        order["queued"] = True
+
     order["location_human"] = STATUSES_LOCATION_HUMAN.get(order["location"])
     return order
 
