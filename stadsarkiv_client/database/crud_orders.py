@@ -355,8 +355,7 @@ async def _get_active_orders(crud: "CRUD", filters: OrderFilter) -> list:
     else:
         user_statuses = f"{utils_orders.STATUSES_USER.ORDERED}"
 
-    if filters.filter_status == "active":
-        query = f"""
+    query = f"""
 SELECT o.*, r.*, u.*
 FROM orders o
 LEFT JOIN records r ON o.record_id = r.record_id
@@ -404,10 +403,10 @@ WHERE
     {search_filters_as_str}
 
     ORDER BY o.updated_at DESC
-    LIMIT {filters.filter_limit}
+    LIMIT {filters.filter_limit} OFFSET {filters.filter_offset}
 
 """
-
+    log.debug(f"query: {query}")
     orders = await crud.query(query, placeholder_values)
     return orders
 
@@ -423,7 +422,7 @@ SELECT o.*, r.*, u.*
     WHERE o.user_status IN ({utils_orders.STATUSES_USER.DELETED}, {utils_orders.STATUSES_USER.COMPLETED})
     {search_filters_as_str}
     ORDER BY o.updated_at DESC
-    LIMIT {filters.filter_limit}
+    LIMIT {filters.filter_limit} OFFSET {filters.filter_offset}
 """
     orders = await crud.query(query, placeholder_values)
     return orders
@@ -441,6 +440,11 @@ async def get_orders_admin(filters: OrderFilter) -> list:
             orders = await _get_active_orders(crud, filters)
             queued_orders = await _get_queued_orders_length(crud, orders)
 
+            # orders_next
+            filters.filter_offset = filters.filter_offset + filters.filter_limit
+            orders_next = await _get_active_orders(crud, filters)
+            log.debug(f"len(orders_next): {len(orders_next)}")
+
             for order in orders:
                 order = utils_orders.format_order_display(order)
 
@@ -455,6 +459,10 @@ async def get_orders_admin(filters: OrderFilter) -> list:
         if filters.filter_status == "completed":
             orders = await _get_completed_orders(crud, filters)
 
+            filters.filter_offset = filters.filter_offset + filters.filter_limit
+            orders_next = await _get_completed_orders(crud, filters)
+            log.debug(f"len(orders_next): {len(orders_next)}")
+
             for order in orders:
                 order = utils_orders.format_order_display(order)
                 order["user_actions_deactivated"] = True
@@ -462,6 +470,10 @@ async def get_orders_admin(filters: OrderFilter) -> list:
 
         if filters.filter_status == "order_history":
             orders = await _get_history_orders(crud, filters)
+
+            filters.filter_offset = filters.filter_offset + filters.filter_limit
+            orders_next = await _get_history_orders(crud, filters)
+            log.debug(f"len(orders_next): {len(orders_next)}")
 
             for order in orders:
                 order = utils_orders.format_order_display(order)

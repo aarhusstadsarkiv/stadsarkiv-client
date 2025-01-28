@@ -264,8 +264,6 @@ async def orders_admin_get_edit(request: Request):
     order_id = request.path_params["order_id"]
     order = await crud_orders.get_order(order_id)
 
-    log.debug(order)
-
     context_values = {
         "title": "Opdater bestilling",
         "order": order,
