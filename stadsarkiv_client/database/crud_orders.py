@@ -27,6 +27,7 @@ class OrderFilter:
     filter_email: Optional[str] = ""
     filter_user: Optional[str] = ""
     filter_show_queued: Optional[str] = ""
+    filter_limit: int = 2
     filter_offset: int = 0
 
     def normalize(self):
@@ -278,7 +279,7 @@ async def delete_order(order_id: int, user_id: str):
 
 async def _get_queued_orders_length(crud: "CRUD", orders: list[dict]) -> dict:
     """
-    Get the number of queued orders for a list of orders
+    From a list of order get the count of queued orders for each record in the list
     """
     records_ids = [order["record_id"] for order in orders]
     list_of_record_ids = ", ".join([f"'{record_id}'" for record_id in records_ids])
@@ -318,19 +319,7 @@ async def get_orders_user(user_id: str, completed=0) -> list:
         return [format_order_for_display(order) for order in orders]
 
 
-async def get_orders_admin(
-    # filter_status: str,
-    # filter_location: str,
-    # filter_email: str,
-    # filter_user: str,
-    # filter_show_queued:str,
-    # offset: int,
-    filters: OrderFilter,
-) -> list:
-    """
-    Get all orders for a user.
-    """
-
+def _get_and_filters_str_and_values(filters: OrderFilter) -> tuple:
     search_values = []
     search_filters = []
     if filters.filter_location:
@@ -343,11 +332,6 @@ async def get_orders_admin(
         search_filters.append("u.user_display_name LIKE :user_filter")
         search_values.append(filters.filter_user)
 
-    search_filters_as_str = ""
-    if search_filters:
-        # add search filters to query
-        search_filters_as_str = " AND " + " AND ".join(search_filters)
-
     placeholder_values = {}
     if search_filters:
         placeholder_values = {
@@ -356,44 +340,40 @@ async def get_orders_admin(
             "user_filter": f"{filters.filter_user}%",
         }
 
-    SQL_LIMIT = 2
-    database_connection = DatabaseConnection(orders_url)
-    async with database_connection.transaction_scope_async() as connection:
-        crud = CRUD(connection)
+    search_filters_as_str = ""
+    if search_filters:
+        search_filters_as_str = " AND " + " AND ".join(search_filters)
 
-        if filters.filter_show_queued:
-            user_statuses = f"{utils_orders.STATUSES_USER.ORDERED}, {utils_orders.STATUSES_USER.QUEUED}"
-        else:
-            user_statuses = f"{utils_orders.STATUSES_USER.ORDERED}"
+    return search_filters_as_str, placeholder_values
 
-        if filters.filter_status == "active":
-            query = f"""
+
+async def _get_active_orders(crud: "CRUD", filters: OrderFilter) -> list:
+    search_filters_as_str, placeholder_values = _get_and_filters_str_and_values(filters)
+
+    if filters.filter_show_queued:
+        user_statuses = f"{utils_orders.STATUSES_USER.ORDERED}, {utils_orders.STATUSES_USER.QUEUED}"
+    else:
+        user_statuses = f"{utils_orders.STATUSES_USER.ORDERED}"
+
+    if filters.filter_status == "active":
+        query = f"""
 SELECT o.*, r.*, u.*
 FROM orders o
-    LEFT JOIN records r ON o.record_id = r.record_id
-    LEFT JOIN users u ON o.user_id = u.user_id
+LEFT JOIN records r ON o.record_id = r.record_id
+LEFT JOIN users u ON o.user_id = u.user_id
 WHERE o.user_status IN ({user_statuses})
-    {search_filters_as_str}
+{search_filters_as_str}
 ORDER BY o.order_id DESC
-LIMIT {SQL_LIMIT} OFFSET {filters.filter_offset}
+LIMIT {filters.filter_limit} OFFSET {filters.filter_offset}
 """
 
-            orders = await crud.query(query, placeholder_values)
-            queued_orders = await _get_queued_orders_length(crud, orders)
+    orders = await crud.query(query, placeholder_values)
+    return orders
 
-            for order in orders:
-                order = utils_orders.format_order_display(order)
 
-                record_id = order["record_id"]
-                order["count"] = queued_orders.get(record_id, 0)
-
-                # Only the first order in the list is 'ORDERED' and can be changed
-                # if location is READING_ROOM set action_location_change to False
-                if order["location"] != utils_orders.STATUSES_LOCATION.READING_ROOM:
-                    order["allow_location_change"] = True
-
-        if filters.filter_status == "completed":
-            query = f"""
+async def _get_completed_orders(crud: "CRUD", filters: OrderFilter) -> list:
+    search_filters_as_str, placeholder_values = _get_and_filters_str_and_values(filters)
+    query = f"""
 SELECT o.*, r.*, u.*
 FROM orders o
 LEFT JOIN records r ON o.record_id = r.record_id
@@ -424,10 +404,56 @@ WHERE
     {search_filters_as_str}
 
     ORDER BY o.updated_at DESC
-    LIMIT {SQL_LIMIT}
+    LIMIT {filters.filter_limit}
 
 """
-            orders = await crud.query(query, placeholder_values)
+
+    orders = await crud.query(query, placeholder_values)
+    return orders
+
+
+async def _get_history_orders(crud: "CRUD", filters: OrderFilter) -> list:
+    search_filters_as_str, placeholder_values = _get_and_filters_str_and_values(filters)
+
+    query = f"""
+SELECT o.*, r.*, u.*
+    FROM orders o
+    LEFT JOIN records r ON o.record_id = r.record_id
+    LEFT JOIN users u ON o.user_id = u.user_id
+    WHERE o.user_status IN ({utils_orders.STATUSES_USER.DELETED}, {utils_orders.STATUSES_USER.COMPLETED})
+    {search_filters_as_str}
+    ORDER BY o.updated_at DESC
+    LIMIT {filters.filter_limit}
+"""
+    orders = await crud.query(query, placeholder_values)
+    return orders
+
+
+async def get_orders_admin(filters: OrderFilter) -> list:
+    """
+    Get all orders for a user.
+    """
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
+        crud = CRUD(connection)
+
+        if filters.filter_status == "active":
+            orders = await _get_active_orders(crud, filters)
+            queued_orders = await _get_queued_orders_length(crud, orders)
+
+            for order in orders:
+                order = utils_orders.format_order_display(order)
+
+                record_id = order["record_id"]
+                order["count"] = queued_orders.get(record_id, 0)
+
+                # Only the first order in the list is 'ORDERED' and can be changed
+                # if location is READING_ROOM set action_location_change to False
+                if order["location"] != utils_orders.STATUSES_LOCATION.READING_ROOM:
+                    order["allow_location_change"] = True
+
+        if filters.filter_status == "completed":
+            orders = await _get_completed_orders(crud, filters)
 
             for order in orders:
                 order = utils_orders.format_order_display(order)
@@ -435,16 +461,8 @@ WHERE
                 order["allow_location_change"] = True
 
         if filters.filter_status == "order_history":
-            query = f"""
-SELECT * FROM orders o
-    LEFT JOIN records r ON o.record_id = r.record_id
-    LEFT JOIN users u ON o.user_id = u.user_id
-    WHERE o.user_status IN ({utils_orders.STATUSES_USER.DELETED}, {utils_orders.STATUSES_USER.COMPLETED})
-    {search_filters_as_str}
-    ORDER BY o.updated_at DESC 
-    LIMIT {SQL_LIMIT}
-"""
-            orders = await crud.query(query, placeholder_values)
+            orders = await _get_history_orders(crud, filters)
+
             for order in orders:
                 order = utils_orders.format_order_display(order)
                 order["user_actions_deactivated"] = True

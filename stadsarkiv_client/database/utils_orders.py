@@ -99,37 +99,43 @@ def format_order_display(order: dict):
     """
     Format dates in order for display. Change from UTC to Europe/Copenhagen
     """
-    order["created_at"] = date_format.timezone_alter(order["created_at"])
-    order["updated_at"] = date_format.timezone_alter(order["updated_at"])
+    try:
+        order["created_at"] = date_format.timezone_alter(order["created_at"])
+        order["updated_at"] = date_format.timezone_alter(order["updated_at"])
 
-    # Load json data
-    order["record_and_types"] = json.loads(order["record_and_types"])
-    order["meta_data_dict"] = json.loads(order["meta_data"])
+        # log.debug(f"Order: {order['record_and_types']}")
+        # Load json data
+        order["record_and_types"] = json.loads(order["record_and_types"])
+        order["meta_data_dict"] = json.loads(order["meta_data"])
 
-    # Convert record_and_types to string
-    record_and_types = order["record_and_types"]
-    resources = order["meta_data_dict"]["resources"]
+        # Convert record_and_types to string
+        record_and_types = order["record_and_types"]
+        resources = order["meta_data_dict"]["resources"]
 
-    used_keys = ["date_normalized", "series", "collection", "collectors"]
-    record_and_types_strings = utils_core.get_record_and_types_as_strings(record_and_types, used_keys)
-    record_and_types_strings.update(resources)
+        used_keys = ["date_normalized", "series", "collection", "collectors"]
+        record_and_types_strings = utils_core.get_record_and_types_as_strings(record_and_types, used_keys)
+        record_and_types_strings.update(resources)
 
-    order["collectors"] = record_and_types_strings.get("collectors", "")
+        order["collectors"] = record_and_types_strings.get("collectors", "")
 
-    # Convert deadline to date string
-    if order["deadline"]:
-        deadline = date_format.timezone_alter(order["deadline"])
-        deadline = arrow.get(deadline).format("YYYY-MM-DD")
-        order["deadline"] = deadline
+        # Convert deadline to date string
+        if order["deadline"]:
+            deadline = date_format.timezone_alter(order["deadline"])
+            deadline = arrow.get(deadline).format("YYYY-MM-DD")
+            order["deadline"] = deadline
 
-    # Convert statuses to human readable
-    order["user_status_human"] = STATUSES_USER_HUMAN.get(order["user_status"])
+        # Convert statuses to human readable
+        order["user_status_human"] = STATUSES_USER_HUMAN.get(order["user_status"])
 
-    # Check if queued 
-    if order["user_status"] == STATUSES_USER.QUEUED:
-        order["queued"] = True
+        # Check if queued
+        if order["user_status"] == STATUSES_USER.QUEUED:
+            order["queued"] = True
 
-    order["location_human"] = STATUSES_LOCATION_HUMAN.get(order["location"])
+        order["location_human"] = STATUSES_LOCATION_HUMAN.get(order["location"])
+    except (json.JSONDecodeError, TypeError) as e:
+        log.debug(f"Error: {e}")
+        log.debug(f"{type(order['record_and_types'])}")
+
     return order
 
 
