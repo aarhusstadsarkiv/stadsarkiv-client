@@ -519,22 +519,37 @@ async def get_order(order_id):
         return order
 
 
-async def get_logs():
+async def get_logs(order_id: str = "") -> list:
     """
     Get a single joined order by order_id for display on the admin edit order page
     """
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
-        query = """
+
+        log.debug(f"order_id: {order_id}")
+
+        sql = []
+        values = {}
+        if order_id:
+            sql.append("l.order_id = :order_id")
+            values = {"order_id": order_id}
+
+        where_sql = ""
+        if sql:
+            where_sql = "WHERE " + " AND ".join(sql)
+        query = f"""
 SELECT * FROM orders_log l
 JOIN orders o ON l.order_id = o.order_id
 JOIN users u ON l.user_id = u.user_id
 JOIN records r ON l.record_id = r.record_id
+{where_sql}
 ORDER BY l.updated_at DESC
 LIMIT 100
 """
-        logs = await crud.query(query, {})
+        
+        log.debug(f"query: {query} values: {values}")
+        logs = await crud.query(query, values)
         for single_log in logs:
             updated_location = utils_orders.STATUSES_LOCATION_HUMAN.get(single_log["updated_location"], "")
             update_user_status = utils_orders.STATUSES_USER_HUMAN.get(single_log["updated_user_status"], "")

@@ -303,7 +303,10 @@ async def orders_record_get(request: Request):
 async def orders_logs(request: Request):
     await is_authenticated(request, permissions=["employee"])
 
-    logs = await crud_orders.get_logs()
+    # get query params order_id
+    order_id = request.query_params.get("order_id", "")
+
+    logs = await crud_orders.get_logs(order_id=order_id)
     context_variables = {
         "logs": logs,
         "title": "Order Logs",

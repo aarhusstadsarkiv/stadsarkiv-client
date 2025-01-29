@@ -137,6 +137,9 @@
                                 title="Brugeren er færdig med bestillingen" href="#">Afslut</a>
                         </span>
                         {% endif %}
+
+                        <a class="action-link" href="/admin/orders/logs?order_id={{order.order_id}}"
+                            title="Slet bestillingen">Logs</a>
                     </span>
                 </td>
             </tr>
