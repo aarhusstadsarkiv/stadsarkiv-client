@@ -81,7 +81,7 @@ async def orders_post(request: Request):
 async def _process_order_deletion(request: Request, id_key: str):
     """
     This mehtod is used to delete an order based on the provided key (e.g., "order_id" or "record_id")
-    There is two options because the user can delete an order based on the order_id or the record_id
+    There are two options because the user can delete an order based on the order_id or the record_id
     """
     await is_authenticated_json(request, verified=True)
     me = await api.users_me_get(request)
@@ -113,10 +113,10 @@ async def _process_order_deletion(request: Request, id_key: str):
         }
 
         await crud_orders.update_order(
-            location=0,
-            update_values=update_values,
             order_id=order_id,
             user_id=user_id,
+            location=0,
+            update_values=update_values,
         )
 
     except Exception:
@@ -151,30 +151,35 @@ async def _get_location(update_values: dict) -> int:
     return location
 
 
-async def orders_admin_patch(request: Request):
+async def orders_admin_patch_multiple(request: Request):
     """
     Patch multiple orders at once
+    This is used when updating multiple order locations at once
     """
     try:
         await is_authenticated_json(request, verified=True, permissions=["employee"])
         me = await api.users_me_get(request)
 
         # Mutiple orders can be updated at once
-        update_values: list = await request.json()
-        num_orders = len(update_values)
-        for update_value in update_values:
-            order_id = update_value["order_id"]
-            location = await _get_location(update_value)
+        orders_and_locations: list = await request.json()
+        num_orders = len(orders_and_locations)
+
+        for order_location in orders_and_locations:
+
+            # Single update value is e.g. {'order_id': '22', 'location': '2'}
+            order_id = order_location["order_id"]
+            location = order_location["location"]
+
             await crud_orders.update_order(
-                location=location,
-                update_values=update_value,
                 order_id=order_id,
                 user_id=me["id"],
+                location=location,
+                update_values={},  # No other values are updated than location
             )
 
-        if len(update_values) == 1:
+        if len(orders_and_locations) == 1:
             flash.set_message(request, "1 bestilling er blevet opdateret", type="success")
-        elif len(update_values) > 1:
+        elif len(orders_and_locations) > 1:
             flash.set_message(request, f"{num_orders} bestillinger er blevet opdateret", type="success")
         else:
             flash.set_message(request, "Ingen lokationer blev opdateret", type="success")
@@ -197,13 +202,13 @@ async def orders_admin_patch_single(request: Request):
         order_id = request.path_params["order_id"]
         update_values: dict = await request.json()
 
-        location = await _get_location(update_values)
+        # location = await _get_location(update_values)
 
         await crud_orders.update_order(
-            location=location,
-            update_values=update_values,
             order_id=order_id,
             user_id=me["id"],
+            location=0,
+            update_values=update_values,
         )
 
         if update_values.get("user_status") == utils_orders.STATUSES_USER.DELETED:

@@ -228,7 +228,7 @@ async def _update_location(crud: "CRUD", order_id: int, new_location: int):
                 utils_orders.send_order_message("Order available in reading room", updated_order)
 
 
-async def update_order(location: int, update_values: dict, order_id: int, user_id: str):
+async def update_order(order_id: int, user_id: str, location: int, update_values: dict):
     """
     Updates an order's details such as user status, deadline, and comment. Also handles location updates.
     """
@@ -260,28 +260,28 @@ async def update_order(location: int, update_values: dict, order_id: int, user_i
         )
 
 
-async def delete_order(order_id: int, user_id: str):
-    """
-    Delete an order by setting the user status to DELETED.
-    """
-    database_connection = DatabaseConnection(orders_url)
-    async with database_connection.transaction_scope_async() as connection:
-        crud = CRUD(connection)
+# async def delete_order(order_id: int, user_id: str):
+#     """
+#     Delete an order by setting the user status to DELETED.
+#     """
+#     database_connection = DatabaseConnection(orders_url)
+#     async with database_connection.transaction_scope_async() as connection:
+#         crud = CRUD(connection)
 
-        # Update user status to DELETED
-        await _update_user_status(crud, order_id, utils_orders.STATUSES_USER.DELETED)
+#         # Update user status to DELETED
+#         await _update_user_status(crud, order_id, utils_orders.STATUSES_USER.DELETED)
 
-        order = await _get_orders_one(crud, order_id=order_id)
+#         order = await _get_orders_one(crud, order_id=order_id)
 
-        # Log the update
-        await _insert_log_message(
-            crud,
-            user_id=user_id,
-            order_id=order_id,
-            record_id=order["record_id"],
-            location=order["location"],
-            user_status=order["user_status"],
-        )
+#         # Log the update
+#         await _insert_log_message(
+#             crud,
+#             user_id=user_id,
+#             order_id=order_id,
+#             record_id=order["record_id"],
+#             location=order["location"],
+#             user_status=order["user_status"],
+#         )
 
 
 async def _get_queued_orders_length(crud: "CRUD", orders: list[dict]) -> dict:
@@ -413,7 +413,7 @@ WHERE
     LIMIT {filters.filter_limit} OFFSET {offset}
 
 """
-    log.debug(f"query: {query}")
+    # log.debug(f"query: {query}")
     orders = await crud.query(query, placeholder_values)
     return orders
 
@@ -485,7 +485,7 @@ async def get_orders_admin(filters: OrderFilter) -> tuple[list, OrderFilter]:
             orders_next = await _get_history_orders(crud, filters, offset_next)
 
         # Generate pagination
-        log.debug(f"num orders next {len(orders_next)}")
+        # log.debug(f"num orders next {len(orders_next)}")
         has_next = bool(len(orders_next))
         if has_next:
             next_offset = filters.filter_offset + filters.filter_limit
@@ -527,7 +527,7 @@ async def get_logs(order_id: str = "") -> list:
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
 
-        log.debug(f"order_id: {order_id}")
+        # log.debug(f"order_id: {order_id}")
 
         sql = []
         values = {}
@@ -547,8 +547,8 @@ JOIN records r ON l.record_id = r.record_id
 ORDER BY l.updated_at DESC
 LIMIT 100
 """
-        
-        log.debug(f"query: {query} values: {values}")
+
+        # log.debug(f"query: {query} values: {values}")
         logs = await crud.query(query, values)
         for single_log in logs:
             updated_location = utils_orders.STATUSES_LOCATION_HUMAN.get(single_log["updated_location"], "")
