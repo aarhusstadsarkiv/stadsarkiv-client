@@ -138,6 +138,21 @@ def format_order_display(order: dict):
     return order
 
 
+def format_log_display(log: dict):
+    """
+    Format dates in log for display. Change from UTC to Europe/Copenhagen
+    """
+    updated_location = STATUSES_LOCATION_HUMAN.get(log["updated_location"], "")
+    update_user_status = STATUSES_USER_HUMAN.get(log["updated_user_status"], "")
+    log["updated_location"] = updated_location
+    log["updated_user_status"] = update_user_status
+
+    # convert created_at to danish timezone
+    log["updated_at"] = format_order_display(log)["updated_at"]
+
+    return log
+
+
 def get_deadline_date(days: int = 14) -> str:
 
     utc_now = arrow.utcnow()

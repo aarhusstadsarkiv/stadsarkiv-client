@@ -119,45 +119,42 @@ async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
         user_status = utils_orders.STATUSES_USER.QUEUED if active_order else utils_orders.STATUSES_USER.ORDERED
 
         # Create new order data
-        order_data = utils_orders.get_order_data(
+        order_data_ = utils_orders.get_order_data(
             user_data["user_id"],
             record_data["record_id"],
             user_status,
         )
-        await crud.insert("orders", order_data)
+        await crud.insert("orders", order_data_)
 
         # Retrieve the newly created order
         last_order_id = await crud.last_insert_id()
-        order_data = await _get_orders_one(crud, order_id=last_order_id)
+        inserted_order = await _get_orders_one(crud, order_id=last_order_id)
 
         # Insert a log entry for the new order
         await _insert_log_message(
             crud,
-            user_id=order_data["user_id"],
-            order_id=order_data["order_id"],
-            record_id=record_data["record_id"],
-            location=record_data["location"],
-            user_status=order_data["user_status"],
+            user_id=inserted_order["user_id"],
+            order=inserted_order,
         )
 
         # Handle special cases for orders already in the reading room and ordered
         if record_data["location"] == utils_orders.STATUSES_LOCATION.READING_ROOM and user_status == utils_orders.STATUSES_USER.ORDERED:
-            log.debug(f"Order {order_data['order_id']} moved to READING_ROOM. Setting deadline and sending message.")
+            log.debug(f"Order {inserted_order['order_id']} moved to READING_ROOM. Setting deadline and sending message.")
 
             deadline_date = utils_orders.get_deadline_date()
-            order_data["deadline"] = deadline_date
+            inserted_order["deadline"] = deadline_date
 
             # Update order with deadline and message status
             await crud.update(
                 table="orders",
                 update_values={"deadline": deadline_date, "message_sent": 1},
-                filters={"order_id": order_data["order_id"]},
+                filters={"order_id": inserted_order["order_id"]},
             )
 
-            updated_order = await _get_orders_one(crud, order_id=order_data["order_id"])
+            updated_order = await _get_orders_one(crud, order_id=inserted_order["order_id"])
             utils_orders.send_order_message("Order available in reading room", updated_order)
 
-        return order_data
+        return inserted_order
 
 
 async def _update_user_status(crud: "CRUD", order_id: int, new_status: int):
@@ -253,10 +250,7 @@ async def update_order(order_id: int, user_id: str, location: int, update_values
         await _insert_log_message(
             crud,
             user_id=user_id,
-            order_id=order_id,
-            record_id=updated_order["record_id"],
-            location=updated_order["location"],
-            user_status=updated_order["user_status"],
+            order=updated_order,
         )
 
 
@@ -548,13 +542,10 @@ ORDER BY l.updated_at DESC
 LIMIT 100
 """
 
-        # log.debug(f"query: {query} values: {values}")
         logs = await crud.query(query, values)
+        log.debug(logs[0])
         for single_log in logs:
-            updated_location = utils_orders.STATUSES_LOCATION_HUMAN.get(single_log["updated_location"], "")
-            update_user_status = utils_orders.STATUSES_USER_HUMAN.get(single_log["updated_user_status"], "")
-            single_log["updated_location"] = updated_location
-            single_log["updated_user_status"] = update_user_status
+            single_log = utils_orders.format_log_display(single_log)
         return logs
 
 
@@ -724,17 +715,21 @@ async def _allow_location_change(crud: "CRUD", record_id: str, raise_exception=F
 async def _insert_log_message(
     crud: "CRUD",
     user_id,
-    order_id,
-    record_id,
-    location,
-    user_status,
+    order: dict,
 ):
     log_message = {
         "user_id": user_id,
-        "order_id": order_id,
-        "record_id": record_id,
-        "updated_location": location,
-        "updated_user_status": user_status,
+        "order_id": order["order_id"],
+        "record_id": order["record_id"],
+        "updated_location": order["location"],
+        "updated_user_status": order["user_status"],
     }
+
+    """
+    order_id=order_id,
+    record_id=updated_order["record_id"],
+    location=updated_order["location"],
+    user_status=updated_order["user_status"],
+    """
 
     await crud.insert("orders_log", log_message)
