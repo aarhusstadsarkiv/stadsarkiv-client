@@ -126,11 +126,17 @@ async def _process_order_deletion(request: Request, id_key: str):
     return JSONResponse({"message": "Din bestilling er slettet", "error": False})
 
 
-async def orders_user_patch(request: Request):
+async def orders_user_delete_by_order_id(request: Request):
+    """
+    Delete by order ID (on user profile order page)
+    """
     return await _process_order_deletion(request, id_key="order_id")
 
 
-async def orders_user_delete(request: Request):
+async def orders_user_delete_by_record_id(request: Request):
+    """
+    Delete an order based on the record_id (on the record page)
+    """
     return await _process_order_deletion(request, id_key="record_id")
 
 
