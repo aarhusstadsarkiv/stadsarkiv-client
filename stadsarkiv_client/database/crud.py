@@ -138,11 +138,11 @@ class CRUD:
         row = cursor.fetchone()
         return row["num_rows"]
 
-    async def query(self, query: str, values: dict):
+    async def query(self, query: str, values: dict = {}) -> list:
         """
         Execute a custom query and return the rows.
         """
-        # log.debug(f"Query: {query} - Values: {values}")
+        log.debug(f"Query: {query} - Values: {values}")
         cursor = self.connection.execute(query, values)
         rows = cursor.fetchall()
         rows = [dict(row) for row in rows]

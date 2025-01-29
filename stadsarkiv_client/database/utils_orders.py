@@ -4,7 +4,6 @@ import dataclasses
 from stadsarkiv_client.core import date_format
 import arrow
 from stadsarkiv_client.core import utils_core
-from stadsarkiv_client.core.translate import translate
 
 
 log = get_log()

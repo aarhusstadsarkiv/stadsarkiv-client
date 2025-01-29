@@ -22,13 +22,20 @@ except KeyError:
 
 @dataclass
 class OrderFilter:
+    # Filter options
     filter_status: str = "active"
     filter_location: Optional[str] = "all"
     filter_email: Optional[str] = ""
     filter_user: Optional[str] = ""
     filter_show_queued: Optional[str] = ""
-    filter_limit: int = 2
+    filter_limit: int = 3
     filter_offset: int = 0
+
+    # Pagination
+    filter_has_next: bool = False
+    filter_has_prev: bool = False
+    filter_next_offset: int = 0
+    filter_prev_offset: int = 0
 
     def normalize(self):
         """Normalize filter values for querying."""
@@ -294,9 +301,9 @@ GROUP BY record_id
 ORDER BY queued_count DESC;
 """
     queued_orders = await crud.query(query, {})
-    queued_orders = {order["record_id"]: order["queued_count"] for order in queued_orders}
+    queued_orders_dict = {order["record_id"]: order["queued_count"] for order in queued_orders}
 
-    return queued_orders
+    return queued_orders_dict
 
 
 async def get_orders_user(user_id: str, completed=0) -> list:
@@ -347,7 +354,7 @@ def _get_and_filters_str_and_values(filters: OrderFilter) -> tuple:
     return search_filters_as_str, placeholder_values
 
 
-async def _get_active_orders(crud: "CRUD", filters: OrderFilter) -> list:
+async def _get_active_orders(crud: "CRUD", filters: OrderFilter, offset: int = 0) -> list:
     search_filters_as_str, placeholder_values = _get_and_filters_str_and_values(filters)
 
     if filters.filter_show_queued:
@@ -363,14 +370,14 @@ LEFT JOIN users u ON o.user_id = u.user_id
 WHERE o.user_status IN ({user_statuses})
 {search_filters_as_str}
 ORDER BY o.order_id DESC
-LIMIT {filters.filter_limit} OFFSET {filters.filter_offset}
+LIMIT {filters.filter_limit} OFFSET {offset}
 """
 
     orders = await crud.query(query, placeholder_values)
     return orders
 
 
-async def _get_completed_orders(crud: "CRUD", filters: OrderFilter) -> list:
+async def _get_completed_orders(crud: "CRUD", filters: OrderFilter, offset: int = 0) -> list:
     search_filters_as_str, placeholder_values = _get_and_filters_str_and_values(filters)
     query = f"""
 SELECT o.*, r.*, u.*
@@ -403,7 +410,7 @@ WHERE
     {search_filters_as_str}
 
     ORDER BY o.updated_at DESC
-    LIMIT {filters.filter_limit} OFFSET {filters.filter_offset}
+    LIMIT {filters.filter_limit} OFFSET {offset}
 
 """
     log.debug(f"query: {query}")
@@ -411,7 +418,7 @@ WHERE
     return orders
 
 
-async def _get_history_orders(crud: "CRUD", filters: OrderFilter) -> list:
+async def _get_history_orders(crud: "CRUD", filters: OrderFilter, offset: int = 0) -> list:
     search_filters_as_str, placeholder_values = _get_and_filters_str_and_values(filters)
 
     query = f"""
@@ -422,13 +429,13 @@ SELECT o.*, r.*, u.*
     WHERE o.user_status IN ({utils_orders.STATUSES_USER.DELETED}, {utils_orders.STATUSES_USER.COMPLETED})
     {search_filters_as_str}
     ORDER BY o.updated_at DESC
-    LIMIT {filters.filter_limit} OFFSET {filters.filter_offset}
+    LIMIT {filters.filter_limit} OFFSET {offset}
 """
     orders = await crud.query(query, placeholder_values)
     return orders
 
 
-async def get_orders_admin(filters: OrderFilter) -> list:
+async def get_orders_admin(filters: OrderFilter) -> tuple[list, OrderFilter]:
     """
     Get all orders for a user.
     """
@@ -436,14 +443,10 @@ async def get_orders_admin(filters: OrderFilter) -> list:
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
 
+        offset = filters.filter_offset
         if filters.filter_status == "active":
-            orders = await _get_active_orders(crud, filters)
+            orders = await _get_active_orders(crud, filters, offset)
             queued_orders = await _get_queued_orders_length(crud, orders)
-
-            # orders_next
-            filters.filter_offset = filters.filter_offset + filters.filter_limit
-            orders_next = await _get_active_orders(crud, filters)
-            log.debug(f"len(orders_next): {len(orders_next)}")
 
             for order in orders:
                 order = utils_orders.format_order_display(order)
@@ -456,31 +459,51 @@ async def get_orders_admin(filters: OrderFilter) -> list:
                 if order["location"] != utils_orders.STATUSES_LOCATION.READING_ROOM:
                     order["allow_location_change"] = True
 
-        if filters.filter_status == "completed":
-            orders = await _get_completed_orders(crud, filters)
+            offset_next = offset + filters.filter_limit
+            orders_next = await _get_active_orders(crud, filters, offset_next)
 
-            filters.filter_offset = filters.filter_offset + filters.filter_limit
-            orders_next = await _get_completed_orders(crud, filters)
-            log.debug(f"len(orders_next): {len(orders_next)}")
+        if filters.filter_status == "completed":
+            orders = await _get_completed_orders(crud, filters, offset)
 
             for order in orders:
                 order = utils_orders.format_order_display(order)
                 order["user_actions_deactivated"] = True
                 order["allow_location_change"] = True
 
-        if filters.filter_status == "order_history":
-            orders = await _get_history_orders(crud, filters)
+            offset_next = offset + filters.filter_limit
+            orders_next = await _get_completed_orders(crud, filters, offset_next)
 
-            filters.filter_offset = filters.filter_offset + filters.filter_limit
-            orders_next = await _get_history_orders(crud, filters)
-            log.debug(f"len(orders_next): {len(orders_next)}")
+        if filters.filter_status == "order_history":
+            orders = await _get_history_orders(crud, filters, offset)
 
             for order in orders:
                 order = utils_orders.format_order_display(order)
                 order["user_actions_deactivated"] = True
                 order["allow_location_change"] = False
 
-        return orders
+            offset_next = offset + filters.filter_limit
+            orders_next = await _get_history_orders(crud, filters, offset_next)
+
+        # Generate pagination
+        log.debug(f"num orders next {len(orders_next)}")
+        has_next = bool(len(orders_next))
+        if has_next:
+            next_offset = filters.filter_offset + filters.filter_limit
+        else:
+            next_offset = 0
+
+        has_prev = bool(filters.filter_offset > 0)
+        if has_prev:
+            prev_offset = filters.filter_offset - filters.filter_limit
+        else:
+            prev_offset = 0
+
+        filters.filter_has_next = has_next
+        filters.filter_has_prev = has_prev
+        filters.filter_next_offset = next_offset
+        filters.filter_prev_offset = prev_offset
+
+        return orders, filters
 
 
 async def get_order(order_id):
@@ -509,7 +532,7 @@ JOIN orders o ON l.order_id = o.order_id
 JOIN users u ON l.user_id = u.user_id
 JOIN records r ON l.record_id = r.record_id
 ORDER BY l.updated_at DESC
-LIMIT {SQL_LIMIT}
+LIMIT 100
 """
         logs = await crud.query(query, {})
         for single_log in logs:

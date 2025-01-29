@@ -14,7 +14,6 @@ from stadsarkiv_client.endpoints.endpoints_utils import get_record_data
 from stadsarkiv_client.core import utils_core
 
 
-
 log = get_log()
 
 
@@ -235,12 +234,13 @@ async def orders_admin_get(request: Request):
         filter_email=request.query_params.get("filter_email", ""),
         filter_user=request.query_params.get("filter_user", ""),
         filter_show_queued=request.query_params.get("filter_show_queued", ""),
-        filter_offset=0,
+        filter_offset=int(request.query_params.get("filter_offset", 0)),
     )
 
     filters.normalize()
 
-    orders = await crud_orders.get_orders_admin(
+    # Pagination if added to filters
+    orders, filters = await crud_orders.get_orders_admin(
         filters=filters,
     )
 
@@ -284,7 +284,7 @@ async def orders_record_get(request: Request):
     permissions = await api.me_permissions(request)
     record = await api.proxies_record_get_by_id(record_id)
 
-    record, meta_data, record_and_types = await get_record_data(request, record, permissions)    
+    record, meta_data, record_and_types = await get_record_data(request, record, permissions)
     all_keys = list(record_and_types.keys())
     all_keys = ["collectors", "resources", "subjects", "date_normalized", "desc_notes"]
     html = utils_core.get_parsed_data_as_table(record_and_types, all_keys, debug=True)
