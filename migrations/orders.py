@@ -55,10 +55,11 @@ CREATE TABLE orders_log (
     log_id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id TEXT NOT NULL,
     order_id INTEGER NOT NULL,
-    record_id TEXT NOT NULL,
-    updated_location INTEGER NOT NULL,
-    updated_user_status INTEGER NOT NULL,
+    updated_location INTEGER,
+    updated_user_status INTEGER,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    record_id TEXT NOT NULL,
+    message TEXT NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
 ) STRICT;
 
