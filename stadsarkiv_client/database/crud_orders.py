@@ -24,7 +24,7 @@ MAIL_SENT = "Mail sendt"
 LOCATION_CHANGED = "Lokation ændret"
 ORDER_CREATED = "Bestilling oprettet"
 ORDER_COMPLETED = "Bestilling afsluttet"
-STATUS_CHANGED = "Status ændret"
+STATUS_CHANGED = "Bruger status ændret"
 
 
 @dataclass
