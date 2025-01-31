@@ -121,22 +121,18 @@ async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
         user_status = utils_orders.STATUSES_USER.QUEUED if active_order else utils_orders.STATUSES_USER.ORDERED
 
         # Create new order data
-        order_data_ = utils_orders.get_order_data(
+        order_data = utils_orders.get_order_data(
             user_data["user_id"],
             record_data["record_id"],
             user_status,
         )
-        await crud.insert("orders", order_data_)
+
+        await crud.insert("orders", order_data)
 
         # Retrieve the newly created order and log the creation
         last_order_id = await crud.last_insert_id()
         inserted_order = await _get_orders_one(crud, order_id=last_order_id)
-        await _insert_log_message(
-            crud,
-            user_id=inserted_order["user_id"],
-            order=inserted_order,
-            message=ORDER_CREATED,
-        )
+        log_messages = [ORDER_CREATED]
 
         # Handle special cases for orders already in the reading room and ordered
         if record_data["location"] == utils_orders.STATUSES_LOCATION.READING_ROOM and user_status == utils_orders.STATUSES_USER.ORDERED:
@@ -153,12 +149,14 @@ async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
 
             updated_order = await _get_orders_one(crud, order_id=inserted_order["order_id"])
             utils_orders.send_order_message("Order available in reading room", updated_order)
-            await _insert_log_message(
-                crud,
-                user_id=inserted_order["user_id"],
-                order=inserted_order,
-                message=MAIL_SENT,
-            )
+            log_messages.append(MAIL_SENT)
+
+        await _insert_log_message(
+            crud,
+            user_id=inserted_order["user_id"],
+            order=inserted_order,
+            message=". ".join(log_messages),
+        )
 
         return inserted_order
 
