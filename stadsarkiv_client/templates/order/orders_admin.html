@@ -31,7 +31,7 @@
             filters.filter_status=='order_history' %}selected{% endif %}>Historik</option>
     </select>
     <select name="filter_location" id="filter_location">
-        <option value="all" {% if filters.filter_location=='all' %}selected{% endif %}>Alle lokationer</option>
+        <option value="" {% if filters.filter_location=='' %}selected{% endif %}>Alle lokationer</option>
         {% for key, value in locations.items() %}
         <option value="{{ key }}" {% if filters.filter_location==key|string %}selected{% endif %}>{{ value }}</option>
         {% endfor %}

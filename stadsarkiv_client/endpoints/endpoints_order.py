@@ -241,14 +241,12 @@ async def orders_admin_get(request: Request):
 
     filters = crud_orders.OrderFilter(
         filter_status=request.query_params.get("filter_status", "active"),
-        filter_location=request.query_params.get("filter_location", "all"),
+        filter_location=request.query_params.get("filter_location", ""),
         filter_email=request.query_params.get("filter_email", ""),
         filter_user=request.query_params.get("filter_user", ""),
         filter_show_queued=request.query_params.get("filter_show_queued", ""),
         filter_offset=int(request.query_params.get("filter_offset", 0)),
     )
-
-    filters.normalize()
 
     # Pagination if added to filters
     orders, filters = await crud_orders.get_orders_admin(

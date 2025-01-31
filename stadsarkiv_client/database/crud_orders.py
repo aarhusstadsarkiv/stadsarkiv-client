@@ -31,11 +31,11 @@ STATUS_CHANGED = "Bruger status ændret"
 class OrderFilter:
     # Filter options
     filter_status: str = "active"
-    filter_location: Optional[str] = "all"
+    filter_location: Optional[str] = ""
     filter_email: Optional[str] = ""
     filter_user: Optional[str] = ""
     filter_show_queued: Optional[str] = ""
-    filter_limit: int = 3
+    filter_limit: int = 50
     filter_offset: int = 0
 
     # Pagination
@@ -43,11 +43,6 @@ class OrderFilter:
     filter_has_prev: bool = False
     filter_next_offset: int = 0
     filter_prev_offset: int = 0
-
-    def normalize(self):
-        """Normalize filter values for querying."""
-        if self.filter_location == "all":
-            self.filter_location = ""
 
 
 async def has_active_order(user_id: str, record_id: str):
