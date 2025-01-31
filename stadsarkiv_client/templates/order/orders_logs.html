@@ -35,21 +35,24 @@ generate simple table from these columns
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Order ID</th>
-            <th>User ID</th>
+            <th>ID</th>
+            <th>Opdateret af</th>
             <th>Record ID</th>
-            <th>Updated Location</th>
-            <th>Updated User Status</th>
-            <th>Updated At</th>
+            <th>Lokation</th>
+            <th>Bruger Status</th>
+            <th>Besked</th>
+            <th>Dato</th>
+            
         </tr>
     </thead>
     {% for log in logs %}
     <tr>
         <td>{{ log.order_id }}</td>
-        <td>{{ log.user_display_name }}</td>
+        <td>{{ log.user_display_name }} ({{ log.user_email }})</td>
         <td>{{ log.record_id }}</td>
         <td>{{ log.updated_location }}</td>
         <td>{{ log.updated_user_status }}</td>
+        <td>{{ log.message }}</td>
         <td>{{ log.updated_at }}</td>
     </tr>
     {% endfor %}

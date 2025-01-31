@@ -20,6 +20,13 @@ except KeyError:
     orders_url = ""
 
 
+MAIL_SENT = "Mail sendt"
+LOCATION_CHANGED = "Lokation ændret"
+ORDER_CREATED = "Bestilling oprettet"
+ORDER_COMPLETED = "Bestilling afsluttet"
+STATUS_CHANGED = "Status ændret"
+
+
 @dataclass
 class OrderFilter:
     # Filter options
@@ -126,20 +133,18 @@ async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
         )
         await crud.insert("orders", order_data_)
 
-        # Retrieve the newly created order
+        # Retrieve the newly created order and log the creation
         last_order_id = await crud.last_insert_id()
         inserted_order = await _get_orders_one(crud, order_id=last_order_id)
-
-        # Insert a log entry for the new order
         await _insert_log_message(
             crud,
             user_id=inserted_order["user_id"],
             order=inserted_order,
+            message=ORDER_CREATED,
         )
 
         # Handle special cases for orders already in the reading room and ordered
         if record_data["location"] == utils_orders.STATUSES_LOCATION.READING_ROOM and user_status == utils_orders.STATUSES_USER.ORDERED:
-            log.debug(f"Order {inserted_order['order_id']} moved to READING_ROOM. Setting deadline and sending message.")
 
             deadline_date = utils_orders.get_deadline_date()
             inserted_order["deadline"] = deadline_date
@@ -153,30 +158,42 @@ async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
 
             updated_order = await _get_orders_one(crud, order_id=inserted_order["order_id"])
             utils_orders.send_order_message("Order available in reading room", updated_order)
+            await _insert_log_message(
+                crud,
+                user_id=inserted_order["user_id"],
+                order=inserted_order,
+                message=MAIL_SENT,
+            )
 
         return inserted_order
 
 
-async def _update_user_status(crud: "CRUD", order_id: int, new_status: int):
+async def _update_user_status(crud: "CRUD", user_id: str, order_id: int, new_status: int):
     """
     Updates the user status of an order. If the order's status is COMPLETED or DELETED, it checks for QUEUED orders
     on the same record. If found, updates the first QUEUED order to ORDERED and processes further actions.
     """
     order = await _get_orders_one(crud, order_id=order_id)
     if new_status in [utils_orders.STATUSES_USER.COMPLETED, utils_orders.STATUSES_USER.DELETED]:
-        log.debug(f"Order {order_id}: Status changed to COMPLETED or DELETED.")
+        await _insert_log_message(
+            crud,
+            user_id,
+            order,
+            STATUS_CHANGED,
+        )
 
         next_queued_order = await _get_orders_one(crud, statuses=[utils_orders.STATUSES_USER.QUEUED], record_id=order["record_id"])
         if next_queued_order:
-            log.debug(f"Order {next_queued_order['order_id']} found. Updating from QUEUED to ORDERED.")
-
+            # Update the status of the next queued order to ORDERED
             await crud.update(
                 table="orders",
                 update_values={"user_status": utils_orders.STATUSES_USER.ORDERED},
                 filters={"order_id": next_queued_order["order_id"]},
             )
+            log_messages = [STATUS_CHANGED]
 
             if next_queued_order["location"] == utils_orders.STATUSES_LOCATION.READING_ROOM:
+                # Update the deadline and send a message if the order is in the reading room
                 log.debug(f"Order {next_queued_order['order_id']} moved to READING_ROOM.")
 
                 deadline_date = utils_orders.get_deadline_date()
@@ -188,13 +205,23 @@ async def _update_user_status(crud: "CRUD", order_id: int, new_status: int):
 
                 next_queued_order = await _get_orders_one(crud, order_id=next_queued_order["order_id"])
                 utils_orders.send_order_message("Order available in reading room", next_queued_order)
+                log_messages.append(MAIL_SENT)
+
+            # Log the status change
+            await _insert_log_message(
+                crud,
+                user_id=next_queued_order["user_id"],
+                order=next_queued_order,
+                message=". ".join(log_messages),
+            )
 
 
-async def _update_location(crud: "CRUD", order_id: int, new_location: int):
+async def _update_location(crud: "CRUD", user_id: str, order_id: int, new_location: int):
     """
     Updates the location of a record. If the location changes to READING_ROOM, sets the deadline and sends a message.
     """
     if not new_location:
+        log.debug("No location provided for update")
         return
 
     order = await _get_orders_one(crud, order_id=order_id)
@@ -208,11 +235,15 @@ async def _update_location(crud: "CRUD", order_id: int, new_location: int):
     )
 
     if order["location"] != new_location:
-        log.debug(f"Order {order_id}: Location changed from {order['location']} to {new_location}.")
+        log.debug(f"Record {record_id} moved from {order['location']} to {new_location}")
+        log_messages = [LOCATION_CHANGED]
 
-        # Log type of new_location and user_status
+        # Update order location
+        order["location"] = new_location
 
         if new_location == utils_orders.STATUSES_LOCATION.READING_ROOM:
+            log.debug(f"Order {order_id} moved to READING_ROOM.")
+
             deadline_date = utils_orders.get_deadline_date()
             await crud.update(
                 table="orders",
@@ -223,11 +254,26 @@ async def _update_location(crud: "CRUD", order_id: int, new_location: int):
             if not order.get("message_sent"):
                 updated_order = await _get_orders_one(crud, order_id=order_id)
                 utils_orders.send_order_message("Order available in reading room", updated_order)
+                log_messages.append(MAIL_SENT)
+
+        await _insert_log_message(
+            crud,
+            user_id=user_id,
+            order=order,
+            message=". ".join(log_messages),
+        )
+    else:
+        log.debug("Order not moved to READING_ROOM.")
 
 
-async def update_order(order_id: int, user_id: str, location: int, update_values: dict):
+async def update_order(
+    order_id: int,
+    user_id: str,
+    location: int,
+    update_values: dict,
+):
     """
-    Updates an order's details such as user status, deadline, and comment. Also handles location updates.
+    Updates an order's details such as user status (deadline, and comment). Also handles location updates.
     """
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
@@ -242,40 +288,9 @@ async def update_order(order_id: int, user_id: str, location: int, update_values
         )
 
         # Handle location or user status updates
-        await _update_location(crud, order_id, location)
+        await _update_location(crud, user_id, order_id, location)
         updated_order = await _get_orders_one(crud, order_id=order_id)
-        await _update_user_status(crud, order_id, updated_order["user_status"])
-
-        # Log the update
-        await _insert_log_message(
-            crud,
-            user_id=user_id,
-            order=updated_order,
-        )
-
-
-# async def delete_order(order_id: int, user_id: str):
-#     """
-#     Delete an order by setting the user status to DELETED.
-#     """
-#     database_connection = DatabaseConnection(orders_url)
-#     async with database_connection.transaction_scope_async() as connection:
-#         crud = CRUD(connection)
-
-#         # Update user status to DELETED
-#         await _update_user_status(crud, order_id, utils_orders.STATUSES_USER.DELETED)
-
-#         order = await _get_orders_one(crud, order_id=order_id)
-
-#         # Log the update
-#         await _insert_log_message(
-#             crud,
-#             user_id=user_id,
-#             order_id=order_id,
-#             record_id=order["record_id"],
-#             location=order["location"],
-#             user_status=order["user_status"],
-#         )
+        await _update_user_status(crud, user_id, order_id, updated_order["user_status"])
 
 
 async def _get_queued_orders_length(crud: "CRUD", orders: list[dict]) -> dict:
@@ -521,8 +536,6 @@ async def get_logs(order_id: str = "") -> list:
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
 
-        # log.debug(f"order_id: {order_id}")
-
         sql = []
         values = {}
         if order_id:
@@ -543,7 +556,6 @@ LIMIT 100
 """
 
         logs = await crud.query(query, values)
-        log.debug(logs[0])
         for single_log in logs:
             single_log = utils_orders.format_log_display(single_log)
         return logs
@@ -584,9 +596,10 @@ async def cron_orders():
 
         params = {"current_date": utils_orders.get_current_date_time()}
 
+        user_id = "FIX_ME"
         orders = await crud.query(query, params)
         for order in orders:
-            await _update_user_status(crud, order["order_id"], utils_orders.STATUSES_USER.COMPLETED)
+            await _update_user_status(crud, user_id, order["order_id"], utils_orders.STATUSES_USER.COMPLETED)
 
 
 async def _get_orders(
@@ -716,6 +729,7 @@ async def _insert_log_message(
     crud: "CRUD",
     user_id,
     order: dict,
+    message: str,
 ):
     log_message = {
         "user_id": user_id,
@@ -723,6 +737,7 @@ async def _insert_log_message(
         "record_id": order["record_id"],
         "updated_location": order["location"],
         "updated_user_status": order["user_status"],
+        "message": message,
     }
 
     """

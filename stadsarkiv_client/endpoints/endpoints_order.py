@@ -80,7 +80,7 @@ async def orders_post(request: Request):
 
 async def _process_order_deletion(request: Request, id_key: str):
     """
-    This mehtod is used to delete an order based on the provided key (e.g., "order_id" or "record_id")
+    This method is used to delete an order based on the provided key (e.g., "order_id" or "record_id")
     There are two options because the user can delete an order based on the order_id or the record_id
     """
     await is_authenticated_json(request, verified=True)
@@ -168,7 +168,9 @@ async def orders_admin_patch_multiple(request: Request):
 
             # Single update value is e.g. {'order_id': '22', 'location': '2'}
             order_id = order_location["order_id"]
+            assert isinstance(order_id, int)
             location = order_location["location"]
+            assert isinstance(location, int)
 
             await crud_orders.update_order(
                 order_id=order_id,
@@ -201,8 +203,6 @@ async def orders_admin_patch_single(request: Request):
 
         order_id = request.path_params["order_id"]
         update_values: dict = await request.json()
-
-        # location = await _get_location(update_values)
 
         await crud_orders.update_order(
             order_id=order_id,

@@ -249,11 +249,12 @@
 
             // Add to data values that have changed compared to initial values
             locationElements.forEach((element, index) => {
-                const selected = element.options[element.selectedIndex].value;
+                let selected = element.options[element.selectedIndex].value;
                 if (selected !== initialLocationValues[index]) {
+
                     data.push({
-                        'order_id': element.dataset.id,
-                        'location': selected
+                        'order_id': parseInt(element.dataset.id),
+                        'location': parseInt(selected)
                     });
                 }
             });

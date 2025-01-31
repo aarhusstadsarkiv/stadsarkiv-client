@@ -167,4 +167,4 @@ def get_current_date_time() -> str:
 
 
 def send_order_message(message: str, order: dict):
-    log.debug(f"Mail message: {message} Order: {order}")
+    log.info(f"Mail message: {message} Order: {order['order_id']}")
