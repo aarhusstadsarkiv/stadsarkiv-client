@@ -29,8 +29,20 @@ from stadsarkiv_client.core.args import get_local_config_dir
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.module_loader import load_submodule_from_file
 from typing import Any
+from apscheduler.schedulers.background import BackgroundScheduler
 
 log = get_log()
+
+
+# Define a job function
+def my_cron_job():
+    log.debug("Running scheduled cron job...")
+
+
+# Set up the scheduler
+scheduler = BackgroundScheduler()
+scheduler.add_job(my_cron_job, "cron", minute="*")  # Runs every minute
+scheduler.start()
 
 
 def _get_static_dirs() -> list:
