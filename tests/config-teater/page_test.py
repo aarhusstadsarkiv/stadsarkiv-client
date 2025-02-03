@@ -4,6 +4,7 @@ Test of some modified resources on "teater" client.
 
 from stadsarkiv_client.app import app
 from stadsarkiv_client.core.logging import get_log
+from stadsarkiv_client.core.dynamic_settings import settings
 from starlette.testclient import TestClient
 import unittest
 

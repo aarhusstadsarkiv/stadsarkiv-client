@@ -244,8 +244,8 @@ if _is_source():
     @cli.command(help="Run all tests.")
     def source_test():
         run_tests(None, "tests/config-default/*.py")
-        run_tests("example-config-teater", "tests/config-teater/*.py")
         run_tests("example-config-aarhus", "tests/config-aarhus/*.py")
+        run_tests("example-config-teater", "tests/config-teater/*.py")
 
     @cli.command(help="Fix code according to black, flake8, mypy.")
     def source_fix():
