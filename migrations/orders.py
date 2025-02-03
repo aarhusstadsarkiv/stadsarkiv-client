@@ -83,6 +83,9 @@ CREATE INDEX idx_orders_log_order_id ON orders_log(order_id);
 CREATE INDEX idx_orders_log_user_id ON orders_log(user_id);
 CREATE INDEX idx_orders_log_record_id ON orders_log(record_id);
 
+-- INSERT system user in users table
+INSERT INTO users (user_id, user_email, user_display_name) VALUES ('SYSTEM', 'system', 'SYSTEM');
+
 """
 
 # List of migrations with keys
