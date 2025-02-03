@@ -177,7 +177,6 @@ def server_dev(port: int, workers: int, host: str, data_dir: str, config_dir: st
 def exec(config_dir: str, script: str):
 
     config_dir = _get_config_dir(config_dir)
-
     os.environ["CONFIG_DIR"] = config_dir
 
     python_executable = sys.executable
