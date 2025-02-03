@@ -939,7 +939,7 @@ async def proxies_view_ids_from_list(items: list) -> typing.Any:
             response.raise_for_status()
 
 
-async def mail_post(request: Request, data: dict) -> typing.Any:
+async def mail_post(data: dict) -> typing.Any:
     """
     POST /v1/operations/mail
     """

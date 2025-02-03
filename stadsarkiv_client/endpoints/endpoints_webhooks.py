@@ -58,14 +58,14 @@ async def mail_verify_token(request: Request):
             "data": {
                 "user_id": user_id,
                 "subject": title,
-                "sender": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
-                "reply_to": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
+                "sender": {"email": settings["client_email"], "name": settings["client_name"]},
+                "reply_to": {"email": settings["client_email"], "name": settings["client_name"]},
                 "html_content": html_content,
                 "text_content": html_content,
             }
         }
 
-        await api.mail_post(request, mail_dict)
+        await api.mail_post(mail_dict)
         log.info(f"Verify email sent to: {user['email']}")
     except Exception:
         data = "Error in mail_status"
@@ -102,14 +102,14 @@ async def mail_reset_token(request: Request):
             "data": {
                 "user_id": user_id,
                 "subject": title,
-                "sender": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
-                "reply_to": {"email": "stadsarkivet@aarhusarkivet.dk", "name": "Aarhus Stadsarkiv"},
+                "sender": {"email": settings["client_email"], "name": settings["client_name"]},
+                "reply_to": {"email": settings["client_email"], "name": settings["client_name"]},
                 "html_content": html_content,
                 "text_content": html_content,
             }
         }
 
-        await api.mail_post(request, mail_dict)
+        await api.mail_post(mail_dict)
         log.info(f"Reset email sent to: {user['email']}")
     except Exception:
         data = "Error in mail_status"
