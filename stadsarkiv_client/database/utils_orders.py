@@ -180,8 +180,6 @@ async def send_order_message(message: str, order: dict):
     }
 
     html_content = await get_template_content("mails/order_mail.html", template_values)
-    log.info(f"HTML content: {html_content}")
-    # raise Exception("Stop here")
     mail_dict = {
         "data": {
             "user_id": order["user_id"],
