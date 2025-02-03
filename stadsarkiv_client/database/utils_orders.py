@@ -4,6 +4,9 @@ import dataclasses
 from stadsarkiv_client.core import date_format
 import arrow
 from stadsarkiv_client.core import utils_core
+from stadsarkiv_client.core import api
+from stadsarkiv_client.core.mail import get_template_content
+from stadsarkiv_client.core.dynamic_settings import settings
 
 
 log = get_log()
@@ -166,5 +169,29 @@ def get_current_date_time() -> str:
     return arrow.utcnow().format("YYYY-MM-DD HH:mm:ss")
 
 
-def send_order_message(message: str, order: dict):
-    log.info(f"Sending mail message: {message} Order: {order['order_id']}")
+async def send_order_message(message: str, order: dict):
+
+    title = "Din bestilling er klar til gennemsyn"
+    template_values = {
+        "title": title,
+        "order": order,
+        "client_domain_url": settings["client_url"],
+        "client_name": settings["client_name"],
+    }
+
+    html_content = await get_template_content("mails/order_mail.html", template_values)
+    log.info(f"HTML content: {html_content}")
+    # raise Exception("Stop here")
+    mail_dict = {
+        "data": {
+            "user_id": order["user_id"],
+            "subject": title,
+            "sender": {"email": settings["client_email"], "name": settings["client_name"]},
+            "reply_to": {"email": settings["client_email"], "name": settings["client_name"]},
+            "html_content": html_content,
+            "text_content": html_content,
+        }
+    }
+
+    await api.mail_post(mail_dict)
+    log.info(f"Send mail message: {message} Order: {order['order_id']}")

@@ -1,0 +1,15 @@
+{% extends "mails/mail_template.html" %}
+
+{% block content %}
+<p>Hej {{ order.user_display_name }},</p>
+
+<p>Din bestilling er nu klar til gennemsyn i læsesalen på Aarhus Stadsarkiv.</p>
+
+<p>Det drejer sig om følgende materiale:</p>
+
+<p><a href="{{client_domain_url}}/records/{{ order.record_id }}">{{ order.label }}</a></p>
+
+<p>Med venlig hilsen</p>
+
+<p>{{ client_name }}</p>
+{% endblock %}

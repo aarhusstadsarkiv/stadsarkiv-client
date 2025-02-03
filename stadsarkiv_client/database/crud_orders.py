@@ -148,7 +148,7 @@ async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
             )
 
             updated_order = await _get_orders_one(crud, order_id=inserted_order["order_id"])
-            utils_orders.send_order_message("Order available in reading room", updated_order)
+            await utils_orders.send_order_message("Order available in reading room", updated_order)
             log_messages.append(MAIL_SENT)
 
         await _insert_log_message(
@@ -197,7 +197,7 @@ async def _update_user_status(crud: "CRUD", user_id: str, order_id: int, new_sta
                 )
 
                 next_queued_order = await _get_orders_one(crud, order_id=next_queued_order["order_id"])
-                utils_orders.send_order_message("Order available in reading room", next_queued_order)
+                await utils_orders.send_order_message("Order available in reading room", next_queued_order)
                 log_messages.append(MAIL_SENT)
 
             # Log the status change
@@ -246,7 +246,7 @@ async def _update_location(crud: "CRUD", user_id: str, order_id: int, new_locati
 
             if not order.get("message_sent"):
                 updated_order = await _get_orders_one(crud, order_id=order_id)
-                utils_orders.send_order_message("Order available in reading room", updated_order)
+                await utils_orders.send_order_message("Order available in reading room", updated_order)
                 log_messages.append(MAIL_SENT)
 
         await _insert_log_message(
