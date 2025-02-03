@@ -33,7 +33,7 @@ jobs:
         run: source venv/bin/activate
       
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: venv/bin/pip install -r requirements.txt
       
       - name: Run tests
         run: venv/bin/python -m stadsarkiv_client source-test
