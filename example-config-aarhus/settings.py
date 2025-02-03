@@ -2,8 +2,9 @@ import typing
 
 
 settings: dict[str, typing.Any] = {
-    "client_name": "aarhusarkivet",
+    "client_name": "Aarhus Stadsarkiv",
     "client_url": "https://www.aarhusarkivet.dk",
+    "client_email": "stadsarkivet@aarhusarkivet.dk",
     "language": "da",
     "log_handlers": ["rotating_file"],
     "cookie": {"name": "session", "lifetime": 3600, "httponly": True, "secure": True, "samesite": "lax"},

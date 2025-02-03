@@ -8,6 +8,9 @@ client_name: development
 # If running on localhost you may change this to e.g. "http://localhost:5555"
 client_url: https://demo.openaws.dk
 
+# Default sender of emails
+client_email: stadsarkivet@aarhusarkivet.dk
+
 # If you are running in production, you may set this to True in order to allow robots to index the site
 allow_robots: false
 

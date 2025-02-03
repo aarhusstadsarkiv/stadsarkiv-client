@@ -5,6 +5,7 @@ settings: dict[str, typing.Any] = {
     # test
     "client_name": "teaterarkivet",
     "client_url": "https://teater.openaws.dk",
+    "client_email": "stadsarkivet@aarhusarkivet.dk",
     "language": "da",
     "log_handlers": ["rotating_file"],
     #
