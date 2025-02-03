@@ -589,7 +589,7 @@ async def cron_orders():
 
         params = {"current_date": utils_orders.get_current_date_time()}
 
-        user_id = "FIX_ME"
+        user_id = "SYSTEM"
         orders = await crud.query(query, params)
         for order in orders:
             await _update_user_status(crud, user_id, order["order_id"], utils_orders.STATUSES_USER.COMPLETED)
@@ -720,7 +720,7 @@ async def _allow_location_change(crud: "CRUD", record_id: str, raise_exception=F
 
 async def _insert_log_message(
     crud: "CRUD",
-    user_id,
+    user_id: str,
     order: dict,
     message: str,
 ):
