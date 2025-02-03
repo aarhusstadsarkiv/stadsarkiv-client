@@ -28,6 +28,12 @@ jobs:
 
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
+      - name: Create venv
+        run: python -m venv venv
+      - name: Activate venv
+        run: source venv/bin/activate
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
       - name: Run tests
         run: python -m stadsarkiv_client source-test
