@@ -3,13 +3,13 @@ name: Python Test
 on:
   push:
     branches:
-      - main # Change this to your branch name if needed
+      - main  # Change this to your branch name if needed
     paths-ignore:
-      - "*.md"
-      - "docs/*"
-      - "example-config/*"
-      - "**/*.draft.md"
-      - "example-schemas/*"
+      - '*.md'
+      - 'docs/*'
+      - 'example-config/*'
+      - '**/*.draft.md'
+      - 'example-schemas/*'
 
 jobs:
   test:
@@ -24,29 +24,37 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: "3.10"
+          python-version: '3.10'
 
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
 
-      - name: Run default client tests
-        run: python -m unittest tests/config-default/*.py
+      - name: Run tests
+        run: python -m stadsarkiv_client source-test
         env:
           API_KEY: ${{ secrets.API_KEY }}
         # env:
         # CONFIG_DIR: example-config-aarhus
 
-      - name: Run aarhus client tests
-        run: python -m unittest tests/config-aarhus/*.py
-        env:
-          API_KEY: ${{ secrets.API_KEY }}
-          CONFIG_DIR: example-config-aarhus
+      # - name: Run default client tests
+      #   run: python -m unittest tests/config-default/*.py
+      #   env:
+      #     API_KEY: ${{ secrets.API_KEY }}
+      #   # env:
+      #   # CONFIG_DIR: example-config-aarhus
 
-      - name: Run teater client tests
-        run: python -m unittest tests/config-teater/*.py
-        env:
-          API_KEY: ${{ secrets.API_KEY }}
-          CONFIG_DIR: example-config-teater
+      # - name: Run aarhus client tests
+      #   run: python -m unittest tests/config-aarhus/*.py
+      #   env:
+      #     API_KEY: ${{ secrets.API_KEY }}
+      #     CONFIG_DIR: example-config-aarhus
 
+      # - name: Run teater client tests
+      #   run: python -m unittest tests/config-teater/*.py
+      #   env:
+      #     API_KEY: ${{ secrets.API_KEY }}
+      #     CONFIG_DIR: example-config-teater
+        
       - name: Run mypy
         run: mypy --config-file pyproject.toml .
+      
