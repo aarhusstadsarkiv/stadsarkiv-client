@@ -13,7 +13,7 @@ log = get_log()
 class TestPages(unittest.TestCase):
     def test_events(self):
         client = TestClient(app)
-        response = client.get("/events/112281")
+        response = client.get("/events/000112281")
         self.assertEqual(response.status_code, 200)
 
     def test_people(self):
