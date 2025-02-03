@@ -7,7 +7,6 @@ from stadsarkiv_client.core.logging import get_log
 from starlette.testclient import TestClient
 import unittest
 import json
-import os
 
 log = get_log()
 
@@ -15,8 +14,6 @@ log = get_log()
 class TestJSON(unittest.TestCase):
 
     def test_sejrs_sedler(self):
-
-        os.environ["CONFIG_DIR"] = "example-config-aarhus"
 
         self.maxDiff = None
         client = TestClient(app)

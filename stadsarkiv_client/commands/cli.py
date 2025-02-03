@@ -216,15 +216,13 @@ def run_tests(config_dir, tests_path_pattern):
         logger.info("E.g. export API_KEY=your_api_key")
         exit(1)
 
-    # get python executable in order use the same python version as the current process
-    python_executable = sys.executable
-
-    # get test files
+    # Get test files
+    # Note: Run with sys.executable in order use the same python version as the current process
     test_files = glob.glob(tests_path_pattern)
     if test_files:
         for test_file in test_files:
             logger.info(f"Running tests in {test_file}")
-            subprocess.run([python_executable, "-m", "unittest", test_file], check=True)
+            subprocess.run([sys.executable, "-m", "unittest", test_file], check=True)
     else:
         logger.info(f"No tests found matching pattern {tests_path_pattern}")
 

@@ -39,27 +39,6 @@ jobs:
         run: venv/bin/python -m stadsarkiv_client source-test
         env:
           API_KEY: ${{ secrets.API_KEY }}
-        # env:
-        # CONFIG_DIR: example-config-aarhus
-
-      # - name: Run default client tests
-      #   run: python -m unittest tests/config-default/*.py
-      #   env:
-      #     API_KEY: ${{ secrets.API_KEY }}
-      #   # env:
-      #   # CONFIG_DIR: example-config-aarhus
-
-      # - name: Run aarhus client tests
-      #   run: python -m unittest tests/config-aarhus/*.py
-      #   env:
-      #     API_KEY: ${{ secrets.API_KEY }}
-      #     CONFIG_DIR: example-config-aarhus
-
-      # - name: Run teater client tests
-      #   run: python -m unittest tests/config-teater/*.py
-      #   env:
-      #     API_KEY: ${{ secrets.API_KEY }}
-      #     CONFIG_DIR: example-config-teater
         
       - name: Run mypy
         run: venv/bin/mypy --config-file pyproject.toml .
