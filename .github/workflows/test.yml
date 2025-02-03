@@ -62,5 +62,5 @@ jobs:
       #     CONFIG_DIR: example-config-teater
         
       - name: Run mypy
-        run: mypy --config-file pyproject.toml .
+        run: venv/bin/mypy --config-file pyproject.toml .
       
