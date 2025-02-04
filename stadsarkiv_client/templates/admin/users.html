@@ -71,8 +71,8 @@
             
             <td>{{ user.permission_translated }}</td>
             <td>
-                <a href="{{ url_for('admin_users_get_single', uuid=user.id) }}">Rediger</a> |
-                <a class="delete-user" data-uuid="{{ user.id }}" href="#">Slet</a>   
+                <a class="action-link" href="{{ url_for('admin_users_get_single', uuid=user.id) }}">Rediger</a>
+                <a class="action-link delete-user" data-uuid="{{ user.id }}" href="#">Slet</a>   
             </td>
         </tr>
     {% endfor %}
