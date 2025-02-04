@@ -388,14 +388,14 @@ LEFT JOIN records r ON o.record_id = r.record_id
 LEFT JOIN users u ON o.user_id = u.user_id
 WHERE
     -- Only COMPLETED orders
-    o.user_status = {utils_orders.STATUSES_USER.COMPLETED} OR o.user_status = {utils_orders.STATUSES_USER.DELETED} 
+    o.user_status IN ({utils_orders.STATUSES_USER.COMPLETED}, {utils_orders.STATUSES_USER.DELETED})
 
     -- Make sure we pick the most recent COMPLETED order for each record
     AND o.updated_at = (
         SELECT MAX(o2.updated_at)
         FROM orders o2
         WHERE o2.record_id = o.record_id
-          AND o2.user_status = {utils_orders.STATUSES_USER.COMPLETED} OR o2.user_status = {utils_orders.STATUSES_USER.DELETED}
+          AND o2.user_status IN ({utils_orders.STATUSES_USER.COMPLETED}, {utils_orders.STATUSES_USER.DELETED})
     )
 
     -- Exclude records that have an ORDERED status
@@ -406,7 +406,7 @@ WHERE
     )
 
     -- Also exclude records with location = IN_STORAGE
-    AND r.location <> {utils_orders.STATUSES_LOCATION.IN_STORAGE}
+    -- AND r.location <> {utils_orders.STATUSES_LOCATION.IN_STORAGE}
 
     -- Search filters
     {search_filters_as_str}
