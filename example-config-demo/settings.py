@@ -39,5 +39,5 @@ settings: dict[str, typing.Any] = {
     "allow_user_management": True,
     "allow_save_bookmarks": False,
     "allow_save_search": False,
-    "allow_online_ordering": True,
+    "allow_online_ordering": False,
 }
