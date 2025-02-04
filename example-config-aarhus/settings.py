@@ -85,4 +85,5 @@ settings: dict[str, typing.Any] = {
         "orders": "data/orders.db",
     },
     "log_api_calls": False,
+    "cron_orders": True,
 }
