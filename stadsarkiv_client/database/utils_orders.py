@@ -57,6 +57,9 @@ STATUSES_USER_HUMAN = {
     4: "Slettet",
 }
 
+# TEST
+DATELINE_DAYS = 1
+
 
 def get_insert_user_data(me: dict) -> dict:
     """
@@ -156,10 +159,10 @@ def format_log_display(log: dict):
     return log
 
 
-def get_deadline_date(days: int = 14) -> str:
+def get_deadline_date() -> str:
 
     utc_now = arrow.utcnow()
-    deadline = utc_now.shift(days=days)
+    deadline = utc_now.shift(days=DATELINE_DAYS)
 
     # Return deadline as datetime string (suitable for sqlite)
     return deadline.format("YYYY-MM-DD HH:mm:ss")

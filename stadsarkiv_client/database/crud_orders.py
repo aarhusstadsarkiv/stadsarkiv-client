@@ -203,7 +203,7 @@ async def _update_user_status(crud: "CRUD", user_id: str, order_id: int, new_sta
             # Log the status change
             await _insert_log_message(
                 crud,
-                user_id=next_queued_order["user_id"],
+                user_id=user_id,
                 order=next_queued_order,
                 message=". ".join(log_messages),
             )
@@ -577,6 +577,10 @@ async def cron_orders():
     Deadline may look like this: 2024-12-25 09:23:52
     Check if deadline has passed and update user status to COMPLETED
     """
+    if not settings.get("cron_orders", False):
+        log.debug("Cron orders is disabled")
+        return
+
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
@@ -592,7 +596,21 @@ async def cron_orders():
         user_id = "SYSTEM"
         orders = await crud.query(query, params)
         for order in orders:
-            await _update_user_status(crud, user_id, order["order_id"], utils_orders.STATUSES_USER.COMPLETED)
+
+            full_order = await _get_orders_one(crud, order_id=order["order_id"])
+            await crud.update(
+                table="orders",
+                update_values={"user_status": utils_orders.STATUSES_USER.COMPLETED},
+                filters={"order_id": full_order["order_id"]},
+            )
+
+            await _update_user_status(crud, user_id, full_order["order_id"], utils_orders.STATUSES_USER.COMPLETED)
+            # await _insert_log_message(
+            #     crud,
+            #     user_id,
+            #     full_order,
+            #     ORDER_COMPLETED,
+            # )
 
 
 async def _get_orders(
