@@ -78,6 +78,7 @@
                 <th>Deadline</th>
                 <th title="Antal brugere som står i kø">I Kø</th>
                 <th>Lokation</th>
+                <th></th><!-- has note indicator -->
                 <th>Handling</th>
             </tr>
         </thead>
@@ -113,9 +114,9 @@
                     {% set title = "" %}
                     {% else %}
                     {% set location_change_disabled = "disabled" %}
-                    {% set title = "Du har ikke ændre lokation, da materialet er i Læsesalen og en bruger har rettighed
-                    til
-                    at benytte det. Du må først slette eller afslutte den aktive bestilling, før du kan ændre lokation."
+                    {% set title = "
+Du kan ikke ændre lokation, da materialet er i Læsesalen og en bruger har rettighed til
+at benytte det. Du må først afslutte den aktive bestilling, før du kan ændre lokation."
                     %}
                     {% endif %}
 
@@ -126,6 +127,13 @@
                             %}>{{ value }}</option>
                         {% endfor %}
                     </select>
+                </td>
+                <td>
+                    <span class="has-comment" title="{{ order.comment }}">
+                        {% if order.comment %}
+                    {{ get_icon('counter_1')|safe }}
+                    {% endif %}
+                    </span>
                 </td>
                 <td>
                     <span>
@@ -141,13 +149,6 @@
                         <a class="action-link" href="/admin/orders/logs?order_id={{order.order_id}}"
                             title="Slet bestillingen">Logs</a>
                     </span>
-                    <span class="has-comment" title="{{ order.comment }}">
-                        {% if order.comment %}
-                    {{ get_icon('counter_1')|safe }}
-                    {% endif %}
-                    </span>
-                    
-
                 </td>
             </tr>
 

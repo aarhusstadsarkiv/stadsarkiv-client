@@ -82,6 +82,7 @@ async def _process_order_deletion(request: Request, id_key: str):
     """
     This method is used to delete an order based on the provided key (e.g., "order_id" or "record_id")
     There are two options because the user can delete an order based on the order_id or the record_id
+    This depends on the user being on the order page or the record page
     """
     await is_authenticated_json(request, verified=True)
     me = await api.users_me_get(request)
@@ -138,17 +139,6 @@ async def orders_user_delete_by_record_id(request: Request):
     Delete an order based on the record_id (on the record page)
     """
     return await _process_order_deletion(request, id_key="record_id")
-
-
-async def _get_location(update_values: dict) -> int:
-    """
-    Get location from a dict of update values and remove it from update_values
-    """
-    location = 0
-    if "location" in update_values:
-        location = int(update_values["location"])
-        update_values.pop("location")
-    return location
 
 
 async def orders_admin_patch_multiple(request: Request):
@@ -220,6 +210,7 @@ async def orders_admin_patch_single(request: Request):
         return JSONResponse(
             {
                 "error": False,
+                "message": message,
             }
         )
     except Exception:
@@ -227,6 +218,7 @@ async def orders_admin_patch_single(request: Request):
         return JSONResponse(
             {
                 "error": True,
+                "message": "Der opstod en fejl. Bestilling kunne ikke opdateres.",
             }
         )
 
