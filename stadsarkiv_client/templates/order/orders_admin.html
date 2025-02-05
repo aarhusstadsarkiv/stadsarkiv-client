@@ -104,7 +104,7 @@
                 {% if order.deadline %}
                 <td>{{ order.deadline }}</td>
                 {% else %}
-                <td>Ikke angivet</td>
+                <td></td>
                 {% endif %}
                 <td class="width-50">{{ order.count }}</td>
                 <td>
@@ -130,17 +130,24 @@
                 <td>
                     <span>
                         <a class="action-link" href="/admin/orders/{{order.order_id}}/edit">Rediger</a>
-
-                        {% if not order.user_actions_deactivated %}
-                        <span class="complete-order">
-                            <a class="action-link" data-id="{{order.order_id}}" data-action="completed"
-                                title="Brugeren er færdig med bestillingen" href="#">Afslut</a>
-                        </span>
-                        {% endif %}
-
+                    <span>
+                    {% if not order.user_actions_deactivated %}
+                    <span class="complete-order">
+                        <a class="action-link" data-id="{{order.order_id}}" data-action="completed"
+                            title="Brugeren er færdig med bestillingen" href="#">Afslut</a>
+                    </span>
+                    {% endif %}
+                    <span>
                         <a class="action-link" href="/admin/orders/logs?order_id={{order.order_id}}"
                             title="Slet bestillingen">Logs</a>
                     </span>
+                    <span class="has-comment" title="{{ order.comment }}">
+                        {% if order.comment %}
+                    {{ get_icon('counter_1')|safe }}
+                    {% endif %}
+                    </span>
+                    
+
                 </td>
             </tr>
 
@@ -157,8 +164,6 @@
                 <td></td>
                 <td><span class="action-links"><a href="#" class="update-locations">Opdatér</a></span></td>
                 <td>
-
-
                 </td>
             </tr>
         </tbody>

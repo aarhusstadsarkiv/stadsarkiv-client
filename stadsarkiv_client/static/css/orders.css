@@ -131,3 +131,9 @@ td.record-link {
 td.collectors {
     width: 50px;
 }
+
+span.has-comment > svg {
+    fill: red;
+    vertical-align: middle;
+    cursor: pointer;
+}
