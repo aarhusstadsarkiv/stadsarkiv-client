@@ -1,8 +1,13 @@
+from stadsarkiv_client.core.dynamic_settings import settings, init_settings
 from stadsarkiv_client.app import app
 from stadsarkiv_client.core.logging import get_log
 from starlette.testclient import TestClient
+from stadsarkiv_client.core.migration import Migration
+from stadsarkiv_client.migrations.default import migrations_default
+from stadsarkiv_client.migrations.orders import migrations_orders
 import unittest
 
+init_settings()
 log = get_log()
 
 valid_user = "dennis.iversen+h@gmail.com"
@@ -16,6 +21,18 @@ correct_login = {
     "password": valid_password,
 }
 incorrect_login = {"username": invalid_user, "password": invalid_password}
+
+
+def generate_test_db():
+
+    migration = Migration(db_path=settings["sqlite3"]["default"], migrations=migrations_default)
+    migration.run_migrations()
+
+    migration = Migration(db_path=settings["sqlite3"]["orders"], migrations=migrations_orders)
+    migration.run_migrations()
+
+
+generate_test_db()
 
 """
 User already exists. At some point we should test with a user that does not exist.
