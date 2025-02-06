@@ -16,28 +16,22 @@ from stadsarkiv_client.database.crud_orders import cron_orders
 import asyncio
 import contextlib
 import os
-import json
 import sys
-
 
 sys.path.append(".")
 log = get_log()
-
-
 data_dir = get_data_dir()
+
 if not os.path.exists(data_dir):
     log.info(f"Creating data directory: {data_dir}")
     os.makedirs(data_dir)
 
-api_key = os.getenv("API_KEY")
+api_key = settings.get("api_key")
 if api_key == "api_key":
-    log.error("API_KEY environment variable is not set")
+    raise ValueError("API_KEY environment variable is not set")
 
-log.debug("Environment: " + str(os.getenv("ENVIRONMENT")))
-log.debug(json.dumps(settings, sort_keys=True, indent=4, ensure_ascii=False))
-
-# Log absolute path to this file (in case we use the pipx version)
-log.debug(f"App loaded from the file {os.path.abspath(__file__)}")
+log.info("Environment: " + str(settings.get("environment")))
+log.info(f"App loaded from the file {os.path.abspath(__file__)}")
 
 hooks = get_hooks()
 routes = get_app_routes()
@@ -52,17 +46,18 @@ def run_cron_orders():
     try:
         asyncio.run(cron_orders())
     except Exception:
-        log.exception("Async cron job failed")
+        log.exception("Cron job failed")
 
     log.info("Async cron job completed")
 
 
 # Set up the scheduler
 scheduler = BackgroundScheduler()
-# Every midnight
-scheduler.add_job(run_cron_orders, "cron", hour=0, minute=0)
-# Every minute
-# scheduler.add_job(run_async_cron_job, "cron", minute="*")
+if settings.get("environment") == "development":
+    scheduler.add_job(run_cron_orders, "cron", minute="*")
+else:
+    scheduler.add_job(run_cron_orders, "cron", hour=0, minute=0)
+
 scheduler.start()
 
 

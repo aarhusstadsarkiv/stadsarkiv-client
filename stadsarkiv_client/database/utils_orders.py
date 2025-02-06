@@ -162,9 +162,10 @@ def format_log_display(log: dict):
 def get_deadline_date() -> str:
 
     utc_now = arrow.utcnow()
-    deadline = utc_now.shift(days=DATELINE_DAYS)
 
-    # Return deadline as datetime string (suitable for sqlite)
+    # deadline will look like this: 2025-02-08 00:00:00
+    # The extra day is added to make sure at least one full day is available
+    deadline = utc_now.floor('day').shift(days=DATELINE_DAYS + 1)
     return deadline.format("YYYY-MM-DD HH:mm:ss")
 
 
@@ -173,6 +174,10 @@ def get_current_date_time() -> str:
 
 
 async def send_order_message(message: str, order: dict):
+
+    # Skip sending mail if test email
+    if order["user_email"] == "super@default.com":
+        return
 
     title = "Din bestilling er klar til gennemsyn"
     template_values = {

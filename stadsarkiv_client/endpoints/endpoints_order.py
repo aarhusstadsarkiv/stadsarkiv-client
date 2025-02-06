@@ -116,7 +116,6 @@ async def _process_order_deletion(request: Request, id_key: str):
         await crud_orders.update_order(
             order_id=order_id,
             user_id=user_id,
-            location=0,
             update_values=update_values,
         )
 
@@ -162,11 +161,12 @@ async def orders_admin_patch_multiple(request: Request):
             location = order_location["location"]
             assert isinstance(location, int)
 
+            log.debug(f"Updating order {order_id} to location {location}")
+
             await crud_orders.update_order(
                 order_id=order_id,
                 user_id=me["id"],
-                location=location,
-                update_values={},  # No other values are updated than location
+                update_values={"location": location},  # No other values are updated than location
             )
 
         if len(orders_and_locations) == 1:
@@ -197,7 +197,6 @@ async def orders_admin_patch_single(request: Request):
         await crud_orders.update_order(
             order_id=order_id,
             user_id=me["id"],
-            location=0,
             update_values=update_values,
         )
 
