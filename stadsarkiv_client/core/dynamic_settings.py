@@ -102,8 +102,7 @@ def get_setting(key):
 
 def init_settings():
     """
-    Initialize settings
-    Duummy function to indicate that settings are loaded
+    Dummy function to indicate that settings are loaded
     And to avoid vscode warning about unused import
     """
     pass
