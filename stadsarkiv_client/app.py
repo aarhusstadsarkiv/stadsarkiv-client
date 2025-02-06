@@ -11,9 +11,7 @@ from stadsarkiv_client.core.exception_handlers import exception_handlers
 from stadsarkiv_client.core.sentry import enable_sentry
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core.args import get_data_dir
-from apscheduler.schedulers.background import BackgroundScheduler  # type: ignore
-from stadsarkiv_client.database.crud_orders import cron_orders
-import asyncio
+from stadsarkiv_client.core.scheduler import scheduler
 import contextlib
 import os
 import sys
@@ -36,30 +34,6 @@ log.info(f"App loaded from the file {os.path.abspath(__file__)}")
 hooks = get_hooks()
 routes = get_app_routes()
 routes = hooks.after_routes_init(routes)
-
-
-def run_cron_orders():
-    """
-    Run the cron job for orders
-    """
-    log.info("Running async cron job")
-    try:
-        asyncio.run(cron_orders())
-    except Exception:
-        log.exception("Cron job failed")
-
-    log.info("Async cron job completed")
-
-
-# Set up the scheduler
-scheduler = BackgroundScheduler()
-if settings.get("environment") == "development":
-    scheduler.add_job(run_cron_orders, "cron", minute="*")
-else:
-    scheduler.add_job(run_cron_orders, "cron", hour=0, minute=0)
-
-scheduler.start()
-
 
 sentry_dns = os.getenv("SENTRY_DNS", "")
 if sentry_dns:
