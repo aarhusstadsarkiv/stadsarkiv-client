@@ -21,7 +21,7 @@ export CONFIG_DIR=example-config-aarhus
 
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.migration import Migration
-from stadsarkiv_client.migrations.default import migrations
+from stadsarkiv_client.migrations.default import migrations_default
 from stadsarkiv_client.core.logging import get_log
 import os
 
@@ -41,6 +41,6 @@ except KeyError:
     log.error("No database URL found in settings")
     exit(1)
 
-migration_manager = Migration(db_path, migrations)
+migration_manager = Migration(db_path, migrations_default)
 migration_manager.run_migrations()
 migration_manager.close()

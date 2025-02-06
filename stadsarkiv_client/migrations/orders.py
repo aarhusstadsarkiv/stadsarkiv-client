@@ -66,6 +66,6 @@ INSERT INTO users (user_id, user_email, user_display_name) VALUES ('SYSTEM', 'sy
 """
 
 # List of migrations with keys
-migrations = {
+migrations_orders = {
     "create_orders": _create_orders_query,
 }

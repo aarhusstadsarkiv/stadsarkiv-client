@@ -63,7 +63,7 @@ ALTER TABLE bookmarks RENAME COLUMN bookmark TO record_id;
 """
 
 # List of migrations with keys
-migrations = {
+migrations_default = {
     "create_bookmarks": create_booksmarks_query,
     "create_bookmarks_index": create_booksmarks_index_query,
     "create_searches": create_searches_query,
