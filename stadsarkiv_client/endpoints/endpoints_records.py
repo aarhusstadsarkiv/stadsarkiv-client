@@ -15,7 +15,6 @@ import asyncio
 import json
 import typing
 from stadsarkiv_client.endpoints.endpoints_utils import get_record_data
-from stadsarkiv_client.core import utils_core
 
 
 log = get_log()
