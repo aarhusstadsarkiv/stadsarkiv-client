@@ -9,6 +9,7 @@ from stadsarkiv_client.database.utils import DatabaseConnection
 from stadsarkiv_client.core.logging import get_log
 from dataclasses import dataclass
 from typing import Optional
+import json
 
 
 log = get_log()
@@ -91,10 +92,26 @@ async def _has_active_order(crud: "CRUD", user_id: str, record_id: str):
     return order
 
 
+async def _save_data(meta_data: dict, record_and_types: dict, me: dict):
+
+    # save meta_data, and record_and_types, me as JSON
+    base_path = "tests/data"
+
+    with open(f"{base_path}/meta_data_000495102.json", "w") as f:
+        json.dump(meta_data, f, ensure_ascii=False)
+
+    with open(f"{base_path}/record_and_types_000495102.json", "w") as f:
+        json.dump(record_and_types, f, ensure_ascii=False)
+
+    with open(f"{base_path}/me.json", "w") as f:
+        json.dump(me, f, ensure_ascii=False)
+
+
 async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
     """
     Insert an order into the database with proper validations and updates.
     """
+
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
