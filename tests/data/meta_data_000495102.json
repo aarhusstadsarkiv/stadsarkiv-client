@@ -1,0 +1,31 @@
+{
+    "id": "000495102",
+    "real_id": "495102",
+    "allowed_by_ip": true,
+    "permission_granted": true,
+    "title": "Venskabsforeningen for Ældre Danskere og Indvandrere, bestyrelsen + fællesmøder",
+    "meta_title": "Venskabsforeningen for Ældre Danskere og Indvandrere, bestyrelsen + fællesmøder",
+    "meta_description": "Diverse materiale vedrørende vedrørende Venskabsforeningen for Ældre Danskere og Indvandrere. Heri mødereferater fra...",
+    "icon": {
+        "icon": "gavel",
+        "label": "Forskrifter og vedtægter"
+    },
+    "copyright_id": 1,
+    "legal_id": 2,
+    "contractual_id": 3,
+    "availability_id": 2,
+    "usability_id": 4,
+    "collection_id": null,
+    "content_types_label": "",
+    "orderable": true,
+    "resources": {
+        "type": "analog",
+        "storage_id": [
+            "91+01373-8"
+        ]
+    },
+    "is_representations_online": true,
+    "record_type": "icon",
+    "is_downloadable": false,
+    "has_active_order": null
+}

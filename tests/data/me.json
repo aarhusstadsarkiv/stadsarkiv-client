@@ -1,0 +1,65 @@
+{
+    "id": "SOME_UUID",
+    "email": "some.mail@example.com",
+    "is_active": true,
+    "is_verified": true,
+    "client_id": "demo",
+    "display_name": "hhh",
+    "data": {
+        "bookmarks": [],
+        "custom": {
+            "updated": 1738930151,
+            "data": {}
+        }
+    },
+    "timestamp": 1736428571,
+    "updated": 1738927228,
+    "last_login": 1738927229,
+    "permissions": [
+        {
+            "name": "employee",
+            "grant_id": 4,
+            "entity_id": null
+        },
+        {
+            "name": "researcher",
+            "grant_id": 5,
+            "entity_id": null
+        },
+        {
+            "name": "user",
+            "grant_id": 6,
+            "entity_id": null
+        },
+        {
+            "name": "guest",
+            "grant_id": 8,
+            "entity_id": null
+        },
+        {
+            "name": "scoped_read",
+            "grant_id": 13,
+            "entity_id": null
+        },
+        {
+            "name": "read",
+            "grant_id": 9,
+            "entity_id": null
+        },
+        {
+            "name": "update",
+            "grant_id": 7,
+            "entity_id": null
+        },
+        {
+            "name": "soft_delete",
+            "grant_id": 10,
+            "entity_id": null
+        },
+        {
+            "name": "create",
+            "grant_id": 12,
+            "entity_id": null
+        }
+    ]
+}

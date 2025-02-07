@@ -1,0 +1,307 @@
+{
+    "last_updated": {
+        "value": "2023-11-28T11:29:09.126000",
+        "name": "last_updated",
+        "type": "date",
+        "label": "Senest opdateret"
+    },
+    "collectors": {
+        "value": [
+            {
+                "id": 158411,
+                "label": "Venskabsforeningen for Ældre Danskere og Indvandrere (1997-2023)",
+                "search_query": "/search?collectors=158411",
+                "display_as_link": true
+            }
+        ],
+        "name": "collectors",
+        "type": "link_list",
+        "label": "Arkivskaber"
+    },
+    "organisations": {
+        "value": [
+            {
+                "id": 158411,
+                "label": "Venskabsforeningen for Ældre Danskere og Indvandrere (1997-2023)",
+                "search_query": "/search?organisations=158411",
+                "display_as_link": true
+            }
+        ],
+        "name": "organisations",
+        "type": "link_list",
+        "label": "Organisationer"
+    },
+    "desc_notes": {
+        "value": "Heri billeder af bestyrelsesmedlemmer og suppleanter",
+        "name": "desc_notes",
+        "type": "paragraphs",
+        "label": "Deskriptiv note"
+    },
+    "availability": {
+        "value": {
+            "label": "På magasin",
+            "id": 2
+        },
+        "name": "availability",
+        "type": "label_dict",
+        "label": "Tilgængelighed"
+    },
+    "registration_id": {
+        "value": 2492,
+        "name": "registration_id",
+        "type": "string",
+        "label": "Registrations ID"
+    },
+    "date_from": {
+        "value": "1999",
+        "name": "date_from",
+        "type": "string",
+        "label": "Dato fra"
+    },
+    "created_by": {
+        "value": "Thomas Norskov Kristensen",
+        "name": "created_by",
+        "type": "string",
+        "label": "Oprettet af"
+    },
+    "id": {
+        "value": "000495102",
+        "name": "id",
+        "type": "string",
+        "label": "Arkiv ID"
+    },
+    "other_legal_restrictions": {
+        "value": {
+            "id": 2,
+            "label": "Utilgængeligt ifølge persondatalovgivningen"
+        },
+        "name": "other_legal_restrictions",
+        "type": "label_dict",
+        "label": "Lovgivning"
+    },
+    "subjects": {
+        "value": [
+            [
+                {
+                    "id": 3,
+                    "label": "Samfund",
+                    "search_query": "/search?subjects=3",
+                    "display_as_link": true
+                },
+                {
+                    "id": 47,
+                    "label": "Foreninger",
+                    "search_query": "/search?subjects=47",
+                    "display_as_link": true
+                }
+            ],
+            [
+                {
+                    "id": 37,
+                    "label": "Kultur og fritid",
+                    "search_query": "/search?subjects=37",
+                    "display_as_link": true
+                },
+                {
+                    "id": 56,
+                    "label": "Folkekultur og dagligdagsliv",
+                    "search_query": "/search?subjects=56",
+                    "display_as_link": true
+                }
+            ],
+            [
+                {
+                    "id": 3,
+                    "label": "Samfund",
+                    "search_query": "/search?subjects=3",
+                    "display_as_link": true
+                },
+                {
+                    "id": 63,
+                    "label": "Ud- og indvandring",
+                    "search_query": "/search?subjects=63",
+                    "display_as_link": true
+                }
+            ]
+        ],
+        "name": "subjects",
+        "type": "link_list_hierarchy",
+        "label": "Emner"
+    },
+    "type": {
+        "value": "record",
+        "name": "type",
+        "type": "string",
+        "label": "Type"
+    },
+    "resources": {
+        "value": [
+            {
+                "type": "analog",
+                "storage_id": [
+                    "91+01373-8"
+                ]
+            }
+        ],
+        "name": "resources",
+        "type": "key_value_dicts",
+        "label": "Ressourcer"
+    },
+    "schema": {
+        "value": "oas_v1.0",
+        "name": "schema",
+        "type": "string",
+        "label": "Skema"
+    },
+    "curators": {
+        "value": [
+            {
+                "id": 1,
+                "label": "Aarhus Stadsarkiv",
+                "search_query": "/search?curators=1",
+                "display_as_link": true
+            }
+        ],
+        "name": "curators",
+        "type": "link_list",
+        "label": "Kurator"
+    },
+    "copyright_status": {
+        "value": {
+            "id": 1,
+            "label": "I offentlig eje. Ikke ophavsretsværdigt"
+        },
+        "name": "copyright_status",
+        "type": "label_dict",
+        "label": "Ophavsret"
+    },
+    "last_updated_by": {
+        "value": "Thomas Norskov Kristensen",
+        "name": "last_updated_by",
+        "type": "string",
+        "label": "Senest opdateret af"
+    },
+    "date_to": {
+        "value": "2022",
+        "name": "date_to",
+        "type": "string",
+        "label": "Datering"
+    },
+    "created": {
+        "value": "2023-11-28T11:29:09.126000",
+        "name": "created",
+        "type": "date",
+        "label": "Oprettet"
+    },
+    "summary": {
+        "value": "Diverse materiale vedrørende vedrørende Venskabsforeningen for Ældre Danskere og Indvandrere. Heri mødereferater fra bl.a. bestyrelsesmøder, korrespondance, fotos med videre, der vedrører bestyrelsen og afholdelse af fællesmøder.\n\nVedtægter for Venskabsforeningen for Ældre Danskere og Indvandrere.",
+        "name": "summary",
+        "type": "paragraphs",
+        "label": "Abstrakt"
+    },
+    "content_types": {
+        "value": [
+            [
+                {
+                    "id": 10,
+                    "label": "Forskrifter og vedtægter",
+                    "search_query": "/search?content_types=10",
+                    "display_as_link": true
+                }
+            ],
+            [
+                {
+                    "id": 18,
+                    "label": "Registre og protokoller",
+                    "search_query": "/search?content_types=18",
+                    "display_as_link": true
+                },
+                {
+                    "id": 19,
+                    "label": "Mødereferater og forhandlingsprotokoller",
+                    "search_query": "/search?content_types=19",
+                    "display_as_link": true
+                }
+            ],
+            [
+                {
+                    "id": 49,
+                    "label": "Manuskripter",
+                    "search_query": "/search?content_types=49",
+                    "display_as_link": true
+                },
+                {
+                    "id": 60,
+                    "label": "Korrespondance",
+                    "search_query": "/search?content_types=60",
+                    "display_as_link": true
+                }
+            ],
+            [
+                {
+                    "id": 61,
+                    "label": "Billeder",
+                    "search_query": "/search?content_types=61",
+                    "display_as_link": true
+                },
+                {
+                    "id": 63,
+                    "label": "Portræt",
+                    "search_query": "/search?content_types=63",
+                    "display_as_link": true
+                }
+            ]
+        ],
+        "name": "content_types",
+        "type": "link_list_hierarchy",
+        "label": "Materialetype"
+    },
+    "heading": {
+        "value": "Venskabsforeningen for Ældre Danskere og Indvandrere, bestyrelsen + fællesmøder",
+        "name": "heading",
+        "type": "string",
+        "label": "Overskrift"
+    },
+    "usability": {
+        "value": {
+            "label": "Alle rettigheder forbeholdes",
+            "id": 4
+        },
+        "name": "usability",
+        "type": "label_dict",
+        "label": "Ophavsret"
+    },
+    "date_normalized": {
+        "value": "1999 ~ 2022",
+        "name": "date_normalized",
+        "type": "string",
+        "label": "Datering"
+    },
+    "copyright_status_normalized": {
+        "value": [
+            "I offentlig eje. Ikke ophavsretsværdigt",
+            "Materialet har ikke værkshøjde og er derfor ikke beskyttet af ophavsret. Der er dermed heller ingen ophavsretslige begrænsninger på gengivelse og publicering af dette materiale. "
+        ],
+        "name": "copyright_status_normalized",
+        "type": "string_list",
+        "label": "Ophavsret"
+    },
+    "contractual_status_normalized": {
+        "value": "Materialet må kun ses på læsesalen. Ifølge aftale.",
+        "name": "contractual_status_normalized",
+        "type": "string",
+        "label": "Aftaleforhold"
+    },
+    "other_legal_restrictions_normalized": {
+        "value": "Materialet er utilgængeligt ifølge persondatalovgivningen.",
+        "name": "other_legal_restrictions_normalized",
+        "type": "string",
+        "label": "Lovgivning"
+    },
+    "availability_normalized": {
+        "value": "Materialet er utilgængeligt som følge af nævnte juridiske forhold.",
+        "name": "availability_normalized",
+        "type": "string",
+        "label": "Tilgængelighed"
+    }
+}
