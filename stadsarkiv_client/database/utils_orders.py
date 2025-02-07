@@ -165,7 +165,7 @@ def get_deadline_date() -> str:
 
     # deadline will look like this: 2025-02-08 00:00:00
     # The extra day is added to make sure at least one full day is available
-    deadline = utc_now.floor('day').shift(days=DATELINE_DAYS + 1)
+    deadline = utc_now.floor("day").shift(days=DATELINE_DAYS + 1)
     return deadline.format("YYYY-MM-DD HH:mm:ss")
 
 
