@@ -1,4 +1,3 @@
-
 from stadsarkiv_client.core.dynamic_settings import init_settings
 from stadsarkiv_client.core.logging import get_log
 import unittest
@@ -9,7 +8,7 @@ init_settings()
 log = get_log()
 
 
-class TestDB(unittest.TestCase):
+class TestMigrations(unittest.TestCase):
 
     def test_migrations(self):
         db_path = ":memory:"
