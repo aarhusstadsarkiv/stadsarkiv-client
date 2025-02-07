@@ -209,12 +209,6 @@ def run_tests(config_dir, tests_path_pattern):
     else:
         logger.info(f"Running tests with config dir: {os.getenv('CONFIG_DIR')}")
 
-    # Check if env API_KEY is set
-    if not os.getenv("API_KEY"):
-        logger.info("API_KEY is not set. Set API_KEY in environment variables.")
-        logger.info("E.g. export API_KEY=your_api_key")
-        exit(1)
-
     # Get test files
     # Note: Run with sys.executable in order use the same python version as the current process
     test_files = glob.glob(tests_path_pattern)
@@ -240,10 +234,10 @@ if _is_source():
     # Only show dev commands if source version
     @cli.command(help="Run all tests.")
     def source_test():
-        run_tests(None, "tests/config-default/*.py")
+        run_tests("example-config-demo", "tests/config-default/*.py")
         run_tests("example-config-aarhus", "tests/config-aarhus/*.py")
         run_tests("example-config-teater", "tests/config-teater/*.py")
-        run_tests(None, "tests/core/*.py")
+        run_tests("example-config-demo", "tests/core/*.py")
 
     @cli.command(help="Fix code according to black, flake8, mypy.")
     def source_fix():
