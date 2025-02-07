@@ -172,3 +172,4 @@ uvicorn_process.pid
 /bin-local
 settings_local.py
 data
+!tests/data
