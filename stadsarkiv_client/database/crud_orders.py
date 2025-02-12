@@ -30,7 +30,11 @@ STATUS_CHANGED = "Bruger status ændret"
 
 @dataclass
 class OrderFilter:
-    # Filter options
+    """
+    OrderFilter for seach
+    filter_status can be: active, completed, order_history
+    """
+
     filter_status: str = "active"
     filter_location: Optional[str] = ""
     filter_email: Optional[str] = ""
