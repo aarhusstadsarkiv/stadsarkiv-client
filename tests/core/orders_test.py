@@ -42,14 +42,42 @@ class TestDB(unittest.TestCase):
         with open(record_and_types_file) as f:
             record_and_types = json.load(f)
 
-        # Insert order
-        await crud_orders.insert_order(meta_data, record_and_types, me)
-        print("Order inserted")
+        # No active order
+        has_active_order = await crud_orders.has_active_order(me["id"], meta_data["id"])
+        self.assertFalse(has_active_order)
 
-        # Insert again and exception exception("User is already active on this record")
-        with self.assertRaises(Exception) as _:
-            print("Order already inserted")
+        log.info("Insert order")
+        await crud_orders.insert_order(meta_data, record_and_types, me)
+
+        with self.assertRaises(Exception) as cm:  # Capture the exception
+            log.info("Insert order again and asset raises")
             await crud_orders.insert_order(meta_data, record_and_types, me)
+
+        log.info("Asset correct exception message")
+        self.assertIn("User is already active on this record", str(cm.exception))
+
+        log.info("Assert user has active order")
+        has_active_order = await crud_orders.has_active_order(me["id"], meta_data["id"])
+        self.assertTrue(has_active_order)
+
+        log.info("Assert no deadline on order")
+        order = await crud_orders.get_order("1")
+        self.assertIsNone(order["deadline"])
+
+        log.info("Assert 1 order and no completed orders or order history") 
+        orders_filter = crud_orders.OrderFilter()
+        orders, _ = await crud_orders.get_orders_admin(filters=orders_filter)
+        self.assertEqual(len(orders), 1)
+
+        orders_filter = crud_orders.OrderFilter(filter_status="completed")
+        orders, _ = await crud_orders.get_orders_admin(filters=orders_filter)
+        self.assertEqual(len(orders), 0)
+
+        orders_filter = crud_orders.OrderFilter(filter_status="order_history")
+        orders, _ = await crud_orders.get_orders_admin(filters=orders_filter)
+        self.assertEqual(len(orders), 0)
+
+
 
 
 if __name__ == "__main__":
