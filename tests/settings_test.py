@@ -10,4 +10,5 @@ settings: dict[str, typing.Any] = {
         "default": "/tmp/database.db",
         "orders": "/tmp/orders.db",
     },
+    "send_mail_disabled": True,
 }
