@@ -42,6 +42,10 @@ class TestDB(unittest.TestCase):
         with open(record_and_types_file) as f:
             record_and_types = json.load(f)
 
+        me_2 = me.copy()
+        me_2["id"] = "ANOTHER_USER_ID"
+        me_2["email"] = "another.email@example.com"
+
         log.info("Assert no orders")
         has_active_order = await crud_orders.has_active_order(me["id"], meta_data["id"])
         self.assertFalse(has_active_order)
@@ -53,7 +57,7 @@ class TestDB(unittest.TestCase):
             log.info("Insert order again and assert raises")
             await crud_orders.insert_order(meta_data, record_and_types, me)
 
-        log.info("Asset correct exception message")
+        log.info("Assert correct exception message")
         self.assertIn("User is already active on this record", str(cm.exception))
 
         log.info("Assert user has active order")
@@ -64,8 +68,8 @@ class TestDB(unittest.TestCase):
         order = await crud_orders.get_order("1")
         self.assertIsNone(order["deadline"])
 
-        log.info("Assert 1 order and no completed orders or order history") 
-        orders_filter = crud_orders.OrderFilter()
+        log.info("Assert correct search results")
+        orders_filter = crud_orders.OrderFilter(filter_status="active")
         orders, _ = await crud_orders.get_orders_admin(filters=orders_filter)
         self.assertEqual(len(orders), 1)
 
@@ -81,8 +85,77 @@ class TestDB(unittest.TestCase):
         logs = await crud_orders.get_logs("1")
         self.assertEqual(len(logs), 1)
 
-        
+        update_values = {
+            "comment": "Updated comment",
+        }
 
+        log.info("Update order")
+        await crud_orders.update_order(order["order_id"], me["id"], update_values)
+
+        log.info("Assert updated comment will not be added to log")
+        logs = await crud_orders.get_logs("1")
+        self.assertEqual(len(logs), 1)
+
+        log.info("Move location of record to reading room")
+        update_values = {"location": utils_orders.STATUSES_LOCATION.READING_ROOM}
+        await crud_orders.update_order(order["order_id"], me["id"], update_values)
+
+        log.info("Order now has a deadline")
+        order = await crud_orders.get_order("1")
+        self.assertIsNotNone(order["deadline"])
+
+        log.info("Assert 2 log messages (insert order and move location)")
+        logs = await crud_orders.get_logs("1")
+        self.assertEqual(len(logs), 2)
+
+        with self.assertRaises(Exception) as cm:  # Capture the exception
+            log.info("Move location of record if it is already in reading room. Should raise exception")
+            update_values = {"location": utils_orders.STATUSES_LOCATION.RETURN_TO_STORAGE}
+            await crud_orders.update_order(order["order_id"], me["id"], update_values)
+
+        log.info("Assert correct exception message")
+        self.assertIn("Lokation kan ikke ændres", str(cm.exception))
+
+        # Insert new order containing the same record as the first order but for another user
+        log.info("Insert order for another user")
+        await crud_orders.insert_order(meta_data, record_and_types, me_2)
+        order_2 = await crud_orders.get_order("2")
+
+        # check deadline
+        self.assertIsNone(order_2["deadline"])
+
+        log.info("Assert correct search results")
+        orders_filter = crud_orders.OrderFilter(filter_status="active", filter_show_queued="on")
+        orders, _ = await crud_orders.get_orders_admin(filters=orders_filter)
+        self.assertEqual(len(orders), 2)
+
+        log.info("User 1 completes order")
+        update_values = {"user_status": utils_orders.STATUSES_USER.COMPLETED}
+        await crud_orders.update_order(order["order_id"], me["id"], update_values)
+
+        log.info("Assert correct search results")
+        orders_filter = crud_orders.OrderFilter(filter_status="active")
+        orders, _ = await crud_orders.get_orders_admin(filters=orders_filter)
+        self.assertEqual(len(orders), 1)
+
+        orders_filter = crud_orders.OrderFilter(filter_status="completed")
+        orders, _ = await crud_orders.get_orders_admin(filters=orders_filter)
+        self.assertEqual(len(orders), 0)
+
+        orders_filter = crud_orders.OrderFilter(filter_status="order_history")
+        orders, _ = await crud_orders.get_orders_admin(filters=orders_filter)
+        self.assertEqual(len(orders), 1)
+
+        order_2 = await crud_orders.get_order("2")
+        self.assertIsNotNone(order_2["deadline"])
+
+        log.info("User 2 completes order")
+        update_values = {"user_status": utils_orders.STATUSES_USER.COMPLETED}
+        await crud_orders.update_order(order_2["order_id"], me["id"], update_values)
+
+        log.info("Order 2 assert 2 log messages (insert order and user status change from queued to ordered)")
+        logs = await crud_orders.get_logs("2")
+        self.assertEqual(len(logs), 3)
 
 
 if __name__ == "__main__":
