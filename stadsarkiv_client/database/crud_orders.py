@@ -434,11 +434,13 @@ WHERE
     o.user_status IN ({utils_orders.STATUSES_USER.COMPLETED}, {utils_orders.STATUSES_USER.DELETED})
 
     -- Make sure we pick the most recent COMPLETED order for each record
-    AND o.updated_at = (
-        SELECT MAX(o2.updated_at)
+    AND o.order_id = (
+        SELECT o2.order_id
         FROM orders o2
         WHERE o2.record_id = o.record_id
           AND o2.user_status IN ({utils_orders.STATUSES_USER.COMPLETED}, {utils_orders.STATUSES_USER.DELETED})
+        ORDER BY o2.updated_at DESC, o2.order_id DESC
+        LIMIT 1
     )
 
     -- Exclude records that have an ORDERED status
@@ -449,13 +451,13 @@ WHERE
     )
 
     -- Also exclude records with location = IN_STORAGE
-    -- AND r.location <> {utils_orders.STATUSES_LOCATION.IN_STORAGE}
+    AND r.location <> {utils_orders.STATUSES_LOCATION.IN_STORAGE}
 
     -- Search filters
     {search_filters_as_str}
 
-    ORDER BY o.updated_at DESC
-    LIMIT {filters.filter_limit} OFFSET {offset}
+ORDER BY o.updated_at DESC
+LIMIT {filters.filter_limit} OFFSET {offset};
 
 """
     orders = await crud.query(query, placeholder_values)
@@ -585,7 +587,7 @@ JOIN orders o ON l.order_id = o.order_id
 JOIN users u ON l.user_id = u.user_id
 JOIN records r ON l.record_id = r.record_id
 {where_sql}
-ORDER BY l.updated_at DESC
+ORDER BY l.log_id DESC
 LIMIT 100
 """
 
