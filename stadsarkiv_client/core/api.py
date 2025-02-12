@@ -943,6 +943,11 @@ async def mail_post(data: dict) -> typing.Any:
     """
     POST /v1/operations/mail
     """
+
+    if settings.get("send_mail_disabled"):
+        log.info("send_mail_disabled is set to True. Mail was NOT sent.")
+        return
+
     async with _get_async_client() as client:
         url = base_url + "/operations/mail"
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
