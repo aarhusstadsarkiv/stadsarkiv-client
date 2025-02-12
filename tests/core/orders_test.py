@@ -6,7 +6,7 @@ from stadsarkiv_client.core.migration import Migration
 from stadsarkiv_client.migrations.orders import migrations_orders
 from stadsarkiv_client.database import crud, utils
 import os
-from stadsarkiv_client.database.crud_orders import insert_order
+from stadsarkiv_client.database import crud_orders
 from stadsarkiv_client.database import utils_orders
 import json
 
@@ -42,20 +42,14 @@ class TestDB(unittest.TestCase):
         with open(record_and_types_file) as f:
             record_and_types = json.load(f)
 
-        # user_data = utils_orders.get_insert_user_data(me)
-        # await crud_instance.insert("users", user_data)
-
         # Insert order
-        await insert_order(meta_data, record_and_types, me)
+        await crud_orders.insert_order(meta_data, record_and_types, me)
         print("Order inserted")
 
         # Insert again and exception exception("User is already active on this record")
-        with self.assertRaises(Exception) as context:
-            await insert_order(meta_data, record_and_types, me)
+        with self.assertRaises(Exception) as _:
             print("Order already inserted")
-
-        
-
+            await crud_orders.insert_order(meta_data, record_and_types, me)
 
 
 if __name__ == "__main__":
