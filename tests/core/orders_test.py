@@ -21,7 +21,7 @@ class TestDB(unittest.TestCase):
 
     async def _test_insert_order_async(self):
         """
-        Integration test for insert_order function
+        Simple integration test for orders
         """
         db_path = "/tmp/orders.db"
         if os.path.exists(db_path):
@@ -42,7 +42,7 @@ class TestDB(unittest.TestCase):
         with open(record_and_types_file) as f:
             record_and_types = json.load(f)
 
-        # No active order
+        log.info("Assert no orders")
         has_active_order = await crud_orders.has_active_order(me["id"], meta_data["id"])
         self.assertFalse(has_active_order)
 
@@ -50,7 +50,7 @@ class TestDB(unittest.TestCase):
         await crud_orders.insert_order(meta_data, record_and_types, me)
 
         with self.assertRaises(Exception) as cm:  # Capture the exception
-            log.info("Insert order again and asset raises")
+            log.info("Insert order again and assert raises")
             await crud_orders.insert_order(meta_data, record_and_types, me)
 
         log.info("Asset correct exception message")
@@ -77,6 +77,11 @@ class TestDB(unittest.TestCase):
         orders, _ = await crud_orders.get_orders_admin(filters=orders_filter)
         self.assertEqual(len(orders), 0)
 
+        log.info("Assert 1 log message (insert order)")
+        logs = await crud_orders.get_logs("1")
+        self.assertEqual(len(logs), 1)
+
+        
 
 
 
