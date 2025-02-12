@@ -47,7 +47,15 @@ class TestDB(unittest.TestCase):
 
         # Insert order
         await insert_order(meta_data, record_and_types, me)
-        # await insert_order(meta_data, record_and_types, me)
+        print("Order inserted")
+
+        # Insert again and exception exception("User is already active on this record")
+        with self.assertRaises(Exception) as context:
+            await insert_order(meta_data, record_and_types, me)
+            print("Order already inserted")
+
+        
+
 
 
 if __name__ == "__main__":
