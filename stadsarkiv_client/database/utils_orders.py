@@ -7,7 +7,6 @@ from stadsarkiv_client.core import utils_core
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.mail import get_template_content
 from stadsarkiv_client.core.dynamic_settings import settings
-import arrow
 
 
 log = get_log()
@@ -58,8 +57,8 @@ STATUSES_USER_HUMAN = {
     4: "Slettet",
 }
 
-# TEST
-DATELINE_DAYS = 1
+
+DATELINE_DAYS = 7
 
 
 def get_insert_user_data(me: dict) -> dict:
