@@ -4,7 +4,6 @@ from stadsarkiv_client.core.logging import get_log
 import unittest
 from stadsarkiv_client.core.migration import Migration
 from stadsarkiv_client.migrations.orders import migrations_orders
-from stadsarkiv_client.database import crud, utils
 import os
 from stadsarkiv_client.database import crud_orders
 from stadsarkiv_client.database import utils_orders
@@ -85,11 +84,8 @@ class TestDB(unittest.TestCase):
         logs = await crud_orders.get_logs("1")
         self.assertEqual(len(logs), 1)
 
-        update_values = {
-            "comment": "Updated comment",
-        }
-
         log.info("Update order")
+        update_values = {"comment": "Updated comment"}
         await crud_orders.update_order(order["order_id"], me["id"], update_values)
 
         log.info("Assert updated comment will not be added to log")
@@ -153,7 +149,7 @@ class TestDB(unittest.TestCase):
         update_values = {"user_status": utils_orders.STATUSES_USER.COMPLETED}
         await crud_orders.update_order(order_2["order_id"], me["id"], update_values)
 
-        log.info("Order 2 assert 2 log messages (insert order and user status change from queued to ordered)")
+        log.info("Order 2 assert 3 log messages (insert order, queued to ordered, ordered to completed)")
         logs = await crud_orders.get_logs("2")
         self.assertEqual(len(logs), 3)
 
