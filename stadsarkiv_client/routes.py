@@ -166,6 +166,13 @@ if settings["allow_online_ordering"]:
             name="orders_admin_patch",
             methods=["POST"],
         ),
+
+        Route(
+            "/admin/orders/print",
+            endpoint=endpoints_order.order_admin_print,
+            name="orders_admin_print",
+            methods=["GET", "POST"],
+        ),
     ]
     routes.extend(online_ordering)
 

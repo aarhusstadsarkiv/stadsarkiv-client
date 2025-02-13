@@ -1,0 +1,134 @@
+{% import "macros/basic_macros.html" as basic_macros with context %}
+
+{% extends "empty.html" %}
+
+{% block body_class %}page-orders-record-html{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/table.css') }}?v={{ get_setting('version') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/orders.css') }}?v={{ get_setting('version') }}">
+{% endblock head %}
+
+{% block content %}
+
+<div class="print-container">
+
+    <div class="print-section">
+
+        <div class="print-logo">
+            <img src="{{ url_for('static', path='assets/orders-logo.png') }}" alt="Logo">
+        </div>
+
+        <pre>{# to_json(order) #}</pre> 
+
+        <div class="print-date">
+            <p>Dato for bestilling: {{ order.created_at_human }}</p>
+        </div>
+
+        <h2>Bestilling af materiale fra AarhusArkivet</h2>
+
+        <h3>Bestiller</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <td class="width-200">Navn</td>
+                    <td>{{ order.user_display_name }}</td>
+                </tr>
+                <tr>
+                    <td class="width-200">E-mail</td>
+                    <td>{{ order.user_email }}</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        {# iterate record_and_types_str and output key and value in a table #}
+        <h3>Materiale</h3>
+        <table>
+            <tbody>
+                {% for key, value in material_base_info.items() %}
+                <tr>
+                    <td class="width-200">{{ translate("label_" + key) }}</td>
+                    <td >{{ value }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        
+    </div>
+
+    <div class="print-section" style="margin-top: 20px;">
+        {% if resources %}
+        <h3>Til brug på magasin</h3>
+        {# iterate key and value from dict resources and output in a table #}
+        <table>
+            <tbody>
+                {% for key, value in resources.items() %}
+                <tr>
+                    <td class="width-200">{{ key }}</td>
+                    <td>{{ value }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        {# iterate legal_info and output key and value in a table #}
+        <h3>Tilgængelighed og anden juridisk beskyttelse</h3>
+        <table>
+            <tbody>
+                {% for key, value in legal_info.items() %}
+                <tr>
+                    <td class="width-200">{{ translate("label_" + key) }}</td>
+                    <td>{{ value }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+<style>
+    /* Common styles for both screen and print */
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-size: 14px;
+    }
+
+    .print-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .print-section {
+        flex: 1;
+    }
+
+    /* Print-specific adjustments */
+    @media print {
+        
+        .print-container {
+            height: 100vh;
+        }
+    }
+
+    .print-date {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .print-logo img {
+        max-width: 150px;
+    }
+</style>
+
+
+{% endblock content %}

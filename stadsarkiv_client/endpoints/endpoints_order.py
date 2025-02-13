@@ -315,3 +315,51 @@ async def orders_logs(request: Request):
 
     context = await get_context(request, context_variables, "record")
     return templates.TemplateResponse(request, "order/orders_logs.html", context)
+
+
+async def order_admin_print(request: Request):
+    """
+    Simple display of a record
+    """
+    await is_authenticated(request, permissions=["employee"])
+
+    # get order_id from query params order_id
+    order_id = request.query_params.get("order_id", "")
+    order = await crud_orders.get_order(order_id)
+    record_id = order["record_id"]
+
+    permissions = await api.me_permissions(request)
+    record = await api.proxies_record_get_by_id(record_id)
+
+    record, meta_data, record_and_types = await get_record_data(request, record, permissions)
+
+    record_keys = ["id", "collectors", "date_normalized"]
+
+    # Get record and types a Dict[str, str] for easy access
+    material_base_info = utils_core.get_record_and_types_as_strings(record_and_types, record_keys)
+
+    record_keys = ["availability_normalized", "contractual_status_normalized", "other_legal_restrictions_normalized"]
+    legal_info = utils_core.get_record_and_types_as_strings(record_and_types, record_keys)
+
+    # add title with value "TEST" as first key
+    material_base_info["title"] = meta_data["meta_title"]
+
+    # record_content_contractual_status_normalized
+
+    # recordhtml = utils_core.get_parsed_data_as_table(record_and_types, all_keys, debug=True)
+    context_variables = {
+        # "html": html,
+        "material_base_info": material_base_info,
+        "record_keys": record_keys,
+        "record_and_types": record_and_types,
+        "title": meta_data["title"],
+        "meta_title": meta_data["meta_title"],
+        "meta_description": meta_data["meta_description"],
+        "record_id": record_id,
+        "order": order,
+        "resources": meta_data.get("resources", {}),
+        "legal_info": legal_info,
+    }
+
+    context = await get_context(request, context_variables, "record")
+    return templates.TemplateResponse(request, "order/print.html", context)

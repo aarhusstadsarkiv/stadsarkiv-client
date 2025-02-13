@@ -7,6 +7,7 @@ from stadsarkiv_client.core import utils_core
 from stadsarkiv_client.core import api
 from stadsarkiv_client.core.mail import get_template_content
 from stadsarkiv_client.core.dynamic_settings import settings
+import arrow
 
 
 log = get_log()
@@ -108,7 +109,11 @@ def format_order_display(order: dict):
         order["created_at"] = date_format.timezone_alter(order["created_at"])
         order["updated_at"] = date_format.timezone_alter(order["updated_at"])
 
-        # log.debug(f"Order: {order['record_and_types']}")
+        # Add human readable date format for created_at
+        created_at_human = arrow.get(order["created_at"], "YYYY-MM-DD HH:mm:ss")
+        created_at_human_str = created_at_human.format("D. MMMM YYYY", locale="da")
+        order["created_at_human"] = created_at_human_str
+
         # Load json data
         order["record_and_types"] = json.loads(order["record_and_types"])
         order["meta_data_dict"] = json.loads(order["meta_data"])
