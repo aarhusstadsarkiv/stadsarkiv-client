@@ -133,7 +133,7 @@ class Hooks(HooksSpec):
         if me:
             user_id = me["id"]
             has_active_order = await crud_orders.has_active_order(user_id=user_id, record_id=meta_data["id"])
-            meta_data["has_active_order"] = has_active_order
+            meta_data["has_active_order"] = bool(has_active_order)
 
         return record, meta_data
 
