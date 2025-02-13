@@ -44,10 +44,10 @@
     {% endif %}
     <a href="#" class="clear-search-filters action-link">Ryd filtre</a>
     {% if filters.filter_has_prev %}
-    <a id="filter-prev" class ="action-link" href="#" data-prev="{{ filters.filter_prev_offset }}">&lt;&lt; Forrige</a>
+    <a id="filter-prev" class="action-link" href="#" data-prev="{{ filters.filter_prev_offset }}">&lt;&lt; Forrige</a>
     {% endif %}
     {% if filters.filter_has_next %}
-    <a id="filter-next" class ="action-link" href="#" data-next="{{ filters.filter_next_offset }}">Næste &gt;&gt;</a>
+    <a id="filter-next" class="action-link" href="#" data-next="{{ filters.filter_next_offset }}">Næste &gt;&gt;</a>
     {% endif %}
 
     <br>
@@ -115,8 +115,8 @@
                     {% else %}
                     {% set location_change_disabled = "disabled" %}
                     {% set title = "
-Du kan ikke ændre lokation, da materialet er i Læsesalen og en bruger har rettighed til
-at benytte det. Du må først afslutte den aktive bestilling, før du kan ændre lokation."
+                    Du kan ikke ændre lokation, da materialet er i Læsesalen og en bruger har rettighed til
+                    at benytte det. Du må først afslutte den aktive bestilling, før du kan ændre lokation."
                     %}
                     {% endif %}
 
@@ -131,28 +131,28 @@ at benytte det. Du må først afslutte den aktive bestilling, før du kan ændre
                 <td>
                     <span class="has-comment" title="{{ order.comment }}">
                         {% if order.comment %}
-                    {{ get_icon('counter_1')|safe }}
-                    {% endif %}
+                        {{ get_icon('counter_1')|safe }}
+                        {% endif %}
                     </span>
                 </td>
                 <td>
                     <span>
                         <a class="action-link" href="/admin/orders/{{order.order_id}}/edit">Rediger</a>
-                    <span>
-                    {% if not order.user_actions_deactivated %}
-                    <span class="complete-order">
-                        <a class="action-link" data-id="{{order.order_id}}" data-action="completed"
-                            title="Brugeren er færdig med bestillingen" href="#">Afslut</a>
-                    </span>
-                    {% endif %}
-                    <span>
-                        <a class="action-link" href="/admin/orders/logs?order_id={{order.order_id}}"
-                            title="Slet bestillingen">Logs</a>
-                    </span>
-                    <span>
-                        <a class="action-link" href="/admin/orders/print?order_id={{order.order_id}}"
-                            title="Print">Print</a>
-                    </span>
+                        <span>
+                            {% if not order.user_actions_deactivated %}
+                            <span class="complete-order">
+                                <a class="action-link" data-id="{{order.order_id}}" data-action="completed"
+                                    title="Brugeren er færdig med bestillingen" href="#">Afslut</a>
+                            </span>
+                            {% endif %}
+                            <span>
+                                <a class="action-link" href="/admin/orders/logs?order_id={{order.order_id}}"
+                                    title="Slet bestillingen">Logs</a>
+                            </span>
+                            <span>
+                                <a class="action-link print-external"
+                                    href="/admin/orders/print?order_id={{order.order_id}}" title="Print">Print</a>
+                            </span>
                 </td>
             </tr>
 
@@ -167,7 +167,10 @@ at benytte det. Du må først afslutte den aktive bestilling, før du kan ændre
                 <td></td>
                 <td></td>
                 <td></td>
-                <td><span class="action-links"><a href="#" class="update-locations">Opdatér</a></span></td>
+                <td>
+                    <a href="#" class="action-link update-locations">Opdatér</a>
+                    <a href="#" class="action-link">Print</a>
+                </td>
                 <td>
                 </td>
             </tr>
@@ -286,102 +289,121 @@ at benytte det. Du må først afslutte den aktive bestilling, før du kan ændre
         });
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const filterForm = document.querySelector('form');
-    
-        function submitFilteredForm() {
-            const formData = new FormData(filterForm);
-            const params = new URLSearchParams();
-    
-            for (const [key, value] of formData.entries()) {
-                if (value.trim() !== '') { // Ignore empty values
-                    params.append(key, value);
-                }
-            }
-    
-            const url = '/admin/orders?' + params.toString();
-            window.location.href = url;
-        }
-    
-        // Submit form on form submission
-        filterForm.addEventListener('submit', function (event) {
-            event.preventDefault();
-            submitFilteredForm();
-        });
-    
-        // Submit form when select elements change
-        document.querySelectorAll('.filters > select').forEach(select => {
-            select.addEventListener('change', submitFilteredForm);
-        });
-    
-        // Submit form when pressing Enter in input fields
-        document.querySelectorAll('.filters > input').forEach(input => {
-            input.addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    submitFilteredForm();
-                }
-            });
-        });
-    
-        // Clear search filters (except filter_status) and submit
-        document.querySelector('.clear-search-filters').addEventListener('click', function (event) {
-            event.preventDefault();
-    
-            filterForm.querySelectorAll('input').forEach(input => {
-                if (input.name !== 'filter_status') {
-                    input.value = '';
-                }
-            });
-    
-            submitFilteredForm();
-        });
-    
-        // Submit form when filter_show_queued checkbox changes
-        const filterShowQueued = document.querySelector('#filter_show_queued');
-        if (filterShowQueued) {
-            filterShowQueued.addEventListener('change', submitFilteredForm);
-        }
-    
-        // Function to apply existing filters to pagination
-        function applyFiltersToPagination(offsetKey, offsetValue) {
-            const formData = new FormData(filterForm);
-            const params = new URLSearchParams();
-    
-            for (const [key, value] of formData.entries()) {
-                if (value.trim() !== '') { // Keep existing filters
-                    params.append(key, value);
-                }
-            }
-    
-            params.append(offsetKey, offsetValue); // Add pagination offset
-    
-            const url = '/admin/orders?' + params.toString();
-            window.location.href = url;
-        }
-    
-        // Handle next pagination
-        const filterNext = document.querySelector('#filter-next');
-        if (filterNext) {
-            filterNext.addEventListener('click', function (event) {
-                event.preventDefault();
-                const next = event.target.dataset.next;
-                applyFiltersToPagination('filter_offset', next);
-            });
-        }
-    
-        // Handle previous pagination
-        const filterPrev = document.querySelector('#filter-prev');
-        if (filterPrev) {
-            filterPrev.addEventListener('click', function (event) {
-                event.preventDefault();
-                const prev = event.target.dataset.prev;
-                applyFiltersToPagination('filter_offset', prev);
-            });
-        }
-    });
-    
 
+    const filterForm = document.querySelector('form');
+
+    function submitFilteredForm() {
+        const formData = new FormData(filterForm);
+        const params = new URLSearchParams();
+
+        for (const [key, value] of formData.entries()) {
+            if (value.trim() !== '') { // Ignore empty values
+                params.append(key, value);
+            }
+        }
+
+        const url = '/admin/orders?' + params.toString();
+        window.location.href = url;
+    }
+
+    // Submit form on form submission
+    filterForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        submitFilteredForm();
+    });
+
+    // Submit form when select elements change
+    document.querySelectorAll('.filters > select').forEach(select => {
+        select.addEventListener('change', submitFilteredForm);
+    });
+
+    // Submit form when pressing Enter in input fields
+    document.querySelectorAll('.filters > input').forEach(input => {
+        input.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                submitFilteredForm();
+            }
+        });
+    });
+
+    // Clear search filters (except filter_status) and submit
+    document.querySelector('.clear-search-filters').addEventListener('click', function (event) {
+        event.preventDefault();
+
+        filterForm.querySelectorAll('input').forEach(input => {
+            if (input.name !== 'filter_status') {
+                input.value = '';
+            }
+        });
+
+        submitFilteredForm();
+    });
+
+    // Submit form when filter_show_queued checkbox changes
+    const filterShowQueued = document.querySelector('#filter_show_queued');
+    if (filterShowQueued) {
+        filterShowQueued.addEventListener('change', submitFilteredForm);
+    }
+
+    // Function to apply existing filters to pagination
+    function applyFiltersToPagination(offsetKey, offsetValue) {
+        const formData = new FormData(filterForm);
+        const params = new URLSearchParams();
+
+        for (const [key, value] of formData.entries()) {
+            if (value.trim() !== '') { // Keep existing filters
+                params.append(key, value);
+            }
+        }
+
+        params.append(offsetKey, offsetValue); // Add pagination offset
+
+        const url = '/admin/orders?' + params.toString();
+        window.location.href = url;
+    }
+
+    // Handle next pagination
+    const filterNext = document.querySelector('#filter-next');
+    if (filterNext) {
+        filterNext.addEventListener('click', function (event) {
+            event.preventDefault();
+            const next = event.target.dataset.next;
+            applyFiltersToPagination('filter_offset', next);
+        });
+    }
+
+    // Handle previous pagination
+    const filterPrev = document.querySelector('#filter-prev');
+    if (filterPrev) {
+        filterPrev.addEventListener('click', function (event) {
+            event.preventDefault();
+            const prev = event.target.dataset.prev;
+            applyFiltersToPagination('filter_offset', prev);
+        });
+    }
+
+    function setPrint() {
+        const closePrint = () => {
+            document.body.removeChild(this);
+        };
+        this.contentWindow.onbeforeunload = closePrint;
+        this.contentWindow.onafterprint = closePrint;
+        this.contentWindow.print();
+    }
+
+    const printExternal = document.querySelectorAll('.print-external');
+    printExternal.forEach(element => {
+        element.addEventListener('click', function (event) {
+            event.preventDefault();
+            const url = event.target.href;
+            const hideFrame = document.createElement("iframe");
+            hideFrame.onload = setPrint;
+            hideFrame.style.display = "none"; // hide iframe
+            hideFrame.src = url;
+            document.body.appendChild(hideFrame);
+        });
+    });
 
 </script>
 {% endblock content %}

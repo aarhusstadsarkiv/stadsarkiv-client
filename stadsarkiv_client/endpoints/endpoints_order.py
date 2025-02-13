@@ -325,6 +325,14 @@ async def order_admin_print(request: Request):
 
     # get order_id from query params order_id
     order_id = request.query_params.get("order_id", "")
+    data = await _get_print_data(request, order_id)
+    data["disable_js"] = True
+
+    context = await get_context(request, data, "record")
+    return templates.TemplateResponse(request, "order/print.html", context)
+
+
+async def _get_print_data(request: Request, order_id: str = ''):
     order = await crud_orders.get_order(order_id)
     record_id = order["record_id"]
 
@@ -333,22 +341,16 @@ async def order_admin_print(request: Request):
 
     record, meta_data, record_and_types = await get_record_data(request, record, permissions)
 
+    # Get the order data and title
     record_keys = ["id", "collectors", "date_normalized"]
-
-    # Get record and types a Dict[str, str] for easy access
     material_base_info = utils_core.get_record_and_types_as_strings(record_and_types, record_keys)
+    material_base_info["title"] = meta_data["meta_title"]
 
+    # Get the legal information
     record_keys = ["availability_normalized", "contractual_status_normalized", "other_legal_restrictions_normalized"]
     legal_info = utils_core.get_record_and_types_as_strings(record_and_types, record_keys)
 
-    # add title with value "TEST" as first key
-    material_base_info["title"] = meta_data["meta_title"]
-
-    # record_content_contractual_status_normalized
-
-    # recordhtml = utils_core.get_parsed_data_as_table(record_and_types, all_keys, debug=True)
-    context_variables = {
-        # "html": html,
+    data = {
         "material_base_info": material_base_info,
         "record_keys": record_keys,
         "record_and_types": record_and_types,
@@ -361,5 +363,4 @@ async def order_admin_print(request: Request):
         "legal_info": legal_info,
     }
 
-    context = await get_context(request, context_variables, "record")
-    return templates.TemplateResponse(request, "order/print.html", context)
+    return data
