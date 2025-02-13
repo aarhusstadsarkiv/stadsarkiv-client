@@ -15,7 +15,7 @@ if "CONFIG_DIR" not in os.environ:
     exit(1)
 
 
-log_file_pattern = "data/logs/main.log"
+log_file_pattern = "/home/dennis/logs/main.log"
 log = get_log()
 
 
