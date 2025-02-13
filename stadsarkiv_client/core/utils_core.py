@@ -130,7 +130,6 @@ def get_parsed_data_as_table(data: Dict[str, Any], keys_to_parse: List[str], deb
 
     table_html = "<table>"
     for key, value in parsed_data.items():
-
         display_key = translate("label_" + key)
         if debug:
             display_key = f"{display_key} ({key})"
