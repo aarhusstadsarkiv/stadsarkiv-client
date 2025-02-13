@@ -344,3 +344,10 @@ Pointen er at vi får to forskellige resultater.
 Søgemaskine giver en den indtastede (men også tilføjet dage - gættet), mens record siden giver den (indtastede) forkortede værdi. 
 
 ---
+
+Man kan søge på et arkivalie og som administrator se stregkode eller Enheds ID.
+Men det kunne være rart at kunne gøre det den anden vej rundt.
+Altså søge på en Enhed (æske) og se hvilke arkivalier de er registret til at lægge i den. Altså æskens indhold.
+Spørg hvis I er i tvivl hvad jeg mener
+
+- Christian
