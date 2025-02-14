@@ -54,6 +54,14 @@ ORDER_STATUS_HUMAN = {
     4: "Slettet",
 }
 
+ORDER_STATUS_USER = OrderStatus()
+ORDER_STATUS_USER_HUMAN = {
+    1: "På vej",
+    2: "Afsluttet",
+    3: "I kø",
+    4: "Slettet",
+}
+
 
 DATELINE_DAYS = 7
 
@@ -102,6 +110,7 @@ def format_order_display(order: dict):
     Format dates in order for display. Change from UTC to Europe/Copenhagen
     """
     try:
+        # convert created_at and updated_at to danish timezone
         order["created_at"] = date_format.timezone_alter(order["created_at"])
         order["updated_at"] = date_format.timezone_alter(order["updated_at"])
 
@@ -116,10 +125,11 @@ def format_order_display(order: dict):
 
         # Convert record_and_types to string
         record_and_types = order["record_and_types"]
-        resources = order["meta_data_dict"]["resources"]
 
         used_keys = ["date_normalized", "series", "collection", "collectors"]
         record_and_types_strings = utils_core.get_record_and_types_as_strings(record_and_types, used_keys)
+
+        resources = order["meta_data_dict"]["resources"]
         record_and_types_strings.update(resources)
 
         order["collectors"] = record_and_types_strings.get("collectors", "")
@@ -130,8 +140,11 @@ def format_order_display(order: dict):
             deadline = arrow.get(deadline).format("YYYY-MM-DD")
             order["deadline"] = deadline
 
-        # Convert statuses to human readable
+        # Convert statuses to human readable. Backend
         order["order_status_human"] = ORDER_STATUS_HUMAN.get(order["order_status"])
+
+        # Convert statuses to human readable. Frontend
+        order["order_status_human_user"] = ORDER_STATUS_USER_HUMAN.get(order["order_status"])
 
         # Check if queued
         if order["order_status"] == ORDER_STATUS.QUEUED:

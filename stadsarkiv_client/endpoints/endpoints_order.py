@@ -27,7 +27,7 @@ async def _is_order_owner(request: Request, order_id: int) -> bool:
     return is_owner
 
 
-async def orders_get_orders(request: Request):
+async def orders_get_user_orders(request: Request):
     """
     GET endpoint for displaying all orders for authenticated user
     """

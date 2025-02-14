@@ -368,7 +368,9 @@ async def get_orders_user(user_id: str, completed=0) -> list:
         orders = await _get_orders(crud, statuses=statuses, user_id=user_id)
 
         # Format each order for display
-        return [format_order_for_display(order) for order in orders]
+        orders = [utils_orders.format_order_display(order) for order in orders]
+
+        return orders
 
 
 def _get_and_filters_str_and_values(filters: OrderFilter) -> tuple:
@@ -558,7 +560,7 @@ async def get_order(order_id):
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         order = await _get_orders_one(CRUD(connection), order_id=order_id)
-        order = format_order_for_display(order)
+        order = utils_orders.format_order_display(order)
         allow_location_change = await _allow_location_change(CRUD(connection), order["record_id"])
         order["allow_location_change"] = allow_location_change
         return order
@@ -605,14 +607,6 @@ async def get_order_by_record_id(user_id: str, record_id: str):
     async with database_connection.transaction_scope_async() as connection:
         order = await _get_orders_one(CRUD(connection), user_id=user_id, record_id=record_id)
         return order
-
-
-def format_order_for_display(order: dict):
-    """
-    Format order for display
-    """
-    order = utils_orders.format_order_display(order)
-    return order
 
 
 async def cron_orders():
