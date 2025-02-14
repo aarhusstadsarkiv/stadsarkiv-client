@@ -143,17 +143,24 @@ def format_order_display(order: dict):
         # Convert statuses to human readable. Backend
         order["order_status_human"] = ORDER_STATUS_HUMAN.get(order["order_status"])
 
-        # Convert statuses to human readable. Frontend
-        order["order_status_human_user"] = ORDER_STATUS_USER_HUMAN.get(order["order_status"])
-
         # Check if queued
         if order["order_status"] == ORDER_STATUS.QUEUED:
             order["queued"] = True
 
         order["location_human"] = RECORD_LOCATION_HUMAN.get(order["location"])
-    except (json.JSONDecodeError, TypeError) as e:
-        log.debug(f"Error: {e}")
+    except (json.JSONDecodeError, TypeError):
+        log.exception("Error in format_order_display")
         log.debug(f"{type(order['record_and_types'])}")
+
+    return order
+
+
+def format_order_display_user(order: dict):
+    """
+    Format dates in order for display. Change from UTC to Europe/Copenhagen
+    """
+
+    order["order_status_human_user"] = ORDER_STATUS_USER_HUMAN.get(order["order_status"])
 
     return order
 

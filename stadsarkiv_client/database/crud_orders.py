@@ -369,6 +369,7 @@ async def get_orders_user(user_id: str, completed=0) -> list:
 
         # Format each order for display
         orders = [utils_orders.format_order_display(order) for order in orders]
+        orders = [utils_orders.format_order_display_user(order) for order in orders]
 
         return orders
 

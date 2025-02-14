@@ -27,7 +27,7 @@ async def _is_order_owner(request: Request, order_id: int) -> bool:
     return is_owner
 
 
-async def orders_get_user_orders(request: Request):
+async def orders_get_orders_user(request: Request):
     """
     GET endpoint for displaying all orders for authenticated user
     """
@@ -332,7 +332,7 @@ async def order_admin_print(request: Request):
     return templates.TemplateResponse(request, "order/print.html", context)
 
 
-async def _get_print_data(request: Request, order_id: str = ''):
+async def _get_print_data(request: Request, order_id: str = ""):
     order = await crud_orders.get_order(order_id)
     record_id = order["record_id"]
 
