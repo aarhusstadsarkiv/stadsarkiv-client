@@ -126,7 +126,7 @@ class TestDB(unittest.TestCase):
         self.assertEqual(len(orders), 2)
 
         log.info("User 1 completes order")
-        update_values = {"user_status": utils_orders.ORDER_STATUS.COMPLETED}
+        update_values = {"order_status": utils_orders.ORDER_STATUS.COMPLETED}
         await crud_orders.update_order(order["order_id"], me["id"], update_values)
 
         log.info("Assert correct search results")
@@ -146,7 +146,7 @@ class TestDB(unittest.TestCase):
         self.assertIsNotNone(order_2["deadline"])
 
         log.info("User 2 completes order")
-        update_values = {"user_status": utils_orders.ORDER_STATUS.COMPLETED}
+        update_values = {"order_status": utils_orders.ORDER_STATUS.COMPLETED}
         await crud_orders.update_order(order_2["order_id"], me["id"], update_values)
 
         log.info("Order 2 assert 3 log messages (insert order, queued to ordered, ordered to completed)")
