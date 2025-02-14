@@ -159,11 +159,16 @@ def format_order_display(order: dict):
     return order
 
 
-def format_order_display_user(order: dict):
+def format_order_display_user(order: dict, status: str = "active"):
     """
     Orders are displayed differently for the user
     """
-    # order["order_status_human_user"] = ORDER_STATUS_USER_HUMAN.get(order["order_status"])
+
+    if status == "active":
+        order["order_status_human"] = "Tilgængelig"
+
+    if status == "reserved":
+        order["order_status_human"] = ORDER_STATUS_USER_HUMAN.get(order["order_status"])
 
     # If order is ORDERED and deadline is set calculate days remaining
     if order["order_status"] == ORDER_STATUS.ORDERED and order["deadline"]:

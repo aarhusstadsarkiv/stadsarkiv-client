@@ -351,7 +351,7 @@ ORDER BY queued_count DESC;
     return queued_orders_dict
 
 
-async def get_orders_user(user_id: str, completed=0) -> list:
+async def get_orders_user(user_id: str, status: str = "active") -> list:
     """
     Get all orders for a user. Exclude orders with specific statuses.
     """
@@ -359,17 +359,38 @@ async def get_orders_user(user_id: str, completed=0) -> list:
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
 
-        # Define the statuses based on the `completed` flag
-        statuses = (
-            [utils_orders.ORDER_STATUS.COMPLETED] if completed else [utils_orders.ORDER_STATUS.ORDERED, utils_orders.ORDER_STATUS.QUEUED]
-        )
+        if status == "active":
+            query = f"""
+            SELECT o.*, r.*, u.*
+FROM orders o
+LEFT JOIN records r ON o.record_id = r.record_id
+LEFT JOIN users u ON o.user_id = u.user_id
+WHERE o.order_status IN ({utils_orders.ORDER_STATUS.ORDERED}, {utils_orders.ORDER_STATUS.QUEUED})
+AND r.location = {utils_orders.RECORD_LOCATION.READING_ROOM}
+AND o.user_id = :user_id
+ORDER BY o.order_id DESC
+            """
+            orders = await crud.query(query, {"user_id": user_id})
+
+        elif status == "reserved":
+            query = f"""
+            SELECT o.*, r.*, u.*
+FROM orders o
+LEFT JOIN records r ON o.record_id = r.record_id
+LEFT JOIN users u ON o.user_id = u.user_id
+WHERE
+    (o.order_status IN ({utils_orders.ORDER_STATUS.QUEUED}) AND r.location = {utils_orders.RECORD_LOCATION.READING_ROOM}) OR
+    (o.order_status IN ({utils_orders.ORDER_STATUS.ORDERED}) AND r.location <> {utils_orders.RECORD_LOCATION.READING_ROOM})
+AND o.user_id = :user_id
+ORDER BY o.order_id DESC
+            """
 
         # Fetch the orders based on statuses
-        orders = await _get_orders(crud, statuses=statuses, user_id=user_id)
+        orders = await crud.query(query, {"user_id": user_id})
 
         # Format each order for display
         orders = [utils_orders.format_order_display(order) for order in orders]
-        orders = [utils_orders.format_order_display_user(order) for order in orders]
+        orders = [utils_orders.format_order_display_user(order, status) for order in orders]
 
         return orders
 

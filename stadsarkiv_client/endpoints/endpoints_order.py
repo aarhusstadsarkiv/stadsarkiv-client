@@ -8,7 +8,6 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.database import crud_orders
 from stadsarkiv_client.database import utils_orders
 from stadsarkiv_client.core import flash
-from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.endpoints.endpoints_utils import get_record_data
 from stadsarkiv_client.core import utils_core
@@ -35,9 +34,14 @@ async def orders_get_orders_user(request: Request):
     try:
 
         me = await api.users_me_get(request)
-        orders = await crud_orders.get_orders_user(user_id=me["id"], completed=0)
+        status = request.query_params.get("status", "active")
+        orders = await crud_orders.get_orders_user(user_id=me["id"], status=status)
 
-        context_values = {"title": translate("Your orders"), "me": me, "orders": orders}
+        title = "Tilgængelig i læsesal"
+        if status == "reserved":
+            title = "Reserveret materiale"
+
+        context_values = {"title": title, "me": me, "orders": orders, "status": status}
         context = await get_context(request, context_values=context_values)
 
         return templates.TemplateResponse(request, "order/orders_user.html", context)
