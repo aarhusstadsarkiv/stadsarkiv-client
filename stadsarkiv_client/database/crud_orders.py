@@ -96,6 +96,27 @@ async def _has_active_order(crud: "CRUD", user_id: str, record_id: str):
     return order
 
 
+async def _allow_renew_order(crud: "CRUD", user_id: str, order_id: int):
+    """
+    Check if order can be renewed
+    Order can be renewed if:
+    - order_status is ORDERED
+    - dateline is set and has not passed utils_orders.DATELINE_DAYS (3 days)
+    """
+    order = await _get_orders_one(
+        crud,
+        user_id=user_id,
+        order_id=order_id,
+        statuses=[utils_orders.ORDER_STATUS.ORDERED],
+    )
+
+    # Check if deadline is within 3 days
+    if utils_orders.is_renewal_possible(order["deadline"]):
+        return False
+
+    return True
+
+
 async def _save_data(meta_data: dict, record_and_types: dict, me: dict):
 
     # save meta_data, and record_and_types, me as JSON
@@ -365,7 +386,7 @@ async def get_orders_user(user_id: str, status: str = "active") -> list:
 FROM orders o
 LEFT JOIN records r ON o.record_id = r.record_id
 LEFT JOIN users u ON o.user_id = u.user_id
-WHERE o.order_status IN ({utils_orders.ORDER_STATUS.ORDERED}, {utils_orders.ORDER_STATUS.QUEUED})
+WHERE o.order_status IN ({utils_orders.ORDER_STATUS.ORDERED})
 AND r.location = {utils_orders.RECORD_LOCATION.READING_ROOM}
 AND o.user_id = :user_id
 ORDER BY o.order_id DESC

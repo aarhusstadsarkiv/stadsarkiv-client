@@ -15,8 +15,15 @@
 {{ basic_macros.page_title(title) }}
 
 {% if orders|length == 0 %}
-<p>Du har ingen aktive bestillinger.</p>
-{% else %}
+    {% if status == "active" %}
+        <p>Du har ingen bestillinger tilgængelig i læsesal.</p>
+    {% endif %}
+
+    {% if status == "reserved" %}
+        <p>Du har ingen reserverede bestillinger.</p>
+    {% endif %}
+
+{% endif %}
 
 {% if status == "active" %}
 <div class="sub-menu">
@@ -55,24 +62,34 @@
             <div class="label">Placering</div>
             <div class="content">
                 <span>{{ order.location_human }}</span>
-                {% if order.days_remaining %}
-                <span class="days-remaining">({{ order.days_remaining }} dage tilbage)</span>
-                {% endif %}
             </div>
         </div>
+
+        {% if order.deadline_human %}
+        <div class="record-content">
+            <div class="label">Deadline</div>
+            <div class="content">
+                <span class="days-remaining">{{ order.deadline_human }} ({{ order.days_remaining }} dage tilbage) </span>
+            </div>
+        </div>
+        {% endif %}
 
         <div class="record-content">
             <div class="label">Oprettet</div>
             <div class="content">{{ order.created_at_short }}</div>
         </div>
 
-        <div class="action-links delete-order"><a data-id="{{order.order_id}}" href="#">Slet bestilling</a></div>
+        <div class="action-links">
+            <a data-id="{{order.order_id}}" class="delete-order" href="#">Slet bestilling</a>
+            {% if order.renewal_possible %}
+            <a href="/order/renew/{{ order.order_id }}" class="renew-order">Forny bestilling</a>
+            {% endif %}
+        </div>
         <hr>
     </div>
 </div>
 
 {% endfor %}
-{% endif %}
 
 <pre>{# to_json(orders) #}</pre>
 
@@ -116,8 +133,15 @@
         }
     }
 
-    document.querySelectorAll('.delete-order > *').forEach(element => {
+    document.querySelectorAll('.delete-order').forEach(element => {
         element.addEventListener('click', handleDeleteUserClick);
+    });
+
+    document.querySelectorAll('.renew-order').forEach(element => {
+        element.addEventListener('click', function(event) {
+            event.preventDefault();
+            alert('Not implemented')
+        });
     });
 
 </script>

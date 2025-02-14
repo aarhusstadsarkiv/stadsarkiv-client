@@ -102,8 +102,8 @@
                 <td>{{ order.user_display_name }}</td>
                 <td class="width-100">{{ order.order_status_human }}</td>
                 <td>{{ order.updated_at }}</td>
-                {% if order.deadline %}
-                <td>{{ order.deadline }}</td>
+                {% if order.deadline_human %}
+                <td>{{ order.deadline_human }}</td>
                 {% else %}
                 <td></td>
                 {% endif %}

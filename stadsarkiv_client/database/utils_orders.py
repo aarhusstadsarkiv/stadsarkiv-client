@@ -63,7 +63,8 @@ ORDER_STATUS_USER_HUMAN = {
 }
 
 
-DATELINE_DAYS = 7
+DEADLINE_DAYS_RENEWAL = 7
+DEADLINE_DAYS = 7
 
 
 def get_insert_user_data(me: dict) -> dict:
@@ -142,7 +143,7 @@ def format_order_display(order: dict):
         if order["deadline"]:
             deadline = date_format.timezone_alter(order["deadline"])
             deadline = arrow.get(deadline).format("YYYY-MM-DD")
-            order["deadline"] = deadline
+            order["deadline_human"] = deadline
 
         # Convert statuses to human readable. Backend
         order["order_status_human"] = ORDER_STATUS_HUMAN.get(order["order_status"])
@@ -163,10 +164,8 @@ def format_order_display_user(order: dict, status: str = "active"):
     """
     Orders are displayed differently for the user
     """
-
     if status == "active":
         order["order_status_human"] = "Tilgængelig"
-
     if status == "reserved":
         order["order_status_human"] = ORDER_STATUS_USER_HUMAN.get(order["order_status"])
 
@@ -178,6 +177,9 @@ def format_order_display_user(order: dict, status: str = "active"):
     else:
         order["days_remaining"] = 0
 
+    order["renewal_possible"] = False
+    if order["deadline"]:
+        order["renewal_possible"] = is_renewal_possible(order["deadline"])
     return order
 
 
@@ -197,13 +199,32 @@ def format_log_display(log: dict):
 
 
 def get_deadline_date() -> str:
+    """
+    Get a deadline date
+    Set this on a order when the order is status is ORDERED and location is READING_ROOM
+    """
 
     utc_now = arrow.utcnow()
 
     # deadline will look like this: 2025-02-08 00:00:00
     # The extra day is added to make sure at least one full day is available
-    deadline = utc_now.floor("day").shift(days=DATELINE_DAYS + 1)
+    deadline = utc_now.floor("day").shift(days=DEADLINE_DAYS + 1)
     return deadline.format("YYYY-MM-DD HH:mm:ss")
+
+
+def is_renewal_possible(deadline_str: str):
+    """
+    deadline_str: the order deadline
+    Check if renewal is possible
+    Deadline needs to be within DEADLINE_DAYS_RENEWAL days
+    """
+    utc_now = arrow.utcnow()
+    deadline = arrow.get(deadline_str, "YYYY-MM-DD HH:mm:ss")
+
+    # Check if deadline is within DEADLINE_DAYS_RENEWAL days
+    if (deadline - utc_now).days <= DEADLINE_DAYS_RENEWAL:
+        return True
+    return False
 
 
 def get_current_date_time() -> str:
