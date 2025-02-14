@@ -114,6 +114,10 @@ def format_order_display(order: dict):
         order["created_at"] = date_format.timezone_alter(order["created_at"])
         order["updated_at"] = date_format.timezone_alter(order["updated_at"])
 
+        # short version of created_at and updated_at
+        order["created_at_short"] = arrow.get(order["created_at"]).format("YYYY-MM-DD")
+        order["updated_at_short"] = arrow.get(order["updated_at"]).format("YYYY-MM-DD")
+
         # Add human readable date format for created_at
         created_at_human = arrow.get(order["created_at"], "YYYY-MM-DD HH:mm:ss")
         created_at_human_str = created_at_human.format("D. MMMM YYYY", locale="da")
@@ -157,10 +161,17 @@ def format_order_display(order: dict):
 
 def format_order_display_user(order: dict):
     """
-    Format dates in order for display. Change from UTC to Europe/Copenhagen
+    Orders are displayed differently for the user
     """
+    # order["order_status_human_user"] = ORDER_STATUS_USER_HUMAN.get(order["order_status"])
 
-    order["order_status_human_user"] = ORDER_STATUS_USER_HUMAN.get(order["order_status"])
+    # If order is ORDERED and deadline is set calculate days remaining
+    if order["order_status"] == ORDER_STATUS.ORDERED and order["deadline"]:
+        deadline = arrow.get(order["deadline"], "YYYY-MM-DD")
+        days_remaining = (deadline - arrow.utcnow()).days
+        order["days_remaining"] = days_remaining
+    else:
+        order["days_remaining"] = 0
 
     return order
 

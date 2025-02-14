@@ -35,12 +35,22 @@
 
         <div class="record-content">
             <div class="label">Status</div>
-            <div class="content">{{ order.order_status_human_user }}</div>
+            <div class="content">{{ order.order_status_human }}</div>
+        </div>
+
+        <div class="record-content">
+            <div class="label">Placering</div>
+            <div class="content">
+                <span>{{ order.location_human }}</span>
+                {% if order.days_remaining %}
+                <span class="days-remaining">({{ order.days_remaining }} dage tilbage)</span>
+                {% endif %}
+            </div>
         </div>
 
         <div class="record-content">
             <div class="label">Oprettet</div>
-            <div class="content">{{ order.created_at }}</div>
+            <div class="content">{{ order.created_at_short }}</div>
         </div>
 
         <div class="action-links delete-order"><a data-id="{{order.order_id}}" href="#">Slet bestilling</a></div>
@@ -49,8 +59,9 @@
 </div>
 
 {% endfor %}
-
 {% endif %}
+
+<pre>{# to_json(orders) #}</pre>
 
 <div class="loadingspinner hidden"></div>
 <script type="module">
