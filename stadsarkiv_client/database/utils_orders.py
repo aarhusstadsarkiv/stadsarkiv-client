@@ -13,31 +13,28 @@ log = get_log()
 
 
 @dataclasses.dataclass
-class StatusesLocation:
+class RecordLocation:
     """
-    Possible admin statuses for an order
+    Possible locations for a record
     """
 
     IN_STORAGE: int = 1
     PACKED_STORAGE: int = 2
-    # IN_STORAGE_DOKK1: int = 3
     READING_ROOM: int = 4
     RETURN_TO_STORAGE: int = 5
 
 
-STATUSES_LOCATION = StatusesLocation()
-STATUSES_LOCATION_HUMAN = {
+RECORD_LOCATION = RecordLocation()
+RECORD_LOCATION_HUMAN = {
     1: "På magasin",  # Initial status
     2: "Pakket til læsesal",
-    # 3: "Depotrum på dokk1",
     4: "På læsesalen",
     5: "Pakket til magasin",
-    # 6: "Tilbage på magasin",
 }
 
 
 @dataclasses.dataclass
-class StatusesUser:
+class OrderStatus:
     """
     Possible user statuses for an order
     NOTICE: In /static/js/orders.js the statuses are copied from here
@@ -49,8 +46,8 @@ class StatusesUser:
     DELETED: int = 4
 
 
-STATUSES_USER = StatusesUser()
-STATUSES_USER_HUMAN = {
+ORDER_STATUS = OrderStatus()
+ORDER_STATUS_HUMAN = {
     1: "Bestilt",
     2: "Afsluttet",
     3: "I kø",
@@ -77,7 +74,7 @@ def get_insert_record_data(meta_data: dict, record_and_types: dict, location: in
     Get material data for inserting into records table
     """
     if not location:
-        location = STATUSES_LOCATION.IN_STORAGE
+        location = RECORD_LOCATION.IN_STORAGE
 
     data = {
         "record_id": meta_data["id"],
@@ -134,13 +131,13 @@ def format_order_display(order: dict):
             order["deadline"] = deadline
 
         # Convert statuses to human readable
-        order["user_status_human"] = STATUSES_USER_HUMAN.get(order["user_status"])
+        order["user_status_human"] = ORDER_STATUS_HUMAN.get(order["user_status"])
 
         # Check if queued
-        if order["user_status"] == STATUSES_USER.QUEUED:
+        if order["user_status"] == ORDER_STATUS.QUEUED:
             order["queued"] = True
 
-        order["location_human"] = STATUSES_LOCATION_HUMAN.get(order["location"])
+        order["location_human"] = RECORD_LOCATION_HUMAN.get(order["location"])
     except (json.JSONDecodeError, TypeError) as e:
         log.debug(f"Error: {e}")
         log.debug(f"{type(order['record_and_types'])}")
@@ -152,8 +149,8 @@ def format_log_display(log: dict):
     """
     Format dates in log for display. Change from UTC to Europe/Copenhagen
     """
-    updated_location = STATUSES_LOCATION_HUMAN.get(log["updated_location"], "")
-    update_user_status = STATUSES_USER_HUMAN.get(log["updated_user_status"], "")
+    updated_location = RECORD_LOCATION_HUMAN.get(log["updated_location"], "")
+    update_user_status = ORDER_STATUS_HUMAN.get(log["updated_user_status"], "")
     log["updated_location"] = updated_location
     log["updated_user_status"] = update_user_status
 

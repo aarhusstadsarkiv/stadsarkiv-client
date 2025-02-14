@@ -93,7 +93,7 @@ class TestDB(unittest.TestCase):
         self.assertEqual(len(logs), 1)
 
         log.info("Move location of record to reading room")
-        update_values = {"location": utils_orders.STATUSES_LOCATION.READING_ROOM}
+        update_values = {"location": utils_orders.RECORD_LOCATION.READING_ROOM}
         await crud_orders.update_order(order["order_id"], me["id"], update_values)
 
         log.info("Order now has a deadline")
@@ -106,7 +106,7 @@ class TestDB(unittest.TestCase):
 
         with self.assertRaises(Exception) as cm:  # Capture the exception
             log.info("Move location of record if it is already in reading room. Should raise exception")
-            update_values = {"location": utils_orders.STATUSES_LOCATION.RETURN_TO_STORAGE}
+            update_values = {"location": utils_orders.RECORD_LOCATION.RETURN_TO_STORAGE}
             await crud_orders.update_order(order["order_id"], me["id"], update_values)
 
         log.info("Assert correct exception message")
@@ -126,7 +126,7 @@ class TestDB(unittest.TestCase):
         self.assertEqual(len(orders), 2)
 
         log.info("User 1 completes order")
-        update_values = {"user_status": utils_orders.STATUSES_USER.COMPLETED}
+        update_values = {"user_status": utils_orders.ORDER_STATUS.COMPLETED}
         await crud_orders.update_order(order["order_id"], me["id"], update_values)
 
         log.info("Assert correct search results")
@@ -146,7 +146,7 @@ class TestDB(unittest.TestCase):
         self.assertIsNotNone(order_2["deadline"])
 
         log.info("User 2 completes order")
-        update_values = {"user_status": utils_orders.STATUSES_USER.COMPLETED}
+        update_values = {"user_status": utils_orders.ORDER_STATUS.COMPLETED}
         await crud_orders.update_order(order_2["order_id"], me["id"], update_values)
 
         log.info("Order 2 assert 3 log messages (insert order, queued to ordered, ordered to completed)")
