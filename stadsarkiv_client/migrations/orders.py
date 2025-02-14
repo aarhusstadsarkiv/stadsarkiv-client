@@ -9,7 +9,7 @@ CREATE TABLE users (
 CREATE TABLE orders (
     order_id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id TEXT NOT NULL,
-    user_status INTEGER NOT NULL,
+    order_status INTEGER NOT NULL,
     record_id TEXT NOT NULL,
     deadline TEXT,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -33,7 +33,7 @@ CREATE TABLE orders_log (
     user_id TEXT NOT NULL,
     order_id INTEGER NOT NULL,
     updated_location INTEGER,
-    updated_user_status INTEGER,
+    updated_order_status INTEGER,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     record_id TEXT NOT NULL,
     message TEXT NOT NULL,
@@ -47,7 +47,7 @@ CREATE INDEX idx_users_user_email ON users(user_email);
 -- Indexes for orders
 CREATE INDEX idx_orders_user_id ON orders(user_id);
 CREATE INDEX idx_orders_record_id ON orders(record_id);
-CREATE INDEX idx_orders_user_status ON orders(user_status);
+CREATE INDEX idx_orders_order_status ON orders(order_status);
 CREATE INDEX idx_orders_log_updated_at ON orders_log(updated_at);
 CREATE INDEX idx_orders_updated_at ON orders(updated_at);
 

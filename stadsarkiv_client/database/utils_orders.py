@@ -87,11 +87,11 @@ def get_insert_record_data(meta_data: dict, record_and_types: dict, location: in
     return data
 
 
-def get_order_data(user_id: str, record_id: str, user_status: int) -> dict:
+def get_order_data(user_id: str, record_id: str, order_status: int) -> dict:
     return {
         "user_id": user_id,
         "record_id": record_id,
-        "user_status": user_status,
+        "order_status": order_status,
         "created_at": get_current_date_time(),
         "updated_at": get_current_date_time(),
     }
@@ -131,10 +131,10 @@ def format_order_display(order: dict):
             order["deadline"] = deadline
 
         # Convert statuses to human readable
-        order["user_status_human"] = ORDER_STATUS_HUMAN.get(order["user_status"])
+        order["order_status_human"] = ORDER_STATUS_HUMAN.get(order["order_status"])
 
         # Check if queued
-        if order["user_status"] == ORDER_STATUS.QUEUED:
+        if order["order_status"] == ORDER_STATUS.QUEUED:
             order["queued"] = True
 
         order["location_human"] = RECORD_LOCATION_HUMAN.get(order["location"])
@@ -150,9 +150,9 @@ def format_log_display(log: dict):
     Format dates in log for display. Change from UTC to Europe/Copenhagen
     """
     updated_location = RECORD_LOCATION_HUMAN.get(log["updated_location"], "")
-    update_user_status = ORDER_STATUS_HUMAN.get(log["updated_user_status"], "")
+    update_order_status = ORDER_STATUS_HUMAN.get(log["updated_order_status"], "")
     log["updated_location"] = updated_location
-    log["updated_user_status"] = update_user_status
+    log["updated_order_status"] = update_order_status
 
     # convert created_at to danish timezone
     log["updated_at"] = format_order_display(log)["updated_at"]

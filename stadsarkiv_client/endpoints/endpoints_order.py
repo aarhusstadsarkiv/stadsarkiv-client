@@ -110,7 +110,7 @@ async def _process_order_deletion(request: Request, id_key: str):
 
         # Update the order with the status. Location is not altered, hence it is set to 0
         update_values = {
-            "user_status": utils_orders.ORDER_STATUS.DELETED,
+            "order_status": utils_orders.ORDER_STATUS.DELETED,
         }
 
         await crud_orders.update_order(
@@ -200,7 +200,7 @@ async def orders_admin_patch_single(request: Request):
             update_values=update_values,
         )
 
-        if update_values.get("user_status") == utils_orders.ORDER_STATUS.DELETED:
+        if update_values.get("order_status") == utils_orders.ORDER_STATUS.DELETED:
             message = "Din bestilling er blevet slettet"
         else:
             message = "Bestillingen er blevet opdateret"
@@ -268,7 +268,7 @@ async def orders_admin_get_edit(request: Request):
         "title": "Opdater bestilling",
         "order": order,
         "locations": utils_orders.RECORD_LOCATION_HUMAN,
-        "user_statuses": utils_orders.ORDER_STATUS_HUMAN,
+        "order_statuses": utils_orders.ORDER_STATUS_HUMAN,
     }
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse(request, "order/order_admin_edit.html", context)

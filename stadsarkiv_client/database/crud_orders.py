@@ -139,13 +139,13 @@ async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
 
         # Determine user status based on active orders for the record
         active_order = await _get_orders_one(crud, [utils_orders.ORDER_STATUS.ORDERED], meta_data["id"])
-        user_status = utils_orders.ORDER_STATUS.QUEUED if active_order else utils_orders.ORDER_STATUS.ORDERED
+        order_status = utils_orders.ORDER_STATUS.QUEUED if active_order else utils_orders.ORDER_STATUS.ORDERED
 
         # Create new order data
         order_data = utils_orders.get_order_data(
             user_data["user_id"],
             record_data["record_id"],
-            user_status,
+            order_status,
         )
 
         await crud.insert("orders", order_data)
@@ -156,7 +156,7 @@ async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
         log_messages = [ORDER_CREATED]
 
         # Handle special cases for orders already in the reading room and ordered
-        if record_data["location"] == utils_orders.RECORD_LOCATION.READING_ROOM and user_status == utils_orders.ORDER_STATUS.ORDERED:
+        if record_data["location"] == utils_orders.RECORD_LOCATION.READING_ROOM and order_status == utils_orders.ORDER_STATUS.ORDERED:
 
             deadline_date = utils_orders.get_deadline_date()
             inserted_order["deadline"] = deadline_date
@@ -182,18 +182,18 @@ async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
         return inserted_order
 
 
-async def _update_user_status(crud: "CRUD", user_id: str, order_id: int, new_status: int):
+async def _update_order_status(crud: "CRUD", user_id: str, order_id: int, new_status: int):
     """
     Updates the user status of an order. If the order's status is COMPLETED or DELETED, it checks for QUEUED orders
     on the same record. If found, updates the first QUEUED order to ORDERED and processes further actions.
     """
     order = await _get_orders_one(crud, order_id=order_id)
-    if new_status == order["user_status"]:
+    if new_status == order["order_status"]:
         return
 
     await crud.update(
         table="orders",
-        update_values={"user_status": new_status},
+        update_values={"order_status": new_status},
         filters={"order_id": order_id},
     )
 
@@ -212,7 +212,7 @@ async def _update_user_status(crud: "CRUD", user_id: str, order_id: int, new_sta
             # Update the status of the next queued order to ORDERED
             await crud.update(
                 table="orders",
-                update_values={"user_status": utils_orders.ORDER_STATUS.ORDERED},
+                update_values={"order_status": utils_orders.ORDER_STATUS.ORDERED},
                 filters={"order_id": next_queued_order["order_id"]},
             )
             log_messages = [STATUS_CHANGED]
@@ -308,7 +308,7 @@ async def update_order(
     update_values: dict,
 ):
     """
-    Updates an order's details (location, comment, and user_status)
+    Updates an order's details (location, comment, and order_status)
     """
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
@@ -316,7 +316,7 @@ async def update_order(
 
         # Only one of the following can be updated at a time
         comment = update_values.get("comment", "")
-        user_status = update_values.get("user_status", 0)
+        order_status = update_values.get("order_status", 0)
         location = update_values.get("location", 0)
 
         if comment:
@@ -325,8 +325,8 @@ async def update_order(
         elif location:
             await _update_location(crud, user_id, order_id, location)
 
-        elif user_status:
-            await _update_user_status(crud, user_id, order_id, user_status)
+        elif order_status:
+            await _update_order_status(crud, user_id, order_id, order_status)
 
 
 async def _get_queued_orders_length(crud: "CRUD", orders: list[dict]) -> dict:
@@ -340,7 +340,7 @@ async def _get_queued_orders_length(crud: "CRUD", orders: list[dict]) -> dict:
     query = f"""
 SELECT record_id, COUNT(*) AS queued_count
 FROM orders
-WHERE user_status IN ({utils_orders.ORDER_STATUS.QUEUED})
+WHERE order_status IN ({utils_orders.ORDER_STATUS.QUEUED})
 AND record_id IN ({list_of_record_ids})
 GROUP BY record_id
 ORDER BY queued_count DESC;
@@ -403,16 +403,16 @@ async def _get_active_orders(crud: "CRUD", filters: OrderFilter, offset: int = 0
     search_filters_as_str, placeholder_values = _get_and_filters_str_and_values(filters)
 
     if filters.filter_show_queued:
-        user_statuses = f"{utils_orders.ORDER_STATUS.ORDERED}, {utils_orders.ORDER_STATUS.QUEUED}"
+        order_statuses = f"{utils_orders.ORDER_STATUS.ORDERED}, {utils_orders.ORDER_STATUS.QUEUED}"
     else:
-        user_statuses = f"{utils_orders.ORDER_STATUS.ORDERED}"
+        order_statuses = f"{utils_orders.ORDER_STATUS.ORDERED}"
 
     query = f"""
 SELECT o.*, r.*, u.*
 FROM orders o
 LEFT JOIN records r ON o.record_id = r.record_id
 LEFT JOIN users u ON o.user_id = u.user_id
-WHERE o.user_status IN ({user_statuses})
+WHERE o.order_status IN ({order_statuses})
 {search_filters_as_str}
 ORDER BY o.order_id DESC
 LIMIT {filters.filter_limit} OFFSET {offset}
@@ -431,14 +431,14 @@ LEFT JOIN records r ON o.record_id = r.record_id
 LEFT JOIN users u ON o.user_id = u.user_id
 WHERE
     -- Only COMPLETED orders
-    o.user_status IN ({utils_orders.ORDER_STATUS.COMPLETED}, {utils_orders.ORDER_STATUS.DELETED})
+    o.order_status IN ({utils_orders.ORDER_STATUS.COMPLETED}, {utils_orders.ORDER_STATUS.DELETED})
 
     -- Make sure we pick the most recent COMPLETED order for each record
     AND o.order_id = (
         SELECT o2.order_id
         FROM orders o2
         WHERE o2.record_id = o.record_id
-          AND o2.user_status IN ({utils_orders.ORDER_STATUS.COMPLETED}, {utils_orders.ORDER_STATUS.DELETED})
+          AND o2.order_status IN ({utils_orders.ORDER_STATUS.COMPLETED}, {utils_orders.ORDER_STATUS.DELETED})
         ORDER BY o2.updated_at DESC, o2.order_id DESC
         LIMIT 1
     )
@@ -447,7 +447,7 @@ WHERE
     AND o.record_id NOT IN (
         SELECT record_id
         FROM orders
-        WHERE user_status = {utils_orders.ORDER_STATUS.ORDERED}
+        WHERE order_status = {utils_orders.ORDER_STATUS.ORDERED}
     )
 
     -- Also exclude records with location = IN_STORAGE
@@ -472,7 +472,7 @@ SELECT o.*, r.*, u.*
     FROM orders o
     LEFT JOIN records r ON o.record_id = r.record_id
     LEFT JOIN users u ON o.user_id = u.user_id
-    WHERE o.user_status IN ({utils_orders.ORDER_STATUS.DELETED}, {utils_orders.ORDER_STATUS.COMPLETED})
+    WHERE o.order_status IN ({utils_orders.ORDER_STATUS.DELETED}, {utils_orders.ORDER_STATUS.COMPLETED})
     {search_filters_as_str}
     ORDER BY o.updated_at DESC
     LIMIT {filters.filter_limit} OFFSET {offset}
@@ -632,7 +632,7 @@ async def cron_orders():
         SELECT * FROM orders
         WHERE deadline IS NOT NULL
         AND deadline < :current_date
-        AND user_status = {utils_orders.ORDER_STATUS.ORDERED}"""
+        AND order_status = {utils_orders.ORDER_STATUS.ORDERED}"""
 
         params = {"current_date": utils_orders.get_current_date_time()}
 
@@ -641,7 +641,7 @@ async def cron_orders():
         for order in orders:
 
             log.info(f"Order {order['order_id']} has passed deadline. Setting status to COMPLETED")
-            await _update_user_status(crud, user_id, order["order_id"], utils_orders.ORDER_STATUS.COMPLETED)
+            await _update_order_status(crud, user_id, order["order_id"], utils_orders.ORDER_STATUS.COMPLETED)
 
 
 async def _get_orders(
@@ -712,7 +712,7 @@ async def _get_orders_query_params(
 
     if statuses:
         statuses_str = ", ".join([str(status) for status in statuses])
-        where_clauses.append(f"o.user_status IN ({statuses_str})")
+        where_clauses.append(f"o.order_status IN ({statuses_str})")
 
     if record_id:
         where_clauses.append("r.record_id = :record_id")
@@ -751,7 +751,7 @@ async def _get_orders_query_params(
 async def _allow_location_change(crud: "CRUD", record_id: str, raise_exception=False):
     """
     Check if location can be changed
-    Get orders where location is READING_ROOM and user_status is ORDERED
+    Get orders where location is READING_ROOM and order_status is ORDERED
     If there are no orders then location can be changed
     """
     orders = await _get_orders(
@@ -778,7 +778,7 @@ async def _insert_log_message(
         "order_id": order["order_id"],
         "record_id": order["record_id"],
         "updated_location": order["location"],
-        "updated_user_status": order["user_status"],
+        "updated_order_status": order["order_status"],
         "message": message,
     }
 
@@ -786,7 +786,7 @@ async def _insert_log_message(
     order_id=order_id,
     record_id=updated_order["record_id"],
     location=updated_order["location"],
-    user_status=updated_order["user_status"],
+    order_status=updated_order["order_status"],
     """
 
     await crud.insert("orders_log", log_message)
