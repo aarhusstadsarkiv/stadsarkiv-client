@@ -96,25 +96,27 @@ async def _has_active_order(crud: "CRUD", user_id: str, record_id: str):
     return order
 
 
-async def _allow_renew_order(crud: "CRUD", user_id: str, order_id: int):
+async def _is_renew_possible(crud: "CRUD", user_id: str, order: dict):
     """
-    Check if order can be renewed
-    Order can be renewed if:
-    - order_status is ORDERED
-    - dateline is set and has not passed utils_orders.DATELINE_DAYS (3 days)
+    Check if a user order can be renewed
+    - Check if user status is ORDERED
+    - Check if no other order is in the queue
+    - deadline is set and has not passed utils_orders.DEADLINE_DAYS_RENEWAL
     """
-    order = await _get_orders_one(
+
+    queued = await _get_orders_one(
         crud,
-        user_id=user_id,
-        order_id=order_id,
-        statuses=[utils_orders.ORDER_STATUS.ORDERED],
+        record_id=order["record_id"],
+        statuses=[utils_orders.ORDER_STATUS.QUEUED],
     )
 
-    # Check if deadline is within 3 days
-    if utils_orders.is_renewal_possible(order["deadline"]):
+    if queued:
         return False
 
-    return True
+    if utils_orders.is_renewal_possible(order):
+        return True
+
+    return False
 
 
 async def _save_data(meta_data: dict, record_and_types: dict, me: dict):
@@ -391,7 +393,6 @@ AND r.location = {utils_orders.RECORD_LOCATION.READING_ROOM}
 AND o.user_id = :user_id
 ORDER BY o.order_id DESC
             """
-            orders = await crud.query(query, {"user_id": user_id})
 
         elif status == "reserved":
             query = f"""
@@ -408,6 +409,15 @@ ORDER BY o.order_id DESC
 
         # Fetch the orders based on statuses
         orders = await crud.query(query, {"user_id": user_id})
+
+        # Add renewal_possible and days_remaining to each order (utils_orders.)
+        for order in orders:
+            order["renewal_possible"] = await _is_renew_possible(
+                crud,
+                user_id=user_id,
+                order=order,
+            )
+            order["days_remaining"] = utils_orders.days_remaining(order)
 
         # Format each order for display
         orders = [utils_orders.format_order_display(order) for order in orders]
