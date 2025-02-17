@@ -65,11 +65,18 @@
             </div>
         </div>
 
-        {% if order.deadline_human %}
+        {% if order.deadline_human and order.days_remaining >= 0 %}
         <div class="record-content">
             <div class="label">Deadline</div>
             <div class="content">
-                <span class="days-remaining">{{ order.deadline_human }} ({{ order.days_remaining }} dage tilbage) </span>
+                {% if order.days_remaining == 0 %}
+                    {% set status = "Udløber i morgen" %}
+                {% elif order.days_remaining == 1 %}
+                    {% set status = order.days_remaining ~ " dag tilbage" %}
+                {% else %}
+                    {% set status = order.days_remaining ~ " dage tilbage" %}
+                {% endif %}
+                <span class="days-remaining">{{ order.deadline_human }} ({{ status }}) </span>
             </div>
         </div>
         {% endif %}
