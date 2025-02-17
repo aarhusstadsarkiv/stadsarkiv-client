@@ -715,6 +715,21 @@ async def cron_orders():
             log.info(f"Order {order['order_id']} has passed deadline. Setting status to COMPLETED")
             await _update_order_status(crud, user_id, order["order_id"], utils_orders.ORDER_STATUS.COMPLETED)
 
+        # Send mail to orders where current day is equal to deadline - DEADLINE_DAYS_RENEWAL (e.g. 3 days)
+        deadline_indicating_renewal = utils_orders.deadline_indicating_renewal_mail()
+        query = f"""
+        SELECT * FROM orders
+        WHERE deadline IS NOT NULL
+        AND deadline = :deadline
+        AND order_status = {utils_orders.ORDER_STATUS.ORDERED}
+        """
+        params = {"deadline": deadline_indicating_renewal}
+        orders = await crud.query(query, params)
+
+        log.debug(f"Orders with deadline indicating renewal: {orders}")
+        
+        
+
 
 async def _get_orders(
     crud: "CRUD",

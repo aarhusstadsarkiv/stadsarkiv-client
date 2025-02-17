@@ -187,6 +187,20 @@ def days_remaining(order: dict) -> int:
     return days_remaining
 
 
+def deadline_indicating_renewal_mail() -> str:
+    """
+    Get a date string indicating if a renewal email should be sent
+    Records can be renewed between (deadline - DEADLINE_DAYS_RENEWAL) and deadline
+
+    This gets a date string DEADLINE_DAYS_RENEWAL (e.g. 3 days) into the future
+    Select orders with a deadline on this date and send a renewal email.
+    This ensures that the mail is only sent once. 
+    """
+    date_send_renewal = arrow.utcnow().floor("day").shift(days=DEADLINE_DAYS_RENEWAL + 1)
+    date_send_renewal_str = date_send_renewal.format("YYYY-MM-DD HH:mm:ss")
+    return date_send_renewal_str
+
+
 def format_order_display_user(order: dict, status: str = "active"):
     """
     Orders are displayed differently for the user
