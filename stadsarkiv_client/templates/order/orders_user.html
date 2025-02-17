@@ -89,7 +89,7 @@
         <div class="action-links">
             <a data-id="{{order.order_id}}" class="delete-order" href="#">Slet bestilling</a>
             {% if order.renewal_possible %}
-            <a href="/order/renew/{{ order.order_id }}" class="renew-order">Forny bestilling</a>
+            <a data-id="{{order.order_id}}" href="/order/renew/{{ order.order_id }}" class="renew-order">Forny bestilling</a>
             {% endif %}
         </div>
         <hr>
@@ -140,16 +140,41 @@
         }
     }
 
+    async function handleRenewOrderClick(event) {
+        event.preventDefault();
+        
+        spinner.classList.toggle('hidden');
+
+        try {
+            const element = event.target;
+            const url = '/order/patch/' + element.dataset.id + "/renew";
+            const res = await Requests.asyncPostJson(url);
+
+            if (res.error) {
+                Flash.setMessage(res.message, 'error');
+            } else {
+                // Reload
+                window.location.reload();
+                // Flash.setMessage(res.message, 'success');
+                // element.closest('.parent-container-delete').remove();
+            }
+
+        } catch (e) {
+            Flash.setMessage(res.message, 'error');
+            await asyncLogError('/error/log', e.stack);
+        } finally {
+            spinner.classList.toggle('hidden');
+        }
+    }
+
     document.querySelectorAll('.delete-order').forEach(element => {
         element.addEventListener('click', handleDeleteUserClick);
     });
 
     document.querySelectorAll('.renew-order').forEach(element => {
-        element.addEventListener('click', function(event) {
-            event.preventDefault();
-            alert('Not implemented')
-        });
+        element.addEventListener('click', handleRenewOrderClick);
     });
+
 
 </script>
 

@@ -143,13 +143,19 @@ if settings["allow_online_ordering"]:
         Route(
             "/order/patch/{order_id:int}/order-id",
             endpoint=endpoints_order.orders_user_delete_by_order_id,
-            name="orders_user_patch",
+            name="orders_user_patch_by_order_id",
             methods=["POST"],
         ),
         Route(
             "/order/patch/{record_id:str}/record-id",
             endpoint=endpoints_order.orders_user_delete_by_record_id,
-            name="orders_user_patch",
+            name="orders_user_patch_by_record_id",
+            methods=["POST"],
+        ),
+        Route(
+            "/order/patch/{order_id:str}/renew",
+            endpoint=endpoints_order.orders_user_renew_by_order_id,
+            name="orders_user_patch_renew",
             methods=["POST"],
         ),
         Route("/admin/orders/{record_id:str}/html", endpoint=endpoints_order.orders_record_get, name="orders_record_get"),

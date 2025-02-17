@@ -3,7 +3,7 @@ from starlette.responses import JSONResponse, RedirectResponse
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 from stadsarkiv_client.core import api
-from stadsarkiv_client.core.auth import is_authenticated, is_authenticated_json
+from stadsarkiv_client.core.auth import is_authenticated, is_authenticated_json, AuthExceptionJSON
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.database import crud_orders
 from stadsarkiv_client.database import utils_orders
@@ -53,7 +53,7 @@ async def orders_get_orders_user(request: Request):
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
-async def orders_renew_post(request: Request):
+async def orders_user_renew_by_order_id(request: Request):
 
     await is_authenticated_json(request, verified=True)
     me = await api.users_me_get(request)
@@ -64,22 +64,18 @@ async def orders_renew_post(request: Request):
 
         is_owner = await _is_order_owner(request, order_id)
         if not is_owner:
-            return JSONResponse(
-                {
-                    "message": "Du har ikke rettigheder til at forny denne bestilling",
-                    "error": True,
-                }
-            )
+            raise AuthExceptionJSON(message="Du har ikke rettigheder til at forny denne bestilling")
 
         if not utils_orders.is_renewal_possible(order):
             return JSONResponse(
                 {
                     "message": "Fornyelse er desværre ikke mulig. En anden bruger har reserveret materialet eller materialet er uløbet",
                     "error": True,
-                }
+                }, status_code=400
             )
 
         await crud_orders.renew_order(order_id, me["id"])
+        flash.set_message(request, "Din bestilling er blevet fornyet", type="success")
         return JSONResponse({"message": "Din bestilling er blevet fornyet", "error": False})
     except Exception:
 
