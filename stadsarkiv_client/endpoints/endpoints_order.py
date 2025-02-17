@@ -53,6 +53,45 @@ async def orders_get_orders_user(request: Request):
         return RedirectResponse(url="/auth/login", status_code=302)
 
 
+async def orders_renew_post(request: Request):
+
+    await is_authenticated_json(request, verified=True)
+    me = await api.users_me_get(request)
+
+    try:
+        order_id = request.path_params["order_id"]
+        order = await crud_orders.get_order(order_id)
+
+        is_owner = await _is_order_owner(request, order_id)
+        if not is_owner:
+            return JSONResponse(
+                {
+                    "message": "Du har ikke rettigheder til at forny denne bestilling",
+                    "error": True,
+                }
+            )
+
+        if not utils_orders.is_renewal_possible(order):
+            return JSONResponse(
+                {
+                    "message": "Fornyelse er desværre ikke mulig. En anden bruger har reserveret materialet eller materialet er uløbet",
+                    "error": True,
+                }
+            )
+
+        await crud_orders.renew_order(order_id, me["id"])
+        return JSONResponse({"message": "Din bestilling er blevet fornyet", "error": False})
+    except Exception:
+
+        log.exception("Error in auth_orders_post")
+        return JSONResponse(
+            {
+                "message": "Fornyelse er desværre ikke mulig. En anden bruger har reserveret materialet eller materialet er uløbet",
+                "error": True,
+            }
+        )
+
+
 async def orders_post(request: Request):
     """
     POST endpoint for creating an order

@@ -26,7 +26,7 @@ if (orderElem) {
                 url = `/order/${recordId}`;
                 data = {}
             } else {
-                url = `/order/delete/${recordId}`;
+                url = `/order/patch/${recordId}/record-id`;
                 data = {}
 
                 const confirmedDelete = confirm('Er du sikker på at du vil slette bestillingen?');

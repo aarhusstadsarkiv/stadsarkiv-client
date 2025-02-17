@@ -119,6 +119,31 @@ async def _is_renew_possible(crud: "CRUD", user_id: str, order: dict):
     return False
 
 
+async def renew_order(order_id: int, user_id: str):
+    database_connection = DatabaseConnection(orders_url)
+    async with database_connection.transaction_scope_async() as connection:
+        crud = CRUD(connection)
+        order = await _get_orders_one(crud, order_id=order_id)
+
+        if not await _is_renew_possible(crud, user_id, order):
+            raise Exception(f"Bestilling {order_id} kunne ikke fornyes")
+
+        deadline_date = utils_orders.get_deadline_date()
+        await crud.update(
+            table="orders",
+            update_values={"deadline": deadline_date},
+            filters={"order_id": order_id},
+        )
+
+        # Log the renewal
+        await _insert_log_message(
+            crud,
+            user_id=user_id,
+            order=order,
+            message="Bestilling fornyet",
+        )
+
+
 async def _save_data(meta_data: dict, record_and_types: dict, me: dict):
 
     # save meta_data, and record_and_types, me as JSON

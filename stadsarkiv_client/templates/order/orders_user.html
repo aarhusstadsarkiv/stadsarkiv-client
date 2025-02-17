@@ -122,7 +122,7 @@
         try {
 
             const element = event.target;
-            const url = '/order/patch/' + element.dataset.id;
+            const url = '/order/patch/' + element.dataset.id + '/order-id';
             const res = await Requests.asyncPostJson(url);
 
             if (res.error) {

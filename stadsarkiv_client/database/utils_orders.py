@@ -162,7 +162,6 @@ def format_order_display(order: dict):
 
 def is_renewal_possible(order: dict) -> bool:
     """
-    deadline_str: the order deadline
     Check if renewal is possible
     Deadline needs to be within DEADLINE_DAYS_RENEWAL days
     """
@@ -177,7 +176,9 @@ def is_renewal_possible(order: dict) -> bool:
 
 
 def days_remaining(order: dict) -> int:
-    # If order is ORDERED and deadline is set calculate days remaining else 0
+    """
+    Get days remaining for an order
+    """
     days_remaining = 0
     if order["order_status"] == ORDER_STATUS.ORDERED and order["deadline"]:
         deadline = arrow.get(order["deadline"], "YYYY-MM-DD")
@@ -195,8 +196,6 @@ def format_order_display_user(order: dict, status: str = "active"):
     if status == "reserved":
         order["order_status_human"] = ORDER_STATUS_USER_HUMAN.get(order["order_status"])
 
-    # order["days_remaining"] = days_remaining(order)
-    # order["renewal_possible"] = is_renewal_possible(order)
     return order
 
 
@@ -220,9 +219,7 @@ def get_deadline_date() -> str:
     Get a deadline date
     Set this on a order when the order is status is ORDERED and location is READING_ROOM
     """
-
     utc_now = arrow.utcnow()
-
     # deadline will look like this: 2025-02-08 00:00:00
     # The extra day is added to make sure at least one full day is available
     deadline = utc_now.floor("day").shift(days=DEADLINE_DAYS + 1)
