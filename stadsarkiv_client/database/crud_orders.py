@@ -400,7 +400,7 @@ FROM orders o
 LEFT JOIN records r ON o.record_id = r.record_id
 LEFT JOIN users u ON o.user_id = u.user_id
 WHERE
-    (o.order_status IN ({utils_orders.ORDER_STATUS.QUEUED}) AND r.location = {utils_orders.RECORD_LOCATION.READING_ROOM}) OR
+    (o.order_status IN ({utils_orders.ORDER_STATUS.QUEUED})) OR
     (o.order_status IN ({utils_orders.ORDER_STATUS.ORDERED}) AND r.location <> {utils_orders.RECORD_LOCATION.READING_ROOM})
 AND o.user_id = :user_id
 ORDER BY o.order_id DESC
