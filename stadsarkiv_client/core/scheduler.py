@@ -1,5 +1,5 @@
 from apscheduler.schedulers.background import BackgroundScheduler  # type: ignore
-from stadsarkiv_client.database.crud_orders import cron_orders
+from stadsarkiv_client.database.crud_orders import cron_orders_expire
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.dynamic_settings import settings
 import asyncio
@@ -13,7 +13,7 @@ def run_cron_orders():
     """
     log.info("Running async cron job")
     try:
-        asyncio.run(cron_orders())
+        asyncio.run(cron_orders_expire())
     except Exception:
         log.exception("Cron job failed")
     log.info("Async cron job completed")

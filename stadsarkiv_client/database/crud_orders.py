@@ -694,7 +694,7 @@ async def get_order_by_record_id(user_id: str, record_id: str):
         return order
 
 
-async def cron_orders():
+async def cron_orders_expire():
     """
     Check if expire has passed and update user status to COMPLETED
     """

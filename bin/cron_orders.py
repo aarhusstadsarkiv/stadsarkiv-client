@@ -1,5 +1,5 @@
 import os
-from stadsarkiv_client.database.crud_orders import cron_orders
+from stadsarkiv_client.database.crud_orders import cron_orders_expire
 from stadsarkiv_client.core.logging import get_log
 import asyncio
 
@@ -14,4 +14,4 @@ print(f"Using configuration directory: {config_dir}")
 
 log.debug(f"Using configuration directory: {config_dir}")
 
-asyncio.run(cron_orders())
+asyncio.run(cron_orders_expire())
