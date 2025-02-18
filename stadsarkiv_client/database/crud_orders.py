@@ -715,7 +715,7 @@ async def cron_orders():
             AND expire_at < :current_date
             AND order_status = {utils_orders.ORDER_STATUS.ORDERED}"""
 
-            params = {"current_date": utils_orders.get_current_date_time()}            
+            params = {"current_date": utils_orders.get_current_date_time()}
             orders_expire = await crud.query(query, params)
     except Exception:
         log.exception("Failed to get orders for cron_orders")
