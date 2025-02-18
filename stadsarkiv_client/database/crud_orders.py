@@ -22,10 +22,13 @@ except KeyError:
 
 
 MAIL_SENT = "Mail sendt"
+RENEWAL_SENT = "Mail fornyelse sendt"
 LOCATION_CHANGED = "Lokation ændret"
 ORDER_CREATED = "Bestilling oprettet"
 ORDER_COMPLETED = "Bestilling afsluttet"
 STATUS_CHANGED = "Bruger status ændret"
+
+SYSTEM_USER_ID = "SYSTEM"
 
 
 @dataclass
@@ -96,13 +99,21 @@ async def _has_active_order(crud: "CRUD", user_id: str, record_id: str):
     return order
 
 
-async def _is_renew_possible(crud: "CRUD", user_id: str, order: dict):
+async def _is_renew_possible(crud: "CRUD", order: dict):
     """
-    Check if a user order can be renewed
+    Check if an order can be renewed
     - Check if user status is ORDERED
-    - Check if no other order is in the queue
-    - deadline is set and has not passed utils_orders.DEADLINE_DAYS_RENEWAL
+    - Order has a expire_at date
+    - Order has not passed expire_at
+    - Check if no other order is in the queue in the same record
     """
+
+    if not order["expire_at"]:
+        return False
+
+    days_remaining_ = utils_orders.get_days_until_expire(order)
+    if days_remaining_ > utils_orders.DEADLINE_DAYS_RENEWAL:
+        return False
 
     queued = await _get_orders_one(
         crud,
@@ -113,25 +124,22 @@ async def _is_renew_possible(crud: "CRUD", user_id: str, order: dict):
     if queued:
         return False
 
-    if utils_orders.is_renewal_possible(order):
-        return True
-
-    return False
+    return True
 
 
-async def renew_order(order_id: int, user_id: str):
+async def renew_order(user_id: str, order_id: int):
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
         order = await _get_orders_one(crud, order_id=order_id)
 
-        if not await _is_renew_possible(crud, user_id, order):
+        if not await _is_renew_possible(crud, order):
             raise Exception(f"Bestilling {order_id} kunne ikke fornyes")
 
-        deadline_date = utils_orders.get_deadline_date()
+        expire_at_date = utils_orders.get_expire_at_date()
         await crud.update(
             table="orders",
-            update_values={"deadline": deadline_date},
+            update_values={"expire_at": expire_at_date},
             filters={"order_id": order_id},
         )
 
@@ -206,13 +214,13 @@ async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
         # Handle special cases for orders already in the reading room and ordered
         if record_data["location"] == utils_orders.RECORD_LOCATION.READING_ROOM and order_status == utils_orders.ORDER_STATUS.ORDERED:
 
-            deadline_date = utils_orders.get_deadline_date()
-            inserted_order["deadline"] = deadline_date
+            expire_at = utils_orders.get_expire_at_date()
+            inserted_order["expire_at"] = expire_at
 
-            # Update order with deadline and message status
+            # Update order with expire_at and message status
             await crud.update(
                 table="orders",
-                update_values={"deadline": deadline_date, "message_sent": 1},
+                update_values={"expire_at": expire_at, "message_sent": 1},
                 filters={"order_id": inserted_order["order_id"]},
             )
 
@@ -266,13 +274,13 @@ async def _update_order_status(crud: "CRUD", user_id: str, order_id: int, new_st
             log_messages = [STATUS_CHANGED]
 
             if next_queued_order["location"] == utils_orders.RECORD_LOCATION.READING_ROOM:
-                # Update the deadline and send a message if the order is in the reading room
+                # Update the expire and send a message if the order is in the reading room
                 log.info(f"Order {next_queued_order['order_id']} moved to READING_ROOM.")
 
-                deadline_date = utils_orders.get_deadline_date()
+                expire_at = utils_orders.get_expire_at_date()
                 await crud.update(
                     table="orders",
-                    update_values={"deadline": deadline_date, "message_sent": 1},
+                    update_values={"expire_at": expire_at, "message_sent": 1},
                     filters={"order_id": next_queued_order["order_id"]},
                 )
 
@@ -292,7 +300,7 @@ async def _update_order_status(crud: "CRUD", user_id: str, order_id: int, new_st
 async def _update_location(crud: "CRUD", user_id: str, order_id: int, new_location: int):
     """
     Updates the location of a record.
-    If the location changes to READING_ROOM, set the deadline and sends a message.
+    If the location changes to READING_ROOM, set the expire_at and sends a message.
     """
     order = await _get_orders_one(crud, order_id=order_id)
     if order["location"] == new_location:
@@ -309,13 +317,13 @@ async def _update_location(crud: "CRUD", user_id: str, order_id: int, new_locati
 
     log_messages = [LOCATION_CHANGED]
 
-    # If the new location is the reading room, add deadline and message_sent fields
+    # If the new location is the reading room, add expire_at and message_sent fields
     order_update_values: dict = {}
     order_update_values["updated_at"] = utils_orders.get_current_date_time()
 
-    # If the order is in the reading room, set the deadline and send a message
+    # If the order is in the reading room, set the expire_at and send a message
     if new_location == utils_orders.RECORD_LOCATION.READING_ROOM:
-        order_update_values["deadline"] = utils_orders.get_deadline_date()
+        order_update_values["expire_at"] = utils_orders.get_expire_at_date()
 
         if not order.get("message_sent"):
             await utils_orders.send_order_message("Order available in reading room", order)
@@ -351,8 +359,8 @@ async def _update_comment(crud: "CRUD", user_id: str, order_id: int, new_comment
 
 
 async def update_order(
-    order_id: int,
     user_id: str,
+    order_id: int,
     update_values: dict,
 ):
     """
@@ -439,10 +447,9 @@ ORDER BY o.order_id DESC
         for order in orders:
             order["renewal_possible"] = await _is_renew_possible(
                 crud,
-                user_id=user_id,
                 order=order,
             )
-            order["days_remaining"] = utils_orders.days_remaining(order)
+            order["days_remaining"] = utils_orders.get_days_until_expire(order)
 
         # Format each order for display
         orders = [utils_orders.format_order_display(order) for order in orders]
@@ -689,46 +696,78 @@ async def get_order_by_record_id(user_id: str, record_id: str):
 
 async def cron_orders():
     """
-    Deadline may look like this: 2024-12-25 09:23:52
-    Check if deadline has passed and update user status to COMPLETED
+    Check if expire has passed and update user status to COMPLETED
     """
     if not settings.get("cron_orders", False):
         log.debug("Cron orders is disabled")
         return
 
-    database_connection = DatabaseConnection(orders_url)
-    async with database_connection.transaction_scope_async() as connection:
-        crud = CRUD(connection)
+    # Get orders where expire_at has passed
+    try:
+        database_connection = DatabaseConnection(orders_url)
+        async with database_connection.transaction_scope_async() as connection:
+            crud = CRUD(connection)
 
-        query = f"""
-        SELECT * FROM orders
-        WHERE deadline IS NOT NULL
-        AND deadline < :current_date
-        AND order_status = {utils_orders.ORDER_STATUS.ORDERED}"""
+            # Expire orders where expire_at has passed
+            query = f"""
+            SELECT * FROM orders
+            WHERE expire_at IS NOT NULL
+            AND expire_at < :current_date
+            AND order_status = {utils_orders.ORDER_STATUS.ORDERED}"""
 
-        params = {"current_date": utils_orders.get_current_date_time()}
+            params = {"current_date": utils_orders.get_current_date_time()}            
+            orders_expire = await crud.query(query, params)
+    except Exception:
+        log.exception("Failed to get orders for cron_orders")
+        return
 
-        user_id = "SYSTEM"
-        orders = await crud.query(query, params)
-        for order in orders:
+    for order in orders_expire:
+        try:
+            database_connection = DatabaseConnection(orders_url)
+            async with database_connection.transaction_scope_async() as connection:
+                crud = CRUD(connection)
+                log.info(f"Order {order['order_id']} has passed expire_at. Setting status to COMPLETED")
+                await _update_order_status(crud, SYSTEM_USER_ID, order["order_id"], utils_orders.ORDER_STATUS.COMPLETED)
+        except Exception:
+            log.exception(f"Failed to update order {order['order_id']} to COMPLETED")
 
-            log.info(f"Order {order['order_id']} has passed deadline. Setting status to COMPLETED")
-            await _update_order_status(crud, user_id, order["order_id"], utils_orders.ORDER_STATUS.COMPLETED)
 
-        # Send mail to orders where current day is equal to deadline - DEADLINE_DAYS_RENEWAL (e.g. 3 days)
-        deadline_indicating_renewal = utils_orders.deadline_indicating_renewal_mail()
-        query = f"""
-        SELECT * FROM orders
-        WHERE deadline IS NOT NULL
-        AND deadline = :deadline
-        AND order_status = {utils_orders.ORDER_STATUS.ORDERED}
-        """
-        params = {"deadline": deadline_indicating_renewal}
-        orders = await crud.query(query, params)
+async def cron_renewal_emails():
 
-        log.debug(f"Orders with deadline indicating renewal: {orders}")
-        
-        
+    try:
+        database_connection = DatabaseConnection(orders_url)
+        async with database_connection.transaction_scope_async() as connection:
+            crud = CRUD(connection)
+            date_indicating_renewal = utils_orders.get_date_indicating_renewal_mail()
+            query = f"""
+            SELECT * FROM orders
+            WHERE expire_at IS NOT NULL
+            AND expire_at = :expire_at
+            AND order_status = {utils_orders.ORDER_STATUS.ORDERED}
+            """
+            params = {"expire_at": date_indicating_renewal}
+            renewal_orders = await crud.query(query, params)
+
+    except Exception:
+        log.exception("Cron renewal emails failed")
+        return
+
+    for order in renewal_orders:
+        try:
+            database_connection = DatabaseConnection(orders_url)
+            async with database_connection.transaction_scope_async() as connection:
+                crud = CRUD(connection)
+
+                log.info(f"Order {order['order_id']} has expire_at indicating renewal. Sending mail")
+                await utils_orders.send_order_message("Order renewal reminder", order)
+                await _insert_log_message(
+                    crud,
+                    user_id=SYSTEM_USER_ID,
+                    order=order,
+                    message=RENEWAL_SENT,
+                )
+        except Exception:
+            log.exception(f"Failed to send renewal email for order {order['order_id']}")
 
 
 async def _get_orders(

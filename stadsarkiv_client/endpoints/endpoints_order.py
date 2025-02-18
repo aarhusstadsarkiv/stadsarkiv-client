@@ -54,27 +54,23 @@ async def orders_get_orders_user(request: Request):
 
 
 async def orders_user_renew_by_order_id(request: Request):
+    """
+    Renew an order based on the order_id
+    Checks if user is owner of order
+    Checks if order can be renewed
+    """
 
     await is_authenticated_json(request, verified=True)
     me = await api.users_me_get(request)
 
     try:
         order_id = request.path_params["order_id"]
-        order = await crud_orders.get_order(order_id)
-
         is_owner = await _is_order_owner(request, order_id)
         if not is_owner:
             raise AuthExceptionJSON(message="Du har ikke rettigheder til at forny denne bestilling")
 
-        if not utils_orders.is_renewal_possible(order):
-            return JSONResponse(
-                {
-                    "message": "Fornyelse er desværre ikke mulig. En anden bruger har reserveret materialet eller materialet er uløbet",
-                    "error": True,
-                }, status_code=400
-            )
-
-        await crud_orders.renew_order(order_id, me["id"])
+        # This also checks if it is possible to renew
+        await crud_orders.renew_order(me["id"], order_id)
         flash.set_message(request, "Din bestilling er blevet fornyet", type="success")
         return JSONResponse({"message": "Din bestilling er blevet fornyet", "error": False})
     except Exception:
@@ -91,6 +87,8 @@ async def orders_user_renew_by_order_id(request: Request):
 async def orders_post(request: Request):
     """
     POST endpoint for creating an order
+    Checks if user is authenticated and verified
+    Checks if order already exists
     """
     await is_authenticated_json(request, verified=True)
     me = await api.users_me_get(request)
@@ -153,8 +151,8 @@ async def _process_order_deletion(request: Request, id_key: str):
         }
 
         await crud_orders.update_order(
-            order_id=order_id,
             user_id=user_id,
+            order_id=order_id,
             update_values=update_values,
         )
 
@@ -181,8 +179,10 @@ async def orders_user_delete_by_record_id(request: Request):
 
 async def orders_admin_patch_multiple(request: Request):
     """
-    Patch multiple orders at once
-    This is used when updating multiple order locations at once
+    Patch multiple orders at once.
+    This is used when updating multiple order locations at once.
+    Checks if user is authenticated and verified.
+    Checks if user has employee permissions.
     """
     try:
         await is_authenticated_json(request, verified=True, permissions=["employee"])
@@ -203,8 +203,8 @@ async def orders_admin_patch_multiple(request: Request):
             log.debug(f"Updating order {order_id} to location {location}")
 
             await crud_orders.update_order(
-                order_id=order_id,
                 user_id=me["id"],
+                order_id=order_id,
                 update_values={"location": location},  # No other values are updated than location
             )
 
@@ -223,8 +223,8 @@ async def orders_admin_patch_multiple(request: Request):
 
 async def orders_admin_patch_single(request: Request):
     """
-    User can only cancel their own order
-    Admin can patch any order
+    Patch a single order as admin
+    Used to update the comment on the order
     """
     try:
         await is_authenticated_json(request, verified=True, permissions=["employee"])
@@ -234,8 +234,8 @@ async def orders_admin_patch_single(request: Request):
         update_values: dict = await request.json()
 
         await crud_orders.update_order(
-            order_id=order_id,
             user_id=me["id"],
+            order_id=order_id,
             update_values=update_values,
         )
 

@@ -70,11 +70,11 @@
             <div class="label">Deadline</div>
             <div class="content">
                 {% if order.days_remaining == 0 %}
-                    {% set status = "Udløber i morgen" %}
+                    {% set status = "deadline i dag" %}
                 {% elif order.days_remaining == 1 %}
-                    {% set status = order.days_remaining ~ " dag tilbage" %}
+                    {% set status = order.days_remaining ~ " dag til deadline" %}
                 {% else %}
-                    {% set status = order.days_remaining ~ " dage tilbage" %}
+                    {% set status = order.days_remaining ~ " dage til deadline" %}
                 {% endif %}
                 <span class="days-remaining">{{ order.deadline_human }} ({{ status }}) </span>
             </div>

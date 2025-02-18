@@ -139,11 +139,12 @@ def format_order_display(order: dict):
 
         order["collectors"] = record_and_types_strings.get("collectors", "")
 
-        # Convert deadline to date string
-        if order["deadline"]:
-            deadline = date_format.timezone_alter(order["deadline"])
-            deadline = arrow.get(deadline).format("YYYY-MM-DD")
-            order["deadline_human"] = deadline
+        # Convert expire_at to deadline date string
+        if order["expire_at"]:
+            # deadline is the day before expire_at
+            deadline = arrow.get(order["expire_at"]).shift(days=-1)
+            deadline_str = deadline.format("YYYY-MM-DD")
+            order["deadline_human"] = deadline_str
 
         # Convert statuses to human readable. Backend
         order["order_status_human"] = ORDER_STATUS_HUMAN.get(order["order_status"])
@@ -160,41 +161,25 @@ def format_order_display(order: dict):
     return order
 
 
-def is_renewal_possible(order: dict) -> bool:
+def get_days_until_expire(order: dict) -> int:
     """
-    Check if renewal is possible
-    Deadline needs to be within DEADLINE_DAYS_RENEWAL days
-    """
-
-    if not order["deadline"]:
-        return False
-
-    days_remaining_ = days_remaining(order)
-    if days_remaining_ <= DEADLINE_DAYS_RENEWAL:
-        return True
-    return False
-
-
-def days_remaining(order: dict) -> int:
-    """
-    Get days remaining for an order
+    Get days until an order expires.
     """
     days_remaining = 0
-    if order["order_status"] == ORDER_STATUS.ORDERED and order["deadline"]:
-        deadline = arrow.get(order["deadline"], "YYYY-MM-DD")
-        days_remaining = (deadline - arrow.utcnow()).days
+    if order["order_status"] == ORDER_STATUS.ORDERED and order["expire_at"]:
+        expire_ = arrow.get(order["expire_at"], "YYYY-MM-DD")
+        days_remaining = (expire_ - arrow.utcnow()).days
 
     return days_remaining
 
 
-def deadline_indicating_renewal_mail() -> str:
+def get_date_indicating_renewal_mail() -> str:
     """
-    Get a date string indicating if a renewal email should be sent
-    Records can be renewed between (deadline - DEADLINE_DAYS_RENEWAL) and deadline
+    Records can be renewed between (expire_at - DEADLINE_DAYS_RENEWAL) and expire_at
 
-    This gets a date string DEADLINE_DAYS_RENEWAL (e.g. 3 days) into the future
-    Select orders with a deadline on this date and send a renewal email.
-    This ensures that the mail is only sent once. 
+    This def gets a date string DEADLINE_DAYS_RENEWAL days into the future.
+    If this date corresponds to the expire_at of an order, the order can be renewed
+    and a mail can be sent to the user
     """
     date_send_renewal = arrow.utcnow().floor("day").shift(days=DEADLINE_DAYS_RENEWAL + 1)
     date_send_renewal_str = date_send_renewal.format("YYYY-MM-DD HH:mm:ss")
@@ -228,16 +213,16 @@ def format_log_display(log: dict):
     return log
 
 
-def get_deadline_date() -> str:
+def get_expire_at_date() -> str:
     """
-    Get a deadline date
+    Get a expire_at date
     Set this on a order when the order is status is ORDERED and location is READING_ROOM
     """
     utc_now = arrow.utcnow()
-    # deadline will look like this: 2025-02-08 00:00:00
+    # expire_at will look like this: 2025-02-08 00:00:00
     # The extra day is added to make sure at least one full day is available
-    deadline = utc_now.floor("day").shift(days=DEADLINE_DAYS + 1)
-    return deadline.format("YYYY-MM-DD HH:mm:ss")
+    expire_at = utc_now.floor("day").shift(days=DEADLINE_DAYS + 1)
+    return expire_at.format("YYYY-MM-DD HH:mm:ss")
 
 
 def get_current_date_time() -> str:

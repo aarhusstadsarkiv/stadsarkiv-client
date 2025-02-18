@@ -11,7 +11,7 @@ CREATE TABLE orders (
     user_id TEXT NOT NULL,
     order_status INTEGER NOT NULL,
     record_id TEXT NOT NULL,
-    deadline TEXT,
+    expire_at TEXT,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
     comment TEXT DEFAULT "",
@@ -52,7 +52,7 @@ CREATE INDEX idx_orders_log_updated_at ON orders_log(updated_at);
 CREATE INDEX idx_orders_updated_at ON orders(updated_at);
 
 -- Indexes for records
-CREATE INDEX idx_orders_deadline ON orders(deadline);
+CREATE INDEX idx_orders_expire_at ON orders(expire_at);
 CREATE INDEX idx_records_location ON records(location);
 
 -- Indexes for orders_log

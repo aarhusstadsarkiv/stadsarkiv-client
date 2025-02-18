@@ -63,9 +63,9 @@ class TestDB(unittest.TestCase):
         has_active_order = await crud_orders.has_active_order(me["id"], meta_data["id"])
         self.assertTrue(has_active_order)
 
-        log.info("Assert no deadline on order")
+        log.info("Assert no expire_at on order")
         order = await crud_orders.get_order("1")
-        self.assertIsNone(order["deadline"])
+        self.assertIsNone(order["expire_at"])
 
         log.info("Assert correct search results")
         orders_filter = crud_orders.OrderFilter(filter_status="active")
@@ -86,7 +86,11 @@ class TestDB(unittest.TestCase):
 
         log.info("Update order")
         update_values = {"comment": "Updated comment"}
-        await crud_orders.update_order(order["order_id"], me["id"], update_values)
+        await crud_orders.update_order(
+            me["id"],
+            order["order_id"],
+            update_values,
+        )
 
         log.info("Assert updated comment will not be added to log")
         logs = await crud_orders.get_logs("1")
@@ -94,11 +98,15 @@ class TestDB(unittest.TestCase):
 
         log.info("Move location of record to reading room")
         update_values = {"location": utils_orders.RECORD_LOCATION.READING_ROOM}
-        await crud_orders.update_order(order["order_id"], me["id"], update_values)
+        await crud_orders.update_order(
+            me["id"],
+            order["order_id"],
+            update_values,
+        )
 
-        log.info("Order now has a deadline")
+        log.info("Order now has a expire_at")
         order = await crud_orders.get_order("1")
-        self.assertIsNotNone(order["deadline"])
+        self.assertIsNotNone(order["expire_at"])
 
         log.info("Assert 2 log messages (insert order and move location)")
         logs = await crud_orders.get_logs("1")
@@ -107,7 +115,11 @@ class TestDB(unittest.TestCase):
         with self.assertRaises(Exception) as cm:  # Capture the exception
             log.info("Move location of record if it is already in reading room. Should raise exception")
             update_values = {"location": utils_orders.RECORD_LOCATION.RETURN_TO_STORAGE}
-            await crud_orders.update_order(order["order_id"], me["id"], update_values)
+            await crud_orders.update_order(
+                me["id"],
+                order["order_id"],
+                update_values,
+            )
 
         log.info("Assert correct exception message")
         self.assertIn("Lokation kan ikke ændres", str(cm.exception))
@@ -117,8 +129,8 @@ class TestDB(unittest.TestCase):
         await crud_orders.insert_order(meta_data, record_and_types, me_2)
         order_2 = await crud_orders.get_order("2")
 
-        # check deadline
-        self.assertIsNone(order_2["deadline"])
+        # check expire_at
+        self.assertIsNone(order_2["expire_at"])
 
         log.info("Assert correct search results")
         orders_filter = crud_orders.OrderFilter(filter_status="active", filter_show_queued="on")
@@ -127,7 +139,11 @@ class TestDB(unittest.TestCase):
 
         log.info("User 1 completes order")
         update_values = {"order_status": utils_orders.ORDER_STATUS.COMPLETED}
-        await crud_orders.update_order(order["order_id"], me["id"], update_values)
+        await crud_orders.update_order(
+            me["id"],
+            order["order_id"],
+            update_values,
+        )
 
         log.info("Assert correct search results")
         orders_filter = crud_orders.OrderFilter(filter_status="active")
@@ -143,11 +159,15 @@ class TestDB(unittest.TestCase):
         self.assertEqual(len(orders), 1)
 
         order_2 = await crud_orders.get_order("2")
-        self.assertIsNotNone(order_2["deadline"])
+        self.assertIsNotNone(order_2["expire_at"])
 
         log.info("User 2 completes order")
         update_values = {"order_status": utils_orders.ORDER_STATUS.COMPLETED}
-        await crud_orders.update_order(order_2["order_id"], me["id"], update_values)
+        await crud_orders.update_order(
+            me["id"],
+            order_2["order_id"],
+            update_values,
+        )
 
         log.info("Order 2 assert 3 log messages (insert order, queued to ordered, ordered to completed)")
         logs = await crud_orders.get_logs("2")
