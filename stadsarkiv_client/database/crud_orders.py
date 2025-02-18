@@ -30,6 +30,15 @@ STATUS_CHANGED = "Bruger status ændret"
 
 SYSTEM_USER_ID = "SYSTEM"
 
+MAIL_MESSAGE_ORDER_READY = "Din bestilling er nu klar til gennemsyn i læsesalen på Aarhus Stadsarkiv."
+MAIL_MESSAGE_ORDER_READY_TITLE = "Din bestilling er klar til gennemsyn"
+
+client_url = settings.get("client_url", "")
+
+MAIL_MESSAGE_ORDER_RENEW = f"""Din bestilling har deadline om {utils_orders.DEADLINE_DAYS_RENEWAL} dage.<br>
+Forny dit materiale på <a href="{ client_url }/auth/orders">www.aarhusarkivet.dk</a>"""
+MAIL_MESSAGE_ORDER_RENEW_TITLE = "Fornyelse af bestilling"
+
 
 @dataclass
 class OrderFilter:
@@ -225,7 +234,7 @@ async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
             )
 
             updated_order = await _get_orders_one(crud, order_id=inserted_order["order_id"])
-            await utils_orders.send_order_message("Order available in reading room", updated_order)
+            await utils_orders.send_order_message(MAIL_MESSAGE_ORDER_READY_TITLE, MAIL_MESSAGE_ORDER_READY, updated_order)
             log_messages.append(MAIL_SENT)
 
         await _insert_log_message(
@@ -285,7 +294,7 @@ async def _update_order_status(crud: "CRUD", user_id: str, order_id: int, new_st
                 )
 
                 next_queued_order = await _get_orders_one(crud, order_id=next_queued_order["order_id"])
-                await utils_orders.send_order_message("Order available in reading room", next_queued_order)
+                await utils_orders.send_order_message(MAIL_MESSAGE_ORDER_READY_TITLE, MAIL_MESSAGE_ORDER_READY, next_queued_order)
                 log_messages.append(MAIL_SENT)
 
             # Log the status change
@@ -326,7 +335,7 @@ async def _update_location(crud: "CRUD", user_id: str, order_id: int, new_locati
         order_update_values["expire_at"] = utils_orders.get_expire_at_date()
 
         if not order.get("message_sent"):
-            await utils_orders.send_order_message("Order available in reading room", order)
+            await utils_orders.send_order_message(MAIL_MESSAGE_ORDER_READY_TITLE, MAIL_MESSAGE_ORDER_READY, order)
             order_update_values["message_sent"] = 1
             log_messages.append(MAIL_SENT)
 
@@ -717,6 +726,8 @@ async def cron_orders_expire():
 
             params = {"current_date": utils_orders.get_current_date_time()}
             orders_expire = await crud.query(query, params)
+
+            log.debug(f"Found {len(orders_expire)} orders to expire")
     except Exception:
         log.exception("Failed to get orders for cron_orders")
         return
@@ -740,26 +751,36 @@ async def cron_renewal_emails():
             crud = CRUD(connection)
             date_indicating_renewal = utils_orders.get_date_indicating_renewal_mail()
             query = f"""
-            SELECT * FROM orders
-            WHERE expire_at IS NOT NULL
-            AND expire_at = :expire_at
-            AND order_status = {utils_orders.ORDER_STATUS.ORDERED}
+            SELECT o.*, r.*, u.*
+FROM orders o
+LEFT JOIN records r ON o.record_id = r.record_id
+LEFT JOIN users u ON o.user_id = u.user_id
+WHERE o.expire_at IS NOT NULL
+AND o.expire_at = :expire_at
+AND o.order_status = {utils_orders.ORDER_STATUS.ORDERED}
             """
             params = {"expire_at": date_indicating_renewal}
             renewal_orders = await crud.query(query, params)
+            log.info(f"Found {len(renewal_orders)} orders with expire_at = {date_indicating_renewal}")
 
     except Exception:
         log.exception("Cron renewal emails failed")
         return
 
     for order in renewal_orders:
+
         try:
             database_connection = DatabaseConnection(orders_url)
             async with database_connection.transaction_scope_async() as connection:
                 crud = CRUD(connection)
 
+                if not await _is_renew_possible(crud, order):
+                    log.info(f"Order {order['order_id']} could not be renewed")
+                    continue
+
                 log.info(f"Order {order['order_id']} has expire_at indicating renewal. Sending mail")
-                await utils_orders.send_order_message("Order renewal reminder", order)
+
+                await utils_orders.send_order_message(MAIL_MESSAGE_ORDER_RENEW_TITLE, MAIL_MESSAGE_ORDER_RENEW, order)
                 await _insert_log_message(
                     crud,
                     user_id=SYSTEM_USER_ID,

@@ -3,7 +3,7 @@
 {% block content %}
 <p>Hej {{ order.user_display_name }},</p>
 
-<p>Din bestilling er nu klar til gennemsyn i læsesalen på Aarhus Stadsarkiv.</p>
+<p>{{ message|safe }}</p>
 
 <p>Det drejer sig om følgende materiale:</p>
 

@@ -229,15 +229,14 @@ def get_current_date_time() -> str:
     return arrow.utcnow().format("YYYY-MM-DD HH:mm:ss")
 
 
-async def send_order_message(message: str, order: dict):
+async def send_order_message(title: str, message: str, order: dict):
+    """
+    Send a mail to the user when the order is ready for review
+    """
 
-    # Skip sending mail if test email
-    if order["user_email"] == "super@default.com":
-        return
-
-    title = "Din bestilling er klar til gennemsyn"
     template_values = {
         "title": title,
+        "message": message,
         "order": order,
         "client_domain_url": settings["client_url"],
         "client_name": settings["client_name"],
@@ -256,4 +255,4 @@ async def send_order_message(message: str, order: dict):
     }
 
     await api.mail_post(mail_dict)
-    log.info(f"Send mail message: {message} Order: {order['order_id']}")
+    log.info(f"Sent mail message: {message} Order: {order['order_id']}")
