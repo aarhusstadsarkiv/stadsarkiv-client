@@ -115,6 +115,9 @@ def _set_representations(meta_data: dict, record: dict):
                 if "large_image" not in meta_data["representations"]:
                     meta_data["representations"]["large_image"] = meta_data["representations"].get("record_image")
 
+                if "full_image" in meta_data["representations"]:
+                    meta_data["representations"]["large_image"] = meta_data["representations"]["full_image"]
+
                 meta_data["portrait"] = record.get("portrait")
     else:
         meta_data["record_type"] = "icon"
