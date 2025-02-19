@@ -105,7 +105,7 @@ class TestDB(unittest.TestCase):
         logs = await crud_orders.get_logs("1")
         self.assertEqual(len(logs), 1)
 
-        # Test update location of record to reading room
+        # Update location to reading room
         update_values = {"location": utils_orders.RECORD_LOCATION.READING_ROOM}
         await crud_orders.update_order(
             me["id"],
@@ -136,6 +136,9 @@ class TestDB(unittest.TestCase):
         # Insert new order containing the same record as the first order but for another user
         await crud_orders.insert_order(meta_data, record_and_types, me_2)
         order_2 = await crud_orders.get_order("2")
+
+        # Check if order_2 status is queued
+        self.assertEqual(order_2["order_status"], utils_orders.ORDER_STATUS.QUEUED)
 
         # check expire_at
         self.assertIsNone(order_2["expire_at"])

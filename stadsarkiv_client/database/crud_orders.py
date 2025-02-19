@@ -180,7 +180,6 @@ async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
     """
     Insert an order into the database with proper validations and updates.
     """
-
     database_connection = DatabaseConnection(orders_url)
     async with database_connection.transaction_scope_async() as connection:
         crud = CRUD(connection)
@@ -247,7 +246,7 @@ async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
         return inserted_order
 
 
-async def _update_order_status(crud: "CRUD", user_id: str, order_id: int, new_status: int):
+async def _update_status(crud: "CRUD", user_id: str, order_id: int, new_status: int):
     """
     Updates the user status of an order. If the order's status is COMPLETED or DELETED, it checks for QUEUED orders
     on the same record. If found, updates the first QUEUED order to ORDERED and processes further actions.
@@ -391,7 +390,7 @@ async def update_order(
             await _update_location(crud, user_id, order_id, location)
 
         elif order_status:
-            await _update_order_status(crud, user_id, order_id, order_status)
+            await _update_status(crud, user_id, order_id, order_status)
 
 
 async def _get_queued_orders_length(crud: "CRUD", orders: list[dict]) -> dict:
@@ -738,7 +737,7 @@ async def cron_orders_expire():
             async with database_connection.transaction_scope_async() as connection:
                 crud = CRUD(connection)
                 log.info(f"Order {order['order_id']} has passed expire_at. Setting status to COMPLETED")
-                await _update_order_status(crud, SYSTEM_USER_ID, order["order_id"], utils_orders.ORDER_STATUS.COMPLETED)
+                await _update_status(crud, SYSTEM_USER_ID, order["order_id"], utils_orders.ORDER_STATUS.COMPLETED)
         except Exception:
             log.exception(f"Failed to update order {order['order_id']} to COMPLETED")
 
