@@ -6,7 +6,7 @@
  */
 
 class Requests {
-    
+
     static REQUEST_TIMEOUT = 10;
 
     /**
@@ -16,22 +16,22 @@ class Requests {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), Requests.REQUEST_TIMEOUT * 1000);
         options.signal = controller.signal;
-    
+
         try {
             const response = await fetch(url, options);
             clearTimeout(timeoutId);
-    
+
             let responseData;
             try {
                 responseData = await response.json();
             } catch (jsonError) {
                 responseData = null;
             }
-    
+
             if (!response.ok && responseData === null) {
                 throw new Error(`${options.method} request failed: ${response.status} ${response.statusText}`);
             }
-    
+
             return responseData !== null ? responseData : {};
         } catch (error) {
             if (error.name === 'AbortError') {
@@ -40,8 +40,6 @@ class Requests {
             throw error;
         }
     }
-    
-    
 
     /**
      * Post FormData async. Accepts JSON as response.
