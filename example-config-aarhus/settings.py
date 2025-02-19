@@ -7,7 +7,7 @@ settings: dict[str, typing.Any] = {
     "client_email": "stadsarkivet@aarhusarkivet.dk",
     "language": "da",
     "log_handlers": ["rotating_file"],
-    "cookie": {"name": "session", "lifetime": 3600 * 12, "httponly": True, "secure": True, "samesite": "lax"},
+    "cookie": {"name": "session", "lifetime": 3600 * 24, "httponly": True, "secure": True, "samesite": "lax"},
     "api_base_url": "https://api.openaws.dk/v1",
     "pages": [
         {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
