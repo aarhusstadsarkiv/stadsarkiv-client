@@ -43,5 +43,4 @@ else:
     scheduler.add_job(run_cron_renewal_emails, "cron", hour=0, minute=4)
 
 
-
 scheduler.start()
