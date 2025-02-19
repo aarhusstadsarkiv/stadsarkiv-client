@@ -22,6 +22,8 @@ class TestDB(unittest.TestCase):
         """
         Simple integration test for orders
         """
+
+        # Generate a new database for testing
         db_path = "/tmp/orders.db"
         if os.path.exists(db_path):
             os.remove(db_path)
@@ -29,6 +31,7 @@ class TestDB(unittest.TestCase):
         migration = Migration(db_path=db_path, migrations=migrations_orders)
         migration.run_migrations()
 
+        # Load user, meta_data and record_and_types - test data
         me_data_file = "tests/data/me.json"
         with open(me_data_file) as f:
             me = json.load(f)
@@ -41,33 +44,39 @@ class TestDB(unittest.TestCase):
         with open(record_and_types_file) as f:
             record_and_types = json.load(f)
 
+        # Generate a second user
         me_2 = me.copy()
         me_2["id"] = "ANOTHER_USER_ID"
         me_2["email"] = "another.email@example.com"
 
-        log.info("Assert no orders")
+        # Test has_active_order
         has_active_order = await crud_orders.has_active_order(me["id"], meta_data["id"])
         self.assertFalse(has_active_order)
 
-        log.info("Insert order")
+        # Test insert_order
         await crud_orders.insert_order(meta_data, record_and_types, me)
 
-        with self.assertRaises(Exception) as cm:  # Capture the exception
-            log.info("Insert order again and assert raises")
+        # Test exception if user is already active on this record
+        with self.assertRaises(Exception) as cm:
             await crud_orders.insert_order(meta_data, record_and_types, me)
 
-        log.info("Assert correct exception message")
         self.assertIn("User is already active on this record", str(cm.exception))
 
-        log.info("Assert user has active order")
+        # Test has_active_order again with the new order
         has_active_order = await crud_orders.has_active_order(me["id"], meta_data["id"])
         self.assertTrue(has_active_order)
 
-        log.info("Assert no expire_at on order")
-        order = await crud_orders.get_order("1")
+        # Test no expire_at
+        order = await crud_orders.get_order(1)
+
+        # Test is user is owner
+        is_owner = await crud_orders.is_owner(me["id"], order["order_id"])
+        self.assertTrue(is_owner)
+
+        # Check that order does not have an expire_at
         self.assertIsNone(order["expire_at"])
 
-        log.info("Assert correct search results")
+        # Test for correct filters results
         orders_filter = crud_orders.OrderFilter(filter_status="active")
         orders, _ = await crud_orders.get_orders_admin(filters=orders_filter)
         self.assertEqual(len(orders), 1)
@@ -80,11 +89,11 @@ class TestDB(unittest.TestCase):
         orders, _ = await crud_orders.get_orders_admin(filters=orders_filter)
         self.assertEqual(len(orders), 0)
 
-        log.info("Assert 1 log message (insert order)")
+        # Test correct amount of log messages
         logs = await crud_orders.get_logs("1")
         self.assertEqual(len(logs), 1)
 
-        log.info("Update order")
+        # Test update_order comment
         update_values = {"comment": "Updated comment"}
         await crud_orders.update_order(
             me["id"],
@@ -92,11 +101,11 @@ class TestDB(unittest.TestCase):
             update_values,
         )
 
-        log.info("Assert updated comment will not be added to log")
+        # Update comment is not added to the log
         logs = await crud_orders.get_logs("1")
         self.assertEqual(len(logs), 1)
 
-        log.info("Move location of record to reading room")
+        # Test update location of record to reading room
         update_values = {"location": utils_orders.RECORD_LOCATION.READING_ROOM}
         await crud_orders.update_order(
             me["id"],
@@ -104,16 +113,16 @@ class TestDB(unittest.TestCase):
             update_values,
         )
 
-        log.info("Order now has a expire_at")
+        # Order should now have an expire_at
         order = await crud_orders.get_order("1")
         self.assertIsNotNone(order["expire_at"])
 
-        log.info("Assert 2 log messages (insert order and move location)")
+        # Test correct amount of log messages
         logs = await crud_orders.get_logs("1")
         self.assertEqual(len(logs), 2)
 
-        with self.assertRaises(Exception) as cm:  # Capture the exception
-            log.info("Move location of record if it is already in reading room. Should raise exception")
+        # Test that location can not be changed when order is active and in reading room
+        with self.assertRaises(Exception) as cm:
             update_values = {"location": utils_orders.RECORD_LOCATION.RETURN_TO_STORAGE}
             await crud_orders.update_order(
                 me["id"],
@@ -121,23 +130,22 @@ class TestDB(unittest.TestCase):
                 update_values,
             )
 
-        log.info("Assert correct exception message")
+        # Test correct exception message
         self.assertIn("Lokation kan ikke ændres", str(cm.exception))
 
         # Insert new order containing the same record as the first order but for another user
-        log.info("Insert order for another user")
         await crud_orders.insert_order(meta_data, record_and_types, me_2)
         order_2 = await crud_orders.get_order("2")
 
         # check expire_at
         self.assertIsNone(order_2["expire_at"])
 
-        log.info("Assert correct search results")
+        # Test correct of filter results
         orders_filter = crud_orders.OrderFilter(filter_status="active", filter_show_queued="on")
         orders, _ = await crud_orders.get_orders_admin(filters=orders_filter)
         self.assertEqual(len(orders), 2)
 
-        log.info("User 1 completes order")
+        # User 1 completes order
         update_values = {"order_status": utils_orders.ORDER_STATUS.COMPLETED}
         await crud_orders.update_order(
             me["id"],
@@ -145,7 +153,7 @@ class TestDB(unittest.TestCase):
             update_values,
         )
 
-        log.info("Assert correct search results")
+        # Check filter results
         orders_filter = crud_orders.OrderFilter(filter_status="active")
         orders, _ = await crud_orders.get_orders_admin(filters=orders_filter)
         self.assertEqual(len(orders), 1)
@@ -158,6 +166,7 @@ class TestDB(unittest.TestCase):
         orders, _ = await crud_orders.get_orders_admin(filters=orders_filter)
         self.assertEqual(len(orders), 1)
 
+        # User 2 should get an expire_at now. As the record is in reading room
         order_2 = await crud_orders.get_order("2")
         self.assertIsNotNone(order_2["expire_at"])
 
