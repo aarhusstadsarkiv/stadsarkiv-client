@@ -400,7 +400,7 @@ async def update_order(
             await _update_status(crud, user_id, order_id, order_status)
 
         elif expire_at:
-            """ only used in tests """
+            """only used in tests"""
             update_values = {"expire_at": expire_at}
             await crud.update(
                 table="orders",

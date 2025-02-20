@@ -363,8 +363,8 @@ async def order_admin_print(request: Request):
     await is_authenticated(request, permissions=["employee"])
 
     # get order_id from query params order_id
-    order_id = request.query_params.get("order_id", "")
-    data = await _get_print_data(request, order_id)
+    order_id = request.query_params.get("order_id", "0")
+    data = await _get_print_data(request, int(order_id))
     data["disable_js"] = True
 
     context = await get_context(request, data, "record")
