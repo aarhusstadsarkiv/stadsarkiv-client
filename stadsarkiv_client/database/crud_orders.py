@@ -388,6 +388,7 @@ async def update_order(
         comment = update_values.get("comment", "")
         order_status = update_values.get("order_status", 0)
         location = update_values.get("location", 0)
+        expire_at = update_values.get("expire_at", "")
 
         if comment:
             await _update_comment(crud, user_id, order_id, comment)
@@ -397,6 +398,15 @@ async def update_order(
 
         elif order_status:
             await _update_status(crud, user_id, order_id, order_status)
+
+        elif expire_at:
+            """ only used in tests """
+            update_values = {"expire_at": expire_at}
+            await crud.update(
+                table="orders",
+                update_values=update_values,
+                filters={"order_id": order_id},
+            )
 
 
 async def _get_queued_orders_length(crud: "CRUD", orders: list[dict]) -> dict:
@@ -652,7 +662,7 @@ async def get_orders_admin(filters: OrderFilter) -> tuple[list, OrderFilter]:
         return orders, filters
 
 
-async def get_order(order_id):
+async def get_order(order_id: int):
     """
     Get a single joined order by order_id for display on the admin edit order page
     """
@@ -665,7 +675,7 @@ async def get_order(order_id):
         return order
 
 
-async def get_logs(order_id: str = "") -> list:
+async def get_logs(order_id: int = 0) -> list:
     """
     Get a single joined order by order_id for display on the admin edit order page
     """

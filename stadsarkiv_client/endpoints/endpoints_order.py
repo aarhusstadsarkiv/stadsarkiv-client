@@ -343,9 +343,9 @@ async def orders_logs(request: Request):
     await is_authenticated(request, permissions=["employee"])
 
     # get query params order_id
-    order_id = request.query_params.get("order_id", "")
+    order_id = request.query_params.get("order_id", "0")
 
-    logs = await crud_orders.get_logs(order_id=order_id)
+    logs = await crud_orders.get_logs(order_id=int(order_id))
     context_variables = {
         "logs": logs,
         "title": "Order Logs",
