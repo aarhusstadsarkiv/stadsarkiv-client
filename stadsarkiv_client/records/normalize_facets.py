@@ -25,7 +25,7 @@ class NormalizeFacets:
         self._query_str = query_str
         self._facets_resolved = search_result["facets_resolved"]
         self._filters: list = []
-        self._facets = settings_facets
+        self._facets = settings_facets.copy()
 
         # query params without the "-" (negated) prefix
         self._query_params_cleaned = [(name.lstrip("-"), value) for name, value in self._query_params]
