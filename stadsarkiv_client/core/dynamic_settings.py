@@ -18,6 +18,7 @@ from stadsarkiv_client.core.module_loader import load_submodule_from_file
 import importlib
 import os
 import yaml
+import copy
 
 log = get_log()
 
@@ -98,6 +99,14 @@ def get_setting(key):
     Get a setting by key
     """
     return settings.get(key, None)
+
+
+def get_settings_facets():
+    """
+    Get settings_facets
+    """
+    # return deep copy
+    return copy.deepcopy(settings_facets)
 
 
 def init_settings():

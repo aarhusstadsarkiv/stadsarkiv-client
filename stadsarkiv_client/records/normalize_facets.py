@@ -6,7 +6,7 @@ Filters is the list of search filters that are displayed on the top of the searc
 
 from stadsarkiv_client.core.logging import get_log
 from starlette.requests import Request
-from stadsarkiv_client.core.dynamic_settings import settings_facets
+from stadsarkiv_client.core.dynamic_settings import get_settings_facets
 from stadsarkiv_client.settings_query_params import settings_query_params
 
 # from stadsarkiv_client.core import query
@@ -25,7 +25,7 @@ class NormalizeFacets:
         self._query_str = query_str
         self._facets_resolved = search_result["facets_resolved"]
         self._filters: list = []
-        self._facets = settings_facets.copy()
+        self._facets = get_settings_facets()
 
         # query params without the "-" (negated) prefix
         self._query_params_cleaned = [(name.lstrip("-"), value) for name, value in self._query_params]
@@ -84,7 +84,7 @@ class NormalizeFacets:
         Alter the facets content with the count from the search facets. Also add
         a checked key to the facets content if the facet is checked in the query_params.
         """
-        for key, value in settings_facets.items():
+        for key, value in self._facets.items():
             if value["type"] == "default":
                 self._transform_default_facets(key, value["content"])
 
@@ -170,7 +170,7 @@ class NormalizeFacets:
 
         # Ignore keys where filters have been generated from _transform_default_facets method
         # These has the type "default" in settings_facets
-        ignore_keys = [key for key in settings_facets.keys() if settings_facets[key].get("type") == "default"]
+        ignore_keys = [key for key in self._facets.keys() if self._facets[key].get("type") == "default"]
         ignore_keys.extend(["size", "start", "sort", "direction", "view"])
 
         for query_name, query_value in self._query_params_cleaned:
