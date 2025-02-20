@@ -371,7 +371,7 @@ async def order_admin_print(request: Request):
     return templates.TemplateResponse(request, "order/print.html", context)
 
 
-async def _get_print_data(request: Request, order_id: str = ""):
+async def _get_print_data(request: Request, order_id: int = 0):
     order = await crud_orders.get_order(order_id)
     record_id = order["record_id"]
 
