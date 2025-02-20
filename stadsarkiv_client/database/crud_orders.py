@@ -21,12 +21,18 @@ except KeyError:
     orders_url = ""
 
 
-MAIL_SENT = "Mail sendt"
-RENEWAL_SENT = "Mail fornyelse sendt"
-LOCATION_CHANGED = "Lokation ændret"
-ORDER_CREATED = "Bestilling oprettet"
-ORDER_COMPLETED = "Bestilling afsluttet"
-STATUS_CHANGED = "Bruger status ændret"
+@dataclass
+class LogMessages:
+    ORDER_CREATED: str = "Bestilling oprettet"
+    ORDER_RENEWED: str = "Bestilling fornyet"
+    STATUS_CHANGED: str = "Bruger status ændret"
+    LOCATION_CHANGED: str = "Lokation ændret"
+    MAIL_SENT: str = "Mail sendt"
+    RENEWAL_SENT: str = "Mail fornyelse sendt"
+
+
+LOG_MESSAGES = LogMessages()
+
 
 SYSTEM_USER_ID = "SYSTEM"
 
@@ -143,7 +149,7 @@ async def renew_order(user_id: str, order_id: int):
         order = await _get_orders_one(crud, order_id=order_id)
 
         if not await _is_renew_possible(crud, order):
-            raise Exception(f"Bestilling {order_id} kunne ikke fornyes")
+            raise Exception(f"Bestilling {order_id} kan ikke fornyes")
 
         expire_at_date = utils_orders.get_expire_at_date()
         await crud.update(
@@ -157,7 +163,7 @@ async def renew_order(user_id: str, order_id: int):
             crud,
             user_id=user_id,
             order=order,
-            message="Bestilling fornyet",
+            message=LOG_MESSAGES.ORDER_RENEWED,
         )
 
 
@@ -217,7 +223,7 @@ async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
         # Retrieve the newly created order and log the creation
         last_order_id = await crud.last_insert_id()
         inserted_order = await _get_orders_one(crud, order_id=last_order_id)
-        log_messages = [ORDER_CREATED]
+        log_messages = [LOG_MESSAGES.ORDER_CREATED]
 
         # Handle special cases for orders already in the reading room and ordered
         if record_data["location"] == utils_orders.RECORD_LOCATION.READING_ROOM and order_status == utils_orders.ORDER_STATUS.ORDERED:
@@ -234,7 +240,7 @@ async def insert_order(meta_data: dict, record_and_types: dict, me: dict):
 
             updated_order = await _get_orders_one(crud, order_id=inserted_order["order_id"])
             await utils_orders.send_order_message(MAIL_MESSAGE_ORDER_READY_TITLE, MAIL_MESSAGE_ORDER_READY, updated_order)
-            log_messages.append(MAIL_SENT)
+            log_messages.append(LOG_MESSAGES.MAIL_SENT)
 
         await _insert_log_message(
             crud,
@@ -268,7 +274,7 @@ async def _update_status(crud: "CRUD", user_id: str, order_id: int, new_status: 
             crud,
             user_id,
             order,
-            STATUS_CHANGED,
+            LOG_MESSAGES.STATUS_CHANGED,
         )
 
         next_queued_order = await _get_orders_one(crud, statuses=[utils_orders.ORDER_STATUS.QUEUED], record_id=order["record_id"])
@@ -279,7 +285,7 @@ async def _update_status(crud: "CRUD", user_id: str, order_id: int, new_status: 
                 update_values={"order_status": utils_orders.ORDER_STATUS.ORDERED},
                 filters={"order_id": next_queued_order["order_id"]},
             )
-            log_messages = [STATUS_CHANGED]
+            log_messages = [LOG_MESSAGES.STATUS_CHANGED]
 
             if next_queued_order["location"] == utils_orders.RECORD_LOCATION.READING_ROOM:
                 # Update the expire and send a message if the order is in the reading room
@@ -294,7 +300,7 @@ async def _update_status(crud: "CRUD", user_id: str, order_id: int, new_status: 
 
                 next_queued_order = await _get_orders_one(crud, order_id=next_queued_order["order_id"])
                 await utils_orders.send_order_message(MAIL_MESSAGE_ORDER_READY_TITLE, MAIL_MESSAGE_ORDER_READY, next_queued_order)
-                log_messages.append(MAIL_SENT)
+                log_messages.append(LOG_MESSAGES.MAIL_SENT)
 
             # Log the status change
             await _insert_log_message(
@@ -323,7 +329,7 @@ async def _update_location(crud: "CRUD", user_id: str, order_id: int, new_locati
         filters={"record_id": order["record_id"]},
     )
 
-    log_messages = [LOCATION_CHANGED]
+    log_messages = [LOG_MESSAGES.LOCATION_CHANGED]
 
     # If the new location is the reading room, add expire_at and message_sent fields
     order_update_values: dict = {}
@@ -336,7 +342,7 @@ async def _update_location(crud: "CRUD", user_id: str, order_id: int, new_locati
         if not order.get("message_sent"):
             await utils_orders.send_order_message(MAIL_MESSAGE_ORDER_READY_TITLE, MAIL_MESSAGE_ORDER_READY, order)
             order_update_values["message_sent"] = 1
-            log_messages.append(MAIL_SENT)
+            log_messages.append(LOG_MESSAGES.MAIL_SENT)
 
     # Perform update on the order
     await crud.update(
@@ -784,7 +790,7 @@ AND o.order_status = {utils_orders.ORDER_STATUS.ORDERED}
                     crud,
                     user_id=SYSTEM_USER_ID,
                     order=order,
-                    message=RENEWAL_SENT,
+                    message=LOG_MESSAGES.RENEWAL_SENT,
                 )
         except Exception:
             log.exception(f"Failed to send renewal email for order {order['order_id']}")
