@@ -3,6 +3,18 @@ This file contains the settings query parameters that can be used in the
 search query.
 """
 
+from types import MappingProxyType
+
+
+def make_immutable(obj):
+    """
+    Recursively convert all dicts inside obj to MappingProxyType.
+    """
+    if isinstance(obj, dict):
+        return MappingProxyType({k: make_immutable(v) for k, v in obj.items()})
+    return obj
+
+
 settings_query_params = {
     "view": {
         "label": "Visning",
@@ -214,3 +226,5 @@ settings_query_params = {
         "search_filter": False,
     },
 }
+
+settings_query_params = make_immutable(settings_query_params)
