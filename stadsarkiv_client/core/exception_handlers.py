@@ -29,6 +29,7 @@ async def not_found(request: Request, exc: HTTPException):
     context_values = {
         "title": f"404 {translate('Error. Not Found')}",
         "status_code": 404,
+        "human_error": "Siden du leder efter findes ikke. ",
     }
 
     # No need to log full exception. It's a 404
@@ -47,6 +48,7 @@ async def http_status_error(request: Request, exc: HTTPStatusError):
     context_values = {
         "title": title,
         "status_code": exc.response.status_code,
+        "human_error": "Der skete en fejl, da systemet hentede data fra et API. Fejlen er blevet logget og vi vil kigge på det hurtigst muligt.",
         "exc": exc,
         "exc_traceback": exc_traceback,
     }
@@ -66,6 +68,7 @@ async def server_error(request: Request, exc: Exception):
     context_values = {
         "title": f"500 {translate('Error. Server Error')}",
         "status_code": 500,
+        "human_error": "Der skete en system fejl. Fejlen er blevet logget og vi vil kigge på det hurtigst muligt.",
         "exc": exc,
         "exc_traceback": exc_traceback,
     }
@@ -84,6 +87,7 @@ async def forbidden_error(request: Request, exc: HTTPException):
     context_values = {
         "title": translate("Error. Forbidden Error"),
         "status_code": 403,
+        "human_error": "Du har ikke adgang til denne side. Fejlen er blevet logget. ",
     }
 
     log.exception(f"403 Forbidden: {request.url}")
