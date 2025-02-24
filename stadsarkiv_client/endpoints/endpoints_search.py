@@ -48,7 +48,11 @@ def _get_search_pagination_data(request: Request, query_str_pagination, total: i
 
     result["total"] = total
 
-    start = int(request.query_params.get("start", 0))
+    start_ = request.query_params.get("start", "0")
+    if not start_.isdigit():
+        start_ = "0"
+
+    start = int(start_)
     result["start"] = start
 
     total_pages = (total // size) + (1 if total % size != 0 else 0)
@@ -123,6 +127,10 @@ def _get_default_query_params(request: Request):
 
     start = request.query_params.get("start", None)
     if start:
+
+        if not start.isdigit():
+            start = "0"
+
         add_list_items.append(("start", start))
 
     return add_list_items
