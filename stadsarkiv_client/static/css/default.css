@@ -366,6 +366,14 @@ h6 {
     opacity: .5;
 }
 
+.sub-menu a {
+    padding: 5px;
+    background-color: rgba(var(--navigation-background-rgb), 0.15);
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+
 .loadingspinner {
     margin-top: 10px;
     pointer-events: none;

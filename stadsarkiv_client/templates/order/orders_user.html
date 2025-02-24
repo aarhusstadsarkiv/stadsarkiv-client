@@ -14,6 +14,11 @@
 
 {{ basic_macros.page_title(title) }}
 
+<div class="sub-menu">
+    <a href="/auth/orders" class="active">Tilgængelig i læsesal</a>
+    <a href="/auth/orders?status=reserved" class="active">Reserveret materiale</a>
+</div>
+
 {% if orders|length == 0 %}
     {% if status == "active" %}
         <p>Du har ingen bestillinger tilgængelig i læsesal.</p>
@@ -24,19 +29,6 @@
     {% endif %}
 
 {% endif %}
-
-{% if status == "active" %}
-<div class="sub-menu">
-    <a href="/auth/orders?status=reserved" class="active">Vis reserveret materiale</a>
-</div>
-{% endif %}
-
-{% if status == "reserved" %}
-<div class="sub-menu">
-    <a href="/auth/orders" class="active">Vis tilgængelig i læsesal</a>
-</div>
-{% endif %}
-
 
 {% for order in orders %}
 <div class="record-section parent-container-delete">
