@@ -64,7 +64,7 @@ ORDER_STATUS_USER_HUMAN = {
 
 
 DEADLINE_DAYS_RENEWAL = 3
-DEADLINE_DAYS = 7
+DEADLINE_DAYS = 30
 
 
 def get_insert_user_data(me: dict) -> dict:
