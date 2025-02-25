@@ -33,14 +33,17 @@ def run_cron_renewal_emails():
 
 # Initialize scheduler
 scheduler = BackgroundScheduler()
-if settings.get("environment") == "development":
-    log.info("Running cron job every minute in development")
-    scheduler.add_job(run_cron_orders_expire, "cron", minute="*")
-    scheduler.add_job(run_cron_renewal_emails, "cron", minute="*")
-else:
-    log.info("Running cron job every day at midnight")
-    scheduler.add_job(run_cron_orders_expire, "cron", hour=0, minute=2)
-    scheduler.add_job(run_cron_renewal_emails, "cron", hour=0, minute=4)
+
+# Cron orders if enabled
+if settings.get("cron_orders", False):
+    if settings.get("environment") == "development":
+        log.info("Running cron job every minute in development")
+        scheduler.add_job(run_cron_orders_expire, "cron", minute="*")
+        scheduler.add_job(run_cron_renewal_emails, "cron", minute="*")
+    else:
+        log.info("Running cron job every day at midnight")
+        scheduler.add_job(run_cron_orders_expire, "cron", hour=0, minute=2)
+        scheduler.add_job(run_cron_renewal_emails, "cron", hour=0, minute=4)
 
 
 scheduler.start()

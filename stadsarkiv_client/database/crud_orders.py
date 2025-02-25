@@ -722,10 +722,6 @@ async def cron_orders_expire():
     """
     Check if expire has passed and update user status to COMPLETED
     """
-    if not settings.get("cron_orders", False):
-        log.debug("Cron orders is disabled")
-        return
-
     # Get orders where expire_at has passed
     try:
         database_connection = DatabaseConnection(orders_url)
