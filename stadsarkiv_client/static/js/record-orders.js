@@ -6,7 +6,6 @@ const spinner = document.querySelector('.loadingspinner');
 const orderElem = document.getElementById('record-order');
 
 // <div class ="action-links"><a href="#" id="record-order" data-id="1">Bestil materialet</a></div>
-console.log(orderElem)
 
 if (orderElem) {
     orderElem.addEventListener('click', async function (event) {
