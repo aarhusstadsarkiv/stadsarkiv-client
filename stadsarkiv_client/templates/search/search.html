@@ -41,26 +41,16 @@
 <script type="module">
     import { searchEvents } from "/static/js/search.js";
     import { autoCompleteInit  } from '/static/js/auto-complete-instance.js';
+    import { config } from '/static/js/config.js';
 
     searchEvents();
 
-    const searchBaseUrl = '/search?';
-    window.addEventListener("pageshow", function(event) {
-        if (!event.persisted) {
-            autoCompleteInit(searchBaseUrl);
-        }
-    });
-
-
-    const bookmarkSearch = document.querySelector('.bookmark-search');
-    if (bookmarkSearch) {
-        bookmarkSearch.addEventListener('click', function() {
-            console.log('bookmarkSearch');
-            let sign = prompt("Indtast en tekst som gemmes med din søgning");
-            if (sign) {
-                
+    if (config.autoComplete) {
+        const searchBaseUrl = '/search?';
+        window.addEventListener("pageshow", function(event) {
+            if (!event.persisted) {
+                autoCompleteInit(searchBaseUrl);
             }
-            // console.log(sign);
         });
     }
 </script>
