@@ -1,0 +1,67 @@
+ body {
+
+/* colors */
+
+  /* h2 grå */
+--color-grey-50: #f7f7f8;
+--color-grey-100: #ecedef;
+--color-grey-200: #dbdde1;
+--color-grey-300: #c8cbd0;
+--color-grey-400: #b4b8c0;
+--color-grey-500: #a1a6af;
+--color-grey-600: #9196a1;
+--color-grey-700: #7d8491;
+--color-grey-800: #525761;
+--color-grey-900: #2a2d32;
+--color-grey-950: #151619;
+
+
+/* h2 blå */
+--color-bluesyvhundet-50: #ebf6ff;
+--color-bluesyvhundet-100: #d6edff;
+--color-bluesyvhundet-200: #a8d9ff;
+--color-bluesyvhundet-300: #80c8ff;
+--color-bluesyvhundet-400: #52b4ff;
+--color-bluesyvhundet-500: #29a2ff;
+--color-bluesyvhundet-600: #008efa;
+--color-bluesyvhundet-700: #0076d1;
+--color-bluesyvhundet-800: #004e8a;
+--color-bluesyvhundet-900: #002847;
+--color-bluesyvhundet-950: #001424;
+
+
+
+--color-green600-50: #ecf8ed;
+--color-green600-100: #ddf3de;
+--color-green600-200: #b7e6b9;
+--color-green600-300: #95da97;
+--color-green600-400: #6fcd73;
+--color-green600-500: #4dc151;
+--color-green600-600: #39a33c;
+--color-green600-700: #2a792d;
+--color-green600-800: #1d531f;
+--color-green600-900: #0f2a0f;
+--color-green600-950: #071307;
+--color-gulfem-50: #ffffe5;
+--color-gulfem-100: #ffffcc;
+--color-gulfem-200: #ffff99;
+--color-gulfem-300: #ffff66;
+--color-gulfem-400: #ffff33;
+--color-gulfem-500: #ffff00;
+--color-gulfem-600: #cccc00;
+--color-gulfem-700: #999900;
+--color-gulfem-800: #666600;
+--color-gulfem-900: #333300;
+--color-gulfem-950: #191900;
+--color-redfem-50: #fde8ec;
+--color-redfem-100: #faccd5;
+--color-redfem-200: #f69daf;
+--color-redfem-300: #f16985;
+--color-redfem-400: #ed3b5e;
+--color-redfem-500: #dc143c;
+--color-redfem-600: #b21030;
+--color-redfem-700: #830c24;
+--color-redfem-800: #590818;
+--color-redfem-900: #2a040b;
+--color-redfem-950: #170206;
+  }

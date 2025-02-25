@@ -1,0 +1,57 @@
+.images-top-container {
+    display: flex;
+    background-image: url(/static/assets/images-page/Billder-fra-Aarhus_AA_header_1920px.jpg);
+    background-size: contain;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1920 / 400;
+}
+
+.images-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 25px;
+    padding-top: 15px;
+    margin: 0 auto;
+    max-width: 1400px;
+    padding-top: 50px;
+}
+
+/** image-link - default is 3 columns */
+.images-link {
+    flex: 1 0 30%;
+    /* Four columns */
+    margin: 5px;
+}
+
+@media (max-width: 1024px) {
+    .images-link {
+        flex: 1 0 46%;
+        /* Two columns */
+    }
+    .images-top-image-container {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .images-link {
+        flex: 1 0 96%;
+        max-width: 96%;
+    }
+}
+
+.images-text p {
+    font-size: 0.9em;
+}
+
+.images-text h3 {
+    font-size: 1.2em;
+    text-decoration: uppercase;
+}
+
+
+.footer {
+    margin-top: 0;
+}
