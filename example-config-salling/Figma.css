@@ -1,59 +1,53 @@
 .page-records-search {
     position: absolute;
-    height: 459.67498779296875px;
+    height: 460px;
     width: 360px;
-    padding: 0px;
+    padding: 0;
 }
 
 .search-link {
     background-color: #ffffff;
-    height: 459.67498779296875px;
+    height: 460px;
     width: 360px;
-    filter: drop-shadow(0px 12px 16px rgba(0.03921568766236305, 0.04967320337891579, 0.07058823853731155, 0.07999999821186066));
-    padding-left: 24px;
-    padding-right: 24px;
-    padding-top: 24px;
-    padding-bottom: 32px;
+    filter: drop-shadow(0px 12px 16px rgba(10, 13, 18, 0.08));
+    padding: 24px 24px 32px;
     display: flex;
     flex-direction: column;
     gap: 32px;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
 }
 
 .search-thumbnail {
-    height: 233.67498779296875px;
+    height: 234px;
     width: 312px;
-    padding: 0px;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    left: 24px;
-    top: 24px;
     position: relative;
 }
 
 .købstadensdåbsattest {
-    height: 233.67498779296875px;
+    height: 234px;
     width: 312px;
 }
 
 .search-details {
     height: 138px;
     width: 312px;
-    padding: 0px;
+    padding: 0;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    left: 24px;
-    top: 289.67px;
     position: relative;
+    top: 290px;
 }
 
-.record-contentrecord_content_date_normalized {
+.record-content-date {
     height: 20px;
     width: 83px;
-    padding: 0px;
+    padding: 0;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -65,7 +59,7 @@
 .content2 {
     height: 20px;
     width: 83px;
-    padding: 0px;
+    padding: 0;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -73,63 +67,53 @@
     position: relative;
 }
 
-.~2017 {
+.date-text {
     color: #000000;
     text-align: left;
-    vertical-align: text-top;
     font-size: 14px;
-    font-family: Inter;
+    font-family: Inter, sans-serif;
     line-height: 20px;
-    border-style: hidden;
-    outline: none;
     width: 83px;
-    align-self: flex-start;
     display: flex;
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
 }
 
 .search-summary {
     height: 30px;
     width: 312px;
-    padding: 0px;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    top: 28px;
     position: relative;
+    top: 28px;
 }
 
-.købstadensdåbsattest2 {
+.summary-title {
     color: #000000;
     text-align: left;
-    vertical-align: text-top;
     font-size: 20px;
-    font-family: Inter;
+    font-family: Inter, sans-serif;
     line-height: 30px;
-    border-style: hidden;
-    outline: none;
     width: 228px;
 }
 
 .search-summary2 {
     height: 72px;
     width: 312px;
-    padding: 0px;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    top: 66px;
     position: relative;
+    top: 66px;
 }
 
-.hvembyggedeaarhus {
+.summary-description {
     color: #000000;
     text-align: left;
-    vertical-align: text-top;
     font-size: 16px;
-    font-family: Inter;
+    font-family: Inter, sans-serif;
     line-height: 24px;
-    border-style: hidden;
-    outline: none;
     width: 312px;
 }
