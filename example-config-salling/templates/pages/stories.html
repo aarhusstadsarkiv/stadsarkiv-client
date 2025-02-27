@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block body_class %}page-home{% endblock %}
+
+{% block content %}
+{% include "includes/main_title.html" %}
+
+<p>Dette er den "default" homepage</p>
+
+<pre>{{ to_json(main_stories) }}</pre>
+
+<div class="story-first">
+    <h3>{{ story_first.heading }}</h3>
+
+    {# for each story_first.paragraphs print over each paragraph #}
+    {% for paragraph in story_first.paragraphs %}
+        <p>{{ paragraph }}</p>
+    {% endfor %}
+</div>
+
+
+
+{% endblock content %}
