@@ -75,6 +75,7 @@ def get_record_meta_data(request: Request, record: dict, user_permissions=[]) ->
     meta_data["permission_granted"] = permssion_granted
     meta_data["title"] = title
     meta_data["meta_title"] = _get_meta_title(record)
+    meta_data["summary"] = record.get("summary", "")
     meta_data["meta_description"] = record_utils.meaningful_substring(record.get("summary", ""), 120)
 
     if not meta_data["meta_description"]:
