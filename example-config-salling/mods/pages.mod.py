@@ -1,6 +1,7 @@
 from starlette.routing import Route
 from starlette.requests import Request
 from starlette.responses import JSONResponse
+from starlette.exceptions import HTTPException
 
 # from starlette.exceptions import HTTPException
 from stadsarkiv_client.core.templates import templates
@@ -73,6 +74,13 @@ async def import_data(request: Request):
     return JSONResponse({"status": "ok"})
 
 
+def _get_story_path(file: str):
+    # remove json extension and leading 4 chars (001- or 002- etc)
+    url_path = file.replace(".json", "")
+    url_path = url_path[4:]
+    return url_path
+
+
 def _get_source_stories():
     stories = []
     data_path = os.path.join(base_dir, "..", "data", "stories")
@@ -81,16 +89,10 @@ def _get_source_stories():
     for file in story_paths:
         file_path = os.path.join(data_path, file)
 
-        # read json file
         with open(file_path, "r") as f:
             story = json.load(f)
 
-        basename = os.path.basename(file)
-        url_path = basename.replace(".json", "")
-        log.info(f"URL path: {url_path}")
-        # remove leading 001- or 002- (4 chars)
-        url_path = url_path[4:]
-        story[0]["path"] = url_path
+        story[0]["path"] = _get_story_path(file)
         stories.append(story)
 
     return stories
@@ -113,7 +115,6 @@ async def stories_index(request: Request):
 
     # The first story is special
     story_first = main_stories.pop(0)
-
     title = story_first.get("heading")
 
     context = await get_context(
@@ -129,31 +130,34 @@ async def stories_index(request: Request):
 
 
 async def story_display(request: Request):
-    pass
 
+    # get path
+    path = request.path_params["page"]
 
-"""
-docs_folder = str(os.path.join(base_dir, "..", "docs"))
+    # load imported stories
+    stories_imported = os.path.join(base_dir, "..", "data", "stories_imported.json")
+    with open(stories_imported, "r") as f:
+        stories = json.load(f)
 
-docs_data = [
-    {"title": "stadsarkiv-client", "file": "README.md", "path": "/"},
-    {"title": "Create client", "file": "README.client.md", "path": "/docs/README.client.md"},
-    {"title": "Run on server", "file": "README.server.md", "path": "/docs/README.server.md"},
-]
+    # Iterate over all stories and find the one with the correct path
+    found_story = None
+    for story in stories:
+        if story[0]["path"] == path:
+            found_story = True
+            break
 
-url_path = request.url.path
+    if not found_story:
+        raise HTTPException(404, detail="Page not found", headers=None)
 
-for doc in docs_data:
-    if doc["path"] != url_path:
-        continue
-
-    file_path = os.path.join(docs_folder, doc.get("file", ""))
-    with open(file_path, "r") as file:
-        content = file.read()
-
-    context_values = {"title": "Documentation", "doc_data": docs_data, "content": content}
-    context = await get_context(request, context_values=context_values)
-    return templates.TemplateResponse(request, "docs/docs.html", context)
-
-raise HTTPException(404, detail="Page not found", headers=None)
-"""
+    sections = story
+    first_section = sections.pop(0)
+    title = first_section["heading"]
+    context = await get_context(
+        request,
+        context_values={
+            "title": title,
+            "sections": sections,
+            "first_section": first_section,
+        },
+    )
+    return templates.TemplateResponse(request, "pages/story.html", context)

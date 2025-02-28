@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block body_class %}page-home{% endblock %}
+
+{% block content %}
+{% include "includes/main_title.html" %}
+
+<div class="story-section-first">
+
+    <div class="story-section-first-content">
+
+        {% for paragraph in first_section.paragraphs %}
+        <p>{{ paragraph }}</p>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="story-sections">
+
+    {% for section in sections %}
+    <div class="story-section">
+        <div class="story-section-text">
+        {% if section.date %}
+        <h1>{{ section.date }} </h1>
+        <h3>{{ section.heading }} </h3>
+        {% for paragraph in section.paragraphs %}
+        <p>{{ paragraph }}</p>
+        {% endfor %}
+        {% endif %}
+        </div>    
+        <div class="story-section-image">
+            {% if section.urls and section.urls[0] %}
+                <div class="story-image-container">
+                    <img src="{{ section.urls[0] }}" alt="{{ section.heading }}">
+                    {% if section.summary and section.summary[0] %}
+                        <p class="story-image-summary">{{ section.summary[0] }}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <hr>
+    {% endfor %}
+</div>
+
+<style>
+
+    .story-image-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .story-image-summary {
+        margin: 0;
+        font-style: italic;
+    }
+
+    .story-sections {
+        display: flex;
+
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .story-section {
+        display: flex;
+        gap: 20px;
+    }
+
+    .story-section-text {
+        width: 50%;
+    }
+
+    .story-section-image {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .story-section img {
+        max-height: 300px;
+        width: auto;
+        max-width: 100%;
+    }
+
+    .story-section img {
+        max-height: 300px;
+        width: auto;
+    }
+
+    .story-sections h3:first-of-type {
+        text-decoration: underline;
+    }
+</style>
+
+<pre>{# to_json(sections) #}</pre>
+
+{% endblock content %}
