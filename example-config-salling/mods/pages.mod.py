@@ -8,7 +8,6 @@ from stadsarkiv_client.core.context import get_context
 import os
 from stadsarkiv_client.core.logging import get_log
 import json
-from stadsarkiv_client.core import api
 import httpx
 
 log = get_log()
@@ -22,7 +21,7 @@ def get_routes() -> list:
         # Route("/", endpoint=docs_endpoint, name="homepage", methods=["GET"]),
         Route("/historier", endpoint=stories_index, name="stories", methods=["GET"]),
         Route("/historier/{page:str}", endpoint=story_display, name="story_display", methods=["GET"]),
-        Route("/salling/import", endpoint=import_images, name="docs", methods=["GET"]),
+        Route("/salling/import", endpoint=import_data, name="import_data", methods=["GET"]),
     ]
 
     return routes
@@ -40,7 +39,7 @@ async def fetch_image(url: str):
         return response.content
 
 
-async def import_images(request: Request):
+async def import_data(request: Request):
 
     stories = _get_source_stories()
     for story in stories:
@@ -68,10 +67,7 @@ async def import_images(request: Request):
 
     # save the stories to a new json file
     data_path = os.path.join(base_dir, "..", "data", "stories_imported.json")
-    with open(
-        data_path,
-        "w",
-    ) as f:
+    with open(data_path, "w") as f:
         json.dump(stories, f, ensure_ascii=False, indent=4)
 
     return JSONResponse({"status": "ok"})
@@ -80,39 +76,43 @@ async def import_images(request: Request):
 def _get_source_stories():
     stories = []
     data_path = os.path.join(base_dir, "..", "data", "stories")
-    for file in os.listdir(data_path):
-
-        # Get full path to file
-        log.debug(f"File: {file}")
+    story_paths = os.listdir(data_path)
+    story_paths.sort()
+    for file in story_paths:
         file_path = os.path.join(data_path, file)
 
         # read json file
         with open(file_path, "r") as f:
             story = json.load(f)
 
+        basename = os.path.basename(file)
+        url_path = basename.replace(".json", "")
+        log.info(f"URL path: {url_path}")
+        # remove leading 001- or 002- (4 chars)
+        url_path = url_path[4:]
+        story[0]["path"] = url_path
         stories.append(story)
 
     return stories
 
 
 async def stories_index(request: Request):
-    url_path = request.url.path
+    """
+    Index of stories
+    """
 
-    # read imported data
+    # load imported stories
     stories_imported = os.path.join(base_dir, "..", "data", "stories_imported.json")
-    # stories = _get_source_stories()
-
     with open(stories_imported, "r") as f:
         stories = json.load(f)
 
-    # Get all main stories
+    # Get all main stories. Main stories is the first story in each section
     main_stories = []
     for story in stories:
         main_stories.append(story[0])
 
-    # Get first story dict
-    story_first = stories.pop(0)
-    story_first = story_first[0]
+    # The first story is special
+    story_first = main_stories.pop(0)
 
     title = story_first.get("heading")
 
@@ -120,7 +120,7 @@ async def stories_index(request: Request):
         request,
         context_values={
             "title": title,
-            "stories": stories,
+            # "stories": stories,
             "story_first": story_first,
             "main_stories": main_stories,
         },

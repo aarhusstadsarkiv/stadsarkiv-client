@@ -5,18 +5,134 @@
 {% block content %}
 {% include "includes/main_title.html" %}
 
-<p>Dette er den "default" homepage</p>
-
-<pre>{{ to_json(main_stories) }}</pre>
+<pre>{# to_json(story_first) #}</pre>
 
 <div class="story-first">
-    <h3>{{ story_first.heading }}</h3>
 
-    {# for each story_first.paragraphs print over each paragraph #}
-    {% for paragraph in story_first.paragraphs %}
+    <div class="story-first-content">
+
+        {% for paragraph in story_first.paragraphs %}
         <p>{{ paragraph }}</p>
+        {% endfor %}
+    </div>
+
+    <div class="story-first-portrait">
+        <img src="{{ story_first.urls[0] }}" alt="{{ story_first.heading }}">
+    </div>
+</div>
+
+<div class="search-results-stories">
+
+    {% for story in main_stories %}
+    <div class="search-result-stories">
+        <a class="search-link-stories" href="/historier/{{ story.path }}">
+            <div class="search-portrait-stories">
+                <img src="{{ story.urls[0] }}" alt="{{ story.heading }}">
+            </div>
+            <div class="search-summary-stories">{{ story.heading }}</div>
+
+            <div class="search-result-date-stories">
+                1965
+            </div>
+        </a>
+    </div>
     {% endfor %}
 </div>
+
+<style>
+    .story-first {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .story-first-content {
+        width: 60%;
+    }
+    .story-first-portrait {
+        width: 40%;
+    }
+
+    /** change to columns when width is 992px */
+    @media (max-width: 992px) {
+        .story-first {
+            flex-direction: column;
+        }
+        .story-first-content {
+            width: 100%;
+        }
+        .story-first-portrait {
+            display: none;
+        }
+    } 
+
+    .search-results-stories {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 20px;
+        max-width: 100%;
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+
+    @media (max-width: 1200px) {
+        .search-results-stories {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (max-width: 992px) {
+        .search-results-stories {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 576px) {
+        .search-results-stories {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .search-result-stories {
+        border-radius: 5px;
+        break-inside: avoid;
+        margin-bottom: 20px;
+        background: var(--search-result-background);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+    }
+
+    .search-result-stories:hover {
+        background-color: var(--search-result-background-hover);
+    }
+
+    .search-link-stories {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    a.search-link-stories {
+        text-decoration: none;
+        color: var(--text);
+        font-size: 0.9rem;
+    }
+
+    .search-portrait-stories img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1 / 1;
+        object-fit: contain;
+    }
+
+    .search-summary-stories {
+        flex-grow: 1;
+    }
+
+    .search-result-date-stories {
+        font-size: 0.9em;
+    }
+</style>
 
 
 
