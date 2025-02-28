@@ -171,5 +171,5 @@ uvicorn_process.pid
 /resources
 /bin-local
 settings_local.py
-data
+/data
 !tests/data
