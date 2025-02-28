@@ -5,17 +5,17 @@
 {% block content %}
 {% include "includes/main_title.html" %}
 
-<div class="story-section-first">
-
-    <div class="story-section-first-content">
-
-        {% for paragraph in first_section.paragraphs %}
-        <p>{{ paragraph }}</p>
-        {% endfor %}
-    </div>
-</div>
 
 <div class="story-sections">
+
+    <div class="story-section">
+        <div class="story-section-text">
+            {% for paragraph in first_section.paragraphs %}
+            <p>{{ paragraph }}</p>
+            {% endfor %}
+        </div>
+        <div></div>
+    </div>
 
     {% for section in sections %}
     <div class="story-section">
@@ -60,10 +60,6 @@
         min-width: 100%;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         border-radius: 12px;
-        /*
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        */ 
     }
     
     .story-image-summary {
@@ -72,12 +68,10 @@
         text-decoration: none;
     }
 
-    /** remove decoration from story-section-image */
     .story-section-image a {
         text-decoration: none;
         color: var(--text)
     }
-
 
     .story-sections {
         display: flex;
@@ -100,7 +94,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        
     }
     
     .story-section-image p, .story-section img {
@@ -108,11 +101,16 @@
         width: auto;
     }
 
-    .story-sections h4:first-of-type {
-        font-size: larger;
-        text-decoration: underline;
+    .story-sections h4 {
+        font-size: 1.5em;
+        font-weight: 500;
     }
 
+    .story-sections h4:first-of-type {
+        font-size: 1.5em;
+        font-weight: 500;
+        text-decoration: underline;
+    }
 
     /** change to columns when width is 992px */
     @media (max-width: 992px) {
