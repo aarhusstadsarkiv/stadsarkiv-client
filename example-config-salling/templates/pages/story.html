@@ -21,25 +21,30 @@
     <div class="story-section">
         <div class="story-section-text">
         {% if section.date %}
-        <h1>{{ section.date }} </h1>
-        <h3>{{ section.heading }} </h3>
+        <h4>{{ section.date }} </h1>
+        <h4>{{ section.heading }} </h3>
         {% for paragraph in section.paragraphs %}
         <p>{{ paragraph }}</p>
         {% endfor %}
         {% endif %}
         </div>    
+        
+        {% if section.urls and section.urls[0] %}
         <div class="story-section-image">
-            {% if section.urls and section.urls[0] %}
+            <a href="/records/{{ section.recordIds[0] }}">
                 <div class="story-image-container">
                     <img src="{{ section.urls[0] }}" alt="{{ section.heading }}">
                     {% if section.summary and section.summary[0] %}
                         <p class="story-image-summary">{{ section.summary[0] }}</p>
                     {% endif %}
                 </div>
-            {% endif %}
+            </a>
         </div>
+        {% else %}
+        <div></div>
+        {% endif %}
+        
     </div>
-    <hr>
     {% endfor %}
 </div>
 
@@ -51,16 +56,31 @@
         align-items: center;
         text-align: center;
         gap: 10px;
+        padding: 20px;
+        min-width: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border-radius: 12px;
+        /*
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        */ 
     }
     
     .story-image-summary {
         margin: 0;
         font-style: italic;
+        text-decoration: none;
     }
+
+    /** remove decoration from story-section-image */
+    .story-section-image a {
+        text-decoration: none;
+        color: var(--text)
+    }
+
 
     .story-sections {
         display: flex;
-
         flex-direction: column;
         gap: 40px;
     }
@@ -68,6 +88,7 @@
     .story-section {
         display: flex;
         gap: 20px;
+        align-items: center;
     }
 
     .story-section-text {
@@ -79,22 +100,32 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        
     }
     
-    .story-section img {
-        max-height: 300px;
-        width: auto;
-        max-width: 100%;
-    }
-
-    .story-section img {
-        max-height: 300px;
+    .story-section-image p, .story-section img {
+        max-width: 300px;
         width: auto;
     }
 
-    .story-sections h3:first-of-type {
+    .story-sections h4:first-of-type {
+        font-size: larger;
         text-decoration: underline;
     }
+
+
+    /** change to columns when width is 992px */
+    @media (max-width: 992px) {
+        .story-section {
+            flex-direction: column;
+        }
+        .story-image-container {
+            width: 100%;
+        }
+        .story-section-text {
+            width: 100%;
+        }
+    } 
 </style>
 
 <pre>{# to_json(sections) #}</pre>
