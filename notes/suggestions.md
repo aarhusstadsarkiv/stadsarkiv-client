@@ -351,3 +351,16 @@ Altså søge på en Enhed (æske) og se hvilke arkivalier de er registret til at
 Spørg hvis I er i tvivl hvad jeg mener
 
 - Christian
+
+---
+
+Jeg har to fremtidige ønsker til fremsøgning af publikationer på AarhusArkivet.
+
+Man skal kunne fremsøge en publikation på forfatterens navn
+DK5 emner bør være søgbare, så man kan få vist de bøger vi har inden for en bestemt kategori f.eks. ”arkitektur”.
+
+- Christian
+
+---
+
+Captcha (mere tydeligt).
