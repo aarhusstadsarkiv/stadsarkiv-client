@@ -213,6 +213,46 @@ async def story_display(request: Request):
     return templates.TemplateResponse(request, "pages/story.html", context)
 
 
+async def memory_display(request: Request):
+    # get path
+    path = request.path_params["page"]
+
+    # load imported stories
+    memories_imported = os.path.join(base_dir, "..", "data", "memories_imported.json")
+    with open(memories_imported, "r") as f:
+        memories = json.load(f)
+
+    # Iterate over all stories and find the one with the correct path
+    found_memory = None
+    for memory in memories:
+        if memory["path"] == path:
+            found_memory = True
+            break
+
+    if not found_memory:
+        raise HTTPException(404, detail="Page not found", headers=None)
+
+    memory_images = []
+    images = memory.get("urls", [])
+    images_texts = memory.get("summary", [])
+    for url, text in zip(images, images_texts):
+        image = {
+            "url": url,
+            "text": text,
+        }
+        memory_images.append(image)
+
+    context = await get_context(
+        request,
+        context_values={
+            "title": memory["heading"],
+            "memory": memory,
+            "images": memory_images,
+        },
+    )
+    return templates.TemplateResponse(request, "pages/memory.html", context)
+
+
 def get_routes() -> list:
 
     routes = [
@@ -220,6 +260,7 @@ def get_routes() -> list:
         Route("/historier", endpoint=stories_index, name="stories", methods=["GET"]),
         Route("/historier/{page:str}", endpoint=story_display, name="story_display", methods=["GET"]),
         Route("/erindringer", endpoint=memories_index, name="memories", methods=["GET"]),
+        Route("/erindringer/{page:str}", endpoint=memory_display, name="memory_display", methods=["GET"]),
         Route("/import/stories", endpoint=import_stories, name="import_data", methods=["GET"]),
         Route("/import/memories", endpoint=import_memories, name="import_data", methods=["GET"]),
     ]
