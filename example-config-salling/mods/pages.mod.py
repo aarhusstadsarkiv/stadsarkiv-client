@@ -68,6 +68,14 @@ async def import_memories(request: Request):
     for memory in memories:
         memory["urls"] = []
         memory["summary"] = []
+
+        # MARIES ANDENDAGSTØJ (1945)
+        # Generate url path from the heading
+        url_path = memory["heading"].lower()
+        url_path = url_path.replace(" ", "-")
+        url_path = "".join([c for c in url_path if c.isalnum() or c in "æøåÆØÅ-"])
+        memory["path"] = url_path
+
         record_ids = memory.get("recordIds", [])
         if record_ids:
             for record_id in record_ids:
