@@ -19,6 +19,7 @@ settings: dict[str, typing.Any] = {
     "api_base_url": "https://dev.openaws.dk/v1",
     "main_menu_top": [
         {"name": "stories", "title": "Historier", "type": "text"},
+        {"name": "memories", "title": "Erindringer", "type": "text"},
         {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],
     "main_menu_system": [

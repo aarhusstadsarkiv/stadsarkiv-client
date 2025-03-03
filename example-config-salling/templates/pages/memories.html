@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block body_class %}page-home{% endblock %}
+
+{% block content %}
+{% include "includes/main_title.html" %}
+
+<pre>{# to_json(memories) #}</pre>
+
+<div class="memories-results">
+    {% for memory in memories %}
+    <div class="memories-result">
+        <a class="memories-link" href="/historier/{{ memory.path }}">
+            
+            <div class="memory-content">
+                <div class="memory-text">
+                    <div class="memories-summary">{{ memory.heading }}</div>
+                    <div class="search-paragraph">
+                        {{ memory.paragraphs[0] }}
+                    </div>          
+                    <div class="memories-date">{{ memory.date }}</div>
+                </div>
+
+                {% if memory.urls and memory.urls[0] %}
+                <div class="memory-image">
+                    <img src="{{ memory.urls[0] }}" alt="{{ memory.heading }}">
+                </div>
+                {% endif %}
+            </div>
+
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+
+    .memories-results {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 20px;
+        max-width: 100%;
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+
+    @media (max-width: 992px) {
+        .memories-results {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .memories-result {
+        border-radius: 5px;
+        background: var(--search-result-background);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+    }
+
+    .memories-result:hover {
+        background-color: var(--search-result-background-hover);
+    }
+
+    .memories-link {
+        display: block;
+        text-decoration: none;
+        color: var(--text);
+    }
+
+    .memories-link:hover {
+        text-decoration: none;
+    }
+
+    .memory-content {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .memory-text {
+        flex: 1;
+        text-align: left;
+    }
+
+    .memory-image img {
+        width: 150px;
+        height: 150px;
+        object-fit: contain;
+        border-radius: 5px;
+        background-color: var(--background);
+    }
+
+    .memories-summary {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .memories-date {
+        font-size: 0.9em;
+        color: var(--text-secondary);
+    }
+
+
+</style>
+
+
+{% endblock content %}

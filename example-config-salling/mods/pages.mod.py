@@ -16,19 +16,6 @@ current_path = os.path.abspath(__file__)
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
 
-def get_routes() -> list:
-
-    routes = [
-        # Route("/", endpoint=docs_endpoint, name="homepage", methods=["GET"]),
-        Route("/historier", endpoint=stories_index, name="stories", methods=["GET"]),
-        Route("/historier/{page:str}", endpoint=story_display, name="story_display", methods=["GET"]),
-        Route("/import/stories", endpoint=import_stories, name="import_data", methods=["GET"]),
-        Route("/import/memories", endpoint=import_memories, name="import_data", methods=["GET"]),
-    ]
-
-    return routes
-
-
 async def fetch_json(url: str):
     async with httpx.AsyncClient() as client:
         response = await client.get(url)
@@ -164,6 +151,26 @@ async def stories_index(request: Request):
     return templates.TemplateResponse(request, "pages/stories.html", context)
 
 
+async def memories_index(request: Request):
+    """
+    Index of memories
+    """
+
+    # load imported stories
+    memories_imported = os.path.join(base_dir, "..", "data", "memories_imported.json")
+    with open(memories_imported, "r") as f:
+        memories = json.load(f)
+
+    context = await get_context(
+        request,
+        context_values={
+            "title": "Udvalgte Sallingminder",
+            "memories": memories,
+        },
+    )
+    return templates.TemplateResponse(request, "pages/memories.html", context)
+
+
 async def story_display(request: Request):
 
     # get path
@@ -196,3 +203,17 @@ async def story_display(request: Request):
         },
     )
     return templates.TemplateResponse(request, "pages/story.html", context)
+
+
+def get_routes() -> list:
+
+    routes = [
+        # Route("/", endpoint=docs_endpoint, name="homepage", methods=["GET"]),
+        Route("/historier", endpoint=stories_index, name="stories", methods=["GET"]),
+        Route("/historier/{page:str}", endpoint=story_display, name="story_display", methods=["GET"]),
+        Route("/erindringer", endpoint=memories_index, name="memories", methods=["GET"]),
+        Route("/import/stories", endpoint=import_stories, name="import_data", methods=["GET"]),
+        Route("/import/memories", endpoint=import_memories, name="import_data", methods=["GET"]),
+    ]
+
+    return routes
