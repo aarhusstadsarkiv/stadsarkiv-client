@@ -22,7 +22,8 @@ def get_routes() -> list:
         # Route("/", endpoint=docs_endpoint, name="homepage", methods=["GET"]),
         Route("/historier", endpoint=stories_index, name="stories", methods=["GET"]),
         Route("/historier/{page:str}", endpoint=story_display, name="story_display", methods=["GET"]),
-        Route("/salling/import", endpoint=import_data, name="import_data", methods=["GET"]),
+        Route("/import/stories", endpoint=import_stories, name="import_data", methods=["GET"]),
+        Route("/import/memories", endpoint=import_memories, name="import_data", methods=["GET"]),
     ]
 
     return routes
@@ -40,7 +41,7 @@ async def fetch_image(url: str):
         return response.content
 
 
-async def import_data(request: Request):
+async def import_stories(request: Request):
 
     stories = _get_source_stories()
     for story in stories:
@@ -64,12 +65,46 @@ async def import_data(request: Request):
                     section["summary"].append(summary)
                     log.debug(section)
 
-                    # return JSONResponse({"status": "ok"})
-
     # save the stories to a new json file
     data_path = os.path.join(base_dir, "..", "data", "stories_imported.json")
     with open(data_path, "w") as f:
         json.dump(stories, f, ensure_ascii=False, indent=4)
+
+    return JSONResponse({"status": "ok"})
+
+
+async def import_memories(request: Request):
+    data_path = os.path.join(base_dir, "..", "data", "memories", "memories.json")
+    with open(data_path, "r") as f:
+        memories = json.load(f)
+
+    for memory in memories:
+        memory["urls"] = []
+        memory["summary"] = []
+        record_ids = memory.get("recordIds", [])
+        if record_ids:
+            for record_id in record_ids:
+                log.debug(f"Record id: {record_id}")
+
+                fetch_url = f"http://localhost:5555/records/{record_id}/json/meta_data"
+                json_data = await fetch_json(fetch_url)
+                portrait = json_data.get("portrait")
+                memory["urls"].append(portrait)
+
+                # summary
+                summary = json_data.get("summary", "")
+                if not summary:
+                    summary = json_data.get("title", "")
+
+                log.debug(summary)
+
+                memory["summary"].append(summary)
+                log.debug(memory)
+
+    # save the stories to a new json file
+    data_path = os.path.join(base_dir, "..", "data", "memories_imported.json")
+    with open(data_path, "w") as f:
+        json.dump(memories, f, ensure_ascii=False, indent=4)
 
     return JSONResponse({"status": "ok"})
 
