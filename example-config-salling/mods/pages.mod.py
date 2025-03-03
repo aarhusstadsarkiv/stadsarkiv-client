@@ -235,10 +235,12 @@ async def memory_display(request: Request):
     memory_images = []
     images = memory.get("urls", [])
     images_texts = memory.get("summary", [])
-    for url, text in zip(images, images_texts):
+    records = memory.get("recordIds", [])
+    for url, text, record in zip(images, images_texts, records):
         image = {
             "url": url,
             "text": text,
+            "record": record,
         }
         memory_images.append(image)
 
