@@ -18,18 +18,18 @@
     </div>
 </div>
 
-<div class="stories-results">
+<div class="stories-all-results">
 
     {% for story in main_stories %}
 
-    <div class="stories-result">
-        <a class="stories-link" href="/historier/{{ story.path }}">
-            <div class="stories-portrait">
+    <div class="story-result">
+        <a class="story-link" href="/historier/{{ story.path }}">
+            <div class="story-portrait">
                 <img src="{{ story.urls[0] }}" alt="{{ story.heading }}">
             </div>
-            <div class="stories-summary">{{ story.heading }}</div>
+            <div class="story-summary">{{ story.heading }}</div>
 
-            <div class="stories-date">
+            <div class="story-date">
 
             </div>
         </a>
@@ -64,7 +64,7 @@
         }
     } 
 
-    .stories-results {
+    .stories-all-results {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         grid-gap: 20px;
@@ -74,24 +74,24 @@
     }
 
     @media (max-width: 1200px) {
-        .stories-results {
+        .stories-all-results {
             grid-template-columns: repeat(3, 1fr);
         }
     }
 
     @media (max-width: 992px) {
-        .stories-results {
+        .stories-all-results {
             grid-template-columns: repeat(2, 1fr);
         }
     }
 
     @media (max-width: 576px) {
-        .stories-results {
+        .stories-all-results {
             grid-template-columns: 1fr;
         }
     }
 
-    .stories-result {
+    .story-result {
         border-radius: 5px;
         break-inside: avoid;
         margin-bottom: 20px;
@@ -100,35 +100,35 @@
         padding: 10px;
     }
 
-    .stories-result:hover {
+    .story-result:hover {
         background-color: var(--search-result-background-hover);
     }
 
-    .stories-link {
+    .story-link {
         display: flex;
         flex-direction: column;
         text-align: center;
     }
 
-    a.stories-link {
+    a.story-link {
         text-decoration: none;
         color: var(--text);
         font-size: 0.9rem;
     }
 
-    .stories-portrait img {
+    .story-portrait img {
         width: 100%;
         height: auto;
         aspect-ratio: 1 / 1;
         object-fit: contain;
     }
 
-    .stories-summary {
+    .story-summary {
         flex-grow: 1;
         font-weight: bold;
     }
 
-    .stories-date {
+    .story-date {
         font-size: 0.9em;
     }
 </style>

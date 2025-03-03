@@ -7,18 +7,18 @@
 
 <pre>{# to_json(memories) #}</pre>
 
-<div class="memories-results">
+<div class="memories-all-results">
     {% for memory in memories %}
-    <div class="memories-result">
-        <a class="memories-link" href="/historier/{{ memory.path }}">
+    <div class="memory-result">
+        <a class="memory-link" href="/erindringer/{{ memory.path }}">
             
             <div class="memory-content">
                 <div class="memory-text">
-                    <div class="memories-summary">{{ memory.heading }}</div>
-                    <div class="search-paragraph">
+                    <div class="memory-summary">{{ memory.heading }}</div>
+                    <div class="memory-text">
                         {{ memory.paragraphs[0] }}
                     </div>          
-                    <div class="memories-date">{{ memory.date }}</div>
+                    <div class="memory-date">{{ memory.date }}</div>
                 </div>
 
                 {% if memory.urls and memory.urls[0] %}
@@ -35,7 +35,8 @@
 
 <style>
 
-    .memories-results {
+    /** all results */
+    .memories-all-results {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 20px;
@@ -45,29 +46,30 @@
     }
 
     @media (max-width: 992px) {
-        .memories-results {
+        .memories-all-results {
             grid-template-columns: 1fr;
         }
     }
 
-    .memories-result {
+    /** single result */
+    .memory-result {
         border-radius: 5px;
         background: var(--search-result-background);
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 10px;
     }
 
-    .memories-result:hover {
+    .memory-result:hover {
         background-color: var(--search-result-background-hover);
     }
 
-    .memories-link {
+    .memory-link {
         display: block;
         text-decoration: none;
         color: var(--text);
     }
 
-    .memories-link:hover {
+    .memory-link:hover {
         text-decoration: none;
     }
 
@@ -90,12 +92,12 @@
         background-color: var(--background);
     }
 
-    .memories-summary {
+    .memory-summary {
         font-weight: bold;
         margin-bottom: 5px;
     }
 
-    .memories-date {
+    .memory-date {
         font-size: 0.9em;
         color: var(--text-secondary);
     }
