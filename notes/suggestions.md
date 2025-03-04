@@ -364,3 +364,15 @@ DK5 emner bør være søgbare, så man kan få vist de bøger vi har inden for e
 ---
 
 Captcha (mere tydeligt).
+
+Christian
+
+
+--- 
+
+Rotations mulighed på billeder
+
+Fx luftfotos. 
+
+Phillip
+
