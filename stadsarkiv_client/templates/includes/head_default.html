@@ -15,6 +15,7 @@
 {% endif %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/dolphin.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/default.css') }}?v={{ get_setting('version') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/navigation.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/record.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/footer.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/local.css') }}?v={{ get_setting('version') }}">
@@ -26,7 +27,7 @@
 <script type="module">
     import { Flash } from "/static/js/flash.js";
     Flash.clearMessages(); // Clear flash messages on page load
-    import "/static/js/main-events.js";
+    import "/static/js/main-navigation.js";
     import "/static/js/local.js";
 </script>
 {% endif %}

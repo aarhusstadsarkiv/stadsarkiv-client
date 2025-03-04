@@ -31,14 +31,6 @@ h6 {
     padding: 5px;
 }
 
-
-/** 
- * The main title of a page
- */
-.main-title {
-    text-transform: uppercase;
-}
-
 /**
  * The main menu is hidden by default
  * When the hamburger menu is clicked, the main menu is shown
@@ -145,6 +137,15 @@ h6 {
     display: flex;
     flex-direction: row;
 }
+
+
+/** 
+ * The main title of a page
+ */
+ .main-title {
+    text-transform: uppercase;
+}
+
 
 /**
  * flash messages
