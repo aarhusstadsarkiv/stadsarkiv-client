@@ -13,6 +13,14 @@
             <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
         {% endfor %}
     {% endfor %}
+
+    {% for menu_item in main_menu_top %}
+        {% if menu_item.type == 'text' %}
+            <div class="menu-text-overlay">
+                <a href="{{ menu_item.url }}">{{ menu_item.title }}</a>
+            </div>
+        {% endif %}
+    {% endfor %}
 </div>
 
 <div class="navigation-right-group">
@@ -23,6 +31,9 @@
                 <a href="{{ menu_item.url }}">{{ menu_item.title }}</a>    
             </div>
         {% endif %}
+    {% endfor %}
+
+    {% for menu_item in main_menu_top %}
         {% if menu_item.type == 'icon' %}
             <a href="{{ menu_item.url }}" aria-label="{{ menu_item.title }}">
                 <div class="menu-icon">{{ get_icon(menu_item.icon)|safe }}</div>

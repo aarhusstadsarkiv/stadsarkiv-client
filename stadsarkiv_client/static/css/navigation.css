@@ -128,3 +128,17 @@
     display: flex;
     flex-direction: row;
 }
+
+ .menu-text-overlay {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .navigation-right-group .menu-text {
+        display: none;
+    }
+
+    .menu-text-overlay {
+        display: block;
+    }
+}
