@@ -5,15 +5,15 @@
 {% block content %}
 {% include "includes/main_title.html" %}
 
-<div class="story-first">
-    <div class="story-first-content">
+<div class="stories-first">
+    <div class="stories-first-content">
 
         {% for paragraph in story_first.paragraphs %}
         <p>{{ paragraph }}</p>
         {% endfor %}
     </div>
 
-    <div class="story-first-portrait">
+    <div class="stories-first-portrait">
         <img src="{{ story_first.urls[0] }}" alt="{{ story_first.heading }}">
     </div>
 </div>
@@ -22,15 +22,13 @@
 
     {% for story in main_stories %}
 
-    <div class="story-result">
-        <a class="story-link" href="/historier/{{ story.path }}">
-            <div class="story-portrait">
+    <div class="stories-result">
+        <a class="stories-link" href="/historier/{{ story.path }}">
+            <div class="stories-portrait">
                 <img src="{{ story.urls[0] }}" alt="{{ story.heading }}">
             </div>
-            <div class="story-summary">{{ story.heading }}</div>
-
-            <div class="story-date">
-
+            <div class="stories-summary">
+                {{ story.heading }}
             </div>
         </a>
     </div>
@@ -38,28 +36,28 @@
 </div>
 
 <style>
-    .story-first {
+    .stories-first {
         display: flex;
         align-items: center;
         gap: 20px;
     }
 
-    .story-first-content {
+    .stories-first-content {
         width: 60%;
     }
-    .story-first-portrait {
+    .stories-first-portrait {
         width: 40%;
     }
 
     /** change to columns when width is 992px */
     @media (max-width: 992px) {
-        .story-first {
+        .stories-first {
             flex-direction: column;
         }
-        .story-first-content {
+        .stories-first-content {
             width: 100%;
         }
-        .story-first-portrait {
+        .stories-first-portrait {
             display: none;
         }
     } 
@@ -91,7 +89,7 @@
         }
     }
 
-    .story-result {
+    .stories-result {
         border-radius: 5px;
         break-inside: avoid;
         margin-bottom: 20px;
@@ -100,36 +98,32 @@
         padding: 10px;
     }
 
-    .story-result:hover {
+    .stories-result:hover {
         background-color: var(--search-result-background-hover);
     }
 
-    .story-link {
+    .stories-link {
         display: flex;
         flex-direction: column;
         text-align: center;
     }
 
-    a.story-link {
+    a.stories-link {
         text-decoration: none;
         color: var(--text);
         font-size: 0.9rem;
     }
 
-    .story-portrait img {
+    .stories-portrait img {
         width: 100%;
         height: auto;
         aspect-ratio: 1 / 1;
         object-fit: contain;
     }
 
-    .story-summary {
+    .stories-summary {
         flex-grow: 1;
         font-weight: bold;
-    }
-
-    .story-date {
-        font-size: 0.9em;
     }
 </style>
 
