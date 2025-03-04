@@ -34,7 +34,8 @@ async def orders_get_orders_user(request: Request):
     try:
 
         me = await api.users_me_get(request)
-        status = request.query_params.get("status", "active")
+
+        status = request.path_params.get("status_type", "active")
         orders = await crud_orders.get_orders_user(user_id=me["id"], status=status)
 
         title = "Tilgængelig i læsesal"

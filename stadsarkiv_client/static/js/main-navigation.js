@@ -53,3 +53,17 @@ actionLinks.forEach(link => {
         activeLinkSet = true;
     }
 });
+
+// Same as above but for .sub-menu
+const subMenuLinks = document.querySelectorAll('.sub-menu a');
+subMenuLinks.forEach(link => {
+    const path = link.getAttribute('data-path') || link.getAttribute('href');
+    const isExactMatch = path === window.location.pathname;
+    const isPartialMatch = path !== '/' && window.location.pathname.startsWith(path);
+
+    if (isExactMatch || isPartialMatch) {
+        link.classList.add('active');
+        activeLinkSet = true;
+    }
+});
+

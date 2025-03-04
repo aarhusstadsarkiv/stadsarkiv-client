@@ -15,8 +15,8 @@
 {{ basic_macros.page_title(title) }}
 
 <div class="sub-menu">
-    <a href="/auth/orders" class="active">Tilgængelig i læsesal</a>
-    <a href="/auth/orders?status=reserved" class="active">Reserveret materiale</a>
+    <a href="/auth/orders/active">Tilgængelig i læsesal</a>
+    <a href="/auth/orders/reserved">Reserveret materiale</a>
 </div>
 
 {% if orders|length == 0 %}

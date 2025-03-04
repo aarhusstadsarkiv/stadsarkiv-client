@@ -237,9 +237,17 @@ h6 {
 
 .sub-menu a {
     padding: 5px;
-    background-color: rgba(var(--navigation-background-rgb), 0.15);
+    background-color: rgba(var(--navigation-background-rgb), 0.25);
     border-radius: 5px;
     text-decoration: none;
+}
+
+.sub-menu a:hover {
+    background-color: rgba(var(--navigation-background-rgb), 0.15);
+}
+
+.sub-menu a.active {
+    background-color: rgba(var(--navigation-background-rgb), 0.15);
 }
 
 
