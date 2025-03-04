@@ -5,7 +5,6 @@
 {% block content %}
 {% include "includes/main_title.html" %}
 
-
 <div class="memory">     
     {% for paragraph in memory.paragraphs %}
     <p>{{ paragraph }}</p>
@@ -13,9 +12,7 @@
 </div>
 
 <div class="memory-all-results">
-
     {% for image in images %}
-
     <div class="memory-result">
         <a class="memory-link" href="/records/{{ image.record }}">
             <div class="memory-portrait">
