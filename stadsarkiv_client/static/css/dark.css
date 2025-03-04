@@ -76,8 +76,8 @@
     --search-result-background-hover: #383838;
     --search-link-text: #e1e1e1;
   
-    --search-pagination-background-disabled: #3a3a3a;
-    --search-pagination-disabled: lightblue;
+    --background-disabled: #3a3a3a;
+    --text-disabled: lightblue;
   
     /**
      * footer.css

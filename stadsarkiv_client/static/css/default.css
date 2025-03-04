@@ -195,8 +195,8 @@ h6 {
 
 .action-links>.disabled {
     padding: 5px 10px;
-    background-color: var(--search-pagination-background-disabled);
-    color: var(--search-pagination-disabled);
+    background-color: var(--background-disabled);
+    color: var(--text-disabled);
     border-radius: 5px;
     pointer-events: none;
 }
@@ -228,8 +228,8 @@ h6 {
  * The disabled attribute is used to disable the link
  */
 .action-links>a[disabled] {
-    background-color: var(--search-pagination-background-disabled);
-    color: var(--search-pagination-disabled);
+    background-color: var(--background-disabled);
+    color: var(--text-disabled);
     border-radius: 5px;
     cursor: not-allowed;
     opacity: .5;
@@ -237,17 +237,20 @@ h6 {
 
 .sub-menu a {
     padding: 5px;
-    background-color: rgba(var(--navigation-background-rgb), 0.25);
+    background-color: var(--navigation-background);
     border-radius: 5px;
     text-decoration: none;
+    color: var(--main-menu);
 }
 
 .sub-menu a:hover {
-    background-color: rgba(var(--navigation-background-rgb), 0.15);
+    background-color: rgba(var(--navigation-background-rgb), 0.75);
+    color: var(--main-menu);
 }
 
 .sub-menu a.active {
-    background-color: rgba(var(--navigation-background-rgb), 0.15);
+    background-color: rgba(var(--navigation-background-rgb), 0.75);
+    color: var(--main-menu); 
 }
 
 

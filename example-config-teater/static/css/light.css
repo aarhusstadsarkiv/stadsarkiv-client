@@ -78,8 +78,8 @@
   --search-result-background-hover: #fafafa;
   --search-link-text: black;
 
-  --search-pagination-background-disabled: #cccccc;
-  --search-pagination-disabled: #111;
+  --background-disabled: #cccccc;
+  --text-disabled: #111;
 
   /**
    * footer.css
