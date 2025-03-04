@@ -255,14 +255,21 @@ async def memory_display(request: Request):
     return templates.TemplateResponse(request, "pages/memory.html", context)
 
 
+async def about(request: Request):
+    context = await get_context(request,{
+        "title": "Om SallingArkivet"
+    })
+    return templates.TemplateResponse(request, "pages/about.html", context)
+
+
 def get_routes() -> list:
 
     routes = [
-        # Route("/", endpoint=docs_endpoint, name="homepage", methods=["GET"]),
         Route("/historier", endpoint=stories_index, name="stories", methods=["GET"]),
         Route("/historier/{page:str}", endpoint=story_display, name="story_display", methods=["GET"]),
         Route("/erindringer", endpoint=memories_index, name="memories", methods=["GET"]),
         Route("/erindringer/{page:str}", endpoint=memory_display, name="memory_display", methods=["GET"]),
+        Route("/om-sallingarkivet", endpoint=about, name="about", methods=["GET"]),
         Route("/import/stories", endpoint=import_stories, name="import_data", methods=["GET"]),
         Route("/import/memories", endpoint=import_memories, name="import_data", methods=["GET"]),
     ]

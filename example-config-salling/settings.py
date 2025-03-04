@@ -20,6 +20,7 @@ settings: dict[str, typing.Any] = {
     "main_menu_top": [
         {"name": "stories", "title": "Historier", "type": "text"},
         {"name": "memories", "title": "Erindringer", "type": "text"},
+        {"name": "about", "title": "Om SallingArkivet", "type": "text"},
         {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],
     "main_menu_system": [
@@ -37,7 +38,7 @@ settings: dict[str, typing.Any] = {
     },
     "search_base_url": "/search",
     "show_version": True,
-    "allow_user_registration": True,
+    "allow_user_registration": False,
     "allow_user_management": True,
     "allow_save_bookmarks": False,
     "allow_save_search": False,
