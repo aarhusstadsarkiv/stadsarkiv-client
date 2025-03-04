@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block body_class %}page-home{% endblock %}
+{% block body_class %}page-memories{% endblock %}
 
 {% block content %}
 {% include "includes/main_title.html" %}
@@ -9,20 +9,18 @@
 
 <div class="memories-all-results">
     {% for memory in memories %}
-    <div class="memory-result">
-        <a class="memory-link" href="/erindringer/{{ memory.path }}">
-            
-            <div class="memory-content">
-                <div class="memory-text">
-                    <div class="memory-summary">{{ memory.heading }}</div>
-                    <div class="memory-text">
+    <div class="memories-result">
+        <a class="memories-result-link" href="/erindringer/{{ memory.path }}">
+            <div class="memories-result-content">
+                <div class="memories-result-text">
+                    <div class="memories-result-summary">{{ memory.heading }}</div>
+                    <div>
                         {{ memory.paragraphs[0] }}
                     </div>          
-                    <div class="memory-date">{{ memory.date }}</div>
                 </div>
 
                 {% if memory.urls and memory.urls[0] %}
-                <div class="memory-image">
+                <div class="memories-result-image">
                     <img src="{{ memory.urls[0] }}" alt="{{ memory.heading }}">
                 </div>
                 {% endif %}
@@ -52,39 +50,39 @@
     }
 
     /** single result */
-    .memory-result {
+    .memories-result {
         border-radius: 5px;
         background: var(--search-result-background);
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 10px;
     }
 
-    .memory-result:hover {
+    .memories-result:hover {
         background-color: var(--search-result-background-hover);
     }
 
-    .memory-link {
+    .memories-result-link {
         display: block;
         text-decoration: none;
         color: var(--text);
     }
 
-    .memory-link:hover {
+    .memories-result-link:hover {
         text-decoration: none;
     }
 
-    .memory-content {
+    .memories-result-content {
         display: flex;
         align-items: flex-start;
         gap: 15px;
     }
 
-    .memory-text {
+    .memories-result-text {
         flex: 1;
         text-align: left;
     }
 
-    .memory-image img {
+    .memories-result-image img {
         width: 150px;
         height: 150px;
         object-fit: contain;
@@ -92,16 +90,10 @@
         background-color: var(--background);
     }
 
-    .memory-summary {
+    .memories-result-summary {
         font-weight: bold;
         margin-bottom: 5px;
     }
-
-    .memory-date {
-        font-size: 0.9em;
-        color: var(--text-secondary);
-    }
-
 
 </style>
 
