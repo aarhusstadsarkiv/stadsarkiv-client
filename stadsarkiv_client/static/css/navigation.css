@@ -9,7 +9,7 @@
 .logo {
     margin-left: 10px;
     display: flex;
-    align-items: flex-end;
+    align-items: end;
 }
 
 .navigation-right-group {
@@ -89,11 +89,13 @@
  * main menu icons
  */
 .menu-icon svg {
-    color: white;
-    fill: white;
+    color: var(--main-menu);
+    fill: var(--main-menu);
     height: 40px;
     width: 40px;
 }
+
+
 
 .menu-icon {
     padding: 0 5px;
