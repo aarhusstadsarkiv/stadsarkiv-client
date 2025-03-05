@@ -29,7 +29,6 @@ document.addEventListener('click', function (event) {
     }
 });
 
-
 // on pageshow event, if the menu is open, close it
 window.addEventListener('pageshow', function (e) {
     if (e.persisted) {
@@ -66,4 +65,3 @@ subMenuLinks.forEach(link => {
         activeLinkSet = true;
     }
 });
-

@@ -1,0 +1,18 @@
+/** salling local css */
+
+/** only display #menu-hamburger menu devices where max-width is 768px */
+#menu-hamburger {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    #menu-hamburger {
+        display: block;
+    }
+}
+
+@media (min-width: 769px) {
+    .main-menu-overlay {
+        display: none;
+    }
+}
