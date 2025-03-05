@@ -13,6 +13,6 @@
 
 @media (min-width: 769px) {
     .main-menu-overlay {
-        display: none;
+        display: none !important;
     }
 }
