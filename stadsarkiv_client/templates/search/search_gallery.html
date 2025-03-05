@@ -41,17 +41,20 @@
 </div>
 
 <script type="module">
+    import { config } from '/static/js/config.js';
     import { searchEvents } from "/static/js/search.js";
     import { autoCompleteInit } from '/static/js/auto-complete-instance.js';
 
     searchEvents();
 
-    const searchBaseUrl = '/search?';
-    window.addEventListener("pageshow", function(event) {
-        if (!event.persisted) {
-            autoCompleteInit(searchBaseUrl);
-        }
-    });
+    if (config.autoComplete) {
+        const searchBaseUrl = '/search?';
+        window.addEventListener("pageshow", function(event) {
+            if (!event.persisted) {
+                autoCompleteInit(searchBaseUrl);
+            }
+        });
+    }
 </script>
 
 {% endblock content %}
