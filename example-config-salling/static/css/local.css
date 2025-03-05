@@ -16,3 +16,7 @@
         display: none !important;
     }
 }
+
+.page-about .container-medium, .page-cookies .container-medium {
+    max-width: 700px;
+}

@@ -256,10 +256,13 @@ async def memory_display(request: Request):
 
 
 async def about(request: Request):
-    context = await get_context(request,{
-        "title": "Om SallingArkivet"
-    })
+    context = await get_context(request, {"title": "Om SallingArkivet"})
     return templates.TemplateResponse(request, "pages/about.html", context)
+
+
+async def cookies(request: Request):
+    context = await get_context(request, {"title": "Cookie- og privatlivspolitik"})
+    return templates.TemplateResponse(request, "pages/cookies.html", context)
 
 
 def get_routes() -> list:
@@ -272,6 +275,7 @@ def get_routes() -> list:
         Route("/om-sallingarkivet", endpoint=about, name="about", methods=["GET"]),
         Route("/import/stories", endpoint=import_stories, name="import_data", methods=["GET"]),
         Route("/import/memories", endpoint=import_memories, name="import_data", methods=["GET"]),
+        Route("/cookies", endpoint=cookies, name="import_data", methods=["GET"]),
     ]
 
     return routes
