@@ -24,13 +24,6 @@ settings: dict[str, typing.Any] = {
         {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],
     "main_menu_system": [
-        {"name": "auth_login_get", "title": "Log ind"},
-        {"name": "auth_logout_get", "title": "Log ud"},
-        {"name": "auth_register_get", "title": "Ny bruger"},
-        {"name": "auth_me_get", "title": "Profil"},
-        {"name": "admin_users_get", "title": "Brugere"},
-        {"name": "schemas_get_list", "title": "Skemaer"},
-        {"name": "entities_get_list", "title": "Entiteter"},
     ],
     "sqlite3": {
         "default": "data/database.db",
@@ -39,7 +32,7 @@ settings: dict[str, typing.Any] = {
     "search_base_url": "/search",
     "show_version": True,
     "allow_user_registration": False,
-    "allow_user_management": True,
+    "allow_user_management": False,
     "allow_save_bookmarks": False,
     "allow_save_search": False,
     "allow_online_ordering": False,
