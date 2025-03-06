@@ -6,10 +6,12 @@
   --background-body: #fff;
   --background: #efefef;
   --background-alt: #ececec;
-  --text-main: #111;
+  --text-main: #333;
   --text-bright: #000;
   --text-muted: #70777f;
-  --links: #f00;
+  /* --links: #f00; */
+  /* --links: #0091ff; */
+  --links: black;
   --focus: #0096bfab;
   --border: #dbdbdb;
   --code: #000;
@@ -41,7 +43,7 @@
    * default.css
    */
   --navigation-background: #ddd;
-  --navigation-background-rgb: 60, 123, 155;
+  --navigation-background-rgb: 221, 221, 221;
   --navigation-background-hover: #ffffff22;
 
   --flash-color: white;
