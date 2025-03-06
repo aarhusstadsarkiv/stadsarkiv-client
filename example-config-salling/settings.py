@@ -17,6 +17,12 @@ settings: dict[str, typing.Any] = {
     },
     # "api_base_url": "http://localhost:8000/v1",
     "api_base_url": "https://dev.openaws.dk/v1",
+
+    "pages": [
+        {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
+        {"name": "about", "title": "Om SallingArkivet", "template": "pages/about.html", "url": "/om-sallingarkivet"},
+        {"name": "cookies", "title": "Cookie- og privatlivspolitik", "template": "pages/cookies.html", "url": "/cookies"},
+    ],
     "main_menu_top": [
         {"name": "stories", "title": "Historier", "type": "text"},
         {"name": "memories", "title": "Erindringer", "type": "text"},

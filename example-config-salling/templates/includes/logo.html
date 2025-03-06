@@ -1,7 +1,5 @@
 <div class="logo">
-    {% if request.url.path != '/' %}
     <a href="{{ url_for('home') }}">
         <img src="{{ url_for('static', path='/assets/logo.png') }}" alt="Gå til forsiden">
     </a>
-    {% endif %}
 </div>
