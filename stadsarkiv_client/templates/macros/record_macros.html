@@ -113,9 +113,9 @@
         {% endif %}
         {% for key in block_keys %}
 
-        <div class="action-links">
+        
         {% if key == 'bookmarks' %}
-
+            <div class="action-links">
             {% if has_permission('user', permissions_list) and get_setting('allow_save_bookmarks') %}
             <a id="bookmark-action" data-id="{{ meta_data['id']}}" href="#"></a>
             {% endif %}
@@ -139,10 +139,8 @@
                     <a href="/auth/login?next=/records/{{ record_and_types.id.value }}">{{ translate('Login to order online') }}</a>
                 -->
             {% endif %}
-
+            </div>
         {% endif %}
-
-        </div>
 
         {% if key in record_and_types %}
         {{ common_macros.parse_block_section(record_and_types[key]) }}
