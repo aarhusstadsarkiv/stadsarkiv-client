@@ -36,11 +36,21 @@
     display: none;
 }
 
+.page-records-view .record-section:nth-of-type(2) {
+    flex-direction: row-reverse;
+}
 
-.page-records-view .record_content_collectors,
-.page-records-view .record_content_collection,
-.page-records-view .record_content_curators,
-.record_content_organisations
-{
-    display: none;
+@media (max-width: 768px) {
+    .page-records-view .record-section:nth-of-type(2) {
+        flex-direction: column;
+    }
+}
+
+.record-content {
+    flex-direction: column;
+    gap: unset;
+}
+
+.record-content .content {
+    max-width: var(--text-max-width);
 }
