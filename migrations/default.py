@@ -18,6 +18,9 @@ E.g.:
 export CONFIG_DIR=example-config-aarhus
 ./bin/default.py
 """
+import sys
+
+sys.path.append(".")
 
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.migration import Migration

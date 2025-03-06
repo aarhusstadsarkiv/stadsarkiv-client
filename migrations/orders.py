@@ -8,6 +8,10 @@ export CONFIG_DIR=example-config-aarhus
 
 """
 
+import sys
+
+sys.path.append(".")
+
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.migration import Migration
 from stadsarkiv_client.migrations.orders import migrations_orders
