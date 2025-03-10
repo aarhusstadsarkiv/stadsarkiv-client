@@ -15,6 +15,9 @@ from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from stadsarkiv_client.endpoints import auth_data
 
+# import tool to urldecode
+import urllib.parse
+
 log = get_log()
 
 
@@ -25,7 +28,8 @@ async def auth_login_get(request: Request):
     next_url = request.query_params.get("next")
 
     if next_url:
-        post_url = "/auth/login?next=" + next_url
+        encoded_next_url = urllib.parse.quote_plus(next_url)
+        post_url = "/auth/login?next=" + encoded_next_url
 
     context_values = {
         "title": translate("Login"),
@@ -57,7 +61,8 @@ async def auth_login_post(request: Request):
         flash.set_message(request, str(e), type="error", use_settings=True)
 
     if next_url:
-        return RedirectResponse(url="/auth/login?next=" + next_url, status_code=302)
+        next_url_encoded = urllib.parse.quote(next_url, safe="")
+        return RedirectResponse(url="/auth/login?next=" + next_url_encoded, status_code=302)
     else:
         return RedirectResponse(url="/auth/login", status_code=302)
 
@@ -95,6 +100,8 @@ async def auth_set_cooke(request: Request):
 
     if cookie_name == "dark_theme":
         response = JSONResponse({})
+
+        # 10 years
         MAX_AGE = 10 * 365 * 24 * 60 * 60
         if cookie_value:
             flash.set_message(request, message=translate("Dark theme enabled."), type="success")

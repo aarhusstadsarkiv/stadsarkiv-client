@@ -11,6 +11,7 @@ from stadsarkiv_client.core import api
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core import cookie
 from stadsarkiv_client.core.logging import get_log
+import urllib.parse
 
 log = get_log()
 
@@ -73,9 +74,18 @@ def _generate_menu_urls(request: Request, menu_items: list, query_str_display: s
     for menu_item in menu_items:
         url = str(request.url_for(menu_item["name"]))
         if menu_item["name"] == "search_get":
+
+            # Add query_str_display to search url
             menu_item["url"] = f"{url}?{query_str_display}"
         elif menu_item["name"] == "auth_login_get" and current_path:
-            menu_item["url"] = f"{url}?next={current_path}"
+
+            # Add next parameter to login url
+            current_path = request.url.path
+            if request.query_params:
+                current_path += f"?{request.query_params}"
+
+            next_url = urllib.parse.quote(current_path, safe="")
+            menu_item["url"] = f"{url}?next={next_url}"
         else:
             menu_item["url"] = url
 

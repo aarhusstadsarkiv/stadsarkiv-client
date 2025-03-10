@@ -17,7 +17,6 @@ settings: dict[str, typing.Any] = {
     },
     # "api_base_url": "http://localhost:8000/v1",
     "api_base_url": "https://dev.openaws.dk/v1",
-
     "pages": [
         {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
         {"name": "about", "title": "Om SallingArkivet", "template": "pages/about.html", "url": "/om-sallingarkivet"},
@@ -29,8 +28,7 @@ settings: dict[str, typing.Any] = {
         {"name": "about", "title": "Om SallingArkivet", "type": "text"},
         {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],
-    "main_menu_system": [
-    ],
+    "main_menu_system": [],
     "sqlite3": {
         "default": "data/database.db",
         "orders": "data/orders.db",
