@@ -14,9 +14,8 @@
 @media (min-width: 769px) {
     .main-menu-overlay {
         /** 
-         * I am sorry :) 
-         * But this is the absolute simplest way to hide the overlay menu on desktop
-         * without changing the html structure or adding javascript
+         * This is the absolute simplest way to hide the overlay menu on desktop
+         * without changing the html structure or adding javascript.
         */
         display: none !important;
     }
