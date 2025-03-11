@@ -48,7 +48,9 @@ async def http_status_error(request: Request, exc: HTTPStatusError):
     context_values = {
         "title": title,
         "status_code": exc.response.status_code,
-        "human_error": "Der skete en fejl, da systemet hentede data fra et API. Fejlen er blevet logget og vi vil kigge på det hurtigst muligt.",
+        "human_error": (
+            "Der skete en fejl, da systemet hentede data fra et API. Fejlen er blevet logget, og vi vil kigge på det hurtigst muligt."
+        ),
         "exc": exc,
         "exc_traceback": exc_traceback,
     }

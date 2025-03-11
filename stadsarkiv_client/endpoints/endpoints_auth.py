@@ -14,8 +14,7 @@ from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.api import OpenAwsException
 from stadsarkiv_client.core import api
 from stadsarkiv_client.endpoints import auth_data
-
-# import tool to urldecode
+from stadsarkiv_client.core import cookie
 import urllib.parse
 
 log = get_log()
@@ -29,7 +28,11 @@ async def auth_login_get(request: Request):
 
     if next_url:
         encoded_next_url = urllib.parse.quote_plus(next_url)
-        post_url = "/auth/login?next=" + encoded_next_url
+        post_url = f"/auth/login?next={encoded_next_url}"
+    else:
+        next_url = f"/search?{cookie.get_query_str_display(request)}"
+        encoded_next_url = urllib.parse.quote_plus(next_url)
+        post_url = f"/auth/login?next={encoded_next_url}"
 
     context_values = {
         "title": translate("Login"),
@@ -49,22 +52,16 @@ async def auth_login_post(request: Request):
         flash.set_message(request, translate("You have been logged in."), type="success")
 
         if next_url:
-            return RedirectResponse(url=next_url, status_code=302)
+            return JSONResponse({"error": False, "redirect": next_url})
         else:
-            return RedirectResponse(url="/search", status_code=302)
+            return JSONResponse({"error": False, "redirect": "/search"})
 
     except OpenAwsException as e:
-        flash.set_message(request, str(e), type="error")
+        return JSONResponse({"message": str(e), "error": True})
 
     except Exception as e:
         log.exception("Error in auth_login_post")
-        flash.set_message(request, str(e), type="error", use_settings=True)
-
-    if next_url:
-        next_url_encoded = urllib.parse.quote(next_url, safe="")
-        return RedirectResponse(url="/auth/login?next=" + next_url_encoded, status_code=302)
-    else:
-        return RedirectResponse(url="/auth/login", status_code=302)
+        return JSONResponse({"message": str(e), "error": True})
 
 
 async def auth_logout_get(request: Request):
