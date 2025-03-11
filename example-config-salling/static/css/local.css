@@ -53,3 +53,11 @@
 .record-content .content {
     max-width: var(--text-max-width);
 }
+
+.logo svg {
+    height: 61px;
+}
+
+.footer {
+    align-items: center;
+}
