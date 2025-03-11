@@ -23,10 +23,11 @@ settings: dict[str, typing.Any] = {
         {"name": "cookies", "title": "Cookie- og privatlivspolitik", "template": "pages/cookies.html", "url": "/cookies"},
     ],
     "main_menu_top": [
-        {"name": "stories", "title": "Historier", "type": "text"},
-        {"name": "memories", "title": "Erindringer", "type": "text"},
-        {"name": "about", "title": "Om SallingArkivet", "type": "text"},
-        {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
+        {"name": "search_get", "title": "Udforsk arkivet", "type": "text"},
+        {"name": "stories", "title": "Fortællinger", "type": "text"},
+        # {"name": "memories", "title": "Erindringer", "type": "text"},
+        {"name": "about", "title": "Om Arkivet", "type": "text"},
+        # {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],
     "main_menu_system": [],
     "sqlite3": {

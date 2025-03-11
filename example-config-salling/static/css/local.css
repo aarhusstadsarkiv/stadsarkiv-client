@@ -25,10 +25,6 @@
     max-width: 700px;
 }
 
-.logo img {
-    height: 51px;
-}
-
 .page-records-search .record_content_collectors,
 .page-records-search .record_content_collection
 {
@@ -56,6 +52,17 @@
 
 .logo svg {
     height: 61px;
+}
+
+@media (max-width: 1024px) {
+    .logo svg {
+        transform: scale(0.7);
+        transform-origin: left;
+    }
+    .logo {
+        max-width: 200px;
+        align-items: anchor-center;
+    }
 }
 
 .footer {
