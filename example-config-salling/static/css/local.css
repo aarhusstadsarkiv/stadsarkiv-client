@@ -22,7 +22,8 @@
 }
 
 .page-about .container-medium, .page-cookies .container-medium {
-    max-width: 700px;
+    width: 700px;
+    max-width: 100%;
 }
 
 .page-records-search .record_content_collectors,
