@@ -76,4 +76,5 @@
 
 .menu-text a, .main-menu-overlay a {
     text-transform: unset;
+    font-size: 1.4em;
 }
