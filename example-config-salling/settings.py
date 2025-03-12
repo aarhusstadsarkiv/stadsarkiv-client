@@ -20,7 +20,7 @@ settings: dict[str, typing.Any] = {
     "pages": [
         {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
         {"name": "about", "title": "Om SallingArkivet", "template": "pages/about.html", "url": "/om-sallingarkivet"},
-        {"name": "cookies", "title": "Cookie- og privatlivspolitik", "template": "pages/cookies.html", "url": "/cookies"},
+        {"name": "privatlivspolitik", "title": "Privatlivspolitik", "template": "pages/privacy.html", "url": "/privatlivspolitik"},
     ],
     "main_menu_top": [
         {"name": "search_get", "title": "Udforsk arkivet", "type": "text"},

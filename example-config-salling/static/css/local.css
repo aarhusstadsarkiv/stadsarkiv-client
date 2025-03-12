@@ -69,3 +69,7 @@
 .footer {
     align-items: center;
 }
+
+.footer-logo-right {
+    margin-bottom: 2em;
+}
