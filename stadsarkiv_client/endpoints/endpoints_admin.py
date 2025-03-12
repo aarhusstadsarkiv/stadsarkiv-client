@@ -41,7 +41,7 @@ async def admin_users_get(request: Request):
         ("limit", limit),
         ("offset", offset),
         ("descending", "true"),
-        ("order", "timestamp"),
+        # ("order", "created_at"),
         ("is_active", "true"),
         # ("pattern", "gmail"),
     ]
@@ -49,7 +49,7 @@ async def admin_users_get(request: Request):
         ("limit", limit),
         ("offset", next_offset),
         ("descending", "true"),
-        ("order", "timestamp"),
+        # ("order", "created_at"),
         ("is_active", "true"),
         # ("pattern", "gmail"),
     ]
