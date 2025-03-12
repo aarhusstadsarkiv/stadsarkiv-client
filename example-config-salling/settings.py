@@ -23,7 +23,7 @@ settings: dict[str, typing.Any] = {
         {"name": "privatlivspolitik", "title": "Privatlivspolitik", "template": "pages/privacy.html", "url": "/privatlivspolitik"},
     ],
     "main_menu_top": [
-        {"name": "search_get", "title": "Udforsk arkivet", "type": "text"},
+        {"name": "search_get", "title": "Udforsk Arkivet", "type": "text"},
         {"name": "stories", "title": "Fortællinger", "type": "text"},
         # {"name": "memories", "title": "Erindringer", "type": "text"},
         {"name": "about", "title": "Om Arkivet", "type": "text"},
