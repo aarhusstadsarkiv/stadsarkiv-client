@@ -251,13 +251,12 @@ async def users_get(request: Request, query_str: str) -> dict:
             headers=headers,
         )
 
-        if response.is_success:
-            return response.json()
-        else:
-            raise OpenAwsException(
-                422,
-                translate("You need to be logged in to view this page."),
-            )
+        if not response.is_success:
+            json_response = response.json()
+            log.error(json_response)
+            raise_openaws_exception(response.status_code, json_response)
+
+        return response.json()
 
 
 async def users_permissions(request: Request) -> dict:
@@ -274,13 +273,11 @@ async def users_permissions(request: Request) -> dict:
             headers=headers,
         )
 
-        if response.is_success:
-            return response.json()
-        else:
-            raise OpenAwsException(
-                422,
-                translate("You need to be logged in to view this page."),
-            )
+        if not response.is_success:
+            json_response = response.json()
+            raise_openaws_exception(response.status_code, json_response)
+
+        return response.json()
 
 
 async def user_get(request: Request) -> dict:
@@ -307,13 +304,11 @@ async def user_get_by_uuid(request: Request, uuid: str) -> dict:
             headers=headers,
         )
 
-        if response.is_success:
-            return response.json()
-        else:
-            raise OpenAwsException(
-                422,
-                translate("You need to be logged in to view this page."),
-            )
+        if not response.is_success:
+            json_response = response.json()
+            raise_openaws_exception(response.status_code, json_response)
+
+        return response.json()
 
 
 async def user_permissions_subset(request: Request):
