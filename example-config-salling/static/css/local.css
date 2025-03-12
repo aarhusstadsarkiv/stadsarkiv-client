@@ -73,3 +73,7 @@
 .footer-logo-right {
     margin-bottom: 2em;
 }
+
+.menu-text a, .main-menu-overlay a {
+    text-transform: unset;
+}
