@@ -25,7 +25,7 @@
     </div>
     {{ search_macros.parse_pagination_total(pagination_data) }}
     {{ search_macros.parse_pagination(pagination_data) }}
-    {{ search_macros.parse_search_result_gallery(search_result) }}
+    {{ search_macros.parse_search_result_gallery(search_result, view) }}
     {% if pagination_data["total_pages"] != 1 %}
     {{ search_macros.parse_pagination(pagination_data) }}
     {% endif %}
