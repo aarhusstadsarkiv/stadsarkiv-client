@@ -3,6 +3,9 @@ import { Flash } from '/static/js/flash.js';
 import { asyncLogError } from '/static/js/error.js';
 import { truncateText } from '/static/js/truncate-text.js';
 
+const containerLeft = document.querySelector('.container-left');
+const containerMainFacets = document.querySelector('.container-main-facets');
+
 /**
  * Utility function to save the state of details elements from a given container
  */
@@ -23,35 +26,18 @@ function saveState(containerSelector, storageKey) {
  * Save the state of the tree to local storage
  */
 function saveTree() {
-
-    const containerLeftIsDisplayed = window.getComputedStyle(document.querySelector('.container-left')).display != 'none';
-    if (containerLeftIsDisplayed) {
-        saveState('.container-left', 'treeState');
-        
+    
+    if (containerLeft) {
+        if (window.getComputedStyle(containerLeft).display != 'none') {
+            saveState('.container-left', 'treeState');
+        }
     }
-
-    const containerMainFacetsIsDisplayed = window.getComputedStyle(document.querySelector('.container-main-facets')).display != 'none';
-    if (containerMainFacetsIsDisplayed) {
-        saveState('.container-main-facets', 'treeState');
-
+    
+    if (containerMainFacets) {
+        if (window.getComputedStyle(containerMainFacets).display != 'none') {
+            saveState('.container-main-facets', 'treeState');
+        }
     }
-}
-
-/**
- *  Utility function to collapse all details elements in a given container
- */
-function collapseTree(containerSelector) {
-    const detailsElements = document.querySelectorAll(`${containerSelector} .facets details`);
-    detailsElements.forEach(detailElement => {
-        detailElement.open = false;
-    });
-}
-
-/**
- * Collapses all trees
- */
-function collapseAllTrees() {
-    // collapseTree('.container-main-facets');
 }
 
 /**
@@ -74,14 +60,16 @@ function expandTreeFromState(containerSelector, storageKey) {
  */
 function expandTree() {
 
-    const containerLeftIsDisplayed = window.getComputedStyle(document.querySelector('.container-left')).display != 'none';
-    if (containerLeftIsDisplayed) {
-        expandTreeFromState('.container-left', 'treeState');
+    if (containerLeft) {
+        if (window.getComputedStyle(containerLeft).display != 'none') {
+            expandTreeFromState('.container-left', 'treeState');
+        }
     }
 
-    const containerMainFacetsIsDisplayed = window.getComputedStyle(document.querySelector('.container-main-facets')).display != 'none';
-    if (containerMainFacetsIsDisplayed) {
-        expandTreeFromState('.container-main-facets', 'treeState');
+    if (containerMainFacets) {
+        if (window.getComputedStyle(containerMainFacets).display != 'none') {
+            expandTreeFromState('.container-main-facets', 'treeState');
+        }
     }
 }
 
@@ -319,3 +307,21 @@ function searchEvents() {
 }
 
 export { searchEvents }
+
+
+/**
+ *  Utility function to collapse all details elements in a given container
+ */
+// function collapseTree(containerSelector) {
+//     const detailsElements = document.querySelectorAll(`${containerSelector} .facets details`);
+//     detailsElements.forEach(detailElement => {
+//         detailElement.open = false;
+//     });
+// }
+
+/**
+ * Collapses all trees
+ */
+// function collapseAllTrees() {
+//     collapseTree('.container-main-facets');
+// }
