@@ -13,7 +13,9 @@
 {% endblock head %}
 
 {% block content %}
-
+<div class="container-left">
+    {{ search_macros.parse_top_level_facets(facets, "facets", "search-date") }}
+</div>
 <div class="container-main">
 
     {{ search_macros.parse_search() }}
