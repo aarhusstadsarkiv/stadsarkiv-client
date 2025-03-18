@@ -107,6 +107,12 @@
     text-overflow: ellipsis; /* Adds "..." if text overflows */
     max-height: 1.4em; /* Ensures it only takes up one line */
     display: block;
+    text-align: left;
+}
+
+.search-result-date-gallery {
+    text-align: left;
+    font-size: 1.0em;
 }
 
 /*
