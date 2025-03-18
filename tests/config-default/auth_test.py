@@ -53,13 +53,13 @@ class TestAuth(unittest.TestCase):
         # Sometimes login credential uses "email" and sometimes "username" ... this is a bit confusing
         login = {"email": valid_user, "password": valid_password}
         response = client.post("/auth/login", data=login, follow_redirects=True)  # type: ignore
-        expect_json = {'error': False, 'redirect': '/search'}
+        expect_json = {"error": False, "redirect": "/search"}
         self.assertEqual(response.json(), expect_json)
 
     def test_login_post_incorrect(self):
         client = TestClient(app)
         response = client.post("/auth/login", data=incorrect_login, follow_redirects=True)  # type: ignore
-        expect_json = {'message': 'Email eller password er ikke korrekt.', 'error': True}
+        expect_json = {"message": "Email eller password er ikke korrekt.", "error": True}
         self.assertEqual(response.json(), expect_json)
 
     def test_logout_get(self):
