@@ -59,9 +59,14 @@ async def auth_login_post(request: Request):
     except OpenAwsException as e:
         return JSONResponse({"message": str(e), "error": True})
 
-    except Exception as e:
+    except Exception:
         log.exception("Error in auth_login_post")
-        return JSONResponse({"message": str(e), "error": True})
+        return JSONResponse(
+            {
+                "message": "Beklager, men noget gik galt. Fejlen er logget og vil blive undersøgt. Prøv igen senere",
+                "error": True,
+            }
+        )
 
 
 async def auth_logout_get(request: Request):
