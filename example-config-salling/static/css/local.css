@@ -78,3 +78,27 @@
     text-transform: unset;
     font-size: 1.4em;
 }
+
+.container-max {
+    max-width: 1400px;
+}
+
+a.search-link-gallery {
+    /* display: flex; */
+}
+
+.search-portrait-gallery img {
+    /*
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    */
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+
+

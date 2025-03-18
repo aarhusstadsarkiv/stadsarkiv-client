@@ -173,3 +173,4 @@ uvicorn_process.pid
 settings_local.py
 /data
 !tests/data
+.DS_Store

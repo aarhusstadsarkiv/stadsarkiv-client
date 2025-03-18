@@ -7,38 +7,37 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/search.css') }}?v={{ get_setting('version') }}">
+{% if view == 'grid' %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/search_grid.css') }}?v={{ get_setting('version') }}">
+{% endif %}
 {% endblock head %}
 
 {% block content %}
-<div class="container-left">
-    {{ search_macros.parse_top_level_facets(facets, "facets", "search-date") }}
-</div>
 <div class="container-main">
 
     {{ search_macros.parse_search() }}
     {{ search_macros.parse_facets_filters(facets_filters) }}
-
     <div class="container-main-facets">
         {{ search_macros.parse_top_level_facets(facets, 'facets', 'search-date-main') }}
     </div>
     {{ search_macros.parse_pagination_total(pagination_data) }}
     {{ search_macros.parse_pagination(pagination_data) }}
-    {{ search_macros.parse_search_result(search_result) }}
+    {{ search_macros.parse_search_result_gallery(search_result) }}
     {% if pagination_data["total_pages"] != 1 %}
     {{ search_macros.parse_pagination(pagination_data) }}
     {% endif %}
 
     {% set meta_links = [
-        {'label': 'JSON', 'url': url_for('search_get_json') ~ "?" ~ query_str_search | string}
+    {'label': 'JSON', 'url': url_for('search_get_json') ~ "?" ~ query_str_search | string}
     ] %}
-    
+
     {{ common_macros.parse_meta_block(meta_links, permissions_list) }}
 </div>
 
 <script type="module">
-    import { searchEvents } from "/static/js/search.js";
-    import { autoCompleteInit  } from '/static/js/auto-complete-instance.js';
     import { config } from '/static/js/config.js';
+    import { searchEvents } from "/static/js/search.js";
+    import { autoCompleteInit } from '/static/js/auto-complete-instance.js';
 
     searchEvents();
 

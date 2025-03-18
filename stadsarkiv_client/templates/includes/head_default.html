@@ -1,3 +1,4 @@
+<!-- head_default.html -->
 <title>
   {{ meta_title }}
 </title>
@@ -18,7 +19,6 @@
 <link rel="stylesheet" href="{{ url_for('static', path='/css/navigation.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/record.css') }}?v={{ get_setting('version') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='/css/footer.css') }}?v={{ get_setting('version') }}">
-<link rel="stylesheet" href="{{ url_for('static', path='/css/local.css') }}?v={{ get_setting('version') }}">
 <link rel="shortcut icon" href="{{ url_for('static', path='/assets/favicon.ico') }}?v={{ get_setting('version') }}">
 
 {% include "includes/importmap.html" %}
