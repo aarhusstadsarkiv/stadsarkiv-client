@@ -26,7 +26,7 @@
         height: 100%;
         object-fit: cover;
         /* filter: grayscale(100%); */
-        
+
     }
 
     .overlay-text {
@@ -41,6 +41,11 @@
         width: 100%;
         cursor: pointer;
     }
+
+    .overlay-text a {
+        color: white;
+        text-decoration: none;
+    }
 </style>
 
 
@@ -49,63 +54,74 @@
 <div class="image-container">
     <div class="image-item">
         <img src="{{ url_for('static', path='/assets/udforsk/jul.jpg') }}" alt="Jul og Salling">
-        <div class="overlay-text">Jul og Salling</div>
+        <div class="overlay-text"><a href="/search?q=jul*&size=20&sort=created_at&direction=desc&view=grid">Jul og
+                Salling</a></div>
     </div>
     <div class="image-item">
         <img src="{{ url_for('static', path='/assets/udforsk/jubilæum.jpg') }}" alt="Jubilæer">
-        <div class="overlay-text">Jubilæer</div>
+        <div class="overlay-text"><a
+                href="/search?q=jubilæ%2A&size=20&sort=date_to&view=grid&direction=desc&">Jubilæer</a></div>
     </div>
     <div class="image-item">
         <img src="{{ url_for('static', path='/assets/udforsk/herman_salling.jpg') }}" alt="Herman Salling">
-        <div class="overlay-text">Herman Salling</div>
+        <div class="overlay-text"><a
+                href="/search?size=20&sort=created_at&view=grid&direction=desc&q=Herman+Salling">Herman Salling</a>
+        </div>
     </div>
     <div class="image-item">
-        <img src="{{ url_for('static', path='/assets/udforsk/folkekultur.jpg') }}"
-            alt="Folkekultur og dagligdagsliv">
-        <div class="overlay-text">Folkekultur og dagligdagsliv</div>
+        <img src="{{ url_for('static', path='/assets/udforsk/folkekultur.jpg') }}" alt="Folkekultur og dagligdagsliv">
+        <div class="overlay-text"><a
+                href="/search?size=20&sort=created_at&view=grid&direction=desc&subjects=33&">Folkekultur og
+                dagligdagsliv</a></div>
     </div>
     <div class="image-item">
         <img src="{{ url_for('static', path='/assets/udforsk/ferdinand_salling.jpg') }}" alt="Ferdinand Salling">
-        <div class="overlay-text">Ferdinand Salling</div>
+        <div class="overlay-text"><a
+                href="/search?subjects=10&size=20&sort=created_at&view=grid&direction=desc&start=0">Ferdinand
+                Salling</a></div>
     </div>
     <div class="image-item">
         <img src="{{ url_for('static', path='/assets/udforsk/konfirmation.jpg') }}" alt="Konfirmationer">
-        <div class="overlay-text">Konfirmationer</div>
+        <div class="overlay-text"><a
+                href="/search?q=konfir%2A&size=20&sort=created_at&view=grid&direction=desc&start=0">Konfirmationer</a>
+        </div>
     </div>
     <div class="image-item">
         <img src="{{ url_for('static', path='/assets/udforsk/ejendomme.jpg') }}" alt="Ejendomme og bygningsværker">
-        <div class="overlay-text">Ejendomme og bygningsværker</div>
+        <div class="overlay-text"><a
+                href="https://salling.openaws.dk/search?subjects=10&size=20&sort=created_at&view=grid&direction=desc&start=0">Ejendomme
+                og bygningsværker</a></div>
     </div>
     <!-- Add more image items as needed -->
 </div>
 
 <script>
     // Drag images inside the container
-        const pointerScroll = (elem) => {
-            const dragStart = (ev) => {
-              elem.setPointerCapture(ev.pointerId);
-              ev.preventDefault(); // Prevent default image dragging
-            };
-          
-            const dragEnd = (ev) => elem.releasePointerCapture(ev.pointerId);
-          
-            const drag = (ev) => {
-              if (elem.hasPointerCapture(ev.pointerId)) {
+    const pointerScroll = (elem) => {
+        const dragStart = (ev) => {
+            elem.setPointerCapture(ev.pointerId);
+            ev.preventDefault(); // Prevent default image dragging
+        };
+
+        const dragEnd = (ev) => elem.releasePointerCapture(ev.pointerId);
+
+        const drag = (ev) => {
+            if (elem.hasPointerCapture(ev.pointerId)) {
                 elem.scrollLeft -= ev.movementX;
-              }
-            };
-          
-            // Prevent images from being draggable
-            elem.querySelectorAll("img").forEach((img) => {
-              img.draggable = false;
-              img.addEventListener("dragstart", (ev) => ev.preventDefault());
-            });
-          
-            elem.addEventListener("pointerdown", dragStart);
-            elem.addEventListener("pointerup", dragEnd);
-            elem.addEventListener("pointermove", drag);
-          };
-          
-          document.querySelectorAll(".image-container").forEach(pointerScroll);
+            }
+        };
+
+        // Prevent images from being draggable
+        elem.querySelectorAll("img").forEach((img) => {
+            img.draggable = false;
+            img.addEventListener("dragstart", (ev) => ev.preventDefault());
+        });
+
+        elem.addEventListener("pointerdown", dragStart);
+        elem.addEventListener("pointerup", dragEnd);
+        elem.addEventListener("pointermove", drag);
+    };
+
+    document.querySelectorAll(".image-container").forEach(pointerScroll);
 
 </script>
