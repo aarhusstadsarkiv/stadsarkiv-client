@@ -414,12 +414,6 @@
             <div class="search-portrait-gallery">
                 <img src="{{ result.portrait }}" alt="{{ label }}">
             </div>
-            {% else %}
-                {% if view == 'grid' %}
-                <div class="search-portrait-gallery">
-                    <img src="{{ url_for('static', path='/assets/transparent_1px.png') }}" alt="{{ label }}">
-                </div>
-                {% endif %}
             {% endif %}
             {{ parse_search_title_gallery(result) }}
             <div class="search-result-date-gallery">
