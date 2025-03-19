@@ -1,0 +1,111 @@
+<style>
+    .image-container {
+        display: flex;
+        overflow-x: auto;
+        gap: 10px;
+        padding: 10px;
+        touch-action: none;
+        user-select: none;
+        padding: 10px 0;
+    }
+
+    .image-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .image-item {
+        position: relative;
+        flex-shrink: 0;
+        width: 250px;
+        height: 150px;
+        cursor: grab;
+    }
+
+    .image-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* filter: grayscale(100%); */
+        
+    }
+
+    .overlay-text {
+        position: absolute;
+        bottom: 0;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        background-color: rgba(255, 255, 255, 0.5);
+        padding-left: 10px;
+        width: 100%;
+        cursor: pointer;
+    }
+</style>
+
+
+
+<h3>Populære temaer fra arkivet</h3>
+<div class="image-container">
+    <div class="image-item">
+        <img src="{{ url_for('static', path='/assets/udforsk/jul.jpg') }}" alt="Jul og Salling">
+        <div class="overlay-text">Jul og Salling</div>
+    </div>
+    <div class="image-item">
+        <img src="{{ url_for('static', path='/assets/udforsk/jubilæum.jpg') }}" alt="Jubilæer">
+        <div class="overlay-text">Jubilæer</div>
+    </div>
+    <div class="image-item">
+        <img src="{{ url_for('static', path='/assets/udforsk/herman_salling.jpg') }}" alt="Herman Salling">
+        <div class="overlay-text">Herman Salling</div>
+    </div>
+    <div class="image-item">
+        <img src="{{ url_for('static', path='/assets/udforsk/folkekultur.jpg') }}"
+            alt="Folkekultur og dagligdagsliv">
+        <div class="overlay-text">Folkekultur og dagligdagsliv</div>
+    </div>
+    <div class="image-item">
+        <img src="{{ url_for('static', path='/assets/udforsk/ferdinand_salling.jpg') }}" alt="Ferdinand Salling">
+        <div class="overlay-text">Ferdinand Salling</div>
+    </div>
+    <div class="image-item">
+        <img src="{{ url_for('static', path='/assets/udforsk/konfirmation.jpg') }}" alt="Konfirmationer">
+        <div class="overlay-text">Konfirmationer</div>
+    </div>
+    <div class="image-item">
+        <img src="{{ url_for('static', path='/assets/udforsk/ejendomme.jpg') }}" alt="Ejendomme og bygningsværker">
+        <div class="overlay-text">Ejendomme og bygningsværker</div>
+    </div>
+    <!-- Add more image items as needed -->
+</div>
+
+<script>
+    // Drag images inside the container
+        const pointerScroll = (elem) => {
+            const dragStart = (ev) => {
+              elem.setPointerCapture(ev.pointerId);
+              ev.preventDefault(); // Prevent default image dragging
+            };
+          
+            const dragEnd = (ev) => elem.releasePointerCapture(ev.pointerId);
+          
+            const drag = (ev) => {
+              if (elem.hasPointerCapture(ev.pointerId)) {
+                elem.scrollLeft -= ev.movementX;
+              }
+            };
+          
+            // Prevent images from being draggable
+            elem.querySelectorAll("img").forEach((img) => {
+              img.draggable = false;
+              img.addEventListener("dragstart", (ev) => ev.preventDefault());
+            });
+          
+            elem.addEventListener("pointerdown", dragStart);
+            elem.addEventListener("pointerup", dragEnd);
+            elem.addEventListener("pointermove", drag);
+          };
+          
+          document.querySelectorAll(".image-container").forEach(pointerScroll);
+
+</script>
