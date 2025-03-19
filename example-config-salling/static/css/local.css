@@ -46,6 +46,11 @@
     max-width: 1200px;
 }
 
+.container-main {
+    padding: 20px;
+    margin: unset;
+}
+
 .container-left  {
     display: none;
 }
