@@ -156,7 +156,7 @@
 
 {% macro parse_search_form() %}
 <!-- the div provides a context for search-suggestions with `position: absolute` -->
-<div>
+<div class="container-search-form">
     <form id="search" method="get" action="{{ url_for('search_get')}}" role="search">
         {% for key, value in query_params if key not in ['start', 'q'] %}
         <input type="hidden" name="{{ key }}" value="{{ value }}">
@@ -262,11 +262,25 @@
     {% elif total == 1 %}
     {{ total }} {{ translate('Search result') }}
     {% elif total == 10000 %}
-    <div>{{ translate('More than 10.000 search results') }}</div>
-    <div>{{ size }} {{ translate('Per page')}}. {{ translate('Showing page') }} {{ current_page }} {{ translate('of') }} {{ total_pages }}.</div>    
+    <div>
+        <span class="paginaton-total-results">{{ translate('More than 10.000 search results') }}</span>
+    </div>
+    <div>
+        <span class="paginaton-per-page">{{ size }} {{ translate('Per page')}}.</span>
+        <span class="pagination-showing-page">{{ translate('Showing page') }} {{ current_page }} {{ translate('of') }} {{ total_pages }}.</span>
+    </div>    
     {% else %}
-    <div>{{ total }} {{ translate('Search results') }}.</div>
-    <div>{{ size }} {{ translate('Per page')}}. {{ translate('Showing page') }} {{ current_page }} {{ translate('of') }} {{ total_pages }}.</div>
+    <div>
+        <span class="paginaton-total-results">{{ total }} {{ translate('Search results') }}.</span>
+    </div>
+    <div>
+        <span class="paginaton-per-page">
+            {{ size }} {{ translate('Per page')}}.
+        </span>
+        <span class="pagination-showing-page">
+            {{ translate('Showing page') }} {{ current_page }} {{ translate('of') }} {{ total_pages }}.
+        </span>
+    </div>
     {% endif %}
 </div>
 {% endmacro %}

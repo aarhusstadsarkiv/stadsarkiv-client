@@ -132,3 +132,22 @@
 }
 */
 
+.container-search-form {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    #q {
+        width: 100%;
+    }
+    
+    .container-search-form #submit {
+        display:none;
+    }
+}
+
+
+.facets-toggle-container {
+    display: none;
+}
+
