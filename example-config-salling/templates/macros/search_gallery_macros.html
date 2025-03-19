@@ -1,4 +1,3 @@
-
 {% set truncate_summary_gallery = 160 %}
 
 {% macro parse_search_title_gallery(result) %}
@@ -9,7 +8,7 @@
 {% endif %}
 {% endmacro %}
 
-{% macro parse_search_result_gallery(search_result) %}
+{% macro parse_search_result_gallery(search_result, view) %}
 {% set start = search_result["start"]|int %}
 {% set size = search_result["size"]|int %}
 
@@ -24,14 +23,20 @@
     <div class="search-result-gallery">
         <a class="search-link-gallery" href="/records/{{ result.id }}?search={{ current }}">
             {% if result.portrait %}
-            <div class="search-portrait-gallery">
                 {% if result.label %}
                 {% set label = result.label %}
                 {% else %}
                 {% set label = result.summary %}
                 {% endif %}
+            <div class="search-portrait-gallery">
                 <img src="{{ result.portrait }}" alt="{{ label }}">
             </div>
+            {% else %}
+                {% if view == 'grid' %}
+                <div class="search-portrait-gallery">
+                    <img src="{{ url_for('static', path='/assets/transparent_1px.png') }}" alt="{{ label }}">
+                </div>
+                {% endif %}
             {% endif %}
             {{ parse_search_title_gallery(result) }}
             <div class="search-result-date-gallery">
