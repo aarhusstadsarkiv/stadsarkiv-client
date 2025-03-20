@@ -42,6 +42,25 @@
     }
 }
 
+.container-max {
+    max-width: 1200px;
+}
+
+.container-main {
+    padding: 20px;
+    margin: unset;
+}
+
+.container-left  {
+    display: none;
+}
+
+
+.facets-toggle-container {
+    display: block;
+}
+
+
 .record-content {
     flex-direction: column;
     gap: unset;
@@ -79,26 +98,56 @@
     font-size: 1.4em;
 }
 
-.container-max {
-    max-width: 1400px;
-}
-
-a.search-link-gallery {
-    /* display: flex; */
-}
-
-.search-portrait-gallery img {
-    /*
+.page-records-search-grid .search-portrait-gallery img {
     width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1;
-    object-fit: contain;
-    */
+    height: 100%; /* Ensures uniform height */
+    aspect-ratio: 1 / 1; /* Maintains square shape */
+    object-fit: cover; /* Fills the space without distortion */
+}
+
+.page-records-search-grid .search-summary-gallery {
+    font-size: 1.4em;
+    font-weight: bold;
+    overflow: hidden; /* Hides overflow text */
+    text-overflow: ellipsis; /* Adds "..." if text overflows */
+    max-height: 1.4em; /* Ensures it only takes up one line */
+    display: block;
+    text-align: left;
+}
+
+.search-result-date-gallery {
+    text-align: left;
+    font-size: 1.0em;
+}
+
+/*
+
+.search-summary-gallery {
+    text-decoration: none;
+    font-size: 1.4em;
+    font-weight: 600;
+    white-space: nowrap; 
+    overflow: hidden;    
+    text-overflow: ellipsis; 
+}
+*/
+
+.container-search-form {
     width: 100%;
-    height: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    #q {
+        width: 100%;
+    }
+    
+    .container-search-form #submit {
+        display:none;
+    }
 }
 
 
+.facets-toggle-container {
+    display: none;
+}
 
