@@ -60,11 +60,11 @@
     display: block;
 }
 
-
+/*
 .record-content {
     flex-direction: column;
     gap: unset;
-}
+}*/
 
 .record-content .content {
     max-width: var(--text-max-width);
@@ -148,6 +148,10 @@
 
 
 .facets-toggle-container {
+    display: none;
+}
+
+.paginaton-per-page {
     display: none;
 }
 
