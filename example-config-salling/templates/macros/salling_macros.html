@@ -47,3 +47,30 @@
     {% endfor %}
 </div>
 {% endmacro %}
+
+{% macro parse_pagination_total(pagination_data) %}
+
+{% set total = pagination_data["total"] %}
+{% set size = pagination_data["size"] %}
+{% set start = pagination_data["start"] %}
+{% set total_pages = pagination_data["total_pages"] %}
+{% set current_page = pagination_data["current_page"] %}
+{% set query_str = pagination_data["query_str"] %}
+
+<div class="pagination-total">
+    {% if total == 0 %}
+    {{ translate('No search results') }}
+    {% elif total == 1 %}
+    {{ total }} {{ translate('Search result') }}
+    {% elif total == 10000 %}
+
+    <span class="paginaton-total-results">{{ translate('More than 10.000 search results') }}</span>
+    <span class="pagination-showing-page">{{ translate('Showing page') }} {{ current_page }} {{ translate('of') }} {{ total_pages }}.</span>  
+    {% else %}
+    <span class="paginaton-total-results">{{ total }} {{ translate('Search results') }}.</span>
+    <span class="pagination-showing-page">
+        {{ translate('Showing page') }} {{ current_page }} {{ translate('of') }} {{ total_pages }}.
+    </span>
+    {% endif %}
+</div>
+{% endmacro %}

@@ -2,7 +2,7 @@
 
 {% import "macros/common_macros.html" as common_macros %}
 {% import "macros/search_macros.html" as search_macros with context %}
-{% import "macros/search_gallery_macros.html" as search_gallery_macros with context %}
+{% import "macros/salling_macros.html" as salling_macros with context %}
 
 
 {% block body_class %}page-records-search {% if view == 'grid' %}page-records-search-grid{% else
@@ -25,9 +25,9 @@
     <div class="container-main-facets">
         {{ search_macros.parse_top_level_facets(facets, 'facets', 'search-date-main') }}
     </div>
-    {{ search_macros.parse_pagination_total(pagination_data) }}
+    {{ salling_macros.parse_pagination_total(pagination_data) }}
     {{ search_macros.parse_pagination(pagination_data) }}
-    {{ search_gallery_macros.parse_search_result_gallery(search_result, view) }}
+    {{ salling_macros.parse_search_result_gallery(search_result, view) }}
     {% if pagination_data["total_pages"] != 1 %}
     {{ search_macros.parse_pagination(pagination_data) }}
     {% endif %}
