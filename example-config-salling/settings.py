@@ -25,7 +25,7 @@ settings: dict[str, typing.Any] = {
     "main_menu_top": [
         {"name": "search_get", "title": "Udforsk Arkivet", "type": "text"},
         {"name": "stories", "title": "Fortællinger", "type": "text"},
-        # {"name": "memories", "title": "Erindringer", "type": "text"},
+        {"name": "memories", "title": "Erindringer", "type": "text"},
         {"name": "about", "title": "Om Arkivet", "type": "text"},
         # {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],

@@ -29,7 +29,7 @@ class Hooks(HooksSpec):
         # online
         query_params.append(("availability", "4"))
         # images
-        query_params.append(("content_types", "61"))
+        # query_params.append(("content_types", "61"))
 
 
         return query_params
@@ -46,6 +46,6 @@ class Hooks(HooksSpec):
         # online
         query_params = [(key, value) for key, value in query_params if key != "availability"]
         # images
-        query_params = [(key, value) for key, value in query_params if key != "content_types"]
+        # query_params = [(key, value) for key, value in query_params if key != "content_types"]
 
         return query_params
