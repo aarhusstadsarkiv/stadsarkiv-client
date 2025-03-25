@@ -12,9 +12,7 @@
 
 <body class="{% block body_class %}{% endblock %}">
 
-    <header>
-        {% include "includes/navigation.html" %}
-    </header>
+    {% include "includes/navigation.html" %}
 
     <main class="container-max">
         {% block content %}
