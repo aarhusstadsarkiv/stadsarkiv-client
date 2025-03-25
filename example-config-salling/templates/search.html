@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    {% include "includes/head_default.html" %}
+    {% include "includes/head_extra.html" %}
+    {% block head %}
+    {% endblock head %}
+
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/local.css') }}?v={{ get_setting('version') }}">
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+
+    <nav class="container-fluid navigation sticky-top">
+        {% include "includes/navigation.html" %}
+    </nav>
+
+    <main class="container-medium">
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+    <footer class="footer">
+        {% include "includes/footer.html" %}
+    </footer>
+
+    {% include "includes/flash.html" %}
+
+</body>
+
+</html>

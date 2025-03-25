@@ -25,6 +25,12 @@ class Hooks(HooksSpec):
         # Remove all curators from the query params and add curator (4)
         query_params = [(key, value) for key, value in query_params if key != "organisations"]
         query_params.append(("organisations", "107434"))
+        
+        # online
+        query_params.append(("availability", "4"))
+        # images
+        # query_params.append(("content_types", "61"))
+
 
         return query_params
 
@@ -36,5 +42,10 @@ class Hooks(HooksSpec):
         """
         # organisations=107434
         query_params = [(key, value) for key, value in query_params if key != "organisations"]
+        
+        # online
+        query_params = [(key, value) for key, value in query_params if key != "availability"]
+        # images
+        # query_params = [(key, value) for key, value in query_params if key != "content_types"]
 
         return query_params
