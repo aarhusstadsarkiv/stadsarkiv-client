@@ -5,17 +5,19 @@
 <head>
 
     {% include "includes/head_default.html" %}
+    {% include "includes/head_extra.html" %}
     {% block head %}
     {% endblock head %}
+
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/local.css') }}?v={{ get_setting('version') }}">
 
 </head>
 
 <body class="page-custom {% block body_class %}{% endblock %}">
 
-    <nav class="container-fluid navigation sticky-top">
-        {% include "includes/logo.html" %}
+    <header>
         {% include "includes/navigation.html" %}
-    </nav>
+    </header>
 
     <main class="container-small">
         <div class="container-left">
