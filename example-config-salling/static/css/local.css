@@ -77,11 +77,27 @@
     max-width: var(--text-max-width);
 }
 
+/*
 .logo svg {
     height: 61px;
+}*/
+
+
+.logo-text-end {
+    font-weight: bold;
+}
+
+.navigation {
+    align-items: anchor-center;
+}
+
+.logo a {
+    font-size: 2em;
+    text-decoration: none;
 }
 
 @media (max-width: 1024px) {
+    /*
     .logo svg {
         transform: scale(0.7);
         transform-origin: left;
@@ -90,8 +106,14 @@
     .logo {
         max-width: 200px;
         align-items: anchor-center;
+    }*/
+    .logo a {
+        font-size: 1.5em;
     }
+
 }
+
+
 
 .footer {
     align-items: center;
