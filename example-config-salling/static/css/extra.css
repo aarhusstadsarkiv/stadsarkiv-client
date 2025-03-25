@@ -1,80 +1,76 @@
-@layer primitives, tokens, application, issues;
+:root {
 
 
-
-
-@layer primitives {
     /* * primitives */
 
-    colors {
-
-        --color-white: #FFFFFF;
-        --color-gray-50: #FDFDFD;
-        --color-gray-100: #F5F5F5;
-        --color-gray-300: #D5D7DA;
-        --color-gray-500: #717680;
-        --color-gray-700: #414651;
-        --color-gray-900: #181D27;
-        --color-brand-color-600: #7F56D9;
-        --color-brand-color-700: #6940C6;
-
-    }
-
-    font-family {
-
-        --font-family-testing: 'Verdana';
-        --font-family-display: Times New Roman;
-        --font-family-body: Times New Roman;
-    }
-
-    font-weight {
-
-        --font-weight-regular: regular;
-        --font-weight-medium: medium;
-        --font-weight-semibold: semibold;
-        --font-weight-bold: bold;
-    }
-
-    font-lineheight {
-
-        --font-lineheight-4xl: 90px;
-        --font-lineheight-3xl: 72px;
-        --font-lineheight-2xl: 60px;
-        --font-lineheight-xl: 44px;
-        --font-lineheight-lg: 38px;
-        --font-lineheight-md: 32px;
-        --font-lineheight-s: 30px;
-        --font-lineheight-xs: 28px;
-        --font-lineheight-2xs: 24px;
-        --font-lineheight-3xs: 20px;
-        --font-lineheight-4xs: 18px;
-    }
-
-    font-size {
-
-        --font-size-4xl: 72px;
-        --font-size-3xl: 60px;
-        --font-size-2xl: 48px;
-        --font-size-xl: 36px;
-        --font-size-lg: 30px;
-        --font-size-md: 24px;
-        --font-size-sm: 20px;
-        --font-size-xs: 18px;
-        --font-size-2xs: 16px;
-        --font-size-3xs: 14px;
-        --font-size-4xs: 12px;
-    }
+    /* * color primitives */
 
 
-    sizes {
-        --numbers-sizing-5: 20px;
-
-    }
-}
+    --color-white: #FFFFFF;
+    --color-gray-50: #FDFDFD;
+    --color-gray-100: #F5F5F5;
+    --color-gray-300: #D5D7DA;
+    --color-gray-500: #717680;
+    --color-gray-700: #414651;
+    --color-gray-900: #181D27;
+    --color-brand-color-600: #7F56D9;
+    --color-brand-color-700: #6940C6;
 
 
 
-tokens {
+    /* * font primitives */
+
+    --font-family-testing: 'Verdana';
+    --font-family-display: Times New Roman;
+    --font-family-body: Times New Roman;
+
+
+
+
+    --font-weight-regular: regular;
+    --font-weight-medium: medium;
+    --font-weight-semibold: semibold;
+    --font-weight-bold: bold;
+
+
+
+
+    --font-lineheight-4xl: 90px;
+    --font-lineheight-3xl: 72px;
+    --font-lineheight-2xl: 60px;
+    --font-lineheight-xl: 44px;
+    --font-lineheight-lg: 38px;
+    --font-lineheight-md: 32px;
+    --font-lineheight-s: 30px;
+    --font-lineheight-xs: 28px;
+    --font-lineheight-2xs: 24px;
+    --font-lineheight-3xs: 20px;
+    --font-lineheight-4xs: 18px;
+
+
+
+
+    --font-size-4xl: 72px;
+    --font-size-3xl: 60px;
+    --font-size-2xl: 48px;
+    --font-size-xl: 36px;
+    --font-size-lg: 30px;
+    --font-size-md: 24px;
+    --font-size-sm: 20px;
+    --font-size-xs: 18px;
+    --font-size-2xs: 16px;
+    --font-size-3xs: 14px;
+    --font-size-4xs: 12px;
+
+
+    /* * number primitives */
+
+    --numbers-sizing-5: 20px;
+
+
+    /* * Tokens */
+
+
     --numbers-spacing-2xl: var(--numbers-sizing-5);
     --background-bg-primary: var(--color-white);
     --background-bg-tertiary: var(--color-gray-100);
@@ -86,11 +82,16 @@ tokens {
     --text-colors-text-placeholder: var(--color-gray-500);
     --border-border-primary: var(--color-gray-300);
 
-}
 
-application {
 
-    /* * System colors */
+
+
+
+
+
+
+
+    /* * application */
 
 
     --background-body: var(--background-bg-primary);
@@ -157,18 +158,6 @@ application {
     --slideshow-background: rgba(0, 0, 0, 0.5);
     --slideshow-background-alt: rgba(0, 0, 0, 0.8);
     --slideshow-text: white;
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 
