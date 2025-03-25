@@ -21,8 +21,6 @@
     }
 }
 
-
-
 .page-about .container-medium,
 .page-cookies .container-medium {
     width: 700px;
@@ -67,28 +65,16 @@
     display: block;
 }
 
-/*
-.record-content {
-    flex-direction: column;
-    gap: unset;
-}*/
-
 .record-content .content {
     max-width: var(--text-max-width);
 }
-
-/*
-.logo svg {
-    height: 61px;
-}*/
-
 
 .logo-text-end {
     font-weight: bold;
 }
 
 .navigation {
-    align-items: anchor-center;
+    align-items: center;
 }
 
 .logo a {
@@ -97,23 +83,10 @@
 }
 
 @media (max-width: 1024px) {
-    /*
-    .logo svg {
-        transform: scale(0.7);
-        transform-origin: left;
-    }
-
-    .logo {
-        max-width: 200px;
-        align-items: anchor-center;
-    }*/
     .logo a {
         font-size: 1.5em;
     }
-
 }
-
-
 
 .footer {
     align-items: center;
@@ -193,7 +166,6 @@
         margin-right: 10px; 
         margin-left: unset;
     }
-    
 }
 
 .search-form {
@@ -206,4 +178,3 @@
     padding: 0 0.5em;
     /* padding: unset; */
 }
-
