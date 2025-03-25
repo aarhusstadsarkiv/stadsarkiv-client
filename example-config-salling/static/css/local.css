@@ -23,14 +23,14 @@
 
 
 
-.page-about .container-medium, .page-cookies .container-medium {
+.page-about .container-medium,
+.page-cookies .container-medium {
     width: 700px;
     max-width: 100%;
 }
 
 .page-records-search .record_content_collectors,
-.page-records-search .record_content_collection
-{
+.page-records-search .record_content_collection {
     display: none;
 }
 
@@ -46,14 +46,19 @@
 
 .container-max {
     max-width: 1200px;
+    padding-top: 20px;
+    padding: unset;
 }
 
 .container-main {
-    padding: 20px;
+    padding: 0 20px;
     margin: unset;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
-.container-left  {
+.container-left {
     display: none;
 }
 
@@ -81,6 +86,7 @@
         transform: scale(0.7);
         transform-origin: left;
     }
+
     .logo {
         max-width: 200px;
         align-items: anchor-center;
@@ -95,7 +101,8 @@
     margin-bottom: 2em;
 }
 
-.menu-text a, .main-menu-overlay a {
+.menu-text a,
+.main-menu-overlay a {
     text-transform: unset;
     font-size: 1.4em;
 }
@@ -108,17 +115,23 @@
 
 .page-records-search-grid .search-portrait-gallery img {
     width: 100%;
-    height: 100%; /* Ensures uniform height */
-    aspect-ratio: 1 / 1; /* Maintains square shape */
-    object-fit: cover; /* Fills the space without distortion */
+    height: 100%;
+    /* Ensures uniform height */
+    aspect-ratio: 1 / 1;
+    /* Maintains square shape */
+    object-fit: cover;
+    /* Fills the space without distortion */
 }
 
 .page-records-search-grid .search-summary-gallery {
     font-size: 1.4em;
     font-weight: bold;
-    overflow: hidden; /* Hides overflow text */
-    text-overflow: ellipsis; /* Adds "..." if text overflows */
-    max-height: 1.4em; /* Ensures it only takes up one line */
+    overflow: hidden;
+    /* Hides overflow text */
+    text-overflow: ellipsis;
+    /* Adds "..." if text overflows */
+    max-height: 1.4em;
+    /* Ensures it only takes up one line */
     display: block;
     text-align: left;
 }
@@ -128,33 +141,46 @@
     font-size: 1.0em;
 }
 
-/*
-
-.search-summary-gallery {
-    text-decoration: none;
-    font-size: 1.4em;
-    font-weight: 600;
-    white-space: nowrap; 
-    overflow: hidden;    
-    text-overflow: ellipsis; 
+.search-results {
+    max-width: unset;
 }
-*/
 
-.container-search-form {
-    width: 100%;
+.facets-toggle-container {
+    display: none;
+}
+
+.search-option {
+    margin-right: unset;
+    margin-left: 10px;
 }
 
 @media (max-width: 768px) {
     #q {
         width: 100%;
     }
-    
-    .container-search-form #submit {
-        display:none;
+
+    .container-search-form {
+        width: 100%;
     }
+
+    .container-search-form #submit {
+        display: none;
+    }
+
+    .search-option {
+        margin-right: 10px; 
+        margin-left: unset;
+    }
+    
 }
 
-
-.facets-toggle-container {
-    display: none;
+.search-form {
+    gap: 15px;
 }
+
+.footer-content {
+    padding: unset;
+    padding-bottom: 2em;
+    /* padding: unset; */
+}
+
