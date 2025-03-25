@@ -181,6 +181,7 @@
 .footer-content {
     padding: unset;
     padding-bottom: 2em;
+    padding: 0 0.5em;
     /* padding: unset; */
 }
 
