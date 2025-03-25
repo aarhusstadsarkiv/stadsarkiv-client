@@ -1,57 +1,61 @@
 {% import "macros/common_macros.html" as common_macros %}
 
-<div class="main-menu-overlay">
-    {% for menu_item in main_menu_system %}
-    <a href="{{ menu_item.url }}">{{ menu_item.title }}</a>
-    {% endfor %}
+<header class="sticky-top">
 
-    {% for section in main_menu_sections %}
-    {% if section.title %}
-    <h3>{{ section.title }}</h3>
-    {% endif %}
-    {% for menu_item in section.pages %}
-    <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
-    {% endfor %}
-    {% endfor %}
-
-    {% for menu_item in main_menu_top %}
-    {% if menu_item.type == 'text' %}
-    <div class="menu-text-overlay">
+    <div class="main-menu-overlay">
+        {% for menu_item in main_menu_system %}
         <a href="{{ menu_item.url }}">{{ menu_item.title }}</a>
-    </div>
-    {% endif %}
-    {% endfor %}
-</div>
+        {% endfor %}
 
-<nav class="container-fluid navigation sticky-top">
-    {% include "includes/logo.html" %}
-
-    <div class="navigation-right-group">
+        {% for section in main_menu_sections %}
+        {% if section.title %}
+        <h3>{{ section.title }}</h3>
+        {% endif %}
+        {% for menu_item in section.pages %}
+        <a href="{{ url_for(menu_item.name) }}">{{ menu_item.title }}</a>
+        {% endfor %}
+        {% endfor %}
 
         {% for menu_item in main_menu_top %}
         {% if menu_item.type == 'text' %}
-        <div class="menu-text">
+        <div class="menu-text-overlay">
             <a href="{{ menu_item.url }}">{{ menu_item.title }}</a>
         </div>
         {% endif %}
         {% endfor %}
-
-        {% for menu_item in main_menu_top %}
-        {% if menu_item.type == 'icon' %}
-        <a href="{{ menu_item.url }}" aria-label="{{ menu_item.title }}">
-            <div class="menu-icon">{{ get_icon(menu_item.icon)|safe }}</div>
-        </a>
-        {% endif %}
-        {% endfor %}
-
-        <a id="menu-hamburger" href="#" aria-label="{{ translate('Open menu') }}" aria-expanded="false">
-            <div class="menu-icon closed">
-                {{ get_icon('menu')|safe }}
-            </div>
-            <div class="menu-icon open" style="display: none">
-                {{ get_icon('menu_open')|safe }}
-            </div>
-        </a>
     </div>
 
-</nav>
+    <nav class="container-fluid navigation">
+        {% include "includes/logo.html" %}
+
+        <div class="navigation-right-group">
+
+            {% for menu_item in main_menu_top %}
+            {% if menu_item.type == 'text' %}
+            <div class="menu-text">
+                <a href="{{ menu_item.url }}">{{ menu_item.title }}</a>
+            </div>
+            {% endif %}
+            {% endfor %}
+
+            {% for menu_item in main_menu_top %}
+            {% if menu_item.type == 'icon' %}
+            <a href="{{ menu_item.url }}" aria-label="{{ menu_item.title }}">
+                <div class="menu-icon">{{ get_icon(menu_item.icon)|safe }}</div>
+            </a>
+            {% endif %}
+            {% endfor %}
+
+            <a id="menu-hamburger" href="#" aria-label="{{ translate('Open menu') }}" aria-expanded="false">
+                <div class="menu-icon closed">
+                    {{ get_icon('menu')|safe }}
+                </div>
+                <div class="menu-icon open" style="display: none">
+                    {{ get_icon('menu_open')|safe }}
+                </div>
+            </a>
+        </div>
+
+    </nav>
+
+</header>
