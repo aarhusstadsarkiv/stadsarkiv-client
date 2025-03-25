@@ -21,6 +21,8 @@
     }
 }
 
+
+
 .page-about .container-medium, .page-cookies .container-medium {
     width: 700px;
     max-width: 100%;
@@ -60,11 +62,11 @@
     display: block;
 }
 
-
+/*
 .record-content {
     flex-direction: column;
     gap: unset;
-}
+}*/
 
 .record-content .content {
     max-width: var(--text-max-width);
@@ -96,6 +98,12 @@
 .menu-text a, .main-menu-overlay a {
     text-transform: unset;
     font-size: 1.4em;
+}
+
+@media (max-width: 1024px) {
+    .menu-text a {
+        font-size: 1.0em;
+    }
 }
 
 .page-records-search-grid .search-portrait-gallery img {
@@ -150,4 +158,3 @@
 .facets-toggle-container {
     display: none;
 }
-

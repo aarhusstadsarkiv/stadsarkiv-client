@@ -48,74 +48,108 @@
     }
 </style>
 
+{% set image_items = [
+{
+"image_src": "/assets/udforsk/jul.jpg",
+"alt_text": "Jul og Salling",
+"link_url": "/search?events=123178",
+"link_text": "Jul og Salling"
+},
+{
+"image_src": "/assets/udforsk/jubilæum.jpg",
+"alt_text": "Jubilæer",
+"link_url": "/search?collection_tags=Jubilæer",
+"link_text": "Jubilæer"
+},
+{
+"image_src": "/assets/udforsk/herman_salling.jpg",
+"alt_text": "Herman Salling",
+"link_url": "/search?people=107435",
+"link_text": "Herman Salling"
+},
+{
+"image_src": "/assets/udforsk/folkekultur.jpg",
+"alt_text": "Folkekultur og dagligdagsliv",
+"link_url": "/search?subjects=33",
+"link_text": "Folkekultur og dagligdagsliv"
+},
+{
+"image_src": "/assets/udforsk/ferdinand_salling.jpg",
+"alt_text": "Ferdinand Salling",
+"link_url": "/search?people=108280",
+"link_text": "Ferdinand Salling"
+},
+{
+"image_src": "/assets/udforsk/konfirmation.jpg",
+"alt_text": "Konfirmationer",
+"link_url": "/search?q=konfir%2A&size=20&sort=created_at&direction=desc&start=0",
+"link_text": "Konfirmationer"
+},
+{
+"image_src": "/assets/udforsk/ejendomme.jpg",
+"alt_text": "Ejendomme og bygningsværker",
+"link_url": "/search?events=123789",
+"link_text": "Ejendomme og bygningsværker"
+}
+] %}
 
 
 <h3>Populære temaer fra arkivet</h3>
+
 <div class="image-container">
-    <div class="image-item">
-        <img src="{{ url_for('static', path='/assets/udforsk/jul.jpg') }}" alt="Jul og Salling">
-        <div class="overlay-text"><a href="/search?q=jul*&size=20&sort=created_at&direction=desc&view=grid">Jul og
-                Salling</a></div>
-    </div>
-    <div class="image-item">
-        <img src="{{ url_for('static', path='/assets/udforsk/jubilæum.jpg') }}" alt="Jubilæer">
-        <div class="overlay-text"><a
-                href="/search?q=jubilæ%2A&size=20&sort=date_to&view=grid&direction=desc&">Jubilæer</a></div>
-    </div>
-    <div class="image-item">
-        <img src="{{ url_for('static', path='/assets/udforsk/herman_salling.jpg') }}" alt="Herman Salling">
-        <div class="overlay-text"><a
-                href="/search?size=20&sort=created_at&view=grid&direction=desc&q=Herman+Salling">Herman Salling</a>
+    {% for item in image_items %}
+    <a href="{{ item.link_url }}">
+        <div class="image-item">
+            <img src="{{ url_for('static', path=item.image_src) }}" alt="{{ item.alt_text }}">
+            <div class="overlay-text">
+                {{ item.link_text }}
+            </div>
         </div>
-    </div>
-    <div class="image-item">
-        <img src="{{ url_for('static', path='/assets/udforsk/folkekultur.jpg') }}" alt="Folkekultur og dagligdagsliv">
-        <div class="overlay-text"><a
-                href="/search?size=20&sort=created_at&view=grid&direction=desc&subjects=33&">Folkekultur og
-                dagligdagsliv</a></div>
-    </div>
-    <div class="image-item">
-        <img src="{{ url_for('static', path='/assets/udforsk/ferdinand_salling.jpg') }}" alt="Ferdinand Salling">
-        <div class="overlay-text"><a
-                href="/search?subjects=10&size=20&sort=created_at&view=grid&direction=desc&start=0">Ferdinand
-                Salling</a></div>
-    </div>
-    <div class="image-item">
-        <img src="{{ url_for('static', path='/assets/udforsk/konfirmation.jpg') }}" alt="Konfirmationer">
-        <div class="overlay-text"><a
-                href="/search?q=konfir%2A&size=20&sort=created_at&view=grid&direction=desc&start=0">Konfirmationer</a>
-        </div>
-    </div>
-    <div class="image-item">
-        <img src="{{ url_for('static', path='/assets/udforsk/ejendomme.jpg') }}" alt="Ejendomme og bygningsværker">
-        <div class="overlay-text"><a
-                href="https://salling.openaws.dk/search?subjects=10&size=20&sort=created_at&view=grid&direction=desc&start=0">Ejendomme
-                og bygningsværker</a></div>
-    </div>
-    <!-- Add more image items as needed -->
+    </a>
+    {% endfor %}
 </div>
+
 
 <script>
     // Drag images inside the container
+
     const pointerScroll = (elem) => {
+        let clickedElement = null;
+
         const dragStart = (ev) => {
             elem.setPointerCapture(ev.pointerId);
+            startX = ev.clientX;
+            isDragging = false;
+            clickedElement = ev.target; // Store the initially clicked element
             ev.preventDefault(); // Prevent default image dragging
         };
 
-        const dragEnd = (ev) => elem.releasePointerCapture(ev.pointerId);
+        const dragEnd = (ev) => {
+            elem.releasePointerCapture(ev.pointerId);
 
-        const drag = (ev) => {
-            if (elem.hasPointerCapture(ev.pointerId)) {
-                elem.scrollLeft -= ev.movementX;
+            // If there was no dragging, simulate a click
+            if (!isDragging && clickedElement) {
+                let target = clickedElement;
+
+                // Traverse up to find the closest <a> element
+                while (target && target.tagName !== "A") {
+                    target = target.parentElement;
+                }
+
+                if (target && target.tagName === "A") {
+                    window.location.href = target.href;
+                }
             }
         };
 
-        // Prevent images from being draggable
-        elem.querySelectorAll("img").forEach((img) => {
-            img.draggable = false;
-            img.addEventListener("dragstart", (ev) => ev.preventDefault());
-        });
+        const drag = (ev) => {
+            if (elem.hasPointerCapture(ev.pointerId)) {
+                if (Math.abs(ev.clientX - startX) > 5) {
+                    isDragging = true;
+                }
+                elem.scrollLeft -= ev.movementX;
+            }
+        };
 
         elem.addEventListener("pointerdown", dragStart);
         elem.addEventListener("pointerup", dragEnd);
@@ -123,5 +157,7 @@
     };
 
     document.querySelectorAll(".image-container").forEach(pointerScroll);
+
+
 
 </script>
