@@ -12,9 +12,7 @@
 
 <body class="{% block body_class %}{% endblock %}">
 
-    <nav class="container-fluid navigation sticky-top">
-        {% include "includes/navigation.html" %}
-    </nav>
+    {% include "includes/navigation.html" %}
 
     <main class="container-medium">
         {% block content %}

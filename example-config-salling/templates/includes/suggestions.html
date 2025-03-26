@@ -111,11 +111,11 @@
 
 
 <script>
-    // Drag images inside the container
-
     const pointerScroll = (elem) => {
         let clickedElement = null;
-
+        let isDragging = false;
+        let startX = 0;
+    
         const dragStart = (ev) => {
             elem.setPointerCapture(ev.pointerId);
             startX = ev.clientX;
@@ -123,25 +123,24 @@
             clickedElement = ev.target; // Store the initially clicked element
             ev.preventDefault(); // Prevent default image dragging
         };
-
+    
         const dragEnd = (ev) => {
             elem.releasePointerCapture(ev.pointerId);
-
-            // If there was no dragging, simulate a click
+    
             if (!isDragging && clickedElement) {
                 let target = clickedElement;
-
+    
                 // Traverse up to find the closest <a> element
                 while (target && target.tagName !== "A") {
                     target = target.parentElement;
                 }
-
+    
                 if (target && target.tagName === "A") {
                     window.location.href = target.href;
                 }
             }
         };
-
+    
         const drag = (ev) => {
             if (elem.hasPointerCapture(ev.pointerId)) {
                 if (Math.abs(ev.clientX - startX) > 5) {
@@ -150,13 +149,23 @@
                 elem.scrollLeft -= ev.movementX;
             }
         };
-
+    
+        const preventClickOnDrag = (ev) => {
+            if (isDragging) {
+                ev.stopPropagation();
+                ev.preventDefault(); // Prevent click from triggering navigation
+            }
+        };
+    
         elem.addEventListener("pointerdown", dragStart);
         elem.addEventListener("pointerup", dragEnd);
         elem.addEventListener("pointermove", drag);
+        elem.addEventListener("click", preventClickOnDrag, true); // Capture click events
+    
     };
-
+    
     document.querySelectorAll(".image-container").forEach(pointerScroll);
+    
 
 
 

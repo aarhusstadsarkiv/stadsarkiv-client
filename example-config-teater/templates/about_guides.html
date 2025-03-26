@@ -3,19 +3,20 @@
 <html lang="da">
 
 <head>
+
     {% include "includes/head_default.html" %}
+    {% include "includes/head_extra.html" %}
     {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/toc.css') }}?v={{ get_setting('version') }}">
     {% endblock head %}
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/toc.css') }}?v={{ get_setting('version') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/local.css') }}?v={{ get_setting('version') }}">
+
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
 
-    <nav class="container-fluid navigation sticky-top">
-        {% include "includes/logo.html" %}
-        {% include "includes/navigation.html" %}
-    </nav>
-
+    {% include "includes/navigation.html" %}
+    
     <main class="container-small">
         
         <div class="container-main" id="article">
