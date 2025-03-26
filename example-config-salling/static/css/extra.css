@@ -187,14 +187,6 @@ div.record-section:nth-child(3)>div:nth-child(1)>h3:nth-child(1) {
     line-height: var(--font-lineheight-lg)
 }
 
-.text_lg_semibold,
-.record-content>.label {
-    font-size: var(--font-size-xs);
-    font-family: var(--font-family-display);
-    font-weight: 700;
-    line-height: var(--font-lineheight-xs);
-}
-
 .text_xl_regular,
 .record-content>.content>p {
     font-size: var(--font-size-sm);
@@ -203,10 +195,21 @@ div.record-section:nth-child(3)>div:nth-child(1)>h3:nth-child(1) {
     line-height: var(--font-lineheight-sm);
 }
 
-.text_md_semibold,
+.text_lg_semibold,
+.record-content>.label,
 .menu-text a,
-#submit,
 .menu-text:nth-child(1) {
+    font-size: var(--font-size-xs);
+    font-family: var(--font-family-body);
+    font-weight: 700;
+    line-height: var(--font-lineheight-xs);
+}
+
+
+
+.text_md_semibold,
+
+#submit {
     font-size: var(--font-size-2xs);
     font-family: var(--font-family-body);
     font-weight: 700;
