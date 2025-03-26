@@ -20,9 +20,8 @@
 
     /* * font primitives */
 
-    --font-family-testing: 'Verdana';
-    --font-family-display: Times New Roman;
-    --font-family-body: Times New Roman;
+    --font-family-display: 'Verdana';
+    --font-family-body: 'Verdana';
 
 
 
@@ -174,7 +173,7 @@ body {
 .display_md_semibold,
 .record-title {
     font-size: var(--font-size-xl);
-    font-family: var(--font-family-testing);
+    font-family: var(--font-family-display);
     font-weight: 700;
     line-height: var(--font-lineheight-xl)
 }
@@ -183,33 +182,36 @@ body {
 div.record-section:nth-child(3)>div:nth-child(1)>h3:nth-child(1) {
     font-size: var(--font-size-lg);
     font-style: unset;
-    font-family: var(--font-family-testing);
+    font-family: var(--font-family-display);
     font-weight: 600;
     line-height: var(--font-lineheight-lg)
-}
-
-.text_lg_semibold,
-.record-content>.label {
-    font-size: var(--font-size-xs);
-    font-family: var(--font-family-testing);
-    font-weight: 700;
-    line-height: var(--font-lineheight-xs);
 }
 
 .text_xl_regular,
 .record-content>.content>p {
     font-size: var(--font-size-sm);
-    font-family: var(--font-family-testing);
+    font-family: var(--font-family-body);
     font-weight: 400;
     line-height: var(--font-lineheight-sm);
 }
 
-.text_md_semibold,
+.text_lg_semibold,
+.record-content>.label,
 .menu-text a,
-#submit,
 .menu-text:nth-child(1) {
+    font-size: var(--font-size-xs);
+    font-family: var(--font-family-body);
+    font-weight: 700;
+    line-height: var(--font-lineheight-xs);
+}
+
+
+
+.text_md_semibold,
+
+#submit {
     font-size: var(--font-size-2xs);
-    font-family: var(--font-family-testing);
+    font-family: var(--font-family-body);
     font-weight: 700;
     line-height: var(--font-lineheight-2xs);
 }
@@ -218,7 +220,7 @@ div.record-section:nth-child(3)>div:nth-child(1)>h3:nth-child(1) {
 .search-summary,
 .search-summary-gallery {
     font-size: var(--font-size-4xs);
-    font-family: var(--font-family-testing);
+    font-family: var(--font-family-body);
     font-weight: 700;
     line-height: var(--font-lineheight-4xs);
 }
@@ -227,9 +229,17 @@ div.record-section:nth-child(3)>div:nth-child(1)>h3:nth-child(1) {
 .search-summary2,
 .search-summary-gallery2 {
     font-size: var(--font-size-4xs);
-    font-family: var(--font-family-testing);
+    font-family: var(--font-family-body);
     font-weight: 700;
     line-height: var(--font-lineheight-4xs);
+}
+
+.text_sm_semibold,
+.search-result-date-gallery {
+    font-size: var(--font-size-3xs);
+    font-family: var(--font-family-body);
+    font-weight: 600;
+    line-height: var(--font-lineheight-3xs);
 }
 
 .menu-text {
@@ -256,13 +266,7 @@ div.record-section:nth-child(3)>div:nth-child(1)>h3:nth-child(1) {
 }
 
 
-.text_sm_semibold,
-.search-result-date-gallery {
-    font-size: var(--font-size-3xs);
-    font-family: var(--font-family-testing);
-    font-weight: 600;
-    line-height: var(--font-lineheight-3xs);
-}
+
 
 
 div.search-result-gallery:nth-child(1)>a:nth-child(1)>div:nth-child(1)>img:nth-child(1) {
