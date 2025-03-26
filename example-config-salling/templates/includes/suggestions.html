@@ -102,7 +102,7 @@
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        background-color: var(--background-disabled);
+        background-color: var(--search-result-background);
         z-index: 10;
         cursor: pointer;
         height: 40px;
@@ -120,11 +120,11 @@
         right: 0px;
     }
 
-    .arrow-left-container[disabled], .arrow-right-container[disabled] {
+    .arrow-right-container.disabled, .arrow-left-container.disabled {
         background-color: var(--background-disabled);
-        pointer-events: not-allowed;
         cursor: not-allowed;
-    }
+    } 
+
 </style>
 
 <h3 class="main-title">Populære temaer fra arkivet</h3>
@@ -199,12 +199,12 @@
             if (direction === "left") {
                 imageContainer.scrollTo({
                     left: target.offsetLeft - imageContainer.offsetLeft,
-                    behavior: 'smooth'
+                    behavior: 'instant'
                 });
             } else {
                 imageContainer.scrollTo({
                     left: target.offsetLeft + target.offsetWidth - imageContainer.offsetWidth,
-                    behavior: 'smooth'
+                    behavior: 'instant'
                 });
             }
         }
@@ -216,18 +216,18 @@
         setTimeout(() => {
             // Set initial disabled on 'arrow-right-container' if first image is visible
             if (getVisibleImageIndexes().includes(0)) {
-                document.querySelector(".arrow-left-container").setAttribute("disabled", "");
+                document.querySelector(".arrow-left-container").classList.add("disabled");
             } else {
-                document.querySelector(".arrow-left-container").removeAttribute("disabled");
+                document.querySelector(".arrow-left-container").classList.remove("disabled");
             }
 
             // Set initial disabled on 'arrow-right-container' if last image is visible
             if (getVisibleImageIndexes().includes(images.length - 1)) {
-                document.querySelector(".arrow-right-container").setAttribute("disabled", "");
+                document.querySelector(".arrow-right-container").classList.add("disabled");
             } else {
-                document.querySelector(".arrow-right-container").removeAttribute("disabled");
+                document.querySelector(".arrow-right-container").classList.remove("disabled");
             }
-        }, 500);
+        }, 10);
         
         /*
         console.log(getVisibleImageIndexes())
