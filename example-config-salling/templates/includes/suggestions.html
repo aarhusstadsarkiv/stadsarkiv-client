@@ -125,6 +125,14 @@
         cursor: not-allowed;
     } 
 
+    /* hide arrow container when screen is less than 768px */
+    @media (max-width: 768px) {
+        .horizontal-slider .arrow-left-container,
+        .horizontal-slider .arrow-right-container {
+            display: none;
+        }
+    }
+
 </style>
 
 <h3 class="main-title">Populære temaer fra arkivet</h3>
