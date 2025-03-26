@@ -1,151 +1,40 @@
 :root {
 
-    /** 
-      *Primitives fra Jonas
-      */
+
+    /* * primitives */
+
+    /* * color primitives */
 
 
-    /** 
-      *color primitives
-      */
-
-    --hvid: fafafa;
-    --greydark: 0B1215;
-    --greylighter: 1A2B32;
-    --greylightest: 70777F;
-    --bluenormal: 008EFA;
-    --blueverylight: EBF6FF;
-    --border-grey: E9EAEB;
-
-    /** 
-      *sizing primitives
-      */
+    --color-white: #FFFFFF;
+    --color-gray-50: #FDFDFD;
+    --color-gray-100: #F5F5F5;
+    --color-gray-300: #D5D7DA;
+    --color-gray-500: #717680;
+    --color-gray-700: #414651;
+    --color-gray-900: #181D27;
+    --color-brand-color-600: #7F56D9;
+    --color-brand-color-700: #6940C6;
 
 
-    --numbers-sizing-0: 0px;
-    --numbers-sizing-0․5: 2px;
-    --numbers-sizing-1: 4px;
-    --numbers-sizing-1․5: 6px;
-    --numbers-sizing-2: 8px;
-    --numbers-sizing-3: 12px;
-    --numbers-sizing-4: 16px;
-    --numbers-sizing-5: 20px;
-    --numbers-sizing-6: 24px;
-    --numbers-sizing-8: 32px;
-    --numbers-sizing-10: 40px;
-    --numbers-sizing-12: 48px;
-    --numbers-sizing-16: 64px;
-    --numbers-sizing-20: 80px;
-    --numbers-spacing-xxs: var(--numbers-sizing-0․5);
-    --numbers-sizing-24: 96px;
-    --numbers-sizing-32: 128px;
-    --numbers-spacing-xs: var(--numbers-sizing-1);
-    --numbers-sizing-40: 160px;
-    --numbers-sizing-48: 192px;
-    --numbers-sizing-56: 224px;
-    --numbers-sizing-64: 256px;
-    --numbers-sizing-80: 320px;
-    --numbers-sizing-96: 384px;
-    --numbers-sizing-120: 480px;
-    --numbers-sizing-140: 560px;
-    --numbers-sizing-160: 640px;
-    --numbers-sizing-180: 720px;
-    --numbers-sizing-192: 768px;
-    --numbers-sizing-256: 1024px;
-    --numbers-sizing-320: 1280px;
-    --numbers-sizing-360: 1440px;
-    --numbers-sizing-400: 1600px;
-    --numbers-sizing-480: 1920px;
 
-    /** 
-      *spacing primitives
-      */
+    /* * font primitives */
 
-    --numbers-spacing-sm: var(--numbers-sizing-1․5);
-    --numbers-spacing-md: var(--numbers-sizing-2);
-    --numbers-spacing-lg: var(--numbers-sizing-3);
-    --numbers-spacing-xl: var(--numbers-sizing-4);
-    --numbers-spacing-2xl: var(--numbers-sizing-5);
-    --numbers-spacing-3xl: var(--numbers-sizing-6);
-    --numbers-spacing-4xl: var(--numbers-sizing-8);
-    --numbers-spacing-5xl: var(--numbers-sizing-10);
-    --numbers-spacing-6xl: var(--numbers-sizing-12);
-    --numbers-spacing-7xl: var(--numbers-sizing-16);
-
-
-    /** 
-      *Radius primitives
-      */
-
-    --numbers-radius-none: 0px;
-    --numbers-radius-xxs: 2px;
-    --numbers-radius-xs: 4px;
-    --numbers-radius-sm: 6px;
-    --numbers-radius-md: 8px;
-    --numbers-radius-lg: 10px;
-    --numbers-radius-xl: 12px;
-    --numbers-radius-2xl: 16px;
-    --numbers-radius-3xl: 20px;
-    --numbers-radius-4xl: 24px;
-    --numbers-radius-full: 99999px;
-
-
-    --numbers-containers-container-sizes-md: var(--numbers-sizing-192);
-    --numbers-containers-container-sizes-lg: var(--numbers-sizing-256);
-    --numbers-containers-container-sizes-xl: var(--numbers-sizing-320);
-    --numbers-spacing-9xl: var(--numbers-sizing-24);
-    --numbers-spacing-10xl: var(--numbers-sizing-32);
-    --numbers-spacing-11xl: var(--numbers-sizing-40);
-    --numbers-width-xxs: var(--numbers-sizing-80);
-    --numbers-width-xs: var(--numbers-sizing-96);
-    --numbers-width-sm: var(--numbers-sizing-120);
-    --numbers-width-md: var(--numbers-sizing-140);
-    --numbers-width-lg: var(--numbers-sizing-160);
-    --numbers-width-xl: var(--numbers-sizing-192);
-    --numbers-width-2xl: var(--numbers-sizing-256);
-    --numbers-width-3xl: var(--numbers-sizing-320);
-    --numbers-width-4xl: var(--numbers-sizing-360);
-    --numbers-width-5xl: var(--numbers-sizing-400);
-    --numbers-width-6xl: var(--numbers-sizing-480);
-    --numbers-containers-padding-padding-mobile: var(--numbers-sizing-4);
-    --numbers-containers-padding-padding-desktop: var(--numbers-sizing-8);
-    --numbers-containers-max-max-width-desktop: var(--numbers-sizing-320);
-    --numbers-widths-sm: var(--numbers-sizing-1․5);
-    --numbers-widths-md: var(--numbers-sizing-2);
-    --numbers-widths-lg: var(--numbers-sizing-3);
-    --numbers-widths-xl: var(--numbers-sizing-4);
-    --numbers-widths-2xl: var(--numbers-sizing-5);
-    --numbers-widths-3xl: var(--numbers-sizing-6);
-    --numbers-widths-4xl: var(--numbers-sizing-8);
-    --numbers-widths-5xl: var(--numbers-sizing-10);
-    --numbers-widths-6xl: var(--numbers-sizing-12);
-    --numbers-widths-7xl: var(--numbers-sizing-16);
-    --numbers-widths-8xl: var(--numbers-sizing-20);
-    --numbers-widths-9xl: var(--numbers-sizing-24);
-    --numbers-widths-10xl: var(--numbers-sizing-32);
-    --numbers-widths-11xl: var(--numbers-sizing-40);
-
-
-    /**
-       * typografi af Jonas
-       */
+    --font-family-testing: 'Verdana';
     --font-family-display: Times New Roman;
     --font-family-body: Times New Roman;
+
+
+
+
     --font-weight-regular: regular;
     --font-weight-medium: medium;
     --font-weight-semibold: semibold;
     --font-weight-bold: bold;
-    --font-size-4xl: 72px;
-    --font-size-3xl: 60px;
-    --font-size-2xl: 48px;
-    --font-size-xl: 36px;
-    --font-size-lg: 30px;
-    --font-size-md: 24px;
-    --font-size-sm: 20px;
-    --font-size-xs: 18px;
-    --font-size-2xs: 16px;
-    --font-size-3xs: 14px;
-    --font-size-4xs: 12px;
+
+
+
+
     --font-lineheight-4xl: 90px;
     --font-lineheight-3xl: 72px;
     --font-lineheight-2xl: 60px;
@@ -161,6 +50,37 @@
 
 
 
+    --font-size-4xl: 72px;
+    --font-size-3xl: 60px;
+    --font-size-2xl: 48px;
+    --font-size-xl: 36px;
+    --font-size-lg: 30px;
+    --font-size-md: 24px;
+    --font-size-sm: 20px;
+    --font-size-xs: 18px;
+    --font-size-2xs: 16px;
+    --font-size-3xs: 14px;
+    --font-size-4xs: 12px;
+
+
+    /* * number primitives */
+
+    --numbers-sizing-5: 20px;
+
+
+    /* * Tokens */
+
+
+    --numbers-spacing-2xl: var(--numbers-sizing-5);
+    --background-bg-primary: var(--color-white);
+    --background-bg-tertiary: var(--color-gray-100);
+    --background-bg-brand-solid: var(--color-brand-color-600);
+    --background-bg-brand-solid-hover: var(--color-brand-color-700);
+
+    --text-colors-text-primary: var(--color-gray-900);
+    --text-colors-text-secondary: var(--color-gray-700);
+    --text-colors-text-placeholder: var(--color-gray-500);
+    --border-border-primary: var(--color-gray-300);
 
 
 
@@ -170,404 +90,91 @@
 
 
 
-    /** 
-       * System colors
-       */
+
+    /* * application */
+
+
+    --background-body: var(--background-bg-primary);
+    --background-bg-secondary: var(--gray-50);
+    --background-alt: var(--background-bg-tertiary);
+    --text-main: var(--text-colors-text-primary);
+    --text-bright: #000;
+    --text-muted: var(--text-colors-text-secondary);
+    --links: var(--text-colors-text-secondary);
+    --border: var(--border-border-primary);
+    --code: #000;
+    --animation-duration: 0.1s;
+    --button-base: var(--background-bg-brand-solid);
+    --button-hover: var(--background-bg-brand-solid-hover);
+
+    --form-placeholder: var(--text-colors-text-placeholder);
+    --form-text: var(--text-colors-text-primary);
+    --variable: #39a33c;
+    --highlight: #ff0;
+    --body-width: 100%;
 
 
 
-    --background-body: var(--hvid);
-    --background: var(--hvid);
-    --background-alt: var(--hvid);
-    --text-main: var(var(--greylighter)) --text-bright: var(--greydark);
-    --text-muted: var(--greylightest);
-    /* --links: #f00; */
-    /* --links: #0091ff; */
-    --links: var(--greydark);
-    --border: var(--border-grey);
-    --code: var(--greydark);
-    --button-base: var(--bluenormal);
-    --button-hover: var(--blueverylight);
-    --scrollbar-thumb: color-mod(var(--button-hover) lightness(+6%));
-    --scrollbar-thumb-hover: var(--button-hover);
-    --form-placeholder: var(--greylightest);
-    --form-text: var(--greydark);
-
-    /**
-       * default.css
-       */
-    --navigation-background: var(--hvid);
-    --navigation-background-rgb: 250, 250, 250;
 
 
-    --main-menu: var(--bluenormal);
-    --main-menu-hover: var(--blueverylight);
+    /* *  default.css */
+
+    --navigation-background: var(--color-white);
+    --navigation-background-hover: var(--color-gray-50);
 
 
 
-    /**
-       * record.css
-       */
 
-    --record-header-border: var();
-    --record-title: var(--greydark);
-
-    --record-prev-next: var(--greydark);
-
-    /**
-       * search.css
-       */
-    --search-result-background: none --search-result-border: #e6e6e6;
-    --search-result-background-hover: var (--background-alt);
-    --search-link-text: var(--text-main);
+    /* * record.css */
 
 
-    /**
-       * footer.css
-       */
-    --footer-text: var(--text-muted);
+    --record-header-border: #cacaca;
+    --record-title: var(--text-main);
+    --record-prev-next: var(--text-main);
+    --record-prev-next-disabled: var(--text-muted);
+
+
+
+    /* * search.css */
+
+    --search-result-background: var(--background);
+    --search-result-border: var(--border);
+    --search-result-background-hover: var(--background-alt);
+    --search-link-text: black;
+
+    --background-disabled: var(--background-alt);
+    --text-disabled: var(--text-muted);
+
+
+    /* * footer.css */
+
+
+    --footer-text: var(--text-main);
     --footer-heading: var(--text-main);
 
-    /**
-       * slideshow.css
-       */
+
+    /* * slideshow.css */
+
     --slideshow-background: rgba(0, 0, 0, 0.5);
     --slideshow-background-alt: rgba(0, 0, 0, 0.8);
     --slideshow-text: white;
-
-    /**
-       * overlay.css
-       */
-    --overlay-background: white;
-
-
-    --numbers-containers-container-sizes-sm: var(--numbers-sizing-160);
-    --numbers-paragraph-max-width: var(--numbers-sizing-180);
-    --numbers-spacing-8xl: var(--numbers-sizing-20);
-
-
-
-
-}
-
-/**
-       * ekstra CSS af Jonas
-       */
-
-
-/**
-       * Typografi
-       */
-
-
-.display_2xl_regular {
-    font-size: var(--font-size-4xl);
-    font-family: wingdings;
-    font-weight: 400;
-    line-height: var(--font-lineheight-4xl);
-}
-
-.display_2xl_medium {
-    font-size: var(--font-size-4xl);
-    font-family: wingdings;
-    font-weight: 500;
-    line-height: var(--font-lineheight-4xl);
-}
-
-.display_2xl_semibold {
-    font-size: var(--font-size-4xl);
-    font-family: wingdings;
-    font-weight: 600;
-    line-height: var(--font-lineheight-4xl);
-}
-
-.display_2xl_bold {
-    font-size: var(--font-size-4xl);
-    font-family: wingdings;
-    font-weight: 700;
-    line-height: var(--font-lineheight-4xl);
-}
-
-.display_xl_regular {
-    font-size: var(--font-size-3xl);
-    font-family: wingdings;
-    font-weight: 400;
-    line-height: var(--font-lineheight-3xl);
-}
-
-.display_xl_medium {
-    font-size: var(--font-size-3xl);
-    font-family: wingdings;
-    font-weight: 500;
-    line-height: var(--font-lineheight-3xl);
-}
-
-.display_xl_semibold {
-    font-size: var(--font-size-3xl);
-    font-family: wingdings;
-    font-weight: 600;
-    line-height: var(--font-lineheight-3xl);
-}
-
-.display_xl_bold {
-    font-size: var(--font-size-3xl);
-    font-family: wingdings;
-    font-weight: 700;
-    line-height: var(--font-lineheight-3xl);
-}
-
-.display_lg_regular {
-    font-size: var(--font-size-2xl);
-    font-family: wingdings;
-    font-weight: 400;
-    line-height: var(--font-lineheight-2xl)
-}
-
-.display_lg_medium {
-    font-size: var(--font-size-2xl);
-    font-family: wingdings;
-    font-weight: 500;
-    line-height: var(--font-lineheight-2xl)
-}
-
-.display_lg_semibold {
-    font-size: var(--font-size-2xl);
-    font-family: wingdings;
-    font-weight: 600;
-    line-height: var(--font-lineheight-2xl)
-}
-
-.display_lg_bold {
-    font-size: var(--font-size-2xl);
-    font-family: wingdings;
-    font-weight: 700;
-    line-height: var(--font-lineheight-2xl)
-}
-
-.display_md_regular {
-    font-size: var(--font-size-xl);
-    font-family: wingdings;
-    font-weight: 400;
-    line-height: var(--font-lineheight-xl)
-}
-
-.display_md_medium {
-    font-size: var(--font-size-xl);
-    font-family: wingdings;
-    font-weight: 500;
-    line-height: var(--font-lineheight-xl)
 }
 
 
 
-.display_md_bold {
-    font-size: var(--font-size-xl);
-    font-family: wingdings;
-    font-weight: 700;
-    line-height: var(--font-lineheight-xl)
+
+body {
+    background-color: var(--background-bg-primary);
 }
 
-.display_sm_regular {
-    font-size: var(--font-size-lg);
-    font-family: wingdings;
-    font-weight: 400;
-    line-height: var(--font-lineheight-lg)
+.navigation {
+    background-color: var(--background-bg-primary);
 }
-
-.display_sm_medium {
-    font-size: var(--font-size-lg);
-    font-family: wingdings;
-    font-weight: 500;
-    line-height: var(--font-lineheight-lg)
-}
-
-
-
-.display_sm_bold {
-    font-size: var(--font-size-lg);
-    font-family: wingdings;
-    font-weight: 700;
-    line-height: var(--font-lineheight-lg)
-}
-
-.display_xs_regular {
-    font-size: var(--font-size-md);
-    font-family: wingdings;
-    font-weight: 400;
-    line-height: var(--font-lineheight-md);
-}
-
-.display_xs_medium {
-    font-size: var(--font-size-md);
-    font-style: normal;
-    font-family: wingdings;
-    font-weight: 500;
-    line-height: var(--font-lineheight-md);
-}
-
-.display_xs_semibold {
-    font-size: var(--font-size-md);
-    font-family: wingdings;
-    font-weight: 600;
-    line-height: var(--font-lineheight-md);
-}
-
-.display_xs_bold {
-    font-size: var(--font-size-md);
-    font-family: wingdings;
-    font-weight: 700;
-    line-height: var(--font-lineheight-md);
-}
-
-
-
-.text_xl_semibold {
-    font-size: var(--font-size-sm);
-    font-family: wingdings;
-    font-weight: 700;
-    line-height: var(--font-lineheight-sm);
-}
-
-.text_xl_medium {
-    font-size: var(--font-size-sm);
-    font-family: wingdings;
-    font-weight: 400;
-    line-height: var(--font-lineheight-sm);
-}
-
-.text_xl_bold {
-    font-size: var(--font-size-sm);
-    font-family: wingdings;
-    font-weight: 700;
-    line-height: var(--font-lineheight-sm);
-}
-
-.text_xl_semibold_underlined {
-    font-size: var(--font-size-sm);
-    text-decoration: underline;
-    font-family: wingdings;
-    font-weight: 700;
-    line-height: var(--font-lineheight-sm);
-}
-
-.text_lg_regular {
-    font-size: var(--font-size-xs);
-    font-family: wingdings;
-    font-weight: 400;
-    line-height: var(--font-lineheight-xs);
-}
-
-.text_lg_medium {
-    font-size: var(--font-size-xs);
-    font-family: wingdings;
-    font-weight: 400;
-    line-height: var(--font-lineheight-xs);
-}
-
-
-
-.text_lg_bold {
-    font-size: var(--font-size-xs);
-    font-family: wingdings;
-    font-weight: 700;
-    line-height: var(--font-lineheight-xs);
-}
-
-.text_md_regular {
-    font-size: var(--font-size-2xs);
-    font-family: wingdings;
-    font-weight: 400;
-    line-height: var(--font-lineheight-2xs);
-}
-
-.text_md_medium {
-    font-size: var(--font-size-2xs);
-    font-family: wingdings;
-    font-weight: 400;
-    line-height: var(--font-lineheight-2xs);
-}
-
-.text_md_semibold {
-    font-size: var(--font-size-2xs);
-    font-family: wingdings;
-    font-weight: 700;
-    line-height: var(--font-lineheight-2xs);
-}
-
-.text_md_bold {
-    font-size: var(--font-size-2xs);
-    font-family: wingdings;
-    font-weight: 700;
-    line-height: var(--font-lineheight-2xs);
-}
-
-.text_sm_regular {
-    font-size: var(--font-size-3xs);
-    font-family: wingdings;
-    font-weight: 400;
-    line-height: var(--font-lineheight-3xs);
-}
-
-.text_sm_medium {
-    font-size: var(--font-size-3xs);
-    font-family: wingdings;
-    font-weight: 400;
-    line-height: var(--font-lineheight-3xs);
-}
-
-.text_sm_semibold {
-    font-size: var(--font-size-3xs);
-    font-family: wingdings;
-    font-weight: 600;
-    line-height: var(--font-lineheight-3xs);
-}
-
-.text_sm_bold {
-    font-size: var(--font-size-3xs);
-    font-family: wingdings;
-    font-weight: 700;
-    line-height: var(--font-lineheight-3xs);
-}
-
-.text_xs_regular {
-    font-size: var(--font-size-4xs);
-    font-family: wingdings;
-    font-weight: 400;
-    line-height: var(--font-lineheight-4xs);
-}
-
-.text_xs_medium {
-    font-size: var(--font-size-4xs);
-    font-family: wingdings;
-    font-weight: 400;
-    line-height: var(--font-lineheight-4xs);
-}
-
-.text_xs_semibold {
-    font-size: var(--font-size-4xs);
-    font-family: wingdings;
-    font-weight: 700;
-    line-height: var(--font-lineheight-4xs);
-}
-
-.text_xs_bold {
-    font-size: var(--font-size-4xs);
-    font-family: wingdings;
-    font-weight: 700;
-    line-height: var(--font-lineheight-4xs);
-}
-
-
-
-/**
-       * Code in use
-       */
-
 
 .display_md_semibold,
 .record-title {
     font-size: var(--font-size-xl);
-    font-family: wingdings;
+    font-family: var(--font-family-testing);
     font-weight: 700;
     line-height: var(--font-lineheight-xl)
 }
@@ -576,7 +183,7 @@
 div.record-section:nth-child(3)>div:nth-child(1)>h3:nth-child(1) {
     font-size: var(--font-size-lg);
     font-style: unset;
-    font-family: wingdings;
+    font-family: var(--font-family-testing);
     font-weight: 600;
     line-height: var(--font-lineheight-lg)
 }
@@ -584,7 +191,7 @@ div.record-section:nth-child(3)>div:nth-child(1)>h3:nth-child(1) {
 .text_lg_semibold,
 .record-content>.label {
     font-size: var(--font-size-xs);
-    font-family: wingdings;
+    font-family: var(--font-family-testing);
     font-weight: 700;
     line-height: var(--font-lineheight-xs);
 }
@@ -592,7 +199,127 @@ div.record-section:nth-child(3)>div:nth-child(1)>h3:nth-child(1) {
 .text_xl_regular,
 .record-content>.content>p {
     font-size: var(--font-size-sm);
-    font-family: wingdings;
+    font-family: var(--font-family-testing);
     font-weight: 400;
     line-height: var(--font-lineheight-sm);
+}
+
+.text_md_semibold,
+.menu-text a,
+#submit,
+.menu-text:nth-child(1) {
+    font-size: var(--font-size-2xs);
+    font-family: var(--font-family-testing);
+    font-weight: 700;
+    line-height: var(--font-lineheight-2xs);
+}
+
+.text_xs_semibold,
+.search-summary,
+.search-summary-gallery {
+    font-size: var(--font-size-4xs);
+    font-family: var(--font-family-testing);
+    font-weight: 700;
+    line-height: var(--font-lineheight-4xs);
+}
+
+.text_md_regular,
+.search-summary2,
+.search-summary-gallery2 {
+    font-size: var(--font-size-4xs);
+    font-family: var(--font-family-testing);
+    font-weight: 700;
+    line-height: var(--font-lineheight-4xs);
+}
+
+.menu-text {
+    color: var(--text-colors-text-primary);
+
+
+}
+
+.menu-text :hover {
+    background-color: var(--background-alt);
+}
+
+#q {
+    background-color: var(--background-alt);
+}
+
+.action-links>a {
+    background-color: var(--bg-brand-solid);
+    color: var(--hvid);
+}
+
+.action-links>a:hover {
+    background-color: var(--bg-brand-solid_hover);
+}
+
+
+.text_sm_semibold,
+.search-result-date-gallery {
+    font-size: var(--font-size-3xs);
+    font-family: var(--font-family-testing);
+    font-weight: 600;
+    line-height: var(--font-lineheight-3xs);
+}
+
+
+div.search-result-gallery:nth-child(1)>a:nth-child(1)>div:nth-child(1)>img:nth-child(1) {
+    border-radius: var(--numbers-radius-2xl, 16px);
+}
+
+.footer {
+    background-color: #f9f9f9;
+}
+
+
+
+
+@layer issues {
+
+
+    /*  ! Dennis version */
+
+    /*
+  .search-result-gallery {
+      border-radius: none;
+      break-inside: avoid;
+      margin-bottom: 0;
+      background: var(--search-result-background);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+  }
+*/
+
+    /* ! Jonas version */
+    .search-result-gallery {
+        display: flex;
+        width: 280px;
+        max-width: 343px;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--numbers-spacing-2xl, 20px);
+        border-radius: var(--numbers-radius-2xl, 16px);
+    }
+
+
+
+
+
+    /* ! ISSUES WITH CODE BELOW 
+
+
+    .navigation {
+        background-color: var(--color-gray-100);
+        border: 1px solid var(--border-border-primary);
+    }
+
+    nav.container-fluid {
+        margin-left: 32px;
+        margin-right: 32px;
+    }
+
+    */
+
 }
