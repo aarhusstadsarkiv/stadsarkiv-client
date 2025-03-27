@@ -120,10 +120,11 @@ async def story_display(request: Request):
     return templates.TemplateResponse(request, "pages/story.html", context)
 
 
-async def story_random() -> dict:
+async def story_by_index(index: int) -> dict:
     stories = await _load_stories()
-    story = random.choice(stories)
+    # story = random.choice(stories)
 
+    story = stories[index]
     # extract data
     sections = story.copy()
     first_section = sections.pop(0)
@@ -182,7 +183,7 @@ async def home_test(request: Request):
 
     memories = await _get_memories(index=[1, 2])
 
-    story = await story_random()
+    story = await story_by_index(3)
     context = await get_context(
         request,
         context_values={
