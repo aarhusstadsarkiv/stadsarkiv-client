@@ -1,0 +1,48 @@
+{% set image_items = [
+{
+"image_src": "https://acastorage.blob.core.windows.net/sam-access/000511873/000511873_m.jpg",
+"alt_text": "Jul og Salling",
+"link_url": "/search?events=123178",
+"link_text": "Jul og Salling"
+},
+{
+"image_src": "https://storage.googleapis.com/openaws-access/000141162_m.jpg",
+"alt_text": "Jubilæer",
+"link_url": "/search?collection_tags=Jubilæer",
+"link_text": "Jubilæer"
+},
+{
+"image_src": "https://storage.googleapis.com/openaws-access/000144328_m.jpg",
+"alt_text": "Herman Salling",
+"link_url": "/search?people=107435",
+"link_text": "Herman Salling"
+},
+{
+"image_src": "https://storage.googleapis.com/openaws-access/000142014_m.jpg",
+"alt_text": "Folkekultur og dagligdagsliv",
+"link_url": "/search?subjects=33",
+"link_text": "Folkekultur og dagligdagsliv"
+},
+{
+"image_src": "https://storage.googleapis.com/openaws-access/000144367_m.jpg",
+"alt_text": "Ferdinand Salling",
+"link_url": "/search?people=108280",
+"link_text": "Ferdinand Salling"
+},
+{
+"image_src": "https://storage.googleapis.com/openaws-access/000140706_m.jpg",
+"alt_text": "Konfirmationer",
+"link_url": "/search?collection_tags=Konfirmation",
+"link_text": "Konfirmationer"
+},
+{
+"image_src": "https://acastorage.blob.core.windows.net/sam-access/000496714/000496714_m.jpg",
+"alt_text": "Ejendomme og bygningsværker",
+"link_url": "/search?subjects=10",
+"link_text": "Ejendomme og bygningsværker"
+}
+] %}
+
+<h3 class="main-title">Populære temaer fra arkivet</h3>
+
+{{ salling_macros.search_suggestions(image_items) }}
