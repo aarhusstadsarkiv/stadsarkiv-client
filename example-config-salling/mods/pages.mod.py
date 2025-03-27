@@ -7,6 +7,7 @@ from stadsarkiv_client.core.context import get_context
 import os
 from stadsarkiv_client.core.logging import get_log
 import json
+import random
 
 log = get_log()
 current_path = os.path.abspath(__file__)
@@ -72,35 +73,59 @@ async def _load_stories():
         return stories
 
 
-async def story_display(request: Request):
-
-    # get path
-    path = request.path_params["page"]
-
-    stories = await _load_stories()
-
-    # Iterate over all stories and find the one with the correct path
-    found_story = None
+async def story_exists(stories: list, path: str) -> dict:
+    found_story = {}
     for story in stories:
         if story[0]["path"] == path:
-            found_story = True
+            found_story = story
             break
 
+    return found_story
+
+
+async def story_display(request: Request):
+    """
+    A story is a list of dicts where each dict is sub-story or section of a story
+    """
+    stories = await _load_stories()
+    path = request.path_params["page"]
+
+    found_story = await story_exists(stories, path)
     if not found_story:
         raise HTTPException(404, detail="Page not found", headers=None)
 
-    sections = story
+    sections = found_story.copy()
+
+    # Get data of the story
     first_section = sections.pop(0)
     title = first_section["heading"]
+    data = {
+        "title": title,
+        "sections": sections,
+        "first_section": first_section,
+    }
+
     context = await get_context(
         request,
-        context_values={
-            "title": title,
-            "sections": sections,
-            "first_section": first_section,
-        },
+        context_values=data,
     )
     return templates.TemplateResponse(request, "pages/story.html", context)
+
+
+async def story_random():
+    stories = await _load_stories()
+    story = random.choice(stories)
+
+    # extract data
+    sections = story.copy()
+    first_section = sections.pop(0)
+    title = first_section["heading"]
+    data = {
+        "title": title,
+        "sections": sections,
+        "first_section": first_section,
+    }
+    return data
 
 
 async def memory_display(request: Request):
@@ -145,6 +170,16 @@ async def memory_display(request: Request):
     return templates.TemplateResponse(request, "pages/memory.html", context)
 
 
+async def home_test(request: Request):
+    context = await get_context(
+        request,
+        context_values={
+            "title": "Heureka!",
+        },
+    )
+    return templates.TemplateResponse(request, "pages/home.html", context)
+
+
 def get_routes() -> list:
 
     routes = [
@@ -152,6 +187,7 @@ def get_routes() -> list:
         Route("/historier/{page:str}", endpoint=story_display, name="story_display", methods=["GET"]),
         Route("/erindringer", endpoint=memories_index, name="memories", methods=["GET"]),
         Route("/erindringer/{page:str}", endpoint=memory_display, name="memory_display", methods=["GET"]),
+        Route("/", endpoint=home_test, name="home", methods=["GET"]),
     ]
 
     return routes
