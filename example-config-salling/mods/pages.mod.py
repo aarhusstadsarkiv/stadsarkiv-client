@@ -45,15 +45,23 @@ async def stories_index(request: Request):
     return templates.TemplateResponse(request, "pages/stories.html", context)
 
 
+async def _get_memories(index: list = []):
+    # load imported memories
+    memories_imported = os.path.join(base_dir, "..", "data", "memories_imported.json")
+    with open(memories_imported, "r") as f:
+        memories = json.load(f)
+
+        if index:
+            memories = [memories[i] for i in index]
+
+        return memories
+
+
 async def memories_index(request: Request):
     """
     Index of memories
     """
-
-    # load imported stories
-    memories_imported = os.path.join(base_dir, "..", "data", "memories_imported.json")
-    with open(memories_imported, "r") as f:
-        memories = json.load(f)
+    memories = await _get_memories()
 
     context = await get_context(
         request,
@@ -112,7 +120,7 @@ async def story_display(request: Request):
     return templates.TemplateResponse(request, "pages/story.html", context)
 
 
-async def story_random():
+async def story_random() -> dict:
     stories = await _load_stories()
     story = random.choice(stories)
 
@@ -171,10 +179,16 @@ async def memory_display(request: Request):
 
 
 async def home_test(request: Request):
+
+    memories = await _get_memories(index=[1, 2])
+
+    story = await story_random()
     context = await get_context(
         request,
         context_values={
             "title": "Heureka!",
+            "story": story,
+            "memories": memories,
         },
     )
     return templates.TemplateResponse(request, "pages/home.html", context)

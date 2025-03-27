@@ -74,3 +74,49 @@
     {% endif %}
 </div>
 {% endmacro %}
+
+{% macro memories (memories) %}
+<div class="memories-all-results">
+    {% for memory in memories %}
+    <div class="memories-result">
+        <a class="memories-result-link" href="/erindringer/{{ memory.path }}">
+            <div class="memories-result-content">
+                <div class="memories-result-text">
+                    <div class="memories-result-summary">{{ memory.heading }}</div>
+                    <div>
+                        {{ memory.paragraphs[0] }}
+                    </div>          
+                </div>
+
+                {% if memory.urls and memory.urls[0] %}
+                <div class="memories-result-image">
+                    <img src="{{ memory.urls[0] }}" alt="{{ memory.heading }}">
+                </div>
+                {% endif %}
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro story_first (story_first, use_story_link=false) %}
+<div class="stories-first">
+    <div class="stories-first-content">
+
+        {% for paragraph in story_first.paragraphs %}
+        <p>{{ paragraph }}</p>
+        {% endfor %}
+
+        {% if use_story_link %}
+        <p>
+            <a href="/historier/{{story_first.path}}">Læs hele historien</a>
+        </p>
+        {% endif %}
+    </div>
+
+    <div class="stories-first-portrait">
+        <img src="{{ story_first.urls[0] }}" alt="{{ story_first.heading }}">
+    </div>
+</div>
+{% endmacro %}

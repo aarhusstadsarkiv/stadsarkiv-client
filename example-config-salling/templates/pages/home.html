@@ -1,52 +1,46 @@
 {% extends "base.html" %}
 
+{% import "macros/salling_macros.html" as salling_macros %}
 
 {% block body_class %}page-home{% endblock %}
 
-{% block content %}
-{% include "includes/main_title.html" %}
-
-<div class="stories-first">
-    <div class="stories-first-content">
-
-        <p>Velkommen til Sallinghistorierne. Her kan du læse stormagasinet Sallings historie fra sin begyndelse i 1906 og frem til i dag. Mon Lise Nørgaard var inspireret af Sallings udvikling, da hun skrev tv-serien Matador?</p>
-        <p>Stormagasinet Sallings historie er næsten lige så gammel som Strøget i Aarhus. Da Ferdinand Salling åbnede sin&nbsp;første butik i 1906, kunne ingen vide, at Salling ville udvikle sig til Strøgets førende shopping-destination.</p>
-        <p>Du kan vælge første historie "Salling gennem tiden" til højre, eller udvælge netop den historie, du ønsker at læse i menuen herover. Historierne er ikke nødvendigvis i kronologisk rækkefølge, men det er de enkelte historier til gengæld.</p>
-        <p>Aarhus Stadsarkiv kuraterer&nbsp;Sallinghistorierne med udgangspunkt i arkivalier, der bliver vist og beskrevet under de enkelte historier.</p>
-    </div>
-
-    <div class="stories-first-portrait">
-        <img src="https://acastorage.blob.core.windows.net/sam-access/000511521/000511521_m.jpg" alt="HISTORIEN OM SALLING">
-    </div>
-</div>
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/memories.css') }}?v={{ get_setting('version') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/stories.css') }}?v={{ get_setting('version') }}">
 
 <style>
-    .stories-first {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .stories-first-content {
-        width: 60%;
-    }
-    .stories-first-portrait {
-        width: 40%;
-    }
-
-    /** change to columns when width is 992px */
     @media (max-width: 992px) {
-        .stories-first {
-            flex-direction: column;
-        }
-        .stories-first-content {
-            width: 100%;
-        }
-        .stories-first-portrait {
-            display: none;
-        }
-    } 
 
+        .stories-first-portrait {
+            width: 100%;
+            text-align: center;
+            display: unset;
+        }
+
+        .stories-first-portrait img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    h3 {
+        text-decoration: underline;
+        text-transform: uppercase;
+    }
 </style>
+
+{% endblock head %}
+
+{% block content %}
+{# include "includes/main_title.html" #}
+
+{% set section = story.first_section %}
+
+<h3 class="main-title">Udvalgt Salling historie</h3>
+{{ salling_macros.story_first(section, use_story_link=true) }}
+
+<h3 class="main-title">Udvalgte Salling Minder</h3>
+{{ salling_macros.memories(memories) }}
+
 
 {% endblock content %}

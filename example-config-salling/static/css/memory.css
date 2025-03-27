@@ -1,0 +1,86 @@
+
+.memory {
+    max-width: 700px;
+}
+
+.memory-first {
+    width: 60%;
+}
+
+@media (max-width: 992px) {
+    .memory-first {
+        width: 100%;
+    }
+}
+
+/** 
+ * first paragraph in memory should be in bold
+*/
+.memory-first p:first-child {
+    font-weight: bold;
+}
+
+.memory-all-results {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Default to 4 columns on large screens */
+    gap: 15px;
+}
+
+@media (max-width: 1200px) {
+    .memory-all-results {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .memory-all-results {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .memory-all-results {
+        grid-template-columns: 1fr;
+    }
+}
+
+.memory-result {
+    border-radius: 5px;
+    break-inside: avoid;
+    margin-bottom: 20px;
+    background: var(--search-result-background);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.memory-result:hover {
+    background-color: var(--search-result-background-hover);
+}
+
+.memory-link {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    text-align: left;
+}
+
+a.memory-link {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.9rem;
+}
+
+.memory-portrait img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+}
+
+.memory-summary {
+    flex-grow: 1;
+}
+
+.memory-date {
+    font-size: 0.9em;
+}
