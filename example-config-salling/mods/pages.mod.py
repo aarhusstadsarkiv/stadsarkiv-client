@@ -1,129 +1,16 @@
 from starlette.routing import Route
 from starlette.requests import Request
-from starlette.responses import JSONResponse
+
 from starlette.exceptions import HTTPException
 from stadsarkiv_client.core.templates import templates
 from stadsarkiv_client.core.context import get_context
 import os
 from stadsarkiv_client.core.logging import get_log
 import json
-import httpx
 
 log = get_log()
 current_path = os.path.abspath(__file__)
 base_dir = os.path.dirname(os.path.abspath(__file__))
-
-
-async def fetch_json(url: str):
-    async with httpx.AsyncClient() as client:
-        response = await client.get(url)
-        return response.json()
-
-
-async def fetch_image(url: str):
-    async with httpx.AsyncClient() as client:
-        response = await client.get(url)
-        return response.content
-
-
-async def import_stories(request: Request):
-
-    stories = _get_source_stories()
-    for story in stories:
-        for section in story:
-            section["urls"] = []
-            section["summary"] = []
-            record_ids = section.get("recordIds", [])
-            if record_ids:
-                # add fields for urls corresponding to the record ids
-
-                for record_id in record_ids:
-                    log.debug(f"Record id: {record_id}")
-
-                    fetch_url = f"http://localhost:5555/records/{record_id}/json/meta_data"
-                    json_data = await fetch_json(fetch_url)
-                    portrait = json_data.get("portrait")
-                    section["urls"].append(portrait)
-
-                    # summary
-                    summary = json_data.get("summary", "")
-                    section["summary"].append(summary)
-                    log.debug(section)
-
-    # save the stories to a new json file
-    data_path = os.path.join(base_dir, "..", "data", "stories_imported.json")
-    with open(data_path, "w") as f:
-        json.dump(stories, f, ensure_ascii=False, indent=4)
-
-    return JSONResponse({"status": "ok"})
-
-
-async def import_memories(request: Request):
-    data_path = os.path.join(base_dir, "..", "data", "memories", "memories.json")
-    with open(data_path, "r") as f:
-        memories = json.load(f)
-
-    for memory in memories:
-        memory["urls"] = []
-        memory["summary"] = []
-
-        # MARIES ANDENDAGSTØJ (1945)
-        # Generate url path from the heading
-        url_path = memory["heading"].lower()
-        url_path = url_path.replace(" ", "-")
-        url_path = "".join([c for c in url_path if c.isalnum() or c in "æøåÆØÅ-"])
-        memory["path"] = url_path
-
-        record_ids = memory.get("recordIds", [])
-        if record_ids:
-            for record_id in record_ids:
-                log.debug(f"Record id: {record_id}")
-
-                fetch_url = f"http://localhost:5555/records/{record_id}/json/meta_data"
-                json_data = await fetch_json(fetch_url)
-                portrait = json_data.get("portrait")
-                memory["urls"].append(portrait)
-
-                # summary
-                summary = json_data.get("summary", "")
-                if not summary:
-                    summary = json_data.get("title", "")
-
-                log.debug(summary)
-
-                memory["summary"].append(summary)
-                log.debug(memory)
-
-    # save the stories to a new json file
-    data_path = os.path.join(base_dir, "..", "data", "memories_imported.json")
-    with open(data_path, "w") as f:
-        json.dump(memories, f, ensure_ascii=False, indent=4)
-
-    return JSONResponse({"status": "ok"})
-
-
-def _get_story_path(file: str):
-    # remove json extension and leading 4 chars (001- or 002- etc)
-    url_path = file.replace(".json", "")
-    url_path = url_path[4:]
-    return url_path
-
-
-def _get_source_stories():
-    stories = []
-    data_path = os.path.join(base_dir, "..", "data", "stories")
-    story_paths = os.listdir(data_path)
-    story_paths.sort()
-    for file in story_paths:
-        file_path = os.path.join(data_path, file)
-
-        with open(file_path, "r") as f:
-            story = json.load(f)
-
-        story[0]["path"] = _get_story_path(file)
-        stories.append(story)
-
-    return stories
 
 
 async def stories_index(request: Request):
@@ -177,15 +64,20 @@ async def memories_index(request: Request):
     return templates.TemplateResponse(request, "pages/memories.html", context)
 
 
+async def _load_stories():
+    # load imported stories
+    stories_imported = os.path.join(base_dir, "..", "data", "stories_imported.json")
+    with open(stories_imported, "r") as f:
+        stories = json.load(f)
+        return stories
+
+
 async def story_display(request: Request):
 
     # get path
     path = request.path_params["page"]
 
-    # load imported stories
-    stories_imported = os.path.join(base_dir, "..", "data", "stories_imported.json")
-    with open(stories_imported, "r") as f:
-        stories = json.load(f)
+    stories = await _load_stories()
 
     # Iterate over all stories and find the one with the correct path
     found_story = None
@@ -260,8 +152,6 @@ def get_routes() -> list:
         Route("/historier/{page:str}", endpoint=story_display, name="story_display", methods=["GET"]),
         Route("/erindringer", endpoint=memories_index, name="memories", methods=["GET"]),
         Route("/erindringer/{page:str}", endpoint=memory_display, name="memory_display", methods=["GET"]),
-        Route("/import/stories", endpoint=import_stories, name="import_data", methods=["GET"]),
-        Route("/import/memories", endpoint=import_memories, name="import_data", methods=["GET"]),
     ]
 
     return routes
