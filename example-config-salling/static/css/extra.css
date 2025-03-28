@@ -123,10 +123,6 @@ body {
     font-family: 'Helvetica Neue', 'Ubuntu', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen', 'Fira Sans', sans-serif, 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji';
 }
 
-.sticky-top {
-    padding: 0px 32px;
-}
-
 .search-option select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -167,6 +163,30 @@ body {
     /* Remove default styling for other browsers */
 }
 
+.header {
+    color: var(--text-colors-link-primary);
+}
+
+.logo {
+    margin-left: 32px
+}
+
+.logo {
+    color: var(--text-colors-link-primary);
+}
+
+.navigation-right-group {
+    margin-right: 32px;
+    color: var(--text-colors-link-primary);
+}
+
+
+.menu-text a {
+    color: var(--text-colors-link-primary);
+
+}
+
+
 .search-option select:hover {
     background-color: var(--background-bg-brand-secondary-hover, #EFEFFB);
 }
@@ -183,18 +203,16 @@ body {
 
 
 
-
-
-
-.menu-text a {
-    color: var(--text-colors-brand-primary);
+a {
+    color: var(--text-colors-link-primary);
 }
 
-.menu-text a:hover {
+
+a:hover {
     color: var(--text-colors-brand-primary-hover);
 }
 
-.menu-text a:disabled {
+a:disabled {
     color: var(--text-colors-text-quartenary);
 }
 
@@ -297,10 +315,9 @@ body {
 }
 
 
-
-
-
-
-footer li>a {
-    color: var(--text-colors-brand-primary)
+footer a {
+    color: var(--text-colors-link-primary);
+    text-decoration: underline;
+    margin: 0 5px;
+    text-align: left;
 }
