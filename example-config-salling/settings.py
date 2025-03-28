@@ -18,14 +18,14 @@ settings: dict[str, typing.Any] = {
     # "api_base_url": "http://localhost:8000/v1",
     "api_base_url": "https://dev.openaws.dk/v1",
     "pages": [
-        {"name": "home", "title": "Hjem", "template": "pages/home.html", "url": "/"},
+        # {"name": "home_test", "title": "Hjem", "template": "pages/home.html", "url": "/"},
         {"name": "about", "title": "Om SallingArkivet", "template": "pages/about.html", "url": "/om-sallingarkivet"},
         {"name": "privatlivspolitik", "title": "Privatlivspolitik", "template": "pages/privacy.html", "url": "/privatlivspolitik"},
     ],
     "main_menu_top": [
         {"name": "search_get", "title": "Udforsk Arkivet", "type": "text"},
-        {"name": "stories", "title": "Fortællinger", "type": "text"},
-        {"name": "memories", "title": "Erindringer", "type": "text"},
+        {"name": "stories", "title": "Historien", "type": "text"},
+        {"name": "memories", "title": "Minder", "type": "text"},
         {"name": "about", "title": "Om Arkivet", "type": "text"},
         # {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],

@@ -1,97 +1,15 @@
 {% extends "base.html" %}
 
+{% import "macros/salling_macros.html" as salling_macros %}
+
 {% block body_class %}page-memories{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/memories.css') }}?v={{ get_setting('version') }}">
+{% endblock head %}
 
 {% block content %}
 {% include "includes/main_title.html" %}
 
-<div class="memories-all-results">
-    {% for memory in memories %}
-    <div class="memories-result">
-        <a class="memories-result-link" href="/erindringer/{{ memory.path }}">
-            <div class="memories-result-content">
-                <div class="memories-result-text">
-                    <div class="memories-result-summary">{{ memory.heading }}</div>
-                    <div>
-                        {{ memory.paragraphs[0] }}
-                    </div>          
-                </div>
-
-                {% if memory.urls and memory.urls[0] %}
-                <div class="memories-result-image">
-                    <img src="{{ memory.urls[0] }}" alt="{{ memory.heading }}">
-                </div>
-                {% endif %}
-            </div>
-        </a>
-    </div>
-    {% endfor %}
-</div>
-<style>
-
-
-    .memories-all-results {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 20px;
-        max-width: 100%;
-        margin: 0 auto;
-        margin-top: 20px;
-    }
-
-    @media (max-width: 992px) {
-        .memories-all-results {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    /** single result */
-    .memories-result {
-        border-radius: 5px;
-        background: var(--search-result-background);
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        padding: 10px;
-    }
-
-    .memories-result:hover {
-        background-color: var(--search-result-background-hover);
-    }
-
-    .memories-result-link {
-        display: block;
-        text-decoration: none;
-        color: var(--text);
-    }
-
-    .memories-result-link:hover {
-        text-decoration: none;
-    }
-
-    .memories-result-content {
-        display: flex;
-        align-items: flex-start;
-        gap: 15px;
-    }
-
-    .memories-result-text {
-        flex: 1;
-        text-align: left;
-    }
-
-    .memories-result-image img {
-        width: 150px;
-        height: 150px;
-        object-fit: contain;
-        border-radius: 5px;
-        background-color: var(--background);
-    }
-
-    .memories-result-summary {
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-</style>
-
+{{ salling_macros.memories(memories) }}
 
 {% endblock content %}

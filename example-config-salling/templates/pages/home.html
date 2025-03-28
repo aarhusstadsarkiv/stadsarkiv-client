@@ -1,10 +1,66 @@
 {% extends "base.html" %}
 
+{% import "macros/salling_macros.html" as salling_macros %}
+
 {% block body_class %}page-home{% endblock %}
 
-{% block content %}
-{% include "includes/main_title.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/memories.css') }}?v={{ get_setting('version') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/stories.css') }}?v={{ get_setting('version') }}">
 
-<p>Dette er den "default" homepage</p>
+<link rel="stylesheet" href="{{ url_for('static', path='/css/search_suggestions.css') }}?v={{ get_setting('version') }}">
+<script type="module">
+
+    import {} from '/static/js/search-suggestions.js?v={{ get_setting("version") }}';
+
+</script>
+
+<style>
+
+    .stories-first {
+        border-radius: 5px;
+        break-inside: avoid;
+        margin-bottom: 20px;
+        background: var(--search-result-background);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+    }
+    @media (max-width: 992px) {
+
+        .stories-first-portrait {
+            width: 100%;
+            text-align: center;
+            display: unset;
+        }
+
+        .stories-first-portrait img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    h3 {
+        text-transform: uppercase;
+        margin: 20px 0;
+    }
+</style>
+
+{% endblock head %}
+
+{% block content %}
+{# include "includes/main_title.html" #}
+
+{% set section = story.first_section %}
+
+<h3 class="main-title">Udvalgt Salling historie</h3>
+{{ salling_macros.story_first_home(section) }}
+
+
+<h3 class="main-title">Udvalgte Salling Minder</h3>
+{{ salling_macros.memories(memories) }}
+
+
+{% include 'includes/search_suggestions_home.html' %}
+
 
 {% endblock content %}

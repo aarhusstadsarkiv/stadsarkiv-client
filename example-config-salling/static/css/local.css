@@ -178,3 +178,13 @@
     padding: 0 0.5em;
     /* padding: unset; */
 }
+
+
+@media (max-width: 1200px) {
+    footer img {
+        margin: unset;
+        padding: 20px 0;
+        margin-left: auto;
+    }
+}
+
