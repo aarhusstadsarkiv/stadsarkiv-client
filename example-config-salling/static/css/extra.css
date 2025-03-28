@@ -3,52 +3,66 @@ html {
     -webkit-text-size-adjust: 100%;
 }
 
-:root {
 
+
+
+
+
+:root {
 
     /* * primitives */
 
     /* * color primitives */
 
-
     --color-white: #FFFFFF;
-    --color-gray-50: #FDFDFD;
     --color-gray-alternate: #f9f9f9;
+    --color-gray-50: #FDFDFD;
     --color-gray-100: #F5F5F5;
+    --color-gray-200: #E9EAEB;
     --color-gray-300: #D5D7DA;
     --color-gray-500: #717680;
     --color-gray-700: #414651;
+    --color-gray-800: #252B37;
     --color-gray-900: #181D27;
+    --color-brand-color-25: #F8F8FD;
+    --color-brand-color-50: #EFEFFB;
+    --color-brand-color-100: #E2E3F8;
+    --color-brand-color-300: #A9AAEA;
     --color-brand-color-600: #444ce7;
     --color-brand-color-700: #3538cd;
-
-
-
-
-
-    /* * font primitives */
-
+    --color-brand-color-800: #22248B;
 
     /* * Tokens */
 
-
-    --numbers-spacing-2xl: var(--numbers-sizing-5);
     --background-bg-primary: var(--color-white);
     --background-bg-secondary: var(--color-gray-alternate);
-    --background-bg-tertiary: var(--color-gray-100);
+    --background-bg-tertiary: var(--color-gray-50);
     --background-bg-brand-solid: var(--color-brand-color-600);
     --background-bg-brand-solid-hover: var(--color-brand-color-700);
+    --background-bg-brand-secondary: var(--color-brand-color-50);
+    --background-bg-brand-secondary-hover: var(--color-brand-color-100);
+    --background-bg-brand-secondary-disabled: var(--color-brand-color-25);
+
 
 
     --text-colors-text-primary: var(--color-gray-900);
     --text-colors-text-secondary: var(--color-gray-700);
+    --text-colors-text-tertiary: var(--color-gray-800);
+    --text-colors-text-quartenary: var(--color-gray-300);
     --text-colors-text-primary-on-brand: var(--color-white);
     --text-colors-text-placeholder: var(--color-gray-500);
-    --border-border-primary: var(--color-gray-300);
+    --text-colors-brand-primary: var(--color-brand-color-700);
+    --text-colors-brand-primary-hover: var(--color-brand-color-800);
+    --text-colors-link-primary: var(--color-brand-color-700);
 
+    --border-border-primary: var(--color-gray-300);
+    --border-border-brand-solid: var(--color-brand-color-600);
+    --border-border-brand-solid-active: var(--color-brand-color-300);
+    --border-border-brand-solid-secondary: var(--color-brand-color-50);
+
+    --svg-colors-brand-primary: var(--color-brand-color-700);
 
     /* * application */
-
 
     --background-body: var(--background-bg-primary);
     --background-secondary: var(--background-bg-secondary);
@@ -56,7 +70,9 @@ html {
     --text-main: var(--text-colors-text-primary);
     --text-bright: #000;
     --text-muted: var(--text-colors-text-secondary);
-    --links: var(--text-colors-text-secondary);
+    /*
+    --links: var(--color-brand-color-700); 
+    */
     --border: var(--border-border-primary);
     --code: #000;
     --animation-duration: 0.1s;
@@ -68,40 +84,32 @@ html {
     --highlight: #ff0;
     --body-width: 100%;
 
-
     /* *  default.css */
 
     --navigation-background: var(--background-bg-primary);
     --navigation-background-hover: var(--background-bg-secondary);
 
-
     /* * record.css */
-
 
     --record-header-border: none;
     --record-title: var(--text-main);
     --record-prev-next: var(--text-main);
     --record-prev-next-disabled: var(--text-muted);
 
-
-
     /* * search.css */
 
     --search-result-background: var(--background-bg-primary);
     --search-result-border: var(--border);
     --search-result-background-hover: var(--background-secondary);
-    --search-link-text: black;
+    --search-link-text: var(--text-main);
 
     --background-disabled: var(--background-alt);
     --text-disabled: var(--text-muted);
 
-
     /* * footer.css */
-
 
     --footer-text: var(--text-main);
     --footer-heading: var(--text-main);
-
 
     /* * slideshow.css */
 
@@ -112,15 +120,33 @@ html {
 
 body {
     background-color: var(--background-bg-primary);
+    font-family: 'Helvetica Neue', 'Ubuntu', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen', 'Fira Sans', sans-serif, 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji';
 }
 
-.menu-text:hover {
-    background-color: var(--navigation-background-hover);
+.sticky-top {
+    padding: 0px 32px;
 }
 
 .search-option select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    /* Reset border */
+    outline: none;
+    /* Reset outline */
+    background: none;
+    /* Reset background */
+    box-shadow: none;
+    /* Reset box shadow */
+}
+
+
+
+.search-option select {
     height: 44px;
-    border: 1px solid var(--color-gray-300, #D5D7DA);
+    color: var(--text-colors-brand-primary, #3538cd);
+    background: var(--background-bg-brand-secondary, #ffffff);
     border-radius: 8px;
     gap: 8px;
     padding-top: 10px;
@@ -128,54 +154,137 @@ body {
     /* Add extra padding to create space for the chevron */
     padding-bottom: 10px;
     padding-left: 14px;
-    background: var(--background-bg-primary, #ffffff);
     box-shadow: 0px 1px 2px 0px #0A0D120D;
     appearance: none;
-    /* Remove default styling */
-    -webkit-appearance: none;
-    /* For WebKit browsers */
-    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16"%3E%3Cpath fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/%3E%3C/svg%3E');
-    /* Add your chevron icon */
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%233538cd" class="bi bi-chevron-down" viewBox="0 0 16 16"%3E%3Cpath fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/%3E%3C/svg%3E');
     background-repeat: no-repeat;
     background-position: calc(100% - 14px) 50%;
-    /* Dynamically position chevron */
+    -webkit-appearance: none;
+    /* Remove macOS default styling */
+    -moz-appearance: none;
+    /* Remove Firefox default styling */
+    appearance: none;
+    /* Remove default styling for other browsers */
+}
+
+.search-option select:hover {
+    background-color: var(--background-bg-brand-secondary-hover, #EFEFFB);
+}
+
+.search-option select:focus:disabled {
+    background-color: var(--background-bg-brand-secondary-disabled);
+}
+
+.search-option select:active {
+    background-color: var(--background-bg-brand-secondary);
+    border: 1px solid var(--border-border-brand-solid-secondary, #E9EAEB);
+    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05), 0px 0px 0px 4px #F4EBFF;
+}
+
+
+
+
+
+
+.menu-text a {
+    color: var(--text-colors-brand-primary);
+}
+
+.menu-text a:hover {
+    color: var(--text-colors-brand-primary-hover);
+}
+
+.menu-text a:disabled {
+    color: var(--text-colors-text-quartenary);
 }
 
 
 .search-result {
     border: none;
+
 }
 
-
+#search {
+    display: flex;
+    gap: 8px;
+}
 
 #submit {
-    color: var(--text-colors-text-primary-on-brand)
+
+    display: flex;
+    height: 44px;
+    gap: 8px;
+    color: var(--text-colors-text-primary-on-brand);
+    border-radius: 8px;
+    border: 1px solid var(--border-border-brand-solid, #444ce7);
+    background: var(--background-bg-brand-solid, #444ce7);
+    color: var(--text-colors-text-primary-on-brand);
+
+    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+
 }
 
-.menu-text {
-    color: var(--text-colors-text-primary);
+#submit:hover {
+    background: var(--background-bg-brand-solid-hover);
+    color: var(--text-colors-text-primary-on-brand);
 }
 
-.menu-text :hover {
-    background-color: var(--background-alt);
+#submit:active {
+    /* Shadow/xs focused 4px primary-100 */
+    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05), 0px 0px 0px 4px #F4EBFF;
 }
+
+
 
 #q {
     background-color: var(--background-alt);
+    padding-left: 16px;
+    gap: 6px;
+    border-radius: 8px;
+    border: 1px solid var(--border-border-primary, #D5D7DA);
+    background: var(--background-bg-primary, #FFF);
+    /* Shadow/xs */
+    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+}
+
+
+
+
+#q:focus {
+    border: 1px solid var(--border-border-brand-solid-active, #A9AAEA);
+    color: var(--text-colors-text-primary);
+    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
 }
 
 .action-links>a {
-    background-color: var(--bg-brand-solid);
-    color: var(--hvid);
+    border-radius: 8px;
+    border: 1px solid var(--border-border-primary, #D5D7DA);
+    background-color: var(--background-bg-primary);
+    color: var(--text-colors-text-secondary);
+    /* Shadow/xs */
+    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
 }
 
-.action-links>a:hover {
-    background-color: var(--bg-brand-solid_hover);
+.action-links>:hover {
+
+    background-color: var(--background-bg-tertiary);
+    border: 1px solid var(--border-border-primary);
+    color: var(--text-colors-text-tertiary);
+    /* Shadow/xs */
+    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
 }
 
+.action-links>.disabled {
+    border: 1px solid var(--color-gray-200, #E9EAEB);
+    background-color: var(--background-bg-primary);
+    color: var(--text-colors-text-quartenary);
 
-.footer {
-    background-color: var(--background-bg-secondary);
+}
+
+.action-links>:active {
+    /* Shadow/xs focused 4px gray-100 */
+    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05), 0px 0px 0px 4px #F5F5F5;
+
 }
 
 .main-menu-overlay {
@@ -189,10 +298,9 @@ body {
 
 
 
-/* * potentielle styles */
-/*
-.search-result {
- border-radius: 16px;
-}
 
-*/
+
+
+footer li>a {
+    color: var(--text-colors-brand-primary)
+}
