@@ -171,27 +171,40 @@ body {
 }
 
 .header {
+    margin-left: 15px;
     color: var(--text-colors-link-primary);
 }
 
 .logo {
-    margin-left: 32px;
+    margin-left: 15px;
     color: var(--text-colors-link-primary);
 }
-
-
 
 .navigation-right-group {
-    margin-right: 32px;
+    margin-right: 15px;
     color: var(--text-colors-link-primary);
 }
+
+/* min width of 1400px */
+@media (min-width: 1500px) {
+    .logo {
+        margin-left: 32px;
+    }
+
+    .navigation-right-group {
+        margin-right: 32px;
+    }
+}
+
+
 
 
 .menu-text a {
     color: var(--text-colors-link-primary);
 
-}
 
+}
+/*
 .container-medium {
     padding: 0px 80px
 }
@@ -200,7 +213,7 @@ body {
     padding-left: var(--container-width-medium-padding);
     padding-right: var(--container-width-medium-padding);
 }
-
+*/
 .search-option select:hover {
     background-color: var(--background-bg-brand-secondary-hover, #EFEFFB);
 }
