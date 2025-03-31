@@ -32,13 +32,16 @@ Run the client:
 stadsarkiv-client server-dev -c example-config-simple
 ```
 
-If the `-c` or `--config` option is not used, then the module will look for templates, static files, and configuration in the folder `local`. If the `local` does not exist, the module will use built-in defaults.
+If the `-c` or `--config` option is not used, then the module will look for templates, static files, and configuration in the folder `local`. If the `local` folder does not exist, the module will use built-in defaults.
 
 ## .env
 
 In `.env` you may set the following:
 
 ```ini
+# API_KEY is required for the client to work. You may request an API key from Aarhus Stadsarkiv.
+API_KEY=your_api_key
+
 # SESSION Secret
 SECRET=some_secret
 
