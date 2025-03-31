@@ -129,6 +129,7 @@
     /* Ensures it only takes up one line */
     display: block;
     text-align: left;
+    overflow: visible;
 }
 
 .search-result-date-gallery {
