@@ -8,6 +8,10 @@ html {
 
 
 
+
+
+
+
 :root {
 
     /* * primitives */
@@ -73,6 +77,7 @@ html {
     /*
     --links: var(--color-brand-color-700); 
     */
+
     --border: var(--border-border-primary);
     --code: #000;
     --animation-duration: 0.1s;
@@ -116,7 +121,15 @@ html {
     --slideshow-background: rgba(0, 0, 0, 0.5);
     --slideshow-background-alt: rgba(0, 0, 0, 0.8);
     --slideshow-text: white;
+
+    /* * width styles */
+    --container-width-medium: 1440px;
+    --container-width-medium-padding: 32px;
 }
+
+
+
+
 
 body {
     background-color: var(--background-bg-primary);
@@ -155,12 +168,6 @@ body {
     background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%233538cd" class="bi bi-chevron-down" viewBox="0 0 16 16"%3E%3Cpath fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/%3E%3C/svg%3E');
     background-repeat: no-repeat;
     background-position: calc(100% - 14px) 50%;
-    -webkit-appearance: none;
-    /* Remove macOS default styling */
-    -moz-appearance: none;
-    /* Remove Firefox default styling */
-    appearance: none;
-    /* Remove default styling for other browsers */
 }
 
 .header {
@@ -168,12 +175,11 @@ body {
 }
 
 .logo {
-    margin-left: 32px
-}
-
-.logo {
+    margin-left: 32px;
     color: var(--text-colors-link-primary);
 }
+
+
 
 .navigation-right-group {
     margin-right: 32px;
@@ -186,6 +192,14 @@ body {
 
 }
 
+.container-medium {
+    padding: 0px 80px
+}
+
+.container-medium>* {
+    padding-left: var(--container-width-medium-padding);
+    padding-right: var(--container-width-medium-padding);
+}
 
 .search-option select:hover {
     background-color: var(--background-bg-brand-secondary-hover, #EFEFFB);
@@ -218,14 +232,32 @@ a:disabled {
 
 
 .search-result {
-    border: none;
+    border-top: 0.5px solid var(--search-result-border);
 
 }
+
+.search-result:hover {
+    background-color: var(--background-bg-tertiary);
+    border-top: var(--);
+}
+
+.search-result-gallery {
+    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+    border-radius: 8px;
+    color: var(--text-colors-text-primary);
+}
+
+.search-result-gallery:hover {
+    background-color: var(--background-bg-primary);
+}
+
+
 
 #search {
     display: flex;
     gap: 8px;
 }
+
 
 #submit {
 
@@ -236,7 +268,7 @@ a:disabled {
     border-radius: 8px;
     border: 1px solid var(--border-border-brand-solid, #444ce7);
     background: var(--background-bg-brand-solid, #444ce7);
-    color: var(--text-colors-text-primary-on-brand);
+
 
     box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
 
@@ -274,7 +306,7 @@ a:disabled {
     box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
 }
 
-.action-links>a {
+.action-links a {
     border-radius: 8px;
     border: 1px solid var(--border-border-primary, #D5D7DA);
     background-color: var(--background-bg-primary);
@@ -283,7 +315,7 @@ a:disabled {
     box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
 }
 
-.action-links>:hover {
+.action-links a:hover {
 
     background-color: var(--background-bg-tertiary);
     border: 1px solid var(--border-border-primary);
@@ -292,28 +324,31 @@ a:disabled {
     box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
 }
 
-.action-links>.disabled {
+.action-links a:disabled {
     border: 1px solid var(--color-gray-200, #E9EAEB);
     background-color: var(--background-bg-primary);
     color: var(--text-colors-text-quartenary);
 
 }
 
-.action-links>:active {
+.action-links a:active {
     /* Shadow/xs focused 4px gray-100 */
     box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05), 0px 0px 0px 4px #F5F5F5;
 
 }
 
-.main-menu-overlay {
-    background-color: var(--background-bg-primary);
-    box-shadow: 0px 12px 16px -4px rgba(10, 13, 18, 0.08), 0px 4px 6px -2px rgba(10, 13, 18, 0.03);
-}
-
 .menu-text-overlay {
     padding: 12px 16px;
+
 }
 
+.footer {
+    background-color: var(--background-bg-secondary);
+}
+
+footer li.heading {
+    border: none;
+}
 
 footer a {
     color: var(--text-colors-link-primary);
