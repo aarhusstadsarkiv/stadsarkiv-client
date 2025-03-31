@@ -5,7 +5,6 @@ html {
 
 
 body {
-    font-weight: false;
     line-height: 1.65;
 }
 
@@ -403,4 +402,21 @@ footer a {
     text-decoration: underline;
     margin: 0 5px;
     text-align: left;
+}
+
+
+
+
+/* ! Additional styles here */
+
+.image-item img {
+    border-radius: 12px;
+}
+
+#item2 {
+    order: unset;
+}
+
+#item3 {
+    order: unset;
 }
