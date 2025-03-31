@@ -146,7 +146,11 @@
 
 .search-option {
     margin-right: unset;
-    margin-left: 10px;
+    /* margin-left: 10px; */
+}
+
+.search-options {
+    gap: 10px;
 }
 
 @media (max-width: 768px) {
@@ -163,8 +167,10 @@
     }
 
     .search-option {
+        /*
         margin-right: 10px; 
         margin-left: unset;
+        */
     }
 }
 

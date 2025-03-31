@@ -171,21 +171,20 @@ body {
 }
 
 .header {
-    margin-left: 15px;
+    /* margin-left: 15px; */
     color: var(--text-colors-link-primary);
 }
 
 .logo {
-    margin-left: 15px;
+    margin-left: 18px;
     color: var(--text-colors-link-primary);
 }
 
 .navigation-right-group {
-    margin-right: 15px;
+    margin-right: 5px;
     color: var(--text-colors-link-primary);
 }
 
-/* min width of 1400px */
 @media (min-width: 1500px) {
     .logo {
         margin-left: 32px;
