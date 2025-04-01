@@ -144,19 +144,10 @@ h6 {
 
 /**
  * main content facets is hidden by default
+ * js will show it if needed
  */
 .container-main-facets {
     display: none;
-}
-
-/**
- * display the facets on the left side
- */
-@media (max-width: 992px) {
-    .container-main-facets {
-        display: block;
-        margin: 10px 0;
-    }
 }
 
 .sticky-left {
