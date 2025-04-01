@@ -1,6 +1,6 @@
 
-const imageContainer = document.querySelector(".image-container");
-const images = Array.from(document.querySelectorAll(".image-item"));
+const imageContainer = document.querySelector(".horizontal-slider .image-container");
+const images = Array.from(document.querySelectorAll(".horizontal-slider .image-item"));
 
 function getVisibleImageIndexes() {
     let containerRect = imageContainer.getBoundingClientRect();
@@ -50,49 +50,36 @@ function scrollByImage(direction) {
     }
 }
 
-function setDisabled () {
+const arrowLeft = document.querySelector(".horizontal-slider .arrow-left-container");
+const arrowRight = document.querySelector(".horizontal-slider .arrow-right-container");
+
+function setDisabled() {
 
     // wait for the scroll to finish
     setTimeout(() => {
         // Set initial disabled on 'arrow-right-container' if first image is visible
         if (getVisibleImageIndexes().includes(0)) {
-            document.querySelector(".arrow-left-container").classList.add("disabled");
+            arrowLeft.classList.add("disabled");
         } else {
-            document.querySelector(".arrow-left-container").classList.remove("disabled");
+            arrowLeft.classList.remove("disabled");
         }
 
         // Set initial disabled on 'arrow-right-container' if last image is visible
         if (getVisibleImageIndexes().includes(images.length - 1)) {
-            document.querySelector(".arrow-right-container").classList.add("disabled");
+            arrowRight.classList.add("disabled");
         } else {
-            document.querySelector(".arrow-right-container").classList.remove("disabled");
+            arrowRight.classList.remove("disabled");
         }
     }, 10);
-    
-    /*
-    console.log(getVisibleImageIndexes())
-    // Set initial disabled on 'arrow-right-container' if first image is visible
-    if (getVisibleImageIndexes().includes(0)) {
-        document.querySelector(".arrow-left-container").setAttribute("disabled", "");
-    } else {
-        document.querySelector(".arrow-left-container").removeAttribute("disabled");
-    }
-
-    // Set initial disabled on 'arrow-right-container' if last image is visible
-    if (getVisibleImageIndexes().includes(images.length - 1)) {
-        document.querySelector(".arrow-right-container").setAttribute("disabled", "");
-    } else {
-        document.querySelector(".arrow-right-container").removeAttribute("disabled");
-    }*/
 }
 
-document.querySelector(".arrow-left-container").addEventListener("click", () => {
+arrowLeft.addEventListener("click", () => {
     scrollByImage("left");
-    console.log("Scrolling left done" )
+    console.log("Scrolling left done")
     setDisabled();
 });
 
-document.querySelector(".arrow-right-container").addEventListener("click", () => {
+arrowRight.addEventListener("click", () => {
     scrollByImage("right");
     setDisabled();
 });
@@ -152,6 +139,6 @@ const pointerScroll = (elem) => {
 
 };
 
-document.querySelectorAll(".image-container").forEach(pointerScroll);
+document.querySelectorAll(".horizontal-slider .image-container").forEach(pointerScroll);
 
-export {};
+export { };
