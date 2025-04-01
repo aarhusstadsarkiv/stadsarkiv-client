@@ -3,7 +3,6 @@ html {
     -webkit-text-size-adjust: 100%;
 }
 
-
 body {
     line-height: 1.65;
 }
@@ -17,54 +16,68 @@ h2,
 h3,
 h4,
 h5 {
+    font-family: 'Inter', sans-serif;
     line-height: 1.15;
 }
 
-h1 {
-    font-weight: 700;
+h1,
+.text-size-h1 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
     margin-top: 0;
-    font-size: 1.8em;
+    font-size: var(--text-size-4xl);
+    /* 2.49rem */
 }
 
 h2,
 .text-size-h2 {
-    font-size: 1.6em;
+    font-size: var(--text-size-3xl);
+    /* 2.07rem */
 }
 
 h3,
 .text-size-h3 {
-    font-size: 1.42em;
+    font-size: var(--text-size-2xl);
+    /* 1.73rem */
 }
 
 h4,
 .text-size-h4 {
-    font-size: 1.27em;
+    font-size: var(--text-size-xl);
+    /* 1.44rem */
 }
 
 h5,
 .text-size-h5 {
-    font-size: 1.13em;
+    font-size: var(--text-size-lg);
+    /* 1.2rem */
 }
 
 .text-caption {
-    font-size: 0.89em;
+    font-size: var(--text-size-sm);
+    /* 0.83rem */
 }
 
 small,
 .text-small {
-    font-size: 0.79em;
+    font-size: var(--text-size-xs);
 }
-
-
-
-
-
-
-
 
 :root {
 
     /* * primitives */
+
+    /* * font sizes */
+
+    --text-size-xs: 0.69rem;
+    --text-size-sm: 0.83rem;
+    --text-size-md: 1rem;
+    --text-size-lg: 1.2rem;
+    --text-size-xl: 1.44rem;
+    --text-size-2xl: 1.73rem;
+    --text-size-3xl: 2.07rem;
+    --text-size-4xl: 2.49rem;
+    --text-size-5xl: 2.99rem;
 
     /* * color primitives */
 
@@ -487,4 +500,37 @@ body>footer {
     width: 200px;
     max-width: none;
     padding: unset;
+}
+
+.stories-first-content>p {
+    max-width: 80%;
+    margin-top: 8px;
+    margin-bottom: 8px;
+
+}
+
+.stories-first-content>p>a {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    height: 44px;
+    padding: 0px 16px;
+    gap: 8px;
+    color: var(--text-colors-text-primary-on-brand);
+    border-radius: 8px;
+    border: 1px solid var(--border-border-brand-solid, #444ce7);
+    background: var(--background-bg-brand-solid, #444ce7);
+    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+}
+
+
+.stories-first-content>p>a:hover {
+    background: var(--background-bg-brand-solid-hover);
+    color: var(--text-colors-text-primary-on-brand);
+    text-decoration: unset;
+}
+
+.stories-first-content>p>a:active {
+    /* Shadow/xs focused 4px primary-100 */
+    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05), 0px 0px 0px 4px #F4EBFF;
 }
