@@ -44,7 +44,7 @@ async def stories_index(request: Request):
     return templates.TemplateResponse(request, "pages/stories.html", context)
 
 
-async def _get_memories(index: list = []):
+async def _get_memories(index: list = []) -> list:
     # load imported memories
     memories_imported = os.path.join(base_dir, "..", "data", "memories_imported.json")
     with open(memories_imported, "r") as f:
@@ -119,21 +119,28 @@ async def story_display(request: Request):
     return templates.TemplateResponse(request, "pages/story.html", context)
 
 
-async def story_by_index(index: int) -> dict:
+async def story_by_index(index: list = []) -> list:
     stories = await _load_stories()
-    # story = random.choice(stories)
 
-    story = stories[index]
-    # extract data
-    sections = story.copy()
-    first_section = sections.pop(0)
-    title = first_section["heading"]
-    data = {
-        "title": title,
-        "sections": sections,
-        "first_section": first_section,
-    }
-    return data
+    if index:
+        stories = [stories[i] for i in index]
+    else:
+        stories = stories
+
+    stories_data = []
+
+    for story in stories:
+        # extract data
+        sections = story.copy()
+        first_section = sections.pop(0)
+        title = first_section["heading"]
+        data = {
+            "title": title,
+            "sections": sections,
+            "first_section": first_section,
+        }
+        stories_data.append(data)
+    return stories_data
 
 
 async def memory_display(request: Request):
@@ -178,11 +185,12 @@ async def memory_display(request: Request):
     return templates.TemplateResponse(request, "pages/memory.html", context)
 
 
-async def home_test(request: Request):
+async def home_page(request: Request):
 
     memories = await _get_memories(index=[0, 2])
+    stories = await story_by_index(index=[])
 
-    story = await story_by_index(5)
+    story = stories[2]
     context = await get_context(
         request,
         context_values={
@@ -201,7 +209,7 @@ def get_routes() -> list:
         Route("/historier/{page:str}", endpoint=story_display, name="story_display", methods=["GET"]),
         Route("/erindringer", endpoint=memories_index, name="memories", methods=["GET"]),
         Route("/erindringer/{page:str}", endpoint=memory_display, name="memory_display", methods=["GET"]),
-        Route("/", endpoint=home_test, name="home", methods=["GET"]),
+        Route("/", endpoint=home_page, name="home", methods=["GET"]),
     ]
 
     return routes
