@@ -5,7 +5,6 @@
 {% block content %}
 {% include "includes/main_title.html" %}
 
-
 <div class="story-sections">
 
     <div class="story-section">
@@ -14,7 +13,16 @@
             <p>{{ paragraph }}</p>
             {% endfor %}
         </div>
-        <div></div>
+        <div class="story-section-image">
+            <a href="/records/{{ first_section.recordIds[0] }}">
+                <div class="story-image-container">
+                    <img src="{{ first_section.urls[0] }}" alt="{{ first_section.heading }}">
+                    {% if first_section.summary and first_section.summary[0] %}
+                        <p class="story-image-summary">{{ first_section.summary[0] }}</p>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
     </div>
 
     {% for section in sections %}
