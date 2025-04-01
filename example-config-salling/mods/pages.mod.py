@@ -190,7 +190,7 @@ async def home_page(request: Request):
     memories = await _get_memories(index=[0, 2])
     stories = await story_by_index(index=[])
 
-    story = stories[2]
+    story = stories[3]
     context = await get_context(
         request,
         context_values={
