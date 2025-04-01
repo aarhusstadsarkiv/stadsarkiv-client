@@ -11,12 +11,11 @@
 <link rel="stylesheet" href="{{ url_for('static', path='/css/search_suggestions.css') }}?v={{ get_setting('version') }}">
 <script type="module">
 
-    import {} from '/static/js/search-suggestions.js?v={{ get_setting("version") }}';
+    import { } from '/static/js/search-suggestions.js?v={{ get_setting("version") }}';
 
 </script>
 
 <style>
-
     .stories-first {
         border-radius: 5px;
         break-inside: avoid;
@@ -25,12 +24,36 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 10px;
     }
+
+    .stories-first-portrait {
+        align-items: center;
+        width: unset;
+        position: relative;
+        margin: 0 auto;
+    }
+
     @media (max-width: 992px) {
 
         .stories-first-portrait {
-            width: 100%;
             text-align: center;
             display: unset;
+        }
+
+        .stories-first-portrait img {
+            width: 100%;
+            height: auto;
+        }
+
+        .stories-first-content>p {
+            width: 100%;
+        }
+    }
+
+    /* max width of 768px; */
+    @media (max-width: 768px) {
+        .stories-first-portrait {
+            width: 100%;
+            margin: 0 auto;
         }
 
         .stories-first-portrait img {
@@ -43,18 +66,45 @@
         text-transform: uppercase;
         margin: 20px 0;
     }
+
+    .stories-first-portrait .arrow-left-container,
+    .stories-first-portrait .arrow-right-container {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .stories-first-portrait .arrow-left-container {
+        left: 0;
+    }
+
+    .stories-first-portrait .arrow-right-container {
+        right: 0;
+    }
+
+    .stories-first-portrait .arrow-left-container,
+    .stories-first-portrait .arrow-right-container {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: var(--search-result-background);
+        z-index: 10;
+        cursor: pointer;
+        height: 40px;
+        width: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 </style>
 
 {% endblock head %}
 
 {% block content %}
-{# include "includes/main_title.html" #}
 
 {% set section = story.first_section %}
 
-
 {{ salling_macros.story_first_home(section) }}
-
 
 <h3 class="main-title">Udvalgte Salling Minder</h3>
 {{ salling_macros.memories(memories) }}
