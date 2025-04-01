@@ -158,13 +158,6 @@
     .container-search-form #submit {
         display: none;
     }
-
-    .search-option {
-        /*
-        margin-right: 10px; 
-        margin-left: unset;
-        */
-    }
 }
 
 .search-form {
@@ -175,7 +168,6 @@
     padding: unset;
     padding-bottom: 2em;
     padding: 0 0.5em;
-    /* padding: unset; */
 }
 
 
