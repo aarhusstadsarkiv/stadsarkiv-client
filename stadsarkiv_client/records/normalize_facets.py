@@ -108,15 +108,15 @@ class NormalizeFacets:
         resolved_label = self._get_facets_resolved_label(key, value)
 
         if resolved_label:
-            return label_settings + " " + resolved_label
+            return str(label_settings) + " " + resolved_label
 
         if key == "date_from" or key == "date_to":
-            return label_settings + " " + _str_to_date(value)
+            return str(label_settings) + " " + _str_to_date(value)
 
         if key == "q":
             return f"{label_settings} '{value}'"
 
-        return label_settings + " " + value
+        return str(label_settings) + " " + value
 
     def _get_entity_path(self, key):
         """

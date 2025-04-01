@@ -42,4 +42,5 @@ settings: dict[str, typing.Any] = {
     "allow_save_search": False,
     "allow_online_ordering": False,
     "ignore_record_keys": ["curators", "collectors", "collection", "organisations"],
+    "canonical_url": "https://www.aarhusarkivet.dk",
 }

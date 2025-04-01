@@ -94,5 +94,3 @@ sudo service stadsarkiv-client-demo-2 restart
 You can see the logs of the service with:
 
     sudo journalctl -u stadsarkiv-client.service
-
-```
