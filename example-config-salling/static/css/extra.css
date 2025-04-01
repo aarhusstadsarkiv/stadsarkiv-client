@@ -3,65 +3,79 @@ html {
     -webkit-text-size-adjust: 100%;
 }
 
-body {
-    line-height: 1.65;
-}
-
 p {
     font-size: 1em;
+    line-height: 24px;
+    font-weight: 400;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5 {
-    font-family: 'Inter', sans-serif;
-    line-height: 1.15;
-}
-
-h1,
-.text-size-h1 {
-    font-family: 'Inter', sans-serif;
+a {
+    color: var(--text-colors-link-primary);
     font-weight: 500;
+}
+
+
+h1 {
+    font-weight: 600;
     margin-top: 0;
-    font-size: var(--text-size-4xl);
+    font-size: var(--text-size-5xl);
     /* 2.49rem */
+    line-height: 60px;
+
 }
 
-h2,
-.text-size-h2 {
+h2 {
+    font-weight: 600;
+    font-size: var(--text-size-4xl);
+    line-height: 44px;
+}
+
+h3 {
+    font-weight: 600;
     font-size: var(--text-size-3xl);
-    /* 2.07rem */
-}
-
-h3,
-.text-size-h3 {
-    font-size: var(--text-size-2xl);
     /* 1.73rem */
+    line-height: 38px;
 }
 
-h4,
-.text-size-h4 {
-    font-size: var(--text-size-xl);
+h4 {
+    font-weight: 600;
+    font-size: var(--text-size-2xl);
     /* 1.44rem */
+    line-height: 32px;
 }
 
-h5,
-.text-size-h5 {
-    font-size: var(--text-size-lg);
+h5 {
+    font-weight: 600;
+    font-size: var(--text-size-xl);
     /* 1.2rem */
+    line-height: 30px;
 }
 
 .text-caption {
+    font-weight: 500;
     font-size: var(--text-size-sm);
     /* 0.83rem */
+    line-height: 20px;
 }
 
 small,
 .text-small {
+    font-weight: 400;
     font-size: var(--text-size-xs);
+    line-height: 18px;
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: unset;
+    margin-bottom: unset;
+}
+
+
 
 :root {
 
@@ -69,15 +83,28 @@ small,
 
     /* * font sizes */
 
-    --text-size-xs: 0.69rem;
-    --text-size-sm: 0.83rem;
-    --text-size-md: 1rem;
-    --text-size-lg: 1.2rem;
-    --text-size-xl: 1.44rem;
-    --text-size-2xl: 1.73rem;
-    --text-size-3xl: 2.07rem;
-    --text-size-4xl: 2.49rem;
-    --text-size-5xl: 2.99rem;
+    --text-size-xs: 0.75rem, 12px;
+    /* Fallback: 12px */
+    --text-size-sm: 0.875rem, 14px;
+    /* Fallback: 14px */
+    --text-size-md: 1rem, 16px;
+    /* Fallback: 16px */
+    --text-size-lg: 1.125rem, 18px;
+    /* Fallback: 18px */
+    --text-size-xl: 1.25rem, 20px;
+    /* Fallback: 20px */
+    --text-size-2xl: 1.5rem, 24px;
+    /* Fallback: 24px */
+    --text-size-3xl: 1.875rem, 30px;
+    /* Fallback: 30px */
+    --text-size-4xl: 2.25rem, 36px;
+    /* Fallback: 36px */
+    --text-size-5xl: 3rem, 48px;
+    /* Fallback: 48px */
+
+
+
+
 
     /* * color primitives */
 
@@ -192,7 +219,7 @@ small,
 
 body {
     background-color: var(--background-bg-primary);
-    font-family: 'Helvetica Neue', 'Ubuntu', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen', 'Fira Sans', sans-serif, 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji';
+    font-family: 'Inter', 'Helvetica Neue', 'Ubuntu', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen', 'Fira Sans', sans-serif, 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji';
 
 }
 
@@ -265,9 +292,7 @@ body {
     background-color: var(--background-bg-brand-secondary-hover, #EFEFFB);
 }
 
-a {
-    color: var(--text-colors-link-primary);
-}
+
 
 
 a:hover {
@@ -311,9 +336,10 @@ a:disabled {
 }
 
 .stories-first {
-    background-color: var(--background-bg-tertiary);
-    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+    background-color: var(--background-bg-primary);
+    box-shadow: unset;
     align-items: unset;
+    padding: unset;
 }
 
 #submit {
@@ -463,7 +489,10 @@ body>footer {
     padding-bottom: 48px;
 }
 
-
+#item-2 {
+    display: flex;
+    justify-content: center;
+}
 
 
 #item-3 {
@@ -502,10 +531,13 @@ body>footer {
     padding: unset;
 }
 
+.stories-first-content {
+    display: flex;
+    flex-direction: column;
+}
+
 .stories-first-content>p {
     max-width: 80%;
-    margin-top: 8px;
-    margin-bottom: 8px;
 
 }
 
@@ -534,3 +566,15 @@ body>footer {
     /* Shadow/xs focused 4px primary-100 */
     box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05), 0px 0px 0px 4px #F4EBFF;
 }
+
+
+.stories-first-portrait>img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+
+
+/* !Fix footer */
+/* ! fix menu */
