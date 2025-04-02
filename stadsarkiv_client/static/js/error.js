@@ -1,25 +1,25 @@
 /**
  * function that serializes the error
  */
-function serializeError(error, customMessage) {
-
-    // Default custom message is 'JS error'
-    if (!customMessage) {
-        customMessage = 'JS error';
-    }
-    return {
-        customMessage: customMessage,
+function serializeError(error) {
+    // Note: error_type, error_code, error_url are options in the python logger
+    // May use them at some point 
+    let data = {
         message: error.message,
-        name: error.name,
-        stack: error.stack,
+        exception: error.stack,
     };
+
+    return data;
 }
 
 /**
  * Send the error to the server
+ * If the error is a JS error it has a stack trace and a message
+ * Otherwise you may compose the error object yourself
  */
-function asyncLogError(error, customMessage) {
-    const errorData = serializeError(error, customMessage);
+function asyncLogError(error) {
+
+    const errorData = serializeError(error);
 
     // Send as json
     fetch('/error/log', {
