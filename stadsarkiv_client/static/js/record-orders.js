@@ -1,6 +1,7 @@
 import { asyncLogError } from "/static/js/error.js";
 import { Requests } from "/static/js/requests.js";
 import { Flash } from "/static/js/flash.js";
+import { config } from "/static/js/config.js";
 
 const spinner = document.querySelector('.loadingspinner');
 const orderElem = document.getElementById('record-order');
@@ -55,7 +56,7 @@ if (orderElem) {
             }
 
         } catch (e) {
-            Flash.setMessage("Der skete en system fejl. Prøv igen senere.", 'error');
+            Flash.setMessage(config.jsExceptionMessage, 'error');
             await asyncLogError(e);
             console.error(e);
         } finally {
