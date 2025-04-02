@@ -55,7 +55,7 @@ if (orderElem) {
             }
 
         } catch (e) {
-            Flash.setMessage("System fejl", 'error');
+            Flash.setMessage("Der skete en system fejl. Prøv igen senere.", 'error');
             await asyncLogError(e);
             console.error(e);
         } finally {
