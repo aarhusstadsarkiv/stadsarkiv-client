@@ -21,7 +21,6 @@ formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(messag
 
 class JsonFormatter(logging.Formatter):
     def format(self, record):
-
         log_record = {
             "time": self.formatTime(record, self.datefmt),
             "name": record.name,
@@ -33,22 +32,19 @@ class JsonFormatter(logging.Formatter):
         if record.exc_info:
             log_record["exception"] = self.formatException(record.exc_info)
 
-        # Add extra fields to the log record
-        if getattr(record, "error_code", ""):
-            log_record["error_code"] = getattr(record, "error_code", "")
+        # Add extra fields to the log record if they exist
+        extra_fields = {
+            "error_code": "error_code",
+            "error_type": "error_type",
+            "error_url": "request_url",
+            "exception": "exception",
+            "message": "message",
+        }
 
-        if getattr(record, "error_type", ""):
-            log_record["error_type"] = getattr(record, "error_type", "")
-
-        if getattr(record, "error_url", ""):
-            log_record["request_url"] = str(getattr(record, "error_url", ""))
-
-        # Allow set exception and message using extra fields (e.g for logging javascript errors)
-        if getattr(record, "exception", ""):
-            log_record["exception"] = str(getattr(record, "exception", ""))
-
-        if getattr(record, "message", ""):
-            log_record["message"] = str(getattr(record, "message", ""))
+        for attr, log_key in extra_fields.items():
+            value = getattr(record, attr, None)
+            if value:
+                log_record[log_key] = value
 
         return json.dumps(log_record)
 
