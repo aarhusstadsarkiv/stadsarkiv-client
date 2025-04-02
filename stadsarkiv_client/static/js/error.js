@@ -9,6 +9,13 @@ function serializeError(error) {
         exception: error.stack,
     };
 
+    // error_type, error_code, error_url are optional
+    data.error_type = error.error_type || null;
+    data.error_code = error.error_code || null;
+    data.error_url = error.error_url || null;
+
+    console.log("Serialized error: ", data);
+
     return data;
 }
 
