@@ -43,6 +43,13 @@ class JsonFormatter(logging.Formatter):
         if getattr(record, "error_url", ""):
             log_record["request_url"] = str(getattr(record, "error_url", ""))
 
+        # Allow set exception and message using extra fields (e.g for logging javascript errors)
+        if getattr(record, "exception", ""):
+            log_record["exception"] = str(getattr(record, "exception", ""))
+
+        if getattr(record, "message", ""):
+            log_record["message"] = str(getattr(record, "message", ""))
+
         return json.dumps(log_record)
 
 
