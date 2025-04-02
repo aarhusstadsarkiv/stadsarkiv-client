@@ -55,8 +55,9 @@ if (orderElem) {
             }
 
         } catch (e) {
-            Flash.setMessage(res.message, 'error');
-            await asyncLogError('/error/log', e.stack);
+            Flash.setMessage("System fejl", 'error');
+            await asyncLogError(e);
+            console.error(e);
         } finally {
             spinner.classList.toggle('hidden');
         }
