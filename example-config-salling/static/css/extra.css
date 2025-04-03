@@ -211,9 +211,7 @@ h6 {
     --slideshow-background-alt: rgba(0, 0, 0, 0.8);
     --slideshow-text: white;
 
-    /* * width styles */
-    --container-width-medium: 1440px;
-    --container-width-medium-padding: 32px;
+
 }
 
 
@@ -344,7 +342,6 @@ a:disabled {
 
 #submit {
 
-    display: flex;
     height: 44px;
     gap: 8px;
     color: var(--text-colors-text-primary-on-brand);
