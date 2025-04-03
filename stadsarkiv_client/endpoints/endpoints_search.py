@@ -262,6 +262,10 @@ def _normalize_search_result(records: dict):
             content_type = record["content_types"][-1]
             record["content_type"] = facets_resolved["content_types"].get(content_type).get("display_label", None)
 
+        record["show_image"] = False
+        if record.get("thumbnail") and record.get("availability", None) == "4":
+            record["show_image"] = True
+
     return records
 
 

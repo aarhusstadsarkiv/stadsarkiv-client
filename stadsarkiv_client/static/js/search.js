@@ -169,17 +169,16 @@ function searchEvents() {
 
     try {
 
-        const containerMainFacetsElem = document.querySelector('.container-main-facets');
         const facetsToogle = document.getElementById('facets-toggle');
         let hideFacetsState = localStorage.getItem('hideFacets') || 'true';
 
         const hideFacetsElement = () => {
-            containerMainFacetsElem.style.display = 'none';
+            containerMainFacets.style.display = 'none';
             if (facetsToogle) facetsToogle.textContent = 'Vis filtre';
         }
 
         const showFacetsElements = () => {
-            containerMainFacetsElem.style.display = 'block';
+            containerMainFacets.style.display = 'block';
             if (facetsToogle) facetsToogle.textContent = 'Skjul filtre';
         }
 
@@ -195,7 +194,7 @@ function searchEvents() {
 
         facetsToogle?.addEventListener('click', function (e) {
             e.preventDefault();
-            if (containerMainFacetsElem.style.display === 'none') {
+            if (containerMainFacets.style.display === 'none') {
                 hideFacetsState = 'false';
                 showFacetsElements();
                 localStorage.setItem('hideFacets', 'false');
@@ -213,7 +212,6 @@ function searchEvents() {
 
             // Check if the resize event crosses the 992px to 993px boundary
             if ((lastWindowWidth <= 992 && currentWindowWidth > 992) || (lastWindowWidth > 992 && currentWindowWidth <= 992)) {
-                console.log("Resize event crossed the 992px boundary")
                 expandTree();
                 truncateText(document.querySelectorAll(".search-summary"), 80, true);
             }

@@ -355,7 +355,7 @@
                 
             </div>
             <div class="search-thumbnail">
-                {% if result.thumbnail %}
+                {% if result.show_image %}
                 <img src="{{ result.thumbnail }}" alt="{{ result.label }}">
                 {% endif %}
             </div>
@@ -419,7 +419,7 @@
 
     <div class="search-result-gallery">
         <a class="search-link-gallery" href="/records/{{ result.id }}?search={{ current }}">
-            {% if result.portrait %}
+            {% if result.show_image %}
                 {% if result.label %}
                 {% set label = result.label %}
                 {% else %}
