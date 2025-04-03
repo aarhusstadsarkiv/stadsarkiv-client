@@ -184,6 +184,7 @@
     import { Requests } from "/static/js/requests.js";
     import { Flash } from "/static/js/flash.js";
     import { OrderStatus } from '/static/js/orders.js';
+    import { config } from "/static/js/config.js";
 
     const spinner = document.querySelector('.loadingspinner');
 
@@ -231,8 +232,9 @@
             }
 
         } catch (e) {
-            Flash.setMessage(res.message, 'error');
-            await asyncLogError('/error/log', e.stack);
+            Flash.setMessage(config.jsExceptionMessage, 'error');
+            await asyncLogError(e);
+            console.error(e);
         } finally {
             spinner.classList.toggle('hidden');
         }
@@ -245,6 +247,9 @@
         element.addEventListener('click', handleUserStatusClick);
     });
 
+    /**
+     * all locations
+     */
     const locationElements = document.querySelectorAll('.location');
 
     // Get initial vales in order to only update changed values
@@ -271,6 +276,8 @@
                 }
             });
 
+            
+
             const url = '/admin/orders/patch';
             spinner.classList.toggle('hidden');
 
@@ -280,8 +287,9 @@
                 // Redirect to same page to update view
                 window.location.reload();
             } catch (e) {
-                Flash.setMessage(res.message, 'error');
-                await asyncLogError('/error/log', e.stack);
+                Flash.setMessage(config.jsExceptionMessage, 'error');
+                await asyncLogError(e);
+                console.error(e);
             } finally {
                 spinner.classList.toggle('hidden');
             }

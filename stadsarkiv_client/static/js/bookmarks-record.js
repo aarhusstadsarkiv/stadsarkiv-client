@@ -2,6 +2,7 @@
 import { asyncLogError } from "/static/js/error.js";
 import { Requests } from "/static/js/requests.js";
 import { Flash } from "/static/js/flash.js";
+import { config } from "/static/js/config.js";
 
 let action;
 const bookmarkAddElem = document.getElementById('bookmark-action');
@@ -53,8 +54,9 @@ if (bookmarkAddElem) {
                 Flash.setMessage(res.message, 'success');
             }
         } catch (e) {
-            Flash.setMessage(res.message, 'error');
-            await asyncLogError('/error/log', e.stack);
+            Flash.setMessage(config.jsExceptionMessage, 'error');
+            await asyncLogError(e);
+            console.error(e);
         } finally {
             initialize();
             spinner.classList.toggle('hidden');

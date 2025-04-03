@@ -2,6 +2,7 @@ import { Events } from '/static/js/events.js';
 import { Flash } from '/static/js/flash.js';
 import { asyncLogError } from '/static/js/error.js';
 import { truncateText } from '/static/js/truncate-text.js';
+import { config } from '/static/js/config.js';
 
 const containerLeft = document.querySelector('.container-left');
 const containerMainFacets = document.querySelector('.container-main-facets');
