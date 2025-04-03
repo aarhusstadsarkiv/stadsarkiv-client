@@ -174,11 +174,14 @@ async def memory_display(request: Request):
         }
         memory_images.append(image)
 
+    first_image = memory_images.pop(0)
+
     context = await get_context(
         request,
         context_values={
             "title": memory["heading"],
             "memory": memory,
+            "first_image": first_image,
             "images": memory_images,
         },
     )
