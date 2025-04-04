@@ -161,3 +161,20 @@
     display: none !important;
 }
 
+/* media max width 1024px. Set padding: 20px 20px; */
+@media (max-width: 1200px) {
+
+    .footer {
+        padding: unset;
+    }
+
+
+    .footer-content {
+        padding: 20px;
+    }
+}
+
+body>footer {
+    margin-top: 0px;
+}
+
