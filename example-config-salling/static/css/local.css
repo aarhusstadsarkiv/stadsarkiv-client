@@ -88,6 +88,12 @@
     }
 }
 
+body>footer {
+    margin-top: unset;
+}
+
+
+
 .footer {
     align-items: center;
 }
@@ -171,13 +177,17 @@
 }
 
 
-@media (max-width: 1200px) {
-    footer img {
-        margin: unset;
-        padding: 20px 0;
-        margin-left: auto;
-    }
+
+.footer {
+    padding: 10px 18px;
 }
+
+footer img {
+    margin: unset;
+    padding: 20px 20px;
+    margin-left: auto;
+}
+
 
 .container-main-facets {
     display: none !important;
