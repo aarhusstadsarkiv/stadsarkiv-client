@@ -88,19 +88,6 @@
     }
 }
 
-body>footer {
-    margin-top: unset;
-}
-
-
-
-.footer {
-    align-items: center;
-}
-
-.footer-logo-right {
-    margin-bottom: 2em;
-}
 
 .menu-text a,
 .main-menu-overlay a {
@@ -169,25 +156,6 @@ body>footer {
 .search-form {
     gap: 15px;
 }
-
-.footer-content {
-    padding: unset;
-    padding-bottom: 2em;
-    padding: 0 0.5em;
-}
-
-
-
-.footer {
-    padding: 10px 18px;
-}
-
-footer img {
-    margin: unset;
-    padding: 20px 20px;
-    margin-left: auto;
-}
-
 
 .container-main-facets {
     display: none !important;
