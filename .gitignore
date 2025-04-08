@@ -173,5 +173,6 @@ uvicorn_process.pid
 settings_local.py
 settings_local.yml
 /data
+/data-local
 !tests/data
 .DS_Store
