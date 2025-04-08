@@ -35,7 +35,7 @@ settings: dict[str, typing.Any] = {
         "orders": "data/orders.db",
     },
     "search_base_url": "/search",
-    "show_version": True,
+    "show_version": False,
     "allow_user_registration": False,
     "allow_user_management": False,
     "allow_save_bookmarks": False,

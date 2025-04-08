@@ -1,7 +1,7 @@
 .memories-all-results {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 20px;
+    grid-gap: 40px;
     max-width: 100%;
     margin: 0 auto;
     margin-top: 20px;
@@ -13,12 +13,11 @@
     }
 }
 
-/** single result */
+/** single result of all the results */
 .memories-result {
     border-radius: 5px;
     background: var(--search-result-background);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
 }
 
 .memories-result:hover {

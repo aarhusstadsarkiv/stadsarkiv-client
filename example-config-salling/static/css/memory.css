@@ -1,46 +1,57 @@
 
-.memory {
-    max-width: 700px;
-}
-
-.memory-first {
-    width: 60%;
-}
-
-@media (max-width: 992px) {
-    .memory-first {
-        width: 100%;
-    }
-}
-
 /** 
- * first paragraph in memory should be in bold
+ * Styles a single memory that consists of some text and one or multiple images
 */
 .memory-first p:first-child {
     font-weight: bold;
 }
 
-.memory-all-results {
+.memory-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Default to 4 columns on large screens */
-    gap: 15px;
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: 2em;
+    column-gap: 2em; 
 }
 
-@media (max-width: 1200px) {
-    .memory-all-results {
-        grid-template-columns: repeat(3, 1fr);
-    }
+.memory-first {
+    display: contents;
+    
+}
+.memory-first > * {
+    align-self: center;
+}
+
+.memory-first > *:first-child {
+    grid-column: span 3;
+}
+
+.memory-first > *:nth-child(2) {
+    grid-column: span 1;
+}
+
+.memory-rest {
+    display: contents;
 }
 
 @media (max-width: 992px) {
-    .memory-all-results {
+    .memory-container {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .memory-first > *:first-child,
+    .memory-first > *:nth-child(2) {
+        grid-column: span 1;
     }
 }
 
 @media (max-width: 576px) {
-    .memory-all-results {
+    .memory-container {
         grid-template-columns: 1fr;
+    }
+
+    .memory-first > *:first-child,
+    .memory-first > *:nth-child(2) {
+        grid-column: span 1;
     }
 }
 
@@ -51,6 +62,7 @@
     background: var(--search-result-background);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 10px;
+    min-height: 100%;
 }
 
 .memory-result:hover {
@@ -60,8 +72,8 @@
 .memory-link {
     display: flex;
     flex-direction: column;
-    text-align: center;
     text-align: left;
+    gap: 1em;
 }
 
 a.memory-link {
@@ -70,9 +82,13 @@ a.memory-link {
     font-size: 0.9rem;
 }
 
+.memory-potrait {
+    flex: 1;
+}
+
 .memory-portrait img {
-    width: 100%;
-    height: auto;
+    height: 100%;
+    width: auto;
     aspect-ratio: 1 / 1;
     object-fit: contain;
 }

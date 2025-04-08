@@ -128,4 +128,4 @@ for row in unresolved_errors:
     print("-" * 50)
 
     # Pause for a second between requests
-    time.sleep(1)
+    time.sleep(0.1)
