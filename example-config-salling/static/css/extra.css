@@ -18,7 +18,7 @@ a {
 h1 {
     font-weight: 600;
     margin-top: 0;
-    font-size: var(--text-size-5xl);
+    font-size: var(2.49rem);
     /* 2.49rem */
     line-height: 60px;
 
@@ -26,42 +26,42 @@ h1 {
 
 h2 {
     font-weight: 600;
-    font-size: var(--text-size-4xl);
+    font-size: 2.25rem;
     line-height: 44px;
 }
 
 h3 {
     font-weight: 600;
-    font-size: var(--text-size-3xl);
+    font-size: 1.73rem;
     /* 1.73rem */
     line-height: 38px;
 }
 
 h4 {
     font-weight: 600;
-    font-size: var(--text-size-2xl);
+    font-size: 1.44rem;
     /* 1.44rem */
     line-height: 32px;
 }
 
 h5 {
     font-weight: 600;
-    font-size: var(--text-size-xl);
+    font-size: 1.2rem;
     /* 1.2rem */
     line-height: 30px;
 }
 
-.text-caption {
+.text-caption .text-small,
+.story-image-container>p {
     font-weight: 500;
-    font-size: var(--text-size-sm);
+    font-size: 0.83rem;
     /* 0.83rem */
     line-height: 20px;
 }
 
-small,
-.text-small {
+small {
     font-weight: 400;
-    font-size: var(--text-size-xs);
+    font-size: 0.75rem;
     line-height: 18px;
 }
 
@@ -245,7 +245,7 @@ body {
     background-color: var(--background-bg-primary);
     background: var(--White, #FFF);
     /* Shadow/lg */
-    box-shadow: 0px 12px 16px -4px rgba(10, 13, 18, 0.08), 0px 4px 6px -2px rgba(10, 13, 18, 0.03);
+
 
 }
 
@@ -270,7 +270,7 @@ body {
     /* Reset outline */
     background: none;
     /* Reset background */
-    box-shadow: none;
+
     /* Reset box shadow */
 }
 
@@ -288,7 +288,7 @@ body {
     /* Add extra padding to create space for the chevron */
     padding-bottom: 10px;
     padding-left: 14px;
-    box-shadow: 0px 1px 2px 0px #0A0D120D;
+
     appearance: none;
     background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23181D27" class="bi bi-chevron-down" viewBox="0 0 16 16"%3E%3Cpath fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/%3E%3C/svg%3E');
     background-repeat: no-repeat;
@@ -364,7 +364,7 @@ a:disabled {
 .search-result-gallery,
 .stories-result,
 .memories-result {
-    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+
     border-radius: 8px;
     color: var(--text-colors-text-primary);
 }
@@ -384,7 +384,7 @@ a:disabled {
 
 .stories-first {
     background-color: var(--background-bg-primary);
-    box-shadow: unset;
+
     align-items: unset;
     padding: unset;
 }
@@ -399,7 +399,7 @@ a:disabled {
     background: var(--background-bg-brand-solid, #444ce7);
 
 
-    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+
 
 }
 
@@ -410,7 +410,7 @@ a:disabled {
 
 #submit:active {
     /* Shadow/xs focused 4px primary-100 */
-    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05), 0px 0px 0px 4px #F4EBFF;
+
 }
 
 
@@ -423,7 +423,7 @@ a:disabled {
     border: 1px solid var(--border-border-primary, #D5D7DA);
     background: var(--background-bg-primary, #FFF);
     /* Shadow/xs */
-    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+
 }
 
 
@@ -432,7 +432,7 @@ a:disabled {
 #q:focus {
     border: 1px solid var(--border-border-brand-solid-active, #A9AAEA);
     color: var(--text-colors-text-primary);
-    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+
 }
 
 .action-links>a {
@@ -442,7 +442,7 @@ a:disabled {
     color: var(--text-colors-text-secondary);
     font-weight: 400;
     /* Shadow/xs */
-    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+
 }
 
 .action-links>a:hover {
@@ -451,7 +451,7 @@ a:disabled {
     border: 1px solid var(--border-border-primary);
     color: var(--text-colors-text-tertiary);
     /* Shadow/xs */
-    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+
 }
 
 .action-links>a:disabled {
@@ -463,7 +463,7 @@ a:disabled {
 
 .action-links>a:active {
     /* Shadow/xs focused 4px gray-100 */
-    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05), 0px 0px 0px 4px #F5F5F5;
+
 
 }
 
@@ -473,7 +473,7 @@ a:disabled {
     outline: 1px solid var(--border-border-brand-solid-secondary);
     /* Use outline instead of border */
     /* Shadow/xs */
-    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+
     align-content: center;
     padding: 0px 12px;
 }
@@ -569,7 +569,7 @@ a:disabled {
     border-radius: 8px;
     border: 1px solid var(--border-border-brand-solid, #444ce7);
     background: var(--background-bg-brand-solid, #444ce7);
-    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05);
+
 }
 
 
@@ -581,7 +581,7 @@ a:disabled {
 
 .stories-first-content>p>a:active {
     /* Shadow/xs focused 4px primary-100 */
-    box-shadow: 0px 1px 2px 0px rgba(10, 13, 18, 0.05), 0px 0px 0px 4px #F4EBFF;
+
 }
 
 /* when max-width is 1200px */
@@ -592,6 +592,14 @@ a:disabled {
         width: 150px;
     }
 }
+
+.story-image-summary {
+    text-align: left;
+}
+
+/* cancelling styles */
+
+
 
 /* when max-width is 768px */
 @media (max-width: 768px) {
