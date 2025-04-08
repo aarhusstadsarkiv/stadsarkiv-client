@@ -27,19 +27,19 @@ Otherwise, we will use the default log files at ./data/logs/main.log
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Parse log files and extract error logs.")
     parser.add_argument(
-        "--log_file_pattern",
+        "--glob",
         type=str,
         default="./data/logs/main.log*",
-        help="Path to the glob file pattern to use when extracting logs. Default: ./data/logs/main.log*",
+        help="Path to the glob file pattern to use when extracting logs. Default: './data/logs/main.log*'",
     )
     return parser.parse_args()
 
 
 args = parse_arguments()
-log_file_pattern = args.log_file_pattern
+log_file_pattern = args.glob
 
 try:
-    db_path = settings["sqlite3"]["default"]
+    db_path = settings["sqlite3"]["errors"]
 except KeyError:
     log.error("No database URL found in settings")
     exit(1)
@@ -66,14 +66,14 @@ def parse_line(line: str):
         exception = log_data.get("exception", "")
 
         # Check if combination exists
-        cursor.execute("SELECT 1 FROM error_logs WHERE url = ? AND message = ?", (request_url, error_message))
+        cursor.execute("SELECT 1 FROM error_log WHERE url = ? AND message = ?", (request_url, error_message))
         result = cursor.fetchone()
 
         # Insert the error into the database if it doesn't exist
         if result is None:
             cursor.execute(
                 """
-                INSERT INTO error_logs (time, name, level, message, exception, url, error_code, resolved)
+                INSERT INTO error_log (time, name, level, message, exception, url, error_code, resolved)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (time, name, level, error_message, exception, request_url, error_code, False),
