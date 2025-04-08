@@ -62,6 +62,10 @@ alter_bookmarks_table = """
 ALTER TABLE bookmarks RENAME COLUMN bookmark TO record_id;
 """
 
+drop_error_logs = """
+DROP TABLE IF EXISTS error_logs;
+"""
+
 # List of migrations with keys
 migrations_default = {
     "create_bookmarks": create_booksmarks_query,
@@ -73,4 +77,5 @@ migrations_default = {
     "create_error_logs": create_error_logs,
     "create_error_logs_index": create_error_logs_index,
     "alter_bookmarks_table": alter_bookmarks_table,
+    "drop_error_logs": drop_error_logs,
 }

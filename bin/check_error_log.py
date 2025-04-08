@@ -19,7 +19,7 @@ if "CONFIG_DIR" not in os.environ:
 # check if environment variable CONFIG_DIR is set
 
 
-database_url = settings["sqlite3"]["default"]
+database_url = settings["sqlite3"]["errors"]
 database_connection = DatabaseConnection(database_url)
 transaction_scope_sync = database_connection.transaction_scope_sync
 
@@ -38,7 +38,7 @@ should_resolve = [
 def get_unresolved_urls():
 
     with transaction_scope_sync() as connection:
-        cursor = connection.execute("SELECT * FROM error_logs WHERE resolved = 0")
+        cursor = connection.execute("SELECT * FROM error_log WHERE resolved = 0")
         unresolved_errors = cursor.fetchall()
         return unresolved_errors
 
@@ -47,7 +47,7 @@ def mark_url_resolved(error_id):
     """Mark the URL as resolved in the database."""
 
     with transaction_scope_sync() as connection:
-        connection.execute("UPDATE error_logs SET resolved = 1 WHERE id = ?", (error_id,))
+        connection.execute("UPDATE error_log SET resolved = 1 WHERE id = ?", (error_id,))
         connection.commit()
 
 

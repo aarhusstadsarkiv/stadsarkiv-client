@@ -161,6 +161,10 @@
     display: none !important;
 }
 
+.footer {
+    background-color: #F2F2F2;
+}
+
 /* media max width 1024px. Set padding: 20px 20px; */
 @media (max-width: 1200px) {
 
@@ -176,5 +180,10 @@
 
 body>footer {
     margin-top: 0px;
+}
+
+.main-title {
+    text-transform: uppercase;
+    margin-top: 25px;
 }
 

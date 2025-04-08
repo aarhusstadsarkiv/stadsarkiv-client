@@ -6,6 +6,7 @@ import glob
 import sqlite3
 import json
 import os
+import argparse
 
 
 # Check if the environment variable CONFIG_DIR is set
@@ -15,12 +16,30 @@ if "CONFIG_DIR" not in os.environ:
     exit(1)
 
 
-log_file_pattern = "/home/dennis/logs/main*"
 log = get_log()
 
+"""
+We need a log file pattern to search for as a argument. 
+Otherwise, we will use the default log files at ./data/logs/main.log 
+"""
+
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Parse log files and extract error logs.")
+    parser.add_argument(
+        "--glob",
+        type=str,
+        default="./data/logs/main.log*",
+        help="Path to the glob file pattern to use when extracting logs. Default: './data/logs/main.log*'",
+    )
+    return parser.parse_args()
+
+
+args = parse_arguments()
+log_file_pattern = args.glob
 
 try:
-    db_path = settings["sqlite3"]["default"]
+    db_path = settings["sqlite3"]["errors"]
 except KeyError:
     log.error("No database URL found in settings")
     exit(1)
@@ -36,7 +55,7 @@ log_files = glob.glob(log_file_pattern)
 def parse_line(line: str):
     log_data = json.loads(line)
 
-    # Only proceed if the log line is an error log
+    # Only proceed if the log line is an ERROR log
     if log_data.get("level") == "ERROR":
         time = log_data.get("time")
         name = log_data.get("name")
@@ -47,14 +66,14 @@ def parse_line(line: str):
         exception = log_data.get("exception", "")
 
         # Check if combination exists
-        cursor.execute("SELECT 1 FROM error_logs WHERE url = ? AND message = ?", (request_url, error_message))
+        cursor.execute("SELECT 1 FROM error_log WHERE url = ? AND message = ?", (request_url, error_message))
         result = cursor.fetchone()
 
         # Insert the error into the database if it doesn't exist
         if result is None:
             cursor.execute(
                 """
-                INSERT INTO error_logs (time, name, level, message, exception, url, error_code, resolved)
+                INSERT INTO error_log (time, name, level, message, exception, url, error_code, resolved)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (time, name, level, error_message, exception, request_url, error_code, False),
