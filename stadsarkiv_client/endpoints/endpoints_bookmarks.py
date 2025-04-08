@@ -93,8 +93,10 @@ async def auth_bookmarks_json(request: Request):
     Get user bookmarks as JSON. Used for /records/{record_id} page.
     In /static/js/bookmarks-record.js
     """
-    try:
+    message = translate("You need to be logged in as user in order to bookmark a record.")
+    await is_authenticated_json(request, ["user"], message=message)
 
+    try:
         # get query param record_id
         record_id = request.query_params.get("record_id")
         if not record_id:
@@ -109,6 +111,7 @@ async def auth_bookmarks_json(request: Request):
             bookmarks_list = await crud_default.select_one(table="bookmarks", filters=filters)
 
         return JSONResponse(bookmarks_list, status_code=200)
+
     except OpenAwsException as e:
         log.exception("Error in auth_bookmarks_json")
         json_data = {"message": str(e), "error": True}

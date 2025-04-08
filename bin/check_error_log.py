@@ -27,6 +27,7 @@ should_not_resolve = [
     "Representations but no record_type",
     "JSON Error in Agenda Item",
     "Sejrs sedler should have a summary",
+    "Missing Image",
 ]
 
 should_resolve = [
@@ -109,7 +110,7 @@ for row in unresolved_errors:
             continue
 
         # Check if the error is resolvable
-        # if http_status_code >= 400 and http_status_code < 600:
+        # if http_status_code >= 400 and http_status_code < 500:
         resolved_statuses = [200, 301, 302, 400, 404, 422]
         if http_status_code in resolved_statuses:
             mark_url_resolved(error_id)
