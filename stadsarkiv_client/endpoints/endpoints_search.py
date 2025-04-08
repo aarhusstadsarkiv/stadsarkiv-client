@@ -99,8 +99,12 @@ def get_size_sort_view(request: Request):
     if int(size) > 1000:
         size = "1000"
 
-    sort = request.query_params.get("sort", request.cookies.get("sort", "date_from"))
-    view = request.query_params.get("view", request.cookies.get("view", "list"))
+    sort_default = settings.get("search_default_sort", "date_from")
+    view_default = settings.get("search_default_view", "list")
+
+    sort = request.query_params.get("sort", request.cookies.get("sort", sort_default))
+    view = request.query_params.get("view", request.cookies.get("view", view_default))
+
     return size, sort, view
 
 
