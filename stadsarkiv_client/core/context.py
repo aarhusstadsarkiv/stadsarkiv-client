@@ -29,7 +29,7 @@ async def get_context(request: Request, context_values: dict = {}, identifier: s
     # query_str_display is used to display the last search query
     # it is already present in the context_values if the client is requesting the search page
     # if it is not present, we need to add it to the context_values
-    query_str_display = context_values.get("query_str_display", None)
+    query_str_display = context_values.get("query_str_display", "")
     if "query_str_display" not in context_values:
         query_str_display = cookie.get_query_str_display(request)
 
