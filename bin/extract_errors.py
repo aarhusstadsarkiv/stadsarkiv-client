@@ -15,7 +15,7 @@ if "CONFIG_DIR" not in os.environ:
     exit(1)
 
 
-log_file_pattern = "/home/dennis/logs/main.log"
+log_file_pattern = "/home/dennis/logs/main*"
 log = get_log()
 
 
@@ -70,6 +70,7 @@ def parse_log_file(log_file_path: str):
 
 # Process each log file
 for log_file_path in log_files:
+    print(f"Processing log file: {log_file_path}")
     parse_log_file(log_file_path)
 
 # Close the connection
