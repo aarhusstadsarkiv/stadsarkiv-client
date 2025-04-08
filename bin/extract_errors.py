@@ -19,8 +19,8 @@ if "CONFIG_DIR" not in os.environ:
 log = get_log()
 
 """
-We need a log file pattern to search for as a argument. 
-Otherwise, we will use the default log files at ./data/logs/main.log 
+We need a log file pattern to search for as a argument.
+Otherwise, we will use the default log files at ./data/logs/main.log
 """
 
 
