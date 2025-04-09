@@ -99,8 +99,12 @@ def get_size_sort_view(request: Request):
     if int(size) > 1000:
         size = "1000"
 
-    sort = request.query_params.get("sort", request.cookies.get("sort", "date_from"))
-    view = request.query_params.get("view", request.cookies.get("view", "list"))
+    sort_default = settings.get("search_default_sort", "date_from")
+    view_default = settings.get("search_default_view", "list")
+
+    sort = request.query_params.get("sort", request.cookies.get("sort", sort_default))
+    view = request.query_params.get("view", request.cookies.get("view", view_default))
+
     return size, sort, view
 
 
@@ -225,13 +229,18 @@ def set_response_cookie(response: Response, context: dict):
         "q": context.get("q"),
     }
 
-    # 365 days
-    DAYS_365 = 60 * 60 * 24 * 365 * 1
+    # # 365 days
+    # DAYS_365 = 60 * 60 * 24 * 365 * 1
 
-    response.set_cookie(key="search", value=json.dumps(search_cookie_value), httponly=True, max_age=DAYS_365, expires=DAYS_365)
-    response.set_cookie(key="size", value=size, httponly=True, max_age=DAYS_365, expires=DAYS_365)
-    response.set_cookie(key="sort", value=sort, httponly=True, max_age=DAYS_365, expires=DAYS_365)
-    response.set_cookie(key="view", value=view, httponly=True, max_age=DAYS_365, expires=DAYS_365)
+    # response.set_cookie(key="search", value=json.dumps(search_cookie_value), httponly=True, max_age=DAYS_365, expires=DAYS_365)
+    # response.set_cookie(key="size", value=size, httponly=True, max_age=DAYS_365, expires=DAYS_365)
+    # response.set_cookie(key="sort", value=sort, httponly=True, max_age=DAYS_365, expires=DAYS_365)
+    # response.set_cookie(key="view", value=view, httponly=True, max_age=DAYS_365, expires=DAYS_365)
+
+    response.set_cookie(key="search", value=json.dumps(search_cookie_value), httponly=True)
+    response.set_cookie(key="size", value=size, httponly=True)
+    response.set_cookie(key="sort", value=sort, httponly=True)
+    response.set_cookie(key="view", value=view, httponly=True)
 
     return response
 

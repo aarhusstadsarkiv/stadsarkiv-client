@@ -3,6 +3,7 @@ import { Flash } from '/static/js/flash.js';
 import { asyncLogError } from '/static/js/error.js';
 import { truncateText } from '/static/js/truncate-text.js';
 import { config } from '/static/js/config.js';
+import jsCookie from '/static/js/js-cookie.js';
 
 const containerLeft = document.querySelector('.container-left');
 const containerMainFacets = document.querySelector('.container-main-facets');
@@ -20,7 +21,7 @@ function saveState(containerSelector, storageKey) {
         }
     });
 
-    localStorage.setItem(storageKey, JSON.stringify(openFacets));
+    jsCookie.set(storageKey, JSON.stringify(openFacets));
 }
 
 /**
@@ -45,14 +46,19 @@ function saveTree() {
  * Utility function to expand tree from saved state
  */
 function expandTreeFromState(containerSelector, storageKey) {
-    const openFacets = JSON.parse(localStorage.getItem(storageKey));
-    if (openFacets && openFacets.length) {
-        const detailElements = document.querySelectorAll(`${containerSelector} .facets details`);
-        detailElements.forEach(detailElement => {
-            if (openFacets.includes(detailElement.getAttribute('data-id'))) {
-                detailElement.open = true;
-            }
-        });
+
+    const cookieStorageKey = jsCookie.get(storageKey);
+    if (cookieStorageKey) {
+
+        const openFacets = JSON.parse(jsCookie.get(storageKey));
+        if (openFacets && openFacets.length) {
+            const detailElements = document.querySelectorAll(`${containerSelector} .facets details`);
+            detailElements.forEach(detailElement => {
+                if (openFacets.includes(detailElement.getAttribute('data-id'))) {
+                    detailElement.open = true;
+                }
+            });
+        }
     }
 }
 
@@ -170,7 +176,7 @@ function searchEvents() {
     try {
 
         const facetsToogle = document.getElementById('facets-toggle');
-        let hideFacetsState = localStorage.getItem('hideFacets') || 'true';
+        let hideFacetsState = jsCookie.get('hideFacets') || 'true';
 
         const hideFacetsElement = () => {
             containerMainFacets.style.display = 'none';
@@ -197,11 +203,11 @@ function searchEvents() {
             if (containerMainFacets.style.display === 'none') {
                 hideFacetsState = 'false';
                 showFacetsElements();
-                localStorage.setItem('hideFacets', 'false');
+                jsCookie.set('hideFacets', 'false');
             } else {
                 hideFacetsState = 'true';
                 hideFacetsElement();
-                localStorage.setItem('hideFacets', 'true');
+                jsCookie.set('hideFacets', 'true');
             }
         });
 
@@ -299,7 +305,7 @@ function searchEvents() {
         console.log(error)
         // unset local storage if it fails. 
         // The tree may be updated and the saved state may be invalid
-        localStorage.removeItem('treeState');
+        jsCookie.remove('treeState');
         asyncLogError(error);
 
     }
