@@ -58,3 +58,20 @@
     font-weight: bold;
     margin-bottom: 5px;
 }
+
+@media (max-width: 768px) {
+    .memories-all-results {
+        grid-template-columns: 1fr;
+    }
+
+    .memories-result {
+        border-radius: unset;
+        box-shadow: unset;
+    }
+
+    .memories-result-content {
+        padding: unset;
+        display: flex;
+        align-items: center;
+    }
+}

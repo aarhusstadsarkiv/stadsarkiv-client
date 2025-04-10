@@ -384,8 +384,7 @@ a:disabled {
 }
 
 .search-result-gallery,
-.stories-result,
-.memories-result {
+.stories-result {
 
     border-radius: 8px;
     color: var(--text-colors-text-primary);
@@ -407,23 +406,20 @@ a:disabled {
 .stories-first {
     background-color: var(--background-bg-primary);
 
-    align-items: unset;
-    /* padding: unset; */
 }
 
 .stories-first-content {
     display: flex;
     flex-direction: column;
-    padding: 16px;
     justify-content: center;
 }
 
-
-
+.page-home .stories-first-content {
+    padding: 16px;
+}
 
 .stories-first-content>p {
     max-width: 80%;
-
 }
 
 .stories-first-portrait img {
@@ -629,6 +625,14 @@ a:disabled {
 @media (max-width: 768px) {
     .stories-first-content>p {
         max-width: 100%;
+    }
+
+    .page-home .stories-first-content {
+        padding: unset;
+    }
+
+    .memories-result {
+        padding: unset;
     }
 }
 

@@ -187,3 +187,11 @@ body>footer {
     margin-top: 25px;
 }
 
+.search-thumbnail img {
+    min-width: 240px;
+    height: 240px;
+    width: 240px;
+    /* max-height: 120px; */
+    object-fit: contain;
+}
+
