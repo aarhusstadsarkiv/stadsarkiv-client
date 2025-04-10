@@ -36,7 +36,7 @@
 
 .memories-result-content {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 15px;
     padding: 0.7em;
 }
@@ -71,7 +71,5 @@
 
     .memories-result-content {
         padding: unset;
-        display: flex;
-        align-items: center;
     }
 }
