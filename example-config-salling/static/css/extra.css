@@ -100,11 +100,11 @@ h6 {
     --text-size-sm: 0.8125rem;
     --text-size-md: 1rem;
     --text-size-lg: 1.25rem;
-    --text-size-xl: 1.5625rem;
-    --text-size-2xl: 2rem;
-    --text-size-3xl: 2.5rem;
-    --text-size-4xl: 3.1875rem;
-    --text-size-5xl: 4rem;
+    --text-size-xl: 1.5rem;
+    --text-size-2xl: 1.75rem;
+    --text-size-3xl: 2rem;
+    --text-size-4xl: 2.25rem;
+    --text-size-5xl: 2.75rem;
 
     --line-height-xs: 20px;
     --line-height-sm: 20px;
@@ -411,6 +411,15 @@ a:disabled {
     padding: unset;
 }
 
+.stories-first-content {
+    padding: 16px;
+}
+
+.stories-first-portrait img {
+    height: 100%;
+    border-radius: 5px;
+}
+
 #submit {
 
     height: 44px;
@@ -609,7 +618,9 @@ a:disabled {
 
 /* cancelling styles */
 
-
+.memories-result {
+    padding: 16px;
+}
 
 /* when max-width is 768px */
 @media (max-width: 768px) {
