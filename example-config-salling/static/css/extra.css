@@ -408,7 +408,7 @@ a:disabled {
     background-color: var(--background-bg-primary);
 
     align-items: unset;
-    padding: unset;
+    /* padding: unset; */
 }
 
 .stories-first-content {
