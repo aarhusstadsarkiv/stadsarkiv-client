@@ -412,7 +412,18 @@ a:disabled {
 }
 
 .stories-first-content {
+    display: flex;
+    flex-direction: column;
     padding: 16px;
+    justify-content: center;
+}
+
+
+
+
+.stories-first-content>p {
+    max-width: 80%;
+
 }
 
 .stories-first-portrait img {
@@ -571,15 +582,7 @@ a:disabled {
 
 
 
-.stories-first-content {
-    display: flex;
-    flex-direction: column;
-}
 
-.stories-first-content>p {
-    max-width: 80%;
-
-}
 
 .stories-first-content>p>a {
     display: flex;
