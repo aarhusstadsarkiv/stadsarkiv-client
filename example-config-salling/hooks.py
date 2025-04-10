@@ -16,6 +16,14 @@ class Hooks(HooksSpec):
         """
         context["meta_title"] = context["meta_title"] + " | SallingArkivet"
 
+        try:
+            search_result = context["search_result"]["result"]
+            for result in search_result:
+                if result.get("thumbnail") and result.get("portrait"):
+                    result["thumbnail"] = result["portrait"]
+        except KeyError:
+            pass
+
         return context
 
     async def before_get_search(self, query_params: list) -> list:
