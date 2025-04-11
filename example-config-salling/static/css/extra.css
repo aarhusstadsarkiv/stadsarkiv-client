@@ -643,3 +643,15 @@ a:disabled {
     letter-spacing: var(--letter-spacing-2xl);
     font-style: normal;
 }
+
+.memory {
+    align-self: unset;
+}
+
+.memory-first p:first-child {
+    font-weight: unset;
+}
+
+.story-section {
+    align-items: center;
+}
