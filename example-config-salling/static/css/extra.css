@@ -654,4 +654,5 @@ a:disabled {
 
 .story-section {
     align-items: center;
+    align-items: flex-start;
 }
