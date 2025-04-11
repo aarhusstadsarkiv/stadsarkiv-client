@@ -9,8 +9,9 @@
 .memory-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    row-gap: 2em;
-    column-gap: 2em; 
+
+    gap: 2em; 
+    margin-top: 20px;
 }
 
 .memory-first {
@@ -97,6 +98,8 @@ a.memory-link {
     flex-grow: 1;
 }
 
+/*
 .memory-date {
     font-size: 0.9em;
 }
+*/

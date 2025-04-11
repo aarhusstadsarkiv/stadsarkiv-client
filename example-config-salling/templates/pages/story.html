@@ -29,8 +29,8 @@
     <div class="story-section">
         <div class="story-section-text">
         {% if section.date %}
-        <h4>{{ section.date }} </h1>
-        <h4>{{ section.heading }} </h3>
+        <h4 class="section-title">{{ section.date }} </h4>
+        <h4 class="section-title">{{ section.heading }} </h4>
         {% for paragraph in section.paragraphs %}
         <p>{{ paragraph }}</p>
         {% endfor %}
