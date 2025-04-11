@@ -43,11 +43,11 @@ def get_unresolved_urls():
         return unresolved_errors
 
 
-def mark_url_resolved(error_id):
+def mark_url_resolved(error_log_id):
     """Mark the URL as resolved in the database."""
 
     with transaction_scope_sync() as connection:
-        connection.execute("UPDATE error_log SET resolved = 1 WHERE id = ?", (error_id,))
+        connection.execute("UPDATE error_log SET resolved = 1 WHERE error_log_id = ?", (error_log_id,))
         connection.commit()
 
 
@@ -85,7 +85,7 @@ print("-" * 50)
 # Iterate over each row as a dictionary-like object
 for row in unresolved_errors:
 
-    error_id = row["id"]
+    error_log_id = row["error_log_id"]
     url = row["url"]
     message = row["message"]
     error_code = row["error_code"]
@@ -98,7 +98,7 @@ for row in unresolved_errors:
         resolution = "Ignored"
 
     elif resolve_error_by_message(message):
-        mark_url_resolved(error_id)
+        mark_url_resolved(error_log_id)
         resolution = "Resolved"
 
     elif url:
@@ -113,14 +113,14 @@ for row in unresolved_errors:
         # if http_status_code >= 400 and http_status_code < 500:
         resolved_statuses = [200, 301, 302, 400, 404, 422]
         if http_status_code in resolved_statuses:
-            mark_url_resolved(error_id)
+            mark_url_resolved(error_log_id)
             resolution = "Resolved"
 
     else:
         resolution = "Ignored. No URL"
 
     # Print information for the current URL, with URL on one line
-    print(f"ID: {error_id}")
+    print(f"ID: {error_log_id}")
     print(f"URL: {url}")
     print(f"Error Message: {message}")
     print(f"Error Code: {error_code}")
