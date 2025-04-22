@@ -29,13 +29,13 @@
         "Butikken lå på Søndergade 34. Efter 10 år flyttede butikken over på den anden side af gaden til Søndergade 27. Ferdinand Salling omsatte for omkring 4.202 kr. den første måned i sin forretning. I dag omsætter Salling og Dansk Supermarked for flere milliarder om året."
       ],
       "date": "",
-      "recordIds": ["000511948"],
+      "recordIds": ["000144340"],
       "path": "salling-gennem-tiden",
       "urls": [
-        "https://acastorage.blob.core.windows.net/sam-access/000511948/000511948_m.jpg"
+        "/static/assets/historien/01 Salling gennem tiden.jpg"
       ],
       "summary": [
-        "Vinduesudstilling i Salling, hvor personer i snevejr er i færd med at fastgøre en reklame på ydersiden af vinduerne. Søndergade 27, 2005."
+        "Billede af Ferdinand Sallings første forretninger. Her ses Søndergade 34 og dens bygningsfacade med personer foran butikken."
       ]
     },
     {
@@ -45,9 +45,9 @@
       "paragraphs": [
         "Da Ferdinand Salling åbnede sin butik i 1906, lå der en nytænkning bag. Som navnet sagde, skulle man betale kontakt og kunne ikke købe kredit, hvilket ellers var normalt. I butikken arbejdede udover Ferdinand Salling også en kommis og en dame, der stod ved kassen. Der blev solgt udsalgsvarer i butikken, hvilket vil sige, at man købte et parti varer op for at sælge det med det samme frem for at have et fast sortiment. Butikken blev derfor ikke afhængig af et stort varelager."
       ],
-      "recordIds": ["000144340"],
+      "recordIds": [],
       "urls": [
-        "https://acastorage.blob.core.windows.net/sam-access/000144340/000144340_m.jpg"
+
       ],
       "summary": [
         "Billede af Ferdinand Sallings første forretninger. Her ses Søndergade 34 og dens bygningsfacade med personer foran butikken."
@@ -120,7 +120,7 @@
       "date": "",
       "recordIds": ["000144033"],
       "path": "ferdinand-salling",
-      "urls": ["https://storage.googleapis.com/openaws-access/000144033_m.jpg"],
+      "urls": ["/static/assets/historien/02 Ferdinand Salling.jpg"],
       "summary": ["Portrætfoto af Ferdinand Salling som soldat."]
     },
     {
@@ -130,8 +130,8 @@
       "paragraphs": [
         "Ferdinand Salling var i militæret i 1903-1904. Han tjente ved den 20. Bataljon og var efterfølgende med i deres soldaterforening. Efter sin tid i militæret stod Ferdinand Salling i lære og blev uddannet inden for manufakturhandel."
       ],
-      "recordIds": ["000144033"],
-      "urls": ["https://storage.googleapis.com/openaws-access/000144033_m.jpg"],
+      "recordIds": [],
+      "urls": [],
       "summary": ["Portrætfoto af Ferdinand Salling som soldat."]
     },
     {
@@ -186,9 +186,9 @@
         "De to gadeforeninger, Søndergade-foreningen og Ryesgade-foreningen, fusionerede ved samme lejlighed og blev til den store forening, der kendes i dag: \"Gadeforeningen Strøget*Aarhus\". Strøget i Aarhus er et af de steder i Danmark, hvor der dagligt færdes flest mennesker. Gennemsnitligt lige under 50.000 mennesker går gennem Strøget i Aarhus hver dag hele året rundt."
       ],
       "date": "",
-      "recordIds": ["000151537"],
+      "recordIds": ["000139276"],
       "path": "strøget-i-aarhus",
-      "urls": ["https://storage.googleapis.com/openaws-access/000151537_m.jpg"],
+      "urls": ["/static/assets/historien/11 Strøget i Aarhus.jpg"],
       "summary": [
         "Ryesgade med julebelysning og mange mennesker pga. julehandelen."
       ]
@@ -231,7 +231,7 @@
       "date": "",
       "recordIds": ["000144327"],
       "path": "herman-salling",
-      "urls": ["https://storage.googleapis.com/openaws-access/000144327_m.jpg"],
+      "urls": ["/static/assets/historien/03 Herman Salling.jpg"],
       "summary": ["Portrætfoto af Herman Salling."]
     },
     {
@@ -312,13 +312,13 @@
         "Se her fire vinduesbilleder gennem tiden"
       ],
       "date": "",
-      "recordIds": ["000144272"],
+      "recordIds": ["000511996"],
       "path": "vinduesudstillinger",
       "urls": [
-        "https://acastorage.blob.core.windows.net/sam-access/000144272/000144272_m.jpg"
+        "https://acastorage.blob.core.windows.net/sam-access/000511996/000511996_m.jpg"
       ],
       "summary": [
-        "Indgang til Salling med vinduesudstillinger og efterårsudsalg."
+        "Salling, Vinduesudstilling med efterårstøj til unge"
       ]
     },
     {
@@ -394,8 +394,8 @@
       "paragraphs": [
         "En vigtig del af stemningen i Sallings Tagrestaurant blev skabt af pianist Knud Rasmussen. Han spillede i restauranten hver eftermiddag. Det var også muligt at hyre ham til et arrangement der skulle holdes i restauranten."
       ],
-      "recordIds": ["000144145"],
-      "urls": ["https://storage.googleapis.com/openaws-access/000144145_m.jpg"],
+      "recordIds": [],
+      "urls": [],
       "summary": [
         "Interiørbillede fra restaurant i Salling med gæster og pianist Knud Rasmussen."
       ]
@@ -445,10 +445,10 @@
         "Ved butikkens start var der kun to ansatte, og i dag er der flere hundrede. Det er de ansatte, som kunderne interagerer med. De er derfor en af butikkens vigtigste aktiver og bliver behandlet derefter. Nogle ansatte er kun i Salling i en kort periode, men mange har haft 20, 30 og 40-års jubilæum i butikken."
       ],
       "date": "",
-      "recordIds": ["000141037"],
+      "recordIds": ["000141117"],
       "path": "ansatte-i-salling",
-      "urls": ["https://storage.googleapis.com/openaws-access/000141037_m.jpg"],
-      "summary": [""]
+      "urls": ["/static/assets/historien/05 Ansatte i Salling.jpg"],
+      "summary": ["Mørkeblå dragt om sommer og grå om vinteren. Mænd med slips"]
     },
     {
       "isMain": false,
@@ -506,7 +506,7 @@
       "date": "",
       "recordIds": ["000144236"],
       "path": "sallings-50-års-jubilæum",
-      "urls": ["https://storage.googleapis.com/openaws-access/000144236_m.jpg"],
+      "urls": ["/static/assets/historien/04 Sallings 50-års jubilæum.jpg"],
       "summary": [
         "Sallings facade set fra hjørnet af Søndergade og Østergade. Facaden er pyntet med blomster i anledningen af Sallings 50 års jubilæum."
       ]
@@ -530,8 +530,8 @@
       "paragraphs": [
         "Natten inden jubilæet var butiksfacaden blevet pyntet med 200.000 friske blomster af blomsterhandler Jørgen Abel på Store Torv. Inge – der arbejdede hos Abel Blomster – har fortalt, at blomsterne blev sat på en ramme af hønsenet i dagene forinden. Arbejdet foregik hos GASA på Finlandsvej. Folk valfartede til for at se den smukke facade, som var belyst om natten."
       ],
-      "recordIds": ["000144236"],
-      "urls": ["https://storage.googleapis.com/openaws-access/000144236_m.jpg"],
+      "recordIds": [],
+      "urls": [],
       "summary": [
         "Sallings facade set fra hjørnet af Søndergade og Østergade. Facaden er pyntet med blomster i anledningen af Sallings 50 års jubilæum."
       ]
@@ -572,7 +572,7 @@
       "recordIds": ["000481954"],
       "path": "personalet-på-banen",
       "urls": [
-        "https://acastorage.blob.core.windows.net/sam-access/000481954/000481954_m.jpg"
+        "/static/assets/historien/09 Salling på banen.jpg"
       ],
       "summary": [
         "På billedet hilser Herman Salling og Magasins direktør. 3.000 tilskuere ser på og entre-indtægten på i alt 2.000 kr. går til arrangementer for kronisk syge. "
@@ -583,11 +583,13 @@
       "date": "1957",
       "heading": "Reportage fra fodboldkamp fra 1957",
       "paragraphs": [
-        "I 1957 spillede Salling mod Magasin. Kampen blev beskrevet grundigt i Sallings personaleblad. Her beskriver artiklen ”Operation Ned med nakken”, hvordan kampen forløb. Kampen sluttede med en sejr til Salling på 7-3. Efter kampen drog spillerne til Frederikshøj Kro, hvor der ventede velfortjente smørrebrød."
+      "De to stormagasiner Salling og Magasin mødes til en venskabskamp. Til venstre ses direktør og prokurist Muus fra Magasin. I midten kampens dommer, direktør Robert Rasmussen fra Harlang og Toksvig. Fra Sallings hold ses afdelingschef C. Sandvej og yderst til højre direktør Herman Salling. Salling vandt kampen 5-3."
       ],
-      "recordIds": [],
-      "urls": [],
-      "summary": []
+      "recordIds": ["000482252"],
+      "urls": [
+        "https://acastorage.blob.core.windows.net/sam-access/000482252/000482252_m.jpg"
+      ],
+      "summary": ["De to stormagasiner Salling og Magasin mødes til en venskabskamp."]
     },
     {
       "isMain": false,
@@ -596,9 +598,8 @@
       "paragraphs": [
         "Fodboldkampene mellem Salling og Magasin er med tiden blevet en tradition, og de bliver stadig spillet. Kampene blev spillet af afdelingscheferne, og i mange år var Herman Salling også selv på holdet."
       ],
-      "recordIds": ["000481954"],
+      "recordIds": [],
       "urls": [
-        "https://acastorage.blob.core.windows.net/sam-access/000481954/000481954_m.jpg"
       ],
       "summary": [
         "På billedet hilser Herman Salling og Magasins direktør. 3.000 tilskuere ser på og entre-indtægten på i alt 2.000 kr. går til arrangementer for kronisk syge. "
@@ -614,10 +615,10 @@
         "For mange børn har vinduesudstillingerne i Salling været noget helt specielt. Her kunne man se bevægelige nisser i et fint julemotiv. I butikken kunne man se alt det legetøj, ethvert barn kunne ønske sig. Børn kunne også møde julemanden i Salling – og lige præcis dette møde indgår i mange aarhusianeres erindring om den rigtige jul."
       ],
       "date": "",
-      "recordIds": ["000139302"],
+      "recordIds": ["000512332"],
       "path": "jul-i-salling",
-      "urls": ["https://storage.googleapis.com/openaws-access/000139302_m.jpg"],
-      "summary": ["Børn ser på juleudstilling i Salling"]
+      "urls": ["/static/assets/historien/07 Jul i Salling.jpg"],
+      "summary": ["Vinduesudstilling med nisser og rensdyr ved Børnenes Julekalender."]
     },
     {
       "isMain": false,
@@ -652,51 +653,6 @@
       "recordIds": ["000140254"],
       "urls": ["https://storage.googleapis.com/openaws-access/000140254_m.jpg"],
       "summary": [""]
-    },
-    {
-      "isMain": false,
-      "date": "Ukendt år",
-      "heading": "Julepynt",
-      "paragraphs": [
-        "I Sallings arkiv findes flere eksempler på Salling-julepynt. Her ser vi Salling-nissen."
-      ],
-      "recordIds": [],
-      "urls": [],
-      "summary": []
-    },
-    {
-      "isMain": false,
-      "date": "1958",
-      "heading": "Sallings julekatalog",
-      "paragraphs": [
-        "En vigtig del af julen i Salling er julekataloget. Gennem mere end et halv århundrede har man her kunnet se det nyeste nye og få ideer til årets ønskeseddel. Julekataloget har ændret sig meget med tiden og giver et godt indblik i forskellige tiders drømme, moder og økonomi.",
-        "Julekatalogerne skal bestilles til læsning på Aarhus Stadsarkivs læsesal, og vi giver her til venstre bud på et interessant eksemplar, der kan bestilles."
-      ],
-      "recordIds": [],
-      "urls": [],
-      "summary": []
-    },
-    {
-      "isMain": false,
-      "date": "1960'erne",
-      "heading": "Vinduesudstillinger",
-      "paragraphs": [
-        "”Vi skal ned og se Sallings vinduer” – Sallings julevinduer har altid trukket mange mennesker til. Her har børnene i årtier trykket næserne flade mod ruden for at se bevægelige nisser i et smukt julelandskab. I andre dele kan børn og voksne se alle de ting, de kan ønske sig til jul."
-      ],
-      "recordIds": [],
-      "urls": [],
-      "summary": []
-    },
-    {
-      "isMain": false,
-      "date": "1972",
-      "heading": "Sallings julemand",
-      "paragraphs": [
-        "I nogle familier har det været en fast tradition at skulle ind og møde julemanden i Salling. Sådan var det for Mette og hendes mor, som besøgte julemanden hvert år."
-      ],
-      "recordIds": [],
-      "urls": [],
-      "summary": []
     }
   ],
   [
@@ -709,11 +665,11 @@
         "”Desuden er der sørget for alt til den lille nyfødte, og sidste nyheder inden for spædbørneplejen, saasom elektrisk varmeflaske, rigtig baby-mad paa daaser – og meget mere.”"
       ],
       "date": "",
-      "recordIds": ["000144217"],
+      "recordIds": ["000511854"],
       "path": "salgsfremstød-for-ny-afdeling",
-      "urls": ["https://storage.googleapis.com/openaws-access/000144217_m.jpg"],
+      "urls": ["/static/assets/historien/08 Sallings salgsfremstød.jpg"],
       "summary": [
-        "Bord med lysestage og nipsting udstillet i vindue hos Salling."
+        "Salling Italiensk udstilling forår 1968."
       ]
     },
     {
@@ -773,13 +729,13 @@
         "Herman Salling var i løbet af 1950’erne på flere udlandsrejser, hvor han søgte inspiration til familiens varehus, Salling. Det var her, han fik inspirationen til at åbne føtex i 1960. Føtex blev drevet af Jysk Supermarked A/S, som Salling havde oprettet og var direktør for. Salling trak sig som direktør for Dansk Supermarked i 1999, men fortsatte med at være bestyrelsesformand frem til sin død i 2006."
       ],
       "date": "",
-      "recordIds": ["000511711"],
+      "recordIds": ["000144093"],
       "path": "dansk-supermarked-gennem-tiden",
       "urls": [
-        "https://acastorage.blob.core.windows.net/sam-access/000511711/000511711_m.jpg"
+        "/static/assets/historien/10 Salling Group gennem tiden.jpg"
       ],
       "summary": [
-        "Salling vinduesudstilling med damemode. Ni mannequiner med kjoler i bløde stoffer og cottoncoats. Især i brunlige og lyse nuancer. Dekorationen er markering af Sallings 70-års jubilæum med et gammel billede af Fredinand Sallings butik. På skilte står: \"70 år\"."
+        "Herman Salling foran skilt i anledningen af Føtex 25-års jubilæum."
       ]
     },
     {
