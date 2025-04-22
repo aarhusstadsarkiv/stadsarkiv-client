@@ -21,7 +21,6 @@ if "CONFIG_DIR" not in os.environ:
 
 database_url = settings["sqlite3"]["errors"]
 database_connection = DatabaseConnection(database_url)
-transaction_scope_sync = database_connection.transaction_scope_sync
 
 should_not_resolve = [
     "Representations but no record_type",
@@ -37,7 +36,7 @@ should_resolve = [
 
 def get_unresolved_urls():
 
-    with transaction_scope_sync() as connection:
+    with database_connection.transaction_scope_sync() as connection:
         cursor = connection.execute("SELECT * FROM error_log WHERE resolved = 0")
         unresolved_errors = cursor.fetchall()
         return unresolved_errors
@@ -46,7 +45,7 @@ def get_unresolved_urls():
 def mark_url_resolved(error_log_id):
     """Mark the URL as resolved in the database."""
 
-    with transaction_scope_sync() as connection:
+    with database_connection.transaction_scope_sync() as connection:
         connection.execute("UPDATE error_log SET resolved = 1 WHERE error_log_id = ?", (error_log_id,))
         connection.commit()
 
