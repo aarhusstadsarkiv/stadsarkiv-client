@@ -31,7 +31,7 @@ bookmarkElems.forEach((elem) => {
             }
         } catch (error) {
             Flash.setMessage(config.jsExceptionMessage, 'error');
-            await asyncLogError(e);
+            asyncLogError(e);
             console.error(e);
         } finally {
             spinner.classList.add('hidden');

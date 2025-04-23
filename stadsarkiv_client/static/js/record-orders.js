@@ -57,7 +57,7 @@ if (orderElem) {
 
         } catch (e) {
             Flash.setMessage(config.jsExceptionMessage, 'error');
-            await asyncLogError(e);
+            asyncLogError(e);
             console.error(e);
         } finally {
             spinner.classList.toggle('hidden');

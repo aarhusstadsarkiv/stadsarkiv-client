@@ -55,7 +55,7 @@ if (bookmarkAddElem) {
             }
         } catch (e) {
             Flash.setMessage(config.jsExceptionMessage, 'error');
-            await asyncLogError(e);
+            asyncLogError(e);
             console.error(e);
         } finally {
             initialize();

@@ -14,10 +14,10 @@ images.forEach((img) => {
         // Set current url 
         error.error_url = window.location.href;
         error.error_code = 404;
-        error.error_type = "Missing Image Error";
+        error.error_type = "MissingImageError";
 
         console.log(error);
-        await asyncLogError(error);
+        asyncLogError(error);
 
     };
 });
