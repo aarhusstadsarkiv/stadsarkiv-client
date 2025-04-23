@@ -3,7 +3,7 @@ Define routes for the application.
 """
 
 from starlette.routing import Route, Mount
-from starlette.responses import PlainTextResponse
+from starlette.responses import PlainTextResponse, RedirectResponse
 from starlette.requests import Request
 from stadsarkiv_client.endpoints import (
     endpoints_admin,
@@ -68,10 +68,21 @@ Disallow: /
     return PlainTextResponse(content)
 
 
+async def favicon(request: Request):
+    """
+    /favicon.ico endpoint
+    Redirects to /static/assets/favicon.ico?v={version}
+    """
+    version = settings["version"]
+    redirect_url = f"/static/assets/favicon.ico?v={version}"
+    return RedirectResponse(redirect_url)
+
+
 # Add basic routes
 routes = [
     Mount("/static", MultiStaticFiles(directories=_get_static_dirs()), name="static"),
     Route("/robots.txt", robots_txt),
+    Route("/favicon.ico", favicon),
     Route("/admin/users", endpoint=endpoints_admin.admin_users_get, name="admin_users_get"),
     Route("/admin/users/{uuid}/update", endpoint=endpoints_admin.admin_users_get_single, name="admin_users_get_single"),
     Route("/admin/users/{uuid}/permissions", endpoint=endpoints_admin.admin_users_patch, name="admin_users_patch", methods=["POST"]),
