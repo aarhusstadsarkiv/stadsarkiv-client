@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% import "macros/common_macros.html" as common_macros %}
+
+{% block content %}
+
+<h1>Test</h1>
+
+<script type="module">
+
+    import { asyncLogError } from "/static/js/error.js";
+    
+    try {
+        throw new Error("This is a test error message");
+    } catch (error) {
+        console.log(error)
+        // Log the error using asyncLogError
+        asyncLogError(error);
+    }
+
+    /*
+    let errorTest = new Error("This is a test error message");
+    
+    // Get current url as error url
+    let currentUrl = window.location.href;
+    errorTest.error_url = currentUrl;
+    asyncLogError(errorTest);
+    */
+
+</script>
+
+{% endblock content %}
