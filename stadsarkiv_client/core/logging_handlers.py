@@ -26,6 +26,8 @@ class JsonFormatter(logging.Formatter):
             "name": record.name,
             "level": record.levelname,
             "message": record.getMessage(),
+            "error_code": 500,
+            "error_type": "Server Error",
         }
 
         # If exception information is present, add it to the log record
