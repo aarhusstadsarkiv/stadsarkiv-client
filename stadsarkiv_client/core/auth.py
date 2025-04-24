@@ -13,7 +13,7 @@ def _get_redirect_url(request: Request):
 
 def _log_401_error(request: Request, message: str):
     extra = {
-        "error_url": request.url.path,
+        "error_url": str(request.url),
         "error_type": "Unauthorized",
         "error_code": 401,
     }
@@ -22,7 +22,7 @@ def _log_401_error(request: Request, message: str):
 
 def _log_403_error(request: Request, message: str):
     extra = {
-        "error_url": request.url.path,
+        "error_url": str(request.url),
         "error_code": 403,
         "error_type": "Forbidden",
     }
