@@ -62,8 +62,11 @@ def parse_line(line: str):
         level = log_data.get("level")
         error_message = log_data.get("message")
         error_code = log_data.get("error_code", 0)
-        request_url = log_data.get("request_url", "")
         exception = log_data.get("exception", "")
+        request_url = log_data.get("request_url", "")
+
+        if not request_url:
+            request_url = log_data.get("error_url", "")
 
         # Check if combination exists
         cursor.execute("SELECT 1 FROM error_log WHERE url = ? AND message = ?", (request_url, error_message))

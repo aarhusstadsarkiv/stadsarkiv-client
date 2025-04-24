@@ -105,7 +105,11 @@ for row in unresolved_errors:
             http_status_code = check_url(url)
             current_status_code = f"{http_status_code}"
         except Exception as e:
-            print(e)
+            print(f"Error checking URL {url}: {e}")
+            print("Resolving error due to exception")
+            print("-" * 50)
+            mark_url_resolved(error_log_id)
+            resolution = "Resolved"
             continue
 
         # Check if the error is resolvable
@@ -116,7 +120,10 @@ for row in unresolved_errors:
             resolution = "Resolved"
 
     else:
-        resolution = "Ignored. No URL"
+        # Resolve if not valid URL
+        print(message)
+        resolution = "Resolved because of not valid URL"
+        mark_url_resolved(error_log_id)
 
     # Print information for the current URL, with URL on one line
     print(f"ID: {error_log_id}")
