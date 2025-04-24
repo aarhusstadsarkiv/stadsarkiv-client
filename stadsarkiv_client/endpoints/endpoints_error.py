@@ -24,7 +24,7 @@ async def error_log_post(request: Request):
             "error_code": data.get("error_code", 500),
             "error_type": data.get("error_type", "UnknownError"),
             "error_url": data.get("error_url", str(request.url.path)),
-            "exception": data.get("exception", "")
+            "exception": data.get("exception", ""),
         }
 
         log.error(data.get("message"), extra=extra)
@@ -32,12 +32,7 @@ async def error_log_post(request: Request):
 
     except Exception as e:
 
-        extra = {
-            "error_code": 500,
-            "error_type": "UnknownError",
-            "error_url": str(request.url.path),
-            "exception": str(e)
-        }
+        extra = {"error_code": 500, "error_type": "UnknownError", "error_url": str(request.url.path), "exception": str(e)}
 
         log.error("Failed to parse error log", extra=extra)
         return JSONResponse({"status": "received"}, status_code=200)
