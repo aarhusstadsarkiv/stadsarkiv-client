@@ -38,7 +38,7 @@ class JsonFormatter(logging.Formatter):
         extra_fields = {
             "error_code": "error_code",
             "error_type": "error_type",
-            "error_url": "request_url",
+            "error_url": "error_url",
             "exception": "exception",
             "message": "message",
         }
