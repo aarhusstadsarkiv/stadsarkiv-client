@@ -102,8 +102,6 @@ async def auth_exception_handler(request: Request, exc: AuthException):
     AuthException handler for 403 Forbidden.
     """
     flash.set_message(request, exc.message, type="error")
-    log.exception(f"403 Forbidden: {request.url}")
-    log.info(f"AuthException Redirect to: {exc.redirect_url}")
     return RedirectResponse(url=exc.redirect_url, status_code=302)
 
 
