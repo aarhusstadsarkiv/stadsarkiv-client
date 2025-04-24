@@ -26,7 +26,7 @@ should_not_resolve = [
     "Representations but no record_type",
     "JSON Error in Agenda Item",
     "Sejrs sedler should have a summary",
-    "Missing Image",
+    "Missing Image Error",
 ]
 
 should_resolve = [
