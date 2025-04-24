@@ -65,7 +65,7 @@ def get_rotating_json_file_handler(level: Any, file_name):
 def get_stream_handler(level: Any):
     ch = logging.StreamHandler()
     ch.setLevel(level)
-    ch.setFormatter(formatter)
+    ch.setFormatter(JsonFormatter())
     return ch
 
 
