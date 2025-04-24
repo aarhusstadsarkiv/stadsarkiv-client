@@ -33,7 +33,7 @@ async def not_found(request: Request, exc: HTTPException):
     }
 
     # No need to log full exception. It's a 404
-    log.warning(f"404 Not Found: {request.url}", extra={"error_code": 404, "error_url": request.url})
+    log.warning(f"404 Not Found: {request.url}", extra={"error_code": 404, "error_url": request.url.path})
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse(request, "errors/default.html", context, status_code=404)
 
