@@ -15,7 +15,6 @@ from stadsarkiv_client.core.auth import AuthException, AuthExceptionJSON
 from httpx import HTTPStatusError
 import traceback
 
-HTML_403_PAGE = "403"
 HTML_404_PAGE = "404"
 HTML_500_PAGE = "500"
 
@@ -33,7 +32,7 @@ async def not_found(request: Request, exc: HTTPException):
     }
 
     # No need to log full exception. It's a 404
-    log.warning(f"404 Not Found: {request.url}", extra={"error_code": 404, "error_url": request.url.path})
+    log.warning(f"404 Not Found: {request.url}", extra={"error_code": 404, "error_url": str(request.url)})
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse(request, "errors/default.html", context, status_code=404)
 
@@ -55,7 +54,7 @@ async def http_status_error(request: Request, exc: HTTPStatusError):
         "exc_traceback": exc_traceback,
     }
 
-    extra = {"error_code": exc.response.status_code, "error_url": request.url}
+    extra = {"error_code": exc.response.status_code, "error_url": str(request.url)}
     log.exception(f"{exc.response.status_code} Error: {request.url}", extra=extra)
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse(request, "errors/default.html", context, status_code=exc.response.status_code)
@@ -75,26 +74,10 @@ async def server_error(request: Request, exc: Exception):
         "exc_traceback": exc_traceback,
     }
 
-    extra = {"error_code": 500, "error_url": request.url}
+    extra = {"error_code": 500, "error_url": str(request.url)}
     log.exception(f"500 Error: {request.url}", extra=extra)
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse(request, "errors/default.html", context, status_code=500)
-
-
-async def forbidden_error(request: Request, exc: HTTPException):
-    """
-    403 Forbidden error.
-    """
-
-    context_values = {
-        "title": translate("Error. Forbidden Error"),
-        "status_code": 403,
-        "human_error": "Du har ikke adgang til denne side. Fejlen er blevet logget. ",
-    }
-
-    log.exception(f"403 Forbidden: {request.url}")
-    context = await get_context(request, context_values=context_values)
-    return templates.TemplateResponse(request, "errors/default.html", context, status_code=403)
 
 
 async def auth_exception_handler(request: Request, exc: AuthException):
@@ -113,7 +96,6 @@ async def auth_exception_json_handler(request: Request, exc: AuthExceptionJSON):
 
 
 exception_handlers = {
-    403: forbidden_error,
     404: not_found,
     500: server_error,
     HTTPStatusError: http_status_error,
