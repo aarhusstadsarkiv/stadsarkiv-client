@@ -14,7 +14,7 @@ images.forEach((img) => {
         // Set current url 
         error.error_url = window.location.href;
         error.error_code = 404;
-        error.error_type = "MissingImageError";
+        error.error_type = "Missing Image Error";
 
         console.log(error);
         asyncLogError(error);

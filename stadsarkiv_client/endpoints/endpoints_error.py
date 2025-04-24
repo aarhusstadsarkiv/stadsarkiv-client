@@ -22,7 +22,7 @@ async def error_log_post(request: Request):
 
         extra = {
             "error_code": data.get("error_code", 500),
-            "error_type": data.get("error_type", "UnknownError"),
+            "error_type": data.get("error_type", "Unknown Error"),
             "error_url": data.get("error_url", str(request.url.path)),
             "exception": data.get("exception", ""),
         }

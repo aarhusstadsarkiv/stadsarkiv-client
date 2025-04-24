@@ -13,7 +13,7 @@ function serializeError(error) {
     const error_url = window.location.href;
 
     // error_type, error_code, error_url are optional
-    data.error_type = error.error_type || "UnknownError";
+    data.error_type = error.error_type || "Javscript Error";
     data.error_code = error.error_code || 500;
     data.error_url = error.error_url || error_url;
 
