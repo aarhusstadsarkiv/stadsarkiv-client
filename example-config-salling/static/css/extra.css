@@ -201,7 +201,7 @@ h6 {
 
     --background-body: var(--background-bg-primary);
     --background-secondary: var(--background-bg-secondary);
-    --background-alt: var(--background-bg-tertiary);
+    /* --background-alt: var(--background-bg-tertiary); */
     --text-main: var(--text-colors-text-primary);
     --text-bright: #000;
     --text-muted: var(--text-colors-text-secondary);
