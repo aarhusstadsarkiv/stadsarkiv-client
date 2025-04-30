@@ -107,8 +107,6 @@ arrowRight.addEventListener("click", (event) => {
     setDisabled();
 });
 
-setDisabled();
-
 const pointerScroll = (elem) => {
     let clickedElement = null;
     let isDragging = false;
@@ -174,5 +172,7 @@ if (localStorage.getItem("left")) {
 
 // set visibility of .image-container to 'initial' after loading
 imageContainer.style.visibility = "initial";
+
+setDisabled();
 
 export { };
