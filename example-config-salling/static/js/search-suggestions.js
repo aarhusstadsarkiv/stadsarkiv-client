@@ -59,6 +59,8 @@ function scrollByImage(direction) {
             });
         }
 
+        console.log("Scrolling to image index:", targetIndex, "Left position:", left);
+
         localStorage.setItem("left", left);
     }
 }
@@ -87,6 +89,7 @@ function setDisabled() {
 }
 
 arrowLeft.addEventListener("click", () => {
+
     // Check if the left arrow is disabled
     if (arrowLeft.classList.contains("disabled")) {
         return
@@ -98,6 +101,7 @@ arrowLeft.addEventListener("click", () => {
 });
 
 arrowRight.addEventListener("click", (event) => {
+
     // Check if the right arrow is disabled
     if (arrowRight.classList.contains("disabled")) {
         return
@@ -115,6 +119,14 @@ if (localStorage.getItem("left")) {
         behavior: 'auto'
     });
 }
+
+let scrollTimeout;
+imageContainer.addEventListener("scroll", () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+        setDisabled();
+    }, 50);
+});
 
 // set visibility of .image-container to 'initial' after loading
 imageContainer.style.visibility = "initial";
