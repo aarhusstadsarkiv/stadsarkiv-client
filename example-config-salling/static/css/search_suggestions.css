@@ -3,7 +3,7 @@
     overflow-x: auto;
     gap: 10px;
     padding: 10px;
-    touch-action: none;
+    /* touch-action: none; */
     user-select: none;
     padding: 10px 0;
     visibility: hidden;
