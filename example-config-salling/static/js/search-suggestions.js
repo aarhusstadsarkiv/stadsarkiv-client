@@ -20,52 +20,18 @@ function getVisibleImageIndexes() {
 }
 
 function scrollByImage(direction) {
-    let visibleIndexes = getVisibleImageIndexes();
-    let targetIndex;
-    
-    // Determine which image to scroll to next
-    if (direction === "left") {
-        targetIndex = visibleIndexes[0] - 1; // Move to the leftmost previous image
-        if (targetIndex < 0) {
-            targetIndex = images.length - 1; // Loop back to the last image
-        }
-    } else {
-        // Scroll to the next image to the right
-        targetIndex = visibleIndexes[visibleIndexes.length - 1] + 1;
-        if (targetIndex >= images.length) {
-            targetIndex = 0; // Loop back to the first image
-        }
-    }
+    const visible = getVisibleImageIndexes();
+    let targetIndex =
+        direction === "left"
+            ? (visible[0] - 1 + images.length) % images.length
+            : (visible[visible.length - 1] + 1) % images.length;
 
-    let left = 0;
+    const target = images[targetIndex];
+    const left = target.offsetLeft - imageContainer.offsetLeft;   // ← fixed line
+    imageContainer.scrollTo({ left, behavior: "auto" });
 
-    // Ensure that the targetIndex is within valid bounds
-    if (targetIndex >= 0 && targetIndex < images.length) {
-        let target = images[targetIndex];
-
-        console.log(target)
-
-        if (direction === "left") {
-            left = target.offsetLeft - imageContainer.offsetLeft;
-            imageContainer.scrollTo({
-                left: left,
-                behavior: 'auto'
-            });
-        } else {
-            // left = target.offsetLeft - imageContainer.offsetLeft;
-
-            left = target.offsetLeft - imageContainer.offsetLeft + target.offsetWidth - imageContainer.clientWidth;
-            left = Math.max(0, left); 
-            imageContainer.scrollTo({
-                left: left,
-                behavior: 'auto'
-            });
-        }
-
-        console.log("Scrolling to image index:", targetIndex, "Left position:", left);
-
-        localStorage.setItem("left", left);
-    }
+    localStorage.setItem("left", left);
+    // setDisabled();
 }
 
 const arrowLeft = document.querySelector(".horizontal-slider .arrow-left-container");
