@@ -16,7 +16,9 @@
   - Bygnings- og facade billeder (https://www.aarhusarkivet.dk/search?organisations=107434&size=100&content_types=66&view=gallery&sort=date_from&direction=asc)
    - Søndergade 27 (https://www.aarhusarkivet.dk/search?organisations=107434&locations=85764&size=100&content_types=66&view=gallery&sort=date_from&direction=asc)
    - Søndergade 34 (https://www.aarhusarkivet.dk/search?organisations=107434&locations=85767&size=100&content_types=66&view=gallery&sort=date_from&direction=asc)
+   (1 resultat)
    - Ryesgade 11 / Rosenkrantzgade 31 (https://www.aarhusarkivet.dk/search?organisations=107434&locations=67511&size=100&content_types=61&view=gallery&sort=date_from&direction=asc)
+   (3 resultater)
    - Salling Rooftop (https://www.aarhusarkivet.dk/search?locations=157234)
    - Salling Roofgarden (https://www.aarhusarkivet.dk/search?locations=157235)
   - Luftfotos (https://www.aarhusarkivet.dk/search?organisations=107434&size=100&content_types=62&view=gallery&sort=date_from&direction=asc)
@@ -38,9 +40,13 @@
    - Herman Salling (https://www.aarhusarkivet.dk/search?collection=4&size=100&sort=date_from&view=gallery&direction=asc&q=Herman+Salling)
   - Modeopvisninger og fotomodeller
   - Salling Super (https://www.aarhusarkivet.dk/search?organisations=160327&size=100&content_types=61&view=gallery&sort=date_from&direction=asc)
+  (næsten alle resultater)
+
 - Dokumenter
 - Publikationer (https://www.aarhusarkivet.dk/search?organisations=160327&content_types=36&size=100&view=gallery&sort=date_from&direction=desc&direction=asc)
+(6 resultater)
  - Julekataloger (https://www.aarhusarkivet.dk/search?organisations=107434&events=123178&size=100&sort=date_from&view=gallery&direction=asc&content_types=36&)
+ (19 resultater - ingen af disse kan ses)
 - Avisudklip, artikler og annoncer
 - Illustrationer
 - Videomateriale
