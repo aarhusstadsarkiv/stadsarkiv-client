@@ -201,7 +201,7 @@ h6 {
 
     --background-body: var(--background-bg-primary);
     --background-secondary: var(--background-bg-secondary);
-    /* --background-alt: var(--background-bg-tertiary); */
+    --background-alt: var(--background-bg-tertiary);
     --text-main: var(--text-colors-text-primary);
     --text-bright: #000;
     --text-muted: var(--text-colors-text-secondary);
@@ -239,7 +239,7 @@ h6 {
     --search-result-background-hover: var(--background-secondary);
     --search-link-text: var(--text-main);
 
-    --background-disabled: var(--background-alt);
+    /* --background-disabled: var(--background-alt); */
     --text-disabled: var(--text-muted);
 
     /* * footer.css */
