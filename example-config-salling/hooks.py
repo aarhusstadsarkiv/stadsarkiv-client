@@ -31,8 +31,6 @@ class Hooks(HooksSpec):
         try:
             main_menu_top = context["main_menu_top"]
             main_menu_top = _alter_search_url(main_menu_top)
-            for item in main_menu_top:
-                log.debug(f"Menu item: {item}")
 
             search_result = context["search_result"]["result"]
             for result in search_result:
