@@ -171,7 +171,7 @@ class NormalizeFacets:
         # Ignore keys where filters have been generated from _transform_default_facets method
         # These has the type "default" in settings_facets
         ignore_keys = [key for key in self._facets.keys() if self._facets[key].get("type") == "default"]
-        ignore_keys.extend(["size", "start", "sort", "direction", "view"])
+        ignore_keys.extend(["size", "start", "sort", "direction", "view", "q"])
 
         for query_name, query_value in self._query_params_cleaned:
             # Ignore empty query values
