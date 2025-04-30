@@ -52,7 +52,10 @@ function scrollByImage(direction) {
                 behavior: 'auto'
             });
         } else {
-            left = target.offsetLeft - imageContainer.offsetLeft;
+            // left = target.offsetLeft - imageContainer.offsetLeft;
+
+            left = target.offsetLeft - imageContainer.offsetLeft + target.offsetWidth - imageContainer.clientWidth;
+            left = Math.max(0, left); 
             imageContainer.scrollTo({
                 left: left,
                 behavior: 'auto'
