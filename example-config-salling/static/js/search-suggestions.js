@@ -88,9 +88,9 @@ function setDisabled() {
 
 arrowLeft.addEventListener("click", () => {
     // Check if the left arrow is disabled
-    if (arrowLeft.classList.contains("disabled")) {
-        return
-    }
+    // if (arrowLeft.classList.contains("disabled")) {
+    //     return
+    // }
 
     scrollByImage("left");
     console.log("Scrolling left done")
@@ -99,9 +99,9 @@ arrowLeft.addEventListener("click", () => {
 
 arrowRight.addEventListener("click", (event) => {
     // Check if the right arrow is disabled
-    if (arrowRight.classList.contains("disabled")) {
-        return
-    }
+    // if (arrowRight.classList.contains("disabled")) {
+    //     return
+    // }
 
     scrollByImage("right");
     setDisabled();
