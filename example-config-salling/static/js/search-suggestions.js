@@ -19,34 +19,47 @@ function getVisibleImageIndexes() {
     return visibleIndexes;
 }
 
-function scrollByImage(direction) {
+function scrollByImage(direction, index=null) {
     let visibleIndexes = getVisibleImageIndexes();
     let targetIndex;
-
+    
     // Determine which image to scroll to next
     if (direction === "left") {
         targetIndex = visibleIndexes[0] - 1; // Move to the leftmost previous image
+        if (targetIndex < 0) {
+            targetIndex = images.length - 1; // Loop back to the last image
+        }
     } else {
         // Scroll to the next image to the right
         targetIndex = visibleIndexes[visibleIndexes.length - 1] + 1;
+        if (targetIndex >= images.length) {
+            targetIndex = 0; // Loop back to the first image
+        }
     }
+
+    let left = 0;
 
     // Ensure that the targetIndex is within valid bounds
     if (targetIndex >= 0 && targetIndex < images.length) {
         let target = images[targetIndex];
+
         console.log(target)
 
         if (direction === "left") {
+            left = target.offsetLeft - imageContainer.offsetLeft;
             imageContainer.scrollTo({
-                left: target.offsetLeft - imageContainer.offsetLeft,
+                left: left,
                 behavior: 'instant'
             });
         } else {
+            left = target.offsetLeft + target.offsetWidth - imageContainer.offsetWidth; 
             imageContainer.scrollTo({
-                left: target.offsetLeft + target.offsetWidth - imageContainer.offsetWidth,
+                left: left,
                 behavior: 'instant'
             });
         }
+
+        localStorage.setItem("left", left);
     }
 }
 
@@ -74,12 +87,22 @@ function setDisabled() {
 }
 
 arrowLeft.addEventListener("click", () => {
+    // Check if the left arrow is disabled
+    if (arrowLeft.classList.contains("disabled")) {
+        return
+    }
+
     scrollByImage("left");
     console.log("Scrolling left done")
     setDisabled();
 });
 
-arrowRight.addEventListener("click", () => {
+arrowRight.addEventListener("click", (event) => {
+    // Check if the right arrow is disabled
+    if (arrowRight.classList.contains("disabled")) {
+        return
+    }
+
     scrollByImage("right");
     setDisabled();
 });
@@ -95,8 +118,8 @@ const pointerScroll = (elem) => {
         elem.setPointerCapture(ev.pointerId);
         startX = ev.clientX;
         isDragging = false;
-        clickedElement = ev.target; // Store the initially clicked element
-        ev.preventDefault(); // Prevent default image dragging
+        clickedElement = ev.target;
+        ev.preventDefault();
     };
 
     const dragEnd = (ev) => {
@@ -128,7 +151,7 @@ const pointerScroll = (elem) => {
     const preventClickOnDrag = (ev) => {
         if (isDragging) {
             ev.stopPropagation();
-            ev.preventDefault(); // Prevent click from triggering navigation
+            ev.preventDefault();
         }
     };
 
@@ -139,6 +162,17 @@ const pointerScroll = (elem) => {
 
 };
 
-document.querySelectorAll(".horizontal-slider .image-container").forEach(pointerScroll);
+// document.querySelectorAll(".horizontal-slider .image-container").forEach(pointerScroll);
+
+// Scroll left if set
+if (localStorage.getItem("left")) {
+    imageContainer.scrollTo({
+        left: localStorage.getItem("left"),
+        behavior: 'instant'
+    });
+}
+
+// set visibility of .image-container to 'initial' after loading
+imageContainer.style.visibility = "initial";
 
 export { };
