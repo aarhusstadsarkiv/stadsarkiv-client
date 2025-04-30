@@ -6,6 +6,18 @@ from stadsarkiv_client.records import record_utils
 log = get_log()
 
 
+def _alter_search_url(main_menu_top: dict) -> dict:
+    """
+    Alter the search url in the main menu top.
+    This is done to avoid that the search url is changed in the main menu top.
+    """
+    for item in main_menu_top:
+        if item.get("name") == "search_get":
+            item["url"] = "/search"
+            break
+    return main_menu_top
+
+
 class Hooks(HooksSpec):
     def __init__(self, request):
         super().__init__(request)
@@ -17,6 +29,11 @@ class Hooks(HooksSpec):
         context["meta_title"] = context["meta_title"] + " | SallingArkivet"
 
         try:
+            main_menu_top = context["main_menu_top"]
+            main_menu_top = _alter_search_url(main_menu_top)
+            for item in main_menu_top:
+                log.debug(f"Menu item: {item}")
+
             search_result = context["search_result"]["result"]
             for result in search_result:
                 if result.get("thumbnail") and result.get("portrait"):
