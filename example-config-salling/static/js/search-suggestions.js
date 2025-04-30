@@ -49,13 +49,13 @@ function scrollByImage(direction) {
             left = target.offsetLeft - imageContainer.offsetLeft;
             imageContainer.scrollTo({
                 left: left,
-                behavior: 'instant'
+                behavior: 'auto'
             });
         } else {
             left = target.offsetLeft + target.offsetWidth - imageContainer.offsetWidth; 
             imageContainer.scrollTo({
                 left: left,
-                behavior: 'instant'
+                behavior: 'auto'
             });
         }
 
@@ -107,66 +107,12 @@ arrowRight.addEventListener("click", (event) => {
     setDisabled();
 });
 
-const pointerScroll = (elem) => {
-    let clickedElement = null;
-    let isDragging = false;
-    let startX = 0;
-
-    const dragStart = (ev) => {
-        elem.setPointerCapture(ev.pointerId);
-        startX = ev.clientX;
-        isDragging = false;
-        clickedElement = ev.target;
-        ev.preventDefault();
-    };
-
-    const dragEnd = (ev) => {
-        elem.releasePointerCapture(ev.pointerId);
-
-        if (!isDragging && clickedElement) {
-            let target = clickedElement;
-
-            // Traverse up to find the closest <a> element
-            while (target && target.tagName !== "A") {
-                target = target.parentElement;
-            }
-
-            if (target && target.tagName === "A") {
-                window.location.href = target.href;
-            }
-        }
-    };
-
-    const drag = (ev) => {
-        if (elem.hasPointerCapture(ev.pointerId)) {
-            if (Math.abs(ev.clientX - startX) > 5) {
-                isDragging = true;
-            }
-            elem.scrollLeft -= ev.movementX;
-        }
-    };
-
-    const preventClickOnDrag = (ev) => {
-        if (isDragging) {
-            ev.stopPropagation();
-            ev.preventDefault();
-        }
-    };
-
-    elem.addEventListener("pointerdown", dragStart);
-    elem.addEventListener("pointerup", dragEnd);
-    elem.addEventListener("pointermove", drag);
-    elem.addEventListener("click", preventClickOnDrag, true); // Capture click events
-
-};
-
-// document.querySelectorAll(".horizontal-slider .image-container").forEach(pointerScroll);
 
 // Scroll left if set
 if (localStorage.getItem("left")) {
     imageContainer.scrollTo({
         left: localStorage.getItem("left"),
-        behavior: 'instant'
+        behavior: 'auto'
     });
 }
 
@@ -176,3 +122,60 @@ imageContainer.style.visibility = "initial";
 setDisabled();
 
 export { };
+
+
+
+// const pointerScroll = (elem) => {
+//     let clickedElement = null;
+//     let isDragging = false;
+//     let startX = 0;
+
+//     const dragStart = (ev) => {
+//         elem.setPointerCapture(ev.pointerId);
+//         startX = ev.clientX;
+//         isDragging = false;
+//         clickedElement = ev.target;
+//         ev.preventDefault();
+//     };
+
+//     const dragEnd = (ev) => {
+//         elem.releasePointerCapture(ev.pointerId);
+
+//         if (!isDragging && clickedElement) {
+//             let target = clickedElement;
+
+//             // Traverse up to find the closest <a> element
+//             while (target && target.tagName !== "A") {
+//                 target = target.parentElement;
+//             }
+
+//             if (target && target.tagName === "A") {
+//                 window.location.href = target.href;
+//             }
+//         }
+//     };
+
+//     const drag = (ev) => {
+//         if (elem.hasPointerCapture(ev.pointerId)) {
+//             if (Math.abs(ev.clientX - startX) > 5) {
+//                 isDragging = true;
+//             }
+//             elem.scrollLeft -= ev.movementX;
+//         }
+//     };
+
+//     const preventClickOnDrag = (ev) => {
+//         if (isDragging) {
+//             ev.stopPropagation();
+//             ev.preventDefault();
+//         }
+//     };
+
+//     elem.addEventListener("pointerdown", dragStart);
+//     elem.addEventListener("pointerup", dragEnd);
+//     elem.addEventListener("pointermove", drag);
+//     elem.addEventListener("click", preventClickOnDrag, true); // Capture click events
+
+// };
+
+// document.querySelectorAll(".horizontal-slider .image-container").forEach(pointerScroll);
