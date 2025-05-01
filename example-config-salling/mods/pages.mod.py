@@ -7,6 +7,7 @@ from stadsarkiv_client.core.context import get_context
 import os
 from stadsarkiv_client.core.logging import get_log
 import json
+import random
 
 log = get_log()
 current_path = os.path.abspath(__file__)
@@ -190,15 +191,26 @@ async def memory_display(request: Request):
 
 async def home_page(request: Request):
 
-    memories = await _get_memories(index=[0, 2])
+    memories = await _get_memories()
+
+    # get two random memories
+    random_memories = random.sample(range(len(memories)), 2)
+    memories = [memories[i] for i in random_memories]
+
     stories = await story_by_index(index=[])
 
     story = stories[3]
+
+    story_sections = []
+    for story in stories:
+        story_sections.append(story["first_section"])
+
     context = await get_context(
         request,
         context_values={
             "title": "Forside",
             "story": story,
+            "stories": story_sections,
             "memories": memories,
         },
     )
