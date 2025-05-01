@@ -376,3 +376,7 @@ Fx luftfotos.
 
 Phillip
 
+--- 
+
+Log direkte ud.
+Send brugeren til forsiden, når de logger ud.
