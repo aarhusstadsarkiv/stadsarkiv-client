@@ -28,7 +28,7 @@ function scrollByImage(direction) {
             : (visible[visible.length - 1] + 1) % images.length;
 
     const target = images[targetIndex];
-    const left = target.offsetLeft - imageContainer.offsetLeft;   // ← fixed line
+    const left = target.offsetLeft - imageContainer.offsetLeft;
     imageContainer.scrollTo({ left, behavior: "auto" });
 
     sessionStorage.setItem(sliderId, left);
