@@ -116,7 +116,7 @@
 </div>
 {% endmacro %}
 
-{% macro story_first_home (story_first) %}
+{% macro story_slider (story_first) %}
 <div class="stories-first">
     <div class="stories-first-content">
 
@@ -130,7 +130,6 @@
 
     <div class="stories-first-portrait">
         <!--
-        
         <div class="arrow-right-container">
             <svg class="arrow-right" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                 fill="#1f1f1f">
@@ -145,6 +144,7 @@
             </svg>
         </div>
         -->
+        
         <img src="{{ story_first.urls[0] }}" alt="{{ story_first.heading }}">
     </div>
 </div>
@@ -152,7 +152,7 @@
 
 {% macro search_suggestions(image_items) %}
 <div class="horizontal-slider">
-    <div class="arrow-left-container">
+    <div class="arrow-left-container no-select">
         <svg class="arrow-left" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
             fill="#1f1f1f">
             <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" />
@@ -171,7 +171,7 @@
         </a>
         {% endfor %}
     </div>
-    <div class="arrow-right-container">
+    <div class="arrow-right-container no-select">
         <svg class="arrow-right" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
             fill="#1f1f1f">
             <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z" />

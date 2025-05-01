@@ -113,9 +113,9 @@
 
 {% block content %}
 
-{% set section = story.first_section %}
+{% set section = stories[2] %}
 
-{{ salling_macros.story_first_home(section) }}
+{{ salling_macros.story_slider(section) }}
 
 <h4 class="section-title">Udvalgte Salling Minder</h4>
 {{ salling_macros.memories(memories) }}
