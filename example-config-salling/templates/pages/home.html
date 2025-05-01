@@ -11,7 +11,8 @@
 <link rel="stylesheet" href="{{ url_for('static', path='/css/search_suggestions.css') }}?v={{ get_setting('version') }}">
 <script type="module">
 
-    import { } from '/static/js/search-suggestions.js?v={{ get_setting("version") }}';
+    import { initializeSlider } from '/static/js/search-suggestions.js?v={{ get_setting("version") }}';
+    initializeSlider("home");
 
 </script>
 
