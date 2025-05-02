@@ -16,7 +16,7 @@
         <div class="story-section-image">
             <a href="/records/{{ first_section.recordIds[0] }}">
                 <div class="story-image-container">
-                    <img src="{{ first_section.urls[0] }}" alt="{{ first_section.heading }}">
+                    <img src="{{ first_section.urls[0] | urlencode }}" alt="{{ first_section.heading }}">
                     {% if first_section.summary and first_section.summary[0] %}
                         <p class="story-image-summary">{{ first_section.summary[0] }}</p>
                     {% endif %}
@@ -41,7 +41,7 @@
         <div class="story-section-image">
             <a href="/records/{{ section.recordIds[0] }}">
                 <div class="story-image-container">
-                    <img src="{{ section.urls[0] }}" alt="{{ section.heading }}">
+                    <img src="{{ section.urls[0] | urlencode }}" alt="{{ section.heading }}">
                     {% if section.summary and section.summary[0] %}
                         <p class="story-image-summary">{{ section.summary[0] }}</p>
                     {% endif %}

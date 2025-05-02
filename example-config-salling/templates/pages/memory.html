@@ -13,7 +13,7 @@
 <div class="memory-result">
     <a class="memory-link" href="/records/{{ image.record }}">
         <div class="memory-portrait">
-            <img src="{{ image.url }}" alt="{{ image.text }}">
+            <img src="{{ image.url | urlencode }}" alt="{{ image.text }}">
         </div>
         <div class="memory-summary">{{ image.text }}</div>
     </a>
