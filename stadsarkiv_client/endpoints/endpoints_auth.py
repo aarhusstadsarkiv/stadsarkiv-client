@@ -81,15 +81,6 @@ async def auth_logout_get(request: Request):
         log.exception("Error in auth_logout_post")
         flash.set_message(request, str(e), type="error")
 
-    """
-    is_logged_in = await api.is_logged_in(request)
-    context_values = {
-        "title": translate("Logout"),
-        "is_logged_in": is_logged_in,
-    }
-    context = await get_context(request, context_values=context_values)
-    return templates.TemplateResponse(request, "auth/logout.html", context)
-    """
     return RedirectResponse(url="/", status_code=302)
 
 

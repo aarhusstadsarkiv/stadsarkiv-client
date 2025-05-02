@@ -93,7 +93,6 @@ routes = [
     Route("/auth/login", endpoint=endpoints_auth.auth_login_get, name="auth_login_get"),
     Route("/auth/login", endpoint=endpoints_auth.auth_login_post, name="auth_login_post", methods=["POST"]),
     Route("/auth/logout", endpoint=endpoints_auth.auth_logout_get, name="auth_logout_get"),
-    Route("/auth/logout", endpoint=endpoints_auth.auth_logout_post, name="auth_logout_post", methods=["POST"]),
     Route("/auth/forgot-password", endpoint=endpoints_auth.auth_forgot_password_get, name="auth_forgot_password_get"),
     Route("/auth/forgot-password", endpoint=endpoints_auth.auth_forgot_password_post, name="auth_forgot_password_post", methods=["POST"]),
     Route("/auth/reset-password/{token:str}", endpoint=endpoints_auth.auth_reset_password_get, name="auth_reset_password_get"),

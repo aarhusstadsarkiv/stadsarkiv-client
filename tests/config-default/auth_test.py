@@ -65,12 +65,7 @@ class TestAuth(unittest.TestCase):
     def test_logout_get(self):
         client = TestClient(app)
         response = client.get("/auth/logout", follow_redirects=True)
-        self.assertEqual(response.url, "http://testserver/auth/logout")
-
-    def test_logout_post(self):
-        client = TestClient(app)
-        response = client.post("/auth/logout", follow_redirects=True)
-        self.assertEqual(response.url, "http://testserver/auth/login")
+        self.assertEqual(response.url, "http://testserver/")
 
     def test_register_get(self):
         client = TestClient(app)
