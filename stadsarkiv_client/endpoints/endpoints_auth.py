@@ -70,6 +70,18 @@ async def auth_login_post(request: Request):
 
 
 async def auth_logout_get(request: Request):
+
+    try:
+        user.logout(request)
+        flash.set_message(request, translate("You have been logged out."), type="success")
+
+    except OpenAwsException as e:
+        flash.set_message(request, str(e), type="error")
+    except Exception as e:
+        log.exception("Error in auth_logout_post")
+        flash.set_message(request, str(e), type="error")
+
+    """
     is_logged_in = await api.is_logged_in(request)
     context_values = {
         "title": translate("Logout"),
@@ -77,6 +89,8 @@ async def auth_logout_get(request: Request):
     }
     context = await get_context(request, context_values=context_values)
     return templates.TemplateResponse(request, "auth/logout.html", context)
+    """
+    return RedirectResponse(url="/", status_code=302)
 
 
 async def auth_logout_post(request: Request):
