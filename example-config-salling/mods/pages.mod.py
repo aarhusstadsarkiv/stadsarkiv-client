@@ -205,6 +205,9 @@ async def home_page(request: Request):
     for story in stories:
         story_sections.append(story["first_section"])
 
+    # remove the first story_section from the list
+    story_sections.pop(0)
+
     context = await get_context(
         request,
         context_values={
