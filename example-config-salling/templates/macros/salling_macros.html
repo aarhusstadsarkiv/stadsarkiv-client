@@ -23,21 +23,21 @@
     <div class="search-result-gallery">
         <a class="search-link-gallery" href="/records/{{ result.id }}?search={{ current }}">
             {% if result.show_image %}
-                {% if result.label %}
-                {% set label = result.label %}
-                {% else %}
-                {% set label = result.summary %}
-                {% endif %}
-
-                <div class="search-portrait-gallery">
-                    <img src="{{ result.portrait }}" alt="{{ label }}">
-                </div>
+            {% if result.label %}
+            {% set label = result.label %}
             {% else %}
-                {% if view == 'grid' %}
-                <div class="search-portrait-gallery">
-                    <img src="{{ url_for('static', path='/assets/transparent_1px.png') }}" alt="{{ label }}">
-                </div>
-                {% endif %}
+            {% set label = result.summary %}
+            {% endif %}
+
+            <div class="search-portrait-gallery">
+                <img src="{{ result.portrait }}" alt="{{ label }}">
+            </div>
+            {% else %}
+            {% if view == 'grid' %}
+            <div class="search-portrait-gallery">
+                <img src="{{ url_for('static', path='/assets/transparent_1px.png') }}" alt="{{ label }}">
+            </div>
+            {% endif %}
             {% endif %}
             {{ parse_search_title_gallery(result) }}
             <div class="search-result-date-gallery">
@@ -66,7 +66,8 @@
     {% elif total == 10000 %}
 
     <span class="paginaton-total-results">{{ translate('More than 10.000 search results') }}</span>
-    <span class="pagination-showing-page">{{ translate('Showing page') }} {{ current_page }} {{ translate('of') }} {{ total_pages }}.</span>  
+    <span class="pagination-showing-page">{{ translate('Showing page') }} {{ current_page }} {{ translate('of') }} {{
+        total_pages }}.</span>
     {% else %}
     <span class="paginaton-total-results">{{ total }} {{ translate('Search results') }}.</span>
     <span class="pagination-showing-page">
@@ -86,7 +87,7 @@
                     <div class="memories-result-summary">{{ memory.heading }}</div>
                     <div>
                         {{ memory.paragraphs[0] }}
-                    </div>          
+                    </div>
                 </div>
 
                 {% if memory.urls and memory.urls[0] %}
@@ -116,38 +117,29 @@
 </div>
 {% endmacro %}
 
-{% macro story_slider (story_first) %}
-<div class="stories-first">
-    <div class="stories-first-content">
+{% macro story_slider (stories) %}
+<div class="slideshow no-select">
 
-        <h4 class="section-title">{{ story_first.heading }}</h4>
-        <p>{{ story_first.paragraphs[0] }}</p>
-        <p>
-            <a href="/historier/{{story_first.path}}">Læs hele historien</a>
-        </p>
-
-    </div>
-
-    <div class="stories-first-portrait">
-        <!--
-        <div class="arrow-right-container">
-            <svg class="arrow-right" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                fill="#1f1f1f">
-                <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z" />
-            </svg>
+    {% for story_first in stories %}
+    <div class="stories-first">
+        <div class="stories-first-content">
+            <h4 class="section-title">{{ story_first.heading }}</h4>
+            <p>{{ story_first.paragraphs[0] }}</p>
+            <p>
+                <a href="/historier/{{story_first.path}}">Læs hele historien</a>
+            </p>
         </div>
-
-        <div class="arrow-left-container">
-            <svg class="arrow-left" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                fill="#1f1f1f">
-                <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" />
-            </svg>
-        </div>
-        -->
         
-        <img src="{{ story_first.urls[0] }}" alt="{{ story_first.heading }}">
+        <div class="stories-first-portrait">
+            <a href="/historier/{{story_first.path}}">
+                <img src="{{ story_first.urls[0] }}" alt="{{ story_first.heading }}">
+            </a>
+            
+        </div>
     </div>
+    {% endfor %}
 </div>
+
 {% endmacro %}
 
 {% macro search_suggestions(image_items) %}
