@@ -367,7 +367,6 @@ Captcha (mere tydeligt).
 
 Christian
 
-
 --- 
 
 Rotations mulighed på billeder
@@ -380,3 +379,12 @@ Phillip
 
 Log direkte ud.
 Send brugeren til forsiden, når de logger ud.
+
+Christian
+
+
+---
+
+Et forslag til forslagsbanken 😊
+
+Det kunne være rart og meget brugbart hvis der var stavekontrol i Sams tekstfelter. Der skrives ofte større mængde metatekst til registreringer.
