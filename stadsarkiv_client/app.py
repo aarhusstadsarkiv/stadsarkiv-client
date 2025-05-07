@@ -15,16 +15,6 @@ import contextlib
 import os
 import sys
 
-sys.path.append(".")
-log = get_log()
-data_dir = get_data_dir()
-
-if not os.path.exists(data_dir):
-    log.info(f"Creating data directory: {data_dir}")
-    os.makedirs(data_dir)
-
-log.info("Environment: " + str(settings.get("environment")))
-log.info(f"App loaded from the file {os.path.abspath(__file__)}")
 
 hooks = get_hooks()
 routes = get_app_routes()
@@ -35,6 +25,18 @@ routes = hooks.after_routes_init(routes)
 async def lifespan(app):
 
     try:
+
+        sys.path.append(".")
+        log = get_log()
+        data_dir = get_data_dir()
+
+        if not os.path.exists(data_dir):
+            log.info(f"Creating data directory: {data_dir}")
+            os.makedirs(data_dir)
+
+        log.info("Environment: " + str(settings.get("environment")))
+        log.info(f"App loaded from the file {os.path.abspath(__file__)}")
+
         log.info("App lifecycle started")
 
         api_key = settings.get("api_key")
