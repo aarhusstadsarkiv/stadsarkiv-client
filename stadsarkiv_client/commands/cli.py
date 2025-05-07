@@ -17,6 +17,7 @@ logging.basicConfig(level=logging.INFO)
 logger: logging.Logger = logging.getLogger(__name__)
 stream_handler = logging_handlers.get_stream_handler(logging.INFO)
 logger.addHandler(stream_handler)
+logger.propagate = False
 
 
 class ConfigDirValidator:
@@ -167,7 +168,7 @@ def server_dev(port: int, workers: int, host: str, data_dir: str, config_dir: st
         logger.info("Started Uvicorn in the foreground")
         subprocess.run(cmd, check=True)
     except subprocess.CalledProcessError as e:
-        logger.error(f"Uvicorn failed to start: {e}")
+        logger.error(f"Uvicorn failed to start {e}")
         exit(1)
 
 
