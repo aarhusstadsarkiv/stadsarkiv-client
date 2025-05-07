@@ -8,7 +8,6 @@ from starlette.applications import Starlette
 from stadsarkiv_client.routes import get_app_routes
 from stadsarkiv_client.core.middleware import middleware
 from stadsarkiv_client.core.exception_handlers import exception_handlers
-from stadsarkiv_client.core.sentry import enable_sentry
 from stadsarkiv_client.core.hooks import get_hooks
 from stadsarkiv_client.core.args import get_data_dir
 from stadsarkiv_client.core.scheduler import scheduler
@@ -24,10 +23,6 @@ if not os.path.exists(data_dir):
     log.info(f"Creating data directory: {data_dir}")
     os.makedirs(data_dir)
 
-api_key = settings.get("api_key")
-if api_key == "api_key":
-    raise ValueError("API_KEY environment variable is not set")
-
 log.info("Environment: " + str(settings.get("environment")))
 log.info(f"App loaded from the file {os.path.abspath(__file__)}")
 
@@ -35,17 +30,17 @@ hooks = get_hooks()
 routes = get_app_routes()
 routes = hooks.after_routes_init(routes)
 
-sentry_dns = os.getenv("SENTRY_DNS", "")
-if sentry_dns:
-    enable_sentry(sentry_dns)
-    log.debug("Logging to sentry enabled")
-
 
 @contextlib.asynccontextmanager
 async def lifespan(app):
 
     try:
         log.info("App lifecycle started")
+
+        api_key = settings.get("api_key")
+        if api_key == "api_key":
+            log.error("API_KEY is missing. Please set the API_KEY environment variable before running the app.")
+            raise RuntimeError("Missing required environment variable: API_KEY")
         yield
     finally:
         scheduler.shutdown()
