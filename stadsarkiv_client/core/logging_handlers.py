@@ -19,6 +19,16 @@ warnings.simplefilter(action="ignore", category=FutureWarning)
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 
+class UvicornLikeFormatter(logging.Formatter):
+    def format(self, record):
+        level = f"{record.levelname}:".ljust(9)
+        msg = record.getMessage()
+        if record.exc_info:
+            print("Has exception info")
+            msg += "\n" + self.formatException(record.exc_info)
+        return f"{level} {msg}"
+
+
 class JsonFormatter(logging.Formatter):
     def format(self, record):
         log_record = {
@@ -65,7 +75,7 @@ def get_rotating_json_file_handler(level: Any, file_name):
 def get_stream_handler(level: Any):
     ch = logging.StreamHandler()
     ch.setLevel(level)
-    ch.setFormatter(JsonFormatter())
+    ch.setFormatter(UvicornLikeFormatter())
     return ch
 
 
