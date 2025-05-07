@@ -34,9 +34,8 @@ async def lifespan(app):
             log.info(f"Creating data directory: {data_dir}")
             os.makedirs(data_dir)
 
-        log.info("Environment: " + str(settings.get("environment")))
+        log.info(f"Environment: {settings.get('environment')}")
         log.info(f"App loaded from the file {os.path.abspath(__file__)}")
-
         log.info("App lifecycle started")
 
         api_key = settings.get("api_key")
