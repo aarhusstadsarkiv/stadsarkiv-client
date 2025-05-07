@@ -21,12 +21,12 @@ def load():
     dir_path = Path(__file__).resolve().parent.parent
     env_dist = dir_path / ".env.dist"
     load_dotenv(env_dist)
-    log.debug("Loaded .env.dist file")
+    log.info("Loaded .env.dist file")
 
     local_dot_env = get_local_config_dir(".env")
 
     if os.path.exists(local_dot_env):
         load_dotenv(local_dot_env, override=True)
-        log.debug(f"{local_dot_env} file loaded. Will override .env.dist settings")
+        log.info(f"{local_dot_env} file loaded. Will override .env.dist settings")
     else:
-        log.debug(f"Local {local_dot_env} file NOT loaded")
+        log.info(f"Local {local_dot_env} file NOT loaded")
