@@ -67,7 +67,7 @@ def _get_config_dir(config_dir):
         logger.info(config_dir_validator.get_error_message())
         exit(1)
 
-    return config_dir
+    return config_dir_validator.config_dir_abs
 
 
 @click.group()
