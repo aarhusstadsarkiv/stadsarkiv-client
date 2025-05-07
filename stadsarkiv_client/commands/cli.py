@@ -28,21 +28,18 @@ class ConfigDirValidator:
         self.error_message: str = ""
 
     def validate(self) -> bool:
-
         if not self._exists():
-
             if self.config_dir == "local":
                 return True
-
             self.error_message = f"Config directory '{self.config_dir}' does not exist."
             return False
 
         if not self._is_current_dir():
-            self.error_message = f"Config directory '{self.config_dir}' can not be the current working directory. "
+            self.error_message = f"Config directory '{self.config_dir}' is not in the current working directory."
             return False
 
         if not self._is_within_current_dir():
-            self.error_message = f"Config directory '{self.config_dir}' shall be within the current working directory."
+            self.error_message = f"Config directory '{self.config_dir}' must be within the current working directory."
             return False
 
         return True
@@ -62,12 +59,17 @@ class ConfigDirValidator:
 
 def _get_config_dir(config_dir):
     config_dir = config_dir.rstrip("/\\")
-    config_dir_validator = ConfigDirValidator(config_dir)
-    if not config_dir_validator.validate():
-        logger.info(config_dir_validator.get_error_message())
+    validator = ConfigDirValidator(config_dir)
+
+    if not validator.validate():
+        logger.info(validator.get_error_message())
         exit(1)
 
-    return config_dir
+    abs_path = validator.config_dir_abs
+    if abs_path not in sys.path:
+        sys.path.insert(0, abs_path)
+
+    return abs_path
 
 
 @click.group()
@@ -231,7 +233,7 @@ def _is_source():
         return True
 
 
-if _is_source():
+if _is_source() and os.name != "nt":
     # Only show dev commands if source version
     @cli.command(help="Run all tests.")
     def source_test():
