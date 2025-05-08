@@ -6,6 +6,7 @@ from stadsarkiv_client.core.args import get_local_config_dir
 from stadsarkiv_client.core.module_loader import load_module_attr
 import typing
 import os
+import sys
 
 
 log = get_log()
@@ -32,19 +33,20 @@ def _get_mock_request() -> Request:
 
 
 def get_hooks(request: typing.Optional[Request] = None) -> HooksSpec:
-
     if not request:
         request = _get_mock_request()
 
-    """
-    Get local hooks if they exist, otherwise get the default hooks
-    """
-    try:
+    config_dir = get_local_config_dir()
+    hooks_path = os.path.join(config_dir, "hooks.py")
 
-        module_name = get_local_config_dir() + ".hooks"
-        HooksLocal = load_module_attr(module_name, "Hooks")
-        hooks_local = HooksLocal(request)
-        return hooks_local
+    try:
+        if os.path.exists(hooks_path):
+            if config_dir not in sys.path:
+                sys.path.insert(0, config_dir)
+
+            HooksLocal = load_module_attr("hooks", "Hooks")
+            return HooksLocal(request)
     except ImportError:
-        hooks = Hooks(request)
-        return hooks
+        pass
+
+    return Hooks(request)
