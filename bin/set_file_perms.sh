@@ -16,7 +16,7 @@ GROUP=$2
 DATA=$3
 
 # Change owner to dennis:www-data
-chown -R $USER:$GROUP data
+chown -R $USER:$GROUP $DATA
 
 # Change all dirs to 770
 find $DATA -type d -exec chmod 775 {} \;
