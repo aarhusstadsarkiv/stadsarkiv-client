@@ -11,7 +11,6 @@ import sys
 import logging
 from stadsarkiv_client.core import logging_handlers
 from stadsarkiv_client import __version__, __program__
-from pathlib import Path
 
 
 logging.basicConfig(level=logging.INFO)
@@ -75,9 +74,7 @@ else:
     def server_prod(port: int, workers: int, host: str, config_dir: str):
 
         config_dir = _get_config_dir(config_dir)
-
         os.environ["CONFIG_DIR"] = config_dir
-
         data_dir = os.path.join(config_dir, "data")
         os.environ["DATA_DIR"] = data_dir
 
@@ -109,9 +106,7 @@ else:
 def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True):
 
     config_dir = _get_config_dir(config_dir)
-
     os.environ["CONFIG_DIR"] = config_dir
-
     data_dir = os.path.join(config_dir, "data")
     os.environ["DATA_DIR"] = data_dir
 
