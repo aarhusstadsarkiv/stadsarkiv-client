@@ -78,10 +78,6 @@ else:
         os.environ["CONFIG_DIR"] = config_dir
         os.environ["DATA_DIR"] = "data"
 
-        if os.name == "nt":
-            logger.info("Gunicorn does not work on Windows. Use server-dev instead.")
-            exit(1)
-
         cmd = [
             # Notice that this can not just be "gunicorn" as it is a new subprocess being started
             sys.executable,
