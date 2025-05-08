@@ -23,47 +23,29 @@ logger.propagate = False
 class ConfigDirValidator:
     def __init__(self, config_dir: str):
         self.config_dir = config_dir
-        self.current_dir = os.path.abspath(os.getcwd())
+        # self.current_dir = os.path.abspath(os.getcwd())
         self.config_dir_abs = os.path.abspath(config_dir)
         self.error_message: str = ""
 
     def validate(self) -> bool:
-        if not self._exists():
-            if self.config_dir == "local":
-                return True
+        if not os.path.exists(self.config_dir_abs):
             self.error_message = f"Config directory '{self.config_dir}' does not exist."
             return False
 
-        if not self._is_current_dir():
-            self.error_message = f"Config directory '{self.config_dir}' is not in the current working directory."
-            return False
-
-        if not self._is_within_current_dir():
-            self.error_message = f"Config directory '{self.config_dir}' must be within the current working directory."
-            return False
-
         return True
-
-    def _exists(self) -> bool:
-        return os.path.exists(self.config_dir_abs)
-
-    def _is_current_dir(self) -> bool:
-        return os.path.dirname(self.config_dir_abs) == self.current_dir
-
-    def _is_within_current_dir(self) -> bool:
-        return os.path.commonpath([self.current_dir]) == os.path.commonpath([self.current_dir, self.config_dir_abs])
 
     def get_error_message(self) -> str:
         return self.error_message
 
 
 def _get_config_dir(config_dir):
-    config_dir = config_dir.rstrip("/\\")
     validator = ConfigDirValidator(config_dir)
 
     if not validator.validate():
         logger.info(validator.get_error_message())
         exit(1)
+
+    logger.info(f"Using config dir: {validator.config_dir_abs}")
 
     return validator.config_dir_abs
 
@@ -88,7 +70,7 @@ else:
     @click.option("--workers", default=3, help="Number of workers.")
     @click.option("--host", default="0.0.0.0", help="Server host.")
     @click.option("-d", "--data-dir", default="data", help="Set a path to a data directory.", required=False)
-    @click.option("-c", "--config-dir", default="local", help="Specify a path to a config directory.", required=False)
+    @click.option("-c", "--config-dir", help="Specify a path to a config directory.", required=True)
     def server_prod(port: int, workers: int, host: str, data_dir: str, config_dir: str):
 
         config_dir = _get_config_dir(config_dir)
@@ -125,7 +107,7 @@ else:
 @click.option("--workers", default=1, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
 @click.option("-d", "--data-dir", default="data", help="Set a path to a data directory.", required=False)
-@click.option("-c", "--config-dir", default="local", help="Specify a path to a config directory.", required=False)
+@click.option("-c", "--config-dir", help="Specify a path to a config directory.", required=True)
 def server_dev(port: int, workers: int, host: str, data_dir: str, config_dir: str, reload=True):
 
     config_dir = _get_config_dir(config_dir)
@@ -145,8 +127,6 @@ def server_dev(port: int, workers: int, host: str, data_dir: str, config_dir: st
         else:
             reload_dirs = [config_dir]
 
-    # reload when yml and py files change
-
     cmd = [
         sys.executable,
         "-m",
@@ -159,6 +139,7 @@ def server_dev(port: int, workers: int, host: str, data_dir: str, config_dir: st
     ]
 
     if reload:
+        # reload when yml and py files change
         cmd.append("--reload")
         cmd.append("--reload-include=*.yml")
         if reload_dirs:
