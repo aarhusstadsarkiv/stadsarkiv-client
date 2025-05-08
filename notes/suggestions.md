@@ -388,3 +388,17 @@ Christian
 Et forslag til forslagsbanken 😊
 
 Det kunne være rart og meget brugbart hvis der var stavekontrol i Sams tekstfelter. Der skrives ofte større mængde metatekst til registreringer.
+
+---
+
+Her kommer et udviklingsønske til et fremtidigt SAM.
+
+Ved start og slutdato må slutdatoer ikke være mindre end startdato.
+
+Følgende søgning indeholder en del af disse forkerte dateringer.
+
+https://www.aarhusarkivet.dk/search?date_from=19400409&content_types=61&size=250&sort=date_from&direction=asc&view=gallery&date_to=19400409
+
+Jeg skulle bruge et billede fra besættelsesdagen og satte derfor både start og slutdato til 1940-04-09, men fik også en masse af ovennævnte. Hvorfor aner jeg ikke.
+
+---
