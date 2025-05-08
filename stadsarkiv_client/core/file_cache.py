@@ -7,8 +7,9 @@ from stadsarkiv_client.core.logging import get_log
 
 log = get_log()
 
-
-CACHE_DIR = os.path.join(os.getcwd(), "data", "cache")
+# Set cache dir
+config_dir = os.environ["CONFIG_DIR"]
+CACHE_DIR = os.path.join(config_dir, "data", "cache")
 
 if not os.path.exists(CACHE_DIR):
     os.makedirs(CACHE_DIR)
