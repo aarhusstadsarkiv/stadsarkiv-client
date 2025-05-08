@@ -80,41 +80,44 @@ def cli():
     pass
 
 
-@cli.command(help="Start the production gunicorn server.")
-@click.option("--port", default=5555, help="Server port.")
-@click.option("--workers", default=3, help="Number of workers.")
-@click.option("--host", default="0.0.0.0", help="Server host.")
-@click.option("-d", "--data-dir", default="data", help="Set a path to a data directory.", required=False)
-@click.option("-c", "--config-dir", default="local", help="Specify a path to a config directory.", required=False)
-def server_prod(port: int, workers: int, host: str, data_dir: str, config_dir: str):
+if os.name == "nt":
+    pass
+else:
+    @cli.command(help="Start the production gunicorn server.")
+    @click.option("--port", default=5555, help="Server port.")
+    @click.option("--workers", default=3, help="Number of workers.")
+    @click.option("--host", default="0.0.0.0", help="Server host.")
+    @click.option("-d", "--data-dir", default="data", help="Set a path to a data directory.", required=False)
+    @click.option("-c", "--config-dir", default="local", help="Specify a path to a config directory.", required=False)
+    def server_prod(port: int, workers: int, host: str, data_dir: str, config_dir: str):
 
-    config_dir = _get_config_dir(config_dir)
+        config_dir = _get_config_dir(config_dir)
 
-    os.environ["CONFIG_DIR"] = config_dir
-    os.environ["DATA_DIR"] = data_dir
+        os.environ["CONFIG_DIR"] = config_dir
+        os.environ["DATA_DIR"] = data_dir
 
-    if os.name == "nt":
-        logger.info("Gunicorn does not work on Windows. Use server-dev instead.")
-        exit(1)
+        if os.name == "nt":
+            logger.info("Gunicorn does not work on Windows. Use server-dev instead.")
+            exit(1)
 
-    cmd = [
-        # Notice that this can not just be "gunicorn" as it is a new subprocess being started
-        sys.executable,
-        "-m",
-        "gunicorn",
-        "stadsarkiv_client.app:app",
-        f"--workers={workers}",
-        f"--bind={host}:{port}",
-        "--worker-class=uvicorn.workers.UvicornWorker",
-        "--log-level=info",
-    ]
+        cmd = [
+            # Notice that this can not just be "gunicorn" as it is a new subprocess being started
+            sys.executable,
+            "-m",
+            "gunicorn",
+            "stadsarkiv_client.app:app",
+            f"--workers={workers}",
+            f"--bind={host}:{port}",
+            "--worker-class=uvicorn.workers.UvicornWorker",
+            "--log-level=info",
+        ]
 
-    try:
-        logger.info("Started Gunicorn in the foreground")
-        subprocess.run(cmd, check=True)
-    except subprocess.CalledProcessError as e:
-        logger.error(f"Gunicorn failed to start: {e}")
-        exit(1)
+        try:
+            logger.info("Started Gunicorn in the foreground")
+            subprocess.run(cmd, check=True)
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Gunicorn failed to start: {e}")
+            exit(1)
 
 
 @cli.command(help="Start the running Uvicorn dev-server. Notice: By default it watches for changes in current dir.")
