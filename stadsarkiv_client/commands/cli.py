@@ -65,6 +65,7 @@ def cli():
 if os.name == "nt":
     pass
 else:
+
     @cli.command(help="Start the production gunicorn server.")
     @click.option("--port", default=5555, help="Server port.")
     @click.option("--workers", default=3, help="Number of workers.")
