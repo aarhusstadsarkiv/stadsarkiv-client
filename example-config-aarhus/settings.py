@@ -81,8 +81,8 @@ settings: dict[str, typing.Any] = {
     "allow_save_search": False,
     "allow_online_ordering": True,
     "sqlite3": {
-        "default": "data/database.db",
-        "orders": "data/orders.db",
+        "default": "local/data/database.db",
+        "orders": "local/data/orders.db",
     },
     "log_api_calls": False,
     "cron_orders": True,
