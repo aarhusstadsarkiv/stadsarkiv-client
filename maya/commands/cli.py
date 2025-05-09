@@ -21,15 +21,14 @@ logger.propagate = False
 
 
 class ConfigDirValidator:
-    def __init__(self, config_dir: str):
-        self.config_dir = config_dir
-        # self.current_dir = os.path.abspath(os.getcwd())
-        self.config_dir_abs = os.path.abspath(config_dir)
+    def __init__(self, base_dir: str):
+        self.base_dir = base_dir
+        self.base_dir_abs = os.path.abspath(base_dir)
         self.error_message: str = ""
 
     def validate(self) -> bool:
-        if not os.path.exists(self.config_dir_abs):
-            self.error_message = f"Config directory '{self.config_dir}' does not exist."
+        if not os.path.exists(self.base_dir_abs):
+            self.error_message = f"Config directory '{self.base_dir}' does not exist."
             return False
 
         return True
@@ -38,16 +37,16 @@ class ConfigDirValidator:
         return self.error_message
 
 
-def _get_config_dir(config_dir):
-    validator = ConfigDirValidator(config_dir)
+def _get_base_dir(base_dir):
+    validator = ConfigDirValidator(base_dir)
 
     if not validator.validate():
         logger.info(validator.get_error_message())
         exit(1)
 
-    logger.info(f"Using config dir: {validator.config_dir_abs}")
+    logger.info(f"Using config dir: {validator.base_dir_abs}")
 
-    return validator.config_dir_abs
+    return validator.base_dir_abs
 
 
 @click.group()
@@ -70,11 +69,11 @@ else:
     @click.option("--port", default=5555, help="Server port.")
     @click.option("--workers", default=3, help="Number of workers.")
     @click.option("--host", default="0.0.0.0", help="Server host.")
-    @click.argument("config_dir")
-    def server_prod(port: int, workers: int, host: str, config_dir: str):
+    @click.argument("base_dir")
+    def server_prod(port: int, workers: int, host: str, base_dir: str):
 
-        config_dir = _get_config_dir(config_dir)
-        os.environ["BASE_DIR"] = config_dir
+        base_dir = _get_base_dir(base_dir)
+        os.environ["BASE_DIR"] = base_dir
 
         cmd = [
             # Notice that this can not just be "gunicorn" as it is a new subprocess being started
@@ -100,23 +99,23 @@ else:
 @click.option("--port", default=5555, help="Server port.")
 @click.option("--workers", default=1, help="Number of workers.")
 @click.option("--host", default="0.0.0.0", help="Server host.")
-@click.argument("config_dir")
-def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True):
+@click.argument("base_dir")
+def server_dev(port: int, workers: int, host: str, base_dir: str, reload=True):
 
-    config_dir = _get_config_dir(config_dir)
-    os.environ["BASE_DIR"] = config_dir
+    base_dir = _get_base_dir(base_dir)
+    os.environ["BASE_DIR"] = base_dir
 
     reload = True
     reload_dirs = ["."]
 
     # Prevent watching giant directories if dir is not 'source'
     if not _is_source():
-        if not os.path.exists(config_dir):
+        if not os.path.exists(base_dir):
             logger.info("Config dir is not set. No reloading of source code.")
             reload = False
             reload_dirs = []
         else:
-            reload_dirs = [config_dir]
+            reload_dirs = [base_dir]
 
     cmd = [
         sys.executable,
@@ -148,10 +147,10 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
 @cli.command(help="Execute a script within a config context.")
 @click.option("-s", "--script", help="Path to the script to execute.", required=True)
 @click.option("-c", "--config-dir", default="local", help="Specify a path to a config directory.", required=False)
-def exec(config_dir: str, script: str):
+def exec(base_dir: str, script: str):
 
-    config_dir = _get_config_dir(config_dir)
-    os.environ["BASE_DIR"] = config_dir
+    base_dir = _get_base_dir(base_dir)
+    os.environ["BASE_DIR"] = base_dir
 
     python_executable = sys.executable
     cmd = [
@@ -172,11 +171,11 @@ def server_secret(length):
     print(secrets.token_hex(length))
 
 
-def run_tests(config_dir, tests_path_pattern):
+def run_tests(base_dir, tests_path_pattern):
     os.environ["TEST"] = "TRUE"
-    if config_dir:
-        config_dir = config_dir.rstrip("/\\")
-        os.environ["BASE_DIR"] = config_dir
+    if base_dir:
+        base_dir = base_dir.rstrip("/\\")
+        os.environ["BASE_DIR"] = base_dir
 
     if not os.getenv("BASE_DIR"):
         logger.info("No config dir set. Running with default config dir.")

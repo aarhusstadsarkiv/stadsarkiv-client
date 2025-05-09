@@ -1,7 +1,7 @@
 """
 This file exposes 'get_base_dir_path' and 'get_data_dir_path' to the rest of the application.
 
-The 'BASE_DIR' is required as argument to the stadsarkiv-client CLI. In this dir
+The 'BASE_DIR' is required as argument to the Maya CLI. In this dir
 it is expected that settings, logs, hooks, plugins, sqlite3 databases etc. exists.
 
 It is then added to the environment when the server is started.
