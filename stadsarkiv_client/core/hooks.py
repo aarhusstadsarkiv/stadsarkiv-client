@@ -2,7 +2,7 @@ from starlette.requests import Request
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.hooks_spec import HooksSpec
 from stadsarkiv_client.hooks import Hooks
-from stadsarkiv_client.core.args import get_local_config_dir
+from stadsarkiv_client.core.args import get_base_dir_path
 from stadsarkiv_client.core.module_loader import load_module_attr
 import typing
 import os
@@ -13,7 +13,7 @@ log = get_log()
 
 
 # On startup log if hooks will be loaded
-hooks_path = get_local_config_dir("hooks.py")
+hooks_path = get_base_dir_path("hooks.py")
 if os.path.exists(hooks_path):
     log.debug(f"Local hooks exists. Will load local hooks {hooks_path}")
 else:
@@ -36,7 +36,7 @@ def get_hooks(request: typing.Optional[Request] = None) -> HooksSpec:
     if not request:
         request = _get_mock_request()
 
-    config_dir = get_local_config_dir()
+    config_dir = get_base_dir_path()
     hooks_path = os.path.join(config_dir, "hooks.py")
 
     try:

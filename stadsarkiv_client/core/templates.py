@@ -13,7 +13,7 @@ from stadsarkiv_client.core.translate import translate
 from stadsarkiv_client.core.dynamic_settings import get_setting
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.date_format import date_format
-from stadsarkiv_client.core.args import get_local_config_dir
+from stadsarkiv_client.core.args import get_base_dir_path
 import json
 import re
 import markdown
@@ -26,7 +26,7 @@ log = get_log()
 Get a list of template directories.
 """
 template_dirs = []
-local_templates_dir = get_local_config_dir("templates")
+local_templates_dir = get_base_dir_path("templates")
 if os.path.exists(local_templates_dir):
     template_dirs.append(local_templates_dir)
     log.debug(f"Loaded local templates: {local_templates_dir}")

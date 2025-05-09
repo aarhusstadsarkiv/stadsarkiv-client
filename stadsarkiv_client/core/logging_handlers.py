@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 from concurrent_log_handler import ConcurrentRotatingFileHandler
 import warnings
-from stadsarkiv_client.core.args import get_data_dir
+from stadsarkiv_client.core.args import get_data_dir_path
 import json
 
 MAX_LOG_SIZE = 100 * 1024 * 1024
@@ -60,7 +60,7 @@ class JsonFormatter(logging.Formatter):
 
 
 def generate_log_dir():
-    log_dir = get_data_dir("logs")
+    log_dir = get_data_dir_path("logs")
     os.makedirs(log_dir, exist_ok=True)
 
 

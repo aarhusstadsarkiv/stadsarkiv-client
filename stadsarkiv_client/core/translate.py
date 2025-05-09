@@ -7,7 +7,7 @@ Exposes a translate function that is used in the jinja2 template engine and in p
 """
 
 from stadsarkiv_client.core.dynamic_settings import settings
-from stadsarkiv_client.core.args import get_local_config_dir
+from stadsarkiv_client.core.args import get_base_dir_path
 from stadsarkiv_client.core.logging import get_log
 import yaml
 from pathlib import Path
@@ -29,10 +29,10 @@ with open(en_path, "r", encoding="utf-8") as stream:
 
 # load local yml file if it exists
 language_local = {}
-if os.path.exists(get_local_config_dir("language.yml")):
-    with open(get_local_config_dir("language.yml"), "r", encoding="utf-8") as stream:
+if os.path.exists(get_base_dir_path("language.yml")):
+    with open(get_base_dir_path("language.yml"), "r", encoding="utf-8") as stream:
         language_local = yaml.safe_load(stream)
-        log.debug(f"Loaded local language file: {get_local_config_dir('language.yml')}")
+        log.debug(f"Loaded local language file: {get_base_dir_path('language.yml')}")
 
 
 def _get_translation_override(key: str) -> str:

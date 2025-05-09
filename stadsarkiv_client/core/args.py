@@ -1,21 +1,22 @@
 """
-This file exposes get_local_config_dir() and get_data_dir to the rest of the application.
+This file exposes 'get_base_dir_path' and 'get_data_dir_path' to the rest of the application.
 
-The config-dir can be set on the command line with --config-dir
-It is then added to the environment. This function will return the value of CONFIG_DIR
-or "local" if it is not set.
+The 'BASE_DIR' is required as argument to the stadsarkiv-client CLI. In this dir
+it is expected that settings, logs, hooks, plugins, sqlite3 databases etc. exists.
 
-The data-dir can be set on the command line with --data-dir and is added to the environment.
-This function will return the value of DATA_DIR or "data" if it is not set.
+It is then added to the environment when the server is started.
+
+The get_data_dir() function will return the path to the data directory.
+The data directory is a subdirectory of the base directory.
+
 """
 
 import os
 
 
-def get_local_config_dir(*sub_dirs: str) -> str:
+def get_base_dir_path(*sub_dirs: str) -> str:
     """
-    Get a config dir from command line arguments.
-    If it is not set, return "local".
+    Get a base dir path
     """
     # Get env CONFIG_DIR from os. This is set in the command line arguments to the server.
     config_dir = os.environ.get("CONFIG_DIR")
@@ -30,12 +31,11 @@ def get_local_config_dir(*sub_dirs: str) -> str:
     return paths
 
 
-def get_data_dir(*sub_dirs: str) -> str:
+def get_data_dir_path(*sub_dirs: str) -> str:
     """
-    Get a data dir from command line arguments.
-    If it is not set, return "data".
+    Get a data dir path
     """
-    config_dir = get_local_config_dir()
+    config_dir = get_base_dir_path()
     local_data_dir = os.path.join(config_dir, "data")
 
     return os.path.join(local_data_dir, *sub_dirs)

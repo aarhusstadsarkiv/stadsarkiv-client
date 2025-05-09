@@ -8,7 +8,7 @@ import logging
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core import logging_handlers
 import warnings
-from stadsarkiv_client.core.args import get_data_dir
+from stadsarkiv_client.core.args import get_data_dir_path
 
 
 logging_handlers.generate_log_dir()
@@ -23,7 +23,7 @@ if not len(log.handlers):
 
     if "rotating_file" in settings["log_handlers"]:
         log.debug("Logging to rotating file enabled")
-        main_file_name = get_data_dir("logs", "main.log")
+        main_file_name = get_data_dir_path("logs", "main.log")
         fh = logging_handlers.get_rotating_json_file_handler(level, file_name=main_file_name)
         log.addHandler(fh)
 
@@ -37,7 +37,7 @@ level = settings["log_level"]
 access_log.setLevel(level)
 
 if not len(access_log.handlers):
-    access_file_name = get_data_dir("logs", "access.log")
+    access_file_name = get_data_dir_path("logs", "access.log")
     fh = logging_handlers.get_rotating_file_handler(level, file_name=access_file_name)
     access_log.addHandler(fh)
 

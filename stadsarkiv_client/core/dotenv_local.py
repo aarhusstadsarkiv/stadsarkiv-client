@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import os
 from pathlib import Path
 from stadsarkiv_client.core.logging_handlers import get_init_logger
-from stadsarkiv_client.core.args import get_local_config_dir
+from stadsarkiv_client.core.args import get_base_dir_path
 
 
 log = get_init_logger()
@@ -23,7 +23,7 @@ def load():
     load_dotenv(env_dist)
     log.info("Loaded .env.dist file")
 
-    local_dot_env = get_local_config_dir(".env")
+    local_dot_env = get_base_dir_path(".env")
 
     if os.path.exists(local_dot_env):
         load_dotenv(local_dot_env, override=True)

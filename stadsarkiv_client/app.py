@@ -9,7 +9,7 @@ from stadsarkiv_client.routes import get_app_routes
 from stadsarkiv_client.core.middleware import middleware
 from stadsarkiv_client.core.exception_handlers import exception_handlers
 from stadsarkiv_client.core.hooks import get_hooks
-from stadsarkiv_client.core.args import get_data_dir
+from stadsarkiv_client.core.args import get_data_dir_path
 from stadsarkiv_client.core.scheduler import scheduler
 import contextlib
 import os
@@ -28,7 +28,7 @@ async def lifespan(app):
 
         sys.path.append(".")
         log = get_log()
-        data_dir = get_data_dir()
+        data_dir = get_data_dir_path()
 
         if not os.path.exists(data_dir):
             log.info(f"Creating data directory: {data_dir}")

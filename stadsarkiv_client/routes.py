@@ -25,7 +25,7 @@ from stadsarkiv_client.endpoints import (
 import os
 from stadsarkiv_client.core.dynamic_settings import settings
 from stadsarkiv_client.core.multi_static import MultiStaticFiles
-from stadsarkiv_client.core.args import get_local_config_dir
+from stadsarkiv_client.core.args import get_base_dir_path
 from stadsarkiv_client.core.logging import get_log
 from stadsarkiv_client.core.module_loader import load_submodule_from_file
 from typing import Any
@@ -40,7 +40,7 @@ def _get_static_dirs() -> list:
     """
 
     static_dir_list = []
-    local_static_dir = get_local_config_dir("static")
+    local_static_dir = get_base_dir_path("static")
     if os.path.exists(local_static_dir):
         static_dir_list.append(local_static_dir)
         log.debug(f"Loaded local static files: {local_static_dir}")
@@ -239,7 +239,7 @@ routes.append(
 
 
 def init_module_routes(default_routes: list):
-    module_dir = get_local_config_dir("mods")
+    module_dir = get_base_dir_path("mods")
     if os.path.exists(module_dir):
 
         files = os.listdir(module_dir)
@@ -250,7 +250,7 @@ def init_module_routes(default_routes: list):
             module_path = os.path.join("mods", file_name)
             try:
                 module_name = os.path.splitext(file_name)[0]
-                get_routes: list = load_submodule_from_file(module_name, "get_routes", get_local_config_dir(module_path))
+                get_routes: list = load_submodule_from_file(module_name, "get_routes", get_base_dir_path(module_path))
 
                 if callable(get_routes):
 
