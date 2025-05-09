@@ -3,13 +3,13 @@ import pickle
 import os
 
 from maya.core.logging import get_log
+from maya.core.args import get_data_dir_path
 
 
 log = get_log()
 
 # Set cache dir
-config_dir = os.environ["CONFIG_DIR"]
-CACHE_DIR = os.path.join(config_dir, "data", "cache")
+CACHE_DIR = get_data_dir_path("cache")
 
 if not os.path.exists(CACHE_DIR):
     os.makedirs(CACHE_DIR)
