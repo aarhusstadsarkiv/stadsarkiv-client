@@ -1,7 +1,7 @@
-from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.core.hooks_spec import HooksSpec
-from stadsarkiv_client.records import record_utils
-from stadsarkiv_client.records import record_alter
+from maya.core.logging import get_log
+from maya.core.hooks_spec import HooksSpec
+from maya.records import record_utils
+from maya.records import record_alter
 import json
 
 log = get_log()

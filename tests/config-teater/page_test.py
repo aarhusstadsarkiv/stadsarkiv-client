@@ -2,8 +2,8 @@
 Test of some modified resources on "teater" client.
 """
 
-from stadsarkiv_client.app import app
-from stadsarkiv_client.core.logging import get_log
+from maya.app import app
+from maya.core.logging import get_log
 from starlette.testclient import TestClient
 import unittest
 

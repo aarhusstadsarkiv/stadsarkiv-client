@@ -1,8 +1,8 @@
-from stadsarkiv_client.core.dynamic_settings import init_settings
-from stadsarkiv_client.core.logging import get_log
+from maya.core.dynamic_settings import init_settings
+from maya.core.logging import get_log
 import unittest
 from unittest.mock import patch
-from stadsarkiv_client.core.date_format import timezone_alter, date_format, date_format_day, _sanitize_date_string
+from maya.core.date_format import timezone_alter, date_format, date_format_day, _sanitize_date_string
 
 init_settings()
 log = get_log()

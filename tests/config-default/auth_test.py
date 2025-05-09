@@ -1,10 +1,10 @@
-from stadsarkiv_client.core.dynamic_settings import settings, init_settings
-from stadsarkiv_client.app import app
-from stadsarkiv_client.core.logging import get_log
+from maya.core.dynamic_settings import settings, init_settings
+from maya.app import app
+from maya.core.logging import get_log
 from starlette.testclient import TestClient
-from stadsarkiv_client.core.migration import Migration
-from stadsarkiv_client.migrations.default import migrations_default
-from stadsarkiv_client.migrations.orders import migrations_orders
+from maya.core.migration import Migration
+from maya.migrations.default import migrations_default
+from maya.migrations.orders import migrations_orders
 import unittest
 
 init_settings()

@@ -22,10 +22,10 @@ import sys
 
 sys.path.append(".")
 
-from stadsarkiv_client.core.dynamic_settings import settings
-from stadsarkiv_client.core.migration import Migration
-from stadsarkiv_client.migrations.errors import migrations_error_log
-from stadsarkiv_client.core.logging import get_log
+from maya.core.dynamic_settings import settings
+from maya.core.migration import Migration
+from maya.migrations.errors import migrations_error_log
+from maya.core.logging import get_log
 import os
 
 # Check if the environment variable CONFIG_DIR is set

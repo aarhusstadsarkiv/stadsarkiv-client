@@ -1,5 +1,5 @@
-from stadsarkiv_client.core.hooks_spec import HooksSpec
-from stadsarkiv_client.records.record_utils import is_curator, is_collection
+from maya.core.hooks_spec import HooksSpec
+from maya.records.record_utils import is_curator, is_collection
 
 
 class Hooks(HooksSpec):

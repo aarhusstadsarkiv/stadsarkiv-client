@@ -1,10 +1,10 @@
 import asyncio
-from stadsarkiv_client.core.dynamic_settings import init_settings
-from stadsarkiv_client.core.logging import get_log
+from maya.core.dynamic_settings import init_settings
+from maya.core.logging import get_log
 import unittest
-from stadsarkiv_client.core.migration import Migration
-from stadsarkiv_client.migrations.tests import migrations_tests
-from stadsarkiv_client.database import crud, utils
+from maya.core.migration import Migration
+from maya.migrations.tests import migrations_tests
+from maya.database import crud, utils
 import os
 
 init_settings()

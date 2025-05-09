@@ -5,7 +5,7 @@ line-length = 140
 exclude = [ "venv", ".venv", "generate_openaws_client", "tests", "example-config", "build", "bin-local",]
 
 [tool.bump_version]
-version_file = "stadsarkiv_client/__init__.py"
+version_file = "maya/__init__.py"
 
 [tool.bump_version.replace_patterns.pip]
 file = "example-config-demo/docs/README.md"

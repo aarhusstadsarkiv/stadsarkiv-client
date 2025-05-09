@@ -1,16 +1,16 @@
-from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.core.hooks_spec import HooksSpec
-from stadsarkiv_client.core.api_error import OpenAwsException
-from stadsarkiv_client.records import record_utils
-from stadsarkiv_client.records import record_alter
-from stadsarkiv_client.core import api
+from maya.core.logging import get_log
+from maya.core.hooks_spec import HooksSpec
+from maya.core.api_error import OpenAwsException
+from maya.records import record_utils
+from maya.records import record_alter
+from maya.core import api
 import json
-from stadsarkiv_client.database.crud_default import database_url
-from stadsarkiv_client.database.crud import CRUD
-from stadsarkiv_client.database import crud_orders
-from stadsarkiv_client.database.utils import DatabaseConnection
-from stadsarkiv_client.database.cache import DatabaseCache
-from stadsarkiv_client.core import csv_utils
+from maya.database.crud_default import database_url
+from maya.database.crud import CRUD
+from maya.database import crud_orders
+from maya.database.utils import DatabaseConnection
+from maya.database.cache import DatabaseCache
+from maya.core import csv_utils
 
 
 log = get_log()

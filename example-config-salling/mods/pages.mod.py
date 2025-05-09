@@ -2,10 +2,10 @@ from starlette.routing import Route
 from starlette.requests import Request
 
 from starlette.exceptions import HTTPException
-from stadsarkiv_client.core.templates import templates
-from stadsarkiv_client.core.context import get_context
+from maya.core.templates import templates
+from maya.core.context import get_context
 import os
-from stadsarkiv_client.core.logging import get_log
+from maya.core.logging import get_log
 import json
 import random
 

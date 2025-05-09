@@ -1,8 +1,8 @@
-from stadsarkiv_client.core.dynamic_settings import init_settings
-from stadsarkiv_client.core.logging import get_log
+from maya.core.dynamic_settings import init_settings
+from maya.core.logging import get_log
 import unittest
-from stadsarkiv_client.core.migration import Migration
-from stadsarkiv_client.migrations.orders import migrations_orders
+from maya.core.migration import Migration
+from maya.migrations.orders import migrations_orders
 
 init_settings()
 log = get_log()

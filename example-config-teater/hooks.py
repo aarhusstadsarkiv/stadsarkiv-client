@@ -1,8 +1,8 @@
-from stadsarkiv_client.core.logging import get_log
-from stadsarkiv_client.core.hooks_spec import HooksSpec
-from stadsarkiv_client.core import api
-from stadsarkiv_client.core.relations import format_relations, sort_data
-from stadsarkiv_client.endpoints.endpoints_search import get_search_context_values, set_response_cookie, get_size_sort_view
+from maya.core.logging import get_log
+from maya.core.hooks_spec import HooksSpec
+from maya.core import api
+from maya.core.relations import format_relations, sort_data
+from maya.endpoints.endpoints_search import get_search_context_values, set_response_cookie, get_size_sort_view
 import asyncio
 from starlette.responses import HTMLResponse
 
