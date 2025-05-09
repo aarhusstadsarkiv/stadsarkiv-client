@@ -18,10 +18,14 @@ def get_local_config_dir(*sub_dirs: str) -> str:
     If it is not set, return "local".
     """
     # Get env CONFIG_DIR from os. This is set in the command line arguments to the server.
-    local_config_dir = os.environ.get("CONFIG_DIR", "local")
+    config_dir = os.environ.get("CONFIG_DIR")
+
+    # raise an error if the config dir is not set
+    if config_dir is None:
+        raise ValueError("CONFIG_DIR is not set. Please set it to a valid directory.")
 
     # join the sub_dirs to the local_config_dir
-    paths = os.path.join(local_config_dir, *sub_dirs)
+    paths = os.path.join(config_dir, *sub_dirs)
 
     return paths
 
@@ -31,11 +35,7 @@ def get_data_dir(*sub_dirs: str) -> str:
     Get a data dir from command line arguments.
     If it is not set, return "data".
     """
-    # Get env DATA_DIR from os. This is set in the command line arguments to the server.
+    config_dir = get_local_config_dir()
+    local_data_dir = os.path.join(config_dir, "data")
 
-    local_data_dir = os.environ.get("DATA_DIR", "data")
-
-    # join the sub_dirs to the local_config_dir
-    paths = os.path.join(local_data_dir, *sub_dirs)
-
-    return paths
+    return os.path.join(local_data_dir, *sub_dirs)
