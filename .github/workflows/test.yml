@@ -36,7 +36,7 @@ jobs:
         run: venv/bin/pip install -r requirements.txt
       
       - name: Run tests
-        run: venv/bin/python -m stadsarkiv_client source-test
+        run: venv/bin/python -m maya source-test
         env:
           API_KEY: ${{ secrets.API_KEY }}
         
