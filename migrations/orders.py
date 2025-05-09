@@ -19,9 +19,9 @@ from maya.core.logging import get_log
 import os
 
 # Check if the environment variable CONFIG_DIR is set
-if "CONFIG_DIR" not in os.environ:
+if "BASE_DIR" not in os.environ:
     print("Environment variable CONFIG_DIR is not set. E.g. set it like this:")
-    print("export CONFIG_DIR=example-config-aarhus")
+    print("export BASE_DIR=example-config-aarhus")
     exit(1)
 
 log = get_log()
