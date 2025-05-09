@@ -36,13 +36,13 @@ def get_hooks(request: typing.Optional[Request] = None) -> HooksSpec:
     if not request:
         request = _get_mock_request()
 
-    config_dir = get_base_dir_path()
-    hooks_path = os.path.join(config_dir, "hooks.py")
+    base_dir = get_base_dir_path()
+    hooks_path = get_base_dir_path("hooks.py")
 
     try:
         if os.path.exists(hooks_path):
-            if config_dir not in sys.path:
-                sys.path.insert(0, config_dir)
+            if base_dir not in sys.path:
+                sys.path.insert(0, base_dir)
 
             HooksLocal = load_module_attr("hooks", "Hooks")
             return HooksLocal(request)

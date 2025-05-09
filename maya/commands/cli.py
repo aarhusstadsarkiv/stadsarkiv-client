@@ -74,7 +74,7 @@ else:
     def server_prod(port: int, workers: int, host: str, config_dir: str):
 
         config_dir = _get_config_dir(config_dir)
-        os.environ["CONFIG_DIR"] = config_dir
+        os.environ["BASE_DIR"] = config_dir
 
         cmd = [
             # Notice that this can not just be "gunicorn" as it is a new subprocess being started
@@ -104,7 +104,7 @@ else:
 def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True):
 
     config_dir = _get_config_dir(config_dir)
-    os.environ["CONFIG_DIR"] = config_dir
+    os.environ["BASE_DIR"] = config_dir
 
     reload = True
     reload_dirs = ["."]
@@ -151,7 +151,7 @@ def server_dev(port: int, workers: int, host: str, config_dir: str, reload=True)
 def exec(config_dir: str, script: str):
 
     config_dir = _get_config_dir(config_dir)
-    os.environ["CONFIG_DIR"] = config_dir
+    os.environ["BASE_DIR"] = config_dir
 
     python_executable = sys.executable
     cmd = [
@@ -176,12 +176,12 @@ def run_tests(config_dir, tests_path_pattern):
     os.environ["TEST"] = "TRUE"
     if config_dir:
         config_dir = config_dir.rstrip("/\\")
-        os.environ["CONFIG_DIR"] = config_dir
+        os.environ["BASE_DIR"] = config_dir
 
-    if not os.getenv("CONFIG_DIR"):
+    if not os.getenv("BASE_DIR"):
         logger.info("No config dir set. Running with default config dir.")
     else:
-        logger.info(f"Running tests with config dir: {os.getenv('CONFIG_DIR')}")
+        logger.info(f"Running tests with config dir: {os.getenv('BASE_DIR')}")
 
     # Get test files
     # Note: Run with sys.executable in order use the same python version as the current process

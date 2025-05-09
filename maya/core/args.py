@@ -18,15 +18,15 @@ def get_base_dir_path(*sub_dirs: str) -> str:
     """
     Get a base dir path
     """
-    # Get env CONFIG_DIR from os. This is set in the command line arguments to the server.
-    config_dir = os.environ.get("CONFIG_DIR")
+    # Get env BASE_DIR from os. This is set in the command line arguments to the server.
+    base_dir = os.environ.get("BASE_DIR")
 
     # raise an error if the config dir is not set
-    if config_dir is None:
-        raise ValueError("CONFIG_DIR is not set. Please set it to a valid directory.")
+    if base_dir is None:
+        raise ValueError("BASE_DIR is not set. Please set it to a valid directory.")
 
     # join the sub_dirs to the local_config_dir
-    paths = os.path.join(config_dir, *sub_dirs)
+    paths = os.path.join(base_dir, *sub_dirs)
 
     return paths
 
@@ -35,7 +35,7 @@ def get_data_dir_path(*sub_dirs: str) -> str:
     """
     Get a data dir path
     """
-    config_dir = get_base_dir_path()
-    local_data_dir = os.path.join(config_dir, "data")
+    base_dir = get_base_dir_path()
+    local_data_dir = os.path.join(base_dir, "data")
 
     return os.path.join(local_data_dir, *sub_dirs)
