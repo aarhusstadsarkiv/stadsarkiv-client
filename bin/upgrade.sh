@@ -37,6 +37,7 @@ git pull
 git checkout $install_tag
 
 # Activate virtual environment and install requirements
-./venv/bin/pip install -r requirements.txt
+.venv/bin/activate
+uv pip install -r requirements.txt
 
-echo "The module has been successfully upgraded to the latest tag."
+echo "Maya has been successfully upgraded to the latest tag."
