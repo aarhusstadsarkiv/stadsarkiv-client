@@ -176,3 +176,4 @@ data
 data-local
 !tests/data
 .DS_Store
+.vscode
