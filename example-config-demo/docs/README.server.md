@@ -2,7 +2,7 @@
 
 Create a systemd service file for the stadsarkiv-client. E.g.:
 
-    sudo vim /etc/systemd/system/stadsarkiv-client.service
+    sudo vim /etc/systemd/system/maya.service
 
 ```
 [Unit]
@@ -16,7 +16,7 @@ Type=simple
 # run as
 User=www-data
 WorkingDirectory=/var/www/stadsarkiv-client
-ExecStart=/var/www/stadsarkiv-client/venv/bin/python -m stadsarkiv_client server-prod --port 5555
+ExecStart=/var/www/stadsarkiv-client/venv/bin/python -m maya server-prod maya_root --port 5555
 
 # restart on failure
 Restart=on-failure
@@ -29,15 +29,15 @@ WantedBy=multi-user.target
 
 ## enable
 
-    sudo systemctl enable stadsarkiv-client.service
+    sudo systemctl enable maya.service
 
 ## disable
 
-    sudo systemctl disable stadsarkiv-client.service
+    sudo systemctl disable maya.service
 
 ## remove
 
-    sudo rm /etc/systemd/system/stadsarkiv-client.service 
+    sudo rm /etc/systemd/system/maya.service 
 
 ## reload systemd
 
@@ -47,15 +47,15 @@ E.g. you can edit the service file, but then remember to reload systemd.
 
 ## start, stop or restart a service
     
-    sudo systemctl start stadsarkiv-client.service
-    sudo systemctl stop stadsarkiv-client.service
-    sudo systemctl restart stadsarkiv-client.service
+    sudo systemctl start maya.service
+    sudo systemctl stop maya.service
+    sudo systemctl restart maya.service
 
 ## status of a service
 
 E.g. you want to see the main process id of the service.
     
-    sudo systemctl status stadsarkiv-client.service
+    sudo systemctl status maya.service
 
 # Upgrade and restart service
 
@@ -67,7 +67,7 @@ Run it like this: `./bin/upgrade.sh`
 
 Then restart the service.
 
-    sudo systemctl restart stadsarkiv-client.service
+    sudo systemctl restart maya.service
 
 ## Multiple services
 
@@ -93,4 +93,4 @@ sudo service stadsarkiv-client-demo-2 restart
 
 You can see the logs of the service with:
 
-    sudo journalctl -u stadsarkiv-client.service
+    sudo journalctl -u maya.service

@@ -1,24 +1,24 @@
-# stadsarkiv-client
+# My Achieve Your achieve (MAYA)
 
-The `stadsarkiv-client` is used to make web clients 
+`maya` is used to make web clients 
 that can interact with aarhus stadsarkivs API service. Aarhus stadsarkiv
 contains a lot of public archives and the API service is used to search
 and retrieve data from the archives.
 
-The following describes how to install and use the stadsarkiv-client.
+The following describes how to install and use `maya`.
 
 ## development
 
-    git clone git@github.com:aarhusstadsarkiv/stadsarkiv-client.git
-    cd stadsarkiv-client
-    virtualenv venv # Python >= 3.10.6 should work
-    source venv/bin/activate
+    git clone git@github.com:aarhusstadsarkiv/stadsarkiv-client.git maya
+    cd maya
+    uv venv # Python >= 3.10.6 should work
+    source .venv/bin/activate
 
 Install requirements:
 
 Using pip
 
-    pip install -r requirements.txt
+    uv pip install -r requirements.txt
 
 You may also need to install danish language packs
 
@@ -27,42 +27,42 @@ You may also need to install danish language packs
 
 ### Run for development
 
-Install stadsarkiv-client and make the code "editable":
+Install `maya` and make the code "editable":
 
-    pip install -e .
+    uv pip install -e .
 
 Show all commands: 
 
-    stadsarkiv-client
+    maya
 
 Run dev server with a config dir `example-config-aarhus`: 
 
-    stadsarkiv-client server-dev -c example-config-aarhus
+    maya server-dev example-config-aarhus
 
 In order to perform api-calls you will need a valid `API_KEY` which you can get from aarhus stadsarkiv.
 
-E.g. create a folder like `local` and add a `.env` file with the following content:
+Create a folder that can be named e.g. `maya_base`. Inside the `maya_base` folder add a `.env` file with the following content:
 
     API_KEY=your-api-key
 
 Then you can run the server with the following command:
 
-    stadsarkiv-client server-dev -c local
+    maya server-dev maya_base
 
 You may also just export the `API_KEY`:
 
     export API_KEY=your-api-key
-    stadsarkiv-client server-dev
+    maya server-dev maya_base
 
 ### Fix code
 
 Run black, mypy and flake8:
 
-    stadsarkiv-client source-fix
+    maya source-fix
 
 ### Run tests
 
-    stadsarkiv-client source-test
+    maya source-test
 
 ### Tag a release
 
