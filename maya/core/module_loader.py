@@ -58,7 +58,6 @@ def load_module_attr(module_name: str, attr_name: str):
 
     Returns:
     - The specified attribute from the imported module.
-
     """
     submodule = importlib.import_module(module_name)
     attr = getattr(submodule, attr_name)
