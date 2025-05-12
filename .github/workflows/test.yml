@@ -29,13 +29,16 @@ jobs:
       - name: Install uv
         run: pip install uv
 
+      - name: Create virtual environment with uv
+        run: uv venv
+
       - name: Install dependencies
-        run: uv pip install -r requirements.txt
+        run: .venv/bin/uv pip install -r requirements.txt
 
       - name: Run tests
-        run: uv pip run python -m maya source-test
+        run: .venv/bin/python -m maya source-test
         env:
           API_KEY: ${{ secrets.API_KEY }}
 
       - name: Run mypy
-        run: uv pip run mypy --config-file pyproject.toml .
+        run: .venv/bin/mypy --config-file pyproject.toml .
