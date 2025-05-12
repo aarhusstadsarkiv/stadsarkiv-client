@@ -1,7 +1,3 @@
-"""
-Loads modules and submodules from files.
-"""
-
 import importlib
 import importlib.util
 import os
@@ -9,9 +5,14 @@ import os
 
 def load_module_from_file(module_name: str, file_path: str):
     """
-    Loads a module from a file
-    module_name is a unique name for the module. And a internal reference to the module.
-    the module is executed when loaded
+    Loads a module from a Python file.
+
+    Parameters:
+    - module_name: A unique name to register the module internally.
+    - file_path: The path to the Python file containing the module.
+
+    Returns:
+    - The loaded module object.
     """
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"File path not found: {file_path}")
@@ -29,23 +30,34 @@ def load_module_from_file(module_name: str, file_path: str):
     return module
 
 
-def load_submodule_from_file(module_name: str, submodule_name: str, file_path: str):
+def load_attr_from_file(module_name: str, attr_name: str, file_path: str):
     """
-    Loads a submodule from a file
-    module_name is a unique name for the module. And a internal reference to the module.
-    submodule_name is the name of the submodule that should be loaded from the module
-    e.g. a function or a class inside the file
+    Loads an attribute (e.g., a class or function) from a module file.
+
+    Parameters:
+    - module_name: A unique name for the module used internally.
+    - attr_name: The name of the attribute to load from the module.
+    - file_path: The path to the Python file containing the module.
+
+    Returns:
+    - The specified attribute from the loaded module.
     """
     module = load_module_from_file(module_name, file_path)
-    submodule = getattr(module, submodule_name)
+    attr = getattr(module, attr_name)
 
-    return submodule
+    return attr
 
 
 def load_module_attr(module_name: str, attr_name: str):
     """
-    Loads an attribute from a module
-    This is more secure because this methods does not execute the module
+    Loads an attribute from an already importable module (without executing its source file directly).
+
+    Parameters:
+    - module_name: The importable module name (as used with `import`).
+    - attr_name: The name of the attribute to retrieve from the module.
+
+    Returns:
+    - The specified attribute from the imported module.
     """
     submodule = importlib.import_module(module_name)
     attr = getattr(submodule, attr_name)

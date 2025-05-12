@@ -14,7 +14,7 @@ from maya.settings import settings
 from maya.settings_facets import settings_facets
 from maya.core.args import get_base_dir_path
 from maya.core.logging import get_log
-from maya.core.module_loader import load_submodule_from_file
+from maya.core.module_loader import load_attr_from_file
 import importlib
 import os
 import yaml
@@ -45,7 +45,7 @@ def _load_py_settings(file_name):
     if os.path.exists(get_base_dir_path(file_name)):
         # load from .py file
         try:
-            settings_config = load_submodule_from_file("settings_config", "settings", get_base_dir_path(file_name))
+            settings_config = load_attr_from_file("settings_config", "settings", get_base_dir_path(file_name))
             settings.update(settings_config)
             log.debug(f"Local {file_name} loaded: {get_base_dir_path(file_name)}")
         except Exception:
@@ -78,7 +78,7 @@ if os.path.exists(get_base_dir_path("facets.yml")):
 
 elif os.path.exists(get_base_dir_path("facets.py")):
     try:
-        settings_facets_local = load_submodule_from_file("settings_facets_local", "settings_facets", get_base_dir_path("facets.py"))
+        settings_facets_local = load_attr_from_file("settings_facets_local", "settings_facets", get_base_dir_path("facets.py"))
         settings_facets.update(settings_facets_local)
         log.debug(f"Local facets.py loaded: {get_base_dir_path('facets.py')}")
 
