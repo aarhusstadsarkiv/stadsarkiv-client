@@ -42,7 +42,7 @@ MAIL_MESSAGE_ORDER_READY_TITLE = "Din bestilling er klar til gennemsyn"
 client_url = settings.get("client_url", "")
 
 MAIL_MESSAGE_ORDER_RENEW = f"""Din bestilling har deadline om {utils_orders.DEADLINE_DAYS_RENEWAL} dage.<br>
-Forny dit materiale på <a href="{ client_url }/auth/orders/active">www.aarhusarkivet.dk</a>"""
+Forny dit materiale på <a href="{client_url}/auth/orders/active">www.aarhusarkivet.dk</a>"""
 MAIL_MESSAGE_ORDER_RENEW_TITLE = "Fornyelse af bestilling"
 
 

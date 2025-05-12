@@ -24,7 +24,7 @@ include-package-data = true
 line-length = 140
 
 [tool.mypy]
-exclude = [ "venv", ".venv", "generate_openaws_client", "tests", "example-config", "build", "bin-local",]
+exclude = [ ".venv", "tests", "example-config", "build", "bin-local", "sites",]
 
 [tool.bump_version]
 version_file = "maya/__init__.py"
