@@ -239,15 +239,16 @@ routes.append(
 
 
 def init_module_routes(default_routes: list):
-    module_dir = get_base_dir_path("mods")
+    module_dir = get_base_dir_path("plugins")
     if os.path.exists(module_dir):
 
         files = os.listdir(module_dir)
+        log.info(f"Loading modules from {files}")
         for file_name in files:
-            if ".mod" not in file_name:
+            if ".plugin" not in file_name:
                 continue
 
-            module_path = os.path.join("mods", file_name)
+            module_path = os.path.join(module_dir, file_name)
             try:
                 module_name = os.path.splitext(file_name)[0]
                 get_routes: list = load_submodule_from_file(module_name, "get_routes", get_base_dir_path(module_path))
