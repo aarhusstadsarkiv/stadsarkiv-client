@@ -27,7 +27,7 @@ from maya.core.dynamic_settings import settings
 from maya.core.multi_static import MultiStaticFiles
 from maya.core.args import get_base_dir_path
 from maya.core.logging import get_log
-from maya.core.module_loader import load_submodule_from_file
+from maya.core.module_loader import load_attr_from_file
 from typing import Any
 
 log = get_log()
@@ -239,19 +239,24 @@ routes.append(
 
 
 def init_module_routes(default_routes: list):
-    module_dir = get_base_dir_path("plugins")
-    if os.path.exists(module_dir):
+    plugins_dir = get_base_dir_path("plugins")
+    if os.path.exists(plugins_dir):
 
-        files = os.listdir(module_dir)
-        log.info(f"Loading modules from {files}")
+        files = os.listdir(plugins_dir)
         for file_name in files:
             if ".plugin" not in file_name:
                 continue
 
-            module_path = os.path.join(module_dir, file_name)
+            plugin_path = os.path.join(plugins_dir, file_name)
+            log.info(f"Loading plugin {plugin_path}")
+
             try:
                 module_name = os.path.splitext(file_name)[0]
-                get_routes: list = load_submodule_from_file(module_name, "get_routes", get_base_dir_path(module_path))
+                get_routes: list = load_attr_from_file(
+                    module_name,
+                    "get_routes",
+                    plugin_path,
+                )
 
                 if callable(get_routes):
 

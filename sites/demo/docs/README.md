@@ -62,6 +62,12 @@ Run black, mypy and flake8:
 
 ### Run tests
 
+Before running the tests you must first export a valid `API_KEY`:
+
+    export API_KEY=your-api-key
+
+Then:
+
     maya source-test
 
 ### Tag a release

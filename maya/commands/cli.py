@@ -207,10 +207,10 @@ if _is_source() and os.name != "nt":
     # Only show dev commands if source version
     @cli.command(help="Run all tests.")
     def source_test():
-        run_tests("example-config-demo", "tests/config-default/*.py")
-        run_tests("example-config-aarhus", "tests/config-aarhus/*.py")
-        run_tests("example-config-teater", "tests/config-teater/*.py")
-        run_tests("example-config-demo", "tests/core/*.py")
+        run_tests("sites/demo", "tests/config-default/*.py")
+        run_tests("sites/aarhus", "tests/config-aarhus/*.py")
+        run_tests("sites/teater", "tests/config-teater/*.py")
+        run_tests("sites/demo", "tests/core/*.py")
 
     @cli.command(help="Fix code according to black, flake8, mypy.")
     def source_fix():
