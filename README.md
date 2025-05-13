@@ -2,6 +2,6 @@
 
 ## Documentation
 
-github: [stadsarkiv-client](example-config-demo/docs)
+github: [stadsarkiv-client](sites/demo/docs)
 
 website and demo: [stadsarkiv-client](https://demo.openaws.dk/)
