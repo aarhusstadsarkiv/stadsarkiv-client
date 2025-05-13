@@ -35,8 +35,6 @@ settings: dict[str, typing.Any] = {
     "log_level": log_level,
     "log_handlers": ["stream", "rotating_file"],
     "log_api_calls": False,
-    "sentry_level": logging.INFO,
-    "sentry_event_level": logging.WARNING,
     "cookie": {
         "name": "session",
         "lifetime": 3600,  # seconds
@@ -66,8 +64,8 @@ settings: dict[str, typing.Any] = {
     "facets_enabled": ["content_types", "subjects", "availability", "usability", "dates"],
     "cors_allow_origins": [],
     "allow_robots": False,
-    "allow_user_registration": True,
-    "allow_user_management": True,
+    "allow_user_registration": False,
+    "allow_user_management": False,
     "allow_online_ordering": False,
     "allow_save_bookmarks": False,
     "ignore_record_keys": [],
