@@ -65,13 +65,13 @@ In `language.yml` you may override translations:
 Forgot your password: Glemt password (Fra local language.yml)
 ```
 
-Original language files (and keys) can be found in [stadsarkiv_client/locales/da.yml](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/locales/da.yml)
+Original language files (and keys) can be found in [stadsarkiv_client/locales/da.yml](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/maya/locales/da.yml)
 
 ## Templates
 
 ### Override
 
-Templates that you can override can be found in the [stadsarkiv_client/templates](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/templates) directory. In order to override a template you place your custom template in the `templates` directory. In the `sites/simple` there is a override of `auth/login.html` and `pages/home.html`.
+Templates that you can override can be found in the [stadsarkiv_client/templates](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/maya/templates) directory. In order to override a template you place your custom template in the `templates` directory. In the `sites/simple` there is a override of `auth/login.html` and `pages/home.html`.
 
 As you can see in the home.html template, you may add custom css and js files in the `head` block. This is done like this:
 
@@ -95,7 +95,7 @@ You may add custom pages. In the `sites/simple` there is a custom page `searchgu
 
 ### Override
 
-You may also override any static file found in [stadsarkiv_client/static](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/stadsarkiv_client/static)
+You may also override any static file found in [stadsarkiv_client/static](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/maya/static)
 
 E.g. if you only want to alter the `logo` and the `favicon` you need to create a `static/assets/default_logo.png` and `static/assets/favicon.ico` in your `sites/simple` directory.
 

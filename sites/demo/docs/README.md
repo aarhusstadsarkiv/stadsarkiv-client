@@ -1,4 +1,4 @@
-# My Achieve Your achieve (MAYA)
+# My Achieve Your Achieve (MAYA)
 
 `maya` is used to make web clients 
 that can interact with aarhus stadsarkivs API service. Aarhus stadsarkiv
