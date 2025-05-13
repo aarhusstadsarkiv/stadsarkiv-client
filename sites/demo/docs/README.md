@@ -35,9 +35,9 @@ Show all commands:
 
     maya
 
-Run dev server with a config dir `example-config-aarhus`: 
+Run dev server with a config dir `sites/aarhus`: 
 
-    maya server-dev example-config-aarhus
+    maya server-dev sites/aarhus
 
 In order to perform api-calls you will need a valid `API_KEY` which you can get from aarhus stadsarkiv.
 

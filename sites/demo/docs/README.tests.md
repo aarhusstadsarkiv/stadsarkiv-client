@@ -2,16 +2,18 @@
 
 ## Run all tests
 
-    stadsarkiv-client source-test
+    maya source-test
 
 ## Run a specific test
 
-    # Information about the test
+Specifify that you want to run a test:
+
     export TEST=TRUE
 
-    # Set a config directory - optional
-    # This config directory will be used for the test
-    # Settings in the config directory will override the default settings
-    export CONFIG_DIR=example-config-aarhus
+Set a config directory,
+    
+    export CONFIG_DIR=sites/aarhus
+
+Run the test:
 
     python -m unittest tests/core/orders_test.py 

@@ -79,12 +79,12 @@ E.g.:
 #!/bin/sh
 cd stadsarkiv-client-demo
 ./bin/upgrade.sh
-cp -rf ./example-config-demo/* local/
+cp -rf ./sites/demo/* maya_root/
 sudo service stadsarkiv-client-demo restart
 
 cd stadarkiv-client-demo-2
 ./bin/upgrade.sh
-cp -rf ./example-config-demo-2/* local/
+cp -rf ./sites/demo-2/* maya_root/
 sudo service stadsarkiv-client-demo-2 restart
 
 ```
