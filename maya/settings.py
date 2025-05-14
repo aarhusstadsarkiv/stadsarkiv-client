@@ -37,7 +37,7 @@ settings: dict[str, typing.Any] = {
     "log_api_calls": False,
     "cookie": {
         "name": "session",
-        "lifetime": 3600,  # seconds
+        "lifetime": 3600 * 24,  # seconds
         "httponly": cookie_httponly,
         "secure": cookie_secure,
         "samesite": "lax",
