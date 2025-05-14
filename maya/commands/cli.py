@@ -171,23 +171,21 @@ def server_secret(length):
     print(secrets.token_hex(length))
 
 
-def run_tests(base_dir, tests_path_pattern):
+def run_tests(base_dir: str = "", tests_path_pattern: str = ""):
     os.environ["TEST"] = "TRUE"
     if base_dir:
-        base_dir = base_dir.rstrip("/\\")
         os.environ["BASE_DIR"] = base_dir
-
-    if not os.getenv("BASE_DIR"):
-        logger.info("No config dir set. Running with default config dir.")
-    else:
         logger.info(f"Running tests with config dir: {os.getenv('BASE_DIR')}")
+    else:
+        logger.info("No BASE_DIR is set. Running tests with built-in BASE_DIR and configuration")
 
-    # Get test files
-    # Note: Run with sys.executable in order use the same python version as the current process
+    # Get all test files
     test_files = glob.glob(tests_path_pattern)
     if test_files:
         for test_file in test_files:
             logger.info(f"Running tests in {test_file}")
+
+            # Run with sys.executable in order use the same python version as the current process
             subprocess.run([sys.executable, "-m", "unittest", test_file], check=True)
     else:
         logger.info(f"No tests found matching pattern {tests_path_pattern}")
@@ -210,7 +208,7 @@ if _is_source() and os.name != "nt":
         run_tests("sites/demo", "tests/demo/*.py")
         run_tests("sites/aarhus", "tests/aarhus/*.py")
         run_tests("sites/teater", "tests/teater/*.py")
-        run_tests("sites/demo", "tests/core/*.py")
+        run_tests("", "tests/core/*.py")
 
     @cli.command(help="Fix code according to black, flake8, mypy.")
     def source_fix():
