@@ -20,7 +20,7 @@ async def stories_index(request: Request):
     """
 
     # load imported stories
-    stories_imported = os.path.join(base_dir, "..", "data", "stories_imported.json")
+    stories_imported = os.path.join(base_dir, "..", "data-salling", "stories_imported.json")
     with open(stories_imported, "r") as f:
         stories = json.load(f)
 
@@ -47,7 +47,7 @@ async def stories_index(request: Request):
 
 async def _get_memories(index: list = []) -> list:
     # load imported memories
-    memories_imported = os.path.join(base_dir, "..", "data", "memories_imported.json")
+    memories_imported = os.path.join(base_dir, "..", "data-salling", "memories_imported.json")
     with open(memories_imported, "r") as f:
         memories = json.load(f)
 
@@ -75,7 +75,7 @@ async def memories_index(request: Request):
 
 async def _load_stories():
     # load imported stories
-    stories_imported = os.path.join(base_dir, "..", "data", "stories_imported.json")
+    stories_imported = os.path.join(base_dir, "..", "data-salling", "stories_imported.json")
     with open(stories_imported, "r") as f:
         stories = json.load(f)
         return stories
@@ -149,7 +149,7 @@ async def memory_display(request: Request):
     path = request.path_params["page"]
 
     # load imported stories
-    memories_imported = os.path.join(base_dir, "..", "data", "memories_imported.json")
+    memories_imported = os.path.join(base_dir, "..", "data-salling", "memories_imported.json")
     with open(memories_imported, "r") as f:
         memories = json.load(f)
 
