@@ -1,10 +1,7 @@
-from maya.core.dynamic_settings import settings, init_settings
+from maya.core.dynamic_settings import init_settings
 from maya.app import app
 from maya.core.logging import get_log
 from starlette.testclient import TestClient
-from maya.core.migration import Migration
-from maya.migrations.default import migrations_default
-from maya.migrations.orders import migrations_orders
 import unittest
 
 init_settings()
@@ -21,18 +18,6 @@ correct_login = {
     "password": valid_password,
 }
 incorrect_login = {"username": invalid_user, "password": invalid_password}
-
-
-def generate_test_db():
-
-    migration = Migration(db_path=settings["sqlite3"]["default"], migrations=migrations_default)
-    migration.run_migrations()
-
-    migration = Migration(db_path=settings["sqlite3"]["orders"], migrations=migrations_orders)
-    migration.run_migrations()
-
-
-generate_test_db()
 
 """
 User already exists. At some point we should test with a user that does not exist.
