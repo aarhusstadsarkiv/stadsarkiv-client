@@ -14,7 +14,7 @@ client_email: stadsarkivet@aarhusarkivet.dk
 # If you are running in production, you may set this to True in order to allow robots to index the site
 allow_robots: false
 
-# show the version of the stadarkiv-client
+# show the version of the maya client
 show_version: true
 
 # supported languages are "da" and "en"
@@ -48,7 +48,7 @@ pages:
   - name: home
     title: Hjem
     template: pages/home.html
-    url: "/"
+    url: /
   - name: page_searchguide
     title: Hjælp til søgning
     template: pages/searchguide.html
