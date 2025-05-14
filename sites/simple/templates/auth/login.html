@@ -8,20 +8,57 @@
 
 {% if not is_logged_in %}
 
-<form method="post" action="{{ post_url  }}">
+<h3>Custom headline in custom template</h3>
+
+<form method="post" action="{{ post_url  }}" id="auth_login_post">
     <input type="text" name="email" placeholder="{{ translate('Email') }}" aria-label="Login" autocomplete="email"
         required>
     <input type="password" name="password" placeholder="{{ translate('Password') }}" aria-label="Password"
         autocomplete="current-password" required>
-    <button type="submit" class="contrast">{{ translate('Login') }}</button>
+    <button id="submit" type="submit" class="contrast">{{ translate('Login') }}</button>
     <p>
         <a href="{{ url_for('auth_forgot_password_get') }}">{{ translate('Forgot your password') }}</a>
     </p>
 </form>
 
-<pre>
-    Some custom info about login!
-</pre>
+<div class="loadingspinner hidden"></div>
+
+<script type="module">
+
+    import { asyncLogError } from "/static/js/error.js";
+    import { Requests } from "/static/js/requests.js";
+    import { Flash } from "/static/js/flash.js";
+    import { config } from "/static/js/config.js";
+
+    const spinner = document.querySelector('.loadingspinner');
+    const submit = document.getElementById('submit');
+    submit.addEventListener('click', async function(event) {
+
+        event.preventDefault();
+        spinner.classList.toggle('hidden');
+
+        try {
+            const form = document.getElementById('auth_login_post');
+            const url = form.action;
+            const formData = new FormData(form);
+            const res = await Requests.asyncPost(url, formData);
+
+            if (res.error) {
+                Flash.setMessage(res.message, 'error');
+            } else {
+                window.location.href = res.redirect;
+            }
+            
+        } catch (e) {
+            Flash.setMessage(config.jsExceptionMessage, 'error');
+            asyncLogError(e);
+            console.error(e);
+        } finally {
+            spinner.classList.toggle('hidden');
+        }   
+    });
+
+</script>
 
 {% else %}
     <p>{{ translate('You are already logged in.') }}</p>
