@@ -35,10 +35,11 @@
         spinner.classList.toggle('hidden');
 
         try {
-            const url = '{{ post_url }}';
             const form = document.getElementById('auth_login_post');
+            const url = form.action;
             const formData = new FormData(form);
             const res = await Requests.asyncPost(url, formData);
+
             if (res.error) {
                 Flash.setMessage(res.message, 'error');
             } else {
