@@ -7,10 +7,9 @@ settings: dict[str, typing.Any] = {
     "client_email": "stadsarkivet@aarhusarkivet.dk",
     "language": "da",
     "log_handlers": ["rotating_file"],
-    # "cors_allow_origins": ['https://demo.openaws.dk'],
     "cookie": {
         "name": "session",
-        "lifetime": 3600,  # seconds
+        "lifetime": 3600 * 24,  # seconds
         "httponly": True,
         "secure": True,
         "samesite": "lax",
@@ -22,6 +21,5 @@ settings: dict[str, typing.Any] = {
     "main_menu_system": [
         {"name": "about", "title": "About"},
     ],
-    # "search_base_url": "/search",
     "show_version": True,
 }
