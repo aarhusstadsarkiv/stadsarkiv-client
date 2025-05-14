@@ -1,0 +1,33 @@
+[
+    {
+        "isMain": true,
+        "heading": "PERSONALET PÅ BANEN",
+        "paragraphs": [
+            "Personale i Salling har igennem årene både spillet fodboldkampe indbyrdes mod Salling Aalborg og mod Magasin.",
+            "Fodbold er måske ikke den ting, de fleste forbinder Salling med, men det er en aktivitet, der har været vigtig for personalet igennem mange år. Det begyndte med fodboldkampe mellem afdelingscheferne i Salling og Magasin. Ved åbningen af Salling Aalborg i 1964 kom der også kampe mellem de to Sallingbutikker til."
+        ],
+        "date": "",
+        "recordIds": ["000481954"]
+    },
+    {
+        "isMain": false,
+        "date": "1957",
+        "heading": "Reportage fra fodboldkamp fra 1957",
+        "paragraphs": [
+            "I 1957 spillede Salling mod Magasin. Kampen blev beskrevet grundigt i Sallings personaleblad. Her beskriver artiklen ”Operation Ned med nakken”, hvordan kampen forløb. Kampen sluttede med en sejr til Salling på 7-3. Efter kampen drog spillerne til Frederikshøj Kro, hvor der ventede velfortjente smørrebrød."
+        ],
+        "recordIds": [
+        ]
+    },
+    {
+        "isMain": false,
+        "date": "1958",
+        "heading": "Fodboldkamp mellem Salling og Magasin",
+        "paragraphs": [
+            "Fodboldkampene mellem Salling og Magasin er med tiden blevet en tradition, og de bliver stadig spillet. Kampene blev spillet af afdelingscheferne, og i mange år var Herman Salling også selv på holdet."
+        ],
+        "recordIds": [
+            "000481954"
+        ]
+    }
+]
