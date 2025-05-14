@@ -172,6 +172,12 @@ def server_secret(length):
 
 
 def run_tests(base_dir: str = "", tests_path_pattern: str = ""):
+    """
+    Run tests based on the provided base_dir and tests_path_pattern.
+    - base_dir is the path to the BASE_DIR
+    - tests_path_pattern is the path to the test files
+    """
+
     os.environ["TEST"] = "TRUE"
     if base_dir:
         os.environ["BASE_DIR"] = base_dir
