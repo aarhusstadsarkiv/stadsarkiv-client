@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 """
 
-Adds option for uses ordering materials from the archive to create the database tables.
-
-export CONFIG_DIR=example-config-aarhus
-./bin/orders.py
+sqlite3 migrations for orders.
 
 """
 
@@ -18,10 +15,10 @@ from maya.migrations.orders import migrations_orders
 from maya.core.logging import get_log
 import os
 
-# Check if the environment variable CONFIG_DIR is set
+# Check if the environment variable BASE_DIR is set
 if "BASE_DIR" not in os.environ:
-    print("Environment variable CONFIG_DIR is not set. E.g. set it like this:")
-    print("export BASE_DIR=example-config-aarhus")
+    print("Environment variable BASE_DIR is not set. E.g. set it like this:")
+    print("export BASE_DIR=sites/aarhus")
     exit(1)
 
 log = get_log()

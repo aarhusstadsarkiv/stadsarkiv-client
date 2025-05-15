@@ -1,22 +1,6 @@
 #!/usr/bin/env python
 """
-
-The system will work fine without database tables, but some features will not be available.
-
-- Bookmarks
-- Searches
-- Cache
-- Import logs
-- Error logs in DB format
-
-Install:
-
-Set a config dir as environment variable and run this script to create the database tables.
-
-E.g.:
-
-export CONFIG_DIR=example-config-aarhus
-./bin/default.py
+sqlite3 migrations for adding logged errors into a sqlite3 database.
 """
 import sys
 
@@ -28,10 +12,10 @@ from maya.migrations.errors import migrations_error_log
 from maya.core.logging import get_log
 import os
 
-# Check if the environment variable CONFIG_DIR is set
+# Check if the environment variable BASE_DIR is set
 if "BASE_DIR" not in os.environ:
-    print("Environment variable CONFIG_DIR is not set. E.g. set it like this:")
-    print("export BASE_DIR=example-config-aarhus")
+    print("Environment variable BASE_DIR is not set. E.g. set it like this:")
+    print("export BASE_DIR=sites/aarhus")
     exit(1)
 
 
