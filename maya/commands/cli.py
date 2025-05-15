@@ -8,6 +8,7 @@ import os
 import secrets
 import glob
 import sys
+import json
 import logging
 from maya.core import logging_handlers
 from maya import __version__, __program__
@@ -221,3 +222,20 @@ if _is_source() and os.name != "nt":
         os.system("black . --config pyproject.toml")
         os.system("mypy  --config-file pyproject.toml .")
         os.system("flake8 . --config .flake8")
+
+    @cli.command(help="Generate importmap for JavaScript files.")
+    def import_map():
+
+        base_dir = "maya/static/js"
+        js_files = [f for f in os.listdir(base_dir) if f.endswith(".js")]
+        import_map = {"imports": {}}
+
+        for js_file in js_files:
+            key = f"/static/js/{js_file}"
+            value = key + "?v={{ get_setting('version') }}"
+            import_map["imports"][key] = value
+
+        import_map = json.dumps(import_map, indent=4)
+        import_map_html = f'<script type="importmap">\n{import_map}\n</script>'
+        with open("maya/templates/includes/importmap.html", "w") as f:
+            f.write(import_map_html)
