@@ -30,10 +30,6 @@ settings: dict[str, typing.Any] = {
         # {"name": "search_get", "title": "Søg", "type": "icon", "icon": "search"},
     ],
     "main_menu_system": [],
-    "sqlite3": {
-        "default": "data/database.db",
-        "orders": "data/orders.db",
-    },
     "search_base_url": "/search",
     "show_version": False,
     "allow_user_registration": False,
@@ -46,4 +42,5 @@ settings: dict[str, typing.Any] = {
     # default search parameters
     "search_default_sort": "created_at",
     "search_default_view": "list",
+    "allow_robots": False,
 }
