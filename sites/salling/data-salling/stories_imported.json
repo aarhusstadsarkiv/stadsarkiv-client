@@ -348,7 +348,7 @@
         "000144125"
       ],
       "urls": [
-        "https://storage.googleapis.com/openaws-access/000144125_m.jpg"
+        "https://storage.googleapis.com/openaws-access/000144267_m.jpg"
       ],
       "summary": [
         "Herman Salling i samtale med en person"
@@ -391,9 +391,9 @@
     {
       "isMain": false,
       "date": "1930",
-      "heading": "Vinduesudstilling",
+      "heading": "Tilbagetrukket indgang",
       "paragraphs": [
-        "Sallings facade  under Ferdinand Sallings købmandskab i begyndelsen af 1930'erne. Billedet viser den indvendige facade og tilbagetrukket indgang, der gjorde det muligt at give ekstra udstillingsplads til butikkens sortiment."
+        "I 1930'erne havde Salling en tilbagetrukken indgang, der var flankeret af store vinduespartier, der gav mulighed for ekstra udstillingsplads i ly for vejr og vind."
       ],
       "recordIds": [
         "000144272"
@@ -408,52 +408,69 @@
     {
       "isMain": false,
       "date": "1946",
-      "heading": "Vinduesudstilling",
+      "heading": "Et kæmpe hjørnevindue",
       "paragraphs": [
-        "Vinduesudstilling for tøj under julesalget 1946."
+        "I 1946 over Herman Salling direktørposten i Salling, og han satte blandt andet gang i en udvidelse af forretningsarealet. En nabobygning på hjørnet af Østergade blev købt og nedrevet for at gøre plads til udvidelsen. Udvidelsen gav blandt andet plads til et stort udstillingsareal på hjørnet af Søndergade og Østergade."
       ],
       "recordIds": [
-        "000144142"
+        "000512893"
       ],
       "urls": [
-        "https://storage.googleapis.com/openaws-access/000144142_m.jpg"
+        "https://acastorage.blob.core.windows.net/sam-access/000512893/000512893_m.jpg"
       ],
       "summary": [
-        "Dametøjsudstilling i Salling med julepynt."
+        "Sallings facade julepyntet i julen 1959."
       ]
     },
     {
       "isMain": false,
-      "date": "2000'erne",
-      "heading": "Vinduesudstilling",
+      "date": "1960'erne",
+      "heading": "Skiftende mode",
       "paragraphs": [
-        "Vinduesudstilling for tøj i forbindelse med fejring af nytår."
+        "Sallings vinduesudstillinger er gennem årene blevet brugt til at fremvise tidens modetendenser. I 1960 var det for eksempel tekstiler fra det svenske firma Môlmlycke, der blev fremvist i Sallings dstillingsvinduer. Stoffet var draperet på giner, som kjoler med smalle taljer og fyldigt skørt."
       ],
       "recordIds": [
         "000144218"
       ],
       "urls": [
-        "https://storage.googleapis.com/openaws-access/000144218_m.jpg"
+        "https://acastorage.blob.core.windows.net/sam-access/000512896/000512896_m.jpg"
       ],
       "summary": [
-        "Mannequiner iført modetøj udstillet i vindue hos Salling."
+        "Salling udstillingsvindue fra Stofafdelingen."
       ]
     },
     {
       "isMain": false,
-      "date": "2000'erne",
+      "date": "1980'erne",
       "heading": "Vinduesudstilling",
       "paragraphs": [
-        "Vinduesudstilling for brugsgenstande under temaet nytår."
+        "Sallings udstillingsvindue har også været flittigt benyttet til at reklamere for stormagasinets forskellige arrangementer, temaer og salgsfremstød. I 1983 var det eksempelvis tyske varer, der var i fokus i Sallings udstillingsvindue"
       ],
       "recordIds": [
-        "000144217"
+        "000511989"
       ],
       "urls": [
-        "https://storage.googleapis.com/openaws-access/000144217_m.jpg"
+        "https://acastorage.blob.core.windows.net/sam-access/000511989/000511989_m.jpg"
       ],
       "summary": [
-        "Bord med lysestage og nipsting udstillet i vindue hos Salling."
+        "Salling, Vinduesudstilling med tyske produkter."
+      ]
+    },
+    {
+      "isMain": false,
+      "date": "2023",
+      "heading": "Julen",
+      "paragraphs": [
+        "Generationer af aarhusianere har gennem årene presset deres næser flade mod Sallings udstillingsvinduer i juletiden. De seneste år har det været nøjsomt kreerede julelandsskaber i LEGO, der har prydet nogle af Sallings vinduer i Julen."
+      ],
+      "recordIds": [
+        "000513013"
+      ],
+      "urls": [
+        "https://acastorage.blob.core.windows.net/sam-access/000513013/000513013_m.jpg"
+      ],
+      "summary": [
+        "Vinduesudstilling ved Salling med bygninger opført i Lego i et vintertema."
       ]
     }
   ],
@@ -658,9 +675,9 @@
       "paragraphs": [
         "Ved Sallings 50-års jubilæum blev der optaget en video. På videoen kan man se medarbejdere, kunder og livet i Salling på dagen. Videoen er uden lyd."
       ],
-      "recordIds": [],
-      "urls": [],
-      "summary": []
+      "recordIds": ["000144382"],
+      "urls": ["https://acastorage.blob.core.windows.net/sam-access/000144382/000144382_m.png"],
+      "summary": ["Film fra Sallings 50 års jubilæum"]
     },
     {
       "isMain": false,
