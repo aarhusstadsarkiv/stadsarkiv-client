@@ -199,8 +199,6 @@ async def home_page(request: Request):
 
     stories = await story_by_index(index=[])
 
-    story = stories[3]
-
     story_sections = []
     for story in stories:
         story_sections.append(story["first_section"])
@@ -212,7 +210,6 @@ async def home_page(request: Request):
         request,
         context_values={
             "title": "Forside",
-            "story": story,
             "stories": story_sections,
             "memories": memories,
         },
