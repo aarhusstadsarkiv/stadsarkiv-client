@@ -2,6 +2,6 @@
 
 ## Documentation
 
-github: [stadsarkiv-client](sites/demo/docs)
+github: [maya](sites/demo/docs)
 
-website and demo: [stadsarkiv-client](https://demo.openaws.dk/)
+website and demo: [maya](https://demo.openaws.dk/)
