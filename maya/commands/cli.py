@@ -54,7 +54,7 @@ def _get_base_dir(base_dir):
 @click.version_option(version=__version__, prog_name=__program__)
 def cli():
     """
-    stadsarkiv-client generates individual browser-based GUI-clients
+    maya is used for serving customized web-clients
     that uses the webservice from Aarhus City Archives as backend and datastore.
 
     For full documentation see https://demo.openaws.dk
