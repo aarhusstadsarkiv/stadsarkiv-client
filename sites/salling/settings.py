@@ -42,5 +42,5 @@ settings: dict[str, typing.Any] = {
     # default search parameters
     "search_default_sort": "created_at",
     "search_default_view": "list",
-    "allow_robots": False,
+    "allow_robots": True,
 }
