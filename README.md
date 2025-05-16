@@ -2,6 +2,6 @@
 
 ## Documentation
 
-github: [maya](sites/demo/docs)
+[github](sites/demo/docs)
 
-website and demo: [maya](https://demo.openaws.dk/)
+[website and demo](https://demo.openaws.dk/)
