@@ -5,10 +5,14 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{% if not get_setting('allow_robots') %}
-<meta name="robots" content="noindex, nofollow">
-{% endif %}
 <meta name="description" content="{{ meta_description }}">
+
+{% if meta_tags %}
+  {% for key, value in meta_tags.items() %}
+  <meta name="{{ key }}" content="{{ value }}">
+  {% endfor %}
+{% endif %}
+
 {% if dark_theme %}
 <link rel="stylesheet" href="{{ url_for('static', path='/css/dark.css') }}?v={{ get_setting('version') }}">
 {% else %}

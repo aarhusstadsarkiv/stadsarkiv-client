@@ -11,9 +11,6 @@ client_url: https://demo.openaws.dk
 # Default sender of emails
 client_email: stadsarkivet@aarhusarkivet.dk
 
-# If you are running in production, you may set this to True in order to allow robots to index the site
-allow_robots: false
-
 # show the version of the maya client
 show_version: true
 

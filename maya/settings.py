@@ -63,7 +63,6 @@ settings: dict[str, typing.Any] = {
     "search_keep_results": True,
     "facets_enabled": ["content_types", "subjects", "availability", "usability", "dates"],
     "cors_allow_origins": [],
-    "allow_robots": False,
     "allow_user_registration": False,
     "allow_user_management": False,
     "allow_online_ordering": False,

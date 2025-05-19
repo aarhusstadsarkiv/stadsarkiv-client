@@ -341,6 +341,9 @@ async def get_search_context_values(request: Request, extra_query_params: list =
         "facets_filters": facets_filters,
         "dates": _get_dates(request),
         "pagination_data": pagination_data,
+        "meta_tags": {
+            "robots": "noindex, follow",
+        }
     }
 
     return context_values

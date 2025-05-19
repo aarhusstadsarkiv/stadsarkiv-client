@@ -80,7 +80,6 @@ settings: dict[str, typing.Any] = {
             ],
         },
     ],
-    "allow_robots": True,
     "allow_user_registration": True,
     "allow_user_management": True,
     "allow_save_bookmarks": True,
