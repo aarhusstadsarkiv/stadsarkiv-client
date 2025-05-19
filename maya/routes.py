@@ -54,18 +54,18 @@ def _get_static_dirs() -> list:
     return static_dir_list
 
 
-async def robots_txt(request: Request):
-
-    if settings["allow_robots"]:
-        content = """User-agent: *
-Allow: /
-        """
-        return PlainTextResponse(content)
-    else:
-        content = """User-agent: *
+ROBOTS_PATH = get_base_dir_path("static", "robots.txt")
+ROBOTS_CONTENT = """User-agent: *
 Disallow: /
-        """
-    return PlainTextResponse(content)
+"""
+
+if os.path.exists(ROBOTS_PATH):
+    with open(ROBOTS_PATH, "r") as f:
+        ROBOTS_CONTENT = f.read()
+
+
+async def robots_txt(request: Request):
+    return PlainTextResponse(ROBOTS_CONTENT)
 
 
 async def favicon(request: Request):
