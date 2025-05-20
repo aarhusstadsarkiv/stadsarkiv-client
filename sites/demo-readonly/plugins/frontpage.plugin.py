@@ -26,9 +26,9 @@ async def docs_endpoint(request: Request):
     docs_folder = str(os.path.join(base_dir, "..", "docs"))
 
     docs_data = [
-        {"title": "stadsarkiv-client", "file": "README.md", "path": "/"},
-        {"title": "Create client", "file": "README.client.md", "path": "/docs/README.client.md"},
-        {"title": "Run on server", "file": "README.server.md", "path": "/docs/README.server.md"},
+        {"title": "MAYA", "file": "01-maya.md", "path": "/"},
+        {"title": "Custom Client", "file": "02-client.md", "path": "/docs/README.client.md"},
+        {"title": "On server", "file": "03-server.md", "path": "/docs/README.server.md"},
     ]
 
     url_path = request.url.path
