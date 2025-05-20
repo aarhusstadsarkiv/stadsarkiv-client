@@ -29,7 +29,6 @@ settings: dict[str, typing.Any] = {
         {"name": "schemas_get_list", "title": "Skemaer"},
         {"name": "entities_get_list", "title": "Entiteter"},
     ],
-    "search_base_url": "/search",
     "show_version": True,
     "allow_user_registration": True,
     "allow_user_management": True,
