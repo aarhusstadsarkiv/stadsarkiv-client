@@ -6,10 +6,8 @@ on:
       - main
     paths-ignore:
       - '*.md'
-      - 'docs/*'
-      - 'example-config/*'
-      - '**/*.draft.md'
-      - 'example-schemas/*'
+      - 'docs/**'
+      - 'mkdocs.yml'
 
 jobs:
   test:
