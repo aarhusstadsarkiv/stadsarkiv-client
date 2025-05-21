@@ -39,9 +39,9 @@ exclude = [ "tests",]
 [tool.bump_version.replace_patterns.pip]
 file = "sites/demo-readonly/docs/01-maya.md"
 search = "<!-- LATEST-VERSION-PIP -->"
-replace = "\tpip install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}\n"
+replace = "\tpip install git+https://github.com/aarhusstadsarkiv/maya@{version}\n"
 
 [tool.bump_version.replace_patterns.pipx]
 file = "sites/demo-readonly/docs/01-maya.md"
 search = "<!-- LATEST-VERSION-PIPX -->"
-replace = "\tpipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client@{version}\n"
+replace = "\tpipx install git+https://github.com/aarhusstadsarkiv/maya@{version}\n"
