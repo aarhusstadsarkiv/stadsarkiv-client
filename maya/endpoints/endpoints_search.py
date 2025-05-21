@@ -343,7 +343,7 @@ async def get_search_context_values(request: Request, extra_query_params: list =
         "pagination_data": pagination_data,
         "meta_tags": {
             "robots": "noindex, follow",
-        }
+        },
     }
 
     return context_values
