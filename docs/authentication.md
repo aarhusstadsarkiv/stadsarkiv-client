@@ -29,5 +29,3 @@ Links til linux, mac og pc
 
 ## Demo uden API-nøgle
 Hvis man vil se, hvordan en ukonfigureret Maya-klient se ud og fungerer, kan man som nævnt kigge på demo-siden: https://demo.openaws.dk
-
-
