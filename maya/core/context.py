@@ -98,6 +98,10 @@ def _get_main_menu_system(logged_in: bool, permissions_list: list) -> list:
     """
     main_menu_system: list = settings["main_menu_system"]
 
+    if not settings.get("allow_user_registration", False):
+        excluded_items = {"auth_register_get"}
+        main_menu_system = [item for item in main_menu_system if item["name"] not in excluded_items]
+
     if logged_in:
         excluded_items = {"auth_login_get", "auth_register_get", "auth_forgot_password_get"}
         main_menu_system = [item for item in main_menu_system if item["name"] not in excluded_items]
