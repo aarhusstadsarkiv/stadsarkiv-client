@@ -1,0 +1,68 @@
+site_name: Maya
+site_url: https://aarhusstadsarkiv.github.io/maya
+repo_url: https://github.com/aarhusstadsarkiv/maya
+repo_name: aarhusstadsarkiv/maya
+
+nav:
+  - index.md
+  - installation.md
+  - authentication.md
+  - Usage:
+    #  - usage/index.md
+     - usage/settings.md
+     - usage/facets.md
+     - usage/templates.md
+     - usage/pages.md
+     - usage/hooks.md
+     - usage/static_files.md
+     - usage/CLI_reference.md
+  - examples.md
+  - deployment.md
+  - contribution.md
+  - changelog.md
+
+theme:
+  name: material
+  # https://freesvgicons.com/search?q=maya
+  logo: _assets/icon_white.svg
+  favicon: _assets/icon_black.ico
+  font: false
+  language: da
+  icon:
+    edit: material/pencil
+    view: material/eye
+  features:
+    - content.action.edit
+    # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/
+    - navigation.instant
+    # - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - navigation.indexes
+    - navigation.path
+    - content.code.copy
+extra_css:
+  - _assets/theme.css
+plugins:
+  # - external-markdown
+  - search:
+      lang: da
+markdown_extensions:
+  - footnotes
+  - toc:
+      permalink: true
+      toc_depth: 4
+  - meta
+  - def_list
+  # Alerts
+  # https://squidfunk.github.io/mkdocs-material/reference/admonitions/#supported-types
+  - admonition 
+  # Make alerts collapsible
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  # Align images left or right
+  # E.g. ![Placeholder](https://dummyimage.com/600x400/eee/aaa){: align=left }
+  - attr_list
