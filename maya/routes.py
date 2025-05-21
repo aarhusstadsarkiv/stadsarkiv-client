@@ -90,26 +90,6 @@ routes = [
     Route("/admin/users/{uuid}/json", endpoint=endpoints_admin.admin_users_get_json, name="admin_users_get_json"),
     Route("/admin/test", endpoint=endpoints_admin.admin_test, name="admin_test"),
     Route("/admin/config", endpoint=endpoints_admin.admin_config_get, name="admin_config_get"),
-    Route("/auth/login", endpoint=endpoints_auth.auth_login_get, name="auth_login_get"),
-    Route("/auth/login", endpoint=endpoints_auth.auth_login_post, name="auth_login_post", methods=["POST"]),
-    Route("/auth/logout", endpoint=endpoints_auth.auth_logout_get, name="auth_logout_get"),
-    Route("/auth/forgot-password", endpoint=endpoints_auth.auth_forgot_password_get, name="auth_forgot_password_get"),
-    Route("/auth/forgot-password", endpoint=endpoints_auth.auth_forgot_password_post, name="auth_forgot_password_post", methods=["POST"]),
-    Route("/auth/reset-password/{token:str}", endpoint=endpoints_auth.auth_reset_password_get, name="auth_reset_password_get"),
-    Route(
-        "/auth/reset-password/{token:str}",
-        endpoint=endpoints_auth.auth_reset_password_post,
-        name="auth_reset_password_post",
-        methods=["POST"],
-    ),
-    Route("/auth/me", endpoint=endpoints_auth.auth_me_get, name="auth_me_get"),
-    Route("/auth/cookie", endpoint=endpoints_auth.auth_set_cooke, name="auth_set_cooke", methods=["POST"]),
-    Route("/auth/search-results", endpoint=endpoints_auth.auth_search_results, name="auth_search_results"),
-    # verify request token sent by email
-    Route("/auth/verify/{token:str}", endpoint=endpoints_auth.auth_verify, name="auth_verify"),
-    # send verify email again
-    Route("/auth/send-verify-email", endpoint=endpoints_auth.auth_send_verify_email, name="auth_send_verify_email"),
-    Route("/auth/user-info", endpoint=endpoints_auth.auth_user_info, name="auth_user_info", methods=["POST"]),
     Route("/schemas/{schema_type:str}", endpoint=endpoints_schemas.schemas_get_single, name="schemas_get_single"),
     Route("/schemas", endpoint=endpoints_schemas.schemas_get_list, name="schemas_get_list"),
     Route("/schemas", endpoint=endpoints_schemas.schemas_post, name="schemas_post", methods=["POST"]),
@@ -141,6 +121,10 @@ routes = [
     Route("/webhook/mail/status", endpoint=endpoints_webhooks.mail_status, name="mail_status", methods=["GET", "POST"]),
     Route("/webhook/mail/token/verify", endpoint=endpoints_webhooks.mail_verify_token, name="mail_verify_token", methods=["GET", "POST"]),
     Route("/webhook/mail/token/reset", endpoint=endpoints_webhooks.mail_reset_token, name="mail_reset_token", methods=["GET", "POST"]),
+    # /auth/cookie is used by the frontend to set the cookie for the current session (do not need to be a user)
+    Route("/auth/cookie", endpoint=endpoints_auth.auth_set_cooke, name="auth_set_cooke", methods=["POST"]),
+    # /auth/user-info gets the user info for the current session
+    Route("/auth/user-info", endpoint=endpoints_auth.auth_user_info, name="auth_user_info", methods=["POST"]),
 ]
 
 
@@ -201,8 +185,28 @@ if settings["allow_save_bookmarks"]:
 
 if settings["allow_user_registration"]:
     routes_registration = [
+        Route("/auth/login", endpoint=endpoints_auth.auth_login_get, name="auth_login_get"),
+        Route("/auth/login", endpoint=endpoints_auth.auth_login_post, name="auth_login_post", methods=["POST"]),
+        Route("/auth/logout", endpoint=endpoints_auth.auth_logout_get, name="auth_logout_get"),
+        Route("/auth/forgot-password", endpoint=endpoints_auth.auth_forgot_password_get, name="auth_forgot_password_get"),
+        Route(
+            "/auth/forgot-password", endpoint=endpoints_auth.auth_forgot_password_post, name="auth_forgot_password_post", methods=["POST"]
+        ),
+        Route("/auth/reset-password/{token:str}", endpoint=endpoints_auth.auth_reset_password_get, name="auth_reset_password_get"),
+        Route(
+            "/auth/reset-password/{token:str}",
+            endpoint=endpoints_auth.auth_reset_password_post,
+            name="auth_reset_password_post",
+            methods=["POST"],
+        ),
+        Route("/auth/me", endpoint=endpoints_auth.auth_me_get, name="auth_me_get"),
         Route("/auth/register", endpoint=endpoints_auth.auth_register_get, name="auth_register_get"),
         Route("/auth/register", endpoint=endpoints_auth.auth_register_post, name="auth_register_post", methods=["POST"]),
+        Route("/auth/search-results", endpoint=endpoints_auth.auth_search_results, name="auth_search_results"),
+        # verify request token sent by email
+        Route("/auth/verify/{token:str}", endpoint=endpoints_auth.auth_verify, name="auth_verify"),
+        # send verify email again
+        Route("/auth/send-verify-email", endpoint=endpoints_auth.auth_send_verify_email, name="auth_send_verify_email"),
     ]
     routes.extend(routes_registration)
 
