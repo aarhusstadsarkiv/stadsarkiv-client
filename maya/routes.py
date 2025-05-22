@@ -54,14 +54,20 @@ def _get_static_dirs() -> list:
     return static_dir_list
 
 
-ROBOTS_PATH = get_base_dir_path("static", "robots.txt")
-ROBOTS_CONTENT = """User-agent: *
-Disallow: /
-"""
+def _get_robots_txt() -> str:
+    robots_path = get_base_dir_path("static", "robots.txt")
+    robots_content = """User-agent: *
+    Disallow: /
+    """
 
-if os.path.exists(ROBOTS_PATH):
-    with open(ROBOTS_PATH, "r") as f:
-        ROBOTS_CONTENT = f.read()
+    if os.path.exists(robots_path):
+        with open(robots_path, "r") as f:
+            robots_content = f.read()
+
+    return robots_content
+
+
+ROBOTS_CONTENT = _get_robots_txt()
 
 
 async def robots_txt(request: Request):
