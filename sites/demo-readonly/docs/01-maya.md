@@ -88,6 +88,6 @@ Install main branch:
 
 Install latest version: 
 <!-- LATEST-VERSION-PIPX -->
-	pipx install git+https://github.com/aarhusstadsarkiv/maya@v1.3.822
+	pipx install git+https://github.com/aarhusstadsarkiv/maya@v1.3.823
 
 Usage is the same as for development.
