@@ -245,6 +245,10 @@ routes.append(
 
 
 def init_module_routes(default_routes: list):
+    """
+    Load all routes from all plugins
+    """
+
     plugins_dir = get_base_dir_path("plugins")
     if os.path.exists(plugins_dir):
 
