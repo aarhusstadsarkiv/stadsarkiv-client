@@ -109,14 +109,8 @@ def server_dev(port: int, workers: int, host: str, base_dir: str, reload=True):
     reload = True
     reload_dirs = ["."]
 
-    # Prevent watching giant directories if dir is not 'source'
     if not _is_source():
-        if not os.path.exists(base_dir):
-            logger.info("Config dir is not set. No reloading of source code.")
-            reload = False
-            reload_dirs = []
-        else:
-            reload_dirs = [base_dir]
+        reload_dirs = [base_dir]
 
     cmd = [
         sys.executable,
@@ -133,9 +127,9 @@ def server_dev(port: int, workers: int, host: str, base_dir: str, reload=True):
         # reload when yml and py files change
         cmd.append("--reload")
         cmd.append("--reload-include=*.yml")
-        if reload_dirs:
-            for dir in reload_dirs:
-                cmd.append(f"--reload-dir={dir}")
+
+        for dir in reload_dirs:
+            cmd.append(f"--reload-dir={dir}")
 
     try:
         logger.info("Started Uvicorn in the foreground")
