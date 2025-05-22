@@ -9,7 +9,7 @@ The following describes how to install and use `maya`.
 
 ## development
 
-    git clone git@github.com:aarhusstadsarkiv/stadsarkiv-client.git maya
+    git clone git@github.com:aarhusstadsarkiv/maya.git maya
     cd maya
     uv venv # Python >= 3.10.6 should work
     source .venv/bin/activate
@@ -84,7 +84,7 @@ Bump version:
 
 Install main branch: 
     
-    pipx install git+https://github.com/aarhusstadsarkiv/stadsarkiv-client.git
+    pipx install git+https://github.com/aarhusstadsarkiv/maya.git
 
 Install latest version: 
 <!-- LATEST-VERSION-PIPX -->

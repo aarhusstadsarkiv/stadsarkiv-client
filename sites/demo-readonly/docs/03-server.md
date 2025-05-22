@@ -1,12 +1,12 @@
 # systemd
 
-Create a systemd service file for the stadsarkiv-client. E.g.:
+Create a systemd service file for the maya service. E.g.:
 
     sudo vim /etc/systemd/system/maya.service
 
 ```
 [Unit]
-Description=Stadsarkiv Client Service
+Description=Maya Service
 After=network.target
 
 [Service]
@@ -15,8 +15,8 @@ Type=simple
 
 # run as
 User=www-data
-WorkingDirectory=/var/www/stadsarkiv-client
-ExecStart=/var/www/stadsarkiv-client/venv/bin/python -m maya server-prod maya_root --port 5555
+WorkingDirectory=/var/www/maya
+ExecStart=/var/www/maya/.venv/bin/python -m maya server-prod maya_root --port 5555
 
 # restart on failure
 Restart=on-failure
@@ -59,7 +59,7 @@ E.g. you want to see the main process id of the service.
 
 # Upgrade and restart service
 
-See: [bin/upgrade.sh](https://github.com/aarhusstadsarkiv/stadsarkiv-client/blob/main/bin/upgrade.sh)
+See: [bin/upgrade.sh](https://github.com/aarhusstadsarkiv/maya/blob/main/bin/upgrade.sh)
 
 The above script will upgrade the source code to the latest tag. 
 
