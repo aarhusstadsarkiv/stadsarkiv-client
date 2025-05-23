@@ -77,15 +77,15 @@ E.g.:
 
 ```bash
 #!/bin/sh
-cd stadsarkiv-client-demo
+cd maya-client-demo
 ./bin/upgrade.sh
 cp -rf ./sites/demo/* maya_root/
-sudo service stadsarkiv-client-demo restart
+sudo service maya-client-demo restart
 
 cd stadarkiv-client-demo-2
 ./bin/upgrade.sh
 cp -rf ./sites/demo-2/* maya_root/
-sudo service stadsarkiv-client-demo-2 restart
+sudo service maya-client-demo-2 restart
 
 ```
 
