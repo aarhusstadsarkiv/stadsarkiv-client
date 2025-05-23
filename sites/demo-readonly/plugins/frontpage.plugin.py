@@ -38,7 +38,7 @@ async def docs_endpoint(request: Request):
             continue
 
         file_path = os.path.join(docs_folder, doc.get("file", ""))
-        with open(file_path, "r") as file:
+        with open(file_path, "r", encoding="utf-8") as file:
             content = file.read()
 
         context_values = {"title": "Documentation", "doc_data": docs_data, "content": content}
