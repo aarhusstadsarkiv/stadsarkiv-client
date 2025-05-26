@@ -206,7 +206,7 @@ if _is_source() and os.name != "nt":
     # Only show dev commands if source version
     @cli.command(help="Run all tests.")
     def source_test():
-        run_tests("sites/demo", "tests/demo/*.py")
+        run_tests("sites/base_test", "tests/base_test/*.py")
         run_tests("sites/aarhus", "tests/aarhus/*.py")
         run_tests("sites/teater", "tests/teater/*.py")
         run_tests("", "tests/core/*.py")
