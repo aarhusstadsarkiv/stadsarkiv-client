@@ -1,6 +1,6 @@
 [project]
 name = "maya"
-version = "1.3.823"
+version = "1.3.824"
 description = "Aarhus City Archives client for generating individual browser-based GUI-clients"
 license = "MIT"
 readme = "README.md"
@@ -36,11 +36,11 @@ where = [ ".",]
 exclude = [ "tests",]
 
 [tool.bump_version.replace_patterns.pip]
-file = "sites/demo-readonly/docs/01-maya.md"
+file = "sites/demo/docs/01-maya.md"
 search = "<!-- LATEST-VERSION-PIP -->"
 replace = "\tpip install git+https://github.com/aarhusstadsarkiv/maya@{version}\n"
 
 [tool.bump_version.replace_patterns.pipx]
-file = "sites/demo-readonly/docs/01-maya.md"
+file = "sites/demo/docs/01-maya.md"
 search = "<!-- LATEST-VERSION-PIPX -->"
 replace = "\tpipx install git+https://github.com/aarhusstadsarkiv/maya@{version}\n"
