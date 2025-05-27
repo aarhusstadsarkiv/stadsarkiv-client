@@ -1,5 +1,5 @@
 """
-File containing CLI commands for the Maya Client.
+File containing CLI commands for the Maya CLI.
 """
 
 import click
@@ -63,6 +63,7 @@ def cli():
 
 
 if os.name == "nt":
+    # gunicorn is not supported on Windows, so we skip the server_prod command
     pass
 else:
 
