@@ -15,7 +15,7 @@ Key features include:
 - Modifying routes after initialization (`after_routes_init`)
 - Customizing responses before they are returned (`before_response`)
 - Adjusting login success/failure data (`after_login_success`, `after_login_failure`)
-- Enhancing autocomplete and search behavior 
+- Enhancing autocomplete and search behavior
 (`before_get_auto_complete`, `after_get_auto_complete`, `before_get_search`, `after_get_search`)
 - Modifying context data (`before_context`)
 - Intercepting record retrieval logic (`after_get_record`, `after_get_record_and_types`)

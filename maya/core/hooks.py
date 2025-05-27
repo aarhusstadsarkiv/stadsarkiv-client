@@ -6,9 +6,9 @@ a local `Hooks` class.
 
 Functions:
 - `get_hooks(request)`: Returns an instance of the local or default `Hooks` class,
-  depending on whether a local override is found. Accepts an optional Starlette 
+  depending on whether a local override is found. Accepts an optional Starlette
   `Request` object; if none is provided, a mock request is generated.
-- `_get_mock_request()`: Creates a mock Starlette request to support standalone 
+- `_get_mock_request()`: Creates a mock Starlette request to support standalone
   hook loading outside of a live request context.
 
 """
