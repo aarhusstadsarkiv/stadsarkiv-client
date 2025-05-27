@@ -1,3 +1,8 @@
+"""
+Utils used to handle import bookmarks and emails from CSV files.
+This is only used with the sites/aarhus hooks.
+"""
+
 import csv
 import os
 

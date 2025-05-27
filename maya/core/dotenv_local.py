@@ -1,6 +1,5 @@
 """
-load_dotenv wrapper
-Load the module .env-dist file and override with local .env file if it exists
+Load the default maya .env-dist file and override with local .env file if it exists
 """
 
 from dotenv import load_dotenv
@@ -15,7 +14,7 @@ log = get_init_logger()
 
 def load():
     """
-    Load the module .env-dist file
+    Load the .env-dist included with the source code of maya
     Override with "local" .env file if it exists
     """
     dir_path = Path(__file__).resolve().parent.parent

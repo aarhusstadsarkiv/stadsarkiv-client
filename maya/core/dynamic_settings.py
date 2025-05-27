@@ -1,13 +1,22 @@
 """
-Dynamic settings module that tries to load settings from:
+Dynamic settings loader for Maya.
 
-* settings.yml or settings.py
-* settings_local.yml or settings_local.py
-* facets.yml or facets.py
+This module attempts to load configuration settings in the following order of precedence:
 
-If the environment variable TEST is set, it will also load settings from:
+1. Base configuration:
+   - settings.yml or settings.py (maya.settings)
 
-settings_test.py
+2. Local overrides:
+   - settings_local.yml or settings_local.py
+
+3. Facet-specific settings:
+   - facets.yml or facets.py (overrides contents of `maya.settings_facets`)
+
+4. Test-specific overrides (applied if the TEST environment variable is set):
+   - tests/settings_test.py
+
+Settings are merged into the `settings` and `settings_facets` dictionaries.
+Supports both YAML (.yml) and Python (.py) formats, with preference given to YAML when both exist.
 """
 
 from maya.settings import settings

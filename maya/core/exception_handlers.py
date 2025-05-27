@@ -1,6 +1,14 @@
 """
-Starlette Exception handlers for the application.
-There is a default handler for 403, 404 and 500 errors.
+Custom exception handlers for the Starlette-based application.
+
+This module defines centralized handlers for common error scenarios such as:
+- 404 Not Found
+- 500 Internal Server Error
+- HTTP status errors raised by external API calls
+- Authentication-related errors with support for both HTML and JSON responses
+
+Each handler is responsible for logging, generating a user-friendly error page or response,
+and providing relevant context to the frontend or API client.
 """
 
 from starlette.exceptions import HTTPException

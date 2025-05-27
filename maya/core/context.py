@@ -1,7 +1,17 @@
 """
-Contains a single public function `get_context`
-that returns a dict with basic context values for the templates.
-It also generates basic main menu items based on the user's permissions
+This module provides helper functions to construct the context dictionary used in rendering templates
+within the Maya application. It integrates user session data, permissions, settings-based menus, and
+hook-based extensibility into a unified structure for use in frontend views.
+
+Functions included:
+- `get_context`: Builds the complete context dictionary, incorporating request-specific and global data.
+- `_generate_menu_urls`: Generates URLs for menu items, handling query strings and login redirection.
+- `_get_main_menu_system`: Filters system menu items based on user authentication state and permissions.
+- `_get_title`: Retrieves the page title based on the request URL from the configuration.
+- `_get_authorization`: Provides an authorization header if the user is logged in.
+
+The module relies on internal APIs, dynamic settings, and cookie/session utilities to maintain
+a consistent user interface and behavior across pages.
 """
 
 from starlette.requests import Request
