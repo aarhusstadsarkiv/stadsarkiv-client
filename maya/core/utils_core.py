@@ -1,3 +1,33 @@
+"""
+Module for parsing and formatting structured JSON-like data records into various output formats
+(HTML, plain text, or HTML tables), based on associated metadata types.
+
+This module provides utility functions for transforming dictionaries of data with typed values
+(e.g., links, strings, dates, etc.) into user-friendly display formats. It supports both
+HTML-formatted output for web display and plain text versions for non-HTML contexts.
+
+Functions:
+- get_record_and_types_as_html(data, keys_to_parse, section_tag='p'):
+    Parses specified keys from the input data and formats the values into an HTML structure
+    using the provided section tag (e.g., 'p', 'div').
+
+- get_record_and_types_as_strings(data, keys_to_parse):
+    Converts the data values of specified keys into plain strings, removing any hyperlink formatting
+    while preserving basic structure (e.g., hierarchies).
+
+- get_parsed_data_as_str(data, keys_to_parse):
+    Formats the parsed data as a single HTML string using <div> elements and translated field labels.
+
+- get_parsed_data_as_table(data, keys_to_parse, debug=False):
+    Returns an HTML table representing the parsed data with field labels and values.
+    Optionally includes original key names if debug=True.
+
+- get_parsed_data_as_html(data, keys_to_parse, section_tag='p'):
+    Returns an HTML string with each key/value pair wrapped in a <div> tag. Values are
+    formatted based on their type and wrapped in the specified section tag.
+
+"""
+
 from typing import Dict, List, Any
 from maya.core.translate import translate
 

@@ -1,3 +1,21 @@
+"""
+This module sets up and manages background cron jobs using APScheduler to handle
+asynchronous maintenance tasks in the Maya application. Specifically, it schedules
+and runs two cron jobs:
+
+1. `cron_orders_expire`: Handles the expiration of orders.
+2. `cron_renewal_emails`: Sends out renewal reminder emails.
+
+The scheduler is configured based on application settings:
+- In a development environment, both jobs run every minute.
+- In other environments (e.g., production), the jobs run daily at specified times:
+  - Orders expiration at 00:02 AM.
+  - Renewal emails at 00:04 AM.
+
+All scheduled tasks are wrapped with logging and error handling to capture job status
+and exceptions during execution. Async functions are executed using `asyncio.run`.
+"""
+
 from apscheduler.schedulers.background import BackgroundScheduler  # type: ignore
 from maya.database.crud_orders import cron_orders_expire, cron_renewal_emails
 from maya.core.logging import get_log

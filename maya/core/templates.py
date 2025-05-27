@@ -1,6 +1,20 @@
 """
-Set up the template engine for the application.
-Set up a couple of jinja2 functions.
+Template Engine Initialization and Utility Functions for Jinja2 Integration
+
+This module sets up the Jinja2 template engine for use within a Starlette-based
+web application. It configures the template directories, adds custom context
+processors, and registers a set of helper functions to be available within
+Jinja2 templates.
+
+Key Features:
+- Dynamically discovers and loads local and module-level template directories.
+- Defines a suite of utility functions for use in templates, including:
+  - `pre`, `to_json`: Format variables as JSON (with optional <pre> tags).
+  - `paragraphs`: Convert newline-separated text into HTML paragraphs.
+  - `markdown`: Convert markdown-formatted strings to HTML.
+  - `get_icon`: Retrieve and size SVG icons from designated directories.
+  - `has_permission`, `key_exist_in_dict`, `sub_string`: Common logical utilities.
+- Registers external utilities (e.g., `translate`, `get_setting`, `date_format`) into the template global scope.
 
 """
 

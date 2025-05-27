@@ -1,10 +1,21 @@
 """
-Set's up some basic translation for the application.
-It is possible to create a local language file (./language.py) that may override the built-in
-translation.
+Translation utility module for managing multilingual support in the Maya application.
 
-Exposes a translate function that is used in the jinja2 template engine and in python code.
+This module handles loading and managing language translation files (`.yml`) for multiple locales,
+currently supporting Danish ("da") and English ("en"). It enables translating strings based on the
+current language setting and allows optional addition of missing keys to the translation files during
+development (if enabled in settings).
+
+Functionality includes:
+- Loading default locale files (`da.yml`, `en.yml`) from the `locales` directory.
+- Optionally loading a local override translation file (`language.yml`) for custom translations.
+- Automatically appending missing keys to translation files during development.
+
+Functions:
+- `translate(key: str, translation_add_key=True) -> str`: Returns the translated string for the given key.
+
 """
+
 
 from maya.core.dynamic_settings import settings
 from maya.core.paths import get_base_dir_path

@@ -1,6 +1,14 @@
 """
-User functions.
+This module provides utility functions for managing user session data and permissions
+within a Starlette-based web application.
+
+Functions:
+- set_user_jwt: Stores JWT token and login metadata in the session.
+- logout: Clears all session-related user data, effectively logging the user out.
+- permissions_as_list: Extracts and sorts a list of permission names from a permission dictionary.
+- permission_translated: Translates the highest priority permission in a list into a human-readable string.
 """
+
 
 from starlette.requests import Request
 from maya.core.translate import translate
