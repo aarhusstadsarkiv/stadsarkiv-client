@@ -106,12 +106,6 @@ def server_dev(port: int, workers: int, host: str, base_dir: str, reload=True):
     base_dir = _get_base_dir(base_dir)
     os.environ["BASE_DIR"] = base_dir
 
-    reload = True
-    reload_dirs = ["."]
-
-    if not _is_source():
-        reload_dirs = [base_dir]
-
     cmd = [
         sys.executable,
         "-m",
@@ -124,6 +118,13 @@ def server_dev(port: int, workers: int, host: str, base_dir: str, reload=True):
     ]
 
     if reload:
+        # Default if to reload when the current directory or the base_dir directory changes
+        reload_dirs = [".", base_dir]
+
+        if not _is_source():
+            # If not in source mode, only reload the base_dir directory
+            reload_dirs = [base_dir]
+
         # reload when yml and py files change
         cmd.append("--reload")
         cmd.append("--reload-include=*.yml")
