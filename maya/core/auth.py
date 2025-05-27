@@ -1,3 +1,12 @@
+"""
+Authentication and Authorization Utilities for Maya Web Framework.
+
+Key Components:
+- AuthException / AuthExceptionJSON: Custom exceptions for flow control.
+- is_authenticated / is_authenticated_json: Entry points for route protection.
+- Internal helpers for login redirection, logging, and permission checks.
+"""
+
 from maya.core import api
 from starlette.requests import Request
 from maya.core.logging import get_log
@@ -44,7 +53,6 @@ class AuthExceptionJSON(Exception):
 
 
 async def _check_authentication(request: Request, permissions, message, verified, json_response):
-
     # prevent mutation of the permissions list
     permissions = tuple(permissions)
 
@@ -85,8 +93,16 @@ async def _check_authentication(request: Request, permissions, message, verified
 
 
 async def is_authenticated(request: Request, permissions=[], message=None, verified=False):
+    """
+    Check if the user is authenticated and has the required permissions.
+    This version redirects to the login page if not authenticated.
+    """
     await _check_authentication(request, permissions, message, verified, json_response=False)
 
 
 async def is_authenticated_json(request: Request, permissions=[], message=None, verified=False):
+    """
+    Check if the user is authenticated and has the required permissions.
+    This version returns a JSON response.
+    """
     await _check_authentication(request, permissions, message, verified, json_response=True)
