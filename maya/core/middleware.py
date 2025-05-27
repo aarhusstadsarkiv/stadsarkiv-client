@@ -1,6 +1,35 @@
 """
-Middleware for the application
+Middleware configuration module for the application.
+
+This module defines and registers a set of custom and third-party middleware 
+components used in a Starlette-based web application. The middleware stack 
+enhances the request/response lifecycle by adding features such as:
+
+- Request timing and performance logging
+- Session management with secure cookies
+- CORS support for cross-origin requests
+- Static file and cache handling
+- Response preprocessing via hooks
+- Access logging for auditing
+- GZip compression for efficient payload delivery
+
+Custom Middleware:
+- RequestBeginMiddleware: Records the start time of a request to track performance.
+- StaticPathSkippingMiddleware: Bypasses unnecessary logic for static file requests.
+- ResponseTimeLoggingMiddleware: Logs the time used for request handling.
+- NoCacheMiddleware: Controls caching behavior based on URL patterns.
+- BeforeResponseMiddleware: Applies custom logic to the response before it is sent.
+- AccessLogMiddleware: Logs detailed access information for each request.
+
+Third-party Middleware:
+- CORSMiddleware: Manages Cross-Origin Resource Sharing (CORS) policies.
+- SessionMiddleware: Manages user sessions using secure cookies.
+- SessionAutoloadMiddleware: Automatically loads session data on specified paths.
+- GZipMiddleware: Compresses responses using GZip to reduce payload size.
+
+The middleware list is assembled dynamically based on application settings.
 """
+
 
 from starsessions import CookieStore, SessionMiddleware, SessionAutoloadMiddleware
 from starlette.middleware import Middleware
