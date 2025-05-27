@@ -1,5 +1,18 @@
 """
-A couple of helpers to raise exceptions and validate passwords.
+Defines a custom `OpenAwsException` exception
+
+In general the OpenAwsException is used to raise exceptions that are well-formed
+and expected by maya.
+
+`raise_openaws_exception` is used to extract errors from a failed API call
+It extracts the error code and error message and raises an
+`OpenAwsException` with the appropriate status code and message.
+
+A bit messy as the API returns different error formats.
+
+Besides that, there are some validation functions to validate user input.
+
+
 """
 
 from starlette.requests import Request
@@ -12,8 +25,9 @@ log = get_log()
 
 class OpenAwsException(Exception):
     """
-    OpenAwsException is used to raise exceptions when the API returns
-    welformed errors.
+    OpenAwsException is used as an exception that is expected.
+    E.g. the user is not logged in, or the user tries to register with an invalid password.
+    Or for raising an error when the API returns an error.
 
     raise OpenAwsException(
                 422,
@@ -34,6 +48,7 @@ class OpenAwsException(Exception):
 
 def raise_openaws_exception(status_code: int, error: dict):
     """
+    This is used to raise an OpenAwsException when the API returns an error.
     Raise OpenAwsException based on status_code and error from the API error message.
     """
 
@@ -48,60 +63,6 @@ def raise_openaws_exception(status_code: int, error: dict):
         raise_message = _get_error_string(error_code)
 
     raise OpenAwsException(status_code, raise_message)
-
-
-async def validate_passwords(request: Request):
-    """
-    Validate that the passwords match and are at least 8 characters long.
-    This is also validated on the API side. But in some cases we want to
-    validate it on the client side as well.
-    """
-
-    form = await request.form()
-    password_1 = str(form.get("password"))
-    password_2 = str(form.get("password_2"))
-
-    if password_1 != password_2:
-        raise OpenAwsException(
-            400,
-            translate("Passwords do not match."),
-        )
-
-    if len(password_1) < 8:
-        raise OpenAwsException(
-            400,
-            translate("Password should be at least 8 characters long"),
-        )
-
-
-async def validate_display_name(request: Request):
-    """
-    Validate that the display name is at least 3 characters long.
-    """
-
-    form = await request.form()
-    display_name = str(form.get("display_name"))
-
-    if len(display_name) < 3:
-        raise OpenAwsException(
-            400,
-            translate("Display name should be at least 3 characters long"),
-        )
-
-
-async def validate_captcha(request: Request):
-    """
-    Validate that the captcha is correct.
-    """
-
-    form = await request.form()
-    captcha = str(form.get("captcha"))
-
-    if captcha != "8000":
-        raise OpenAwsException(
-            400,
-            translate("Captcha is not correct"),
-        )
 
 
 def _extract_validation_error(error_dict: dict) -> str:
@@ -174,3 +135,57 @@ def _get_error_string(error: str) -> str:
         return translate("Unknown error. Please try again later.")
 
     return translate("Unknown error. Please try again later.")
+
+
+async def validate_passwords(request: Request):
+    """
+    Validate that the passwords match and are at least 8 characters long.
+    This is also validated on the API side. But in some cases we want to
+    validate it on the client side as well.
+    """
+
+    form = await request.form()
+    password_1 = str(form.get("password"))
+    password_2 = str(form.get("password_2"))
+
+    if password_1 != password_2:
+        raise OpenAwsException(
+            400,
+            translate("Passwords do not match."),
+        )
+
+    if len(password_1) < 8:
+        raise OpenAwsException(
+            400,
+            translate("Password should be at least 8 characters long"),
+        )
+
+
+async def validate_display_name(request: Request):
+    """
+    Validate that the display name is at least 3 characters long.
+    """
+
+    form = await request.form()
+    display_name = str(form.get("display_name"))
+
+    if len(display_name) < 3:
+        raise OpenAwsException(
+            400,
+            translate("Display name should be at least 3 characters long"),
+        )
+
+
+async def validate_captcha(request: Request):
+    """
+    Validate that the captcha is correct.
+    """
+
+    form = await request.form()
+    captcha = str(form.get("captcha"))
+
+    if captcha != "8000":
+        raise OpenAwsException(
+            400,
+            translate("Captcha is not correct"),
+        )
