@@ -1,3 +1,20 @@
+"""
+This module provides utility functions to retrieve and process search-related
+cookie data from HTTP requests in a Starlette-based application.
+
+Functions included:
+- get_search_cookie: Parses the 'search' cookie from the request and returns a
+  SearchCookie dataclass instance, applying any dynamic settings adjustments.
+- get_search_query_params: Extracts the search query parameters from the cookie
+  as a list of (key, value) tuples.
+- get_query_str_display: Retrieves a query string representation of the search
+  parameters, formatted as a standard query string.
+
+These functions rely on the dynamic settings from `maya.core.dynamic_settings`
+to optionally modify the behavior of cookie handling, particularly whether
+search results should be retained or cleared.
+"""
+
 import json
 from starlette.requests import Request
 from maya.core.dynamic_settings import settings
@@ -37,7 +54,7 @@ def get_search_cookie(request: Request) -> SearchCookie:
 
 def get_search_query_params(request: Request) -> list:
     """
-    Get query string from search cookie and return it as a list of tuples\n
+    Get query string from search cookie and return it as a list of tuples
     E.g. [('content_types', '96'), ('content_types', '97')]
     """
     search_cookie = get_search_cookie(request)

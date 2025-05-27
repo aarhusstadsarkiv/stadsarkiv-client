@@ -1,18 +1,25 @@
 """
-Defines a custom `OpenAwsException` exception
+Exception handling and input validation utilities for the OpenAws application.
 
-In general the OpenAwsException is used to raise exceptions that are well-formed
-and expected by maya.
+This module defines a custom exception class (`OpenAwsException`) used to represent
+user-facing errors that occur during request handling. It includes helper functions
+to extract and translate error messages from API responses, and several asynchronous
+validation functions to check client-side form data such as passwords, display names,
+and captchas.
 
-`raise_openaws_exception` is used to extract errors from a failed API call
-It extracts the error code and error message and raises an
-`OpenAwsException` with the appropriate status code and message.
+The `OpenAwsException` class is designed to be used used with expected errors
+such as authentication failures, validation errors, and API response errors.
 
-A bit messy as the API returns different error formats.
+Functions:
+- raise_openaws_exception: Raises an `OpenAwsException` based on status code and error content.
+- validate_passwords: Ensures provided passwords match and meet minimum requirements.
+- validate_display_name: Ensures display name meets length constraints.
+- validate_captcha: Validates the submitted captcha against an expected value.
 
-Besides that, there are some validation functions to validate user input.
-
-
+Internal helpers:
+- _extract_validation_error: Parses validation errors from error dictionaries.
+- _extract_model_error: Parses model-related errors from error dictionaries.
+- _get_error_string: Maps error codes to translated user-friendly error messages.
 """
 
 from starlette.requests import Request
