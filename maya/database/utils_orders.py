@@ -5,7 +5,7 @@ from maya.core import date_format
 import arrow
 from maya.core import utils_core
 from maya.core import api
-from maya.core.mail import get_template_content
+from maya.core.templates import get_template_content
 from maya.core.dynamic_settings import settings
 
 

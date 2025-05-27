@@ -1,5 +1,25 @@
 """
-Default hooks specification.
+This module defines the `HooksSpec` class, which provides default lifecycle hooks
+for various operations in a web application using the Starlette framework.
+
+These hooks are designed to be optionally overridden in custom implementations to
+intercept and modify application behavior at key points such as route initialization,
+response generation, login handling, autocomplete queries, context building,
+record retrieval, search operations, and resource fetching.
+
+Each method provides a structured point of extension to alter or augment the
+underlying process and its data without modifying core logic, enabling flexible
+customization.
+
+Key features include:
+- Modifying routes after initialization (`after_routes_init`)
+- Customizing responses before they are returned (`before_response`)
+- Adjusting login success/failure data (`after_login_success`, `after_login_failure`)
+- Enhancing autocomplete and search behavior 
+(`before_get_auto_complete`, `after_get_auto_complete`, `before_get_search`, `after_get_search`)
+- Modifying context data (`before_context`)
+- Intercepting record retrieval logic (`after_get_record`, `after_get_record_and_types`)
+- Transforming resource output from external APIs (`after_get_resource`)
 """
 
 from starlette.requests import Request

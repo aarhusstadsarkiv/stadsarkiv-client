@@ -1,3 +1,18 @@
+"""
+This module provides functionality for dynamically loading a `Hooks` implementation
+based on the presence of a local `hooks.py` file in the base directory. It supports
+a plug-in system that allows applications to override default behavior by supplying
+a local `Hooks` class.
+
+Functions:
+- `get_hooks(request)`: Returns an instance of the local or default `Hooks` class,
+  depending on whether a local override is found. Accepts an optional Starlette 
+  `Request` object; if none is provided, a mock request is generated.
+- `_get_mock_request()`: Creates a mock Starlette request to support standalone 
+  hook loading outside of a live request context.
+
+"""
+
 from starlette.requests import Request
 from maya.core.logging import get_log
 from maya.core.hooks_spec import HooksSpec

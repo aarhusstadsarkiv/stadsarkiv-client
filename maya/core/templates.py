@@ -140,6 +140,18 @@ def sub_string(value: str, length: int):
     return value[:length] + "..."
 
 
+async def get_template_content(template_path: str, context_values: dict) -> str:
+    """
+    Get template content from a jinja2 template and a dict of context values
+    """
+
+    # Get the template as string
+    template = templates.get_template(template_path)
+    html_content = template.render(context_values)
+
+    return html_content
+
+
 templates.env.globals.update(translate=translate)
 templates.env.globals.update(get_setting=get_setting)
 templates.env.globals.update(date_format=date_format)

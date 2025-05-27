@@ -1,5 +1,28 @@
 """
-A couple of logging handlers.
+This module defines a set of logging utilities including custom formatters and handlers
+to facilitate consistent and structured logging across an application.
+
+Features:
+- A custom formatter (`UvicornLikeFormatter`) that mimics Uvicorn-style console output.
+- A JSON formatter (`JsonFormatter`) that serializes log records as structured JSON,
+  supporting extra context fields for enhanced error tracking.
+- Functions to create and configure stream and file-based logging handlers,
+  including rotating file handlers using `ConcurrentRotatingFileHandler` for safe concurrent writes.
+- Automatic log directory creation based on the application's data directory.
+- A default initialization logger (`get_init_logger`) for early-stage logging before
+  configuration settings are loaded.
+
+Constants:
+- `MAX_LOG_SIZE`: Maximum size (in bytes) for a single log file before rotation.
+- `BACKUP_COUNT`: Number of backup files to retain for rotated logs.
+
+Dependencies:
+- `concurrent_log_handler`: Used for thread-safe and process-safe rotating log files.
+- `maya.core.paths.get_data_dir_path`: Used to resolve the application's data directory path.
+
+Intended Usage:
+This module is designed to be imported and used in other parts of the application
+to configure logging behavior consistently and robustly.
 """
 
 from typing import Any

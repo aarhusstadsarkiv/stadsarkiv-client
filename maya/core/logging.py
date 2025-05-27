@@ -1,6 +1,21 @@
 """
-Set up a single logger for the application.
-Contains a single function (get_log) that returns the setup logger.
+This module sets up and configures application-wide logging for the Maya core system.
+
+It defines and initializes two main loggers: a general-purpose logger (`main`) and an access logger (`access`).
+Logging behavior is controlled by dynamic runtime settings from `maya.core.dynamic_settings.settings`,
+which specify the log level and the enabled log handlers (e.g., stream and rotating file handlers).
+
+Key functionalities:
+- Suppresses `FutureWarning` messages to keep logs clean.
+- Disables lower-level logging from the `uvicorn.error` logger by setting its level to CRITICAL.
+- Ensures that log directories are created before logging begins via `generate_log_dir()`.
+- Sets up log handlers conditionally based on settings, including rotating JSON file handlers and stream handlers.
+- Provides access to the configured loggers via `get_log()` and `get_access_log()` functions.
+
+Functions:
+- `get_log()`: Returns the main application logger.
+- `get_access_log()`: Returns the access logger.
+
 """
 
 from typing import Any

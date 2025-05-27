@@ -1,5 +1,18 @@
 """
-Set and get flash messages to be displayed to the user.
+This module provides utility functions for setting, retrieving, and clearing
+flash messages in a web application. Flash messages are temporary messages
+used to inform users about the result of an action (e.g., success, warning,
+error, or notice). These messages are stored in the session and are intended
+to be displayed on the next page load, after which they are cleared.
+
+Functions:
+- set_message(request, message, type="notice", use_settings=False):
+    Stores a flash message in the user's session. Optionally overrides
+    the message with a custom setting.
+- get_messages(request):
+    Retrieves and removes all flash messages from the session.
+- clear(request):
+    Explicitly removes all flash messages from the session.
 """
 
 import typing

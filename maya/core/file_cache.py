@@ -1,3 +1,16 @@
+"""
+This module provides simple file-based caching utilities for storing and retrieving
+data using pickle serialization. It supports time-based expiration of cached items
+(Time-To-Live or TTL) and organizes cache files under a predefined cache directory.
+
+Functions:
+- file_cache_get(ttl, cache_name_from): Retrieves cached data if it exists and is within TTL.
+- file_cache_set(data, cache_name_from): Stores data in a cache file with a timestamp.
+
+The cache is stored in the 'cache' subdirectory of the `base_dir` data directory, and file names
+are generated using a hash of a user-defined identifier list to ensure uniqueness.
+"""
+
 import time
 import pickle
 import os
