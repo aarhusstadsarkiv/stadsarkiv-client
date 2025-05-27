@@ -13,7 +13,7 @@ from maya.core.translate import translate
 from maya.core.dynamic_settings import get_setting
 from maya.core.logging import get_log
 from maya.core.date_format import date_format
-from maya.core.args import get_base_dir_path
+from maya.core.paths import get_base_dir_path
 import json
 import re
 import markdown

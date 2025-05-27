@@ -8,7 +8,7 @@ import logging
 from maya.core.dynamic_settings import settings
 from maya.core import logging_handlers
 import warnings
-from maya.core.args import get_data_dir_path
+from maya.core.paths import get_data_dir_path
 
 
 logging_handlers.generate_log_dir()

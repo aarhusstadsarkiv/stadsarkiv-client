@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import os
 from pathlib import Path
 from maya.core.logging_handlers import get_init_logger
-from maya.core.args import get_base_dir_path
+from maya.core.paths import get_base_dir_path
 
 
 log = get_init_logger()

@@ -2,7 +2,7 @@ from starlette.requests import Request
 from maya.core.logging import get_log
 from maya.core.hooks_spec import HooksSpec
 from maya.hooks import Hooks
-from maya.core.args import get_base_dir_path
+from maya.core.paths import get_base_dir_path
 from maya.core.module_loader import load_module_attr
 import typing
 import os

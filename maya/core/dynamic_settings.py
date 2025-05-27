@@ -12,7 +12,7 @@ settings_test.py
 
 from maya.settings import settings
 from maya.settings_facets import settings_facets
-from maya.core.args import get_base_dir_path
+from maya.core.paths import get_base_dir_path
 from maya.core.logging import get_log
 from maya.core.module_loader import load_attr_from_file
 import importlib

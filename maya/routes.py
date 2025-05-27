@@ -25,7 +25,7 @@ from maya.endpoints import (
 import os
 from maya.core.dynamic_settings import settings
 from maya.core.multi_static import MultiStaticFiles
-from maya.core.args import get_base_dir_path
+from maya.core.paths import get_base_dir_path
 from maya.core.logging import get_log
 from maya.core.module_loader import load_attr_from_file
 from typing import Any

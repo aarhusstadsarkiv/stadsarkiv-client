@@ -3,7 +3,7 @@ import pickle
 import os
 
 from maya.core.logging import get_log
-from maya.core.args import get_data_dir_path
+from maya.core.paths import get_data_dir_path
 
 
 log = get_log()

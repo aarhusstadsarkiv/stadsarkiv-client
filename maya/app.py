@@ -9,7 +9,7 @@ from maya.routes import get_app_routes
 from maya.core.middleware import middleware
 from maya.core.exception_handlers import exception_handlers
 from maya.core.hooks import get_hooks
-from maya.core.args import get_data_dir_path
+from maya.core.paths import get_data_dir_path
 from maya.core.scheduler import scheduler
 import contextlib
 import os

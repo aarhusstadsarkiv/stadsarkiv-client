@@ -7,7 +7,7 @@ Exposes a translate function that is used in the jinja2 template engine and in p
 """
 
 from maya.core.dynamic_settings import settings
-from maya.core.args import get_base_dir_path
+from maya.core.paths import get_base_dir_path
 from maya.core.logging import get_log
 import yaml
 from pathlib import Path

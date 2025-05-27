@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 from concurrent_log_handler import ConcurrentRotatingFileHandler
 import warnings
-from maya.core.args import get_data_dir_path
+from maya.core.paths import get_data_dir_path
 import json
 
 MAX_LOG_SIZE = 100 * 1024 * 1024

@@ -6,7 +6,7 @@ it is expected that settings, logs, hooks, plugins, sqlite3 databases etc. exist
 
 It is then added to the environment when the server is started.
 
-The get_data_dir() function will return the path to the data directory.
+The get_data_dir_path() function will return a path to the data directory.
 The data directory is a subdirectory of the base directory.
 
 """
