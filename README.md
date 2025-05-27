@@ -2,6 +2,6 @@
 
 ## Documentation
 
-[github](sites/demo-readonly/docs)
+[github](sites/demo/docs)
 
 [website and demo](https://demo.openaws.dk/)
