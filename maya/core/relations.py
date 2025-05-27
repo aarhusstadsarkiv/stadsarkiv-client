@@ -1,5 +1,23 @@
 """
-Format relations obtained from the proxies api.
+Module for formatting and sorting relation data obtained from the Proxies API.
+
+It is used primarily in the context of theater archives (tearterakivet) to manage
+relation entries such as actors and their roles in productions. The module provides
+
+This module provides utility functions for handling relation data. It includes tools for separating onstage and offstage
+roles based on their labels, as well as custom sorting logic to handle inconsistent
+or missing date information in the dataset.
+
+Functions:
+- format_relations(type: str, relations: list):
+    Separates relation entries into onstage and offstage groups based on naming patterns.
+
+- sort_data(data: list, key: str):
+    Sorts a list of relation groups by a specified key, with special handling for
+    extracting year values from textual labels.
+
+- _sort_by_value(list_of_dicts: list, key_name: str, default=None):
+    Sorts a list of dictionaries by the value of a specified key, using a default if needed.
 """
 
 import re

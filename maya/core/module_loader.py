@@ -1,3 +1,26 @@
+"""
+Module for dynamically loading Python modules and their attributes.
+
+This module provides utility functions for importing Python modules and retrieving specific
+attributes (such as functions, classes, or variables) from them. It supports two main use cases:
+1. Loading modules and attributes directly from file paths.
+2. Loading attributes from standard importable modules.
+
+Functions:
+- load_module_from_file(module_name: str, file_path: str):
+    Dynamically loads a module from a specified Python file path.
+
+- load_attr_from_file(module_name: str, attr_name: str, file_path: str):
+    Loads a specific attribute from a module defined in a given file path.
+
+- load_module_attr(module_name: str, attr_name: str):
+    Loads a specific attribute from an already importable module.
+
+Typical use cases include dynamic plugin systems, test frameworks, or any context where
+Python code needs to be loaded and interacted with at runtime.
+"""
+
+
 import importlib
 import importlib.util
 import os

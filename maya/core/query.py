@@ -1,5 +1,15 @@
 """
-Some query utils that can be used to get query params from request and return it as a list of tuples or a string.
+Utility functions for extracting and formatting query parameters from HTTP requests.
+
+This module provides helper functions to process query parameters from Starlette `Request` objects.
+It allows filtering, formatting, and encoding of query parameters, which is useful for building
+URLs, logging, or reusing query strings in downstream requests.
+
+Functions:
+- get_list: Extracts query parameters based on allowed keys and merges them with default values.
+- get_str_from_list: Converts a list of (key, value) tuples into a URL-encoded query string with
+  optional filtering and normalization.
+- get_search: Extracts the "q" (search) parameter from a request.
 """
 
 from starlette.requests import Request

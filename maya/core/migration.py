@@ -1,3 +1,29 @@
+"""
+Module for managing and applying database schema migrations using SQLite.
+
+This module defines a `Migration` class that handles the execution and tracking of SQL-based migrations 
+on an SQLite database. It ensures that each migration is applied only once by maintaining a `migrations` 
+table within the database. The module performs the following key functions:
+
+- Initializes the SQLite connection and checks for the existence of the migrations tracking table.
+- Applies SQL migrations provided as a dictionary of migration keys and SQL strings.
+- Tracks applied migrations to avoid re-execution.
+- Commits each migration to the database and logs the process.
+- Provides a method to close the database connection.
+
+Typical usage:
+
+    migrations = {
+        "001_create_users": "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT);",
+        "002_add_email_to_users": "ALTER TABLE users ADD COLUMN email TEXT;"
+    }
+
+    migrator = Migration("example.db", migrations)
+    migrator.run_migrations()
+    migrator.close()
+"""
+
+
 import sqlite3
 import logging
 
