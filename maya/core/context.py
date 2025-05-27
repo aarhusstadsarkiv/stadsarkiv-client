@@ -1,7 +1,7 @@
 """
-Contains a single function (get_context)
+Contains a single public function `get_context`
 that returns a dict with basic context values for the templates.
-Hooks: You are able to hook into the get_context function and add your own context values.
+It also generates basic main menu items based on the user's permissions
 """
 
 from starlette.requests import Request
@@ -18,7 +18,9 @@ log = get_log()
 
 async def get_context(request: Request, context_values: dict = {}, identifier: str = "") -> dict:
     """
-    Adding some default values to the context.
+    This function is used to get the context for the templates.
+    `context_values` is a dict that can be used to pass additional context values to the templates.
+    `identifier` is a string that can be used to identify the context.
     """
     hooks = get_hooks(request)
 
