@@ -6,7 +6,7 @@ settings: dict[str, typing.Any] = {
     "client_url": "https://demo.openaws.dk",
     "client_email": "stadsarkivet@aarhusarkivet.dk",
     "language": "da",
-    "log_handlers": ["rotating_file"],
+    "log_handlers": ["stream"],
     # "cors_allow_origins": ['https://demo.openaws.dk'],
     "cookie": {
         "name": "session",
