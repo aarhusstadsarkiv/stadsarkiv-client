@@ -18,7 +18,7 @@ Install requirements:
 
 Using pip
 
-    uv pip install -r requirements.txt
+    uv pip install -r pyproject.toml
 
 You may also need to install danish language packs
 
@@ -74,7 +74,7 @@ Then:
 
 Install `bump-py-version`:
 
-    pipx install git+https://github.com/diversen/bump-py-version@v0.0.8
+    pipx install git+https://github.com/diversen/bump-py-version@v2.0.3
 
 Bump version:
 
