@@ -31,7 +31,7 @@ jobs:
         run: uv venv
 
       - name: Install dependencies
-        run: uv pip install -r requirements.txt
+        run: uv sync
 
       - name: Run tests
         run: .venv/bin/python -m maya source-test
